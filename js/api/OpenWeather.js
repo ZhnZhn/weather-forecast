@@ -8,11 +8,11 @@ Object.defineProperty(exports, "__esModule", {
 var METRIC = '&units=metric';
 var LANG = '&lang=en';
 var PERIOD = '&cnt=7';
-var BASE = 'http://api.openweathermap.org/data/2.5/';
+var BASE = 'https://api.openweathermap.org/data/2.5/';
 var WEATHER = 'weather';
 var FORECAST_DAILY = 'forecast/daily';
 var FORECAST = 'forecast';
-var BASE_V3 = 'http://api.openweathermap.org/v3/';
+var BASE_V3 = 'https://api.openweathermap.org/v3/';
 var UVI = 'uvi';
 var CURRENT_JSON = 'current.json';
 

@@ -3,11 +3,11 @@
 const METRIC = '&units=metric'
 const LANG = '&lang=en'
 const PERIOD = '&cnt=7'
-const BASE = 'http://api.openweathermap.org/data/2.5/';
+const BASE = 'https://api.openweathermap.org/data/2.5/';
 const WEATHER = 'weather'
 const FORECAST_DAILY = 'forecast/daily'
 const FORECAST = 'forecast'
-const BASE_V3 = 'http://api.openweathermap.org/v3/'
+const BASE_V3 = 'https://api.openweathermap.org/v3/'
 const UVI = 'uvi'
 const CURRENT_JSON = 'current.json'
 
