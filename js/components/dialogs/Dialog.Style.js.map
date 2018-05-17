@@ -1,0 +1,18 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/dialogs/Dialog.Style.js"
+ ],
+ "file": "../../../src/components/dialogs/Dialog.Style.js",
+ "names": [
+  "styleConfig",
+  "_themeName",
+  "undefined",
+  "_style",
+  "_createStyle",
+  "R",
+  "R_DIALOG",
+  "DIALOG"
+ ],
+ "mappings": ";;;;;;;;AACA,IAAMA,cAAc;AAClBC,cAAYC,SADM;AAElBC,UAAQD,SAFU;AAGlBE,gBAAc,sBAACC,CAAD,EAAO;AACnB,WAAO;AACLC,6BACKD,EAAEE,MADP;AADK,KAAP;AAKD;AATiB,CAApB;;kBAYeP,W"
+}

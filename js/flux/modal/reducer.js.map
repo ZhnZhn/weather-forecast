@@ -1,0 +1,18 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/flux/modal/reducer.js"
+ ],
+ "file": "../../../src/flux/modal/reducer.js",
+ "names": [
+  "INIT_STATE",
+  "id",
+  "undefined",
+  "reducer",
+  "state",
+  "action",
+  "type",
+  "MODAL_SHOW"
+ ],
+ "mappings": ";;;;;;;;AACA;;AAEA,IAAMA,aAAa;AACjBC,MAAIC;AADa,CAAnB;;AAIA,IAAMC,UAAU,SAAVA,OAAU,GAAmC;AAAA,MAA1BC,KAA0B,uEAApBJ,UAAoB;AAAA,MAARK,MAAQ;;AACjD,UAAOA,OAAOC,IAAd;AACE,SAAK,gBAAOC,UAAZ;AACEH,YAAMH,EAAN,GAAWI,OAAOJ,EAAlB;AACA,0BAAYG,KAAZ;AACF;AACG,aAAOA,KAAP;AALL;AAOD,CARD;;kBAUeD,O"
+}

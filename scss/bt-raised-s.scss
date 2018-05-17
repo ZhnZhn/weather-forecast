@@ -1,0 +1,71 @@
+
+@import 'base/values';
+@import 'base/bt-m';
+
+@mixin raised-div($color){
+  color: $color;
+  height: $btH;
+  border-radius: $btBr;
+  top: 0px;
+  transition: $btTransition;
+  &:hover{
+    background-color: rgba(255,255,255, 0.4);
+  }
+}
+
+.bt-raised {
+  &:focus{
+    outline: $cOutlineFocus auto 2px;
+  }
+
+  background-color: $btBg;
+
+  font-family: $btFontFamily;
+  font-size: inherit;
+  font-weight: inherit;
+
+  height: $btH;
+  line-height: $btLh;
+  /*width: '100%',*/
+
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+
+  border-radius: $btBr;
+  border: 10px;
+  text-align: center;
+  margin: 0px;
+  margin-right: 2px;
+  margin-left: 2px;
+  padding: 0px;
+  outline: none;
+  text-decoration: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  transition: $btTransition;
+  cursor: pointer;
+}
+
+.bt-raised__span {
+  position: relative;
+  opacity: 1;
+  font-size: 14px;
+  letter-spacing: 0px;
+  text-transform: uppercase;
+  /*font-weight: 500,*/
+  font-weight: bold;
+  margin: 0px;
+  user-select: none;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+
+.bt-raised__div {
+  @include raised-div(rgb(48, 48, 48));
+}
+
+.bt-raised__div--white {
+  @include raised-div(rgb(255,255,255));
+}

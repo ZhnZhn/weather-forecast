@@ -1,0 +1,19 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/elements/ProviderLink.js"
+ ],
+ "file": "../../../src/components/elements/ProviderLink.js",
+ "names": [
+  "CL",
+  "S",
+  "LINK",
+  "color",
+  "ProviderLink",
+  "className",
+  "style",
+  "prefixCL",
+  "prefix"
+ ],
+ "mappings": ";;;;;;AAAA;;;;;;AAEA,IAAMA,KAAK,oBAAX;;AAEA,IAAMC,IAAI;AACRC,QAAM;AACJC,WAAO;AADH;AADE,CAAV;;AAMA,IAAMC,eAAe,SAAfA,YAAe;AAAA,MACnBC,SADmB,QACnBA,SADmB;AAAA,MAEnBC,KAFmB,QAEnBA,KAFmB;AAAA,MAGnBC,QAHmB,QAGnBA,QAHmB;AAAA,yBAInBC,MAJmB;AAAA,MAInBA,MAJmB,+BAIZ,aAJY;AAAA,SAMrB;AAAA;AAAA,MAAK,WAAWH,SAAhB,EAA2B,OAAOC,KAAlC;AACE;AAAA;AAAA,QAAM,WAAWC,QAAjB;AACGC;AADH,KADF;AAIE;AAAA;AAAA;AACG,mBAAWR,EADd;AAEG,eAAOC,EAAEC,IAFZ;AAGG,cAAK;AAHR;AAAA;AAAA;AAJF,GANqB;AAAA,CAArB;;kBAmBeE,Y"
+}

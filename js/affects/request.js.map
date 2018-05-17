@@ -1,0 +1,18 @@
+{
+ "version": 3,
+ "sources": [
+  "../../src/affects/request.js"
+ ],
+ "file": "../../src/affects/request.js",
+ "names": [
+  "request",
+  "url",
+  "fetch",
+  "then",
+  "status",
+  "res",
+  "json",
+  "Error"
+ ],
+ "mappings": ";;;;;;AACA,IAAMA,UAAU,SAAVA,OAAU,CAACC,GAAD,EAAS;AACvB,SAAOC,MAAMD,GAAN,EACJE,IADI,CACC,eAAO;AAAA,QACFC,MADE,GACSC,GADT,CACFD,MADE;;AAEV,QAAIA,UAAS,GAAT,IAAgBA,SAAO,GAA3B,EAAgC;AAC9B,aAAOC,IAAIC,IAAJ,EAAP;AACD,KAFD,MAEO;AACL,YAAM,IAAIC,KAAJ,mBAA0BH,MAA1B,CAAN;AACD;AACH,GARI,CAAP;AASD,CAVD;;kBAYeJ,O"
+}

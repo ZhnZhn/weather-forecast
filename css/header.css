@@ -1,0 +1,27 @@
+
+.header__title {
+  display: inline-block;
+  color: rgb(128, 192, 64);
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 16px;
+}
+
+@media (max-width: 580px) {
+  .header__title {
+    display: none;  
+  }
+}
+ 
+@media (max-width: 400px) {
+  .header__link-pref {
+    display: none;
+  }
+}
+ 
+.header__link-provider {  
+  display: inline-block;
+  font-weight: bold;
+  padding-left: 16px;
+}
+

@@ -1,0 +1,18 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/flux/settings/actions.js"
+ ],
+ "file": "../../../src/flux/settings/actions.js",
+ "names": [
+  "ACTION",
+  "SETTINGS_SET",
+  "SETTINGS_SET_APIKEY",
+  "setSettings",
+  "apiKey",
+  "type",
+  "setApiKey",
+  "actions"
+ ],
+ "mappings": ";;;;;AACO,IAAMA,0BAAS;AACpBC,gBAAc,cADM;AAEpBC,uBAAqB;AAFD,CAAf;;AAKA,IAAMC,oCAAc,SAAdA,WAAc,CAACC,MAAD;AAAA,SAAa;AACtCC,UAAML,OAAOC,YADyB,EACXG;AADW,GAAb;AAAA,CAApB;;AAIA,IAAME,gCAAY,SAAZA,SAAY;AAAA,SAAO;AAC9BD,UAAML,OAAOE;AADiB,GAAP;AAAA,CAAlB;;AAIP,IAAMK,UAAU;AACdJ,eAAaA,WADC;AAEdG,aAAWA;AAFG,CAAhB;;kBAKeC,O"
+}

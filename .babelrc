@@ -1,0 +1,20 @@
+ {
+   "ignore" : [
+      "src/**/__tests__/**/*.test.js"
+   ],
+    "only" : [
+                "!src/**/__tests__/**/*.test.js",
+                "*.js",
+                "*.jsx",
+                "*.es6"
+             ],
+    "plugins" : [
+        "transform-decorators-legacy",
+     //   "recharts"
+    ],            
+    "presets" : [
+                   "es2015",
+                   "react",
+                   "stage-2"
+                ]
+ }

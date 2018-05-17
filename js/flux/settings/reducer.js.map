@@ -1,0 +1,17 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/flux/settings/reducer.js"
+ ],
+ "file": "../../../src/flux/settings/reducer.js",
+ "names": [
+  "INIT_STATE",
+  "isApiKey",
+  "reducer",
+  "state",
+  "action",
+  "type",
+  "SETTINGS_SET_APIKEY"
+ ],
+ "mappings": ";;;;;;;;;AACA;;AAEA,IAAMA,aAAa;AACjBC,YAAU;AACV;AAFiB,CAAnB;;AAKA,IAAMC,UAAU,SAAVA,OAAU,GAAkC;AAAA,MAAzBC,KAAyB,uEAAnBH,UAAmB;AAAA,MAAPI,MAAO;;AAChD,UAAOA,OAAOC,IAAd;AACE,SAAK,gBAAOC,mBAAZ;AAAiC;AAC/BH,cAAMF,QAAN,GAAiB,IAAjB;AACA,4BAAYE,KAAZ;AACD;AACD;AAAS,aAAOA,KAAP;AALX;AAOD,CARD;;AAUO,IAAMF,8BAAW,SAAXA,QAAW,CAACE,KAAD;AAAA,SAAWA,MAAMF,QAAjB;AAAA,CAAjB;;kBAEQC,O"
+}

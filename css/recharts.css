@@ -1,0 +1,10 @@
+
+.recharts-layer.recharts-composed > .recharts-rectangle {
+  opacity : 0.2;
+}
+
+/*
+.recharts-rectangle {
+  opacity : 0.5;
+}
+*/

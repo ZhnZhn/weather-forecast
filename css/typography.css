@@ -1,0 +1,9 @@
+.data-provider-link {  
+  font-weight: bold;
+  border-bottom: thin solid;
+  text-decoration: none;
+}
+
+.data-provider-link:hover {
+  border-bottom-width: medium;
+}

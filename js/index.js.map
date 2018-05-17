@@ -1,0 +1,21 @@
+{
+ "version": 3,
+ "sources": [
+  "../src/index.js"
+ ],
+ "file": "../src/index.js",
+ "names": [
+  "React",
+  "window",
+  "ReactDOM",
+  "render",
+  "store",
+  "weather",
+  "fnFetchForecast",
+  "id",
+  "dispatch",
+  "document",
+  "getElementById"
+ ],
+ "mappings": ";;AAAA;;;;AACA;;;;AAGA;;;;AACA;;;;AACA;;;;AAEA,IAAMA,QAAQ,mBAAUC,OAAOD,KAA/B;AACA,IAAME,WAAW,sBAAaD,OAAOC,QAArC;IACQC,M,GAAWD,Q,CAAXC,M;;;AAER,IAAMC,QAAQ,4BAAd;;AAEAH,OAAOI,OAAP,GAAiB;AACfC,mBAAkB,yBAACC,EAAD,EAAQ;AACxB,QAAI,OAAOA,EAAP,KAAc,QAAd,IAA0BA,OAAO,CAArC,EAAwC;AACrCH,YAAMI,QAAN,CAAe,gCAAkBD,EAAlB,CAAf;AACF;AACF;AALc,CAAjB;;AAQAJ,OACE,6CAAa,OAAOC,KAApB,GADF,EAEEK,SAASC,cAAT,CAAwB,KAAxB,CAFF"
+}

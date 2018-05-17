@@ -1,0 +1,12 @@
+{
+ "version": 3,
+ "sources": [
+  "../../src/components/ReactImp.js"
+ ],
+ "file": "../../src/components/ReactImp.js",
+ "names": [
+  "React",
+  "window"
+ ],
+ "mappings": ";;;;;;AAAA;;;;;;AAEA,IAAMA,QAAQ,mBAAUC,OAAOD,KAA/B;;kBAEeA,K"
+}

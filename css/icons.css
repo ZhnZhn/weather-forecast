@@ -1,0 +1,10 @@
+.icon__popup__vane {
+  display:inline-block;
+  position:relative;
+  top:4px;
+  width:17px;
+  height:18px;
+  fill:#3f51b5;
+  stroke:#3f51b5;
+  stroke-width:1px;
+}

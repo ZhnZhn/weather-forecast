@@ -1,0 +1,107 @@
+.header {
+  /*position: absolute;
+  z-index: 3;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 3rem;
+  line-height: 3rem;*/
+  background: #1E1E1E none repeat scroll 0% 0%;
+  border-bottom: 1px solid #000;
+}
+
+.bt-hamburger {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  font-size: 0;
+  text-indent: -9999px;
+  color: gray;
+  background-color: #80c040;
+  transition: background-color .3s;
+}
+.bt-hamburger:focus{
+  outline: 0;
+}
+
+.bt-hamburger span::before{
+  content: "";
+  display: block;
+  position: absolute;
+  top: -0.5rem;
+  left: 0;
+  width: 100%;
+  height: 0.25rem;
+  background: gray;
+  border-radius: 2px;
+  transform-origin: top right;
+  transition: transform .3s, width .3s, top .3s;
+}
+.bt-hamburger span {
+  display: block;
+  position: absolute;
+  top: 1rem;
+  left: 0.4rem;
+  right: 0.4rem;
+  height: 0.25rem;
+  background: gray;
+  border-radius: 2px;
+  /*transform-origin: top right;*/
+  transition: transform .3s;
+}
+.bt-hamburger span::after{
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  width: 100%;
+  height: 0.25rem;
+  background: gray;
+  border-radius: 2px;
+  transform-origin: bottom right;
+}
+
+.bt-hamburger.opened {
+  background-color: #71b130;
+}
+
+.bt-hamburger.opened span::before{
+  top: 0;
+  width: 60%;
+  background: #5f5f5f;
+  transform: translateX(0.6rem)rotate(45deg);
+}
+.bt-hamburger.opened span {
+  background: #5f5f5f;
+  transform: rotate(180deg);
+}
+.bt-hamburger.opened span::after{
+  bottom: 0;
+  width: 60%;
+  background: #5f5f5f;
+  transform: translateX(0.6rem)rotate(-45deg);
+}
+
+.modal-root {
+  z-index: 1050;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  opacity: 1;
+  background: rgba(0,0,0, 0.35) none repeat scroll 0% 0%;
+  outline: 0px none;
+}

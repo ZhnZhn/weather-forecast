@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/components/_react.js"],"names":["React","window"],"mappings":";;;;;;AAAA;;;;;;AAEA,IAAMA,QAAQ,mBAAUC,OAAOD,KAA/B;;kBAEeA,K","file":"_react.js","sourcesContent":["import _React from 'react'\r\n\r\nconst React = _React || window.React\r\n\r\nexport default React\r\n"]}
