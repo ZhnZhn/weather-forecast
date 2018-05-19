@@ -18,6 +18,10 @@ var _SvgRect = require('./SvgRect');
 
 var _SvgRect2 = _interopRequireDefault(_SvgRect);
 
+var _LegendCell = require('./LegendCell');
+
+var _LegendCell2 = _interopRequireDefault(_LegendCell);
+
 var _Label = require('./Label.Style');
 
 var _Label2 = _interopRequireDefault(_Label);
@@ -56,6 +60,10 @@ var L = {
   },
   COL_2: {
     display: 'inline-block'
+  },
+  COL_3: {
+    display: 'inline-block',
+    marginLeft: '1rem'
   }
 };
 
@@ -91,96 +99,88 @@ var LegendTemperature = function (_Component) {
           'div',
           { style: L.COL_1 },
           _react2.default.createElement(
-            'div',
-            { onClick: onFilter.bind(null, K.T_MORN) },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_MORN),
-            _react2.default.createElement(
-              'span',
-              { style: styles.tempMorn },
-              'T Morn'
-            )
+            _LegendCell2.default,
+            {
+              onClick: onFilter.bind(null, K.T_MORN),
+              titleStyle: styles.tempMorn,
+              title: 'T Morn'
+            },
+            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_MORN)
           ),
           _react2.default.createElement(
-            'div',
-            { onClick: onFilter.bind(null, K.T_DAY) },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_DAY),
-            _react2.default.createElement(
-              'span',
-              { style: styles.tempDay },
-              'T Day'
-            )
+            _LegendCell2.default,
+            {
+              onClick: onFilter.bind(null, K.T_DAY),
+              titleStyle: styles.tempDay,
+              title: 'T Day'
+            },
+            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_DAY)
           )
         ),
         _react2.default.createElement(
           'div',
           { style: L.COL_2 },
           _react2.default.createElement(
-            'div',
-            { onClick: onFilter.bind(null, K.T_EVE) },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_EVE),
-            _react2.default.createElement(
-              'span',
-              { style: styles.tempEve },
-              'T Eve'
-            )
+            _LegendCell2.default,
+            {
+              onClick: onFilter.bind(null, K.T_EVE),
+              titleStyle: styles.tempEve,
+              title: 'T Eve'
+            },
+            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_EVE)
           ),
           _react2.default.createElement(
-            'div',
-            { onClick: onFilter.bind(null, K.T_NIGHT) },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_NIGHT),
-            _react2.default.createElement(
-              'span',
-              { style: styles.tempNight },
-              'T Night'
-            )
+            _LegendCell2.default,
+            {
+              onClick: onFilter.bind(null, K.T_NIGHT),
+              titleStyle: styles.tempNight,
+              title: 'T Night'
+            },
+            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_NIGHT)
           )
         ),
         _react2.default.createElement(
           'div',
-          { style: Object.assign({}, L.COL_2, { marginLeft: '1rem' }) },
+          { style: L.COL_3 },
           _react2.default.createElement(
-            'div',
-            { onClick: onFilter.bind(null, K.T_MAX) },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_MAX),
-            _react2.default.createElement(
-              'span',
-              { style: styles.tempMax },
-              'T Max'
-            )
+            _LegendCell2.default,
+            {
+              onClick: onFilter.bind(null, K.T_MAX),
+              titleStyle: styles.tempMax,
+              title: 'T Max'
+            },
+            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_MAX)
           ),
           _react2.default.createElement(
-            'div',
-            { onClick: onFilter.bind(null, K.T_MIN) },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_MIN),
-            _react2.default.createElement(
-              'span',
-              { style: styles.tempMin },
-              'T Min'
-            )
+            _LegendCell2.default,
+            {
+              onClick: onFilter.bind(null, K.T_MIN),
+              titleStyle: styles.tempMin,
+              title: 'T Min'
+            },
+            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_MIN)
           )
         ),
         _react2.default.createElement(
           'div',
-          { style: Object.assign({}, L.COL_2, { marginLeft: '1rem' }) },
+          { style: L.COL_3 },
           _react2.default.createElement(
-            'div',
-            { onClick: onFilter.bind(null, K.RAIN) },
-            _react2.default.createElement(_SvgRect2.default, _Label2.default.RECT_RAIN),
-            _react2.default.createElement(
-              'span',
-              { style: styles.rain },
-              'Rain'
-            )
+            _LegendCell2.default,
+            {
+              onClick: onFilter.bind(null, K.RAIN),
+              titleStyle: styles.rain,
+              title: 'Rain'
+            },
+            _react2.default.createElement(_SvgRect2.default, _Label2.default.RECT_RAIN)
           ),
           _react2.default.createElement(
-            'div',
-            { onClick: onFilter.bind(null, K.SPEED) },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_SPEED),
-            _react2.default.createElement(
-              'span',
-              { style: styles.speed },
-              'Speed'
-            )
+            _LegendCell2.default,
+            {
+              onClick: onFilter.bind(null, K.SPEED),
+              titleStyle: styles.speed,
+              title: 'Speed'
+            },
+            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_SPEED)
           )
         )
       );

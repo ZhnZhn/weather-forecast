@@ -11,7 +11,6 @@ var _actions = require('./actions');
 
 var INIT_STATE = {
   isApiKey: false
-  //isApiKey: true
 };
 
 var reducer = function reducer() {

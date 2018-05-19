@@ -39,18 +39,8 @@ class LeftPushMenu extends Component {
 
    handleClickItem = (item, evn) => {
     evn.persist();
-    //console.log(item);
-    //console.log(evn)
-    //console.log(evn.target);
-    //console.log(evn.currentTarget);
-
     this._unmarkDay();
     this._markDay(evn.currentTarget);
-    //this.detailEl = evn.currentTarget;
-    //this.detailEl.style.backgroundColor = createStyle().BG_MARK;
-
-    //const clientX = evn.clientX;
-    //const pageX = evn.pageX;
     this.detailComp.setItem(item);
   }
 
@@ -99,7 +89,7 @@ class LeftPushMenu extends Component {
             >
                <UvCard store={store} />
             </Tab>
-          </TabPane>          
+          </TabPane>
 
          {/*<ForecastChart store={store} />*/}
       </div>

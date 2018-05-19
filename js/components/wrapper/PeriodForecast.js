@@ -28,6 +28,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Component = _react2.default.Component;
 
 
+var S = {
+  DAY: {
+    cursor: 'pointer'
+  }
+};
+
 var INIT_STATE = {
   forecast: {
     cod: 200,
@@ -55,14 +61,10 @@ var Wrapper = function (_Component) {
           onUpdate = _this$props.onUpdate,
           state = store.getState(),
           recent = _selectors.sForecast.recent(state);
-      //, { forecast={} } = store.getState()
-      //, { recent } = forecast;
-
 
       if (recent && _this.recent !== recent) {
         _this.recent = recent;
         _this.setState({
-          // forecast : forecast[recent]
           forecast: _selectors.sForecast.byId(state, recent)
         }, onUpdate);
       }
@@ -88,7 +90,7 @@ var Wrapper = function (_Component) {
       var forecast = this.state.forecast;
 
       return _react2.default.createElement(_PeriodForecast2.default, {
-        dayStyle: { cursor: 'pointer' },
+        dayStyle: S.DAY,
         forecast: forecast,
         onClickItem: onClickItem
       });

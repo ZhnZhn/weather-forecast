@@ -4,8 +4,15 @@ import React from '../_react'
 const { Component } = React;
 import dt from '../../utils/dt';
 
+import SvgClose from '../zhn-atoms/SvgClose'
 import { POPUP } from '../styles/theme';
 
+
+const CL = {
+  DATE: 'marker__caption__date',
+  DESCR: 'marker__description',
+  LABEL: 'marker__label'
+}
 
 const STYLE = {
   ROOT_DIV : {
@@ -27,22 +34,12 @@ const STYLE = {
   },
   BT_CLOSE : {
     position : 'absolute',
-    top: '0px',
-    right : '4px',
-    color: 'black',
-    fontSize : '0.9rem',
-    fontWeight : 'bold',
-    cursor: 'pointer'
+    top: '4px',
+    right : '4px'            
   },
   DAY : {
     borderBottom : '2px solid #8bc34a'
   }
-  /*
-  LABEL : {
-    font
-    color : C.LABEL.color
-  }
-  */
 }
 
 class DayDetailPopup extends Component {
@@ -70,47 +67,48 @@ class DayDetailPopup extends Component {
          : STYLE.NONE
     return (
       <div style={Object.assign({}, POPUP.CHART, STYLE.ROOT_DIV, style, _style)}>
-        <div style={STYLE.BT_CLOSE} onClick={onClose}>
-           close
-        </div>
-        <div className="marker__caption__date">
+        <SvgClose
+          style={STYLE.BT_CLOSE}
+          onClose={onClose}
+        />
+        <div className={CL.DATE}>
           <span style={STYLE.DAY}>{dt.toDayOfWeek(timestamp)}</span>
         </div>
         <div>
-          <span className="marker__description">{description}</span>
+          <span className={CL.DESCR}>{description}</span>
         </div>
         <div>
-          <span className="marker__label">Rain:&nbsp;</span>
+          <span className={CL.LABEL}>Rain:&nbsp;</span>
           <span>{rain}mm&nbsp;</span>
           { snow > 0.02 &&
             <span>
-              <span className="marker__label">Snow:&nbsp;</span>
+              <span className={CL.LABEL}>Snow:&nbsp;</span>
               <span>{snow}mm&nbsp;</span>
             </span>
           }
-          <span className="marker__label">Clouds:&nbsp;</span>
+          <span className={CL.LABEL}>Clouds:&nbsp;</span>
           <span>{clouds}%&nbsp;</span>
         </div>
         <div>
-          <span className="marker__label">Humidity:&nbsp;</span>
+          <span className={CL.LABEL}>Humidity:&nbsp;</span>
           <span>{humidity}%&nbsp;</span>
-          <span className="marker__label">Pressure:&nbsp;</span>
+          <span className={CL.LABEL}>Pressure:&nbsp;</span>
           <span>{pressure}hPa&nbsp;</span>
         </div>
         <div>
-          <span className="marker__label">Morn:&nbsp;</span>
+          <span className={CL.LABEL}>Morn:&nbsp;</span>
           <span>{morn}&nbsp;</span>
-          <span className="marker__label">Day:&nbsp;</span>
+          <span className={CL.LABEL}>Day:&nbsp;</span>
           <span>{day}&nbsp;</span>
-          <span className="marker__label">Max:&nbsp;</span>
+          <span className={CL.LABEL}>Max:&nbsp;</span>
           <span>{max}&nbsp;</span>
         </div>
         <div>
-          <span className="marker__label">Eve:&nbsp;</span>
+          <span className={CL.LABEL}>Eve:&nbsp;</span>
           <span>{eve}&nbsp;</span>
-          <span className="marker__label">Night:&nbsp;</span>
+          <span className={CL.LABEL}>Night:&nbsp;</span>
           <span>{night}&nbsp;</span>
-          <span className="marker__label">Min:&nbsp;</span>
+          <span className={CL.LABEL}>Min:&nbsp;</span>
           <span>{min}&nbsp;</span>
         </div>
       </div>

@@ -2,8 +2,7 @@
 import { ACTION } from './actions'
 
 const INIT_STATE = {
-  isApiKey: false
-  //isApiKey: true
+  isApiKey: false  
 };
 
 const reducer = function(state=INIT_STATE, action){

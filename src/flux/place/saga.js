@@ -12,7 +12,6 @@ const {
 const requestPlace = function* (action){
   try {
     yield* isApiKey()
-
     const { payload={} } = action;
     const { lat, lot } = payload;
     const forecast = yield call(request, api.crForecast(lat, lot))

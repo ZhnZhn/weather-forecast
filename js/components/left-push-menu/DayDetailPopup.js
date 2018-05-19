@@ -14,6 +14,10 @@ var _dt = require('../../utils/dt');
 
 var _dt2 = _interopRequireDefault(_dt);
 
+var _SvgClose = require('../zhn-atoms/SvgClose');
+
+var _SvgClose2 = _interopRequireDefault(_SvgClose);
+
 var _theme = require('../styles/theme');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -27,6 +31,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var Component = _react2.default.Component;
 
+
+var CL = {
+  DATE: 'marker__caption__date',
+  DESCR: 'marker__description',
+  LABEL: 'marker__label'
+};
 
 var STYLE = {
   ROOT_DIV: {
@@ -48,22 +58,13 @@ var STYLE = {
   },
   BT_CLOSE: {
     position: 'absolute',
-    top: '0px',
-    right: '4px',
-    color: 'black',
-    fontSize: '0.9rem',
-    fontWeight: 'bold',
-    cursor: 'pointer'
+    top: '4px',
+    right: '4px'
   },
   DAY: {
     borderBottom: '2px solid #8bc34a'
-    /*
-    LABEL : {
-      font
-      color : C.LABEL.color
-    }
-    */
-  } };
+  }
+};
 
 var DayDetailPopup = function (_Component) {
   _inherits(DayDetailPopup, _Component);
@@ -131,14 +132,13 @@ var DayDetailPopup = function (_Component) {
       return _react2.default.createElement(
         'div',
         { style: Object.assign({}, _theme.POPUP.CHART, STYLE.ROOT_DIV, style, _style) },
+        _react2.default.createElement(_SvgClose2.default, {
+          style: STYLE.BT_CLOSE,
+          onClose: onClose
+        }),
         _react2.default.createElement(
           'div',
-          { style: STYLE.BT_CLOSE, onClick: onClose },
-          'close'
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'marker__caption__date' },
+          { className: CL.DATE },
           _react2.default.createElement(
             'span',
             { style: STYLE.DAY },
@@ -150,7 +150,7 @@ var DayDetailPopup = function (_Component) {
           null,
           _react2.default.createElement(
             'span',
-            { className: 'marker__description' },
+            { className: CL.DESCR },
             description
           )
         ),
@@ -159,7 +159,7 @@ var DayDetailPopup = function (_Component) {
           null,
           _react2.default.createElement(
             'span',
-            { className: 'marker__label' },
+            { className: CL.LABEL },
             'Rain:\xA0'
           ),
           _react2.default.createElement(
@@ -173,7 +173,7 @@ var DayDetailPopup = function (_Component) {
             null,
             _react2.default.createElement(
               'span',
-              { className: 'marker__label' },
+              { className: CL.LABEL },
               'Snow:\xA0'
             ),
             _react2.default.createElement(
@@ -185,7 +185,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: 'marker__label' },
+            { className: CL.LABEL },
             'Clouds:\xA0'
           ),
           _react2.default.createElement(
@@ -200,7 +200,7 @@ var DayDetailPopup = function (_Component) {
           null,
           _react2.default.createElement(
             'span',
-            { className: 'marker__label' },
+            { className: CL.LABEL },
             'Humidity:\xA0'
           ),
           _react2.default.createElement(
@@ -211,7 +211,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: 'marker__label' },
+            { className: CL.LABEL },
             'Pressure:\xA0'
           ),
           _react2.default.createElement(
@@ -226,7 +226,7 @@ var DayDetailPopup = function (_Component) {
           null,
           _react2.default.createElement(
             'span',
-            { className: 'marker__label' },
+            { className: CL.LABEL },
             'Morn:\xA0'
           ),
           _react2.default.createElement(
@@ -237,7 +237,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: 'marker__label' },
+            { className: CL.LABEL },
             'Day:\xA0'
           ),
           _react2.default.createElement(
@@ -248,7 +248,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: 'marker__label' },
+            { className: CL.LABEL },
             'Max:\xA0'
           ),
           _react2.default.createElement(
@@ -263,7 +263,7 @@ var DayDetailPopup = function (_Component) {
           null,
           _react2.default.createElement(
             'span',
-            { className: 'marker__label' },
+            { className: CL.LABEL },
             'Eve:\xA0'
           ),
           _react2.default.createElement(
@@ -274,7 +274,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: 'marker__label' },
+            { className: CL.LABEL },
             'Night:\xA0'
           ),
           _react2.default.createElement(
@@ -285,7 +285,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: 'marker__label' },
+            { className: CL.LABEL },
             'Min:\xA0'
           ),
           _react2.default.createElement(

@@ -89,18 +89,8 @@ var LeftPushMenu = function (_Component) {
       }
     }, _this.handleClickItem = function (item, evn) {
       evn.persist();
-      //console.log(item);
-      //console.log(evn)
-      //console.log(evn.target);
-      //console.log(evn.currentTarget);
-
       _this._unmarkDay();
       _this._markDay(evn.currentTarget);
-      //this.detailEl = evn.currentTarget;
-      //this.detailEl.style.backgroundColor = createStyle().BG_MARK;
-
-      //const clientX = evn.clientX;
-      //const pageX = evn.pageX;
       _this.detailComp.setItem(item);
     }, _this.handleRequestHourly = function () {
       var store = _this.props.store;

@@ -3,7 +3,10 @@ import React from '../_react'
 
 import SvgCircle from './SvgCircle';
 import SvgRect from './SvgRect';
+import LegendCell from './LegendCell';
 import S from './Label.Style';
+
+
 
 const { Component } = React
 
@@ -29,6 +32,10 @@ const L = {
   },
   COL_2 : {
     display: 'inline-block'
+  },
+  COL_3: {
+    display: 'inline-block',
+    marginLeft: '1rem'
   }
 }
 
@@ -42,49 +49,73 @@ class LegendTemperature extends Component {
   }
 
   render(){
-    const { styles, onFilter } = this.props
+    const { styles, onFilter } = this.props;
 
     return (
       <div style={L.ROOT_DIV}>
          <div style={L.COL_1}>
-            <div onClick={onFilter.bind(null, K.T_MORN)}>
-               <SvgCircle {...S.CIRCLE_TEMP_MORN} />
-               <span style={styles.tempMorn}>T Morn</span>
-            </div>
-            <div onClick={onFilter.bind(null, K.T_DAY)}>
-               <SvgCircle {...S.CIRCLE_TEMP_DAY} />
-               <span style={styles.tempDay}>T Day</span>
-            </div>
+           <LegendCell
+             onClick={onFilter.bind(null, K.T_MORN)}
+             titleStyle={styles.tempMorn}
+             title="T Morn"
+           >
+             <SvgCircle {...S.CIRCLE_TEMP_MORN} />
+           </LegendCell>
+           <LegendCell
+             onClick={onFilter.bind(null, K.T_DAY)}
+             titleStyle={styles.tempDay}
+             title="T Day"
+           >
+             <SvgCircle {...S.CIRCLE_TEMP_DAY} />
+           </LegendCell>
          </div>
          <div style={L.COL_2}>
-            <div onClick={onFilter.bind(null, K.T_EVE)}>
-               <SvgCircle {...S.CIRCLE_TEMP_EVE} />
-               <span style={styles.tempEve}>T Eve</span>
-            </div>
-            <div onClick={onFilter.bind(null, K.T_NIGHT)}>
-               <SvgCircle {...S.CIRCLE_TEMP_NIGHT} />
-               <span style={styles.tempNight}>T Night</span>
-            </div>
+           <LegendCell
+             onClick={onFilter.bind(null, K.T_EVE)}
+             titleStyle={styles.tempEve}
+             title="T Eve"
+           >
+             <SvgCircle {...S.CIRCLE_TEMP_EVE} />
+           </LegendCell>
+           <LegendCell
+             onClick={onFilter.bind(null, K.T_NIGHT)}
+             titleStyle={styles.tempNight}
+             title="T Night"
+           >
+             <SvgCircle {...S.CIRCLE_TEMP_NIGHT} />
+           </LegendCell>
          </div>
-         <div style={Object.assign({}, L.COL_2, {marginLeft: '1rem'})}>
-            <div onClick={onFilter.bind(null, K.T_MAX)}>
-               <SvgCircle {...S.CIRCLE_TEMP_MAX} />
-               <span style={styles.tempMax}>T Max</span>
-            </div>
-            <div onClick={onFilter.bind(null, K.T_MIN)}>
-               <SvgCircle {...S.CIRCLE_TEMP_MIN} />
-               <span style={styles.tempMin}>T Min</span>
-            </div>
+         <div style={L.COL_3}>
+           <LegendCell
+             onClick={onFilter.bind(null, K.T_MAX)}
+             titleStyle={styles.tempMax}
+             title="T Max"
+           >
+             <SvgCircle {...S.CIRCLE_TEMP_MAX} />
+           </LegendCell>
+           <LegendCell
+             onClick={onFilter.bind(null, K.T_MIN)}
+             titleStyle={styles.tempMin}
+             title="T Min"
+           >
+             <SvgCircle {...S.CIRCLE_TEMP_MIN} />
+           </LegendCell>
          </div>
-         <div style={Object.assign({}, L.COL_2, {marginLeft: '1rem'})}>
-            <div onClick={onFilter.bind(null, K.RAIN)}>
-              <SvgRect {...S.RECT_RAIN} />
-              <span style={styles.rain}>Rain</span>
-            </div>
-            <div onClick={onFilter.bind(null, K.SPEED)}>
-              <SvgCircle {...S.CIRCLE_SPEED} />
-              <span style={styles.speed}>Speed</span>
-            </div>
+         <div style={L.COL_3}>
+           <LegendCell
+             onClick={onFilter.bind(null, K.RAIN)}
+             titleStyle={styles.rain}
+             title="Rain"
+           >
+             <SvgRect {...S.RECT_RAIN} />
+           </LegendCell>
+           <LegendCell
+             onClick={onFilter.bind(null, K.SPEED)}
+             titleStyle={styles.speed}
+             title="Speed"
+           >
+             <SvgCircle {...S.CIRCLE_SPEED} />
+           </LegendCell>
          </div>
       </div>
      );

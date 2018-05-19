@@ -7,6 +7,12 @@ import { sForecast } from '../../flux/selectors';
 
 const { Component } = React
 
+const S = {
+  DAY: {
+    cursor: 'pointer'
+  }
+};
+
 const INIT_STATE = {
   forecast : {
     cod : 200,
@@ -26,12 +32,9 @@ class Wrapper extends Component {
     const { store, onUpdate } = this.props
     , state = store.getState()
     , recent = sForecast.recent(state)
-    //, { forecast={} } = store.getState()
-    //, { recent } = forecast;
     if (recent && this.recent !== recent ){
       this.recent = recent;
       this.setState({
-        // forecast : forecast[recent]
         forecast : sForecast.byId(state, recent)
       }, onUpdate)
     }
@@ -42,11 +45,11 @@ class Wrapper extends Component {
   }
 
   render(){
-    const { onClickItem } = this.props
-    const { forecast } = this.state
+    const { onClickItem } = this.props;
+    const { forecast } = this.state;
     return (
       <PeriodForecast
-          dayStyle={{ cursor: 'pointer' }}
+          dayStyle={S.DAY}
           forecast={forecast}
           onClickItem={onClickItem}
       />

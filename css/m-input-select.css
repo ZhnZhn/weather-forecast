@@ -97,16 +97,6 @@
   fill: #80c040;
 }
 
-
-.m-select__item {
-  color: white;
-  line-height: 2;
-  padding-left: 16px;
-}
-.m-select__item:hover {
-  background-color: rgba(0, 0, 0, 0.15);
-}
-
 .m-select__line {
   position: absolute;
   bottom: 23px;
