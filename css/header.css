@@ -21,6 +21,7 @@
  
 .header__link-provider {  
   display: inline-block;
+  color: black;
   font-weight: bold;
   padding-left: 16px;
 }

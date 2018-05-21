@@ -29,12 +29,18 @@ class LeafletMap extends Component{
     store : PropTypes.object
   }
   */
+  constructor(props){
+    super(props)
+    this._setLoaded = this._setLoaded.bind(this)
+    this.state = {
+      isLoaded: false
+    }
+  }
 
   componentDidMount(){
     const { id, store } = this.props
     this.unsubsribe = store.subscribe(this._onStore);
-    this.map = fnLeaflet.createMap(id);
-    //this.map.on('click', this._handleClickMap)
+    this.map = fnLeaflet.createMap(id, this._setLoaded);
     this.map.on('click', throttle(
       this._handleClickMap, PERIOD_MS, {
         trailing: false
@@ -43,6 +49,10 @@ class LeafletMap extends Component{
   }
   componentWillUnmount(){
     this.unsubsribe();
+  }
+
+  _setLoaded(){
+    this.setState({ isLoaded: true })
   }
 
   _handleClickMap = (e) => {
@@ -56,7 +66,7 @@ class LeafletMap extends Component{
        , state = store.getState()
        , recent = sPlace.recent(state);
    if ( (recent && recent !== this.recent)
-        || recent === 0 ){      
+        || recent === 0 ){
      fnLeaflet.addMarker(
         sPlace.byId(state, recent),
         theme.themeName,
@@ -67,13 +77,17 @@ class LeafletMap extends Component{
  }
 
   render(){
-    const { id, rootStyle } = this.props;
+    const { id, rootStyle } = this.props
+        , { isLoaded } = this.state;
     return (
       <div
         style={{ ...S.ROOT_DIV, ...rootStyle }}
         id={id}
       >
-        LeafletMap Loading...
+       {
+         !isLoaded &&
+         <span>LeafletMap Loading...</span>
+       }        
       </div>
     );
   }

@@ -24,7 +24,7 @@ const STYLE = {
   },
   ROOT_DIV: {
     position: 'absolute',
-    top: '20%',
+    top: '15%',
     left: '40%',
     display: 'block',
     backgroundColor: '#4D4D4D',
@@ -63,6 +63,7 @@ class ModalDialog extends Component {
      timeout: PropTypes.number,
      caption: PropTypes.string,
      style: PropTypes.object,
+     childrenStyle: PropTypes.object,
      onClose: PropTypes.func
    }
    */
@@ -119,7 +120,7 @@ class ModalDialog extends Component {
     const {
             isShow, isWithButton, style,
             caption, styleCaption,
-            children, onClose
+            children, childrenStyle, onClose
           } = this.props;
 
     let _className, _style;
@@ -145,7 +146,7 @@ class ModalDialog extends Component {
                 <span style={styleCaption}>{caption}</span>
                 <SvgClose onClose={onClose} />
              </div>
-             <div>
+             <div style={childrenStyle}>
                {children}
              </div>
             {isWithButton && this._renderCommandButton()}

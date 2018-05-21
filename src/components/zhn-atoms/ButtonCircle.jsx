@@ -55,7 +55,7 @@ class ButtonCircle extends Component {
   }
 
   render(){
-    const { caption, style } = this.props
+    const { caption, title, style } = this.props
         , { isActive } = this.state
         , _style = (isActive)
             ? { ...S.ROOT, ...style }
@@ -65,6 +65,7 @@ class ButtonCircle extends Component {
       <span
          className={CL_NOT_SELECTED}
          style={_style}
+         title={title}
          onClick={this._hClick}
       >
          {caption}

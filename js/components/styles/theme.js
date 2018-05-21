@@ -8,6 +8,8 @@ var _setTheme2;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 var P = {};
 var TH_GREY = {
   BG: 'grey',
@@ -68,7 +70,7 @@ var _setStyleTo = function _setStyleTo(conf) {
 };
 
 var _stylePopup = function _stylePopup() {
-  document.querySelectorAll('.leaflet-popup-content-wrapper').forEach(function (node) {
+  [].concat(_toConsumableArray(document.querySelectorAll('.leaflet-popup-content-wrapper'))).forEach(function (node) {
     return node.style.backgroundColor = P.BG;
   });
 };

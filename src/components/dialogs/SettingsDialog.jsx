@@ -6,6 +6,7 @@ import styleConfig from './Dialog.Style'
 
 import ModalDialog from '../zhn-moleculs/ModalDialog';
 import SecretField from '../zhn-m-input/SecretField'
+import RowCheckBox from './RowCheckBox'
 import InputSelect from '../zhn-m-input/InputSelect'
 import RaisedButton from '../zhn-atoms/RaisedButton'
 
@@ -13,13 +14,24 @@ const { Component } = React;
 
 const S = {
   MODAL: {
-    position : 'static',
+    position: 'static',
     width: '335px',
-    height: '220px',
+    height: '285px',
     margin: '70px auto 0px'
+  },
+  MODAL_CHILDREN: {
+    paddingBottom: '20px'
   },
   SECRET: {
     width: '280px'
+  },
+  CHECK_BOX: {
+    paddingLeft: '24px',
+    paddingBottom: '6px',
+    paddingRight: '24px'
+  },
+  CHECK_CAPTION: {
+    display: 'inline'
   },
   SELECT: {
     ROOT: {
@@ -54,6 +66,9 @@ class SettingsDialog extends Component {
         onClick={this._handleSet}
       />
     ]
+    this.state = {
+      isAllow: false
+    }
   }
 
   _isNextPropIsShowSame = (nextProps) => {
@@ -66,6 +81,13 @@ class SettingsDialog extends Component {
       return false;
     }
     return true;
+  }
+
+  _checkAllow = () => {
+    this.setState({ isAllow: true })
+  }
+  _uncheckAllow = () => {
+    this.setState({ isAllow: false })
   }
 
 
@@ -93,12 +115,14 @@ class SettingsDialog extends Component {
             isShow,
             onClose
           } = this.props
+        , { isAllow } = this.state
         , TS = theme.createStyle(styleConfig);
     return (
          <ModalDialog
             style={{ ...S.MODAL, ...TS.R_DIALOG }}
             caption="User Settings"
             isShow={isShow}
+            childrenStyle={S.MODAL_CHILDREN}
             commandButtons={this.commandButtons}
             onClose={onClose}
          >
@@ -106,6 +130,16 @@ class SettingsDialog extends Component {
              ref={this._refInput}
              rootStyle={S.SECRET}
              caption="OpenWeatherMap API Key"
+             isAllowRemember={isAllow}
+             name="openweathermap"
+           />
+           <RowCheckBox
+             rootStyle={S.CHECK_BOX}
+             initValue={false}
+             caption="Let Remember Enter of API Key by Browser Password Manager"
+             captionStyle={S.CHECK_CAPTION}
+             onCheck={this._checkAllow}
+             onUnCheck={this._uncheckAllow}
            />
            <InputSelect
              styleConfig={S.SELECT}

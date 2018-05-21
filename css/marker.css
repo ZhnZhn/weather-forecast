@@ -123,7 +123,10 @@
   color: yellow; }
 
 .marker__value {
-  color: #7cb5ec; }
+  //color: #7cb5ec;
+  color: black; 
+  font-weight: 600;
+}
 
 .marker__icon {
   color: #7cb5ec; }

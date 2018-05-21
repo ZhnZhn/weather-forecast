@@ -14,7 +14,7 @@ import withTheme from '../hoc/withTheme';
 
 const { Component } = React;
 
-const TITLE = "Weather v0.1.0";
+const TITLE = "Weather v0.2.0";
 
 const CL = {
   TITLE: 'header__title',
@@ -60,13 +60,13 @@ class Header extends Component {
     dispatch(showModal('SETTINGS'))
   }
 
+
   render(){
     const { rootStyle, store, theme } = this.props
        , _STYLE = theme.createStyle(styleConfig);
     return(
       <header
          role="banner"
-         /*className="header"*/
          style={{...rootStyle, ..._STYLE.HEADER}}
       >
         <ProgressLoading store={store} />
@@ -81,6 +81,7 @@ class Header extends Component {
         <ButtonCircle
            style={S.BT_CIRCLE}
            caption="F"
+           title="Toggle Forecast Popup"
            store={store}
            storeKey="isPopupForecast"
            onClick={this._hForecast}
@@ -88,6 +89,7 @@ class Header extends Component {
          <ButtonCircle
            style={S.BT_CIRCLE}
            caption="S"
+           title="Open Settings Dialog"
            store={store}
            storeKey="isSettings"
            onClick={this._hSettings}

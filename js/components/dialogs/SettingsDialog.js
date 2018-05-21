@@ -28,6 +28,10 @@ var _SecretField = require('../zhn-m-input/SecretField');
 
 var _SecretField2 = _interopRequireDefault(_SecretField);
 
+var _RowCheckBox = require('./RowCheckBox');
+
+var _RowCheckBox2 = _interopRequireDefault(_RowCheckBox);
+
 var _InputSelect = require('../zhn-m-input/InputSelect');
 
 var _InputSelect2 = _interopRequireDefault(_InputSelect);
@@ -52,11 +56,22 @@ var S = {
   MODAL: {
     position: 'static',
     width: '335px',
-    height: '220px',
+    height: '285px',
     margin: '70px auto 0px'
+  },
+  MODAL_CHILDREN: {
+    paddingBottom: '20px'
   },
   SECRET: {
     width: '280px'
+  },
+  CHECK_BOX: {
+    paddingLeft: '24px',
+    paddingBottom: '6px',
+    paddingRight: '24px'
+  },
+  CHECK_CAPTION: {
+    display: 'inline'
   },
   SELECT: {
     ROOT: {
@@ -90,6 +105,14 @@ var SettingsDialog = function (_Component) {
       return nextProps !== _this.props && nextProps.isShow === _this.props.isShow;
     };
 
+    _this._checkAllow = function () {
+      _this.setState({ isAllow: true });
+    };
+
+    _this._uncheckAllow = function () {
+      _this.setState({ isAllow: false });
+    };
+
     _this._handleSet = function () {
       var _this$props = _this.props,
           data = _this$props.data,
@@ -121,6 +144,9 @@ var SettingsDialog = function (_Component) {
       caption: 'Set & Close',
       onClick: _this._handleSet
     })];
+    _this.state = {
+      isAllow: false
+    };
     return _this;
   }
 
@@ -139,6 +165,7 @@ var SettingsDialog = function (_Component) {
           theme = _props.theme,
           isShow = _props.isShow,
           onClose = _props.onClose,
+          isAllow = this.state.isAllow,
           TS = theme.createStyle(_Dialog2.default);
 
       return _react2.default.createElement(
@@ -147,13 +174,24 @@ var SettingsDialog = function (_Component) {
           style: _extends({}, S.MODAL, TS.R_DIALOG),
           caption: 'User Settings',
           isShow: isShow,
+          childrenStyle: S.MODAL_CHILDREN,
           commandButtons: this.commandButtons,
           onClose: onClose
         },
         _react2.default.createElement(_SecretField2.default, {
           ref: this._refInput,
           rootStyle: S.SECRET,
-          caption: 'OpenWeatherMap API Key'
+          caption: 'OpenWeatherMap API Key',
+          isAllowRemember: isAllow,
+          name: 'openweathermap'
+        }),
+        _react2.default.createElement(_RowCheckBox2.default, {
+          rootStyle: S.CHECK_BOX,
+          initValue: false,
+          caption: 'Let Remember Enter of API Key by Browser Password Manager',
+          captionStyle: S.CHECK_CAPTION,
+          onCheck: this._checkAllow,
+          onUnCheck: this._uncheckAllow
         }),
         _react2.default.createElement(_InputSelect2.default, {
           styleConfig: S.SELECT,

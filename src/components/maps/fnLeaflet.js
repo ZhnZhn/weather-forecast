@@ -1,4 +1,3 @@
-//import L from 'leaflet';
 import Leaflet from 'leaflet';
 import marker from '../../templates/marker';
 
@@ -15,17 +14,18 @@ const _crPopupOptions = themeName => ({
 });
 
 const DF = {
-  //LAT: 48,
   LAT: 50,
-  //LAT: 10,
-  LNG: 0
+  LNG: 0,
+  ZOOM: 2,
 };
 
 const fnLeaflet = {
-  createMap : (id) => {
+  createMap : (id, onLoad) => {
     const map = L
-      .map(id, { zoomControl: true })
-      .setView([DF.LAT, DF.LNG], 5);
+      //.map(id, { zoomControl: true, ...options })
+      .map(id, { zoomControl: true})
+      .on('load', onLoad)
+      .setView([DF.LAT, DF.LNG], DF.ZOOM);
     map.zoomControl.setPosition('bottomright');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 {

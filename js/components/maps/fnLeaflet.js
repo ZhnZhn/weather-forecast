@@ -14,7 +14,6 @@ var _marker2 = _interopRequireDefault(_marker);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import L from 'leaflet';
 var L = _leaflet2.default || window.L;
 
 var POPUP_CL = {
@@ -30,15 +29,16 @@ var _crPopupOptions = function _crPopupOptions(themeName) {
 };
 
 var DF = {
-  //LAT: 48,
   LAT: 50,
-  //LAT: 10,
-  LNG: 0
+  LNG: 0,
+  ZOOM: 2
 };
 
 var fnLeaflet = {
-  createMap: function createMap(id) {
-    var map = L.map(id, { zoomControl: true }).setView([DF.LAT, DF.LNG], 5);
+  createMap: function createMap(id, onLoad) {
+    var map = L
+    //.map(id, { zoomControl: true, ...options })
+    .map(id, { zoomControl: true }).on('load', onLoad).setView([DF.LAT, DF.LNG], DF.ZOOM);
     map.zoomControl.setPosition('bottomright');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       id: 'addis',

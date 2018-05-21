@@ -11,7 +11,8 @@ import { POPUP } from '../styles/theme';
 const CL = {
   DATE: 'marker__caption__date',
   DESCR: 'marker__description',
-  LABEL: 'marker__label'
+  LABEL: 'marker__label',
+  VALUE: 'marker__value'
 }
 
 const STYLE = {
@@ -35,7 +36,7 @@ const STYLE = {
   BT_CLOSE : {
     position : 'absolute',
     top: '4px',
-    right : '4px'            
+    right : '4px'
   },
   DAY : {
     borderBottom : '2px solid #8bc34a'
@@ -45,11 +46,12 @@ const STYLE = {
 class DayDetailPopup extends Component {
 
   constructor(props){
-    super()
+    super(props)
+    const {
+            isOpen, style, item
+           } = props;
     this.state = {
-      isOpen : props.isOpen,
-      style : props.style,
-      item : props.item
+      isOpen, style, item
     }
   }
 
@@ -64,52 +66,57 @@ class DayDetailPopup extends Component {
         : 'Without description'
     , _style = (isOpen)
          ? STYLE.BLOCK
-         : STYLE.NONE
+         : STYLE.NONE;
     return (
-      <div style={Object.assign({}, POPUP.CHART, STYLE.ROOT_DIV, style, _style)}>
+      <div style={{
+          ...POPUP.CHART, ...STYLE.ROOT_DIV,
+          ...style, ..._style
+       }}>
         <SvgClose
           style={STYLE.BT_CLOSE}
           onClose={onClose}
         />
         <div className={CL.DATE}>
-          <span style={STYLE.DAY}>{dt.toDayOfWeek(timestamp)}</span>
+          <span style={STYLE.DAY}>
+            {dt.toDayOfWeek(timestamp)}
+          </span>
         </div>
         <div>
           <span className={CL.DESCR}>{description}</span>
         </div>
         <div>
           <span className={CL.LABEL}>Rain:&nbsp;</span>
-          <span>{rain}mm&nbsp;</span>
+          <span className={CL.VALUE}>{rain}mm&nbsp;</span>
           { snow > 0.02 &&
             <span>
               <span className={CL.LABEL}>Snow:&nbsp;</span>
-              <span>{snow}mm&nbsp;</span>
+              <span className={CL.VALUE}>{snow}mm&nbsp;</span>
             </span>
           }
           <span className={CL.LABEL}>Clouds:&nbsp;</span>
-          <span>{clouds}%&nbsp;</span>
+          <span className={CL.VALUE}>{clouds}%&nbsp;</span>
         </div>
         <div>
           <span className={CL.LABEL}>Humidity:&nbsp;</span>
-          <span>{humidity}%&nbsp;</span>
+          <span className={CL.VALUE}>{humidity}%&nbsp;</span>
           <span className={CL.LABEL}>Pressure:&nbsp;</span>
-          <span>{pressure}hPa&nbsp;</span>
+          <span className={CL.VALUE}>{pressure}hPa&nbsp;</span>
         </div>
         <div>
           <span className={CL.LABEL}>Morn:&nbsp;</span>
-          <span>{morn}&nbsp;</span>
+          <span className={CL.VALUE}>{morn}&nbsp;</span>
           <span className={CL.LABEL}>Day:&nbsp;</span>
-          <span>{day}&nbsp;</span>
+          <span className={CL.VALUE}>{day}&nbsp;</span>
           <span className={CL.LABEL}>Max:&nbsp;</span>
-          <span>{max}&nbsp;</span>
+          <span className={CL.VALUE}>{max}&nbsp;</span>
         </div>
         <div>
           <span className={CL.LABEL}>Eve:&nbsp;</span>
-          <span>{eve}&nbsp;</span>
+          <span className={CL.VALUE}>{eve}&nbsp;</span>
           <span className={CL.LABEL}>Night:&nbsp;</span>
-          <span>{night}&nbsp;</span>
+          <span className={CL.VALUE}>{night}&nbsp;</span>
           <span className={CL.LABEL}>Min:&nbsp;</span>
-          <span>{min}&nbsp;</span>
+          <span className={CL.VALUE}>{min}&nbsp;</span>
         </div>
       </div>
     );

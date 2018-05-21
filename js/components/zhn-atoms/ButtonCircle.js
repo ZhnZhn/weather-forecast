@@ -93,6 +93,7 @@ var ButtonCircle = function (_Component) {
     value: function render() {
       var _props = this.props,
           caption = _props.caption,
+          title = _props.title,
           style = _props.style,
           isActive = this.state.isActive,
           _style = isActive ? _extends({}, S.ROOT, style) : _extends({}, S.ROOT, style, S.NOT_ACTIVE);
@@ -102,6 +103,7 @@ var ButtonCircle = function (_Component) {
         {
           className: CL_NOT_SELECTED,
           style: _style,
+          title: title,
           onClick: this._hClick
         },
         caption

@@ -4,7 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _class, _temp, _initialiseProps; //import React, { Component } from 'react';
+
 
 var _react = require('../_react');
 
@@ -26,8 +31,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //import React, { Component } from 'react';
-
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Component = _react2.default.Component;
 
@@ -35,7 +39,8 @@ var Component = _react2.default.Component;
 var CL = {
   DATE: 'marker__caption__date',
   DESCR: 'marker__description',
-  LABEL: 'marker__label'
+  LABEL: 'marker__label',
+  VALUE: 'marker__value'
 };
 
 var STYLE = {
@@ -66,26 +71,22 @@ var STYLE = {
   }
 };
 
-var DayDetailPopup = function (_Component) {
+var DayDetailPopup = (_temp = _class = function (_Component) {
   _inherits(DayDetailPopup, _Component);
 
   function DayDetailPopup(props) {
     _classCallCheck(this, DayDetailPopup);
 
-    var _this = _possibleConstructorReturn(this, (DayDetailPopup.__proto__ || Object.getPrototypeOf(DayDetailPopup)).call(this));
+    var _this = _possibleConstructorReturn(this, (DayDetailPopup.__proto__ || Object.getPrototypeOf(DayDetailPopup)).call(this, props));
 
-    _this.setItem = function (item) {
-      _this.setState({ item: item, isOpen: true });
-    };
+    _initialiseProps.call(_this);
 
-    _this.close = function () {
-      _this.setState({ isOpen: false });
-    };
+    var isOpen = props.isOpen,
+        style = props.style,
+        item = props.item;
 
     _this.state = {
-      isOpen: props.isOpen,
-      style: props.style,
-      item: props.item
+      isOpen: isOpen, style: style, item: item
     };
     return _this;
   }
@@ -131,7 +132,7 @@ var DayDetailPopup = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { style: Object.assign({}, _theme.POPUP.CHART, STYLE.ROOT_DIV, style, _style) },
+        { style: _extends({}, _theme.POPUP.CHART, STYLE.ROOT_DIV, style, _style) },
         _react2.default.createElement(_SvgClose2.default, {
           style: STYLE.BT_CLOSE,
           onClose: onClose
@@ -164,7 +165,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            null,
+            { className: CL.VALUE },
             rain,
             'mm\xA0'
           ),
@@ -178,7 +179,7 @@ var DayDetailPopup = function (_Component) {
             ),
             _react2.default.createElement(
               'span',
-              null,
+              { className: CL.VALUE },
               snow,
               'mm\xA0'
             )
@@ -190,7 +191,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            null,
+            { className: CL.VALUE },
             clouds,
             '%\xA0'
           )
@@ -205,7 +206,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            null,
+            { className: CL.VALUE },
             humidity,
             '%\xA0'
           ),
@@ -216,7 +217,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            null,
+            { className: CL.VALUE },
             pressure,
             'hPa\xA0'
           )
@@ -231,7 +232,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            null,
+            { className: CL.VALUE },
             morn,
             '\xA0'
           ),
@@ -242,7 +243,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            null,
+            { className: CL.VALUE },
             day,
             '\xA0'
           ),
@@ -253,7 +254,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            null,
+            { className: CL.VALUE },
             max,
             '\xA0'
           )
@@ -268,7 +269,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            null,
+            { className: CL.VALUE },
             eve,
             '\xA0'
           ),
@@ -279,7 +280,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            null,
+            { className: CL.VALUE },
             night,
             '\xA0'
           ),
@@ -290,7 +291,7 @@ var DayDetailPopup = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            null,
+            { className: CL.VALUE },
             min,
             '\xA0'
           )
@@ -300,7 +301,16 @@ var DayDetailPopup = function (_Component) {
   }]);
 
   return DayDetailPopup;
-}(Component);
+}(Component), _initialiseProps = function _initialiseProps() {
+  var _this2 = this;
 
+  this.setItem = function (item) {
+    _this2.setState({ item: item, isOpen: true });
+  };
+
+  this.close = function () {
+    _this2.setState({ isOpen: false });
+  };
+}, _temp);
 exports.default = DayDetailPopup;
 //# sourceMappingURL=DayDetailPopup.js.map

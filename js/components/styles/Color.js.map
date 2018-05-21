@@ -1,0 +1,15 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/styles/Color.js"
+ ],
+ "file": "../../../src/components/styles/Color.js",
+ "names": [
+  "COLOR",
+  "YELLOW",
+  "BROWN",
+  "GREY",
+  "BLANK"
+ ],
+ "mappings": ";;;;;AAAA,IAAMA,QAAQ;AACZC,UAAQ,SADI;AAEZC,SAAO,SAFK;AAGZC,QAAM,SAHM;AAIZ;AACAC,SAAO;AALK,CAAd;;kBAQeJ,K"
+}

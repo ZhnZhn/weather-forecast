@@ -54,25 +54,27 @@ var S = {
 var LeafletMap = function (_Component) {
   _inherits(LeafletMap, _Component);
 
-  function LeafletMap() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
+  /*
+  static propTypes = {
+    rootStyle: PropTypes.object,
+    store : PropTypes.object
+  }
+  */
+  function LeafletMap(props) {
     _classCallCheck(this, LeafletMap);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = _possibleConstructorReturn(this, (LeafletMap.__proto__ || Object.getPrototypeOf(LeafletMap)).call(this, props));
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = LeafletMap.__proto__ || Object.getPrototypeOf(LeafletMap)).call.apply(_ref, [this].concat(args))), _this), _this._handleClickMap = function (e) {
+    _this._handleClickMap = function (e) {
       var store = _this.props.store;
       var _e$latlng = e.latlng,
           lat = _e$latlng.lat,
           lng = _e$latlng.lng;
 
       store.dispatch((0, _actions.placeRequested)({ lat: lat, lot: lng }));
-    }, _this._onStore = function () {
+    };
+
+    _this._onStore = function () {
       var _this$props = _this.props,
           store = _this$props.store,
           theme = _this$props.theme,
@@ -83,27 +85,24 @@ var LeafletMap = function (_Component) {
         _fnLeaflet2.default.addMarker(_selectors.sPlace.byId(state, recent), theme.themeName, _this.map);
         _this.recent = recent;
       }
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    _this._setLoaded = _this._setLoaded.bind(_this);
+    _this.state = {
+      isLoaded: false
+    };
+    return _this;
   }
 
   _createClass(LeafletMap, [{
     key: 'componentDidMount',
-
-    /*
-    static propTypes = {
-      rootStyle: PropTypes.object,
-      store : PropTypes.object
-    }
-    */
-
     value: function componentDidMount() {
       var _props = this.props,
           id = _props.id,
           store = _props.store;
 
       this.unsubsribe = store.subscribe(this._onStore);
-      this.map = _fnLeaflet2.default.createMap(id);
-      //this.map.on('click', this._handleClickMap)
+      this.map = _fnLeaflet2.default.createMap(id, this._setLoaded);
       this.map.on('click', (0, _throttle2.default)(this._handleClickMap, PERIOD_MS, {
         trailing: false
       }));
@@ -114,11 +113,17 @@ var LeafletMap = function (_Component) {
       this.unsubsribe();
     }
   }, {
+    key: '_setLoaded',
+    value: function _setLoaded() {
+      this.setState({ isLoaded: true });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _props2 = this.props,
           id = _props2.id,
-          rootStyle = _props2.rootStyle;
+          rootStyle = _props2.rootStyle,
+          isLoaded = this.state.isLoaded;
 
       return _react2.default.createElement(
         'div',
@@ -126,7 +131,11 @@ var LeafletMap = function (_Component) {
           style: _extends({}, S.ROOT_DIV, rootStyle),
           id: id
         },
-        'LeafletMap Loading...'
+        !isLoaded && _react2.default.createElement(
+          'span',
+          null,
+          'LeafletMap Loading...'
+        )
       );
     }
   }]);

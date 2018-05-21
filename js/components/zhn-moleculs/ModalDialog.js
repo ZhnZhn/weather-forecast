@@ -52,7 +52,7 @@ var STYLE = {
   },
   ROOT_DIV: {
     position: 'absolute',
-    top: '20%',
+    top: '15%',
     left: '40%',
     display: 'block',
     backgroundColor: '#4D4D4D',
@@ -119,6 +119,7 @@ var ModalDialog = (_temp = _class = function (_Component) {
      timeout: PropTypes.number,
      caption: PropTypes.string,
      style: PropTypes.object,
+     childrenStyle: PropTypes.object,
      onClose: PropTypes.func
    }
    */
@@ -160,6 +161,7 @@ var ModalDialog = (_temp = _class = function (_Component) {
           caption = _props.caption,
           styleCaption = _props.styleCaption,
           children = _props.children,
+          childrenStyle = _props.childrenStyle,
           onClose = _props.onClose;
 
 
@@ -196,7 +198,7 @@ var ModalDialog = (_temp = _class = function (_Component) {
         ),
         _react2.default.createElement(
           'div',
-          null,
+          { style: childrenStyle },
           children
         ),
         isWithButton && this._renderCommandButton()

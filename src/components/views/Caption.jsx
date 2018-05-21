@@ -3,6 +3,7 @@ import React from '../_react'
 
 const STYLE = {
   ROOT_DIV : {
+    display: 'inline',
     width : '100%',
     color: '#795548',
     paddingLeft : '8px',
@@ -16,7 +17,7 @@ const STYLE = {
 const Caption = (props) => {
   const { forecast={}, style } = props
   , { city={} } = forecast
-  , { name='Forecast', country='' } = city
+  , { name='Forecast', country='' } = city;
   return (
     <div style={Object.assign({}, STYLE.ROOT_DIV, style)}>
       <span>{name}</span>

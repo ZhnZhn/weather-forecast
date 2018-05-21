@@ -1,1 +1,29 @@
-{"version":3,"sources":["../../../src/components/views/Caption.jsx"],"names":["STYLE","ROOT_DIV","width","color","paddingLeft","fontSize","fontWeight","borderBottom","marginBottom","Caption","props","forecast","style","city","name","country","Object","assign"],"mappings":";;;;;;AACA;;;;;;AAEA,IAAMA,QAAQ;AACZC,YAAW;AACTC,WAAQ,MADC;AAETC,WAAO,SAFE;AAGTC,iBAAc,KAHL;AAITC,cAAW,MAJF;AAKTC,gBAAa,MALJ;AAMTC,kBAAe,mBANN;AAOTC,kBAAe;AAPN;AADC,CAAd,C,CAHA;;;AAeA,IAAMC,UAAU,SAAVA,OAAU,CAACC,KAAD,EAAW;AAAA,wBACMA,KADN,CACjBC,QADiB;AAAA,MACjBA,QADiB,mCACR,EADQ;AAAA,MACJC,KADI,GACMF,KADN,CACJE,KADI;AAAA,uBAETD,QAFS,CAErBE,IAFqB;AAAA,MAErBA,IAFqB,kCAEhB,EAFgB;AAAA,mBAGWA,IAHX,CAGrBC,IAHqB;AAAA,MAGrBA,IAHqB,8BAGhB,UAHgB;AAAA,sBAGWD,IAHX,CAGJE,OAHI;AAAA,MAGJA,OAHI,iCAGI,EAHJ;;AAIzB,SACE;AAAA;AAAA,MAAK,OAAOC,OAAOC,MAAP,CAAc,EAAd,EAAkBjB,MAAMC,QAAxB,EAAkCW,KAAlC,CAAZ;AACE;AAAA;AAAA;AAAOE;AAAP,KADF;AAEE;AAAA;AAAA;AAAA;AAAA,KAFF;AAGE;AAAA;AAAA;AAAOC;AAAP;AAHF,GADF;AAOD,CAXD;;kBAaeN,O","file":"Caption.js","sourcesContent":["//import React from 'react';\r\nimport React from '../_react'\r\n\r\nconst STYLE = {\r\n  ROOT_DIV : {\r\n    width : '100%',\r\n    color: '#795548',\r\n    paddingLeft : '8px',\r\n    fontSize : '24px',\r\n    fontWeight : 'bold',\r\n    borderBottom : '3px solid #795548',\r\n    marginBottom : '8px'\r\n  }\r\n}\r\n\r\nconst Caption = (props) => {\r\n  const { forecast={}, style } = props\r\n  , { city={} } = forecast\r\n  , { name='Forecast', country='' } = city\r\n  return (\r\n    <div style={Object.assign({}, STYLE.ROOT_DIV, style)}>\r\n      <span>{name}</span>\r\n      <span>:</span>\r\n      <span>{country}</span>\r\n    </div>\r\n  )\r\n}\r\n\r\nexport default Caption\r\n"]}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/views/Caption.js"
+ ],
+ "file": "../../../src/components/views/Caption.js",
+ "names": [
+  "STYLE",
+  "ROOT_DIV",
+  "display",
+  "width",
+  "color",
+  "paddingLeft",
+  "fontSize",
+  "fontWeight",
+  "borderBottom",
+  "marginBottom",
+  "Caption",
+  "props",
+  "forecast",
+  "style",
+  "city",
+  "name",
+  "country",
+  "Object",
+  "assign"
+ ],
+ "mappings": ";;;;;;AACA;;;;;;AAEA,IAAMA,QAAQ;AACZC,YAAW;AACTC,aAAS,QADA;AAETC,WAAQ,MAFC;AAGTC,WAAO,SAHE;AAITC,iBAAc,KAJL;AAKTC,cAAW,MALF;AAMTC,gBAAa,MANJ;AAOTC,kBAAe,mBAPN;AAQTC,kBAAe;AARN;AADC,CAAd,C,CAHA;;;AAgBA,IAAMC,UAAU,SAAVA,OAAU,CAACC,KAAD,EAAW;AAAA,wBACMA,KADN,CACjBC,QADiB;AAAA,MACjBA,QADiB,mCACR,EADQ;AAAA,MACJC,KADI,GACMF,KADN,CACJE,KADI;AAAA,uBAETD,QAFS,CAErBE,IAFqB;AAAA,MAErBA,IAFqB,kCAEhB,EAFgB;AAAA,mBAGWA,IAHX,CAGrBC,IAHqB;AAAA,MAGrBA,IAHqB,8BAGhB,UAHgB;AAAA,sBAGWD,IAHX,CAGJE,OAHI;AAAA,MAGJA,OAHI,iCAGI,EAHJ;;AAIzB,SACE;AAAA;AAAA,MAAK,OAAOC,OAAOC,MAAP,CAAc,EAAd,EAAkBlB,MAAMC,QAAxB,EAAkCY,KAAlC,CAAZ;AACE;AAAA;AAAA;AAAOE;AAAP,KADF;AAEE;AAAA;AAAA;AAAA;AAAA,KAFF;AAGE;AAAA;AAAA;AAAOC;AAAP;AAHF,GADF;AAOD,CAXD;;kBAaeN,O"
+}

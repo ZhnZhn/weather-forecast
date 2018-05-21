@@ -12,6 +12,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var STYLE = {
   ROOT_DIV: {
+    display: 'inline',
     width: '100%',
     color: '#795548',
     paddingLeft: '8px',

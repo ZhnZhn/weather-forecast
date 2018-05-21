@@ -52,7 +52,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Component = _react2.default.Component;
 
 
-var TITLE = "Weather v0.1.0";
+var TITLE = "Weather v0.2.0";
 
 var CL = {
   TITLE: 'header__title',
@@ -123,9 +123,8 @@ var Header = function (_Component) {
       return _react2.default.createElement(
         'header',
         {
-          role: 'banner'
-          /*className="header"*/
-          , style: _extends({}, rootStyle, _STYLE.HEADER)
+          role: 'banner',
+          style: _extends({}, rootStyle, _STYLE.HEADER)
         },
         _react2.default.createElement(_ProgressLoading2.default, { store: store }),
         _react2.default.createElement(_HamburgerButton2.default, {
@@ -141,6 +140,7 @@ var Header = function (_Component) {
         _react2.default.createElement(_ButtonCircle2.default, {
           style: S.BT_CIRCLE,
           caption: 'F',
+          title: 'Toggle Forecast Popup',
           store: store,
           storeKey: 'isPopupForecast',
           onClick: this._hForecast
@@ -148,6 +148,7 @@ var Header = function (_Component) {
         _react2.default.createElement(_ButtonCircle2.default, {
           style: S.BT_CIRCLE,
           caption: 'S',
+          title: 'Open Settings Dialog',
           store: store,
           storeKey: 'isSettings',
           onClick: this._hSettings
