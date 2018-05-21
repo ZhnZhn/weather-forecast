@@ -26,3 +26,26 @@
   padding-left: 16px;
 }
 
+.header__github-link {
+  display: inline-block;
+  position: absolute;
+  top: 0px;
+  right: 24px;
+  text-decoration: none;
+  fill: #4d4d4d;
+  transition: fill 200ms ease-out; }
+
+.header__github-link svg {
+  width: 2.5rem;
+  height: 3rem; }
+
+.header__github-link:hover, .header__github-link:focus {
+  fill: #80c040; }
+
+@media only screen and (max-width: 640px) {
+  .header__github-link {
+    display: none; 
+  }
+}
+
+

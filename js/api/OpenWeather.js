@@ -16,9 +16,6 @@ var BASE_V3 = 'https://api.openweathermap.org/v3/';
 var UVI = 'uvi';
 var CURRENT_JSON = 'current.json';
 
-//lat: -29.916852233070163
-//lon=149.9853515625
-
 var DF = {
   LAT: 51.48,
   LNG: -0.13

@@ -28,6 +28,10 @@ var _ProviderLink = require('../elements/ProviderLink');
 
 var _ProviderLink2 = _interopRequireDefault(_ProviderLink);
 
+var _GitHubLink = require('./GitHubLink');
+
+var _GitHubLink2 = _interopRequireDefault(_GitHubLink);
+
 var _Header = require('./Header.Style');
 
 var _Header2 = _interopRequireDefault(_Header);
@@ -57,7 +61,8 @@ var TITLE = "Weather v0.2.0";
 var CL = {
   TITLE: 'header__title',
   LINK_PREF: 'header__link-pref',
-  LINK: 'header__link-provider'
+  LINK: 'header__link-provider',
+  GITHUB: 'header__github-link'
 };
 
 var S = {
@@ -156,6 +161,11 @@ var Header = function (_Component) {
         _react2.default.createElement(_ProviderLink2.default, {
           className: CL.LINK,
           prefixCL: CL.LINK_PREF
+        }),
+        _react2.default.createElement(_GitHubLink2.default, {
+          className: CL.GITHUB,
+          title: 'GitHub Repository',
+          href: 'https://github.com/zhnzhn/weather-forecast'
         })
       );
     }

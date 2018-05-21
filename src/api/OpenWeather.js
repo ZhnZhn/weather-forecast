@@ -11,9 +11,6 @@ const BASE_V3 = 'https://api.openweathermap.org/v3/'
 const UVI = 'uvi'
 const CURRENT_JSON = 'current.json'
 
-//lat: -29.916852233070163
-//lon=149.9853515625
-
 const DF = {
   LAT: 51.48,
   LNG: -0.13

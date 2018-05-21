@@ -1,0 +1,14 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/header/GitHubLink.js"
+ ],
+ "file": "../../../src/components/header/GitHubLink.js",
+ "names": [
+  "GitHubLink",
+  "className",
+  "title",
+  "href"
+ ],
+ "mappings": ";;;;;;AACA;;;;;;AAEA,IAAMA,aAAa,SAAbA,UAAa;AAAA,MAAGC,SAAH,QAAGA,SAAH;AAAA,MAAcC,KAAd,QAAcA,KAAd;AAAA,MAAqBC,IAArB,QAAqBA,IAArB;AAAA,SACjB;AAAA;AAAA;AACE,iBAAWF,SADb;AAEE,aAAOC,KAFT;AAGE,YAAMC,IAHR;AAIE,gBAAS;AAJX;AAME;AAAA;AAAA,QAAK,SAAQ,WAAb,EAAyB,OAAM,4BAA/B,EAA4D,aAAU,SAAtE,EAAgF,aAAU,SAA1F,EAAoG,mBAAgB,OAApH,EAA4H,qBAAkB,OAA9I;AACE;AAAA;AAAA;AAAA;AAAA,OADF;AAEE,8CAAM,GAAE,yqBAAR;AAFF;AANF,GADiB;AAAA,CAAnB;;AAcA;;;;;;;;AAjBA;kBAyBeH,U"
+}
