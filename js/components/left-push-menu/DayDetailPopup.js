@@ -127,6 +127,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           night = _temp$night === undefined ? '' : _temp$night,
           _temp$min = temp.min,
           min = _temp$min === undefined ? '' : _temp$min,
+          _dateTitle = _dt2.default.toDayOfWeek(timestamp) + ' ' + _dt2.default.toTime(timestamp),
           description = weather[0] && weather[0].description ? weather[0].description : 'Without description',
           _style = isOpen ? STYLE.BLOCK : STYLE.NONE;
 
@@ -143,7 +144,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           _react2.default.createElement(
             'span',
             { style: STYLE.DAY },
-            _dt2.default.toDayOfWeek(timestamp)
+            _dateTitle
           )
         ),
         _react2.default.createElement(

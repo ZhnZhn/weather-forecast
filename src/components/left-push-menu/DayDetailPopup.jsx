@@ -61,6 +61,7 @@ class DayDetailPopup extends Component {
     , { isOpen, style, item={} } = this.state
     , { dt:timestamp, rain=0, snow=0, clouds=0, humidity='', pressure='', temp={}, weather=[] } = item
     , { morn='', day='', max='', eve='', night='', min='' } = temp
+    , _dateTitle = `${dt.toDayOfWeek(timestamp)} ${dt.toTime(timestamp)}`
     , description = (weather[0] && weather[0].description)
         ? weather[0].description
         : 'Without description'
@@ -78,7 +79,7 @@ class DayDetailPopup extends Component {
         />
         <div className={CL.DATE}>
           <span style={STYLE.DAY}>
-            {dt.toDayOfWeek(timestamp)}
+            {_dateTitle}
           </span>
         </div>
         <div>

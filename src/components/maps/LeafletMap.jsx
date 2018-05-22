@@ -41,7 +41,7 @@ class LeafletMap extends Component{
     const { id, store } = this.props
     this.unsubsribe = store.subscribe(this._onStore);
     this.map = fnLeaflet.createMap(id, this._setLoaded);
-    this.map.on('click', throttle(
+    this.map.on('dblclick', throttle(
       this._handleClickMap, PERIOD_MS, {
         trailing: false
       }
@@ -87,7 +87,7 @@ class LeafletMap extends Component{
        {
          !isLoaded &&
          <span>LeafletMap Loading...</span>
-       }        
+       }
       </div>
     );
   }

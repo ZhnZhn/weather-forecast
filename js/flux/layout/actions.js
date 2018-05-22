@@ -21,4 +21,11 @@ var setThemeName = exports.setThemeName = function setThemeName(themeName) {
     themeName: themeName
   };
 };
+
+var actions = {
+  toggleLayout: toggleLayout,
+  setThemeName: setThemeName
+};
+
+exports.default = actions;
 //# sourceMappingURL=actions.js.map
