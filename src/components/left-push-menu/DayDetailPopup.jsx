@@ -7,13 +7,15 @@ import dt from '../../utils/dt';
 import SvgClose from '../zhn-atoms/SvgClose'
 import { POPUP } from '../styles/theme';
 
-
 const CL = {
   DATE: 'marker__caption__date',
   DESCR: 'marker__description',
   LABEL: 'marker__label',
-  VALUE: 'marker__value'
-}
+  V_WATER: 'marker__v-water',
+  V_PRESSURE: 'marker__v-pressure',
+  V_DAY: 'marker__v-day',
+  V_NIGHT: 'marker__v-night'
+};
 
 const STYLE = {
   ROOT_DIV : {
@@ -35,13 +37,13 @@ const STYLE = {
   },
   BT_CLOSE : {
     position : 'absolute',
-    top: '4px',
+    top: '7px',
     right : '4px'
   },
   DAY : {
     borderBottom : '2px solid #8bc34a'
   }
-}
+};
 
 class DayDetailPopup extends Component {
 
@@ -87,37 +89,59 @@ class DayDetailPopup extends Component {
         </div>
         <div>
           <span className={CL.LABEL}>Rain:&nbsp;</span>
-          <span className={CL.VALUE}>{rain}mm&nbsp;</span>
+          <span className={CL.V_WATER}>
+            {rain}mm&nbsp;
+          </span>
           { snow > 0.02 &&
             <span>
               <span className={CL.LABEL}>Snow:&nbsp;</span>
-              <span className={CL.VALUE}>{snow}mm&nbsp;</span>
+              <span className={CL.V_WATER}>
+                {snow}mm&nbsp;
+              </span>
             </span>
           }
           <span className={CL.LABEL}>Clouds:&nbsp;</span>
-          <span className={CL.VALUE}>{clouds}%&nbsp;</span>
+          <span className={CL.V_WATER}>
+            {clouds}%&nbsp;
+          </span>
         </div>
         <div>
           <span className={CL.LABEL}>Humidity:&nbsp;</span>
-          <span className={CL.VALUE}>{humidity}%&nbsp;</span>
+          <span className={CL.V_WATER}>
+            {humidity}%&nbsp;
+          </span>
           <span className={CL.LABEL}>Pressure:&nbsp;</span>
-          <span className={CL.VALUE}>{pressure}hPa&nbsp;</span>
+          <span className={CL.V_PRESSURE}>
+            {pressure}hPa&nbsp;
+          </span>
         </div>
         <div>
           <span className={CL.LABEL}>Morn:&nbsp;</span>
-          <span className={CL.VALUE}>{morn}&nbsp;</span>
+          <span className={CL.V_DAY}>
+            {morn}&nbsp;
+          </span>
           <span className={CL.LABEL}>Day:&nbsp;</span>
-          <span className={CL.VALUE}>{day}&nbsp;</span>
+          <span className={CL.V_DAY}>
+            {day}&nbsp;
+          </span>
           <span className={CL.LABEL}>Max:&nbsp;</span>
-          <span className={CL.VALUE}>{max}&nbsp;</span>
+          <span className={CL.V_DAY}>
+            {max}&nbsp;
+          </span>
         </div>
         <div>
           <span className={CL.LABEL}>Eve:&nbsp;</span>
-          <span className={CL.VALUE}>{eve}&nbsp;</span>
+          <span className={CL.V_NIGHT}>
+            {eve}&nbsp;
+          </span>
           <span className={CL.LABEL}>Night:&nbsp;</span>
-          <span className={CL.VALUE}>{night}&nbsp;</span>
+          <span className={CL.V_NIGHT}>
+            {night}&nbsp;
+          </span>
           <span className={CL.LABEL}>Min:&nbsp;</span>
-          <span className={CL.VALUE}>{min}&nbsp;</span>
+          <span className={CL.V_NIGHT}>
+            {min}&nbsp;
+          </span>
         </div>
       </div>
     );

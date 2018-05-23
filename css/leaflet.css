@@ -506,7 +506,8 @@
 	background: transparent;
 	}
 .leaflet-container a.leaflet-popup-close-button:hover {
-	color: #999;
+	/*color: #999;*/
+        font-weight: 800;
 	}
 .leaflet-popup-scrolled {
 	overflow: auto;
@@ -534,6 +535,13 @@
 .leaflet-oldie .leaflet-popup-tip {
 	border: 1px solid #999;
 	}
+
+/*Hide control zoom*/
+@media (max-width: 500px) {
+  .leaflet-control-zoom {
+     display: none;
+  }
+}
 
 
 /* div icon */

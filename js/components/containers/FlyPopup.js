@@ -47,7 +47,7 @@ var STYLE = {
   },
   SVG_CLOSE: {
     position: 'absolute',
-    top: '12px',
+    top: '16px',
     right: '6px'
   }
 };

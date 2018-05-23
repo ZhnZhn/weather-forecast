@@ -23,7 +23,7 @@ const fnLeaflet = {
   createMap : (id, onLoad) => {
     const map = L
       //.map(id, { zoomControl: true, ...options })
-      .map(id, { zoomControl: true})
+      .map(id, { zoomControl: true })
       .on('load', onLoad)
       .setView([DF.LAT, DF.LNG], DF.ZOOM);
     map.zoomControl.setPosition('bottomright');

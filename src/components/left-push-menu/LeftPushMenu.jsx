@@ -21,6 +21,12 @@ const { Component } = React
 
 //const BG_MARK = '#646464';
 //const BG_UNMARK = '#808080';
+const S  = {
+  TABS: {
+    textAlign: 'left'
+  }
+};
+
 
 class LeftPushMenu extends Component {
    state = {}
@@ -58,6 +64,8 @@ class LeftPushMenu extends Component {
     this.detailComp.close();
   }
 
+  _refDetail = comp => this.detailComp = comp
+
   render(){
     const { id, store, theme } = this.props
          , STYLE = theme.createStyle(styleConfig);
@@ -69,11 +77,13 @@ class LeftPushMenu extends Component {
             onClickItem={this.handleClickItem}
          />
          <DayDetailPopup
-            ref={ comp => this.detailComp = comp}
+            ref={this._refDetail}
             onClose={this.handleCloseDetail}
           />
 
-          <TabPane key="1" width="100%">
+          <TabPane
+            key="1" width="100%" tabsStyle={S.TABS}
+          >
             <Tab title="7 Days">
                <ForecastChart store={store} />
             </Tab>
@@ -90,8 +100,6 @@ class LeftPushMenu extends Component {
                <UvCard store={store} />
             </Tab>
           </TabPane>
-
-         {/*<ForecastChart store={store} />*/}
       </div>
     );
   }

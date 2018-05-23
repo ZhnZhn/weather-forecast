@@ -24,21 +24,21 @@ var _ModalDialog = require('../zhn-moleculs/ModalDialog');
 
 var _ModalDialog2 = _interopRequireDefault(_ModalDialog);
 
-var _SecretField = require('../zhn-m-input/SecretField');
+var _TabPane = require('../zhn-atoms/TabPane');
 
-var _SecretField2 = _interopRequireDefault(_SecretField);
+var _TabPane2 = _interopRequireDefault(_TabPane);
 
-var _RowCheckBox = require('./RowCheckBox');
+var _Tab = require('../zhn-atoms/Tab');
 
-var _RowCheckBox2 = _interopRequireDefault(_RowCheckBox);
+var _Tab2 = _interopRequireDefault(_Tab);
 
-var _InputSelect = require('../zhn-m-input/InputSelect');
+var _CardApiKey = require('./CardApiKey');
 
-var _InputSelect2 = _interopRequireDefault(_InputSelect);
+var _CardApiKey2 = _interopRequireDefault(_CardApiKey);
 
-var _RaisedButton = require('../zhn-atoms/RaisedButton');
+var _CardUi = require('./CardUi');
 
-var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+var _CardUi2 = _interopRequireDefault(_CardUi);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59,61 +59,43 @@ var S = {
     height: '285px',
     margin: '70px auto 0px'
   },
-  MODAL_CHILDREN: {
-    paddingBottom: '20px'
+  TABS: {
+    textAlign: 'left',
+    marginLeft: '24px'
   },
-  SECRET: {
-    width: '280px'
+  TAB_SELECTED: {
+    //color: '#2f7ed8'
+    color: 'black'
   },
-  CHECK_BOX: {
-    paddingLeft: '24px',
-    paddingBottom: '6px',
-    paddingRight: '24px'
+  CARD_ROOT: {
+    position: 'relative',
+    height: '200px'
   },
-  CHECK_CAPTION: {
-    display: 'inline'
-  },
-  SELECT: {
-    ROOT: {
-      width: '280px'
-    }
+  CARD_BUTTONS: {
+    position: 'absolute',
+    right: '4px',
+    bottom: 0,
+    cursor: 'default'
   }
 };
-
-var DF_THEME = { caption: 'Grey', value: 'GREY' };
-var _themeOptions = [{ caption: 'Grey', value: 'GREY' }, { caption: 'Sand', value: 'SAND' }, { caption: 'White', value: 'WHITE' }];
 
 var SettingsDialog = function (_Component) {
   _inherits(SettingsDialog, _Component);
 
-  /*
-  static propTypes = {
-    isShow: PropTypes.bool,
-    data: PropTypes.shape({
-      onSet: PropTypes.func
-    }),
-    onClose: PropTypes.func
-  }
-  */
+  function SettingsDialog() {
+    var _ref;
 
-  function SettingsDialog(props) {
+    var _temp, _this, _ret;
+
     _classCallCheck(this, SettingsDialog);
 
-    var _this = _possibleConstructorReturn(this, (SettingsDialog.__proto__ || Object.getPrototypeOf(SettingsDialog)).call(this));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this._isNextPropIsShowSame = function (nextProps) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SettingsDialog.__proto__ || Object.getPrototypeOf(SettingsDialog)).call.apply(_ref, [this].concat(args))), _this), _this._isNextPropIsShowSame = function (nextProps) {
       return nextProps !== _this.props && nextProps.isShow === _this.props.isShow;
-    };
-
-    _this._checkAllow = function () {
-      _this.setState({ isAllow: true });
-    };
-
-    _this._uncheckAllow = function () {
-      _this.setState({ isAllow: false });
-    };
-
-    _this._handleSet = function () {
+    }, _this._handleSet = function () {
       var _this$props = _this.props,
           data = _this$props.data,
           onClose = _this$props.onClose,
@@ -121,9 +103,7 @@ var SettingsDialog = function (_Component) {
 
       onSet(_this.inputApiKey.getValue());
       onClose();
-    };
-
-    _this._handleSetTheme = function (item) {
+    }, _this._handleSetTheme = function (item) {
       var _this$props2 = _this.props,
           theme = _this$props2.theme,
           data = _this$props2.data,
@@ -134,21 +114,19 @@ var SettingsDialog = function (_Component) {
       if (prevTheme !== item.value) {
         _this.forceUpdate();
       }
-    };
-
-    _this._refInput = function (c) {
+    }, _this._refInput = function (c) {
       return _this.inputApiKey = c;
-    };
-
-    _this.commandButtons = [_react2.default.createElement(_RaisedButton2.default, {
-      caption: 'Set & Close',
-      onClick: _this._handleSet
-    })];
-    _this.state = {
-      isAllow: false
-    };
-    return _this;
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
+  /*
+  static propTypes = {
+    isShow: PropTypes.bool,
+    data: PropTypes.shape({
+      onSet: PropTypes.func
+    }),
+    onClose: PropTypes.func
+  }
+  */
 
   _createClass(SettingsDialog, [{
     key: 'shouldComponentUpdate',
@@ -165,7 +143,6 @@ var SettingsDialog = function (_Component) {
           theme = _props.theme,
           isShow = _props.isShow,
           onClose = _props.onClose,
-          isAllow = this.state.isAllow,
           TS = theme.createStyle(_Dialog2.default);
 
       return _react2.default.createElement(
@@ -174,32 +151,40 @@ var SettingsDialog = function (_Component) {
           style: _extends({}, S.MODAL, TS.R_DIALOG),
           caption: 'User Settings',
           isShow: isShow,
-          childrenStyle: S.MODAL_CHILDREN,
-          commandButtons: this.commandButtons,
+          isWithButton: false,
           onClose: onClose
         },
-        _react2.default.createElement(_SecretField2.default, {
-          ref: this._refInput,
-          rootStyle: S.SECRET,
-          caption: 'OpenWeatherMap API Key',
-          isAllowRemember: isAllow,
-          name: 'openweathermap'
-        }),
-        _react2.default.createElement(_RowCheckBox2.default, {
-          rootStyle: S.CHECK_BOX,
-          initValue: false,
-          caption: 'Let Remember Enter of API Key by Browser Password Manager',
-          captionStyle: S.CHECK_CAPTION,
-          onCheck: this._checkAllow,
-          onUnCheck: this._uncheckAllow
-        }),
-        _react2.default.createElement(_InputSelect2.default, {
-          styleConfig: S.SELECT,
-          caption: 'Theme (Default: Grey)',
-          initItem: DF_THEME,
-          options: _themeOptions,
-          onSelect: this._handleSetTheme
-        })
+        _react2.default.createElement(
+          _TabPane2.default,
+          { width: '100%', tabsStyle: S.TABS },
+          _react2.default.createElement(
+            _Tab2.default,
+            {
+              title: 'API Key',
+              selectedStyle: S.TAB_SELECTED
+            },
+            _react2.default.createElement(_CardApiKey2.default, {
+              ref: this._refInput,
+              style: S.CARD_ROOT,
+              buttonsStyle: S.CARD_BUTTONS,
+              onSet: this._handleSet,
+              onClose: onClose
+            })
+          ),
+          _react2.default.createElement(
+            _Tab2.default,
+            {
+              title: 'UI Theme',
+              selectedStyle: S.TAB_SELECTED
+            },
+            _react2.default.createElement(_CardUi2.default, {
+              style: S.CARD_ROOT,
+              buttonsStyle: S.CARD_BUTTONS,
+              onSetTheme: this._handleSetTheme,
+              onClose: onClose
+            })
+          )
+        )
       );
     }
   }]);

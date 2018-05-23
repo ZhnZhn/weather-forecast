@@ -64,6 +64,12 @@ var Component = _react2.default.Component;
 //const BG_MARK = '#646464';
 //const BG_UNMARK = '#808080';
 
+var S = {
+  TABS: {
+    textAlign: 'left'
+  }
+};
+
 var LeftPushMenu = function (_Component) {
   _inherits(LeftPushMenu, _Component);
 
@@ -103,14 +109,14 @@ var LeftPushMenu = function (_Component) {
     }, _this.handleCloseDetail = function () {
       _this._unmarkDay();
       _this.detailComp.close();
+    }, _this._refDetail = function (comp) {
+      return _this.detailComp = comp;
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(LeftPushMenu, [{
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
       var _props = this.props,
           id = _props.id,
           store = _props.store,
@@ -126,14 +132,14 @@ var LeftPushMenu = function (_Component) {
           onClickItem: this.handleClickItem
         }),
         _react2.default.createElement(_DayDetailPopup2.default, {
-          ref: function ref(comp) {
-            return _this2.detailComp = comp;
-          },
+          ref: this._refDetail,
           onClose: this.handleCloseDetail
         }),
         _react2.default.createElement(
           _TabPane2.default,
-          { key: '1', width: '100%' },
+          {
+            key: '1', width: '100%', tabsStyle: S.TABS
+          },
           _react2.default.createElement(
             _Tab2.default,
             { title: '7 Days' },

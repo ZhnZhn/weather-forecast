@@ -12,9 +12,9 @@ var _react = require('../_react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
+var _ThemeContext = require('./ThemeContext');
 
-var _propTypes2 = _interopRequireDefault(_propTypes);
+var _ThemeContext2 = _interopRequireDefault(_ThemeContext);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27,33 +27,34 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var Component = _react2.default.Component;
 
-var PropTypes = _propTypes2.default || window.PropTypes;
 
 var withTheme = function withTheme(Wrapper) {
-  var _class, _temp;
-
-  return _temp = _class = function (_Component) {
+  return function (_Component) {
     _inherits(_class, _Component);
 
-    function _class(props, context) {
+    function _class() {
       _classCallCheck(this, _class);
 
-      return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, props, context));
+      return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
     }
 
     _createClass(_class, [{
       key: 'render',
       value: function render() {
-        var theme = this.context.theme;
+        var _this2 = this;
 
-        return _react2.default.createElement(Wrapper, _extends({}, this.props, { theme: theme }));
+        return _react2.default.createElement(
+          _ThemeContext2.default.Consumer,
+          null,
+          function (theme) {
+            return _react2.default.createElement(Wrapper, _extends({}, _this2.props, { theme: theme }));
+          }
+        );
       }
     }]);
 
     return _class;
-  }(Component), _class.contextTypes = {
-    theme: PropTypes.object
-  }, _temp;
+  }(Component);
 };
 
 exports.default = withTheme;

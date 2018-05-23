@@ -1,7 +1,7 @@
 import React from './_react'
 //import PropTypes from 'prop-types';
 
-import ThemeProvider from './hoc/ThemeProvider';
+import ThemeContext from './hoc/ThemeContext'
 import theme from './styles/theme';
 import ModalDialogContainer from './containers/ModalDialogContainer'
 import Header from './header/Header';
@@ -30,7 +30,7 @@ const S = {
     position: 'absolute',
     top: '30px',
     left: '50px',
-    padding: '10px 5px 5px 10px',
+    padding: '10px 5px 5px 4px',
     backgroundColor: '#808080',
     border: '1px solid #999',
     borderRadius: '5px',
@@ -90,7 +90,7 @@ class WeatherSaga extends Component{
   render(){
     const { store } = this.props;
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeContext.Provider value={theme} >
         <div>
           <ModalDialogContainer
             store={store}
@@ -116,7 +116,7 @@ class WeatherSaga extends Component{
             />
           </div>
         </div>
-      </ThemeProvider>
+      </ThemeContext.Provider>
     )
   }
 }

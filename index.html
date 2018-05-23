@@ -7,13 +7,13 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="
       script-src 'self' 'unsafe-inline'
-      https://unpkg.com/react@16.2.0/umd/react.production.min.js
-      https://unpkg.com/react-dom@16.2.0/umd/react-dom.production.min.js
+      https://unpkg.com/react@16.3.2/umd/react.production.min.js
+      https://unpkg.com/react-dom@16.3.2/umd/react-dom.production.min.js
+      https://unpkg.com/leaflet@1.3.1/dist/leaflet.js
       https://unpkg.com/prop-types@15.6.1/prop-types.min.js
-      https://unpkg.com/leaflet@1.0.3/dist/leaflet.js
       https://unpkg.com/recharts@1.0.0-beta.10/umd/Recharts.min.js;
       style-src 'self' 'unsafe-inline';
-      img-src 'self' https://*.tile.openstreetmap.org"
+      img-src 'self' data: https://*.tile.openstreetmap.org"
   >
   <meta name="description" content="Webapp Weathere Forecast">
   <meta name="application-name" content="Webapp Weathere Forecast">
@@ -55,14 +55,12 @@
     })()
   </script>
 
-
-  <link rel="stylesheet" href="css/app-3afc97132d.min.css">
-
+  <link rel="stylesheet" href="css/app-a69dab71c0.min.css">
 
 </head>
 <body>
 
-   <div id="app">
+   <div id="app" class="app">
    </div>
 
    <!--googleoff: snippet-->
@@ -83,19 +81,18 @@
       </div>
    </noscript>
    <!--googleon: snippet-->
-   <script defer crossorigin="anonymous" src="https://unpkg.com/react@16.2.0/umd/react.production.min.js"
-     integrity="sha384-j40ChW3xknV2Dsc9+kP3/6SW2UrR7gYSbx9pmyNU1YTacm/PEj/0bxB9vM8jWFqx"></script>
-   <script defer src="https://unpkg.com/react-dom@16.2.0/umd/react-dom.production.min.js"
-     integrity="sha384-P4XM5fEtXj1kXZzsm1EOHZ7HmQIuzyRjjvX4na21R4eRLjmm+oUZua5ALb2PIojw" crossorigin="anonymous"></script>
-    <script defer src="https://unpkg.com/prop-types@15.6.1/prop-types.min.js"
+   <script defer src="https://unpkg.com/react@16.3.2/umd/react.production.min.js"
+     integrity="sha384-ssmDfleGSKwIS4GlKJM3gqgSQtp6pzFAc7y8f0r2Mfjn+EsHt4UqrSM8EXKZCAFU" crossorigin="anonymous"></script>
+   <script defer src="https://unpkg.com/react-dom@16.3.2/umd/react-dom.production.min.js"
+     integrity="sha384-9HNXemlU8cB7vTVvdlZbsut+fnt78jK2amX1CCxkLlamx+yD4gde8D6DJe+QkHm3" crossorigin="anonymous"></script>
+   <script defer src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+      integrity="sha384-JguaQYjdUVs0XHRhkpHTNjd6j8IjEzgj5+1xeGYHCXQEaufKsYdtn9fgHVeVTLJu" crossorigin="anonymous"></script>
+   <script defer src="https://unpkg.com/prop-types@15.6.1/prop-types.min.js"
       integrity="sha384-FQc2IoXappd5u+WdUftixGwJcyH480eQ0p+eX4rc7iAv1TIPjphlOQAoBGl+dvBM" crossorigin="anonymous"></script>
-   <script defer src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
-      integrity="sha384-9fzrQY4JobN87hT5sQ0JnL9XZQ5q94Qj46ZFqpcBzz03D3UDKAkN/pKct1IVlP2Y" crossorigin="anonymous"></script>
    <script defer src="https://unpkg.com/recharts@1.0.0-beta.10/umd/Recharts.min.js"
       integrity="sha384-mtQR+yEF1CyaC1yh8UHC1fmzaZhNNu0rSU6SDk1o7YhiiXKuTF4FI8nDLnOjIYua" crossorigin="anonymous"></script>
-  <script src="app/lib_4a2175b3d4e037dcb50b.js" defer></script>  
-  <script src="app/app_df8a3463282835554a37.js" defer></script>
-
-
+  <script src="app/lib_c9291956a94443d66bf4.js" defer></script>
+  <script src="app/app_ea3cd4f996e6694d13f0.js" defer></script>
+    
 </body>
 </html>

@@ -40,7 +40,10 @@ var CL = {
   DATE: 'marker__caption__date',
   DESCR: 'marker__description',
   LABEL: 'marker__label',
-  VALUE: 'marker__value'
+  V_WATER: 'marker__v-water',
+  V_PRESSURE: 'marker__v-pressure',
+  V_DAY: 'marker__v-day',
+  V_NIGHT: 'marker__v-night'
 };
 
 var STYLE = {
@@ -63,7 +66,7 @@ var STYLE = {
   },
   BT_CLOSE: {
     position: 'absolute',
-    top: '4px',
+    top: '7px',
     right: '4px'
   },
   DAY: {
@@ -166,7 +169,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: CL.VALUE },
+            { className: CL.V_WATER },
             rain,
             'mm\xA0'
           ),
@@ -180,7 +183,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
             ),
             _react2.default.createElement(
               'span',
-              { className: CL.VALUE },
+              { className: CL.V_WATER },
               snow,
               'mm\xA0'
             )
@@ -192,7 +195,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: CL.VALUE },
+            { className: CL.V_WATER },
             clouds,
             '%\xA0'
           )
@@ -207,7 +210,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: CL.VALUE },
+            { className: CL.V_WATER },
             humidity,
             '%\xA0'
           ),
@@ -218,7 +221,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: CL.VALUE },
+            { className: CL.V_PRESSURE },
             pressure,
             'hPa\xA0'
           )
@@ -233,7 +236,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: CL.VALUE },
+            { className: CL.V_DAY },
             morn,
             '\xA0'
           ),
@@ -244,7 +247,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: CL.VALUE },
+            { className: CL.V_DAY },
             day,
             '\xA0'
           ),
@@ -255,7 +258,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: CL.VALUE },
+            { className: CL.V_DAY },
             max,
             '\xA0'
           )
@@ -270,7 +273,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: CL.VALUE },
+            { className: CL.V_NIGHT },
             eve,
             '\xA0'
           ),
@@ -281,7 +284,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: CL.VALUE },
+            { className: CL.V_NIGHT },
             night,
             '\xA0'
           ),
@@ -292,7 +295,7 @@ var DayDetailPopup = (_temp = _class = function (_Component) {
           ),
           _react2.default.createElement(
             'span',
-            { className: CL.VALUE },
+            { className: CL.V_NIGHT },
             min,
             '\xA0'
           )

@@ -45,11 +45,13 @@
 }
 
 .leaflet-container a.leaflet-popup-close-button {
-  top: -2px;
-  right: -2px;
+  top: 7px;
+  right: 4px;
   width: 24px;
   height: 22px;
   font-size: 24px;
+  font-weight: 500;
+  color: #ed5813;
   line-height: 22px;
 }
 
@@ -122,9 +124,31 @@
 .marker__t {
   color: yellow; }
 
+
+.marker__bt-close {
+  
+}
+
 .marker__value {
   //color: #7cb5ec;
   color: black; 
+  font-weight: 600;
+}
+
+.marker__v-water {
+  color: #3f51b5; 
+  font-weight: 600;
+}
+.marker__v-pressure {
+  color: #0d2339; 
+  font-weight: 600;
+}
+.marker__v-day {
+  color: #ff9800; 
+  font-weight: 600;
+}
+.marker__v-night {
+  color: #434348; 
   font-weight: 600;
 }
 

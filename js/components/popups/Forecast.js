@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('../_react');
@@ -40,6 +42,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var Component = _react2.default.Component;
 
+
+var S = {
+  CAPTION: {
+    marginRight: '40px'
+  }
+};
 
 var NOT_FOUND_MSG = 'Forecast for place not found';
 var OK_CODE = '200';
@@ -119,14 +127,14 @@ var Forecast = function (_Component) {
       return _react2.default.createElement(
         _FlyPopup2.default,
         {
-          rootStyle: Object.assign(rootStyle, _style.ROOT_DIV),
+          rootStyle: _extends({}, rootStyle, _style.ROOT_DIV),
           store: store,
           storeKey: 'isPopupForecast',
           isShow: true
         },
         _react2.default.createElement(_PeriodForecast2.default, {
           forecast: forecast,
-          captionStyle: { marginRight: '30px' }
+          captionStyle: S.CAPTION
         }),
         '' + cod !== OK_CODE && this._renderMsg()
       );

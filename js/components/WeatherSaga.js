@@ -13,9 +13,9 @@ var _react = require('./_react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _ThemeProvider = require('./hoc/ThemeProvider');
+var _ThemeContext = require('./hoc/ThemeContext');
 
-var _ThemeProvider2 = _interopRequireDefault(_ThemeProvider);
+var _ThemeContext2 = _interopRequireDefault(_ThemeContext);
 
 var _theme = require('./styles/theme');
 
@@ -71,7 +71,7 @@ var S = {
     position: 'absolute',
     top: '30px',
     left: '50px',
-    padding: '10px 5px 5px 10px',
+    padding: '10px 5px 5px 4px',
     backgroundColor: '#808080',
     border: '1px solid #999',
     borderRadius: '5px',
@@ -121,8 +121,8 @@ var WeatherSaga = (_temp = _class = function (_Component) {
       var store = this.props.store;
 
       return _react2.default.createElement(
-        _ThemeProvider2.default,
-        { theme: _theme2.default },
+        _ThemeContext2.default.Provider,
+        { value: _theme2.default },
         _react2.default.createElement(
           'div',
           null,

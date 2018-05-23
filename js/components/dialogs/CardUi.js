@@ -6,16 +6,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _class, _temp; //import { Children, Component } from 'react';
-
-
 var _react = require('../_react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
+var _InputSelect = require('../zhn-m-input/InputSelect');
 
-var _propTypes2 = _interopRequireDefault(_propTypes);
+var _InputSelect2 = _interopRequireDefault(_InputSelect);
+
+var _RaisedButton = require('../zhn-atoms/RaisedButton');
+
+var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25,47 +26,63 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Children = _react2.default.Children,
-    Component = _react2.default.Component;
+var Component = _react2.default.Component;
 
-var PropTypes = _propTypes2.default || window.PropTypes;
 
-var ThemeProvider = (_temp = _class = function (_Component) {
-  _inherits(ThemeProvider, _Component);
-
-  _createClass(ThemeProvider, [{
-    key: 'getChildContext',
-    value: function getChildContext() {
-      return { theme: this.theme };
+var S = {
+  SELECT: {
+    ROOT: {
+      width: '280px'
     }
-    /*
-    static propTypes = {
-      theme: PropTypes.object,
-      children: PropTypes.element
-    }
-    */
+  }
+};
 
-  }]);
+var DF_THEME = { caption: 'Grey', value: 'GREY' };
+var _themeOptions = [{ caption: 'Grey', value: 'GREY' }, { caption: 'Sand', value: 'SAND' }, { caption: 'White', value: 'WHITE' }];
 
-  function ThemeProvider(props, context) {
-    _classCallCheck(this, ThemeProvider);
+var CardUi = function (_Component) {
+  _inherits(CardUi, _Component);
 
-    var _this = _possibleConstructorReturn(this, (ThemeProvider.__proto__ || Object.getPrototypeOf(ThemeProvider)).call(this, props, context));
+  function CardUi() {
+    _classCallCheck(this, CardUi);
 
-    _this.theme = props.theme;
-    return _this;
+    return _possibleConstructorReturn(this, (CardUi.__proto__ || Object.getPrototypeOf(CardUi)).apply(this, arguments));
   }
 
-  _createClass(ThemeProvider, [{
+  _createClass(CardUi, [{
     key: 'render',
     value: function render() {
-      return Children.only(this.props.children);
+      var _props = this.props,
+          style = _props.style,
+          buttonsStyle = _props.buttonsStyle,
+          onSetTheme = _props.onSetTheme,
+          onClose = _props.onClose;
+
+      return _react2.default.createElement(
+        'div',
+        { style: style },
+        _react2.default.createElement(_InputSelect2.default, {
+          styleConfig: S.SELECT,
+          caption: 'Theme (Default: Grey)',
+          initItem: DF_THEME,
+          options: _themeOptions,
+          onSelect: onSetTheme
+        }),
+        _react2.default.createElement(
+          'div',
+          { style: buttonsStyle },
+          _react2.default.createElement(_RaisedButton2.default, {
+            isPrimary: true,
+            caption: 'Close',
+            onClick: onClose
+          })
+        )
+      );
     }
   }]);
 
-  return ThemeProvider;
-}(Component), _class.childContextTypes = {
-  theme: PropTypes.object
-}, _temp);
-exports.default = ThemeProvider;
-//# sourceMappingURL=ThemeProvider.js.map
+  return CardUi;
+}(Component);
+
+exports.default = CardUi;
+//# sourceMappingURL=CardUi.js.map

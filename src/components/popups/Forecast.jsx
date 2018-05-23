@@ -12,6 +12,12 @@ import withTheme from '../hoc/withTheme';
 
 const { Component } = React
 
+const S  = {
+  CAPTION: {
+    marginRight: '40px'
+  }
+};
+
 const NOT_FOUND_MSG = 'Forecast for place not found';
 const OK_CODE = '200'
 
@@ -67,14 +73,14 @@ class Forecast extends Component {
 
     return (
       <FlyPopup
-          rootStyle={Object.assign(rootStyle, _style.ROOT_DIV)}
+          rootStyle={{ ...rootStyle, ..._style.ROOT_DIV }}
           store={store}
           storeKey="isPopupForecast"
           isShow={true}
        >
         <PeriodForecast
             forecast={forecast}
-            captionStyle={{ marginRight: '30px' }}
+            captionStyle={S.CAPTION}
         />
         { (''+cod) !== OK_CODE && this._renderMsg() }
       </FlyPopup>

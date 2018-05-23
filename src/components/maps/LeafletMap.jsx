@@ -86,7 +86,7 @@ class LeafletMap extends Component{
       >
        {
          !isLoaded &&
-         <span>LeafletMap Loading...</span>
+         <span>LeafletMap Loading...</span>         
        }
       </div>
     );
