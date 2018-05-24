@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.sSettings = exports.sUV = exports.sHourly = exports.sForecast = exports.sPlace = undefined;
+exports.sModal = exports.sSettings = exports.sUV = exports.sHourly = exports.sForecast = exports.sPlace = undefined;
 
 var _reducer = require('./place/reducer');
 
@@ -24,6 +24,10 @@ var uv = _interopRequireWildcard(_reducer4);
 var _reducer5 = require('./settings/reducer');
 
 var settings = _interopRequireWildcard(_reducer5);
+
+var _reducer6 = require('./modal/reducer');
+
+var modal = _interopRequireWildcard(_reducer6);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -72,6 +76,12 @@ var sUV = exports.sUV = {
 var sSettings = exports.sSettings = {
   isApiKey: function isApiKey(state) {
     return settings.isApiKey(state.settings);
+  }
+};
+
+var sModal = exports.sModal = {
+  errMsg: function errMsg(state) {
+    return modal.errMsg(state.modal);
   }
 };
 //# sourceMappingURL=selectors.js.map

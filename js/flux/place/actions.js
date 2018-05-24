@@ -5,8 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var ACTION = exports.ACTION = {
   PLACE_REQUESTED: 'PLACE_REQUESTED',
-  PLACE_REQUESTED_OK: 'PLACE_REQUESTED_OK',
-  PLACE_REQUESTED_FAIL: 'PLACE_REQUESTED_FAIL'
+  PLACE_REQUESTED_OK: 'PLACE_REQUESTED_OK'
 };
 
 var placeRequested = exports.placeRequested = function placeRequested(payload) {
@@ -19,16 +18,10 @@ var placeRequestedOk = exports.placeRequestedOk = function placeRequestedOk(fore
     type: ACTION.PLACE_REQUESTED_OK, forecast: forecast
   };
 };
-var placeRequestedFail = exports.placeRequestedFail = function placeRequestedFail(message) {
-  return {
-    type: ACTION.PLACE_REQUESTED_FAIL, message: message
-  };
-};
 
 var actions = {
   requested: placeRequested,
-  requestedOk: placeRequestedOk,
-  requestedFail: placeRequestedFail
+  requestedOk: placeRequestedOk
 };
 
 exports.default = actions;

@@ -1,25 +1,5 @@
 import dt from '../utils/dt'
 import is from '../utils/is';
-/*
-const getRain = (w) => {
-  let rainHour, rainValue;
-  if (typeof w.rain !== 'undefined'){
-    const keys = Object.keys(w.rain);
-    if (typeof keys[0] !== 'undefined'){
-      rainHour = keys[0];
-      rainValue = w.rain[rainHour];
-    } else {
-      rainHour = "3h";
-      rainValue = 0;
-    }
-  } else {
-    rainHour = "3h";
-    rainValue = 0;
-  }
-  return { rainHour, rainValue };
-}
-*/
-
 
 const _fnCreateVane = (deg) => {
   return `<svg xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +23,6 @@ const marker = {
     , { deg=0, speed='' } = is.toObjLike(wind)
     , icon = is.toStr(weather, 'icon', 0, 'no-data');
 
-    //<span style="color:#607d8b;">${name}</span>
     return `<div style="position:relative;top:-45px;left:-25px;font-size: 15px;font-weight:bold;">
              <img src=./img/${icon}.png style="width:60px;height:60px;"></img>
              <div style="position:absolute; top:5px; left: 50px; width: 90px; line-height: 1.2;">
@@ -56,12 +35,11 @@ const marker = {
              </div>
             </div>`
   },
-  //2196f3
+
 
   fPopup : (w={}, themeName) => {
-    //const { rainHour, rainValue } = getRain(w) ;
     const {
-      name='', sys, dt:msc, wind, weather,
+      id, name='', sys, dt:msc, wind, weather,
       main, visibility='no data'
     } = w
     , { country='' } = is.toObjLike(sys)
@@ -70,10 +48,17 @@ const marker = {
     , { deg=0, speed='no data' } = is.toObjLike(wind)
     , icon = is.toStr(weather, 'icon', 0, 'no-data');
 
-    return `<div class="marker__caption" onclick="weather.fnFetchForecast(${w.id})">
-               <div class="marker__caption__city">
-                 ${name}:${country}
-               </div>
+    let _captionCl=''
+      , _captionOnClick=''
+      , _captionCityDiv='';
+    if (typeof id === 'number' && id !== 0) {
+      _captionCl = 'marker__caption__not-empty'
+      _captionOnClick = `weather.fnFetchForecast(${id})`
+      _captionCityDiv = `<div class="marker__caption__city">${name}:${country}</div>`
+    }
+
+    return `<div class="marker__caption ${_captionCl}" onclick="${_captionOnClick}">
+               ${_captionCityDiv}
                <div class="marker__caption__date">
                  ${dt.toMonthDayTime(msc)}
                </div>

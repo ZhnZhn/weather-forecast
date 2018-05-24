@@ -4,6 +4,7 @@ import { sForecast } from '../selectors';
 
 import Api from '../../api/OpenWeather';
 import request from '../../affects/request';
+import modal from '../modal/actions'
 
 const {
   takeEvery,
@@ -21,7 +22,9 @@ const requestForecast = function* (action){
       yield put(forecast.requestedInCache(id))
     }
   } catch(err){
-    yield put(forecast.requestedFail(err.message))
+    yield put(modal.showModal('ERROR', {
+      errMsg: err.message
+    }))    
   }
 }
 

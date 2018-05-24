@@ -167,6 +167,7 @@ var WeatherSaga = (_temp = _class = function (_Component) {
     if (layout !== _this2.layout) {
       if (layout.isPushMenu !== _this2.isPushMenu) {
         if (_this2.isPushMenu) {
+
           _this2.mapEl.style.transform = 'translateX(0px)';
           _this2.mapEl.style.width = '100vw';
           _this2.menuEl.style.transform = 'translateX(-100%)';
@@ -184,6 +185,10 @@ var WeatherSaga = (_temp = _class = function (_Component) {
       }
       _this2.layout = layout;
     }
+  };
+
+  this._refMap = function (n) {
+    return _this2._mapComp = n;
   };
 }, _temp);
 exports.default = WeatherSaga;

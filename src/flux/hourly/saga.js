@@ -5,6 +5,7 @@ import { sForecast, sHourly } from '../selectors'
 
 import Api from '../../api/OpenWeather';
 import request from '../../affects/request';
+import modal from '../modal/actions'
 
 const {
   takeEvery,
@@ -23,7 +24,9 @@ const requestHourly = function* (action){
       yield put(hourly.requestedInCache(recent))
     }
   } catch(err) {
-    yield put(hourly.requestedFail(err.message))
+    yield put(modal.showModal('ERROR', {
+      errMsg: err.message
+    }))    
   }
 }
 

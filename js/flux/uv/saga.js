@@ -20,6 +20,10 @@ var _request = require('../../affects/request');
 
 var _request2 = _interopRequireDefault(_request);
 
+var _actions3 = require('../modal/actions');
+
+var _actions4 = _interopRequireDefault(_actions3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var takeEvery = _reduxSaga.effects.takeEvery,
@@ -73,7 +77,9 @@ var fetchUV = /*#__PURE__*/regeneratorRuntime.mark(function fetchUV(action) {
           _context.prev = 19;
           _context.t0 = _context['catch'](0);
           _context.next = 23;
-          return put(_actions2.default.requestedFail(_context.t0.message));
+          return put(_actions4.default.showModal('ERROR', {
+            errMsg: _context.t0.message
+          }));
 
         case 23:
         case 'end':

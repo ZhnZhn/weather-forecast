@@ -3,6 +3,7 @@ import * as forecast from './forecast/reducer';
 import * as hourly from './hourly/reducer';
 import * as uv from './uv/reducer';
 import * as settings from './settings/reducer';
+import * as modal from './modal/reducer';
 
 export const sPlace = {
   recent : (state) => place.recent(state.place),
@@ -28,4 +29,8 @@ export const sUV = {
 
 export const sSettings = {
   isApiKey : (state) => settings.isApiKey(state.settings)
+}
+
+export const sModal = {
+  errMsg: state => modal.errMsg(state.modal)
 }

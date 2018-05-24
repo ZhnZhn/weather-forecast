@@ -1,9 +1,11 @@
 import React from '../_react'
 
+const CL = "legend-cell";
+
 const S = {
-  CELL: {
-    paddingBottom: '4px',
-    cursor: 'pointer'
+  CELL: {    
+    paddingLeft: '4px',
+    paddingRight: '4px'
   }
 };
 
@@ -15,6 +17,7 @@ const LegendCell = ({
   title=''
 }) =>
 <div
+  className={CL}
   style={{...S.CELL, ...style}}
   onClick={onClick}
 >

@@ -16,6 +16,10 @@ var _actions = require('./actions');
 
 var _actions2 = _interopRequireDefault(_actions);
 
+var _actions3 = require('../modal/actions');
+
+var _actions4 = _interopRequireDefault(_actions3);
+
 var _request = require('../../affects/request');
 
 var _request2 = _interopRequireDefault(_request);
@@ -28,7 +32,7 @@ var takeEvery = _reduxSaga.effects.takeEvery,
 
 
 var requestPlace = /*#__PURE__*/regeneratorRuntime.mark(function requestPlace(action) {
-  var _action$payload, payload, lat, lot, forecast;
+  var _is, _action$payload, payload, lat, lot, forecast;
 
   return regeneratorRuntime.wrap(function requestPlace$(_context) {
     while (1) {
@@ -38,32 +42,49 @@ var requestPlace = /*#__PURE__*/regeneratorRuntime.mark(function requestPlace(ac
           return _context.delegateYield((0, _gen.isApiKey)(), 't0', 2);
 
         case 2:
+          _is = _context.t0;
+
+          if (!_is) {
+            _context.next = 13;
+            break;
+          }
+
           _action$payload = action.payload, payload = _action$payload === undefined ? {} : _action$payload;
           lat = payload.lat, lot = payload.lot;
-          _context.next = 6;
+          _context.next = 8;
           return call(_request2.default, _OpenWeather2.default.crForecast(lat, lot));
 
-        case 6:
+        case 8:
           forecast = _context.sent;
-          _context.next = 9;
+          _context.next = 11;
           return put(_actions2.default.requestedOk(forecast));
 
-        case 9:
+        case 11:
           _context.next = 15;
           break;
 
-        case 11:
-          _context.prev = 11;
-          _context.t1 = _context['catch'](0);
+        case 13:
           _context.next = 15;
-          return put(_actions2.default.requestedFail(_context.t1.message));
+          return put(_actions4.default.showModal('SETTINGS'));
 
         case 15:
+          _context.next = 21;
+          break;
+
+        case 17:
+          _context.prev = 17;
+          _context.t1 = _context['catch'](0);
+          _context.next = 21;
+          return put(_actions4.default.showModal('ERROR', {
+            errMsg: _context.t1.message
+          }));
+
+        case 21:
         case 'end':
           return _context.stop();
       }
     }
-  }, requestPlace, this, [[0, 11]]);
+  }, requestPlace, this, [[0, 17]]);
 });
 
 var watchPlaceRequested = /*#__PURE__*/regeneratorRuntime.mark(function watchPlaceRequested() {

@@ -12,6 +12,8 @@ var _actions3 = require('../hourly/actions');
 
 var _actions4 = require('../uv/actions');
 
+var _actions5 = require('../modal/actions');
+
 var _constants = require('./constants');
 
 var reducer = function reducer() {
@@ -19,6 +21,9 @@ var reducer = function reducer() {
   var action = arguments[1];
 
   switch (action.type) {
+    case _actions5.ACTION.MODAL_SHOW:
+      return action.id === 'ERROR' ? _constants.FETCH.FAILED : state;
+
     case _actions.ACTION.PLACE_REQUESTED:
     case _actions2.ACTION.FORECAST_REQUESTED:
     case _actions3.ACTION.HOURLY_REQUESTED:
@@ -33,12 +38,6 @@ var reducer = function reducer() {
     case _actions4.ACTION.UV_REQUESTED_OK:
     case _actions4.ACTION.UV_REQUESTED_INCACHE:
       return _constants.FETCH.SUCCESS;
-
-    case _actions.ACTION.PLACE_REQUESTED_FAIL:
-    case _actions2.ACTION.FORECAST_REQUESTED_FAIL:
-    case _actions3.ACTION.HOURLY_REQUESTED_FAIL:
-    case _actions4.ACTION.UV_REQUESTED_FAIL:
-      return _constants.FETCH.FAILED;
 
     default:
       return state;

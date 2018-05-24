@@ -5,6 +5,7 @@ import { sForecast, sUV } from '../selectors'
 
 import Api from '../../api/OpenWeather';
 import request from '../../affects/request';
+import modal from '../modal/actions'
 
 const { takeEvery, select, call, put } = effects;
 
@@ -21,7 +22,9 @@ const fetchUV = function* (action){
       yield put(aUV.requestedInCache())
     }
   } catch(err){
-    yield put(aUV.requestedFail(err.message))
+    yield put(modal.showModal('ERROR', {
+      errMsg: err.message
+    }))
   }
 }
 

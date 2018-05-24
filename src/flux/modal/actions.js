@@ -3,9 +3,10 @@ export const ACTION = {
   MODAL_SHOW : 'MODAL_SHOW'
 };
 
-export const showModal = (id) => ({
+export const showModal = (id, option ) => ({
   type: ACTION.MODAL_SHOW,
-  id
+  id,
+  ...option
 });
 
 const actions = { showModal };

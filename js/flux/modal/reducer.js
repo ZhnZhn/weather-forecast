@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.errMsg = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -18,11 +19,21 @@ var reducer = function reducer() {
 
   switch (action.type) {
     case _actions.ACTION.MODAL_SHOW:
-      state.id = action.id;
-      return _extends({}, state);
+      {
+        var id = action.id,
+            _errMsg = action.errMsg;
+
+        state.id = id;
+        state.errMsg = _errMsg;
+        return _extends({}, state);
+      }
     default:
       return state;
   }
+};
+
+var errMsg = exports.errMsg = function errMsg(state) {
+  return state.errMsg;
 };
 
 exports.default = reducer;

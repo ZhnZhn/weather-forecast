@@ -91,12 +91,13 @@ var ModalDialog = (_temp = _class = function (_Component) {
     _this._renderCommandButton = function () {
       var _this$props = _this.props,
           commandButtons = _this$props.commandButtons,
+          commandStyle = _this$props.commandStyle,
           withoutClose = _this$props.withoutClose,
           onClose = _this$props.onClose;
 
       return _react2.default.createElement(
         'div',
-        { style: STYLE.COMMAND_DIV },
+        { style: _extends({}, STYLE.COMMAND_DIV, commandStyle) },
         commandButtons,
         !withoutClose && _react2.default.createElement(_RaisedButton2.default, {
           isPrimary: true,

@@ -2,11 +2,17 @@ import { ACTION as P } from '../place/actions';
 import { ACTION as F } from '../forecast/actions';
 import { ACTION as H } from '../hourly/actions';
 import { ACTION as U } from '../uv/actions';
+import { ACTION as M } from '../modal/actions';
 
 import { FETCH } from './constants';
 
 const reducer = function(state='', action){
   switch(action.type){
+    case M.MODAL_SHOW :
+      return action.id === 'ERROR'
+        ? FETCH.FAILED
+        : state;
+
     case P.PLACE_REQUESTED :
     case F.FORECAST_REQUESTED :
     case H.HOURLY_REQUESTED :
@@ -21,12 +27,6 @@ const reducer = function(state='', action){
     case U.UV_REQUESTED_OK :
     case U.UV_REQUESTED_INCACHE :
       return FETCH.SUCCESS;
-
-    case P.PLACE_REQUESTED_FAIL :
-    case F.FORECAST_REQUESTED_FAIL :
-    case H.HOURLY_REQUESTED_FAIL :
-    case U.UV_REQUESTED_FAIL :
-      return FETCH.FAILED;
 
     default: return state;
   }

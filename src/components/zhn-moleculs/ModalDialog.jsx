@@ -101,9 +101,12 @@ class ModalDialog extends Component {
    }
 
   _renderCommandButton = () => {
-    const { commandButtons, withoutClose, onClose } = this.props;
+    const {
+            commandButtons, commandStyle,
+            withoutClose, onClose
+          } = this.props;
     return (
-      <div style={STYLE.COMMAND_DIV}>
+      <div style={{ ...STYLE.COMMAND_DIV, ...commandStyle }}>
         {commandButtons}
         { !withoutClose &&
             <RaisedButton

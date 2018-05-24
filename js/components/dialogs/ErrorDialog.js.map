@@ -1,0 +1,36 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/dialogs/ErrorDialog.js"
+ ],
+ "file": "../../../src/components/dialogs/ErrorDialog.js",
+ "names": [
+  "Component",
+  "S",
+  "MODAL",
+  "position",
+  "width",
+  "height",
+  "margin",
+  "MSG",
+  "lineHeight",
+  "padding",
+  "fontWeight",
+  "ErrorDialog",
+  "_isNextPropIsShowSame",
+  "nextProps",
+  "props",
+  "isShow",
+  "nextState",
+  "theme",
+  "store",
+  "onClose",
+  "TS",
+  "createStyle",
+  "_errMsg",
+  "errMsg",
+  "getState",
+  "R_DIALOG"
+ ],
+ "mappings": ";;;;;;;;;;AAAA;;;;AAGA;;;;AACA;;;;AAEA;;;;AAEA;;;;;;;;;AAPA;;IASQA,S,mBAAAA,S;;;AAER,IAAMC,IAAI;AACRC,SAAO;AACLC,cAAU,QADL;AAELC,WAAO,OAFF;AAGLC,YAAQ,OAHH;AAILC,YAAQ;AAJH,GADC;AAORC,OAAM;AACJF,YAAQ,OADJ;AAEJG,gBAAY,GAFR;AAGJC,aAAS,MAHL;AAIJC,gBAAY;AAJR;AAPE,CAAV;;IAeMC,W;;;;;;;;;;;;;;gMACJC,qB,GAAwB,UAACC,SAAD,EAAe;AACrC,aAAOA,cAAc,MAAKC,KAAnB,IACFD,UAAUE,MAAV,KAAqB,MAAKD,KAAL,CAAWC,MADrC;AAED,K;;;;;0CAEqBF,S,EAAWG,S,EAAU;AACzC,UAAK,KAAKJ,qBAAL,CAA2BC,SAA3B,CAAL,EAA6C;AAC3C,eAAO,KAAP;AACD;AACD,aAAO,IAAP;AACD;;;6BAEO;AAAA,mBAMI,KAAKC,KANT;AAAA,UAEEG,KAFF,UAEEA,KAFF;AAAA,UAGEF,MAHF,UAGEA,MAHF;AAAA,UAIEG,KAJF,UAIEA,KAJF;AAAA,UAKEC,OALF,UAKEA,OALF;AAAA,UAOAC,EAPA,GAOKH,MAAMI,WAAN,kBAPL;AAAA,UAQAC,OARA,GAQU,kBAAOC,MAAP,CAAcL,MAAMM,QAAN,EAAd,CARV;;AASN,aACE;AAAA;AAAA;AACG,8BAAYvB,EAAEC,KAAd,EAAwBkB,GAAGK,QAA3B,CADH;AAEG,mBAAQ,mBAFX;AAGG,kBAAQV,MAHX;AAIG,mBAASI;AAJZ;AAME;AAAA;AAAA,YAAK,OAAOlB,EAAEM,GAAd;AACGe;AADH;AANF,OADF;AAYD;;;;EAlCuBtB,S;;kBAqCX,yBAAUW,WAAV,C"
+}

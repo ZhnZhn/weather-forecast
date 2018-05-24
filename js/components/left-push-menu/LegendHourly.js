@@ -6,6 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //import React, { Component } from 'react';
+
+
 var _react = require('../_react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -24,26 +27,28 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //import React, { Component } from 'react';
-
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Component = _react2.default.Component;
 
 
+var CL = 'legend-cell';
+
 var L_S = {
   ROOT: {
     marginTop: '1rem'
-    //marginLeft : '1rem'
   },
   ITEM: {
     display: 'inline-block',
     marginRight: '1rem',
-    cursor: 'pointer'
+    paddingLeft: '4px',
+    paddingRight: '4px',
+    paddingBottom: '4px'
   }
 };
 
 var _fnLabelStyle = function _fnLabelStyle(is) {
-  return is ? L_S.LABEL : Object.assign({}, L_S.LABEL, _Label2.default.FILTERED);
+  return is ? L_S.LABEL : _extends({}, L_S.LABEL, _Label2.default.FILTERED);
 };
 
 var LegendHourly = function (_Component) {
@@ -71,7 +76,11 @@ var LegendHourly = function (_Component) {
         { style: L_S.ROOT },
         _react2.default.createElement(
           'span',
-          { style: L_S.ITEM, onClick: onFilter.bind(null, 'temp') },
+          {
+            className: CL,
+            style: L_S.ITEM,
+            onClick: onFilter.bind(null, 'temp')
+          },
           _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_NIGHT),
           _react2.default.createElement(
             'span',
@@ -81,7 +90,11 @@ var LegendHourly = function (_Component) {
         ),
         _react2.default.createElement(
           'span',
-          { style: L_S.ITEM, onClick: onFilter.bind(null, 'pressure') },
+          {
+            className: CL,
+            style: L_S.ITEM,
+            onClick: onFilter.bind(null, 'pressure')
+          },
           _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_PRESSURE),
           _react2.default.createElement(
             'span',
@@ -91,7 +104,11 @@ var LegendHourly = function (_Component) {
         ),
         _react2.default.createElement(
           'span',
-          { style: L_S.ITEM, onClick: onFilter.bind(null, 'rain') },
+          {
+            className: CL,
+            style: L_S.ITEM,
+            onClick: onFilter.bind(null, 'rain')
+          },
           _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_RAIN),
           _react2.default.createElement(
             'span',
@@ -101,7 +118,11 @@ var LegendHourly = function (_Component) {
         ),
         _react2.default.createElement(
           'span',
-          { style: L_S.ITEM, onClick: onFilter.bind(null, 'speed') },
+          {
+            className: CL,
+            style: L_S.ITEM,
+            onClick: onFilter.bind(null, 'speed')
+          },
           _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_SPEED),
           _react2.default.createElement(
             'span',

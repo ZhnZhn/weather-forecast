@@ -12,10 +12,12 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var CL = "legend-cell";
+
 var S = {
   CELL: {
-    paddingBottom: '4px',
-    cursor: 'pointer'
+    paddingLeft: '4px',
+    paddingRight: '4px'
   }
 };
 
@@ -29,6 +31,7 @@ var LegendCell = function LegendCell(_ref) {
   return _react2.default.createElement(
     'div',
     {
+      className: CL,
       style: _extends({}, S.CELL, style),
       onClick: onClick
     },

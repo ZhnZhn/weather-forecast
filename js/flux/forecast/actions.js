@@ -6,8 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 var ACTION = exports.ACTION = {
   FORECAST_REQUESTED: 'FORECAST_REQUESTED',
   FORECAST_REQUESTED_INCACHE: 'FORECAST_REQUESTED_INCACHE',
-  FORECAST_REQUESTED_OK: 'FORECAST_REQUESTED_OK',
-  FORECAST_REQUESTED_FAIL: 'FORECAST_REQUESTED_FAIL'
+  FORECAST_REQUESTED_OK: 'FORECAST_REQUESTED_OK'
 };
 
 var forecastRequested = exports.forecastRequested = function forecastRequested(id) {
@@ -25,17 +24,11 @@ var forecastRequestedOk = exports.forecastRequestedOk = function forecastRequest
     type: ACTION.FORECAST_REQUESTED_OK, forecast: forecast, id: id
   };
 };
-var forecastRequestedFail = exports.forecastRequestedFail = function forecastRequestedFail(message) {
-  return {
-    type: ACTION.FORECAST_REQUESTED_FAIL, message: message
-  };
-};
 
 var actions = {
   requested: forecastRequested,
   requestedInCache: forecastRequestedInCache,
-  requestedOk: forecastRequestedOk,
-  requestedFail: forecastRequestedFail
+  requestedOk: forecastRequestedOk
 };
 
 exports.default = actions;

@@ -2,6 +2,7 @@ import { effects } from 'redux-saga'
 import { isApiKey } from '../gen'
 import api from '../../api/OpenWeather'
 import place, { ACTION as A } from './actions'
+import modal from '../modal/actions'
 import request from '../../affects/request'
 
 const {
@@ -11,13 +12,19 @@ const {
 
 const requestPlace = function* (action){
   try {
-    yield* isApiKey()
-    const { payload={} } = action;
-    const { lat, lot } = payload;
-    const forecast = yield call(request, api.crForecast(lat, lot))
-    yield put(place.requestedOk(forecast))
-  } catch(e){
-    yield put(place.requestedFail(e.message))
+    const _is = yield* isApiKey()
+    if (_is) {
+      const { payload={} } = action;
+      const { lat, lot } = payload;
+      const forecast = yield call(request, api.crForecast(lat, lot))
+      yield put(place.requestedOk(forecast))
+    } else {
+      yield put(modal.showModal('SETTINGS'))
+    }
+  } catch(err){
+    yield put(modal.showModal('ERROR', {
+       errMsg: err.message
+    }))
   }
 }
 

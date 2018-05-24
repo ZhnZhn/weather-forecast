@@ -1,8 +1,7 @@
 
 export const ACTION = {
   PLACE_REQUESTED : 'PLACE_REQUESTED',
-  PLACE_REQUESTED_OK : 'PLACE_REQUESTED_OK',
-  PLACE_REQUESTED_FAIL : 'PLACE_REQUESTED_FAIL'
+  PLACE_REQUESTED_OK : 'PLACE_REQUESTED_OK'
 };
 
 export const placeRequested = (payload) => ({
@@ -11,14 +10,11 @@ export const placeRequested = (payload) => ({
 export const placeRequestedOk = (forecast) => ({
   type: ACTION.PLACE_REQUESTED_OK , forecast
 })
-export const placeRequestedFail = (message) => ({
-  type: ACTION.PLACE_REQUESTED_FAIL, message
-})
+
 
 const actions = {
   requested : placeRequested,
-  requestedOk : placeRequestedOk,
-  requestedFail : placeRequestedFail
+  requestedOk : placeRequestedOk
 };
 
 export default actions

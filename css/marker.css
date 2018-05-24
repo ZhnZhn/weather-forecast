@@ -63,9 +63,18 @@
   font-size: 14px; }
 
 .marker__caption {
-  cursor: pointer;
+  //cursor: pointer;
   width: 100%;
   border-bottom: 2px solid #795548;
+}
+.marker__caption__not-empty {
+ padding-left: 4px;
+ padding-right: 4px;
+ border-radius: 2px;
+ cursor: pointer;
+}
+.marker__caption__not-empty:hover {
+  background-color: #646464;
 }
 
 .marker__caption__city {

@@ -40,12 +40,14 @@ class LeafletMap extends Component{
   componentDidMount(){
     const { id, store } = this.props
     this.unsubsribe = store.subscribe(this._onStore);
+
     this.map = fnLeaflet.createMap(id, this._setLoaded);
     this.map.on('dblclick', throttle(
       this._handleClickMap, PERIOD_MS, {
         trailing: false
       }
     ))
+    
   }
   componentWillUnmount(){
     this.unsubsribe();
@@ -86,11 +88,12 @@ class LeafletMap extends Component{
       >
        {
          !isLoaded &&
-         <span>LeafletMap Loading...</span>         
+         <span>LeafletMap Loading...</span>
        }
       </div>
     );
   }
+
 }
 
 export default withTheme(LeafletMap)

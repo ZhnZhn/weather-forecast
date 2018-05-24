@@ -65,9 +65,11 @@ class WeatherSaga extends Component{
     if (layout !== this.layout){
       if (layout.isPushMenu !== this.isPushMenu){
          if (this.isPushMenu){
+
            this.mapEl.style.transform = 'translateX(0px)'
            this.mapEl.style.width = '100vw'
            this.menuEl.style.transform = `translateX(-100%)`
+
          } else {
            const width = this.menuEl.getBoundingClientRect().width
            this.mapEl.style.transform = `translateX(${width}px)`
@@ -86,6 +88,8 @@ class WeatherSaga extends Component{
   componentWillUnmount(){
     this.unsubscribe()
   }
+
+  _refMap = n => this._mapComp = n
 
   render(){
     const { store } = this.props;

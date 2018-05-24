@@ -18,6 +18,10 @@ var _WeatherSaga2 = _interopRequireDefault(_WeatherSaga);
 
 var _actions = require('./flux/forecast/actions');
 
+var _throttle = require('./utils/throttle');
+
+var _throttle2 = _interopRequireDefault(_throttle);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = _react2.default || window.React;
@@ -27,10 +31,17 @@ var render = ReactDOM.render;
 
 var store = (0, _configStore2.default)();
 
+var MS_PERIOD = 10000;
+
+var _forecastRequest = function _forecastRequest(id) {
+  return store.dispatch((0, _actions.forecastRequested)(id));
+};
+var _forecastRequestTh = (0, _throttle2.default)(_forecastRequest, MS_PERIOD, { trailing: false });
+
 window.weather = {
   fnFetchForecast: function fnFetchForecast(id) {
     if (typeof id === 'number' && id !== 0) {
-      store.dispatch((0, _actions.forecastRequested)(id));
+      _forecastRequestTh(id);
     }
   }
 };

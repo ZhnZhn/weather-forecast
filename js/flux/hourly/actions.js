@@ -6,8 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 var ACTION = exports.ACTION = {
   HOURLY_REQUESTED: 'HOURLY_REQUESTED',
   HOURLY_REQUESTED_OK: 'HOURLY_REQUESTED_OK',
-  HOURLY_REQUESTED_INCACHE: 'HOURLY_REQUESTED_INCACHE',
-  HOURLY_REQUESTED_FAIL: 'HOURLY_REQUESTED_FAIL'
+  HOURLY_REQUESTED_INCACHE: 'HOURLY_REQUESTED_INCACHE'
 };
 
 var hourlyRequested = exports.hourlyRequested = function hourlyRequested() {
@@ -25,17 +24,11 @@ var hourlyRequestedInCache = exports.hourlyRequestedInCache = function hourlyReq
     type: ACTION.HOURLY_REQUESTED_INCACHE
   };
 };
-var hourlyRequestedFail = exports.hourlyRequestedFail = function hourlyRequestedFail(msg) {
-  return {
-    type: ACTION.HOURLY_REQUESTED_FAIL, msg: msg
-  };
-};
 
 var actions = {
   requested: hourlyRequested,
   requestedOk: hourlyRequestedOk,
-  requestedInCache: hourlyRequestedInCache,
-  requestedFail: hourlyRequestedFail
+  requestedInCache: hourlyRequestedInCache
 };
 
 exports.default = actions;
