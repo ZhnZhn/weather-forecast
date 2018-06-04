@@ -66,9 +66,14 @@ const roundProp = (obj={}, prop) => {
   return Math.round(obj[prop])
 }
 
+const _isNumber = (n) => typeof n === 'number';
+
 const DayItem = (props) => {
   const { style, item={}, onClick } = props
   , { weather, deg, speed, temp, dt:timestamp } = item
+  , _speed = _isNumber(speed)
+       ? speed.toFixed(2)
+       : ''
   , day = dt.toShortDayOfWeek(timestamp)
   , pressure = roundProp(item, 'pressure')
   , icon = weather[0].icon
@@ -77,16 +82,17 @@ const DayItem = (props) => {
 
   return (
     <div
-       style={Object.assign({}, STYLE.ROOT_DIV, style)}
+       style={{ ...STYLE.ROOT_DIV, ...style }}
        onClick={onClick.bind(null, item)}
-       //onClick={ (el, evn) => onClick(el, item, evn) }
      >
       <div style={STYLE.DAY}>{day}</div>
       <span style={STYLE.PRESSURE}>{pressure}</span>
       <img src={`./img/${icon}.png`} style={STYLE.ICON} />
       <div style={STYLE.CELL_WIND}>
         <IconVane deg={deg} />
-        <span style={STYLE.WIND_SPEED}>{speed}</span>
+        <span style={STYLE.WIND_SPEED}>
+          {_speed}
+        </span>
       </div>
       <div style={STYLE.CELL_TEMP}>
         <span style={STYLE.TEMP_DAY}>{tempDay}</span>

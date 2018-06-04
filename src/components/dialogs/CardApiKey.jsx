@@ -6,6 +6,8 @@ import RaisedButton from '../zhn-atoms/RaisedButton'
 
 const { Component } = React
 
+const CAPTION_ALLOW = "Allow Remember Enter of API Key by Browser Password Manager";
+
 const S  = {
   ROOT: {
     position: 'relative',
@@ -65,7 +67,7 @@ class CardApiKey extends Component {
         <RowCheckBox
           rootStyle={S.CHECK_BOX}
           initValue={false}
-          caption="Let Remember Enter of API Key by Browser Password Manager"
+          caption={CAPTION_ALLOW}
           captionStyle={S.CHECK_CAPTION}
           onCheck={this._checkAllow}
           onUnCheck={this._uncheckAllow}

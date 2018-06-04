@@ -4,6 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //import React from 'react';
+
+
 var _react = require('../_react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -73,14 +76,17 @@ var STYLE = {
     fontSize: '20px',
     fontWeight: 'bold'
   }
-}; //import React from 'react';
-
+};
 
 var roundProp = function roundProp() {
   var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var prop = arguments[1];
 
   return Math.round(obj[prop]);
+};
+
+var _isNumber = function _isNumber(n) {
+  return typeof n === 'number';
 };
 
 var DayItem = function DayItem(props) {
@@ -93,6 +99,7 @@ var DayItem = function DayItem(props) {
       speed = item.speed,
       temp = item.temp,
       timestamp = item.dt,
+      _speed = _isNumber(speed) ? speed.toFixed(2) : '',
       day = _dt2.default.toShortDayOfWeek(timestamp),
       pressure = roundProp(item, 'pressure'),
       icon = weather[0].icon,
@@ -102,9 +109,8 @@ var DayItem = function DayItem(props) {
   return _react2.default.createElement(
     'div',
     {
-      style: Object.assign({}, STYLE.ROOT_DIV, style),
+      style: _extends({}, STYLE.ROOT_DIV, style),
       onClick: onClick.bind(null, item)
-      //onClick={ (el, evn) => onClick(el, item, evn) }
     },
     _react2.default.createElement(
       'div',
@@ -124,7 +130,7 @@ var DayItem = function DayItem(props) {
       _react2.default.createElement(
         'span',
         { style: STYLE.WIND_SPEED },
-        speed
+        _speed
       )
     ),
     _react2.default.createElement(

@@ -16,7 +16,7 @@ const { Component } = React;
 const S = {
   MODAL: {
     position: 'static',
-    width: '335px',
+    width: '342px',
     height: '285px',
     margin: '70px auto 0px'
   },

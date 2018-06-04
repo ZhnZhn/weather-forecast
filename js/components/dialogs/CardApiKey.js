@@ -33,6 +33,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Component = _react2.default.Component;
 
 
+var CAPTION_ALLOW = "Allow Remember Enter of API Key by Browser Password Manager";
+
 var S = {
   ROOT: {
     position: 'relative',
@@ -106,7 +108,7 @@ var CardApiKey = function (_Component) {
         _react2.default.createElement(_RowCheckBox2.default, {
           rootStyle: S.CHECK_BOX,
           initValue: false,
-          caption: 'Let Remember Enter of API Key by Browser Password Manager',
+          caption: CAPTION_ALLOW,
           captionStyle: S.CHECK_CAPTION,
           onCheck: this._checkAllow,
           onUnCheck: this._uncheckAllow

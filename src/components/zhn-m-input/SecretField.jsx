@@ -121,13 +121,15 @@ class TextField extends Component {
         , _lineStyle = (isPassTest)
             ? undefined
             : S.LINE_ERROR
+        , _name = `${name}[password]`
         , _inputProps = isAllowRemember
              ? {
                  autoComplete: "current-password",
-                 name: name,
+                 name: _name
                }
              : {
                  autoComplete: "off",
+                 name: _name,
                  value: value,
                  defaultValue: value,
                  onChange: this._handleInputChange,
@@ -147,6 +149,11 @@ class TextField extends Component {
         </label>
         <div className={CL.DIV}>
           <input
+            hidden={true}
+            name={_name}
+            value={name}
+          />
+          <input
             ref = {this._refInput}
             type="password"
             className={CL.INPUT}
@@ -156,11 +163,15 @@ class TextField extends Component {
             translate={false}
             maxLength={maxLength}
             onFocus={this._handleFocusInput}
-            onBlur={this._handleBlurInput}            
+            onBlur={this._handleBlurInput}
             {..._inputProps}
           />
           <div className={CL.INPUT_LINE} style={_lineStyle} />
-          { _lineStyle && <div className={CL.INPUT_MSG_ERR}>{errorMsg}</div>}
+          {
+             _lineStyle && <div className={CL.INPUT_MSG_ERR}>
+                 {errorMsg}
+               </div>
+          }
         </div>
       </div>
     );

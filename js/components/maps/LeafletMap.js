@@ -102,7 +102,6 @@ var LeafletMap = function (_Component) {
           store = _props.store;
 
       this.unsubsribe = store.subscribe(this._onStore);
-
       this.map = _fnLeaflet2.default.createMap(id, this._setLoaded);
       this.map.on('dblclick', (0, _throttle2.default)(this._handleClickMap, PERIOD_MS, {
         trailing: false

@@ -156,11 +156,13 @@ var TextField = (_temp = _class = function (_Component) {
           _labelStyle = this._isValue(isAllowRemember) || this.isFocus ? undefined : S.LABEL_TO_INPUT,
           _labelErrStyle = isPassTest ? undefined : S.LABEL_ON_ERROR,
           _lineStyle = isPassTest ? undefined : S.LINE_ERROR,
+          _name = name + '[password]',
           _inputProps = isAllowRemember ? {
         autoComplete: "current-password",
-        name: name
+        name: _name
       } : {
         autoComplete: "off",
+        name: _name,
         value: value,
         defaultValue: value,
         onChange: this._handleInputChange,
@@ -184,6 +186,11 @@ var TextField = (_temp = _class = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: CL.DIV },
+          _react2.default.createElement('input', {
+            hidden: true,
+            name: _name,
+            value: name
+          }),
           _react2.default.createElement('input', _extends({
             ref: this._refInput,
             type: 'password',
