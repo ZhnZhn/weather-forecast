@@ -45,7 +45,7 @@ class LeafletMap extends Component{
       this._handleClickMap, PERIOD_MS, {
         trailing: false
       }
-    ))    
+    ))
   }
   componentWillUnmount(){
     this.unsubsribe();
@@ -55,7 +55,7 @@ class LeafletMap extends Component{
     this.setState({ isLoaded: true })
   }
 
-  _handleClickMap = (e) => {
+  _handleClickMap = (e) => {    
     const { store } = this.props;
     const { lat, lng } = e.latlng;
     store.dispatch(placeRequested({ lat, lot:lng }))
@@ -65,14 +65,14 @@ class LeafletMap extends Component{
    const { store, theme } = this.props
        , state = store.getState()
        , recent = sPlace.recent(state);
-   if ( (recent && recent !== this.recent)
-        || recent === 0 ){
+
+   if ( recent || recent === 0 ){
      fnLeaflet.addMarker(
         sPlace.byId(state, recent),
         theme.themeName,
         this.map
      );
-     this.recent = recent;
+     //this.recent = recent;
    }
  }
 

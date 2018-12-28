@@ -9,7 +9,7 @@ module.exports = {
      lib: [
             "react", "react-dom", 
             "redux", "redux-saga",
-            "interact.js", "recharts",
+            "interactjs", "recharts",
             "regenerator-runtime/runtime",  
             "babel-runtime/helpers/classCallCheck",
             "babel-runtime/helpers/createClass",

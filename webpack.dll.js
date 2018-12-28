@@ -10,7 +10,7 @@ module.exports = {
             //"react", "react-dom", 
             //"prop-types",
             "redux", "redux-saga",
-            "interact.js",
+            "interactjs",
             //"recharts",
 
             /*

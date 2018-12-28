@@ -81,9 +81,9 @@ var LeafletMap = function (_Component) {
           state = store.getState(),
           recent = _selectors.sPlace.recent(state);
 
-      if (recent && recent !== _this.recent || recent === 0) {
+      if (recent || recent === 0) {
         _fnLeaflet2.default.addMarker(_selectors.sPlace.byId(state, recent), theme.themeName, _this.map);
-        _this.recent = recent;
+        //this.recent = recent;
       }
     };
 

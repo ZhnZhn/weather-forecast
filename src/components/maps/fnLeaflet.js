@@ -37,7 +37,7 @@ const fnLeaflet = {
     return map;
   },
 
-  addMarker : (w={}, themeName, map) => {
+  addMarker : (w={}, themeName, map) => {    
     const icon = L.divIcon({ html: marker.fDivIcon(w)});
     const { coord={} } = w;
     const { lat, lon } = coord;
