@@ -1,8 +1,8 @@
-# [Weather Forecast](https://zhnzhn.github.io/weather-forecast)
+# [Weather Forecast](https://zhnzhn.github.io/weather-forecast/)
 **Weather Forecast** is RESTFul client for viewing weather forecast.  
-Weather forecast data provider: [OpenWeatherMap](https://openweathermap.org/).  
+Weather forecast data provider: [OpenWeatherMap](https://openweathermap.org).  
 Provider's API Key is required for using app.  
-Webapp has three UI theme: Grey, Sand and White.
+Web app has three UI theme: Grey, Sand and White.
 
 ![alt text](screencast/weather-forecast.png?raw=true "Weather Forecast")
 

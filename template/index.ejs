@@ -7,30 +7,31 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="
       script-src 'self' 'unsafe-inline'
-      https://unpkg.com/react@16.7.0/umd/react.production.min.js
-      https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js
+      https://unpkg.com/react@16.12.0/umd/react.production.min.js
+      https://unpkg.com/react-dom@16.12.0/umd/react-dom.production.min.js
       https://unpkg.com/leaflet@1.3.4/dist/leaflet.js
-      https://unpkg.com/prop-types@15.6.2/prop-types.min.js            
+      https://unpkg.com/prop-types@15.7.2/prop-types.min.js      
       https://unpkg.com/recharts@1.0.1/umd/Recharts.min.js;      
       style-src 'self' 'unsafe-inline';
       img-src 'self' data: https://*.tile.openstreetmap.org"
   >
-  <meta name="description" content="Webapp Weather Forecast. See current and forecast for weather at any point on Earth according to OpenWeatherMap data provider on an map. Personal user API key from data provider is required.">
-  <meta name="application-name" content="Webapp Weather Forecast">
-  <meta name="summary" content="Webapp Weather Forecast">
-  <meta name="url" content="https://zhnzhn.github.io/weather-forecast">
+  <meta name="description" content="Web app Weather Forecast. See current and forecast for weather at any point on Earth according to OpenWeatherMap data provider on an map. Personal user API key from data provider is required.">
+  <meta name="application-name" content="Web app Weather Forecast">
+  <meta name="summary" content="Web app Weather Forecast">
+  <meta name="url" content="https://zhnzhn.github.io/weather-forecast/">
 
   <title>Weather Forecast v0.2.0</title>
   <script type="application/ld+json">{
       "@context": "http://schema.org",
-      "@type": "Map",
-      "name": "weather forecast",
-      "description": "Webapp Weather Forecast. See current and forecast for weather at any point on Earth according to OpenWeatherMap data provider on an map. Personal user API key from data provider is required.",
+      "@type": "WebApplication",
+      "name": "Weather Forecast",
+      "softwareVersion": "0.2.0",            
+      "description": "Web app Weather Forecast. See current and forecast for weather at any point on Earth according to OpenWeatherMap data provider on an map. Personal user API key from data provider is required.",
       "author": {
         "@type": "Person",
         "name": "Yevhenii Molodyi"
       },
-      "url": "https://zhnzhn.github.io/weather-forecast",
+      "url": "https://zhnzhn.github.io/weather-forecast/",
       "image": "https://github.com/ZhnZhn/weather-forecast/raw/master/screencast/weather-forecast.png?raw=true"
     }</script>
 
@@ -89,21 +90,21 @@
         <div class="noscript__msg">
           <p>It seems JavaScript in your browser disabled or not supported.</p>
           <br/>
-          <p>To use <a class="noscript__link" href=".">Webapp Weather Forecast</a>, please, enable JavaScript in the browser and reload the page.</p>
+          <p>To use <a class="noscript__link" href=".">Web app Weather Forecast</a>, please, enable JavaScript in the browser and reload the page.</p>
         </div>
       </div>
    </noscript>
-   <!--googleon: snippet-->
-   <script src="https://unpkg.com/react@16.7.0/umd/react.production.min.js" 
-     integrity="sha384-bDWFfmoLfqL0ZuPgUiUz3ekiv8NyiuJrrk1wGblri8Nut8UVD6mj7vXhjnenE9vy" crossorigin="anonymous"></script>   
-   <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js" 
-     integrity="sha384-mcyjbblFFAXUUcVbGLbJZR86Xd7La0uD1S7/Snd1tW0N+zhy97geTqVYDQ92c8tI" crossorigin="anonymous"></script>   
+   <!--googleon: snippet-->   
+   <script src="https://unpkg.com/react@16.12.0/umd/react.production.min.js" 
+     integrity="sha384-3LaF+GDeugL4KEmnsbb+HuxO42PMnX+W5VYrAF98SHC8Wq47T6D7WpBckxQuazOA" crossorigin="anonymous"></script>   
+   <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.production.min.js" 
+     integrity="sha384-04YC4/4bnGBjX66zkPM2372a4vmHIXVxQwIjLC/NWcMnEAcfYLASjt3cizYDmWBJ" crossorigin="anonymous"></script>   
    <script defer src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" 
       integrity="sha384-/I247jMyT/djAL4ijcbNXfX+PA8OZmkwzUr6Gotpgjz1Rxti1ZECG9Ne0Dj1pXrx" crossorigin="anonymous"></script>   
-   <script src="https://unpkg.com/prop-types@15.6.2/prop-types.min.js" 
-      integrity="sha384-9Fq52URRAaPlKGhu0AzshypUBBQa7Q8Rz1ze2svcZNUHGb/PlxTygZmtyYeqEHOK" crossorigin="anonymous"></script>      
+   <script src="https://unpkg.com/prop-types@15.7.2/prop-types.min.js" 
+      integrity="sha384-LYxFDCinsAkMityIwlndisTOMBM5FXNysu758VzqiuCRZmCw7aDRDVn9HlHPi80A" crossorigin="anonymous"></script>   
    <script src="https://unpkg.com/recharts@1.0.1/umd/Recharts.min.js" 
-     integrity="sha384-z4GIqM7EXkr3ZR/RzFQdJXBeI1yKEoxMgGMZ4x+jt+dkwMqF6xHiFQgc/HsK8xZg" crossorigin="anonymous"></script>         
+     integrity="sha384-z4GIqM7EXkr3ZR/RzFQdJXBeI1yKEoxMgGMZ4x+jt+dkwMqF6xHiFQgc/HsK8xZg" crossorigin="anonymous"></script>      
   <!--lib-->
   <%
  for (var index in htmlWebpackPlugin.files.js ) {
