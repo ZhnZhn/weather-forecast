@@ -1,60 +1,32 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _class, _temp, _initialiseProps;
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _react = _interopRequireDefault(require("./_react"));
+
+var _ThemeContext = _interopRequireDefault(require("./hoc/ThemeContext"));
+
+var _theme = _interopRequireDefault(require("./styles/theme"));
+
+var _ModalDialogContainer = _interopRequireDefault(require("./containers/ModalDialogContainer"));
+
+var _Header = _interopRequireDefault(require("./header/Header"));
+
+var _LeftPushMenu = _interopRequireDefault(require("./left-push-menu/LeftPushMenu"));
+
+var _LeafletMap = _interopRequireDefault(require("./maps/LeafletMap"));
+
+var _Forecast = _interopRequireDefault(require("./popups/Forecast"));
+
 //import PropTypes from 'prop-types';
-
-var _react = require('./_react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _ThemeContext = require('./hoc/ThemeContext');
-
-var _ThemeContext2 = _interopRequireDefault(_ThemeContext);
-
-var _theme = require('./styles/theme');
-
-var _theme2 = _interopRequireDefault(_theme);
-
-var _ModalDialogContainer = require('./containers/ModalDialogContainer');
-
-var _ModalDialogContainer2 = _interopRequireDefault(_ModalDialogContainer);
-
-var _Header = require('./header/Header');
-
-var _Header2 = _interopRequireDefault(_Header);
-
-var _LeftPushMenu = require('./left-push-menu/LeftPushMenu');
-
-var _LeftPushMenu2 = _interopRequireDefault(_LeftPushMenu);
-
-var _LeafletMap = require('./maps/LeafletMap');
-
-var _LeafletMap2 = _interopRequireDefault(_LeafletMap);
-
-var _Forecast = require('./popups/Forecast');
-
-var _Forecast2 = _interopRequireDefault(_Forecast);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Component = _react2.default.Component;
-
-
+var Component = _react["default"].Component;
 var MAP_ID = 'map_id';
 var PUSH_MENU_ID = 'left_push_menu';
-
 var S = {
   HEADER: {
     width: '100%',
@@ -80,116 +52,100 @@ var S = {
   }
 };
 
-var WeatherSaga = (_temp = _class = function (_Component) {
-  _inherits(WeatherSaga, _Component);
+var WeatherSaga =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2["default"])(WeatherSaga, _Component);
 
   /*
   static propTypes = {
     store: PropTypes.object
   }
   */
-
   function WeatherSaga(props) {
-    _classCallCheck(this, WeatherSaga);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, (WeatherSaga.__proto__ || Object.getPrototypeOf(WeatherSaga)).call(this, props));
+    _this = _Component.call(this, props) || this;
 
-    _initialiseProps.call(_this);
+    _this._onStore = function () {
+      var store = _this.props.store,
+          layout = store.getState().layout;
 
-    var layout = props.store.getState().layout;
-    _this.layout = layout;
-    _this.isPushMenu = layout.isPushMenu;
-    _this.themeName = layout.themeName;
+      if (layout !== _this.layout) {
+        if (layout.isPushMenu !== _this.isPushMenu) {
+          if (_this.isPushMenu) {
+            _this.mapEl.style.transform = 'translateX(0px)';
+            _this.mapEl.style.width = '100vw';
+            _this.menuEl.style.transform = "translateX(-100%)";
+          } else {
+            var width = _this.menuEl.getBoundingClientRect().width;
+
+            _this.mapEl.style.transform = "translateX(" + width + "px)";
+            _this.mapEl.style.width = "calc(100vw - " + width + "px)";
+            _this.menuEl.style.transform = 'translateX(0px)';
+          }
+
+          _this.isPushMenu = layout.isPushMenu;
+        } else if (layout.themeName !== _this.themeName) {
+          //console.log('WeatherSaga forceUpdate')
+          _this.forceUpdate();
+
+          _this.themeName = layout.themeName;
+        }
+
+        _this.layout = layout;
+      }
+    };
+
+    _this._refMap = function (n) {
+      return _this._mapComp = n;
+    };
+
+    var _layout = props.store.getState().layout;
+    _this.layout = _layout;
+    _this.isPushMenu = _layout.isPushMenu;
+    _this.themeName = _layout.themeName;
     return _this;
   }
 
-  _createClass(WeatherSaga, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.unsubsribe = this.props.store.subscribe(this._onStore);
-      this.mapEl = document.getElementById(MAP_ID);
-      this.menuEl = document.getElementById(PUSH_MENU_ID);
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.unsubscribe();
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var store = this.props.store;
+  var _proto = WeatherSaga.prototype;
 
-      return _react2.default.createElement(
-        _ThemeContext2.default.Provider,
-        { value: _theme2.default },
-        _react2.default.createElement(
-          'div',
-          null,
-          _react2.default.createElement(_ModalDialogContainer2.default, {
-            store: store
-          }),
-          _react2.default.createElement(_Header2.default, {
-            rootStyle: S.HEADER,
-            store: store
-          }),
-          _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(_LeftPushMenu2.default, {
-              id: PUSH_MENU_ID,
-              store: store
-            }),
-            _react2.default.createElement(_LeafletMap2.default, {
-              id: MAP_ID,
-              rootStyle: S.MAP,
-              store: store
-            }),
-            _react2.default.createElement(_Forecast2.default, {
-              rootStyle: S.FLY_ROOT_DIV,
-              isShow: true,
-              store: store
-            })
-          )
-        )
-      );
-    }
-  }]);
+  _proto.componentDidMount = function componentDidMount() {
+    this.unsubsribe = this.props.store.subscribe(this._onStore);
+    this.mapEl = document.getElementById(MAP_ID);
+    this.menuEl = document.getElementById(PUSH_MENU_ID);
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.unsubscribe();
+  };
+
+  _proto.render = function render() {
+    var store = this.props.store;
+    return _react["default"].createElement(_ThemeContext["default"].Provider, {
+      value: _theme["default"]
+    }, _react["default"].createElement("div", null, _react["default"].createElement(_ModalDialogContainer["default"], {
+      store: store
+    }), _react["default"].createElement(_Header["default"], {
+      rootStyle: S.HEADER,
+      store: store
+    }), _react["default"].createElement("div", null, _react["default"].createElement(_LeftPushMenu["default"], {
+      id: PUSH_MENU_ID,
+      store: store
+    }), _react["default"].createElement(_LeafletMap["default"], {
+      id: MAP_ID,
+      rootStyle: S.MAP,
+      store: store
+    }), _react["default"].createElement(_Forecast["default"], {
+      rootStyle: S.FLY_ROOT_DIV,
+      isShow: true,
+      store: store
+    }))));
+  };
 
   return WeatherSaga;
-}(Component), _initialiseProps = function _initialiseProps() {
-  var _this2 = this;
+}(Component);
 
-  this._onStore = function () {
-    var store = _this2.props.store,
-        layout = store.getState().layout;
-
-    if (layout !== _this2.layout) {
-      if (layout.isPushMenu !== _this2.isPushMenu) {
-        if (_this2.isPushMenu) {
-
-          _this2.mapEl.style.transform = 'translateX(0px)';
-          _this2.mapEl.style.width = '100vw';
-          _this2.menuEl.style.transform = 'translateX(-100%)';
-        } else {
-          var width = _this2.menuEl.getBoundingClientRect().width;
-          _this2.mapEl.style.transform = 'translateX(' + width + 'px)';
-          _this2.mapEl.style.width = 'calc(100vw - ' + width + 'px)';
-          _this2.menuEl.style.transform = 'translateX(0px)';
-        }
-        _this2.isPushMenu = layout.isPushMenu;
-      } else if (layout.themeName !== _this2.themeName) {
-        //console.log('WeatherSaga forceUpdate')
-        _this2.forceUpdate();
-        _this2.themeName = layout.themeName;
-      }
-      _this2.layout = layout;
-    }
-  };
-
-  this._refMap = function (n) {
-    return _this2._mapComp = n;
-  };
-}, _temp);
-exports.default = WeatherSaga;
+var _default = WeatherSaga;
+exports["default"] = _default;
 //# sourceMappingURL=WeatherSaga.js.map

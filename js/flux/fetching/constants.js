@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var FETCH = exports.FETCH = {
+exports.__esModule = true;
+exports.FETCH = void 0;
+var FETCH = {
   LOADING: 'LOADING',
   SUCCESS: 'SUCCESS',
   FAILED: 'FAILED'
 };
+exports.FETCH = FETCH;
 //# sourceMappingURL=constants.js.map

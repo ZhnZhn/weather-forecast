@@ -1,17 +1,1 @@
-{
- "version": 3,
- "sources": [
-  "../../../src/flux/modal/actions.js"
- ],
- "file": "../../../src/flux/modal/actions.js",
- "names": [
-  "ACTION",
-  "MODAL_SHOW",
-  "showModal",
-  "id",
-  "option",
-  "type",
-  "actions"
- ],
- "mappings": ";;;;;;;;AACO,IAAMA,0BAAS;AACpBC,cAAa;AADO,CAAf;;AAIA,IAAMC,gCAAY,SAAZA,SAAY,CAACC,EAAD,EAAKC,MAAL;AAAA;AACvBC,UAAML,OAAOC,UADU;AAEvBE;AAFuB,KAGpBC,MAHoB;AAAA,CAAlB;;AAMP,IAAME,UAAU,EAAEJ,oBAAF,EAAhB;;kBAEeI,O"
-}
+{"version":3,"sources":["../../../src/flux/modal/actions.js"],"names":["ACTION","MODAL_SHOW","showModal","id","option","type","actions"],"mappings":";;;;;;;;;AACO,IAAMA,MAAM,GAAG;AACpBC,EAAAA,UAAU,EAAG;AADO,CAAf;;;AAIA,IAAMC,SAAS,GAAG,SAAZA,SAAY,CAACC,EAAD,EAAKC,MAAL;AAAA;AACvBC,IAAAA,IAAI,EAAEL,MAAM,CAACC,UADU;AAEvBE,IAAAA,EAAE,EAAFA;AAFuB,KAGpBC,MAHoB;AAAA,CAAlB;;;AAMP,IAAME,OAAO,GAAG;AAAEJ,EAAAA,SAAS,EAATA;AAAF,CAAhB;eAEeI,O","sourcesContent":["\r\nexport const ACTION = {\r\n  MODAL_SHOW : 'MODAL_SHOW'\r\n};\r\n\r\nexport const showModal = (id, option ) => ({\r\n  type: ACTION.MODAL_SHOW,\r\n  id,\r\n  ...option\r\n});\r\n\r\nconst actions = { showModal };\r\n\r\nexport default actions\r\n"],"file":"actions.js"}

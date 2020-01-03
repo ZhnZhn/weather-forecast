@@ -1,40 +1,22 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _react = require('../_react');
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-var _react2 = _interopRequireDefault(_react);
+var _react = _interopRequireDefault(require("../_react"));
 
-var _SecretField = require('../zhn-m-input/SecretField');
+var _SecretField = _interopRequireDefault(require("../zhn-m-input/SecretField"));
 
-var _SecretField2 = _interopRequireDefault(_SecretField);
+var _RowCheckBox = _interopRequireDefault(require("./RowCheckBox"));
 
-var _RowCheckBox = require('./RowCheckBox');
+var _RaisedButton = _interopRequireDefault(require("../zhn-atoms/RaisedButton"));
 
-var _RowCheckBox2 = _interopRequireDefault(_RowCheckBox);
-
-var _RaisedButton = require('../zhn-atoms/RaisedButton');
-
-var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Component = _react2.default.Component;
-
-
+var Component = _react["default"].Component;
 var CAPTION_ALLOW = "Allow Remember Enter of API Key by Browser Password Manager";
-
 var S = {
   ROOT: {
     position: 'relative',
@@ -59,20 +41,26 @@ var S = {
   }
 };
 
-var CardApiKey = function (_Component) {
-  _inherits(CardApiKey, _Component);
+var CardApiKey =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2["default"])(CardApiKey, _Component);
 
   function CardApiKey(props) {
-    _classCallCheck(this, CardApiKey);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, (CardApiKey.__proto__ || Object.getPrototypeOf(CardApiKey)).call(this, props));
+    _this = _Component.call(this, props) || this;
 
     _this._checkAllow = function () {
-      _this.setState({ isAllow: true });
+      _this.setState({
+        isAllow: true
+      });
     };
 
     _this._uncheckAllow = function () {
-      _this.setState({ isAllow: false });
+      _this.setState({
+        isAllow: false
+      });
     };
 
     _this._refInput = function (c) {
@@ -85,58 +73,49 @@ var CardApiKey = function (_Component) {
     return _this;
   }
 
-  _createClass(CardApiKey, [{
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          style = _props.style,
-          buttonsStyle = _props.buttonsStyle,
-          onClose = _props.onClose,
-          onSet = _props.onSet;
-      var isAllow = this.state.isAllow;
+  var _proto = CardApiKey.prototype;
 
-      return _react2.default.createElement(
-        'div',
-        { style: style },
-        _react2.default.createElement(_SecretField2.default, {
-          ref: this._refInput,
-          rootStyle: S.SECRET,
-          caption: 'OpenWeatherMap API Key',
-          isAllowRemember: isAllow,
-          name: 'openweathermap'
-        }),
-        _react2.default.createElement(_RowCheckBox2.default, {
-          rootStyle: S.CHECK_BOX,
-          initValue: false,
-          caption: CAPTION_ALLOW,
-          captionStyle: S.CHECK_CAPTION,
-          onCheck: this._checkAllow,
-          onUnCheck: this._uncheckAllow
-        }),
-        _react2.default.createElement(
-          'div',
-          { style: buttonsStyle },
-          _react2.default.createElement(_RaisedButton2.default, {
-            caption: 'Set & Close',
-            onClick: onSet
-          }),
-          _react2.default.createElement(_RaisedButton2.default, {
-            isPrimary: true,
-            caption: 'Close',
-            onClick: onClose
-          })
-        )
-      );
-    }
-  }, {
-    key: 'getValue',
-    value: function getValue() {
-      return this._input.getValue();
-    }
-  }]);
+  _proto.render = function render() {
+    var _this$props = this.props,
+        style = _this$props.style,
+        buttonsStyle = _this$props.buttonsStyle,
+        onClose = _this$props.onClose,
+        onSet = _this$props.onSet;
+    var isAllow = this.state.isAllow;
+    return _react["default"].createElement("div", {
+      style: style
+    }, _react["default"].createElement(_SecretField["default"], {
+      ref: this._refInput,
+      rootStyle: S.SECRET,
+      caption: "OpenWeatherMap API Key",
+      isAllowRemember: isAllow,
+      name: "openweathermap"
+    }), _react["default"].createElement(_RowCheckBox["default"], {
+      rootStyle: S.CHECK_BOX,
+      initValue: false,
+      caption: CAPTION_ALLOW,
+      captionStyle: S.CHECK_CAPTION,
+      onCheck: this._checkAllow,
+      onUnCheck: this._uncheckAllow
+    }), _react["default"].createElement("div", {
+      style: buttonsStyle
+    }, _react["default"].createElement(_RaisedButton["default"], {
+      caption: "Set & Close",
+      onClick: onSet
+    }), _react["default"].createElement(_RaisedButton["default"], {
+      isPrimary: true,
+      caption: "Close",
+      onClick: onClose
+    })));
+  };
+
+  _proto.getValue = function getValue() {
+    return this._input.getValue();
+  };
 
   return CardApiKey;
 }(Component);
 
-exports.default = CardApiKey;
+var _default = CardApiKey;
+exports["default"] = _default;
 //# sourceMappingURL=CardApiKey.js.map

@@ -137,7 +137,7 @@ class TextField extends Component {
                };
 
     return (
-      <div
+      <form
         className={CL.SELECT}
         style={rootStyle}
       >
@@ -173,7 +173,7 @@ class TextField extends Component {
                </div>
           }
         </div>
-      </div>
+      </form>
     );
   }
 

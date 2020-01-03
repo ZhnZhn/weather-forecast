@@ -1,12 +1,11 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _actions = require('../../flux/settings/actions');
+var _actions = require("../../flux/settings/actions");
 
-var _actions2 = require('../../flux/layout/actions');
+var _actions2 = require("../../flux/layout/actions");
 
 var RouterData = {
   getData: function getData(store, type) {
@@ -23,13 +22,13 @@ var RouterData = {
           onBeforeClose: function onBeforeClose() {
             store.dispatch((0, _actions2.toggleLayout)('isSettings'));
           }
-
         };
+
       default:
         return undefined;
     }
   }
 };
-
-exports.default = RouterData;
+var _default = RouterData;
+exports["default"] = _default;
 //# sourceMappingURL=RouterData.js.map

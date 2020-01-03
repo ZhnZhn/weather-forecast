@@ -1,30 +1,17 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _class, _temp;
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-var _react = require('../_react');
+var _react = _interopRequireDefault(require("../_react"));
 
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Component = _react2.default.Component;
-
-
+var Component = _react["default"].Component;
 var CL = {
   SELECT: 'm-select',
   LABEL: 'm-select__label',
@@ -33,7 +20,6 @@ var CL = {
   INPUT_LINE: 'm-input__line',
   INPUT_MSG_ERR: 'm-input__msg-err'
 };
-
 var S = {
   LABEL_TO_INPUT: {
     transform: 'scale(1) translate(0px, -6px)'
@@ -51,68 +37,86 @@ var _isFn = function _isFn(fn) {
 };
 
 var _crValue = function _crValue(_v, v) {
-  var value = void 0;
+  var value;
+
   if (!_v) {
     value = v;
   } else {
     var _vL = _v.length,
         vL = v.length;
+
     if (vL > _vL) {
       value = _v + v.substr(_vL);
     } else {
       value = _v.substr(0, vL);
     }
   }
+
   return value.trim();
 };
 
-var _maskValue = function _maskValue() {
-  var len = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+var _maskValue = function _maskValue(len) {
+  if (len === void 0) {
+    len = 0;
+  }
 
   var i = 0,
       str = '';
+
   for (i; i < len; i++) {
     str = str + 'X';
   }
+
   return str;
 };
 
-var TextField = (_temp = _class = function (_Component) {
-  _inherits(TextField, _Component);
+var TextField =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2["default"])(TextField, _Component);
 
   function TextField(props) {
-    _classCallCheck(this, TextField);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, (TextField.__proto__ || Object.getPrototypeOf(TextField)).call(this));
+    _this = _Component.call(this) || this;
 
     _this._handleFocusInput = function () {
       _this.isFocus = true;
+
       _this.forceUpdate();
     };
 
     _this._handleBlurInput = function () {
       _this.isFocus = false;
+
       _this.forceUpdate();
     };
 
     _this._handleInputChange = function (event) {
       var value = event.target.value;
       _this._value = _crValue(_this._value, value);
+
       var _v = _maskValue(_this._value.length);
+
       if (_this.isOnTest) {
         _this.setState({
           value: _v,
           isPassTest: _this.props.onTest(_this._value)
         });
       } else {
-        _this.setState({ value: _v });
+        _this.setState({
+          value: _v
+        });
       }
     };
 
     _this._handleKeyDown = function (event) {
       if (event.keyCode === 27) {
         _this._value = '';
-        _this.setState({ value: '' });
+
+        _this.setState({
+          value: ''
+        });
       } else if (event.keyCode === 13 && _this.isOnEnter) {
         _this.props.onEnter(event.target.value);
       }
@@ -129,7 +133,6 @@ var TextField = (_temp = _class = function (_Component) {
     _this.isFocus = false;
     var onTest = props.onTest,
         onEnter = props.onEnter;
-
     _this.isOnTest = _isFn(onTest);
     _this.isOnEnter = _isFn(onEnter);
     _this.state = {
@@ -139,104 +142,93 @@ var TextField = (_temp = _class = function (_Component) {
     return _this;
   }
 
-  _createClass(TextField, [{
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          rootStyle = _props.rootStyle,
-          caption = _props.caption,
-          isAllowRemember = _props.isAllowRemember,
-          name = _props.name,
-          maxLength = _props.maxLength,
-          _props$errorMsg = _props.errorMsg,
-          errorMsg = _props$errorMsg === undefined ? '' : _props$errorMsg,
-          _state = this.state,
-          value = _state.value,
-          isPassTest = _state.isPassTest,
-          _labelStyle = this._isValue(isAllowRemember) || this.isFocus ? undefined : S.LABEL_TO_INPUT,
-          _labelErrStyle = isPassTest ? undefined : S.LABEL_ON_ERROR,
-          _lineStyle = isPassTest ? undefined : S.LINE_ERROR,
-          _name = name + '[password]',
-          _inputProps = isAllowRemember ? {
-        autoComplete: "current-password",
-        name: _name
-      } : {
-        autoComplete: "off",
-        name: _name,
-        value: value,
-        defaultValue: value,
-        onChange: this._handleInputChange,
-        onKeyDown: this._handleKeyDown
-      };
+  var _proto = TextField.prototype;
 
-      return _react2.default.createElement(
-        'div',
-        {
-          className: CL.SELECT,
-          style: rootStyle
-        },
-        _react2.default.createElement(
-          'label',
-          {
-            className: CL.LABEL,
-            style: _extends({}, _labelStyle, _labelErrStyle)
-          },
-          caption
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: CL.DIV },
-          _react2.default.createElement('input', {
-            hidden: true,
-            name: _name,
-            value: name
-          }),
-          _react2.default.createElement('input', _extends({
-            ref: this._refInput,
-            type: 'password',
-            className: CL.INPUT,
-            autoCorrect: 'off',
-            autoCapitalize: 'off',
-            spellCheck: false,
-            translate: false,
-            maxLength: maxLength,
-            onFocus: this._handleFocusInput,
-            onBlur: this._handleBlurInput
-          }, _inputProps)),
-          _react2.default.createElement('div', { className: CL.INPUT_LINE, style: _lineStyle }),
-          _lineStyle && _react2.default.createElement(
-            'div',
-            { className: CL.INPUT_MSG_ERR },
-            errorMsg
-          )
-        )
-      );
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(prevProps) {
-      if (this.props !== prevProps) {
-        if (this.props.isAllowRemember !== prevProps.isAllowRemember) {
-          this._input.value = '';
-          if (this.props.isAllowRemember) {
-            this._value = '';
-            this.setState({ value: '' });
-          }
+  _proto.render = function render() {
+    var _this$props = this.props,
+        rootStyle = _this$props.rootStyle,
+        caption = _this$props.caption,
+        isAllowRemember = _this$props.isAllowRemember,
+        name = _this$props.name,
+        maxLength = _this$props.maxLength,
+        _this$props$errorMsg = _this$props.errorMsg,
+        errorMsg = _this$props$errorMsg === void 0 ? '' : _this$props$errorMsg,
+        _this$state = this.state,
+        value = _this$state.value,
+        isPassTest = _this$state.isPassTest,
+        _labelStyle = this._isValue(isAllowRemember) || this.isFocus ? undefined : S.LABEL_TO_INPUT,
+        _labelErrStyle = isPassTest ? undefined : S.LABEL_ON_ERROR,
+        _lineStyle = isPassTest ? undefined : S.LINE_ERROR,
+        _name = name + "[password]",
+        _inputProps = isAllowRemember ? {
+      autoComplete: "current-password",
+      name: _name
+    } : {
+      autoComplete: "off",
+      name: _name,
+      value: value,
+      defaultValue: value,
+      onChange: this._handleInputChange,
+      onKeyDown: this._handleKeyDown
+    };
+
+    return _react["default"].createElement("form", {
+      className: CL.SELECT,
+      style: rootStyle
+    }, _react["default"].createElement("label", {
+      className: CL.LABEL,
+      style: (0, _extends2["default"])({}, _labelStyle, {}, _labelErrStyle)
+    }, caption), _react["default"].createElement("div", {
+      className: CL.DIV
+    }, _react["default"].createElement("input", {
+      hidden: true,
+      name: _name,
+      value: name
+    }), _react["default"].createElement("input", (0, _extends2["default"])({
+      ref: this._refInput,
+      type: "password",
+      className: CL.INPUT,
+      autoCorrect: "off",
+      autoCapitalize: "off",
+      spellCheck: false,
+      translate: false,
+      maxLength: maxLength,
+      onFocus: this._handleFocusInput,
+      onBlur: this._handleBlurInput
+    }, _inputProps)), _react["default"].createElement("div", {
+      className: CL.INPUT_LINE,
+      style: _lineStyle
+    }), _lineStyle && _react["default"].createElement("div", {
+      className: CL.INPUT_MSG_ERR
+    }, errorMsg)));
+  };
+
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      if (this.props.isAllowRemember !== prevProps.isAllowRemember) {
+        this._input.value = '';
+
+        if (this.props.isAllowRemember) {
+          this._value = '';
+          this.setState({
+            value: ''
+          });
         }
       }
     }
-  }, {
-    key: 'getValue',
-    value: function getValue() {
-      var isAllowRemember = this.props.isAllowRemember;
+  };
 
-      return isAllowRemember && this._input ? this._input.value : String(this._value).trim();
-    }
-  }]);
+  _proto.getValue = function getValue() {
+    var isAllowRemember = this.props.isAllowRemember;
+    return isAllowRemember && this._input ? this._input.value : String(this._value).trim();
+  };
 
   return TextField;
-}(Component), _class.defaultProps = {
+}(Component);
+
+TextField.defaultProps = {
   maxLength: "32"
-}, _temp);
-exports.default = TextField;
+};
+var _default = TextField;
+exports["default"] = _default;
 //# sourceMappingURL=SecretField.js.map

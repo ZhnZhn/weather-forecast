@@ -1,12 +1,1 @@
-{
- "version": 3,
- "sources": [
-  "../../src/flux/rootSaga.js"
- ],
- "file": "../../src/flux/rootSaga.js",
- "names": [
-  "all",
-  "rootSaga"
- ],
- "mappings": ";;;;;;AAAA;;AAEA;;;;AACA;;;;AACA;;;;AACA;;;;AAEA;;;;;;IAEQA,G,sBAAAA,G;;;AAER,IAAMC,gDAAW,SAAXA,QAAW;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,iBACRD,IAAI,CACR,qBADQ,EAER,qBAFQ,EAGR,qBAHQ,EAIR,qBAJQ,EAKR,sBALQ,CAAJ,CADQ;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,KAAXC,QAAW;AAAA,CAAX,CAAN;;kBAUgBA,Q"
-}
+{"version":3,"sources":["../../src/flux/rootSaga.js"],"names":["all","effects","rootSaga"],"mappings":";;;;;;;;;AAAA;;AAEA;;AACA;;AACA;;AACA;;AAEA;;IAEQA,G,GAAQC,kB,CAARD,G;;AAER,IAAME,QAAQ;AAAA;AAAA,6BAAG,SAAXA,QAAW;AAAA;AAAA;AAAA;AAAA;AAAA;AACd,iBAAMF,GAAG,CAAC,CACR,uBADQ,EAER,wBAFQ,EAGR,wBAHQ,EAIR,wBAJQ,EAKR,wBALQ,CAAD,CAAT;;AADc;AAAA;AAAA;AAAA;AAAA;AAAA,KAAXE,QAAW;AAAA,CAAH,CAAd;;eAUgBA,Q","sourcesContent":["import { effects } from 'redux-saga'\r\n\r\nimport watchPlaceRequested from './place/saga';\r\nimport watchForecastRequested from './forecast/saga';\r\nimport watchHourlyRequested from './hourly/saga';\r\nimport watchUvRequested from './uv/saga';\r\n\r\nimport watchSettingSet from './settings/saga';\r\n\r\nconst { all } = effects;\r\n\r\nconst rootSaga = function* () {\r\n   yield all([\r\n     watchPlaceRequested(),\r\n     watchForecastRequested(),\r\n     watchHourlyRequested(),\r\n     watchUvRequested(),\r\n     watchSettingSet()     \r\n   ]);\r\n }\r\n\r\n export default rootSaga\r\n"],"file":"rootSaga.js"}

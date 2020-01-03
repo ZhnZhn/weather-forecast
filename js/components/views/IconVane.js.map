@@ -1,16 +1,1 @@
-{
- "version": 3,
- "sources": [
-  "../../../src/components/views/IconVane.js"
- ],
- "file": "../../../src/components/views/IconVane.js",
- "names": [
-  "CL_VANE",
-  "_crStyle",
-  "deg",
-  "undefined",
-  "transform",
-  "IconVane"
- ],
- "mappings": ";;;;;;AACA;;;;;;AACA;;AAEA,IAAMA,UAAU,mBAAhB,C,CAJA;;;AAMA,IAAMC,WAAW,SAAXA,QAAW,CAACC,GAAD,EAAS;AACxB,MAAI,OAAOA,GAAP,KAAe,QAAnB,EAA6B;AAC3B,WAAOC,SAAP;AACD;AACD,SAAO;AACLC,2BAAqBF,GAArB;AADK,GAAP;AAGD,CAPD;;AASA,IAAMG,WAAW,SAAXA,QAAW;AAAA,MAAGH,GAAH,QAAGA,GAAH;AAAA,SACf;AAAA;AAAA,MAAK,OAAM,4BAAX;AACG,eAAQ,WADX,EACuB,OAAM,MAD7B,EACoC,QAAO,MAD3C;AAEG,2BAAoB,MAFvB,EAE8B,mBAAgB,OAF9C;AAGG,iBAAWF,OAHd;AAIG,aAAOC,SAASC,GAAT;AAJV;AAMC;AAAA;AAAA,QAAO,IAAG,OAAV;AAAA;AAAA,KAND;AAOC,4CAAM,GAAE,8CAAR;AAPD,GADe;AAAA,CAAjB;;AAYA;;;;;;kBAMeG,Q"
-}
+{"version":3,"sources":["../../../src/components/views/IconVane.jsx"],"names":["CL_VANE","_crStyle","deg","undefined","transform","IconVane"],"mappings":";;;;;;;AACA;;AADA;AAEA;AAEA,IAAMA,OAAO,GAAG,mBAAhB;;AAEA,IAAMC,QAAQ,GAAG,SAAXA,QAAW,CAACC,GAAD,EAAS;AACxB,MAAI,OAAOA,GAAP,KAAe,QAAnB,EAA6B;AAC3B,WAAOC,SAAP;AACD;;AACD,SAAO;AACLC,IAAAA,SAAS,cAAYF,GAAZ;AADJ,GAAP;AAGD,CAPD;;AASA,IAAMG,QAAQ,GAAG,SAAXA,QAAW;AAAA,MAAGH,GAAH,QAAGA,GAAH;AAAA,SACf;AAAK,IAAA,KAAK,EAAC,4BAAX;AACG,IAAA,OAAO,EAAC,WADX;AACuB,IAAA,KAAK,EAAC,MAD7B;AACoC,IAAA,MAAM,EAAC,MAD3C;AAEG,IAAA,mBAAmB,EAAC,MAFvB;AAE8B,uBAAgB,OAF9C;AAGG,IAAA,SAAS,EAAEF,OAHd;AAIG,IAAA,KAAK,EAAEC,QAAQ,CAACC,GAAD;AAJlB,KAMC;AAAO,IAAA,EAAE,EAAC;AAAV,sBAND,EAOC;AAAM,IAAA,CAAC,EAAC;AAAR,IAPD,CADe;AAAA,CAAjB;AAYA;;;;;;;eAMeG,Q","sourcesContent":["//import React from 'react';\r\nimport React from '../_react'\r\n//import PropTypes from 'prop-types';\r\n\r\nconst CL_VANE = \"icon__popup__vane\";\r\n\r\nconst _crStyle = (deg) => {\r\n  if (typeof deg !== 'number') {\r\n    return undefined;\r\n  }\r\n  return {\r\n    transform: `rotate(${deg}deg)`\r\n  };\r\n}\r\n\r\nconst IconVane = ({ deg }) => (\r\n  <svg xmlns=\"http://www.w3.org/2000/svg\"\r\n     viewBox=\"0 0 17 18\" width=\"100%\" height=\"100%\"\r\n     preserveAspectRatio=\"none\" aria-labelledby=\"title\"\r\n     className={CL_VANE}\r\n     style={_crStyle(deg)}\r\n  >\r\n   <title id=\"title\">Icon Wind Vane</title>\r\n   <path d=\"M 10,0 L 8,0 8,11 4,11 9,18 14,11 10,11 10,0\"/>\r\n</svg>\r\n);\r\n\r\n/*\r\nIconVane.propTypes = {\r\n  deg: PropTypes.number\r\n}\r\n*/\r\n\r\nexport default IconVane\r\n"],"file":"IconVane.js"}

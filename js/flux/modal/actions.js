@@ -1,23 +1,28 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports["default"] = exports.showModal = exports.ACTION = void 0;
 
-var ACTION = exports.ACTION = {
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var ACTION = {
   MODAL_SHOW: 'MODAL_SHOW'
 };
+exports.ACTION = ACTION;
 
-var showModal = exports.showModal = function showModal(id, option) {
-  return _extends({
+var showModal = function showModal(id, option) {
+  return (0, _extends2["default"])({
     type: ACTION.MODAL_SHOW,
     id: id
   }, option);
 };
 
-var actions = { showModal: showModal };
-
-exports.default = actions;
+exports.showModal = showModal;
+var actions = {
+  showModal: showModal
+};
+var _default = actions;
+exports["default"] = _default;
 //# sourceMappingURL=actions.js.map

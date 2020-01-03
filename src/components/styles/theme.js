@@ -60,7 +60,11 @@ const _setStyleTo = conf => {
 
 const _stylePopup = () => {
   [...document.querySelectorAll('.leaflet-popup-content-wrapper')]
-    .forEach(node => node.style.backgroundColor = P.BG)
+    .forEach(node => {
+      if (node && node.style) {
+        node.style.backgroundColor = P.BG
+      }  
+    })
 }
 
 const _setTheme = {

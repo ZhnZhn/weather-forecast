@@ -1,37 +1,23 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.sModal = exports.sSettings = exports.sUV = exports.sHourly = exports.sForecast = exports.sPlace = undefined;
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-var _reducer = require('./place/reducer');
+exports.__esModule = true;
+exports.sModal = exports.sSettings = exports.sUV = exports.sHourly = exports.sForecast = exports.sPlace = void 0;
 
-var place = _interopRequireWildcard(_reducer);
+var place = _interopRequireWildcard(require("./place/reducer"));
 
-var _reducer2 = require('./forecast/reducer');
+var forecast = _interopRequireWildcard(require("./forecast/reducer"));
 
-var forecast = _interopRequireWildcard(_reducer2);
+var hourly = _interopRequireWildcard(require("./hourly/reducer"));
 
-var _reducer3 = require('./hourly/reducer');
+var uv = _interopRequireWildcard(require("./uv/reducer"));
 
-var hourly = _interopRequireWildcard(_reducer3);
+var settings = _interopRequireWildcard(require("./settings/reducer"));
 
-var _reducer4 = require('./uv/reducer');
+var modal = _interopRequireWildcard(require("./modal/reducer"));
 
-var uv = _interopRequireWildcard(_reducer4);
-
-var _reducer5 = require('./settings/reducer');
-
-var settings = _interopRequireWildcard(_reducer5);
-
-var _reducer6 = require('./modal/reducer');
-
-var modal = _interopRequireWildcard(_reducer6);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-var sPlace = exports.sPlace = {
+var sPlace = {
   recent: function recent(state) {
     return place.recent(state.place);
   },
@@ -39,8 +25,8 @@ var sPlace = exports.sPlace = {
     return place.byId(state.place, id);
   }
 };
-
-var sForecast = exports.sForecast = {
+exports.sPlace = sPlace;
+var sForecast = {
   byId: function byId(state, id) {
     return forecast.byId(state.forecast, id);
   },
@@ -54,8 +40,8 @@ var sForecast = exports.sForecast = {
     return forecast.cityCoordById(state.forecast, id);
   }
 };
-
-var sHourly = exports.sHourly = {
+exports.sForecast = sForecast;
+var sHourly = {
   recent: function recent(state) {
     return hourly.recent(state.hourly);
   },
@@ -63,8 +49,8 @@ var sHourly = exports.sHourly = {
     return hourly.byId(state.hourly, id);
   }
 };
-
-var sUV = exports.sUV = {
+exports.sHourly = sHourly;
+var sUV = {
   recent: function recent(state) {
     return uv.recent(state.uv);
   },
@@ -72,16 +58,17 @@ var sUV = exports.sUV = {
     return uv.byId(state.uv, id);
   }
 };
-
-var sSettings = exports.sSettings = {
+exports.sUV = sUV;
+var sSettings = {
   isApiKey: function isApiKey(state) {
     return settings.isApiKey(state.settings);
   }
 };
-
-var sModal = exports.sModal = {
+exports.sSettings = sSettings;
+var sModal = {
   errMsg: function errMsg(state) {
     return modal.errMsg(state.modal);
   }
 };
+exports.sModal = sModal;
 //# sourceMappingURL=selectors.js.map

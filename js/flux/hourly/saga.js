@@ -1,40 +1,36 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-var _reduxSaga = require('redux-saga');
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _actions = require('./actions');
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _actions2 = _interopRequireDefault(_actions);
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _selectors = require('../selectors');
+var _reduxSaga = require("redux-saga");
 
-var _OpenWeather = require('../../api/OpenWeather');
+var _actions = _interopRequireWildcard(require("./actions"));
 
-var _OpenWeather2 = _interopRequireDefault(_OpenWeather);
+var _selectors = require("../selectors");
 
-var _request = require('../../affects/request');
+var _OpenWeather = _interopRequireDefault(require("../../api/OpenWeather"));
 
-var _request2 = _interopRequireDefault(_request);
+var _request = _interopRequireDefault(require("../../affects/request"));
 
-var _actions3 = require('../modal/actions');
-
-var _actions4 = _interopRequireDefault(_actions3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _actions2 = _interopRequireDefault(require("../modal/actions"));
 
 var takeEvery = _reduxSaga.effects.takeEvery,
     select = _reduxSaga.effects.select,
     call = _reduxSaga.effects.call,
     put = _reduxSaga.effects.put;
 
-
-var requestHourly = /*#__PURE__*/regeneratorRuntime.mark(function requestHourly(action) {
+var requestHourly =
+/*#__PURE__*/
+_regenerator["default"].mark(function requestHourly(action) {
   var state, recent, recentHourly, json;
-  return regeneratorRuntime.wrap(function requestHourly$(_context) {
+  return _regenerator["default"].wrap(function requestHourly$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -53,12 +49,12 @@ var requestHourly = /*#__PURE__*/regeneratorRuntime.mark(function requestHourly(
           }
 
           _context.next = 9;
-          return call(_request2.default, _OpenWeather2.default.crHourlyById(recent));
+          return call(_request["default"], _OpenWeather["default"].crHourlyById(recent));
 
         case 9:
           json = _context.sent;
           _context.next = 12;
-          return put(_actions2.default.requestedOk(json, recent));
+          return put(_actions["default"].requestedOk(json, recent));
 
         case 12:
           _context.next = 16;
@@ -66,7 +62,7 @@ var requestHourly = /*#__PURE__*/regeneratorRuntime.mark(function requestHourly(
 
         case 14:
           _context.next = 16;
-          return put(_actions2.default.requestedInCache(recent));
+          return put(_actions["default"].requestedInCache(recent));
 
         case 16:
           _context.next = 22;
@@ -74,22 +70,24 @@ var requestHourly = /*#__PURE__*/regeneratorRuntime.mark(function requestHourly(
 
         case 18:
           _context.prev = 18;
-          _context.t0 = _context['catch'](0);
+          _context.t0 = _context["catch"](0);
           _context.next = 22;
-          return put(_actions4.default.showModal('ERROR', {
+          return put(_actions2["default"].showModal('ERROR', {
             errMsg: _context.t0.message
           }));
 
         case 22:
-        case 'end':
+        case "end":
           return _context.stop();
       }
     }
-  }, requestHourly, this, [[0, 18]]);
+  }, requestHourly, null, [[0, 18]]);
 });
 
-var watchHourlyRequested = /*#__PURE__*/regeneratorRuntime.mark(function watchHourlyRequested() {
-  return regeneratorRuntime.wrap(function watchHourlyRequested$(_context2) {
+var watchHourlyRequested =
+/*#__PURE__*/
+_regenerator["default"].mark(function watchHourlyRequested() {
+  return _regenerator["default"].wrap(function watchHourlyRequested$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
@@ -97,12 +95,13 @@ var watchHourlyRequested = /*#__PURE__*/regeneratorRuntime.mark(function watchHo
           return takeEvery(_actions.ACTION.HOURLY_REQUESTED, requestHourly);
 
         case 2:
-        case 'end':
+        case "end":
           return _context2.stop();
       }
     }
-  }, watchHourlyRequested, this);
+  }, watchHourlyRequested);
 });
 
-exports.default = watchHourlyRequested;
+var _default = watchHourlyRequested;
+exports["default"] = _default;
 //# sourceMappingURL=saga.js.map

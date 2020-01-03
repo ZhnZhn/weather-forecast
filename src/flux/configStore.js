@@ -1,5 +1,5 @@
 //import 'babel-polyfill';
-import 'regenerator-runtime/runtime'
+//import 'regenerator-runtime/runtime'
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 
@@ -12,7 +12,7 @@ const configStore = function() {
   const _middlewares = [ sagaMiddleware ];
   let _composeEnhancer = compose;
   /*eslint-disable no-undef*/
-  if (process.env.NODE_ENV === 'development'){  
+  if (process.env.NODE_ENV === 'development'){
     _composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
     const logger = store => next => action => {

@@ -1,12 +1,1 @@
-{
- "version": 3,
- "sources": [
-  "../../src/flux/gen.js"
- ],
- "file": "../../src/flux/gen.js",
- "names": [
-  "select",
-  "isApiKey"
- ],
- "mappings": ";;;;;;;AAAA;;AACA;;IAEQA,M,sBAAAA,M;AAED,IAAMC,mEAAW,SAAXA,QAAW;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,iBACTD,OAAO,qBAAUC,QAAjB,CADS;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,KAAXA,QAAW;AAAA,CAAX,CAAN"
-}
+{"version":3,"sources":["../../src/flux/gen.js"],"names":["select","effects","isApiKey","sSettings"],"mappings":";;;;;;;;;AAAA;;AACA;;IAEQA,M,GAAWC,kB,CAAXD,M;;AAED,IAAME,QAAQ;AAAA;AAAA,6BAAG,SAAXA,QAAW;AAAA;AAAA;AAAA;AAAA;AAAA;AACf,iBAAMF,MAAM,CAACG,qBAAUD,QAAX,CAAZ;;AADe;AAAA;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,KAAXA,QAAW;AAAA,CAAH,CAAd","sourcesContent":["import { effects } from 'redux-saga';\r\nimport { sSettings } from './selectors';\r\n\r\nconst { select } = effects;\r\n\r\nexport const isApiKey = function* (){\r\n  return yield select(sSettings.isApiKey);\r\n};\r\n"],"file":"gen.js"}

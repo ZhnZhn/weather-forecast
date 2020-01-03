@@ -1,21 +1,15 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _leaflet = require('leaflet');
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _leaflet2 = _interopRequireDefault(_leaflet);
+var _leaflet = _interopRequireDefault(require("leaflet"));
 
-var _marker = require('../../templates/marker');
+var _marker = _interopRequireDefault(require("../../templates/marker"));
 
-var _marker2 = _interopRequireDefault(_marker);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var L = _leaflet2.default || window.L;
-
+var L = _leaflet["default"] || window.L;
 var POPUP_CL = {
   DF: '',
   WHITE: 'popup--white',
@@ -33,12 +27,12 @@ var DF = {
   LNG: 0,
   ZOOM: 2
 };
-
 var fnLeaflet = {
   createMap: function createMap(id, onLoad) {
-    var map = L
-    //.map(id, { zoomControl: true, ...options })
-    .map(id, { zoomControl: true }).on('load', onLoad).setView([DF.LAT, DF.LNG], DF.ZOOM);
+    var map = L //.map(id, { zoomControl: true, ...options })
+    .map(id, {
+      zoomControl: true
+    }).on('load', onLoad).setView([DF.LAT, DF.LNG], DF.ZOOM);
     map.zoomControl.setPosition('bottomright');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       id: 'addis',
@@ -47,15 +41,17 @@ var fnLeaflet = {
     }).addTo(map);
     return map;
   },
+  addMarker: function addMarker(w, themeName, map) {
+    if (w === void 0) {
+      w = {};
+    }
 
-  addMarker: function addMarker() {
-    var w = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var themeName = arguments[1];
-    var map = arguments[2];
-
-    var icon = L.divIcon({ html: _marker2.default.fDivIcon(w) });
-    var _w$coord = w.coord,
-        coord = _w$coord === undefined ? {} : _w$coord;
+    var icon = L.divIcon({
+      html: _marker["default"].fDivIcon(w)
+    });
+    var _w = w,
+        _w$coord = _w.coord,
+        coord = _w$coord === void 0 ? {} : _w$coord;
     var lat = coord.lat,
         lon = coord.lon;
 
@@ -64,10 +60,10 @@ var fnLeaflet = {
         icon: icon,
         title: w.name,
         alt: w.name
-      }).bindPopup(_marker2.default.fPopup(w), _crPopupOptions(themeName)).addTo(map);
+      }).bindPopup(_marker["default"].fPopup(w), _crPopupOptions(themeName)).addTo(map);
     }
   }
 };
-
-exports.default = fnLeaflet;
+var _default = fnLeaflet;
+exports["default"] = _default;
 //# sourceMappingURL=fnLeaflet.js.map

@@ -1,43 +1,24 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _react = require('../_react');
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-var _react2 = _interopRequireDefault(_react);
+var _react = _interopRequireDefault(require("../_react"));
 
-var _SvgCircle = require('./SvgCircle');
+var _SvgCircle = _interopRequireDefault(require("./SvgCircle"));
 
-var _SvgCircle2 = _interopRequireDefault(_SvgCircle);
+var _SvgRect = _interopRequireDefault(require("./SvgRect"));
 
-var _SvgRect = require('./SvgRect');
+var _LegendCell = _interopRequireDefault(require("./LegendCell"));
 
-var _SvgRect2 = _interopRequireDefault(_SvgRect);
+var _Label = _interopRequireDefault(require("./Label.Style"));
 
-var _LegendCell = require('./LegendCell');
-
-var _LegendCell2 = _interopRequireDefault(_LegendCell);
-
-var _Label = require('./Label.Style');
-
-var _Label2 = _interopRequireDefault(_Label);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //import React, { Component } from 'react';
-
-
-var Component = _react2.default.Component;
-
-
+//import React, { Component } from 'react';
+var Component = _react["default"].Component;
 var K = {
   T_DAY: 'tempDay',
   T_NIGHT: 'tempNight',
@@ -48,7 +29,6 @@ var K = {
   RAIN: 'rain',
   SPEED: 'speed'
 };
-
 var L = {
   ROOT_DIV: {
     marginLeft: '3rem',
@@ -67,128 +47,77 @@ var L = {
   }
 };
 
-var LegendTemperature = function (_Component) {
-  _inherits(LegendTemperature, _Component);
+var LegendTemperature =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2["default"])(LegendTemperature, _Component);
 
   function LegendTemperature() {
-    _classCallCheck(this, LegendTemperature);
-
-    return _possibleConstructorReturn(this, (LegendTemperature.__proto__ || Object.getPrototypeOf(LegendTemperature)).apply(this, arguments));
+    return _Component.apply(this, arguments) || this;
   }
 
-  _createClass(LegendTemperature, [{
-    key: 'shouldComponentUpdate',
-    value: function shouldComponentUpdate(nextProps, nextState) {
-      if (this.props !== nextProps && this.props.styles === nextProps.styles) {
-        return false;
-      }
-      return true;
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          styles = _props.styles,
-          onFilter = _props.onFilter;
+  var _proto = LegendTemperature.prototype;
 
-
-      return _react2.default.createElement(
-        'div',
-        { style: L.ROOT_DIV },
-        _react2.default.createElement(
-          'div',
-          { style: L.COL_1 },
-          _react2.default.createElement(
-            _LegendCell2.default,
-            {
-              onClick: onFilter.bind(null, K.T_MORN),
-              titleStyle: styles.tempMorn,
-              title: 'T Morn'
-            },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_MORN)
-          ),
-          _react2.default.createElement(
-            _LegendCell2.default,
-            {
-              onClick: onFilter.bind(null, K.T_DAY),
-              titleStyle: styles.tempDay,
-              title: 'T Day'
-            },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_DAY)
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { style: L.COL_2 },
-          _react2.default.createElement(
-            _LegendCell2.default,
-            {
-              onClick: onFilter.bind(null, K.T_EVE),
-              titleStyle: styles.tempEve,
-              title: 'T Eve'
-            },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_EVE)
-          ),
-          _react2.default.createElement(
-            _LegendCell2.default,
-            {
-              onClick: onFilter.bind(null, K.T_NIGHT),
-              titleStyle: styles.tempNight,
-              title: 'T Night'
-            },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_NIGHT)
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { style: L.COL_3 },
-          _react2.default.createElement(
-            _LegendCell2.default,
-            {
-              onClick: onFilter.bind(null, K.T_MAX),
-              titleStyle: styles.tempMax,
-              title: 'T Max'
-            },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_MAX)
-          ),
-          _react2.default.createElement(
-            _LegendCell2.default,
-            {
-              onClick: onFilter.bind(null, K.T_MIN),
-              titleStyle: styles.tempMin,
-              title: 'T Min'
-            },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_TEMP_MIN)
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { style: L.COL_3 },
-          _react2.default.createElement(
-            _LegendCell2.default,
-            {
-              onClick: onFilter.bind(null, K.RAIN),
-              titleStyle: styles.rain,
-              title: 'Rain'
-            },
-            _react2.default.createElement(_SvgRect2.default, _Label2.default.RECT_RAIN)
-          ),
-          _react2.default.createElement(
-            _LegendCell2.default,
-            {
-              onClick: onFilter.bind(null, K.SPEED),
-              titleStyle: styles.speed,
-              title: 'Speed'
-            },
-            _react2.default.createElement(_SvgCircle2.default, _Label2.default.CIRCLE_SPEED)
-          )
-        )
-      );
+  _proto.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
+    if (this.props !== nextProps && this.props.styles === nextProps.styles) {
+      return false;
     }
-  }]);
+
+    return true;
+  };
+
+  _proto.render = function render() {
+    var _this$props = this.props,
+        styles = _this$props.styles,
+        onFilter = _this$props.onFilter;
+    return _react["default"].createElement("div", {
+      style: L.ROOT_DIV
+    }, _react["default"].createElement("div", {
+      style: L.COL_1
+    }, _react["default"].createElement(_LegendCell["default"], {
+      onClick: onFilter.bind(null, K.T_MORN),
+      titleStyle: styles.tempMorn,
+      title: "T Morn"
+    }, _react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_TEMP_MORN)), _react["default"].createElement(_LegendCell["default"], {
+      onClick: onFilter.bind(null, K.T_DAY),
+      titleStyle: styles.tempDay,
+      title: "T Day"
+    }, _react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_TEMP_DAY))), _react["default"].createElement("div", {
+      style: L.COL_2
+    }, _react["default"].createElement(_LegendCell["default"], {
+      onClick: onFilter.bind(null, K.T_EVE),
+      titleStyle: styles.tempEve,
+      title: "T Eve"
+    }, _react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_TEMP_EVE)), _react["default"].createElement(_LegendCell["default"], {
+      onClick: onFilter.bind(null, K.T_NIGHT),
+      titleStyle: styles.tempNight,
+      title: "T Night"
+    }, _react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_TEMP_NIGHT))), _react["default"].createElement("div", {
+      style: L.COL_3
+    }, _react["default"].createElement(_LegendCell["default"], {
+      onClick: onFilter.bind(null, K.T_MAX),
+      titleStyle: styles.tempMax,
+      title: "T Max"
+    }, _react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_TEMP_MAX)), _react["default"].createElement(_LegendCell["default"], {
+      onClick: onFilter.bind(null, K.T_MIN),
+      titleStyle: styles.tempMin,
+      title: "T Min"
+    }, _react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_TEMP_MIN))), _react["default"].createElement("div", {
+      style: L.COL_3
+    }, _react["default"].createElement(_LegendCell["default"], {
+      onClick: onFilter.bind(null, K.RAIN),
+      titleStyle: styles.rain,
+      title: "Rain"
+    }, _react["default"].createElement(_SvgRect["default"], _Label["default"].RECT_RAIN)), _react["default"].createElement(_LegendCell["default"], {
+      onClick: onFilter.bind(null, K.SPEED),
+      titleStyle: styles.speed,
+      title: "Speed"
+    }, _react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_SPEED))));
+  };
 
   return LegendTemperature;
 }(Component);
 
-exports.default = LegendTemperature;
+var _default = LegendTemperature;
+exports["default"] = _default;
 //# sourceMappingURL=LegendTemperature.js.map

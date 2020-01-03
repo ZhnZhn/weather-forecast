@@ -1,15 +1,13 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _react = require('../_react');
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _react2 = _interopRequireDefault(_react);
+var _react = _interopRequireDefault(require("../_react"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+//import React from 'react';
 var S = {
   SVG: {
     position: 'relative',
@@ -18,35 +16,37 @@ var S = {
     width: '18px',
     height: '18px'
   }
-}; //import React from 'react';
-
+};
 
 var SvgRest = function SvgRest(_ref) {
   var _ref$stroke = _ref.stroke,
-      stroke = _ref$stroke === undefined ? 'green' : _ref$stroke,
+      stroke = _ref$stroke === void 0 ? 'green' : _ref$stroke,
       fill = _ref.fill;
 
   if (!fill) {
     fill = stroke;
   }
-  return _react2.default.createElement(
-    'svg',
-    { xmlns: 'http://www.w3.org/2000/svg',
-      viewBox: '0 0 18 18', width: '100%', height: '100%',
-      preserveAspectRatio: 'none', 'aria-labelledby': 'title',
-      style: S.SVG
-    },
-    _react2.default.createElement(
-      'title',
-      { id: 'title' },
-      'Rest Marker'
-    ),
-    _react2.default.createElement('rect', {
-      x: '3', y: '0', width: '11', height: '18',
-      stroke: stroke, fill: fill
-    })
-  );
+
+  return _react["default"].createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 18 18",
+    width: "100%",
+    height: "100%",
+    preserveAspectRatio: "none",
+    "aria-labelledby": "title",
+    style: S.SVG
+  }, _react["default"].createElement("title", {
+    id: "title"
+  }, "Rest Marker"), _react["default"].createElement("rect", {
+    x: "3",
+    y: "0",
+    width: "11",
+    height: "18",
+    stroke: stroke,
+    fill: fill
+  }));
 };
 
-exports.default = SvgRest;
+var _default = SvgRest;
+exports["default"] = _default;
 //# sourceMappingURL=SvgRect.js.map

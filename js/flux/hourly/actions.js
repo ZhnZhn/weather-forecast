@@ -1,35 +1,44 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var ACTION = exports.ACTION = {
+exports.__esModule = true;
+exports["default"] = exports.hourlyRequestedInCache = exports.hourlyRequestedOk = exports.hourlyRequested = exports.ACTION = void 0;
+var ACTION = {
   HOURLY_REQUESTED: 'HOURLY_REQUESTED',
   HOURLY_REQUESTED_OK: 'HOURLY_REQUESTED_OK',
   HOURLY_REQUESTED_INCACHE: 'HOURLY_REQUESTED_INCACHE'
 };
+exports.ACTION = ACTION;
 
-var hourlyRequested = exports.hourlyRequested = function hourlyRequested() {
+var hourlyRequested = function hourlyRequested() {
   return {
     type: ACTION.HOURLY_REQUESTED
   };
 };
-var hourlyRequestedOk = exports.hourlyRequestedOk = function hourlyRequestedOk(hourly, id) {
+
+exports.hourlyRequested = hourlyRequested;
+
+var hourlyRequestedOk = function hourlyRequestedOk(hourly, id) {
   return {
-    type: ACTION.HOURLY_REQUESTED_OK, hourly: hourly, id: id
+    type: ACTION.HOURLY_REQUESTED_OK,
+    hourly: hourly,
+    id: id
   };
 };
-var hourlyRequestedInCache = exports.hourlyRequestedInCache = function hourlyRequestedInCache() {
+
+exports.hourlyRequestedOk = hourlyRequestedOk;
+
+var hourlyRequestedInCache = function hourlyRequestedInCache() {
   return {
     type: ACTION.HOURLY_REQUESTED_INCACHE
   };
 };
 
+exports.hourlyRequestedInCache = hourlyRequestedInCache;
 var actions = {
   requested: hourlyRequested,
   requestedOk: hourlyRequestedOk,
   requestedInCache: hourlyRequestedInCache
 };
-
-exports.default = actions;
+var _default = actions;
+exports["default"] = _default;
 //# sourceMappingURL=actions.js.map

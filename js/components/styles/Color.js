@@ -1,8 +1,7 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.__esModule = true;
+exports["default"] = void 0;
 var COLOR = {
   YELLOW: '#f1d600',
   BROWN: "#795548",
@@ -10,6 +9,6 @@ var COLOR = {
   //BLANK: 'transparent',
   BLANK: 'rgba(0, 0, 0, 0)'
 };
-
-exports.default = COLOR;
+var _default = COLOR;
+exports["default"] = _default;
 //# sourceMappingURL=Color.js.map

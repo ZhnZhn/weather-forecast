@@ -1,40 +1,36 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-var _reduxSaga = require('redux-saga');
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _actions = require('./actions');
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _actions2 = _interopRequireDefault(_actions);
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _selectors = require('../selectors');
+var _reduxSaga = require("redux-saga");
 
-var _OpenWeather = require('../../api/OpenWeather');
+var _actions = _interopRequireWildcard(require("./actions"));
 
-var _OpenWeather2 = _interopRequireDefault(_OpenWeather);
+var _selectors = require("../selectors");
 
-var _request = require('../../affects/request');
+var _OpenWeather = _interopRequireDefault(require("../../api/OpenWeather"));
 
-var _request2 = _interopRequireDefault(_request);
+var _request = _interopRequireDefault(require("../../affects/request"));
 
-var _actions3 = require('../modal/actions');
-
-var _actions4 = _interopRequireDefault(_actions3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _actions2 = _interopRequireDefault(require("../modal/actions"));
 
 var takeEvery = _reduxSaga.effects.takeEvery,
     call = _reduxSaga.effects.call,
     put = _reduxSaga.effects.put,
     select = _reduxSaga.effects.select;
 
-
-var requestForecast = /*#__PURE__*/regeneratorRuntime.mark(function requestForecast(action) {
+var requestForecast =
+/*#__PURE__*/
+_regenerator["default"].mark(function requestForecast(action) {
   var state, id, json;
-  return regeneratorRuntime.wrap(function requestForecast$(_context) {
+  return _regenerator["default"].wrap(function requestForecast$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -52,12 +48,12 @@ var requestForecast = /*#__PURE__*/regeneratorRuntime.mark(function requestForec
           }
 
           _context.next = 8;
-          return call(_request2.default, _OpenWeather2.default.crForecastById(id));
+          return call(_request["default"], _OpenWeather["default"].crForecastById(id));
 
         case 8:
           json = _context.sent;
           _context.next = 11;
-          return put(_actions2.default.requestedOk(json, id));
+          return put(_actions["default"].requestedOk(json, id));
 
         case 11:
           _context.next = 15;
@@ -65,7 +61,7 @@ var requestForecast = /*#__PURE__*/regeneratorRuntime.mark(function requestForec
 
         case 13:
           _context.next = 15;
-          return put(_actions2.default.requestedInCache(id));
+          return put(_actions["default"].requestedInCache(id));
 
         case 15:
           _context.next = 21;
@@ -73,22 +69,24 @@ var requestForecast = /*#__PURE__*/regeneratorRuntime.mark(function requestForec
 
         case 17:
           _context.prev = 17;
-          _context.t0 = _context['catch'](0);
+          _context.t0 = _context["catch"](0);
           _context.next = 21;
-          return put(_actions4.default.showModal('ERROR', {
+          return put(_actions2["default"].showModal('ERROR', {
             errMsg: _context.t0.message
           }));
 
         case 21:
-        case 'end':
+        case "end":
           return _context.stop();
       }
     }
-  }, requestForecast, this, [[0, 17]]);
+  }, requestForecast, null, [[0, 17]]);
 });
 
-var watchForecastRequested = /*#__PURE__*/regeneratorRuntime.mark(function watchForecastRequested() {
-  return regeneratorRuntime.wrap(function watchForecastRequested$(_context2) {
+var watchForecastRequested =
+/*#__PURE__*/
+_regenerator["default"].mark(function watchForecastRequested() {
+  return _regenerator["default"].wrap(function watchForecastRequested$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
@@ -96,12 +94,13 @@ var watchForecastRequested = /*#__PURE__*/regeneratorRuntime.mark(function watch
           return takeEvery(_actions.ACTION.FORECAST_REQUESTED, requestForecast);
 
         case 2:
-        case 'end':
+        case "end":
           return _context2.stop();
       }
     }
-  }, watchForecastRequested, this);
+  }, watchForecastRequested);
 });
 
-exports.default = watchForecastRequested;
+var _default = watchForecastRequested;
+exports["default"] = _default;
 //# sourceMappingURL=saga.js.map

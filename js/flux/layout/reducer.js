@@ -1,14 +1,15 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _actions = require('../modal/actions');
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _actions2 = require('./actions');
+var _actions = require("../modal/actions");
+
+var _actions2 = require("./actions");
 
 var INIT_STATE = {
   themeName: 'GREY',
@@ -17,29 +18,35 @@ var INIT_STATE = {
   isPushMenu: false
 };
 
-var reducer = function reducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : INIT_STATE;
-  var action = arguments[1];
+var reducer = function reducer(state, action) {
+  if (state === void 0) {
+    state = INIT_STATE;
+  }
 
   switch (action.type) {
     case _actions.ACTION.MODAL_SHOW:
-      return action.id === 'SETTINGS' ? _extends({}, state, { isSettings: true }) : state;
+      return action.id === 'SETTINGS' ? (0, _extends2["default"])({}, state, {}, {
+        isSettings: true
+      }) : state;
+
     case _actions2.ACTION.TOGGLE_LAYOUT:
       {
         var key = action.key;
-
         state[key] = !state[key];
-        return _extends({}, state);
+        return (0, _extends2["default"])({}, state);
       }
+
     case _actions2.ACTION.SET_THEME_NAME:
       {
         state.themeName = action.themeName;
-        return _extends({}, state);
+        return (0, _extends2["default"])({}, state);
       }
+
     default:
       return state;
   }
 };
 
-exports.default = reducer;
+var _default = reducer;
+exports["default"] = _default;
 //# sourceMappingURL=reducer.js.map

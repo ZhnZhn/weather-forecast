@@ -1,24 +1,24 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _actions = require('../place/actions');
+var _actions = require("../place/actions");
 
-var _actions2 = require('../forecast/actions');
+var _actions2 = require("../forecast/actions");
 
-var _actions3 = require('../hourly/actions');
+var _actions3 = require("../hourly/actions");
 
-var _actions4 = require('../uv/actions');
+var _actions4 = require("../uv/actions");
 
-var _actions5 = require('../modal/actions');
+var _actions5 = require("../modal/actions");
 
-var _constants = require('./constants');
+var _constants = require("./constants");
 
-var reducer = function reducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-  var action = arguments[1];
+var reducer = function reducer(state, action) {
+  if (state === void 0) {
+    state = '';
+  }
 
   switch (action.type) {
     case _actions5.ACTION.MODAL_SHOW:
@@ -44,5 +44,6 @@ var reducer = function reducer() {
   }
 };
 
-exports.default = reducer;
+var _default = reducer;
+exports["default"] = _default;
 //# sourceMappingURL=reducer.js.map

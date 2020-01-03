@@ -1,20 +1,21 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
 var styleConfig = {
   _themeName: undefined,
   _style: undefined,
   _createStyle: function _createStyle(R) {
     return {
-      R_DIALOG: _extends({}, R.DIALOG)
+      R_DIALOG: (0, _extends2["default"])({}, R.DIALOG)
     };
   }
 };
-
-exports.default = styleConfig;
+var _default = styleConfig;
+exports["default"] = _default;
 //# sourceMappingURL=Dialog.Style.js.map

@@ -1,19 +1,15 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _react = require('../_react');
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _react = _interopRequireDefault(require("../_react"));
 
 var CL = "legend-cell";
-
 var S = {
   CELL: {
     paddingLeft: '4px',
@@ -27,22 +23,16 @@ var LegendCell = function LegendCell(_ref) {
       children = _ref.children,
       titleStyle = _ref.titleStyle,
       _ref$title = _ref.title,
-      title = _ref$title === undefined ? '' : _ref$title;
-  return _react2.default.createElement(
-    'div',
-    {
-      className: CL,
-      style: _extends({}, S.CELL, style),
-      onClick: onClick
-    },
-    children,
-    _react2.default.createElement(
-      'span',
-      { style: titleStyle },
-      title
-    )
-  );
+      title = _ref$title === void 0 ? '' : _ref$title;
+  return _react["default"].createElement("div", {
+    className: CL,
+    style: (0, _extends2["default"])({}, S.CELL, {}, style),
+    onClick: onClick
+  }, children, _react["default"].createElement("span", {
+    style: titleStyle
+  }, title));
 };
 
-exports.default = LegendCell;
+var _default = LegendCell;
+exports["default"] = _default;
 //# sourceMappingURL=LegendCell.js.map

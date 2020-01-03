@@ -1,48 +1,32 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = require('../_react');
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
 
-var _react2 = _interopRequireDefault(_react);
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-var _withTheme = require('../hoc/withTheme');
+var _react = _interopRequireDefault(require("../_react"));
 
-var _withTheme2 = _interopRequireDefault(_withTheme);
+var _withTheme = _interopRequireDefault(require("../hoc/withTheme"));
 
-var _fnLeaflet = require('./fnLeaflet');
+var _fnLeaflet = _interopRequireDefault(require("./fnLeaflet"));
 
-var _fnLeaflet2 = _interopRequireDefault(_fnLeaflet);
+var _throttle = _interopRequireDefault(require("../../utils/throttle"));
 
-var _throttle = require('../../utils/throttle');
+var _selectors = require("../../flux/selectors");
 
-var _throttle2 = _interopRequireDefault(_throttle);
+var _actions = require("../../flux/place/actions");
 
-var _selectors = require('../../flux/selectors');
-
-var _actions = require('../../flux/place/actions');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //import React, { Component } from 'react';
-
+//import React, { Component } from 'react';
 //import PropTypes from 'prop-types';
-
-var Component = _react2.default.Component;
-
-
+var Component = _react["default"].Component;
 var PERIOD_MS = 5000;
-
 var S = {
   ROOT_DIV: {
     width: '100%',
@@ -51,8 +35,10 @@ var S = {
   }
 };
 
-var LeafletMap = function (_Component) {
-  _inherits(LeafletMap, _Component);
+var LeafletMap =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2["default"])(LeafletMap, _Component);
 
   /*
   static propTypes = {
@@ -61,17 +47,19 @@ var LeafletMap = function (_Component) {
   }
   */
   function LeafletMap(props) {
-    _classCallCheck(this, LeafletMap);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, (LeafletMap.__proto__ || Object.getPrototypeOf(LeafletMap)).call(this, props));
+    _this = _Component.call(this, props) || this;
 
     _this._handleClickMap = function (e) {
       var store = _this.props.store;
       var _e$latlng = e.latlng,
           lat = _e$latlng.lat,
           lng = _e$latlng.lng;
-
-      store.dispatch((0, _actions.placeRequested)({ lat: lat, lot: lng }));
+      store.dispatch((0, _actions.placeRequested)({
+        lat: lat,
+        lot: lng
+      }));
     };
 
     _this._onStore = function () {
@@ -82,66 +70,56 @@ var LeafletMap = function (_Component) {
           recent = _selectors.sPlace.recent(state);
 
       if (recent || recent === 0) {
-        _fnLeaflet2.default.addMarker(_selectors.sPlace.byId(state, recent), theme.themeName, _this.map);
-        //this.recent = recent;
+        _fnLeaflet["default"].addMarker(_selectors.sPlace.byId(state, recent), theme.themeName, _this.map); //this.recent = recent;
+
       }
     };
 
-    _this._setLoaded = _this._setLoaded.bind(_this);
+    _this._setLoaded = _this._setLoaded.bind((0, _assertThisInitialized2["default"])(_this));
     _this.state = {
       isLoaded: false
     };
     return _this;
   }
 
-  _createClass(LeafletMap, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _props = this.props,
-          id = _props.id,
-          store = _props.store;
+  var _proto = LeafletMap.prototype;
 
-      this.unsubsribe = store.subscribe(this._onStore);
-      this.map = _fnLeaflet2.default.createMap(id, this._setLoaded);
-      this.map.on('dblclick', (0, _throttle2.default)(this._handleClickMap, PERIOD_MS, {
-        trailing: false
-      }));
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.unsubsribe();
-    }
-  }, {
-    key: '_setLoaded',
-    value: function _setLoaded() {
-      this.setState({ isLoaded: true });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _props2 = this.props,
-          id = _props2.id,
-          rootStyle = _props2.rootStyle,
-          isLoaded = this.state.isLoaded;
+  _proto.componentDidMount = function componentDidMount() {
+    var _this$props2 = this.props,
+        id = _this$props2.id,
+        store = _this$props2.store;
+    this.unsubsribe = store.subscribe(this._onStore);
+    this.map = _fnLeaflet["default"].createMap(id, this._setLoaded);
+    this.map.on('dblclick', (0, _throttle["default"])(this._handleClickMap, PERIOD_MS, {
+      trailing: false
+    }));
+  };
 
-      return _react2.default.createElement(
-        'div',
-        {
-          style: _extends({}, S.ROOT_DIV, rootStyle),
-          id: id
-        },
-        !isLoaded && _react2.default.createElement(
-          'span',
-          null,
-          'LeafletMap Loading...'
-        )
-      );
-    }
-  }]);
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.unsubsribe();
+  };
+
+  _proto._setLoaded = function _setLoaded() {
+    this.setState({
+      isLoaded: true
+    });
+  };
+
+  _proto.render = function render() {
+    var _this$props3 = this.props,
+        id = _this$props3.id,
+        rootStyle = _this$props3.rootStyle,
+        isLoaded = this.state.isLoaded;
+    return _react["default"].createElement("div", {
+      style: (0, _extends2["default"])({}, S.ROOT_DIV, {}, rootStyle),
+      id: id
+    }, !isLoaded && _react["default"].createElement("span", null, "LeafletMap Loading..."));
+  };
 
   return LeafletMap;
 }(Component);
 
-exports.default = (0, _withTheme2.default)(LeafletMap);
+var _default = (0, _withTheme["default"])(LeafletMap);
+
+exports["default"] = _default;
 //# sourceMappingURL=LeafletMap.js.map

@@ -1,40 +1,36 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-var _reduxSaga = require('redux-saga');
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _actions = require('./actions');
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _actions2 = _interopRequireDefault(_actions);
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _selectors = require('../selectors');
+var _reduxSaga = require("redux-saga");
 
-var _OpenWeather = require('../../api/OpenWeather');
+var _actions = _interopRequireWildcard(require("./actions"));
 
-var _OpenWeather2 = _interopRequireDefault(_OpenWeather);
+var _selectors = require("../selectors");
 
-var _request = require('../../affects/request');
+var _OpenWeather = _interopRequireDefault(require("../../api/OpenWeather"));
 
-var _request2 = _interopRequireDefault(_request);
+var _request = _interopRequireDefault(require("../../affects/request"));
 
-var _actions3 = require('../modal/actions');
-
-var _actions4 = _interopRequireDefault(_actions3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _actions2 = _interopRequireDefault(require("../modal/actions"));
 
 var takeEvery = _reduxSaga.effects.takeEvery,
     select = _reduxSaga.effects.select,
     call = _reduxSaga.effects.call,
     put = _reduxSaga.effects.put;
 
-
-var fetchUV = /*#__PURE__*/regeneratorRuntime.mark(function fetchUV(action) {
+var fetchUV =
+/*#__PURE__*/
+_regenerator["default"].mark(function fetchUV(action) {
   var state, recent, recentUV, coord, json;
-  return regeneratorRuntime.wrap(function fetchUV$(_context) {
+  return _regenerator["default"].wrap(function fetchUV$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -54,12 +50,12 @@ var fetchUV = /*#__PURE__*/regeneratorRuntime.mark(function fetchUV(action) {
 
           coord = _selectors.sForecast.cityCoordById(state, recent);
           _context.next = 10;
-          return call(_request2.default, _OpenWeather2.default.crUV(coord.lat, coord.lon));
+          return call(_request["default"], _OpenWeather["default"].crUV(coord.lat, coord.lon));
 
         case 10:
           json = _context.sent;
           _context.next = 13;
-          return put(_actions2.default.requestedOk(json, recent));
+          return put(_actions["default"].requestedOk(json, recent));
 
         case 13:
           _context.next = 17;
@@ -67,7 +63,7 @@ var fetchUV = /*#__PURE__*/regeneratorRuntime.mark(function fetchUV(action) {
 
         case 15:
           _context.next = 17;
-          return put(_actions2.default.requestedInCache());
+          return put(_actions["default"].requestedInCache());
 
         case 17:
           _context.next = 23;
@@ -75,22 +71,24 @@ var fetchUV = /*#__PURE__*/regeneratorRuntime.mark(function fetchUV(action) {
 
         case 19:
           _context.prev = 19;
-          _context.t0 = _context['catch'](0);
+          _context.t0 = _context["catch"](0);
           _context.next = 23;
-          return put(_actions4.default.showModal('ERROR', {
+          return put(_actions2["default"].showModal('ERROR', {
             errMsg: _context.t0.message
           }));
 
         case 23:
-        case 'end':
+        case "end":
           return _context.stop();
       }
     }
-  }, fetchUV, this, [[0, 19]]);
+  }, fetchUV, null, [[0, 19]]);
 });
 
-var watchAction = /*#__PURE__*/regeneratorRuntime.mark(function watchAction() {
-  return regeneratorRuntime.wrap(function watchAction$(_context2) {
+var watchAction =
+/*#__PURE__*/
+_regenerator["default"].mark(function watchAction() {
+  return _regenerator["default"].wrap(function watchAction$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
@@ -98,12 +96,13 @@ var watchAction = /*#__PURE__*/regeneratorRuntime.mark(function watchAction() {
           return takeEvery(_actions.ACTION.UV_REQUESTED, fetchUV);
 
         case 2:
-        case 'end':
+        case "end":
           return _context2.stop();
       }
     }
-  }, watchAction, this);
+  }, watchAction);
 });
 
-exports.default = watchAction;
+var _default = watchAction;
+exports["default"] = _default;
 //# sourceMappingURL=saga.js.map

@@ -1,29 +1,18 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = require('../_react');
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _react = _interopRequireDefault(require("../_react"));
 
 var CL_NOT_SELECTED = "not-selected";
-
-var Component = _react2.default.Component;
-
+var Component = _react["default"].Component;
 var S = {
   ROOT: {
     display: 'inline-block',
@@ -45,22 +34,26 @@ var S = {
 var _getIsActive = function _getIsActive(props) {
   var store = props.store,
       storeKey = props.storeKey;
-
   return store.getState().layout[storeKey];
 };
 
-var ButtonCircle = function (_Component) {
-  _inherits(ButtonCircle, _Component);
+var ButtonCircle =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2["default"])(ButtonCircle, _Component);
 
   function ButtonCircle(props) {
-    _classCallCheck(this, ButtonCircle);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, (ButtonCircle.__proto__ || Object.getPrototypeOf(ButtonCircle)).call(this));
+    _this = _Component.call(this) || this;
 
     _this._onStore = function () {
       var isActive = _getIsActive(_this.props);
+
       if (isActive !== _this.state.isActive) {
-        _this.setState({ isActive: isActive });
+        _this.setState({
+          isActive: isActive
+        });
       }
     };
 
@@ -68,7 +61,6 @@ var ButtonCircle = function (_Component) {
       var _this$props = _this.props,
           storeKey = _this$props.storeKey,
           onClick = _this$props.onClick;
-
       onClick(storeKey);
     };
 
@@ -78,41 +70,35 @@ var ButtonCircle = function (_Component) {
     return _this;
   }
 
-  _createClass(ButtonCircle, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.unsubscribe = this.props.store.subscribe(this._onStore);
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.unsubscribe();
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          caption = _props.caption,
-          title = _props.title,
-          style = _props.style,
-          isActive = this.state.isActive,
-          _style = isActive ? _extends({}, S.ROOT, style) : _extends({}, S.ROOT, style, S.NOT_ACTIVE);
+  var _proto = ButtonCircle.prototype;
 
-      return _react2.default.createElement(
-        'span',
-        {
-          className: CL_NOT_SELECTED,
-          style: _style,
-          title: title,
-          onClick: this._hClick
-        },
-        caption
-      );
-    }
-  }]);
+  _proto.componentDidMount = function componentDidMount() {
+    this.unsubscribe = this.props.store.subscribe(this._onStore);
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.unsubscribe();
+  };
+
+  _proto.render = function render() {
+    var _this$props2 = this.props,
+        caption = _this$props2.caption,
+        title = _this$props2.title,
+        style = _this$props2.style,
+        isActive = this.state.isActive,
+        _style = isActive ? (0, _extends2["default"])({}, S.ROOT, {}, style) : (0, _extends2["default"])({}, S.ROOT, {}, style, {}, S.NOT_ACTIVE);
+
+    return _react["default"].createElement("span", {
+      className: CL_NOT_SELECTED,
+      style: _style,
+      title: title,
+      onClick: this._hClick
+    }, caption);
+  };
 
   return ButtonCircle;
 }(Component);
 
-exports.default = ButtonCircle;
+var _default = ButtonCircle;
+exports["default"] = _default;
 //# sourceMappingURL=ButtonCircle.js.map

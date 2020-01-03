@@ -1,23 +1,18 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _SettingsDialog = require('./SettingsDialog');
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _SettingsDialog2 = _interopRequireDefault(_SettingsDialog);
+var _SettingsDialog = _interopRequireDefault(require("./SettingsDialog"));
 
-var _ErrorDialog = require('./ErrorDialog');
-
-var _ErrorDialog2 = _interopRequireDefault(_ErrorDialog);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _ErrorDialog = _interopRequireDefault(require("./ErrorDialog"));
 
 var Router = {
-  SETTINGS: _SettingsDialog2.default,
-  ERROR: _ErrorDialog2.default
+  SETTINGS: _SettingsDialog["default"],
+  ERROR: _ErrorDialog["default"]
 };
-
-exports.default = Router;
+var _default = Router;
+exports["default"] = _default;
 //# sourceMappingURL=Router.js.map

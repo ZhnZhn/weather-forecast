@@ -1,26 +1,19 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //import React from 'react';
+exports.__esModule = true;
+exports["default"] = void 0;
 
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = require('../_react');
+var _react = _interopRequireDefault(require("../_react"));
 
-var _react2 = _interopRequireDefault(_react);
+var _dt = _interopRequireDefault(require("../../utils/dt"));
 
-var _dt = require('../../utils/dt');
+var _IconVane = _interopRequireDefault(require("./IconVane"));
 
-var _dt2 = _interopRequireDefault(_dt);
-
-var _IconVane = require('./IconVane');
-
-var _IconVane2 = _interopRequireDefault(_IconVane);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+//import React from 'react';
 var STYLE = {
   ROOT_DIV: {
     display: 'inline-block',
@@ -78,9 +71,10 @@ var STYLE = {
   }
 };
 
-var roundProp = function roundProp() {
-  var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var prop = arguments[1];
+var roundProp = function roundProp(obj, prop) {
+  if (obj === void 0) {
+    obj = {};
+  }
 
   return Math.round(obj[prop]);
 };
@@ -92,7 +86,7 @@ var _isNumber = function _isNumber(n) {
 var DayItem = function DayItem(props) {
   var style = props.style,
       _props$item = props.item,
-      item = _props$item === undefined ? {} : _props$item,
+      item = _props$item === void 0 ? {} : _props$item,
       onClick = props.onClick,
       weather = item.weather,
       deg = item.deg,
@@ -100,59 +94,40 @@ var DayItem = function DayItem(props) {
       temp = item.temp,
       timestamp = item.dt,
       _speed = _isNumber(speed) ? speed.toFixed(2) : '',
-      day = _dt2.default.toShortDayOfWeek(timestamp),
+      day = _dt["default"].toShortDayOfWeek(timestamp),
       pressure = roundProp(item, 'pressure'),
       icon = weather[0].icon,
       tempDay = roundProp(temp, 'day'),
       tempNight = roundProp(temp, 'night');
 
-  return _react2.default.createElement(
-    'div',
-    {
-      style: _extends({}, STYLE.ROOT_DIV, style),
-      onClick: onClick.bind(null, item)
-    },
-    _react2.default.createElement(
-      'div',
-      { style: STYLE.DAY },
-      day
-    ),
-    _react2.default.createElement(
-      'span',
-      { style: STYLE.PRESSURE },
-      pressure
-    ),
-    _react2.default.createElement('img', { src: './img/' + icon + '.png', style: STYLE.ICON }),
-    _react2.default.createElement(
-      'div',
-      { style: STYLE.CELL_WIND },
-      _react2.default.createElement(_IconVane2.default, { deg: deg }),
-      _react2.default.createElement(
-        'span',
-        { style: STYLE.WIND_SPEED },
-        _speed
-      )
-    ),
-    _react2.default.createElement(
-      'div',
-      { style: STYLE.CELL_TEMP },
-      _react2.default.createElement(
-        'span',
-        { style: STYLE.TEMP_DAY },
-        tempDay
-      ),
-      _react2.default.createElement(
-        'span',
-        { style: STYLE.TEMP_NIGHT },
-        tempNight
-      )
-    )
-  );
+  return _react["default"].createElement("div", {
+    style: (0, _extends2["default"])({}, STYLE.ROOT_DIV, {}, style),
+    onClick: onClick.bind(null, item)
+  }, _react["default"].createElement("div", {
+    style: STYLE.DAY
+  }, day), _react["default"].createElement("span", {
+    style: STYLE.PRESSURE
+  }, pressure), _react["default"].createElement("img", {
+    src: "./img/" + icon + ".png",
+    style: STYLE.ICON
+  }), _react["default"].createElement("div", {
+    style: STYLE.CELL_WIND
+  }, _react["default"].createElement(_IconVane["default"], {
+    deg: deg
+  }), _react["default"].createElement("span", {
+    style: STYLE.WIND_SPEED
+  }, _speed)), _react["default"].createElement("div", {
+    style: STYLE.CELL_TEMP
+  }, _react["default"].createElement("span", {
+    style: STYLE.TEMP_DAY
+  }, tempDay), _react["default"].createElement("span", {
+    style: STYLE.TEMP_NIGHT
+  }, tempNight)));
 };
 
 DayItem.defaultProps = {
   onClick: function onClick() {}
 };
-
-exports.default = DayItem;
+var _default = DayItem;
+exports["default"] = _default;
 //# sourceMappingURL=DayItem.js.map

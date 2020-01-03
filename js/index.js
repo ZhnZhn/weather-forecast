@@ -1,42 +1,32 @@
-'use strict';
+"use strict";
 
-var _react = require('react');
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _react2 = _interopRequireDefault(_react);
+var _react = _interopRequireDefault(require("react"));
 
-var _reactDom = require('react-dom');
+var _reactDom = _interopRequireDefault(require("react-dom"));
 
-var _reactDom2 = _interopRequireDefault(_reactDom);
+var _configStore = _interopRequireDefault(require("./flux/configStore"));
 
-var _configStore = require('./flux/configStore');
+var _WeatherSaga = _interopRequireDefault(require("./components/WeatherSaga"));
 
-var _configStore2 = _interopRequireDefault(_configStore);
+var _actions = require("./flux/forecast/actions");
 
-var _WeatherSaga = require('./components/WeatherSaga');
+var _throttle = _interopRequireDefault(require("./utils/throttle"));
 
-var _WeatherSaga2 = _interopRequireDefault(_WeatherSaga);
-
-var _actions = require('./flux/forecast/actions');
-
-var _throttle = require('./utils/throttle');
-
-var _throttle2 = _interopRequireDefault(_throttle);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var React = _react2.default || window.React;
-var ReactDOM = _reactDom2.default || window.ReactDOM;
+var React = _react["default"] || window.React;
+var ReactDOM = _reactDom["default"] || window.ReactDOM;
 var render = ReactDOM.render;
-
-
-var store = (0, _configStore2.default)();
-
+var store = (0, _configStore["default"])();
 var MS_PERIOD = 10000;
 
 var _forecastRequest = function _forecastRequest(id) {
   return store.dispatch((0, _actions.forecastRequested)(id));
 };
-var _forecastRequestTh = (0, _throttle2.default)(_forecastRequest, MS_PERIOD, { trailing: false });
+
+var _forecastRequestTh = (0, _throttle["default"])(_forecastRequest, MS_PERIOD, {
+  trailing: false
+});
 
 window.weather = {
   fnFetchForecast: function fnFetchForecast(id) {
@@ -45,6 +35,7 @@ window.weather = {
     }
   }
 };
-
-render(React.createElement(_WeatherSaga2.default, { store: store }), document.getElementById('app'));
+render(React.createElement(_WeatherSaga["default"], {
+  store: store
+}), document.getElementById('app'));
 //# sourceMappingURL=index.js.map

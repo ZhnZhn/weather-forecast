@@ -1,17 +1,22 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.isApiKey = undefined;
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _reduxSaga = require('redux-saga');
+exports.__esModule = true;
+exports.isApiKey = void 0;
 
-var _selectors = require('./selectors');
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _reduxSaga = require("redux-saga");
+
+var _selectors = require("./selectors");
 
 var select = _reduxSaga.effects.select;
-var isApiKey = /*#__PURE__*/exports.isApiKey = regeneratorRuntime.mark(function isApiKey() {
-  return regeneratorRuntime.wrap(function isApiKey$(_context) {
+
+var isApiKey =
+/*#__PURE__*/
+_regenerator["default"].mark(function isApiKey() {
+  return _regenerator["default"].wrap(function isApiKey$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -19,13 +24,15 @@ var isApiKey = /*#__PURE__*/exports.isApiKey = regeneratorRuntime.mark(function 
           return select(_selectors.sSettings.isApiKey);
 
         case 2:
-          return _context.abrupt('return', _context.sent);
+          return _context.abrupt("return", _context.sent);
 
         case 3:
-        case 'end':
+        case "end":
           return _context.stop();
       }
     }
-  }, isApiKey, this);
+  }, isApiKey);
 });
+
+exports.isApiKey = isApiKey;
 //# sourceMappingURL=gen.js.map

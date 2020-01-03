@@ -1,15 +1,13 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _react = require('../_react');
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _react2 = _interopRequireDefault(_react);
+var _react = _interopRequireDefault(require("../_react"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+//import React from 'react';
 var STYLE = {
   ROOT_DIV: {
     display: 'inline',
@@ -21,40 +19,23 @@ var STYLE = {
     borderBottom: '3px solid #795548',
     marginBottom: '8px'
   }
-}; //import React from 'react';
-
+};
 
 var Caption = function Caption(props) {
   var _props$forecast = props.forecast,
-      forecast = _props$forecast === undefined ? {} : _props$forecast,
+      forecast = _props$forecast === void 0 ? {} : _props$forecast,
       style = props.style,
       _forecast$city = forecast.city,
-      city = _forecast$city === undefined ? {} : _forecast$city,
+      city = _forecast$city === void 0 ? {} : _forecast$city,
       _city$name = city.name,
-      name = _city$name === undefined ? 'Forecast' : _city$name,
+      name = _city$name === void 0 ? 'Forecast' : _city$name,
       _city$country = city.country,
-      country = _city$country === undefined ? '' : _city$country;
-
-  return _react2.default.createElement(
-    'div',
-    { style: Object.assign({}, STYLE.ROOT_DIV, style) },
-    _react2.default.createElement(
-      'span',
-      null,
-      name
-    ),
-    _react2.default.createElement(
-      'span',
-      null,
-      ':'
-    ),
-    _react2.default.createElement(
-      'span',
-      null,
-      country
-    )
-  );
+      country = _city$country === void 0 ? '' : _city$country;
+  return _react["default"].createElement("div", {
+    style: Object.assign({}, STYLE.ROOT_DIV, style)
+  }, _react["default"].createElement("span", null, name), _react["default"].createElement("span", null, ":"), _react["default"].createElement("span", null, country));
 };
 
-exports.default = Caption;
+var _default = Caption;
+exports["default"] = _default;
 //# sourceMappingURL=Caption.js.map

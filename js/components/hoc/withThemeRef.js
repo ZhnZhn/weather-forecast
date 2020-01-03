@@ -1,32 +1,27 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _react = require('react');
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react2 = _interopRequireDefault(_react);
+var _react = _interopRequireDefault(require("react"));
 
-var _ThemeContext = require('./ThemeContext');
-
-var _ThemeContext2 = _interopRequireDefault(_ThemeContext);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _ThemeContext = _interopRequireDefault(require("./ThemeContext"));
 
 var withThemeRef = function withThemeRef(Wrapper) {
-  return _react2.default.forwardRef(function (props, ref) {
-    return _react2.default.createElement(
-      _ThemeContext2.default.Consumer,
-      null,
-      function (theme) {
-        return _react2.default.createElement(Wrapper, _extends({}, props, { theme: theme, ref: ref }));
-      }
-    );
+  return _react["default"].forwardRef(function (props, ref) {
+    return _react["default"].createElement(_ThemeContext["default"].Consumer, null, function (theme) {
+      return _react["default"].createElement(Wrapper, (0, _extends2["default"])({}, props, {
+        theme: theme,
+        ref: ref
+      }));
+    });
   });
 };
 
-exports.default = withThemeRef;
+var _default = withThemeRef;
+exports["default"] = _default;
 //# sourceMappingURL=withThemeRef.js.map

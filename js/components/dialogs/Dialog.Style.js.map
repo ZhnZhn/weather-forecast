@@ -1,18 +1,1 @@
-{
- "version": 3,
- "sources": [
-  "../../../src/components/dialogs/Dialog.Style.js"
- ],
- "file": "../../../src/components/dialogs/Dialog.Style.js",
- "names": [
-  "styleConfig",
-  "_themeName",
-  "undefined",
-  "_style",
-  "_createStyle",
-  "R",
-  "R_DIALOG",
-  "DIALOG"
- ],
- "mappings": ";;;;;;;;AACA,IAAMA,cAAc;AAClBC,cAAYC,SADM;AAElBC,UAAQD,SAFU;AAGlBE,gBAAc,sBAACC,CAAD,EAAO;AACnB,WAAO;AACLC,6BACKD,EAAEE,MADP;AADK,KAAP;AAKD;AATiB,CAApB;;kBAYeP,W"
-}
+{"version":3,"sources":["../../../src/components/dialogs/Dialog.Style.js"],"names":["styleConfig","_themeName","undefined","_style","_createStyle","R","R_DIALOG","DIALOG"],"mappings":";;;;;;;;;AACA,IAAMA,WAAW,GAAG;AAClBC,EAAAA,UAAU,EAAEC,SADM;AAElBC,EAAAA,MAAM,EAAED,SAFU;AAGlBE,EAAAA,YAAY,EAAE,sBAACC,CAAD,EAAO;AACnB,WAAO;AACLC,MAAAA,QAAQ,gCACHD,CAAC,CAACE,MADC;AADH,KAAP;AAKD;AATiB,CAApB;eAYeP,W","sourcesContent":["\r\nconst styleConfig = {\r\n  _themeName: undefined,\r\n  _style: undefined,\r\n  _createStyle: (R) => {\r\n    return {\r\n      R_DIALOG: {\r\n        ...R.DIALOG\r\n      }\r\n    };\r\n  }\r\n};\r\n\r\nexport default styleConfig\r\n"],"file":"Dialog.Style.js"}

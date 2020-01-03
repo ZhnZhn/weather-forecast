@@ -1,48 +1,50 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-var _reduxSaga = require('redux-saga');
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _OpenWeather = require('../../api/OpenWeather');
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _OpenWeather2 = _interopRequireDefault(_OpenWeather);
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _actions = require('./actions');
+var _reduxSaga = require("redux-saga");
 
-var _actions2 = _interopRequireDefault(_actions);
+var _OpenWeather = _interopRequireDefault(require("../../api/OpenWeather"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _actions = _interopRequireWildcard(require("./actions"));
 
 var throttle = _reduxSaga.effects.throttle,
     call = _reduxSaga.effects.call,
     put = _reduxSaga.effects.put;
 
-
-var setSettings = /*#__PURE__*/regeneratorRuntime.mark(function setSettings(action) {
-  return regeneratorRuntime.wrap(function setSettings$(_context) {
+var setSettings =
+/*#__PURE__*/
+_regenerator["default"].mark(function setSettings(action) {
+  return _regenerator["default"].wrap(function setSettings$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return call(_OpenWeather2.default.setApiKey, action.apiKey);
+          return call(_OpenWeather["default"].setApiKey, action.apiKey);
 
         case 2:
           _context.next = 4;
-          return put(_actions2.default.setApiKey());
+          return put(_actions["default"].setApiKey());
 
         case 4:
-        case 'end':
+        case "end":
           return _context.stop();
       }
     }
-  }, setSettings, this);
+  }, setSettings);
 });
 
-var watchSettingSet = /*#__PURE__*/regeneratorRuntime.mark(function watchSettingSet() {
-  return regeneratorRuntime.wrap(function watchSettingSet$(_context2) {
+var watchSettingSet =
+/*#__PURE__*/
+_regenerator["default"].mark(function watchSettingSet() {
+  return _regenerator["default"].wrap(function watchSettingSet$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
@@ -50,12 +52,13 @@ var watchSettingSet = /*#__PURE__*/regeneratorRuntime.mark(function watchSetting
           return throttle(500, _actions.ACTION.SETTINGS_SET, setSettings);
 
         case 2:
-        case 'end':
+        case "end":
           return _context2.stop();
       }
     }
-  }, watchSettingSet, this);
+  }, watchSettingSet);
 });
 
-exports.default = watchSettingSet;
+var _default = watchSettingSet;
+exports["default"] = _default;
 //# sourceMappingURL=saga.js.map

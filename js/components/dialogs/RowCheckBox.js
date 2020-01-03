@@ -1,34 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = require('../_react');
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-var _react2 = _interopRequireDefault(_react);
+var _react = _interopRequireDefault(require("../_react"));
 
-var _SvgCheckBox = require('../zhn-atoms/SvgCheckBox');
+var _SvgCheckBox = _interopRequireDefault(require("../zhn-atoms/SvgCheckBox"));
 
-var _SvgCheckBox2 = _interopRequireDefault(_SvgCheckBox);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //import React, { Component } from 'react';
+//import React, { Component } from 'react';
 //import PropTypes from "prop-types";
-
-
-var Component = _react2.default.Component;
-
-
+var Component = _react["default"].Component;
 var STYLE = {
   ROOT: {
     paddingTop: '6px',
@@ -48,8 +35,10 @@ var STYLE = {
   }
 };
 
-var RowCheckBox = function (_Component) {
-  _inherits(RowCheckBox, _Component);
+var RowCheckBox =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2["default"])(RowCheckBox, _Component);
 
   /*
   static propTypes = {
@@ -60,11 +49,10 @@ var RowCheckBox = function (_Component) {
     onUnCheck: PropTypes.func
   }
   */
-
   function RowCheckBox(props) {
-    _classCallCheck(this, RowCheckBox);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, (RowCheckBox.__proto__ || Object.getPrototypeOf(RowCheckBox)).call(this));
+    _this = _Component.call(this) || this;
 
     _this._handleCheck = function () {
       var onCheck = _this.props.onCheck;
@@ -72,7 +60,10 @@ var RowCheckBox = function (_Component) {
       if (typeof onCheck == 'function') {
         onCheck();
       }
-      _this.setState({ isChecked: true });
+
+      _this.setState({
+        isChecked: true
+      });
     };
 
     _this._handleUnCheck = function () {
@@ -81,7 +72,10 @@ var RowCheckBox = function (_Component) {
       if (typeof onUnCheck == 'function') {
         onUnCheck();
       }
-      _this.setState({ isChecked: false });
+
+      _this.setState({
+        isChecked: false
+      });
     };
 
     _this._handleToggle = function () {
@@ -100,38 +94,31 @@ var RowCheckBox = function (_Component) {
     return _this;
   }
 
-  _createClass(RowCheckBox, [{
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          rootStyle = _props.rootStyle,
-          caption = _props.caption,
-          captionStyle = _props.captionStyle,
-          isChecked = this.state.isChecked,
-          _style = isChecked ? STYLE.CHECKED : null;
+  var _proto = RowCheckBox.prototype;
 
-      return _react2.default.createElement(
-        'div',
-        { style: _extends({}, STYLE.ROOT, rootStyle) },
-        _react2.default.createElement(_SvgCheckBox2.default, {
-          value: isChecked,
-          onCheck: this._handleCheck,
-          onUnCheck: this._handleUnCheck
-        }),
-        caption && _react2.default.createElement(
-          'span',
-          {
-            style: _extends({}, STYLE.CAPTION, captionStyle, _style),
-            onClick: this._handleToggle
-          },
-          caption
-        )
-      );
-    }
-  }]);
+  _proto.render = function render() {
+    var _this$props = this.props,
+        rootStyle = _this$props.rootStyle,
+        caption = _this$props.caption,
+        captionStyle = _this$props.captionStyle,
+        isChecked = this.state.isChecked,
+        _style = isChecked ? STYLE.CHECKED : null;
+
+    return _react["default"].createElement("div", {
+      style: (0, _extends2["default"])({}, STYLE.ROOT, {}, rootStyle)
+    }, _react["default"].createElement(_SvgCheckBox["default"], {
+      value: isChecked,
+      onCheck: this._handleCheck,
+      onUnCheck: this._handleUnCheck
+    }), caption && _react["default"].createElement("span", {
+      style: (0, _extends2["default"])({}, STYLE.CAPTION, {}, captionStyle, {}, _style),
+      onClick: this._handleToggle
+    }, caption));
+  };
 
   return RowCheckBox;
 }(Component);
 
-exports.default = RowCheckBox;
+var _default = RowCheckBox;
+exports["default"] = _default;
 //# sourceMappingURL=RowCheckBox.js.map

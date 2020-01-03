@@ -1,41 +1,30 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _class, _temp; //import React, { Component } from 'react';
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
+var _react = _interopRequireDefault(require("../_react"));
 
-var _react = require('../_react');
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Component = _react2.default.Component;
-
+//import React, { Component } from 'react';
+var Component = _react["default"].Component;
 var Transitions = {
   WIDTH: 'width 500ms ease-out',
   OPACITY: 'opacity 400ms linear'
 };
 
-var ProgressLine = (_temp = _class = function (_Component) {
-  _inherits(ProgressLine, _Component);
+var ProgressLine =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2["default"])(ProgressLine, _Component);
 
   function ProgressLine(props) {
-    _classCallCheck(this, ProgressLine);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, (ProgressLine.__proto__ || Object.getPrototypeOf(ProgressLine)).call(this));
-
+    _this = _Component.call(this) || this;
     _this.wasCompleted = false;
     _this.idCompleted = null;
     _this.wasOpacied = false;
@@ -43,87 +32,93 @@ var ProgressLine = (_temp = _class = function (_Component) {
     return _this;
   }
 
-  _createClass(ProgressLine, [{
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      if (this.idCompleted) {
-        clearTimeout(this.idCompleted);
-      }
-      if (this.idOpacied) {
-        clearTimeout(this.idOpacied);
-      }
+  var _proto = ProgressLine.prototype;
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    if (this.idCompleted) {
+      clearTimeout(this.idCompleted);
     }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate() {
-      var _this2 = this;
 
-      if (this.wasCompleted) {
-        this.idCompleted = setTimeout(function () {
-          _this2.idCompleted = null;
-          _this2.forceUpdate();
-        }, 800);
-      } else if (this.wasOpacied) {
-        this.idOpacied = setTimeout(function () {
-          _this2.idOpacied = null;
-          _this2.forceUpdate();
-        }, 800);
-      }
+    if (this.idOpacied) {
+      clearTimeout(this.idOpacied);
     }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          color = _props.color,
-          height = _props.height;
+  };
 
-      var _style = void 0;
+  _proto.componentDidUpdate = function componentDidUpdate() {
+    var _this2 = this;
 
-      if (this.wasOpacied) {
-        _style = {
-          backgroundColor: color,
-          width: 0,
-          opacity: 1,
-          height: height
-        };
-        this.wasOpacied = false;
-      } else if (this.wasCompleted) {
-        _style = {
-          backgroundColor: color,
-          width: '100%',
-          opacity: 0,
-          transition: Transitions.OPACITY,
-          height: height
-        };
-        this.wasCompleted = false;
-        this.wasOpacied = true;
-      } else {
-        var completed = this.props.completed;
+    if (this.wasCompleted) {
+      this.idCompleted = setTimeout(function () {
+        _this2.idCompleted = null;
 
-        if (completed < 0) {
-          completed = 0;
-        } else if (completed >= 100) {
-          completed = 100;
-          this.wasCompleted = true;
-        }
+        _this2.forceUpdate();
+      }, 800);
+    } else if (this.wasOpacied) {
+      this.idOpacied = setTimeout(function () {
+        _this2.idOpacied = null;
 
-        _style = {
-          backgroundColor: color,
-          opacity: 1,
-          width: completed + '%',
-          transition: Transitions.WIDTH,
-          height: height
-        };
+        _this2.forceUpdate();
+      }, 800);
+    }
+  };
+
+  _proto.render = function render() {
+    var _this$props = this.props,
+        color = _this$props.color,
+        height = _this$props.height;
+
+    var _style;
+
+    if (this.wasOpacied) {
+      _style = {
+        backgroundColor: color,
+        width: 0,
+        opacity: 1,
+        height: height
+      };
+      this.wasOpacied = false;
+    } else if (this.wasCompleted) {
+      _style = {
+        backgroundColor: color,
+        width: '100%',
+        opacity: 0,
+        transition: Transitions.OPACITY,
+        height: height
+      };
+      this.wasCompleted = false;
+      this.wasOpacied = true;
+    } else {
+      var completed = this.props.completed;
+
+      if (completed < 0) {
+        completed = 0;
+      } else if (completed >= 100) {
+        completed = 100;
+        this.wasCompleted = true;
       }
 
-      return _react2.default.createElement('div', { className: 'progress-line', style: _style });
+      _style = {
+        backgroundColor: color,
+        opacity: 1,
+        width: completed + '%',
+        transition: Transitions.WIDTH,
+        height: height
+      };
     }
-  }]);
+
+    return _react["default"].createElement("div", {
+      className: "progress-line",
+      style: _style
+    });
+  };
 
   return ProgressLine;
-}(Component), _class.defaultProps = {
+}(Component);
+
+ProgressLine.defaultProps = {
   color: '#2F7ED8',
   height: 3
-}, _temp);
-exports.default = ProgressLine;
+};
+var _default = ProgressLine;
+exports["default"] = _default;
 //# sourceMappingURL=ProgressLine.js.map

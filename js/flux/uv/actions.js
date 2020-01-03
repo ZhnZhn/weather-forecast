@@ -1,35 +1,44 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var ACTION = exports.ACTION = {
+exports.__esModule = true;
+exports["default"] = exports.uvRequestedInCache = exports.uvRequestedOk = exports.uvRequested = exports.ACTION = void 0;
+var ACTION = {
   UV_REQUESTED: 'UV_REQUESTED',
   UV_REQUESTED_OK: 'UV_REQUESTED_OK',
   UV_REQUESTED_INCACHE: 'UV_REQUESTED_INCACHE'
 };
+exports.ACTION = ACTION;
 
-var uvRequested = exports.uvRequested = function uvRequested() {
+var uvRequested = function uvRequested() {
   return {
     type: ACTION.UV_REQUESTED
   };
 };
-var uvRequestedOk = exports.uvRequestedOk = function uvRequestedOk(json, id) {
+
+exports.uvRequested = uvRequested;
+
+var uvRequestedOk = function uvRequestedOk(json, id) {
   return {
-    type: ACTION.UV_REQUESTED_OK, json: json, id: id
+    type: ACTION.UV_REQUESTED_OK,
+    json: json,
+    id: id
   };
 };
-var uvRequestedInCache = exports.uvRequestedInCache = function uvRequestedInCache() {
+
+exports.uvRequestedOk = uvRequestedOk;
+
+var uvRequestedInCache = function uvRequestedInCache() {
   return {
     type: ACTION.UV_REQUESTED_INCACHE
   };
 };
 
+exports.uvRequestedInCache = uvRequestedInCache;
 var actions = {
   requested: uvRequested,
   requestedOk: uvRequestedOk,
   requestedInCache: uvRequestedInCache
 };
-
-exports.default = actions;
+var _default = actions;
+exports["default"] = _default;
 //# sourceMappingURL=actions.js.map

@@ -1,15 +1,13 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _react = require('../_react');
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _react2 = _interopRequireDefault(_react);
+var _react = _interopRequireDefault(require("../_react"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+//import React from 'react';
 var STYLE = {
   SVG: {
     position: 'relative',
@@ -18,28 +16,31 @@ var STYLE = {
     width: '18px',
     height: '18px'
   }
-}; //import React from 'react';
-
+};
 
 var SvgCircle = function SvgCircle(_ref) {
   var stroke = _ref.stroke,
       fill = _ref.fill;
-
-  return _react2.default.createElement(
-    'svg',
-    { xmlns: 'http://www.w3.org/2000/svg',
-      viewBox: '0 0 18 18', width: '100%', height: '100%',
-      preserveAspectRatio: 'none', 'aria-labelledby': 'title',
-      style: STYLE.SVG
-    },
-    _react2.default.createElement(
-      'title',
-      { id: 'title' },
-      'Circle Marker'
-    ),
-    _react2.default.createElement('circle', { r: '6', stroke: stroke, strokeWidth: '2', fill: fill, cx: '9', cy: '9' })
-  );
+  return _react["default"].createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 18 18",
+    width: "100%",
+    height: "100%",
+    preserveAspectRatio: "none",
+    "aria-labelledby": "title",
+    style: STYLE.SVG
+  }, _react["default"].createElement("title", {
+    id: "title"
+  }, "Circle Marker"), _react["default"].createElement("circle", {
+    r: "6",
+    stroke: stroke,
+    strokeWidth: "2",
+    fill: fill,
+    cx: "9",
+    cy: "9"
+  }));
 };
 
-exports.default = SvgCircle;
+var _default = SvgCircle;
+exports["default"] = _default;
 //# sourceMappingURL=SvgCircle.js.map

@@ -1,33 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _class, _temp, _initialiseProps; //import React, { Component } from 'react';
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
 
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-var _react = require('../_react');
+var _react = _interopRequireDefault(require("../_react"));
 
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Component = _react2.default.Component;
-
-
+//import React, { Component } from 'react';
+var Component = _react["default"].Component;
 var CL = "tabpane__tabs";
-
 var S = {
   UL: {
     listStyle: 'outside none none',
@@ -51,100 +39,92 @@ var S = {
   }
 };
 
-var TabPane = (_temp = _class = function (_Component) {
-  _inherits(TabPane, _Component);
+var TabPane =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2["default"])(TabPane, _Component);
 
   function TabPane(props) {
-    _classCallCheck(this, TabPane);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, (TabPane.__proto__ || Object.getPrototypeOf(TabPane)).call(this));
+    _this = _Component.call(this) || this;
 
-    _initialiseProps.call(_this);
+    _this._handlerClickTab = function (index, tabEl) {
+      _this.setState({
+        selectedTabIndex: index
+      });
 
-    var components = props.children.map(function (tab, index) {
-      return _react2.default.cloneElement(tab.props.children, {
+      if (typeof tabEl.props.onClick === 'function') {
+        tabEl.props.onClick();
+      }
+    };
+
+    _this._renderTabs = function (children) {
+      var selectedTabIndex = _this.state.selectedTabIndex;
+      return children.map(function (tab, index) {
+        var isSelected = index === selectedTabIndex ? true : false;
+        return _react["default"].cloneElement(tab, {
+          key: index,
+          onClick: _this._handlerClickTab.bind((0, _assertThisInitialized2["default"])(_this), index, tab),
+          isSelected: isSelected
+        });
+      });
+    };
+
+    _this._renderComponents = function () {
+      var _this$state = _this.state,
+          selectedTabIndex = _this$state.selectedTabIndex,
+          components = _this$state.components;
+      return components.map(function (comp, index) {
+        var divStyle = index === selectedTabIndex ? S.TAB_SELECTED : S.NONE;
+        return _react["default"].createElement("div", {
+          style: divStyle,
+          key: 'a' + index
+        }, comp);
+      });
+    };
+
+    var _components = props.children.map(function (tab, index) {
+      return _react["default"].cloneElement(tab.props.children, {
         key: 'comp' + index
       });
     });
+
     _this.state = {
       selectedTabIndex: 0,
-      components: components
+      components: _components
     };
     return _this;
   }
 
-  _createClass(TabPane, [{
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          width = _props.width,
-          height = _props.height,
-          tabsStyle = _props.tabsStyle,
-          children = _props.children;
+  var _proto = TabPane.prototype;
 
-      return _react2.default.createElement(
-        'div',
-        { style: { width: width, height: height } },
-        _react2.default.createElement(
-          'ul',
-          {
-            className: CL,
-            style: _extends({}, S.UL, tabsStyle)
-          },
-          this._renderTabs(children)
-        ),
-        _react2.default.createElement(
-          'div',
-          { style: S.TABS },
-          this._renderComponents()
-        )
-      );
-    }
-  }, {
-    key: 'getSelectedTabIndex',
-    value: function getSelectedTabIndex() {
-      return this.state.selectedTabIndex;
-    }
-  }]);
+  _proto.render = function render() {
+    var _this$props = this.props,
+        width = _this$props.width,
+        height = _this$props.height,
+        tabsStyle = _this$props.tabsStyle,
+        children = _this$props.children;
+    return _react["default"].createElement("div", {
+      style: {
+        width: width,
+        height: height
+      }
+    }, _react["default"].createElement("ul", {
+      className: CL,
+      style: (0, _extends2["default"])({}, S.UL, {}, tabsStyle)
+    }, this._renderTabs(children)), _react["default"].createElement("div", {
+      style: S.TABS
+    }, this._renderComponents()));
+  };
+
+  _proto.getSelectedTabIndex = function getSelectedTabIndex() {
+    return this.state.selectedTabIndex;
+  };
 
   return TabPane;
-}(Component), _initialiseProps = function _initialiseProps() {
-  var _this2 = this;
+}(Component);
 
-  this._handlerClickTab = function (index, tabEl) {
-    _this2.setState({ selectedTabIndex: index });
-    if (typeof tabEl.props.onClick === 'function') {
-      tabEl.props.onClick();
-    }
-  };
-
-  this._renderTabs = function (children) {
-    var selectedTabIndex = _this2.state.selectedTabIndex;
-
-    return children.map(function (tab, index) {
-      var isSelected = index === selectedTabIndex ? true : false;
-      return _react2.default.cloneElement(tab, {
-        key: index,
-        onClick: _this2._handlerClickTab.bind(_this2, index, tab),
-        isSelected: isSelected
-      });
-    });
-  };
-
-  this._renderComponents = function () {
-    var _state = _this2.state,
-        selectedTabIndex = _state.selectedTabIndex,
-        components = _state.components;
-
-    return components.map(function (comp, index) {
-      var divStyle = index === selectedTabIndex ? S.TAB_SELECTED : S.NONE;
-      return _react2.default.createElement(
-        'div',
-        { style: divStyle, key: 'a' + index },
-        comp
-      );
-    });
-  };
-}, _temp);
-exports.default = TabPane;
+var _default = TabPane;
+exports["default"] = _default;
 //# sourceMappingURL=TabPane.js.map

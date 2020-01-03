@@ -1,29 +1,33 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var ACTION = exports.ACTION = {
+exports.__esModule = true;
+exports["default"] = exports.setApiKey = exports.setSettings = exports.ACTION = void 0;
+var ACTION = {
   SETTINGS_SET: 'SETTINGS_SET',
   SETTINGS_SET_APIKEY: 'SETTINGS_SET_APIKEY'
 };
+exports.ACTION = ACTION;
 
-var setSettings = exports.setSettings = function setSettings(apiKey) {
+var setSettings = function setSettings(apiKey) {
   return {
-    type: ACTION.SETTINGS_SET, apiKey: apiKey
+    type: ACTION.SETTINGS_SET,
+    apiKey: apiKey
   };
 };
 
-var setApiKey = exports.setApiKey = function setApiKey() {
+exports.setSettings = setSettings;
+
+var setApiKey = function setApiKey() {
   return {
     type: ACTION.SETTINGS_SET_APIKEY
   };
 };
 
+exports.setApiKey = setApiKey;
 var actions = {
   setSettings: setSettings,
   setApiKey: setApiKey
 };
-
-exports.default = actions;
+var _default = actions;
+exports["default"] = _default;
 //# sourceMappingURL=actions.js.map

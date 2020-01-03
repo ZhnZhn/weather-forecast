@@ -1,29 +1,18 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports["default"] = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = require('../_react');
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-var _react2 = _interopRequireDefault(_react);
+var _react = _interopRequireDefault(require("../_react"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //import React, { Component } from 'react';
-
-
-var Component = _react2.default.Component;
-
-
+//import React, { Component } from 'react';
+var Component = _react["default"].Component;
 var S = {
   LI: {
     display: 'inline-block',
@@ -42,42 +31,35 @@ var S = {
   }
 };
 
-var Tab = function (_Component) {
-  _inherits(Tab, _Component);
+var Tab =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2["default"])(Tab, _Component);
 
   function Tab() {
-    _classCallCheck(this, Tab);
-
-    return _possibleConstructorReturn(this, (Tab.__proto__ || Object.getPrototypeOf(Tab)).apply(this, arguments));
+    return _Component.apply(this, arguments) || this;
   }
 
-  _createClass(Tab, [{
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          title = _props.title,
-          isSelected = _props.isSelected,
-          selectedStyle = _props.selectedStyle,
-          onClick = _props.onClick;
+  var _proto = Tab.prototype;
 
-      var _selectedStyle = isSelected ? _extends({}, S.SELECTED, selectedStyle) : null;
-      return _react2.default.createElement(
-        'li',
-        {
-          style: _extends({}, S.LI, _selectedStyle),
-          onClick: onClick
-        },
-        _react2.default.createElement(
-          'span',
-          null,
-          title
-        )
-      );
-    }
-  }]);
+  _proto.render = function render() {
+    var _this$props = this.props,
+        title = _this$props.title,
+        isSelected = _this$props.isSelected,
+        selectedStyle = _this$props.selectedStyle,
+        onClick = _this$props.onClick;
+
+    var _selectedStyle = isSelected ? (0, _extends2["default"])({}, S.SELECTED, {}, selectedStyle) : null;
+
+    return _react["default"].createElement("li", {
+      style: (0, _extends2["default"])({}, S.LI, {}, _selectedStyle),
+      onClick: onClick
+    }, _react["default"].createElement("span", null, title));
+  };
 
   return Tab;
 }(Component);
 
-exports.default = Tab;
+var _default = Tab;
+exports["default"] = _default;
 //# sourceMappingURL=Tab.js.map
