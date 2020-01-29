@@ -22,8 +22,6 @@ const S = {
   }
 };
 
-const _isFn = fn => typeof fn === 'function';
-
 const _crValue = (_v, v) => {
   let value;
   if (!_v) { value = v }
@@ -47,21 +45,28 @@ const _maskValue = (len=0) => {
   return str;
 };
 
-class TextField extends Component {
+const _crId = ({ name }) => name + '_sf';
+
+class SecretField extends Component {
   static defaultProps = {
-    maxLength: "32"
+    name: "pwd",
+    maxLength: "32",
+    onTest: () => true,
+    inEnter: () => {}
   }
 
   constructor(props){
-    super()
+    super(props)
     this.isFocus = false;
-    const { onTest, onEnter } = props;
-    this.isOnTest = _isFn(onTest)
-    this.isOnEnter = _isFn(onEnter)
+    this._id = _crId(props)
     this.state = {
       value: '',
       isPassTest: true
     }
+  }
+
+  componentWillUnmound() {
+    clearTimeout(this._clearId)
   }
 
   _handleFocusInput = () => {
@@ -73,24 +78,46 @@ class TextField extends Component {
     this.forceUpdate()
   }
 
-  _handleInputChange = (event) => {
+  _clearAttrValue = () => {
+    this._clearId = setTimeout(() => {
+      const _input = this._input;
+      if (_input && _input.hasAttribute('value')) {
+        _input.removeAttribute('value')
+      }
+    })
+  }
+
+  _hInputChange = (event) => {
+    this.setState({
+      value: event.target.value.trim(),
+      isPassTest: this.props.onTest(event.target.value.trim())
+    })
+  }
+  _hKeyDown = (event) => {
+   if (event.keyCode === 46){
+     this.setState({ value: '' })
+   } else if (event.keyCode === 13) {
+     event.preventDefault()
+     this.props.onEnter(event.target.value)
+     this._wasEnter = true
+     this.forceUpdate(this._clearWasEnter)
+   }
+ }
+
+  _hMaskInputChange = (event) => {
     const value = event.target.value;
     this._value = _crValue(this._value, value)
     const _v = _maskValue(this._value.length);
-    if (this.isOnTest) {
-      this.setState({
-        value: _v,
-        isPassTest: this.props.onTest(this._value)
-      })
-    } else {
-      this.setState({ value : _v })
-    }
+    this.setState({
+      value: _v,
+      isPassTest: this.props.onTest(this._value)
+    })
   }
- _handleKeyDown = (event) => {
-   if (event.keyCode === 27){
+ _hMaskKeyDown = (event) => {
+   if (event.keyCode === 46 || event.keyCode === 27){
      this._value = ''
      this.setState({ value: '' })
-   } else if (event.keyCode === 13 && this.isOnEnter) {
+   } else if (event.keyCode === 13) {
      this.props.onEnter(event.target.value)
    }
  }
@@ -111,8 +138,7 @@ class TextField extends Component {
             maxLength, errorMsg=''
           } = this.props
         , { value, isPassTest } = this.state
-        //, _labelStyle = (value || this.isFocus)
-          , _labelStyle = (this._isValue(isAllowRemember) || this.isFocus)
+        , _labelStyle = (this._isValue(isAllowRemember) || this.isFocus)
             ? undefined
             : S.LABEL_TO_INPUT
         , _labelErrStyle = (isPassTest)
@@ -121,19 +147,18 @@ class TextField extends Component {
         , _lineStyle = (isPassTest)
             ? undefined
             : S.LINE_ERROR
-        , _name = `${name}[password]`
         , _inputProps = isAllowRemember
              ? {
                  autoComplete: "current-password",
-                 name: _name
+                 value,
+                 onChange: this._hInputChange,
+                 onKeyDown: this._hKeyDown
                }
              : {
                  autoComplete: "off",
-                 name: _name,
-                 value: value,
-                 defaultValue: value,
-                 onChange: this._handleInputChange,
-                 onKeyDown: this._handleKeyDown
+                 value,
+                 onChange: this._hMaskInputChange,
+                 onKeyDown: this._hMaskKeyDown
                };
 
     return (
@@ -144,23 +169,22 @@ class TextField extends Component {
         <label
           className={CL.LABEL}
           style={{..._labelStyle, ..._labelErrStyle}}
+          htmlFor={this._id}
          >
           {caption}
         </label>
         <div className={CL.DIV}>
           <input
             hidden={true}
-            name={_name}
+            autoComplete="username"
             value={name}
+            readOnly={true}
           />
           <input
             ref = {this._refInput}
+            id={this._id}
             type="password"
             className={CL.INPUT}
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
-            translate={false}
             maxLength={maxLength}
             onFocus={this._handleFocusInput}
             onBlur={this._handleBlurInput}
@@ -187,6 +211,7 @@ class TextField extends Component {
         }
       }
     }
+    this._clearAttrValue()
   }
 
   getValue(){
@@ -197,4 +222,4 @@ class TextField extends Component {
   }
 }
 
-export default TextField
+export default SecretField
