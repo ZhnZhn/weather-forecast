@@ -15,7 +15,6 @@ var _react = _interopRequireDefault(require("../_react"));
 
 //import React, { Component } from 'react';
 var Component = _react["default"].Component;
-var CL = "tabpane__tabs";
 var S = {
   UL: {
     listStyle: 'outside none none',
@@ -39,6 +38,10 @@ var S = {
   }
 };
 
+var _isFn = function _isFn(fn) {
+  return typeof fn === 'function';
+};
+
 var TabPane =
 /*#__PURE__*/
 function (_Component) {
@@ -47,14 +50,14 @@ function (_Component) {
   function TabPane(props) {
     var _this;
 
-    _this = _Component.call(this) || this;
+    _this = _Component.call(this, props) || this;
 
     _this._handlerClickTab = function (index, tabEl) {
       _this.setState({
         selectedTabIndex: index
       });
 
-      if (typeof tabEl.props.onClick === 'function') {
+      if (_isFn(tabEl.props.onClick)) {
         tabEl.props.onClick();
       }
     };
@@ -65,6 +68,7 @@ function (_Component) {
         var isSelected = index === selectedTabIndex ? true : false;
         return _react["default"].cloneElement(tab, {
           key: index,
+          id: index,
           onClick: _this._handlerClickTab.bind((0, _assertThisInitialized2["default"])(_this), index, tab),
           isSelected: isSelected
         });
@@ -79,7 +83,10 @@ function (_Component) {
         var divStyle = index === selectedTabIndex ? S.TAB_SELECTED : S.NONE;
         return _react["default"].createElement("div", {
           style: divStyle,
-          key: 'a' + index
+          key: 'a' + index,
+          role: "tabpanel",
+          id: "tabpanel-" + index,
+          "aria-labelledby": "tab-" + index
         }, comp);
       });
     };
@@ -111,7 +118,6 @@ function (_Component) {
         height: height
       }
     }, _react["default"].createElement("ul", {
-      className: CL,
       style: (0, _extends2["default"])({}, S.UL, {}, tabsStyle)
     }, this._renderTabs(children)), _react["default"].createElement("div", {
       style: S.TABS

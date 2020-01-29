@@ -18,6 +18,15 @@ html {
   font-size: 100%;
 }
 
+button {
+  appearance: none;
+  border: none;
+  background-color: transparent;
+  font-size: inherit;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
 a {
   text-decoration: none;
   color: black;

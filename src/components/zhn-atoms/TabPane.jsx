@@ -3,8 +3,6 @@ import React from '../_react'
 
 const { Component } = React
 
-const CL = "tabpane__tabs";
-
 const S = {
   UL: {
     listStyle: 'outside none none',
@@ -29,10 +27,12 @@ const S = {
 };
 
 
+const _isFn = fn => typeof fn === 'function';
+
 class TabPane extends Component {
 
   constructor(props){
-    super();
+    super(props);
     const components = props.children.map((tab, index) => {
        return  React.cloneElement(tab.props.children, {
           key : 'comp' + index
@@ -46,7 +46,7 @@ class TabPane extends Component {
 
   _handlerClickTab = (index, tabEl) => {
     this.setState({ selectedTabIndex : index });
-    if (typeof tabEl.props.onClick === 'function'){
+    if (_isFn(tabEl.props.onClick)){
       tabEl.props.onClick();
     }
   }
@@ -54,10 +54,11 @@ class TabPane extends Component {
   _renderTabs = (children) => {
        const { selectedTabIndex } = this.state;
        return children.map((tab, index) => {
-          const isSelected = (index === selectedTabIndex)
-                   ? true : false;
+          const isSelected = index === selectedTabIndex
+            ? true : false;
           return React.cloneElement(tab, {
              key : index,
+             id: index,
              onClick : this._handlerClickTab.bind(this, index, tab),
              isSelected
            }
@@ -73,7 +74,13 @@ class TabPane extends Component {
                     ? S.TAB_SELECTED
                     : S.NONE;
           return (
-             <div style={divStyle} key={'a'+index}>
+             <div
+               style={divStyle}
+               key={'a'+index}
+               role="tabpanel"
+               id={`tabpanel-${index}`}
+               aria-labelledby={`tab-${index}`}
+              >
                 {comp}
              </div>
            );
@@ -82,16 +89,13 @@ class TabPane extends Component {
 
   render(){
     const {
-            width, height,
-            tabsStyle,
-            children
-          } = this.props;
+      width, height,
+      tabsStyle,
+      children
+    } = this.props;
     return (
       <div style={{ width, height }}>
-        <ul
-          className={CL}
-          style={{...S.UL, ...tabsStyle }}
-        >
+        <ul style={{...S.UL, ...tabsStyle }}>
            {this._renderTabs(children)}
         </ul>
         <div style={S.TABS}>

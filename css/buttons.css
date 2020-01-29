@@ -1,3 +1,19 @@
+.tab {
+  display: inline-block;
+  color: #9e9e9e;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-weight: bold;
+  border-bottom: 3px solid #9e9e9e;
+  cursor: pointer;  
+  outline: 0;
+}
+.tab:focus > span {
+  color: #81a5ce;
+}
+
 .button-type-a {
   color: rgba(235,240,16,1);
   background: linear-gradient(to top, #222222, gray);
