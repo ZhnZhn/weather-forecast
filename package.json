@@ -24,7 +24,7 @@
       "leaflet": "npm:leaflet@^1.6.0",
       "react": "npm:react@^16.13.1",
       "react-dom": "npm:react-dom@^16.13.1",
-      "recharts": "npm:recharts@1.0.1",
+      "recharts": "npm:recharts@^1.8.5",
       "redux": "npm:redux@^4.0.1",
       "redux-saga": "npm:redux-saga@^0.16.2"
     },
@@ -36,7 +36,7 @@
     "leaflet": "^1.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "recharts": "^1.0.1",
+    "recharts": "^1.8.5",
     "redux": "^4.0.1",
     "redux-saga": "^0.16.2"
   },
