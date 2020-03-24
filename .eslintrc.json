@@ -3,16 +3,16 @@
     "env": {
         "es6" : true,
         "browser": true
-    },
-    "ecmaFeatures": {
-        "jsx": true,
-        "experimentalObjectRestSpread" : true
-    },
+    },    
     "plugins" : [
-          "react", "redux-saga"
+       "react", 
+       "redux-saga"
     ],
 
-    "extends": "eslint:recommended",
+    "extends": [
+      "eslint:recommended",
+      "plugin:redux-saga/recommended"
+    ],
 
 
     "rules" : {
