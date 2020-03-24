@@ -2,9 +2,8 @@
 import React from '../_react'
 
 const { Component } = React
-const STYLE = {
-  HAMBURGER : {
-    /*backgroundColor: '#80c040',*/
+const S = {
+  HAMBURGER: {
     width: '2.2rem',
     height: '2.2rem',
     verticalAlign: 'middle',
@@ -12,7 +11,7 @@ const STYLE = {
     marginLeft: '0.8rem',
     borderRadius: '0.4rem'
   }
-}
+};
 
 class HamburgerButton extends Component{
 
@@ -46,18 +45,18 @@ class HamburgerButton extends Component{
   }
 
   render(){
-    const {isOpen} = this.state
-        , btClass = (!isOpen)
-             ? "bt-hamburger"
-             : "bt-hamburger opened";
+    const { isOpen } = this.state
+    , btClass = isOpen
+       ? "bt-hamburger opened"
+       : "bt-hamburger";
 
     return (
       <button
          className={btClass}
-         style={STYLE.HAMBURGER}
+         style={S.HAMBURGER}
          onClick={this.handleClick}
       >
-        <span></span>
+        <span />
       </button>
     );
   }

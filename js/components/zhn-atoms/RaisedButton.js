@@ -27,7 +27,7 @@ var RaisedButton = function RaisedButton(_ref) {
       isPrimary = _ref.isPrimary,
       onClick = _ref.onClick;
 
-  var _spanStyle = isPrimary ? S.PRIMARY_SPAN : undefined;
+  var _spanStyle = isPrimary ? S.PRIMARY_SPAN : void 0;
 
   return _react["default"].createElement("button", {
     tabIndex: 0,

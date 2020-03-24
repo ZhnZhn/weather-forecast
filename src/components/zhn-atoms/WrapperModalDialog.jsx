@@ -34,11 +34,8 @@ class WrapperModalDialog extends Component {
     timeout : 450
   }
 
-  constructor(props){
-    super();
-    this.wasClosing = true;
-  }
-
+  wasClosing = true
+  
   componentDidUpdate(prevProps, prevState){
     if (this.wasClosing){
       setTimeout(

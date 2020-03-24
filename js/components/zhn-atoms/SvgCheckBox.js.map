@@ -1,1 +1,43 @@
-{"version":3,"sources":["../../../src/components/zhn-atoms/SvgCheckBox.jsx"],"names":["Component","React","S","DIV","display","width","height","cursor","SVG","EL_CHECKED","C","YELLOW","BLANK","_isFn","fn","SvgCheckBox","props","_hClick","_isOnCheck","_isOnUnCheck","state","onCheck","onUnCheck","isChecked","setState","setUnchecked","value","componentWillReceiveProps","nextProps","render","rootStyle","_elChecked","GREY"],"mappings":"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","sourcesContent":["//import React, { Component } from 'react';\r\nimport React from '../_react'\r\n//import PropTypes from \"prop-types\";\r\n\r\nimport C from '../styles/Color';\r\n\r\nconst { Component } = React;\r\n\r\nconst S = {\r\n  DIV : {\r\n    display: 'inline-block',\r\n    width: '16px',\r\n    height: '16px',\r\n    cursor: 'pointer'\r\n  },\r\n  SVG : {\r\n    display: 'inline-block'\r\n  }\r\n};\r\n\r\nconst EL_CHECKED = (\r\n  <path\r\n      d=\"M 2,3 L 8,14 14,3\"\r\n      strokeWidth=\"2\"\r\n      stroke={C.YELLOW}\r\n      fill={C.BLANK}\r\n  />\r\n);\r\n\r\nconst _isFn = fn => typeof fn === 'function';\r\n\r\nclass SvgCheckBox extends Component {\r\n  /*\r\n  static propTypes = {\r\n    value: PropTypes.bool,\r\n    onCheck: PropTypes.func,\r\n    onUnCheck: PropTypes.func\r\n  }\r\n  */\r\n\r\n  constructor(props){\r\n    super();\r\n\r\n    const { value, onCheck, onUnCheck } = props;\r\n    this._isOnCheck = _isFn(onCheck)\r\n    this._isOnUnCheck = _isFn(onUnCheck)\r\n\r\n    this.state = {\r\n        isChecked: !!value,\r\n    }\r\n  }\r\n\r\n  componentWillReceiveProps(nextProps){\r\n    if (this.props !== nextProps\r\n        && typeof nextProps.value !== 'undefined')\r\n    {\r\n      this.setState({ isChecked: !!nextProps.value })\r\n    }\r\n  }\r\n\r\n  _hClick = () => {\r\n    const {\r\n           _isOnCheck, _isOnUnCheck,\r\n            state, props\r\n          } = this\r\n        , { onCheck, onUnCheck } = props\r\n        , { isChecked } = state;\r\n    if (!isChecked && _isOnCheck){\r\n      onCheck(this);\r\n    } else if (_isOnUnCheck){\r\n      onUnCheck(this);\r\n    }\r\n    this.setState({ isChecked: !isChecked });\r\n  }\r\n\r\n  render(){\r\n    const { rootStyle } = this.props\r\n        , { isChecked } = this.state\r\n        , _elChecked = (isChecked)\r\n            ? EL_CHECKED\r\n            : null;\r\n    return (\r\n      <div\r\n         style={{ ...S.DIV, ...rootStyle }}\r\n         onClick={this._hClick}\r\n      >\r\n        <svg\r\n            viewBox=\"0 0 16 16\" width=\"100%\" height=\"100%\"\r\n            preserveAspectRatio=\"none\" xmlns=\"http://www.w3.org/2000/svg\"\r\n            style={S.SVG}\r\n        >\r\n          <rect\r\n             x=\"1\" y=\"1\"\r\n             height=\"14\" width=\"14\"\r\n             strokeWidth=\"2\" rx=\"3\"\r\n             stroke={C.GREY}  fill={C.BLANK}\r\n          />\r\n          {_elChecked}\r\n        </svg>\r\n      </div>\r\n    );\r\n  }\r\n\r\n  setUnchecked = () => {\r\n    this.setState({ isChecked: false });\r\n  }\r\n}\r\n\r\nexport default SvgCheckBox\r\n"],"file":"SvgCheckBox.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/zhn-atoms/SvgCheckBox.js"
+ ],
+ "file": "../../../src/components/zhn-atoms/SvgCheckBox.js",
+ "names": [
+  "Component",
+  "React",
+  "S",
+  "DIV",
+  "display",
+  "width",
+  "height",
+  "cursor",
+  "SVG",
+  "EL_CHECKED",
+  "C",
+  "YELLOW",
+  "BLANK",
+  "_isFn",
+  "fn",
+  "SvgCheckBox",
+  "props",
+  "_hClick",
+  "_isOnCheck",
+  "_isOnUnCheck",
+  "state",
+  "onCheck",
+  "onUnCheck",
+  "isChecked",
+  "setState",
+  "setUnchecked",
+  "value",
+  "UNSAVE_componentWillReceiveProps",
+  "nextProps",
+  "render",
+  "rootStyle",
+  "_elChecked",
+  "GREY"
+ ],
+ "mappings": "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"
+}

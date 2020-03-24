@@ -12,17 +12,15 @@ const S = {
 
 const ShowHide = (props) => {
     const {isShow, className, style, children} = props
-        , _styleShow = isShow ? S.SHOW : S.HIDE
-        , _classShow = isShow ? SHOW_POPUP : ''
-        , _className = (className)
-              ? `${className} ${_classShow}`
-              : (_classShow !== '')
-                   ? _classShow
-                   : undefined;
+    , _styleShow = isShow ? S.SHOW : S.HIDE
+    , _classShow = isShow ? SHOW_POPUP : ''
+    , _className = className
+         ? `${className} ${_classShow}`
+         : _classShow || void 0;
     return (
       <div
         className={_className}
-        style={Object.assign({}, style, _styleShow)}
+        style={{ ...style, ..._styleShow }}
       >
         {children}
       </div>

@@ -67,7 +67,7 @@ function (_Component) {
   function OpenClose(props) {
     var _this;
 
-    _this = _Component.call(this) || this;
+    _this = _Component.call(this, props) || this;
 
     _this._handleClick = function () {
       _this.setState(function (prev) {

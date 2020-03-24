@@ -1,9 +1,9 @@
 //import React from 'react';
 import React from '../_react'
 
-const STYLE = {
-  SVG : {
-    padding: '3px'
+const S = {
+  SVG: {
+    padding: 3
   }
 };
 
@@ -14,7 +14,7 @@ const SvgClose = ({ style, onClose }) => (
       onClick={onClose}
    >
      <svg viewBox="0 0 12 12" width="100%" height="100%"
-          style={STYLE.SVG}
+          style={S.SVG}
           preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"
       >
           <path d="M 0,0 L 12,12"
@@ -29,7 +29,7 @@ const SvgClose = ({ style, onClose }) => (
           />
      </svg>
    </div>
-)
+);
 
 
 

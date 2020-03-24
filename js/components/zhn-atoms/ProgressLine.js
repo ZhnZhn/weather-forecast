@@ -21,10 +21,14 @@ var ProgressLine =
 function (_Component) {
   (0, _inheritsLoose2["default"])(ProgressLine, _Component);
 
-  function ProgressLine(props) {
+  function ProgressLine() {
     var _this;
 
-    _this = _Component.call(this) || this;
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
     _this.wasCompleted = false;
     _this.idCompleted = null;
     _this.wasOpacied = false;

@@ -1,1 +1,41 @@
-{"version":3,"sources":["../../../src/components/left-push-menu/UvCard.jsx"],"names":["Component","React","S","TIME","paddingTop","paddingLeft","color","fontSize","fontWeight","VALUE","UvCard","state","data","_onStore","store","props","getState","recent","sUV","setState","prev","byId","componentDidMount","unsubscribe","subscribe","componentWillUnmount","render","time","value","_time","replace"],"mappings":";;;;;;;;;AACA;;AAGA;;AAJA;AAGA;IAGQA,S,GAAcC,iB,CAAdD,S;AAER,IAAME,CAAC,GAAG;AACRC,EAAAA,IAAI,EAAG;AACLC,IAAAA,UAAU,EAAG,MADR;AAELC,IAAAA,WAAW,EAAG,QAFT;AAGLC,IAAAA,KAAK,EAAG,SAHH;AAILC,IAAAA,QAAQ,EAAG,MAJN;AAKLC,IAAAA,UAAU,EAAG;AALR,GADC;AAQRC,EAAAA,KAAK,EAAG;AACNL,IAAAA,UAAU,EAAG,MADP;AAENC,IAAAA,WAAW,EAAG,QAFR;AAGNE,IAAAA,QAAQ,EAAG,MAHL;AAINC,IAAAA,UAAU,EAAG;AAJP;AARA,CAAV;;IAgBME,M;;;;;;;;;;;;;UAEJC,K,GAAQ;AACNC,MAAAA,IAAI,EAAG;AADD,K;;UAURC,Q,GAAW,YAAM;AACT,UAAEC,KAAF,GAAY,MAAKC,KAAjB,CAAED,KAAF;AAAA,UACJH,KADI,GACIG,KAAK,CAACE,QAAN,EADJ;AAAA,UAEJC,MAFI,GAEKC,eAAID,MAAJ,CAAWN,KAAX,CAFL;;AAGN,UAAIM,MAAM,KAAK,MAAKN,KAAL,CAAWM,MAA1B,EAAkC;AAChC,cAAKE,QAAL,CAAc,UAACC,IAAD,EAAU;AACtB,iBAAO;AAAER,YAAAA,IAAI,EAAGM,eAAIG,IAAJ,CAASV,KAAT,EAAgBM,MAAhB;AAAT,WAAP;AACD,SAFD;AAGD;AACF,K;;;;;;;SAfDK,iB,GAAA,6BAAmB;AACjB,SAAKC,WAAL,GAAmB,KAAKR,KAAL,CAAWD,KAAX,CAAiBU,SAAjB,CAA2B,KAAKX,QAAhC,CAAnB;AACD,G;;SACDY,oB,GAAA,gCAAsB;AACpB,SAAKF,WAAL;AACD,G;;SAYDG,M,GAAA,kBAAQ;AAAA,2BACc,KAAKf,KADnB,CACEC,IADF;AAAA,QACEA,IADF,iCACO,EADP;AAAA,qBAEsBA,IAFtB,CAEFe,IAFE;AAAA,QAEFA,IAFE,2BAEG,EAFH;AAAA,QAEYC,KAFZ,GAEsBhB,IAFtB,CAEOA,IAFP;AAAA,QAGJiB,KAHI,GAGIF,IAAI,CAACG,OAAL,CAAa,GAAb,EAAiB,EAAjB,EAAqBA,OAArB,CAA6B,GAA7B,EAAkC,GAAlC,CAHJ;;AAIN,WACE,6CACE;AAAK,MAAA,KAAK,EAAE5B,CAAC,CAACC;AAAd,OACG0B,KADH,CADF,EAIE;AAAK,MAAA,KAAK,EAAE3B,CAAC,CAACO;AAAd,OAAsBmB,KAAtB,CAJF,CADF;AAQD,G;;;EAnCkB5B,S;;eAsCNU,M","sourcesContent":["//import React, { Component } from 'react';\r\nimport React from '../_react'\r\n\r\n//import { uvRecent, uvById } from '../../flux/reducer';\r\nimport { sUV } from '../../flux/selectors';\r\n\r\nconst { Component } = React\r\n\r\nconst S = {\r\n  TIME : {\r\n    paddingTop : '1rem',\r\n    paddingLeft : '2.5rem',\r\n    color : '#8bc34a',\r\n    fontSize : '1rem',\r\n    fontWeight : 'bold'\r\n  },\r\n  VALUE : {\r\n    paddingTop : '1rem',\r\n    paddingLeft : '2.5rem',\r\n    fontSize : '3rem',\r\n    fontWeight : 'bold'\r\n  }\r\n}\r\n\r\nclass UvCard extends Component {\r\n\r\n  state = {\r\n    data : {}\r\n  }\r\n\r\n  componentDidMount(){\r\n    this.unsubscribe = this.props.store.subscribe(this._onStore)\r\n  }\r\n  componentWillUnmount(){\r\n    this.unsubscribe()\r\n  }\r\n  _onStore = () => {\r\n    const { store } = this.props\r\n    , state = store.getState()\r\n    , recent = sUV.recent(state);\r\n    if (recent !== this.state.recent) {\r\n      this.setState((prev) => {\r\n        return { data : sUV.byId(state, recent) }\r\n      })\r\n    }\r\n  }\r\n\r\n  render(){\r\n    const { data={} } = this.state\r\n    , { time='', data:value } = data\r\n    , _time = time.replace('Z','').replace('T', ' ')\r\n    return (\r\n      <div>\r\n        <div style={S.TIME}>\r\n          {_time}\r\n        </div>\r\n        <div style={S.VALUE}>{value}</div>\r\n      </div>\r\n    )\r\n  }\r\n}\r\n\r\nexport default UvCard\r\n"],"file":"UvCard.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/left-push-menu/UvCard.js"
+ ],
+ "file": "../../../src/components/left-push-menu/UvCard.js",
+ "names": [
+  "Component",
+  "React",
+  "S",
+  "TIME",
+  "paddingTop",
+  "paddingLeft",
+  "color",
+  "fontSize",
+  "fontWeight",
+  "VALUE",
+  "UvCard",
+  "state",
+  "data",
+  "_onStore",
+  "store",
+  "props",
+  "getState",
+  "recent",
+  "sUV",
+  "setState",
+  "prev",
+  "byId",
+  "componentDidMount",
+  "unsubscribe",
+  "subscribe",
+  "componentWillUnmount",
+  "render",
+  "date_iso",
+  "value",
+  "_date",
+  "replace"
+ ],
+ "mappings": ";;;;;;;;;AACA;;AAEA;;AAHA;IAKQA,S,GAAcC,iB,CAAdD,S;AAER,IAAME,CAAC,GAAG;AACRC,EAAAA,IAAI,EAAG;AACLC,IAAAA,UAAU,EAAG,MADR;AAELC,IAAAA,WAAW,EAAG,QAFT;AAGLC,IAAAA,KAAK,EAAG,SAHH;AAILC,IAAAA,QAAQ,EAAG,MAJN;AAKLC,IAAAA,UAAU,EAAG;AALR,GADC;AAQRC,EAAAA,KAAK,EAAG;AACNL,IAAAA,UAAU,EAAG,MADP;AAENC,IAAAA,WAAW,EAAG,QAFR;AAGNE,IAAAA,QAAQ,EAAG,MAHL;AAINC,IAAAA,UAAU,EAAG;AAJP;AARA,CAAV;;IAgBME,M;;;;;;;;;;;;;UAEJC,K,GAAQ;AACNC,MAAAA,IAAI,EAAG;AADD,K;;UAURC,Q,GAAW,YAAM;AACT,UAAEC,KAAF,GAAY,MAAKC,KAAjB,CAAED,KAAF;AAAA,UACJH,KADI,GACIG,KAAK,CAACE,QAAN,EADJ;AAAA,UAEJC,MAFI,GAEKC,eAAID,MAAJ,CAAWN,KAAX,CAFL;;AAGN,UAAIM,MAAM,KAAK,MAAKN,KAAL,CAAWM,MAA1B,EAAkC;AAChC,cAAKE,QAAL,CAAc,UAACC,IAAD,EAAU;AACtB,iBAAO;AAAER,YAAAA,IAAI,EAAGM,eAAIG,IAAJ,CAASV,KAAT,EAAgBM,MAAhB;AAAT,WAAP;AACD,SAFD;AAGD;AACF,K;;;;;;;SAfDK,iB,GAAA,6BAAmB;AACjB,SAAKC,WAAL,GAAmB,KAAKR,KAAL,CAAWD,KAAX,CAAiBU,SAAjB,CAA2B,KAAKX,QAAhC,CAAnB;AACD,G;;SACDY,oB,GAAA,gCAAsB;AACpB,SAAKF,WAAL;AACD,G;;SAYDG,M,GAAA,kBAAQ;AAAA,2BACc,KAAKf,KADnB,CACEC,IADF;AAAA,QACEA,IADF,iCACO,EADP;AAAA,eAEwBA,IAAI,CAAC,CAAD,CAAJ,IAAW,EAFnC;AAAA,6BAEFe,QAFE;AAAA,QAEFA,QAFE,8BAEO,EAFP;AAAA,0BAEWC,KAFX;AAAA,QAEWA,KAFX,2BAEiB,EAFjB;AAAA,QAGJC,KAHI,GAGIF,QAAQ,CAACG,OAAT,CAAiB,GAAjB,EAAqB,EAArB,EAAyBA,OAAzB,CAAiC,GAAjC,EAAsC,GAAtC,CAHJ;;AAIN,WACE,6CACE;AAAK,MAAA,KAAK,EAAE5B,CAAC,CAACC;AAAd,OACG0B,KADH,CADF,EAIE;AAAK,MAAA,KAAK,EAAE3B,CAAC,CAACO;AAAd,OAAsBmB,KAAtB,CAJF,CADF;AAQD,G;;;EAnCkB5B,S;;eAsCNU,M"
+}

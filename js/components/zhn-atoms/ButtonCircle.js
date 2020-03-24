@@ -17,16 +17,15 @@ var S = {
   ROOT: {
     display: 'inline-block',
     color: '#80c040',
+    width: 22,
+    height: 22,
     border: '2px solid #80c040',
     borderRadius: '50%',
-    width: '22px',
-    height: '22px',
     textAlign: 'center',
     fontWeight: 'bold',
     cursor: 'pointer'
   },
   NOT_ACTIVE: {
-    //color : '#9e9e9e'
     color: '#5b5b5b'
   }
 };
@@ -45,7 +44,7 @@ function (_Component) {
   function ButtonCircle(props) {
     var _this;
 
-    _this = _Component.call(this) || this;
+    _this = _Component.call(this, props) || this;
 
     _this._onStore = function () {
       var isActive = _getIsActive(_this.props);

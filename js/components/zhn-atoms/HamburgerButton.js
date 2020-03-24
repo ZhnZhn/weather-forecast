@@ -11,9 +11,8 @@ var _react = _interopRequireDefault(require("../_react"));
 
 //import React, { Component } from 'react';
 var Component = _react["default"].Component;
-var STYLE = {
+var S = {
   HAMBURGER: {
-    /*backgroundColor: '#80c040',*/
     width: '2.2rem',
     height: '2.2rem',
     verticalAlign: 'middle',
@@ -76,10 +75,10 @@ function (_Component) {
 
   _proto.render = function render() {
     var isOpen = this.state.isOpen,
-        btClass = !isOpen ? "bt-hamburger" : "bt-hamburger opened";
+        btClass = isOpen ? "bt-hamburger opened" : "bt-hamburger";
     return _react["default"].createElement("button", {
       className: btClass,
-      style: STYLE.HAMBURGER,
+      style: S.HAMBURGER,
       onClick: this.handleClick
     }, _react["default"].createElement("span", null));
   };

@@ -21,8 +21,8 @@ var Component = _react["default"].Component;
 var S = {
   DIV: {
     display: 'inline-block',
-    width: '16px',
-    height: '16px',
+    width: 16,
+    height: 16,
     cursor: 'pointer'
   },
   SVG: {
@@ -56,7 +56,7 @@ function (_Component) {
   function SvgCheckBox(_props) {
     var _this;
 
-    _this = _Component.call(this) || this;
+    _this = _Component.call(this, _props) || this;
 
     _this._hClick = function () {
       var _assertThisInitialize = (0, _assertThisInitialized2["default"])(_this),
@@ -98,7 +98,7 @@ function (_Component) {
 
   var _proto = SvgCheckBox.prototype;
 
-  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+  _proto.UNSAVE_componentWillReceiveProps = function UNSAVE_componentWillReceiveProps(nextProps) {
     if (this.props !== nextProps && typeof nextProps.value !== 'undefined') {
       this.setState({
         isChecked: !!nextProps.value

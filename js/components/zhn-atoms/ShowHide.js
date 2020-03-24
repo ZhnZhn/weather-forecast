@@ -5,6 +5,8 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
 var _react = _interopRequireDefault(require("../_react"));
 
 var SHOW_POPUP = 'show-popup';
@@ -24,11 +26,11 @@ var ShowHide = function ShowHide(props) {
       children = props.children,
       _styleShow = isShow ? S.SHOW : S.HIDE,
       _classShow = isShow ? SHOW_POPUP : '',
-      _className = className ? className + " " + _classShow : _classShow !== '' ? _classShow : undefined;
+      _className = className ? className + " " + _classShow : _classShow || void 0;
 
   return _react["default"].createElement("div", {
     className: _className,
-    style: Object.assign({}, style, _styleShow)
+    style: (0, _extends2["default"])({}, style, {}, _styleShow)
   }, children);
 };
 

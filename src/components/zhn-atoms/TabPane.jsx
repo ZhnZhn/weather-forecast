@@ -6,10 +6,10 @@ const { Component } = React
 const S = {
   UL: {
     listStyle: 'outside none none',
-    marginTop: '5px',
-    marginLeft: '10px',
-    marginRight: '5px',
-    marginBottom: '5px',
+    marginTop: 5,
+    marginLeft: 10,
+    marginRight: 5,
+    marginBottom: 5,
     textAlign: 'center'
   },
   TABS: {

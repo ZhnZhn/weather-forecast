@@ -58,7 +58,7 @@ class OpenClose extends Component {
      closeColor: DF.CLOSE_COLOR
    }
    constructor(props){
-     super();
+     super(props);
      const { isClose } = props;
      this.state = {
        isOpen: isClose ? false : true

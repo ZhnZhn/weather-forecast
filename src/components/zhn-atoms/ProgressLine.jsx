@@ -13,13 +13,10 @@ class ProgressLine extends Component {
     height : 3
   }
 
-  constructor(props){
-    super();
-    this.wasCompleted = false;
-    this.idCompleted = null;
-    this.wasOpacied = false;
-    this.idOpacied = null;
-  }
+  wasCompleted = false;
+  idCompleted = null;
+  wasOpacied = false;
+  idOpacied = null;
 
   componentWillUnmount(){
     if (this.idCompleted){
@@ -85,8 +82,7 @@ class ProgressLine extends Component {
     }
 
     return (
-      <div className="progress-line" style={_style}>
-      </div>
+      <div className="progress-line" style={_style} />
     )
   }
 }

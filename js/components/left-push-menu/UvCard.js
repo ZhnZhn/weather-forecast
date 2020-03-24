@@ -12,7 +12,6 @@ var _react = _interopRequireDefault(require("../_react"));
 var _selectors = require("../../flux/selectors");
 
 //import React, { Component } from 'react';
-//import { uvRecent, uvById } from '../../flux/reducer';
 var Component = _react["default"].Component;
 var S = {
   TIME: {
@@ -44,7 +43,7 @@ function (_Component) {
 
     _this = _Component.call.apply(_Component, [this].concat(args)) || this;
     _this.state = {
-      data: {}
+      data: []
     };
 
     _this._onStore = function () {
@@ -76,15 +75,17 @@ function (_Component) {
 
   _proto.render = function render() {
     var _this$state$data = this.state.data,
-        data = _this$state$data === void 0 ? {} : _this$state$data,
-        _data$time = data.time,
-        time = _data$time === void 0 ? '' : _data$time,
-        value = data.data,
-        _time = time.replace('Z', '').replace('T', ' ');
+        data = _this$state$data === void 0 ? [] : _this$state$data,
+        _ref = data[0] || {},
+        _ref$date_iso = _ref.date_iso,
+        date_iso = _ref$date_iso === void 0 ? '' : _ref$date_iso,
+        _ref$value = _ref.value,
+        value = _ref$value === void 0 ? '' : _ref$value,
+        _date = date_iso.replace('Z', '').replace('T', ' ');
 
     return _react["default"].createElement("div", null, _react["default"].createElement("div", {
       style: S.TIME
-    }, _time), _react["default"].createElement("div", {
+    }, _date), _react["default"].createElement("div", {
       style: S.VALUE
     }, value));
   };

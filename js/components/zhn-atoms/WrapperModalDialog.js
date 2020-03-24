@@ -34,17 +34,14 @@ var WrapperModalDialog =
 function (_Component) {
   (0, _inheritsLoose2["default"])(WrapperModalDialog, _Component);
 
-  /*
-  static propTypes = {
-    isShow  : PropTypes.bool,
-    timeout : PropTypes.number,
-    onClose : PropTypes.func
-  }
-  */
-  function WrapperModalDialog(props) {
+  function WrapperModalDialog() {
     var _this;
 
-    _this = _Component.call(this) || this;
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
     _this.wasClosing = true;
     return _this;
   }

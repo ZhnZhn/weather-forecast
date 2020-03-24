@@ -1,7 +1,6 @@
 //import React, { Component } from 'react';
 import React from '../_react'
 
-//import { uvRecent, uvById } from '../../flux/reducer';
 import { sUV } from '../../flux/selectors';
 
 const { Component } = React
@@ -25,7 +24,7 @@ const S = {
 class UvCard extends Component {
 
   state = {
-    data : {}
+    data : []
   }
 
   componentDidMount(){
@@ -46,13 +45,13 @@ class UvCard extends Component {
   }
 
   render(){
-    const { data={} } = this.state
-    , { time='', data:value } = data
-    , _time = time.replace('Z','').replace('T', ' ')
+    const { data=[] } = this.state
+    , { date_iso='', value='' } = data[0] || {}
+    , _date = date_iso.replace('Z','').replace('T', ' ');
     return (
       <div>
         <div style={S.TIME}>
-          {_time}
+          {_date}
         </div>
         <div style={S.VALUE}>{value}</div>
       </div>

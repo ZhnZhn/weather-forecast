@@ -8,9 +8,9 @@ exports["default"] = void 0;
 var _react = _interopRequireDefault(require("../_react"));
 
 //import React from 'react';
-var STYLE = {
+var S = {
   SVG: {
-    padding: '3px'
+    padding: 3
   }
 };
 
@@ -25,7 +25,7 @@ var SvgClose = function SvgClose(_ref) {
     viewBox: "0 0 12 12",
     width: "100%",
     height: "100%",
-    style: STYLE.SVG,
+    style: S.SVG,
     preserveAspectRatio: "none",
     xmlns: "http://www.w3.org/2000/svg"
   }, _react["default"].createElement("path", {

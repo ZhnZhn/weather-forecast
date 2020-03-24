@@ -9,8 +9,8 @@ const { Component } = React;
 const S = {
   DIV : {
     display: 'inline-block',
-    width: '16px',
-    height: '16px',
+    width: 16,
+    height: 16,
     cursor: 'pointer'
   },
   SVG : {
@@ -39,7 +39,7 @@ class SvgCheckBox extends Component {
   */
 
   constructor(props){
-    super();
+    super(props);
 
     const { value, onCheck, onUnCheck } = props;
     this._isOnCheck = _isFn(onCheck)
@@ -50,7 +50,7 @@ class SvgCheckBox extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps){
+  UNSAVE_componentWillReceiveProps(nextProps){
     if (this.props !== nextProps
         && typeof nextProps.value !== 'undefined')
     {
