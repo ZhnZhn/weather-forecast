@@ -9,7 +9,7 @@ exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _reduxSaga = require("redux-saga");
+var _effects = require("redux-saga/effects");
 
 var _actions = _interopRequireWildcard(require("./actions"));
 
@@ -21,11 +21,6 @@ var _request = _interopRequireDefault(require("../../affects/request"));
 
 var _actions2 = _interopRequireDefault(require("../modal/actions"));
 
-var takeEvery = _reduxSaga.effects.takeEvery,
-    select = _reduxSaga.effects.select,
-    call = _reduxSaga.effects.call,
-    put = _reduxSaga.effects.put;
-
 var requestHourly =
 /*#__PURE__*/
 _regenerator["default"].mark(function requestHourly(action) {
@@ -36,7 +31,7 @@ _regenerator["default"].mark(function requestHourly(action) {
         case 0:
           _context.prev = 0;
           _context.next = 3;
-          return select();
+          return (0, _effects.select)();
 
         case 3:
           state = _context.sent;
@@ -49,12 +44,12 @@ _regenerator["default"].mark(function requestHourly(action) {
           }
 
           _context.next = 9;
-          return call(_request["default"], _OpenWeather["default"].crHourlyById(recent));
+          return (0, _effects.call)(_request["default"], _OpenWeather["default"].crHourlyById(recent));
 
         case 9:
           json = _context.sent;
           _context.next = 12;
-          return put(_actions["default"].requestedOk(json, recent));
+          return (0, _effects.put)(_actions["default"].requestedOk(json, recent));
 
         case 12:
           _context.next = 16;
@@ -62,7 +57,7 @@ _regenerator["default"].mark(function requestHourly(action) {
 
         case 14:
           _context.next = 16;
-          return put(_actions["default"].requestedInCache(recent));
+          return (0, _effects.put)(_actions["default"].requestedInCache(recent));
 
         case 16:
           _context.next = 22;
@@ -72,7 +67,7 @@ _regenerator["default"].mark(function requestHourly(action) {
           _context.prev = 18;
           _context.t0 = _context["catch"](0);
           _context.next = 22;
-          return put(_actions2["default"].showModal('ERROR', {
+          return (0, _effects.put)(_actions2["default"].showModal('ERROR', {
             errMsg: _context.t0.message
           }));
 
@@ -92,7 +87,7 @@ _regenerator["default"].mark(function watchHourlyRequested() {
       switch (_context2.prev = _context2.next) {
         case 0:
           _context2.next = 2;
-          return takeEvery(_actions.ACTION.HOURLY_REQUESTED, requestHourly);
+          return (0, _effects.takeEvery)(_actions.ACTION.HOURLY_REQUESTED, requestHourly);
 
         case 2:
         case "end":

@@ -1,4 +1,4 @@
-import { effects } from 'redux-saga';
+import { takeEvery, select, call, put } from 'redux-saga/effects';
 
 import hourly , { ACTION as A } from './actions';
 import { sForecast, sHourly } from '../selectors'
@@ -6,11 +6,6 @@ import { sForecast, sHourly } from '../selectors'
 import Api from '../../api/OpenWeather';
 import request from '../../affects/request';
 import modal from '../modal/actions'
-
-const {
-  takeEvery,
-  select, call, put
-} = effects;
 
 const requestHourly = function* (action){
   try{
@@ -26,7 +21,7 @@ const requestHourly = function* (action){
   } catch(err) {
     yield put(modal.showModal('ERROR', {
       errMsg: err.message
-    }))    
+    }))
   }
 }
 

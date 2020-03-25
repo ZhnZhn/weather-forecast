@@ -1,15 +1,12 @@
-import { effects } from 'redux-saga';
+import { throttle, call, put } from 'redux-saga/effects';
 import api from '../../api/OpenWeather';
 import settings, { ACTION as A } from './actions';
 
-const {
-  throttle,
-  call, put
-} = effects;
-
 const setSettings = function* (action){
+  /*eslint-disable redux-saga/no-unhandled-errors*/
   yield call(api.setApiKey, action.apiKey)
   yield put(settings.setApiKey())
+  /*eslint-enable redux-saga/no-unhandled-errors*/
 }
 
 const watchSettingSet = function* () {

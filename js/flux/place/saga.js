@@ -9,7 +9,7 @@ exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _reduxSaga = require("redux-saga");
+var _effects = require("redux-saga/effects");
 
 var _gen = require("../gen");
 
@@ -20,10 +20,6 @@ var _actions = _interopRequireWildcard(require("./actions"));
 var _actions2 = _interopRequireDefault(require("../modal/actions"));
 
 var _request = _interopRequireDefault(require("../../affects/request"));
-
-var takeEvery = _reduxSaga.effects.takeEvery,
-    call = _reduxSaga.effects.call,
-    put = _reduxSaga.effects.put;
 
 var requestPlace =
 /*#__PURE__*/
@@ -48,12 +44,12 @@ _regenerator["default"].mark(function requestPlace(action) {
           _action$payload = action.payload, payload = _action$payload === void 0 ? {} : _action$payload;
           lat = payload.lat, lot = payload.lot;
           _context.next = 8;
-          return call(_request["default"], _OpenWeather["default"].crForecast(lat, lot));
+          return (0, _effects.call)(_request["default"], _OpenWeather["default"].crForecast(lat, lot));
 
         case 8:
           forecast = _context.sent;
           _context.next = 11;
-          return put(_actions["default"].requestedOk(forecast));
+          return (0, _effects.put)(_actions["default"].requestedOk(forecast));
 
         case 11:
           _context.next = 15;
@@ -61,7 +57,7 @@ _regenerator["default"].mark(function requestPlace(action) {
 
         case 13:
           _context.next = 15;
-          return put(_actions2["default"].showModal('SETTINGS'));
+          return (0, _effects.put)(_actions2["default"].showModal('SETTINGS'));
 
         case 15:
           _context.next = 21;
@@ -71,7 +67,7 @@ _regenerator["default"].mark(function requestPlace(action) {
           _context.prev = 17;
           _context.t1 = _context["catch"](0);
           _context.next = 21;
-          return put(_actions2["default"].showModal('ERROR', {
+          return (0, _effects.put)(_actions2["default"].showModal('ERROR', {
             errMsg: _context.t1.message
           }));
 
@@ -91,7 +87,7 @@ _regenerator["default"].mark(function watchPlaceRequested() {
       switch (_context2.prev = _context2.next) {
         case 0:
           _context2.next = 2;
-          return takeEvery(_actions.ACTION.PLACE_REQUESTED, requestPlace);
+          return (0, _effects.takeEvery)(_actions.ACTION.PLACE_REQUESTED, requestPlace);
 
         case 2:
         case "end":

@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _reduxSaga = require("redux-saga");
+var _effects = require("redux-saga/effects");
 
 var _saga = _interopRequireDefault(require("./place/saga"));
 
@@ -19,8 +19,6 @@ var _saga4 = _interopRequireDefault(require("./uv/saga"));
 
 var _saga5 = _interopRequireDefault(require("./settings/saga"));
 
-var all = _reduxSaga.effects.all;
-
 var rootSaga =
 /*#__PURE__*/
 _regenerator["default"].mark(function rootSaga() {
@@ -29,7 +27,7 @@ _regenerator["default"].mark(function rootSaga() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return all([(0, _saga["default"])(), (0, _saga2["default"])(), (0, _saga3["default"])(), (0, _saga4["default"])(), (0, _saga5["default"])()]);
+          return (0, _effects.all)([(0, _saga["default"])(), (0, _saga2["default"])(), (0, _saga3["default"])(), (0, _saga4["default"])(), (0, _saga5["default"])()]);
 
         case 2:
         case "end":

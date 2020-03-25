@@ -9,7 +9,7 @@ exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _reduxSaga = require("redux-saga");
+var _effects = require("redux-saga/effects");
 
 var _actions = _interopRequireWildcard(require("./actions"));
 
@@ -21,11 +21,6 @@ var _request = _interopRequireDefault(require("../../affects/request"));
 
 var _actions2 = _interopRequireDefault(require("../modal/actions"));
 
-var takeEvery = _reduxSaga.effects.takeEvery,
-    call = _reduxSaga.effects.call,
-    put = _reduxSaga.effects.put,
-    select = _reduxSaga.effects.select;
-
 var requestForecast =
 /*#__PURE__*/
 _regenerator["default"].mark(function requestForecast(action) {
@@ -36,7 +31,7 @@ _regenerator["default"].mark(function requestForecast(action) {
         case 0:
           _context.prev = 0;
           _context.next = 3;
-          return select();
+          return (0, _effects.select)();
 
         case 3:
           state = _context.sent;
@@ -48,12 +43,12 @@ _regenerator["default"].mark(function requestForecast(action) {
           }
 
           _context.next = 8;
-          return call(_request["default"], _OpenWeather["default"].crForecastById(id));
+          return (0, _effects.call)(_request["default"], _OpenWeather["default"].crForecastById(id));
 
         case 8:
           json = _context.sent;
           _context.next = 11;
-          return put(_actions["default"].requestedOk(json, id));
+          return (0, _effects.put)(_actions["default"].requestedOk(json, id));
 
         case 11:
           _context.next = 15;
@@ -61,7 +56,7 @@ _regenerator["default"].mark(function requestForecast(action) {
 
         case 13:
           _context.next = 15;
-          return put(_actions["default"].requestedInCache(id));
+          return (0, _effects.put)(_actions["default"].requestedInCache(id));
 
         case 15:
           _context.next = 21;
@@ -71,7 +66,7 @@ _regenerator["default"].mark(function requestForecast(action) {
           _context.prev = 17;
           _context.t0 = _context["catch"](0);
           _context.next = 21;
-          return put(_actions2["default"].showModal('ERROR', {
+          return (0, _effects.put)(_actions2["default"].showModal('ERROR', {
             errMsg: _context.t0.message
           }));
 
@@ -91,7 +86,7 @@ _regenerator["default"].mark(function watchForecastRequested() {
       switch (_context2.prev = _context2.next) {
         case 0:
           _context2.next = 2;
-          return takeEvery(_actions.ACTION.FORECAST_REQUESTED, requestForecast);
+          return (0, _effects.takeEvery)(_actions.ACTION.FORECAST_REQUESTED, requestForecast);
 
         case 2:
         case "end":

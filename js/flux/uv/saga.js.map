@@ -1,1 +1,35 @@
-{"version":3,"sources":["../../../src/flux/uv/saga.js"],"names":["takeEvery","effects","select","call","put","fetchUV","action","state","recent","sForecast","recentUV","sUV","coord","cityCoordById","request","Api","crUV","lat","lon","json","aUV","requestedOk","requestedInCache","modal","showModal","errMsg","message","watchAction","A","UV_REQUESTED"],"mappings":";;;;;;;;;;;AAAA;;AACA;;AAEA;;AAEA;;AACA;;AACA;;IAEQA,S,GAAiCC,kB,CAAjCD,S;IAAWE,M,GAAsBD,kB,CAAtBC,M;IAAQC,I,GAAcF,kB,CAAdE,I;IAAMC,G,GAAQH,kB,CAARG,G;;AAEjC,IAAMC,OAAO;AAAA;AAAA,6BAAG,SAAVA,OAAU,CAAWC,MAAX;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAEE,iBAAMJ,MAAM,EAAZ;;AAFF;AAENK,UAAAA,KAFM;AAGNC,UAAAA,MAHM,GAGGC,qBAAUD,MAAV,CAAiBD,KAAjB,CAHH;AAING,UAAAA,QAJM,GAIKC,eAAIH,MAAJ,CAAWD,KAAX,CAJL;;AAAA,gBAKRC,MAAM,IAAIE,QAAQ,KAAKF,MALf;AAAA;AAAA;AAAA;;AAMJI,UAAAA,KANI,GAMIH,qBAAUI,aAAV,CAAwBN,KAAxB,EAA+BC,MAA/B,CANJ;AAAA;AAOG,iBAAML,IAAI,CAACW,mBAAD,EAAUC,wBAAIC,IAAJ,CAASJ,KAAK,CAACK,GAAf,EAAoBL,KAAK,CAACM,GAA1B,CAAV,CAAV;;AAPH;AAOJC,UAAAA,IAPI;AAAA;AAQV,iBAAMf,GAAG,CAACgB,oBAAIC,WAAJ,CAAgBF,IAAhB,EAAsBX,MAAtB,CAAD,CAAT;;AARU;AAAA;AAAA;;AAAA;AAAA;AAUV,iBAAMJ,GAAG,CAACgB,oBAAIE,gBAAJ,EAAD,CAAT;;AAVU;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAaZ,iBAAMlB,GAAG,CAACmB,qBAAMC,SAAN,CAAgB,OAAhB,EAAyB;AACjCC,YAAAA,MAAM,EAAE,YAAIC;AADqB,WAAzB,CAAD,CAAT;;AAbY;AAAA;AAAA;AAAA;AAAA;AAAA,KAAVrB,OAAU;AAAA,CAAH,CAAb;;AAoBA,IAAMsB,WAAW;AAAA;AAAA,6BAAG,SAAdA,WAAc;AAAA;AAAA;AAAA;AAAA;AAAA;AAClB,iBAAM3B,SAAS,CAAC4B,gBAAEC,YAAH,EAAiBxB,OAAjB,CAAf;;AADkB;AAAA;AAAA;AAAA;AAAA;AAAA,KAAdsB,WAAc;AAAA,CAAH,CAAjB;;eAIeA,W","sourcesContent":["import { effects } from 'redux-saga'\r\nimport aUV, { ACTION as A } from './actions'\r\n\r\nimport { sForecast, sUV } from '../selectors'\r\n\r\nimport Api from '../../api/OpenWeather';\r\nimport request from '../../affects/request';\r\nimport modal from '../modal/actions'\r\n\r\nconst { takeEvery, select, call, put } = effects;\r\n\r\nconst fetchUV = function* (action){\r\n  try{\r\n    const state = yield select();\r\n    const recent = sForecast.recent(state);\r\n    const recentUV = sUV.recent(state);\r\n    if (recent && recentUV !== recent){\r\n      const coord = sForecast.cityCoordById(state, recent)\r\n      const json = yield call(request, Api.crUV(coord.lat, coord.lon))\r\n      yield put(aUV.requestedOk(json, recent))\r\n    } else {\r\n      yield put(aUV.requestedInCache())\r\n    }\r\n  } catch(err){\r\n    yield put(modal.showModal('ERROR', {\r\n      errMsg: err.message\r\n    }))\r\n  }\r\n}\r\n\r\n\r\nconst watchAction = function* () {\r\n  yield takeEvery(A.UV_REQUESTED, fetchUV)\r\n}\r\n\r\nexport default watchAction\r\n"],"file":"saga.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/flux/uv/saga.js"
+ ],
+ "file": "../../../src/flux/uv/saga.js",
+ "names": [
+  "fetchUV",
+  "action",
+  "state",
+  "recent",
+  "sForecast",
+  "recentUV",
+  "sUV",
+  "coord",
+  "cityCoordById",
+  "request",
+  "Api",
+  "crUV",
+  "lat",
+  "lon",
+  "json",
+  "aUV",
+  "requestedOk",
+  "requestedInCache",
+  "modal",
+  "showModal",
+  "errMsg",
+  "message",
+  "watchAction",
+  "A",
+  "UV_REQUESTED"
+ ],
+ "mappings": ";;;;;;;;;;;AAAA;;AACA;;AAEA;;AAEA;;AACA;;AACA;;AAGA,IAAMA,OAAO;AAAA;AAAA,6BAAG,SAAVA,OAAU,CAAWC,MAAX;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAEE,iBAAM,sBAAN;;AAFF;AAENC,UAAAA,KAFM;AAGNC,UAAAA,MAHM,GAGGC,qBAAUD,MAAV,CAAiBD,KAAjB,CAHH;AAING,UAAAA,QAJM,GAIKC,eAAIH,MAAJ,CAAWD,KAAX,CAJL;;AAAA,gBAKRC,MAAM,IAAIE,QAAQ,KAAKF,MALf;AAAA;AAAA;AAAA;;AAMJI,UAAAA,KANI,GAMIH,qBAAUI,aAAV,CAAwBN,KAAxB,EAA+BC,MAA/B,CANJ;AAAA;AAOG,iBAAM,mBAAKM,mBAAL,EAAcC,wBAAIC,IAAJ,CAASJ,KAAK,CAACK,GAAf,EAAoBL,KAAK,CAACM,GAA1B,CAAd,CAAN;;AAPH;AAOJC,UAAAA,IAPI;AAAA;AAQV,iBAAM,kBAAIC,oBAAIC,WAAJ,CAAgBF,IAAhB,EAAsBX,MAAtB,CAAJ,CAAN;;AARU;AAAA;AAAA;;AAAA;AAAA;AAUV,iBAAM,kBAAIY,oBAAIE,gBAAJ,EAAJ,CAAN;;AAVU;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAaZ,iBAAM,kBAAIC,qBAAMC,SAAN,CAAgB,OAAhB,EAAyB;AACjCC,YAAAA,MAAM,EAAE,YAAIC;AADqB,WAAzB,CAAJ,CAAN;;AAbY;AAAA;AAAA;AAAA;AAAA;AAAA,KAAVrB,OAAU;AAAA,CAAH,CAAb;;AAoBA,IAAMsB,WAAW;AAAA;AAAA,6BAAG,SAAdA,WAAc;AAAA;AAAA;AAAA;AAAA;AAAA;AAClB,iBAAM,wBAAUC,gBAAEC,YAAZ,EAA0BxB,OAA1B,CAAN;;AADkB;AAAA;AAAA;AAAA;AAAA;AAAA,KAAdsB,WAAc;AAAA,CAAH,CAAjB;;eAIeA,W"
+}

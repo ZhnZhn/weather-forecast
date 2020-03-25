@@ -1,4 +1,4 @@
-import { effects } from 'redux-saga'
+import { takeEvery, select, call, put } from 'redux-saga/effects'
 import aUV, { ACTION as A } from './actions'
 
 import { sForecast, sUV } from '../selectors'
@@ -7,7 +7,6 @@ import Api from '../../api/OpenWeather';
 import request from '../../affects/request';
 import modal from '../modal/actions'
 
-const { takeEvery, select, call, put } = effects;
 
 const fetchUV = function* (action){
   try{

@@ -9,15 +9,11 @@ exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _reduxSaga = require("redux-saga");
+var _effects = require("redux-saga/effects");
 
 var _OpenWeather = _interopRequireDefault(require("../../api/OpenWeather"));
 
 var _actions = _interopRequireWildcard(require("./actions"));
-
-var throttle = _reduxSaga.effects.throttle,
-    call = _reduxSaga.effects.call,
-    put = _reduxSaga.effects.put;
 
 var setSettings =
 /*#__PURE__*/
@@ -27,11 +23,11 @@ _regenerator["default"].mark(function setSettings(action) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return call(_OpenWeather["default"].setApiKey, action.apiKey);
+          return (0, _effects.call)(_OpenWeather["default"].setApiKey, action.apiKey);
 
         case 2:
           _context.next = 4;
-          return put(_actions["default"].setApiKey());
+          return (0, _effects.put)(_actions["default"].setApiKey());
 
         case 4:
         case "end":
@@ -49,7 +45,7 @@ _regenerator["default"].mark(function watchSettingSet() {
       switch (_context2.prev = _context2.next) {
         case 0:
           _context2.next = 2;
-          return throttle(500, _actions.ACTION.SETTINGS_SET, setSettings);
+          return (0, _effects.throttle)(500, _actions.ACTION.SETTINGS_SET, setSettings);
 
         case 2:
         case "end":

@@ -1,1 +1,19 @@
-{"version":3,"sources":["../../../src/flux/settings/saga.js"],"names":["throttle","effects","call","put","setSettings","action","api","setApiKey","apiKey","settings","watchSettingSet","A","SETTINGS_SET"],"mappings":";;;;;;;;;;;AAAA;;AACA;;AACA;;IAGEA,Q,GAEEC,kB,CAFFD,Q;IACAE,I,GACED,kB,CADFC,I;IAAMC,G,GACJF,kB,CADIE,G;;AAGR,IAAMC,WAAW;AAAA;AAAA,6BAAG,SAAdA,WAAc,CAAWC,MAAX;AAAA;AAAA;AAAA;AAAA;AAAA;AAClB,iBAAMH,IAAI,CAACI,wBAAIC,SAAL,EAAgBF,MAAM,CAACG,MAAvB,CAAV;;AADkB;AAAA;AAElB,iBAAML,GAAG,CAACM,oBAASF,SAAT,EAAD,CAAT;;AAFkB;AAAA;AAAA;AAAA;AAAA;AAAA,KAAdH,WAAc;AAAA,CAAH,CAAjB;;AAKA,IAAMM,eAAe;AAAA;AAAA,6BAAG,SAAlBA,eAAkB;AAAA;AAAA;AAAA;AAAA;AAAA;AACtB,iBAAMV,QAAQ,CAAC,GAAD,EAAMW,gBAAEC,YAAR,EAAsBR,WAAtB,CAAd;;AADsB;AAAA;AAAA;AAAA;AAAA;AAAA,KAAlBM,eAAkB;AAAA,CAAH,CAArB;;eAIeA,e","sourcesContent":["import { effects } from 'redux-saga';\r\nimport api from '../../api/OpenWeather';\r\nimport settings, { ACTION as A } from './actions';\r\n\r\nconst {\r\n  throttle,\r\n  call, put\r\n} = effects;\r\n\r\nconst setSettings = function* (action){\r\n  yield call(api.setApiKey, action.apiKey)\r\n  yield put(settings.setApiKey())\r\n}\r\n\r\nconst watchSettingSet = function* () {\r\n  yield throttle(500, A.SETTINGS_SET, setSettings)\r\n}\r\n\r\nexport default watchSettingSet\r\n"],"file":"saga.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/flux/settings/saga.js"
+ ],
+ "file": "../../../src/flux/settings/saga.js",
+ "names": [
+  "setSettings",
+  "action",
+  "api",
+  "setApiKey",
+  "apiKey",
+  "settings",
+  "watchSettingSet",
+  "A",
+  "SETTINGS_SET"
+ ],
+ "mappings": ";;;;;;;;;;;AAAA;;AACA;;AACA;;AAEA,IAAMA,WAAW;AAAA;AAAA,6BAAG,SAAdA,WAAc,CAAWC,MAAX;AAAA;AAAA;AAAA;AAAA;AAAA;AAElB,iBAAM,mBAAKC,wBAAIC,SAAT,EAAoBF,MAAM,CAACG,MAA3B,CAAN;;AAFkB;AAAA;AAGlB,iBAAM,kBAAIC,oBAASF,SAAT,EAAJ,CAAN;;AAHkB;AAAA;AAAA;AAAA;AAAA;AAAA,KAAdH,WAAc;AAAA,CAAH,CAAjB;;AAOA,IAAMM,eAAe;AAAA;AAAA,6BAAG,SAAlBA,eAAkB;AAAA;AAAA;AAAA;AAAA;AAAA;AACtB,iBAAM,uBAAS,GAAT,EAAcC,gBAAEC,YAAhB,EAA8BR,WAA9B,CAAN;;AADsB;AAAA;AAAA;AAAA;AAAA;AAAA,KAAlBM,eAAkB;AAAA,CAAH,CAArB;;eAIeA,e"
+}

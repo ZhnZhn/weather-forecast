@@ -1,1 +1,30 @@
-{"version":3,"sources":["../../../src/flux/forecast/saga.js"],"names":["takeEvery","effects","call","put","select","requestForecast","action","state","id","sForecast","byId","request","Api","crForecastById","json","forecast","requestedOk","requestedInCache","modal","showModal","errMsg","message","watchForecastRequested","A","FORECAST_REQUESTED"],"mappings":";;;;;;;;;;;AAAA;;AACA;;AACA;;AAEA;;AACA;;AACA;;IAGEA,S,GAEEC,kB,CAFFD,S;IACAE,I,GACED,kB,CADFC,I;IAAMC,G,GACJF,kB,CADIE,G;IAAKC,M,GACTH,kB,CADSG,M;;AAGb,IAAMC,eAAe;AAAA;AAAA,6BAAG,SAAlBA,eAAkB,CAAWC,MAAX;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAEN,iBAAMF,MAAM,EAAZ;;AAFM;AAEdG,UAAAA,KAFc;AAGdC,UAAAA,EAHc,GAGTF,MAAM,CAACE,EAHE;;AAAA,cAIfC,qBAAUC,IAAV,CAAeH,KAAf,EAAsBC,EAAtB,CAJe;AAAA;AAAA;AAAA;;AAAA;AAKL,iBAAMN,IAAI,CAACS,mBAAD,EAAUC,wBAAIC,cAAJ,CAAmBL,EAAnB,CAAV,CAAV;;AALK;AAKZM,UAAAA,IALY;AAAA;AAMlB,iBAAMX,GAAG,CAACY,oBAASC,WAAT,CAAqBF,IAArB,EAA2BN,EAA3B,CAAD,CAAT;;AANkB;AAAA;AAAA;;AAAA;AAAA;AAQlB,iBAAML,GAAG,CAACY,oBAASE,gBAAT,CAA0BT,EAA1B,CAAD,CAAT;;AARkB;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAWpB,iBAAML,GAAG,CAACe,qBAAMC,SAAN,CAAgB,OAAhB,EAAyB;AACjCC,YAAAA,MAAM,EAAE,YAAIC;AADqB,WAAzB,CAAD,CAAT;;AAXoB;AAAA;AAAA;AAAA;AAAA;AAAA,KAAlBhB,eAAkB;AAAA,CAAH,CAArB;;AAiBA,IAAMiB,sBAAsB;AAAA;AAAA,6BAAG,SAAzBA,sBAAyB;AAAA;AAAA;AAAA;AAAA;AAAA;AAC7B,iBAAMtB,SAAS,CAACuB,gBAAEC,kBAAH,EAAuBnB,eAAvB,CAAf;;AAD6B;AAAA;AAAA;AAAA;AAAA;AAAA,KAAzBiB,sBAAyB;AAAA,CAAH,CAA5B;;eAIeA,sB","sourcesContent":["import { effects } from 'redux-saga';\r\nimport forecast,  { ACTION as A }  from './actions';\r\nimport { sForecast } from '../selectors';\r\n\r\nimport Api from '../../api/OpenWeather';\r\nimport request from '../../affects/request';\r\nimport modal from '../modal/actions'\r\n\r\nconst {\r\n  takeEvery,\r\n  call, put, select\r\n} = effects;\r\n\r\nconst requestForecast = function* (action){\r\n  try{\r\n    const state = yield select()\r\n    const id = action.id\r\n    if (!sForecast.byId(state, id)) {\r\n      const json = yield call(request, Api.crForecastById(id))\r\n      yield put(forecast.requestedOk(json, id))\r\n    } else {\r\n      yield put(forecast.requestedInCache(id))\r\n    }\r\n  } catch(err){\r\n    yield put(modal.showModal('ERROR', {\r\n      errMsg: err.message\r\n    }))    \r\n  }\r\n}\r\n\r\nconst watchForecastRequested = function* (){\r\n  yield takeEvery(A.FORECAST_REQUESTED, requestForecast)\r\n}\r\n\r\nexport default watchForecastRequested\r\n"],"file":"saga.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/flux/forecast/saga.js"
+ ],
+ "file": "../../../src/flux/forecast/saga.js",
+ "names": [
+  "requestForecast",
+  "action",
+  "state",
+  "id",
+  "sForecast",
+  "byId",
+  "request",
+  "Api",
+  "crForecastById",
+  "json",
+  "forecast",
+  "requestedOk",
+  "requestedInCache",
+  "modal",
+  "showModal",
+  "errMsg",
+  "message",
+  "watchForecastRequested",
+  "A",
+  "FORECAST_REQUESTED"
+ ],
+ "mappings": ";;;;;;;;;;;AAAA;;AACA;;AACA;;AAEA;;AACA;;AACA;;AAEA,IAAMA,eAAe;AAAA;AAAA,6BAAG,SAAlBA,eAAkB,CAAWC,MAAX;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAEN,iBAAM,sBAAN;;AAFM;AAEdC,UAAAA,KAFc;AAGdC,UAAAA,EAHc,GAGTF,MAAM,CAACE,EAHE;;AAAA,cAIfC,qBAAUC,IAAV,CAAeH,KAAf,EAAsBC,EAAtB,CAJe;AAAA;AAAA;AAAA;;AAAA;AAKL,iBAAM,mBAAKG,mBAAL,EAAcC,wBAAIC,cAAJ,CAAmBL,EAAnB,CAAd,CAAN;;AALK;AAKZM,UAAAA,IALY;AAAA;AAMlB,iBAAM,kBAAIC,oBAASC,WAAT,CAAqBF,IAArB,EAA2BN,EAA3B,CAAJ,CAAN;;AANkB;AAAA;AAAA;;AAAA;AAAA;AAQlB,iBAAM,kBAAIO,oBAASE,gBAAT,CAA0BT,EAA1B,CAAJ,CAAN;;AARkB;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAWpB,iBAAM,kBAAIU,qBAAMC,SAAN,CAAgB,OAAhB,EAAyB;AACjCC,YAAAA,MAAM,EAAE,YAAIC;AADqB,WAAzB,CAAJ,CAAN;;AAXoB;AAAA;AAAA;AAAA;AAAA;AAAA,KAAlBhB,eAAkB;AAAA,CAAH,CAArB;;AAiBA,IAAMiB,sBAAsB;AAAA;AAAA,6BAAG,SAAzBA,sBAAyB;AAAA;AAAA;AAAA;AAAA;AAAA;AAC7B,iBAAM,wBAAUC,gBAAEC,kBAAZ,EAAgCnB,eAAhC,CAAN;;AAD6B;AAAA;AAAA;AAAA;AAAA;AAAA,KAAzBiB,sBAAyB;AAAA,CAAH,CAA5B;;eAIeA,sB"
+}

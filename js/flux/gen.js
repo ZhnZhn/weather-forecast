@@ -7,11 +7,9 @@ exports.isApiKey = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _reduxSaga = require("redux-saga");
+var _effects = require("redux-saga/effects");
 
 var _selectors = require("./selectors");
-
-var select = _reduxSaga.effects.select;
 
 var isApiKey =
 /*#__PURE__*/
@@ -21,7 +19,7 @@ _regenerator["default"].mark(function isApiKey() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return select(_selectors.sSettings.isApiKey);
+          return (0, _effects.select)(_selectors.sSettings.isApiKey);
 
         case 2:
           return _context.abrupt("return", _context.sent);
