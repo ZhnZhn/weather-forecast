@@ -28,9 +28,13 @@ function (_Component) {
     _this._handleClickOutside = function (event) {
       var onClose = _this.props.onClose;
 
-      if (!_this.rootNode.contains(event.target)) {
+      if (_this.rootNode && !_this.rootNode.contains(event.target)) {
         onClose(event);
       }
+    };
+
+    _this._refRootNode = function (n) {
+      return _this.rootNode = n;
     };
 
     return _this;
@@ -38,9 +42,9 @@ function (_Component) {
 
   var _proto = ModalPane.prototype;
 
-  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-    if (this.props !== nextProps) {
-      if (nextProps.isShow) {
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      if (this.props.isShow) {
         document.addEventListener('click', this._handleClickOutside, true);
       } else {
         document.removeEventListener('click', this._handleClickOutside, true);
@@ -49,16 +53,12 @@ function (_Component) {
   };
 
   _proto.render = function render() {
-    var _this2 = this;
-
     var _this$props = this.props,
         style = _this$props.style,
         children = _this$props.children;
     return _react["default"].createElement("div", {
       style: style,
-      ref: function ref(n) {
-        return _this2.rootNode = n;
-      }
+      ref: this._refRootNode
     }, children);
   };
 

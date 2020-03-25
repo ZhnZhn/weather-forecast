@@ -32,56 +32,28 @@ const _isFn = fn => typeof fn === 'function';
 class SvgCheckBox extends Component {
   /*
   static propTypes = {
+    style: PropTypes.object,
     value: PropTypes.bool,
     onCheck: PropTypes.func,
     onUnCheck: PropTypes.func
   }
   */
 
-  constructor(props){
-    super(props);
-
-    const { value, onCheck, onUnCheck } = props;
-    this._isOnCheck = _isFn(onCheck)
-    this._isOnUnCheck = _isFn(onUnCheck)
-
-    this.state = {
-        isChecked: !!value,
-    }
-  }
-
-  UNSAVE_componentWillReceiveProps(nextProps){
-    if (this.props !== nextProps
-        && typeof nextProps.value !== 'undefined')
-    {
-      this.setState({ isChecked: !!nextProps.value })
-    }
-  }
-
   _hClick = () => {
-    const {
-           _isOnCheck, _isOnUnCheck,
-            state, props
-          } = this
-        , { onCheck, onUnCheck } = props
-        , { isChecked } = state;
-    if (!isChecked && _isOnCheck){
+    const { value, onCheck, onUnCheck } = this.props;
+    if (!value && _isFn(onCheck)){
       onCheck(this);
-    } else if (_isOnUnCheck){
+    } else if (_isFn(onUnCheck)){
       onUnCheck(this);
     }
-    this.setState({ isChecked: !isChecked });
   }
 
   render(){
-    const { rootStyle } = this.props
-        , { isChecked } = this.state
-        , _elChecked = (isChecked)
-            ? EL_CHECKED
-            : null;
+    const { style, value } = this.props
+    , _elChecked = value ? EL_CHECKED : null;
     return (
       <div
-         style={{ ...S.DIV, ...rootStyle }}
+         style={{ ...S.DIV, ...style }}
          onClick={this._hClick}
       >
         <svg
@@ -99,10 +71,6 @@ class SvgCheckBox extends Component {
         </svg>
       </div>
     );
-  }
-
-  setUnchecked = () => {
-    this.setState({ isChecked: false });
   }
 }
 

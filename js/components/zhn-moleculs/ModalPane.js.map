@@ -1,1 +1,32 @@
-{"version":3,"sources":["../../../src/components/zhn-moleculs/ModalPane.jsx"],"names":["Component","React","ModalPane","_handleClickOutside","event","onClose","props","rootNode","contains","target","componentWillReceiveProps","nextProps","isShow","document","addEventListener","removeEventListener","render","style","children","n","defaultProps"],"mappings":";;;;;;;;;AAAA;;IAEQA,S,GAAcC,iB,CAAdD,S;;IAEFE,S;;;;;;;;;;;;;;UAeJC,mB,GAAsB,UAACC,KAAD,EAAW;AAAA,UACvBC,OADuB,GACX,MAAKC,KADM,CACvBD,OADuB;;AAE/B,UAAI,CAAC,MAAKE,QAAL,CAAcC,QAAd,CAAuBJ,KAAK,CAACK,MAA7B,CAAL,EAA2C;AACzCJ,QAAAA,OAAO,CAACD,KAAD,CAAP;AACD;AACF,K;;;;;;;SAfDM,yB,GAAA,mCAA0BC,SAA1B,EAAoC;AAClC,QAAI,KAAKL,KAAL,KAAeK,SAAnB,EAA8B;AAC5B,UAAIA,SAAS,CAACC,MAAd,EAAqB;AACnBC,QAAAA,QAAQ,CAACC,gBAAT,CAA0B,OAA1B,EAAmC,KAAKX,mBAAxC,EAA6D,IAA7D;AACD,OAFD,MAEO;AACLU,QAAAA,QAAQ,CAACE,mBAAT,CAA6B,OAA7B,EAAsC,KAAKZ,mBAA3C,EAAgE,IAAhE;AACD;AACF;AACF,G;;SASDa,M,GAAA,kBAAQ;AAAA;;AAAA,sBACsB,KAAKV,KAD3B;AAAA,QACEW,KADF,eACEA,KADF;AAAA,QACSC,QADT,eACSA,QADT;AAEN,WACE;AACE,MAAA,KAAK,EAAED,KADT;AAEE,MAAA,GAAG,EAAE,aAAAE,CAAC;AAAA,eAAI,MAAI,CAACZ,QAAL,GAAgBY,CAApB;AAAA;AAFR,OAIGD,QAJH,CADF;AAQD,G;;;EAhCqBlB,S;;AAAlBE,S,CACGkB,Y,GAAe;AACpBf,EAAAA,OAAO,EAAE,mBAAM,CAAE;AADG,C;eAkCTH,S","sourcesContent":["import React from '../_react'\r\n\r\nconst { Component } = React;\r\n\r\nclass ModalPane extends Component {\r\n  static defaultProps = {\r\n    onClose: () => {}\r\n  }\r\n\r\n  componentWillReceiveProps(nextProps){\r\n    if (this.props !== nextProps ){\r\n      if (nextProps.isShow){\r\n        document.addEventListener('click', this._handleClickOutside, true)\r\n      } else {\r\n        document.removeEventListener('click', this._handleClickOutside, true)\r\n      }\r\n    }\r\n  }\r\n\r\n  _handleClickOutside = (event) => {\r\n    const { onClose } = this.props;\r\n    if (!this.rootNode.contains(event.target)) {\r\n      onClose(event)\r\n    }\r\n  }\r\n\r\n  render(){\r\n    const { style, children } = this.props;\r\n    return (\r\n      <div\r\n        style={style}\r\n        ref={n => this.rootNode = n}\r\n      >\r\n        {children}\r\n      </div>\r\n    );\r\n  }\r\n}\r\n\r\nexport default ModalPane\r\n"],"file":"ModalPane.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/zhn-moleculs/ModalPane.js"
+ ],
+ "file": "../../../src/components/zhn-moleculs/ModalPane.js",
+ "names": [
+  "Component",
+  "React",
+  "ModalPane",
+  "_handleClickOutside",
+  "event",
+  "onClose",
+  "props",
+  "rootNode",
+  "contains",
+  "target",
+  "_refRootNode",
+  "n",
+  "componentDidUpdate",
+  "prevProps",
+  "isShow",
+  "document",
+  "addEventListener",
+  "removeEventListener",
+  "render",
+  "style",
+  "children",
+  "defaultProps"
+ ],
+ "mappings": ";;;;;;;;;AAAA;;IAEQA,S,GAAcC,iB,CAAdD,S;;IAEFE,S;;;;;;;;;;;;;;UAgBJC,mB,GAAsB,UAACC,KAAD,EAAW;AAAA,UACvBC,OADuB,GACX,MAAKC,KADM,CACvBD,OADuB;;AAE/B,UAAI,MAAKE,QAAL,IAAiB,CAAC,MAAKA,QAAL,CAAcC,QAAd,CAAuBJ,KAAK,CAACK,MAA7B,CAAtB,EAA4D;AAC1DJ,QAAAA,OAAO,CAACD,KAAD,CAAP;AACD;AACF,K;;UAEDM,Y,GAAe,UAAAC,CAAC;AAAA,aAAI,MAAKJ,QAAL,GAAgBI,CAApB;AAAA,K;;;;;;;SAlBhBC,kB,GAAA,4BAAmBC,SAAnB,EAA6B;AAC3B,QAAI,KAAKP,KAAL,KAAeO,SAAnB,EAA6B;AAC3B,UAAI,KAAKP,KAAL,CAAWQ,MAAf,EAAsB;AACpBC,QAAAA,QAAQ,CAACC,gBAAT,CAA0B,OAA1B,EAAmC,KAAKb,mBAAxC,EAA6D,IAA7D;AACD,OAFD,MAEO;AACLY,QAAAA,QAAQ,CAACE,mBAAT,CAA6B,OAA7B,EAAsC,KAAKd,mBAA3C,EAAgE,IAAhE;AACD;AACF;AACF,G;;SAYDe,M,GAAA,kBAAQ;AAAA,sBACsB,KAAKZ,KAD3B;AAAA,QACEa,KADF,eACEA,KADF;AAAA,QACSC,QADT,eACSA,QADT;AAEN,WACE;AACE,MAAA,KAAK,EAAED,KADT;AAEE,MAAA,GAAG,EAAE,KAAKT;AAFZ,OAIGU,QAJH,CADF;AAQD,G;;;EAnCqBpB,S;;AAAlBE,S,CACGmB,Y,GAAe;AACpBhB,EAAAA,OAAO,EAAE,mBAAM,CAAE;AADG,C;eAqCTH,S"
+}

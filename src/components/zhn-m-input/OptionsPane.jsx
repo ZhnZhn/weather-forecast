@@ -6,13 +6,13 @@ import ShowHide from '../zhn-atoms/ShowHide'
 const S = {
   PANE: {
     position: 'absolute',
-    top: '12px',
+    top: 12,
     zIndex: '20',
     width: '100%',
-    paddingTop: '12px',
-    paddingBottom: '12px',
+    paddingTop: 12,
+    paddingBottom: 12,
     backgroundColor: 'rgb(77, 77, 77)',
-    borderRadius: '2px',
+    borderRadius: 2,
     boxShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 2px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px'
   },
   ITEM: {
@@ -21,12 +21,13 @@ const S = {
 }
 
 const _renderOptions = (options, currentItem, clItem, onSelect, isShow) => {
-  return options.map(item => {
+  return options.map((item, index) => {
     const _style = (item.value === currentItem.value)
              ? S.ITEM
-             : undefined;
+             : void 0;
     return (
       <div
+        key={index}
         style={_style}
         className={clItem}
         onClick={onSelect.bind(null, item)}

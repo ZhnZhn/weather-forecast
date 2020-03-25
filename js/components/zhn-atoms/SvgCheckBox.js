@@ -46,73 +46,41 @@ var SvgCheckBox =
 function (_Component) {
   (0, _inheritsLoose2["default"])(SvgCheckBox, _Component);
 
-  /*
-  static propTypes = {
-    value: PropTypes.bool,
-    onCheck: PropTypes.func,
-    onUnCheck: PropTypes.func
-  }
-  */
-  function SvgCheckBox(_props) {
+  function SvgCheckBox() {
     var _this;
 
-    _this = _Component.call(this, _props) || this;
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
 
     _this._hClick = function () {
-      var _assertThisInitialize = (0, _assertThisInitialized2["default"])(_this),
-          _isOnCheck = _assertThisInitialize._isOnCheck,
-          _isOnUnCheck = _assertThisInitialize._isOnUnCheck,
-          state = _assertThisInitialize.state,
-          props = _assertThisInitialize.props,
-          onCheck = props.onCheck,
-          onUnCheck = props.onUnCheck,
-          isChecked = state.isChecked;
+      var _this$props = _this.props,
+          value = _this$props.value,
+          onCheck = _this$props.onCheck,
+          onUnCheck = _this$props.onUnCheck;
 
-      if (!isChecked && _isOnCheck) {
+      if (!value && _isFn(onCheck)) {
         onCheck((0, _assertThisInitialized2["default"])(_this));
-      } else if (_isOnUnCheck) {
+      } else if (_isFn(onUnCheck)) {
         onUnCheck((0, _assertThisInitialized2["default"])(_this));
       }
-
-      _this.setState({
-        isChecked: !isChecked
-      });
     };
 
-    _this.setUnchecked = function () {
-      _this.setState({
-        isChecked: false
-      });
-    };
-
-    var value = _props.value,
-        _onCheck = _props.onCheck,
-        _onUnCheck = _props.onUnCheck;
-    _this._isOnCheck = _isFn(_onCheck);
-    _this._isOnUnCheck = _isFn(_onUnCheck);
-    _this.state = {
-      isChecked: !!value
-    };
     return _this;
   }
 
   var _proto = SvgCheckBox.prototype;
 
-  _proto.UNSAVE_componentWillReceiveProps = function UNSAVE_componentWillReceiveProps(nextProps) {
-    if (this.props !== nextProps && typeof nextProps.value !== 'undefined') {
-      this.setState({
-        isChecked: !!nextProps.value
-      });
-    }
-  };
-
   _proto.render = function render() {
-    var rootStyle = this.props.rootStyle,
-        isChecked = this.state.isChecked,
-        _elChecked = isChecked ? EL_CHECKED : null;
+    var _this$props2 = this.props,
+        style = _this$props2.style,
+        value = _this$props2.value,
+        _elChecked = value ? EL_CHECKED : null;
 
     return _react["default"].createElement("div", {
-      style: (0, _extends2["default"])({}, S.DIV, {}, rootStyle),
+      style: (0, _extends2["default"])({}, S.DIV, {}, style),
       onClick: this._hClick
     }, _react["default"].createElement("svg", {
       viewBox: "0 0 16 16",
