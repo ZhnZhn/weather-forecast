@@ -71,9 +71,7 @@ var _crId = function _crId(_ref) {
   return name + '_sf';
 };
 
-var SecretField =
-/*#__PURE__*/
-function (_Component) {
+var SecretField = /*#__PURE__*/function (_Component) {
   (0, _inheritsLoose2["default"])(SecretField, _Component);
 
   function SecretField(props) {
@@ -200,21 +198,21 @@ function (_Component) {
       onKeyDown: this._hMaskKeyDown
     };
 
-    return _react["default"].createElement("form", {
+    return /*#__PURE__*/_react["default"].createElement("form", {
       className: CL.SELECT,
       style: rootStyle
-    }, _react["default"].createElement("label", {
+    }, /*#__PURE__*/_react["default"].createElement("label", {
       className: CL.LABEL,
-      style: (0, _extends2["default"])({}, _labelStyle, {}, _labelErrStyle),
+      style: (0, _extends2["default"])({}, _labelStyle, _labelErrStyle),
       htmlFor: this._id
-    }, caption), _react["default"].createElement("div", {
+    }, caption), /*#__PURE__*/_react["default"].createElement("div", {
       className: CL.DIV
-    }, _react["default"].createElement("input", {
+    }, /*#__PURE__*/_react["default"].createElement("input", {
       hidden: true,
       autoComplete: "username",
       value: name,
       readOnly: true
-    }), _react["default"].createElement("input", (0, _extends2["default"])({
+    }), /*#__PURE__*/_react["default"].createElement("input", (0, _extends2["default"])({
       ref: this._refInput,
       id: this._id,
       type: "password",
@@ -222,10 +220,10 @@ function (_Component) {
       maxLength: maxLength,
       onFocus: this._handleFocusInput,
       onBlur: this._handleBlurInput
-    }, _inputProps)), _react["default"].createElement("div", {
+    }, _inputProps)), /*#__PURE__*/_react["default"].createElement("div", {
       className: CL.INPUT_LINE,
       style: _lineStyle
-    }), _lineStyle && _react["default"].createElement("div", {
+    }), _lineStyle && /*#__PURE__*/_react["default"].createElement("div", {
       className: CL.INPUT_MSG_ERR
     }, errorMsg)));
   };
@@ -261,7 +259,7 @@ SecretField.defaultProps = {
   onTest: function onTest() {
     return true;
   },
-  inEnter: function inEnter() {}
+  onEnter: function onEnter() {}
 };
 var _default = SecretField;
 exports["default"] = _default;

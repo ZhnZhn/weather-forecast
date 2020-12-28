@@ -52,7 +52,7 @@ class SecretField extends Component {
     name: "pwd",
     maxLength: "32",
     onTest: () => true,
-    inEnter: () => {}
+    onEnter: () => {}
   }
 
   constructor(props){
