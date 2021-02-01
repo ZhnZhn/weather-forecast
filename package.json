@@ -4,16 +4,16 @@
   "description": "Web app Weather Forecast",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --config webpack.dev.js",
+    "dev": "webpack serve --config webpack.dev.js",
     "css:min": "gulp",
     "css:sass": "gulp sass",
     "css:all": "npm run css:sass && npm run css:min",
     "transpile": "babel ./src --out-dir ./js --source-maps --ignore test.js",
     "transpile:all": "babel ./src --out-dir ./js --source-maps",
-    "build:dll": "webpack --colors --progress --config webpack.dll.js",
-    "build:dll-jsx": "webpack --colors --progress --config webpack.dll-jsx.js",
+    "build:dll": "webpack --color --progress --config webpack.dll.js",
+    "build:dll-jsx": "webpack --color --progress --config webpack.dll-jsx.js",
     "stats:json": "webpack --profile --json > stats.json",
-    "stats:dll": "webpack --colors --progress --config webpack.dll.js json > stats-dll.json"
+    "stats:dll": "webpack --color --progress --config webpack.dll.js json > stats-dll.json"
   },
   "author": "Yevhenii Molodyi",
   "license": "BSD-3-Clause",
@@ -51,9 +51,9 @@
     "gulp-rev": "^9.0.0",
     "gulp-sass": "^4.1.0",
     "html-webpack-plugin": "^4.5.0",
-    "terser-webpack-plugin": "^5.0.3",
-    "webpack": "^5.11.1",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "terser-webpack-plugin": "^5.1.1",
+    "webpack": "^5.19.0",
+    "webpack-cli": "^4.4.0",
+    "webpack-dev-server": "^3.11.2"
   }
 }
