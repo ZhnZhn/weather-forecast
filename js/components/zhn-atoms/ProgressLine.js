@@ -10,16 +10,14 @@ var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inh
 var _react = _interopRequireDefault(require("../_react"));
 
 //import React, { Component } from 'react';
-var Component = _react["default"].Component;
+var PureComponent = _react["default"].PureComponent;
 var Transitions = {
   WIDTH: 'width 500ms ease-out',
   OPACITY: 'opacity 400ms linear'
 };
 
-var ProgressLine =
-/*#__PURE__*/
-function (_Component) {
-  (0, _inheritsLoose2["default"])(ProgressLine, _Component);
+var ProgressLine = /*#__PURE__*/function (_PureComponent) {
+  (0, _inheritsLoose2["default"])(ProgressLine, _PureComponent);
 
   function ProgressLine() {
     var _this;
@@ -28,7 +26,7 @@ function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+    _this = _PureComponent.call.apply(_PureComponent, [this].concat(args)) || this;
     _this.wasCompleted = false;
     _this.idCompleted = null;
     _this.wasOpacied = false;
@@ -110,17 +108,17 @@ function (_Component) {
       };
     }
 
-    return _react["default"].createElement("div", {
+    return /*#__PURE__*/_react["default"].createElement("div", {
       className: "progress-line",
       style: _style
     });
   };
 
   return ProgressLine;
-}(Component);
+}(PureComponent);
 
 ProgressLine.defaultProps = {
-  color: '#2F7ED8',
+  color: '#2f7ed8',
   height: 3
 };
 var _default = ProgressLine;

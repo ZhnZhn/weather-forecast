@@ -1,15 +1,15 @@
 //import React, { Component } from 'react';
 import React from '../_react'
 
-const { Component } = React
+const { PureComponent } = React
 const Transitions = {
   WIDTH : 'width 500ms ease-out',
   OPACITY : 'opacity 400ms linear'
 }
 
-class ProgressLine extends Component {
+class ProgressLine extends PureComponent {
   static defaultProps = {
-    color : '#2F7ED8',
+    color : '#2f7ed8',
     height : 3
   }
 
@@ -17,6 +17,7 @@ class ProgressLine extends Component {
   idCompleted = null;
   wasOpacied = false;
   idOpacied = null;
+
 
   componentWillUnmount(){
     if (this.idCompleted){
