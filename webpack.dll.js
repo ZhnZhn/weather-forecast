@@ -9,7 +9,7 @@ module.exports = {
   mode: "production",
   entry: {
      lib: [
-            "redux", "redux-saga",
+            "redux", "react-redux", "redux-saga",
             "interactjs"
           ]
   },
