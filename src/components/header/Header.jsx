@@ -1,5 +1,7 @@
 import React from '../_react'
 //import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux'
+import useTheme from '../hooks/useTheme'
 
 import ProgressLoading from './ProgressLoading';
 import HamburgerButton from '../zhn-atoms/HamburgerButton';
@@ -11,9 +13,7 @@ import styleConfig from './Header.Style';
 import { toggleLayout } from '../../flux/layout/actions';
 import { showModal } from '../../flux/modal/actions';
 
-import withTheme from '../hoc/withTheme';
-
-const { Component } = React;
+const { useCallback } = React;
 
 const TITLE = "Weather v0.2.0";
 
@@ -34,80 +34,55 @@ const S = {
   }
 };
 
-class Header extends Component {
-
-  /*
-  static propTypes = {
-    rootStyle: PropTypes.object,
-    store: PropTypes.shape({
-      dispatch: PropTypes.func
-    }),
-    theme: PropTypes.shape({
-      createStyle: PropTypes.func,
-      setThemeName: PropTypes.func
-    })
-  }
-  */
-
-  _hForecast = (storeKey) => {
-    const { store } = this.props
-        , { dispatch } = store;
+const Header = ({ style }) => {
+  const dispatch = useDispatch()
+  , _hToggleLayout = useCallback(storeKey => {
     dispatch(toggleLayout(storeKey))
-  }
-
-  _hSettings = (storeKey) => {
-    const { store } = this.props
-        , { dispatch } = store;
+  }, [dispatch])
+  , _hSettings = useCallback(storeKey => {
     dispatch(toggleLayout(storeKey))
     dispatch(showModal('SETTINGS'))
-  }
+  }, [dispatch])
+  , _STYLE = useTheme(styleConfig);
 
-
-  render(){
-    const { rootStyle, store, theme } = this.props
-       , _STYLE = theme.createStyle(styleConfig);
-    return(
-      <header
-         role="banner"
-         style={{...rootStyle, ..._STYLE.HEADER}}
-      >
-        <ProgressLoading store={store} />
-        <HamburgerButton
-           store={store}
-           storeKey="isPushMenu"
-           onClick={toggleLayout}
-        />
-        <span className={CL.TITLE}>
-          {TITLE}
-        </span>
-        <ButtonCircle
-           style={S.BT_CIRCLE}
-           caption="F"
-           title="Toggle Forecast Popup"
-           store={store}
-           storeKey="isPopupForecast"
-           onClick={this._hForecast}
-         />
-         <ButtonCircle
-           style={S.BT_CIRCLE}
-           caption="S"
-           title="Open Settings Dialog"
-           store={store}
-           storeKey="isSettings"
-           onClick={this._hSettings}
-         />
-         <ProviderLink
-           className={CL.LINK}
-           prefixCL={CL.LINK_PREF}
-         />
-         <GitHubLink
-           className={CL.GITHUB}
-           title="GitHub Repository"
-           href="https://github.com/zhnzhn/weather-forecast"
-         />
-       </header>
-    );
-  }
+  return (
+    <header
+       role="banner"
+       style={{...style, ..._STYLE.HEADER}}
+    >
+      <ProgressLoading />
+      <HamburgerButton
+         storeKey="isPushMenu"
+         onClick={_hToggleLayout}
+      />
+      <span className={CL.TITLE}>
+        {TITLE}
+      </span>
+      <ButtonCircle
+         style={S.BT_CIRCLE}
+         caption="F"
+         title="Toggle Forecast Popup"
+         storeKey="isPopupForecast"
+         onClick={_hToggleLayout}
+       />
+       <ButtonCircle
+         style={S.BT_CIRCLE}
+         caption="S"
+         title="Open Settings Dialog"
+         storeKey="isSettings"
+         onClick={_hSettings}
+       />
+       <ProviderLink
+         className={CL.LINK}
+         prefixCL={CL.LINK_PREF}
+       />
+       <GitHubLink
+         className={CL.GITHUB}
+         title="GitHub Repository"
+         href="https://github.com/zhnzhn/weather-forecast"
+       />
+     </header>
+  );
 }
 
-export default withTheme(Header)
+export  default Header
