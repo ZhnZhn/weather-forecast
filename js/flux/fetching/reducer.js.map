@@ -1,1 +1,37 @@
-{"version":3,"sources":["../../../src/flux/fetching/reducer.js"],"names":["reducer","state","action","type","M","MODAL_SHOW","id","FETCH","FAILED","P","PLACE_REQUESTED","F","FORECAST_REQUESTED","H","HOURLY_REQUESTED","U","UV_REQUESTED","LOADING","PLACE_REQUESTED_OK","FORECAST_REQUESTED_OK","FORECAST_REQUESTED_INCACHE","HOURLY_REQUESTED_OK","HOURLY_REQUESTED_INCACHE","UV_REQUESTED_OK","UV_REQUESTED_INCACHE","SUCCESS"],"mappings":";;;;;AAAA;;AACA;;AACA;;AACA;;AACA;;AAEA;;AAEA,IAAMA,OAAO,GAAG,SAAVA,OAAU,CAASC,KAAT,EAAmBC,MAAnB,EAA0B;AAAA,MAAjBD,KAAiB;AAAjBA,IAAAA,KAAiB,GAAX,EAAW;AAAA;;AACxC,UAAOC,MAAM,CAACC,IAAd;AACE,SAAKC,iBAAEC,UAAP;AACE,aAAOH,MAAM,CAACI,EAAP,KAAc,OAAd,GACHC,iBAAMC,MADH,GAEHP,KAFJ;;AAIF,SAAKQ,gBAAEC,eAAP;AACA,SAAKC,iBAAEC,kBAAP;AACA,SAAKC,iBAAEC,gBAAP;AACA,SAAKC,iBAAEC,YAAP;AACE,aAAOT,iBAAMU,OAAb;;AAEF,SAAKR,gBAAES,kBAAP;AACA,SAAKP,iBAAEQ,qBAAP;AACA,SAAKR,iBAAES,0BAAP;AACA,SAAKP,iBAAEQ,mBAAP;AACA,SAAKR,iBAAES,wBAAP;AACA,SAAKP,iBAAEQ,eAAP;AACA,SAAKR,iBAAES,oBAAP;AACE,aAAOjB,iBAAMkB,OAAb;;AAEF;AAAS,aAAOxB,KAAP;AArBX;AAuBD,CAxBD;;eA0BeD,O","sourcesContent":["import { ACTION as P } from '../place/actions';\r\nimport { ACTION as F } from '../forecast/actions';\r\nimport { ACTION as H } from '../hourly/actions';\r\nimport { ACTION as U } from '../uv/actions';\r\nimport { ACTION as M } from '../modal/actions';\r\n\r\nimport { FETCH } from './constants';\r\n\r\nconst reducer = function(state='', action){\r\n  switch(action.type){\r\n    case M.MODAL_SHOW :\r\n      return action.id === 'ERROR'\r\n        ? FETCH.FAILED\r\n        : state;\r\n\r\n    case P.PLACE_REQUESTED :\r\n    case F.FORECAST_REQUESTED :\r\n    case H.HOURLY_REQUESTED :\r\n    case U.UV_REQUESTED :\r\n      return FETCH.LOADING;\r\n\r\n    case P.PLACE_REQUESTED_OK :\r\n    case F.FORECAST_REQUESTED_OK :\r\n    case F.FORECAST_REQUESTED_INCACHE :\r\n    case H.HOURLY_REQUESTED_OK :\r\n    case H.HOURLY_REQUESTED_INCACHE :\r\n    case U.UV_REQUESTED_OK :\r\n    case U.UV_REQUESTED_INCACHE :\r\n      return FETCH.SUCCESS;\r\n\r\n    default: return state;\r\n  }\r\n}\r\n\r\nexport default reducer\r\n"],"file":"reducer.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/flux/fetching/reducer.js"
+ ],
+ "file": "../../../src/flux/fetching/reducer.js",
+ "names": [
+  "reducer",
+  "state",
+  "action",
+  "FETCH",
+  "INITIAL",
+  "type",
+  "M",
+  "MODAL_SHOW",
+  "id",
+  "FAILED",
+  "P",
+  "PLACE_REQUESTED",
+  "F",
+  "FORECAST_REQUESTED",
+  "H",
+  "HOURLY_REQUESTED",
+  "U",
+  "UV_REQUESTED",
+  "LOADING",
+  "PLACE_REQUESTED_OK",
+  "FORECAST_REQUESTED_OK",
+  "FORECAST_REQUESTED_INCACHE",
+  "HOURLY_REQUESTED_OK",
+  "HOURLY_REQUESTED_INCACHE",
+  "UV_REQUESTED_OK",
+  "UV_REQUESTED_INCACHE",
+  "SUCCESS"
+ ],
+ "mappings": ";;;;;AAAA;;AACA;;AACA;;AACA;;AACA;;AAEA;;AAEA,IAAMA,OAAO,GAAG,SAAVA,OAAU,CAASC,KAAT,EAA8BC,MAA9B,EAAqC;AAAA,MAA5BD,KAA4B;AAA5BA,IAAAA,KAA4B,GAAtBE,iBAAMC,OAAgB;AAAA;;AACnD,UAAOF,MAAM,CAACG,IAAd;AACE,SAAKC,iBAAEC,UAAP;AACE,aAAOL,MAAM,CAACM,EAAP,KAAc,OAAd,GACHL,iBAAMM,MADH,GAEHR,KAFJ;;AAIF,SAAKS,gBAAEC,eAAP;AACA,SAAKC,iBAAEC,kBAAP;AACA,SAAKC,iBAAEC,gBAAP;AACA,SAAKC,iBAAEC,YAAP;AACE,aAAOd,iBAAMe,OAAb;;AAEF,SAAKR,gBAAES,kBAAP;AACA,SAAKP,iBAAEQ,qBAAP;AACA,SAAKR,iBAAES,0BAAP;AACA,SAAKP,iBAAEQ,mBAAP;AACA,SAAKR,iBAAES,wBAAP;AACA,SAAKP,iBAAEQ,eAAP;AACA,SAAKR,iBAAES,oBAAP;AACE,aAAOtB,iBAAMuB,OAAb;;AAEF;AAAS,aAAOzB,KAAP;AArBX;AAuBD,CAxBD;;eA0BeD,O"
+}

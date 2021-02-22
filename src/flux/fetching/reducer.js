@@ -6,7 +6,7 @@ import { ACTION as M } from '../modal/actions';
 
 import { FETCH } from './constants';
 
-const reducer = function(state='', action){
+const reducer = function(state=FETCH.INITIAL, action){
   switch(action.type){
     case M.MODAL_SHOW :
       return action.id === 'ERROR'

@@ -1,5 +1,6 @@
 
 export const FETCH = {
+  INITIAL : 'INITIAL',
   LOADING : 'LOADING',
   SUCCESS : 'SUCCESS',
   FAILED : 'FAILED'

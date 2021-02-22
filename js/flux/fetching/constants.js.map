@@ -1,1 +1,15 @@
-{"version":3,"sources":["../../../src/flux/fetching/constants.js"],"names":["FETCH","LOADING","SUCCESS","FAILED"],"mappings":";;;;AACO,IAAMA,KAAK,GAAG;AACnBC,EAAAA,OAAO,EAAG,SADS;AAEnBC,EAAAA,OAAO,EAAG,SAFS;AAGnBC,EAAAA,MAAM,EAAG;AAHU,CAAd","sourcesContent":["\r\nexport const FETCH = {\r\n  LOADING : 'LOADING',\r\n  SUCCESS : 'SUCCESS',\r\n  FAILED : 'FAILED'\r\n}\r\n"],"file":"constants.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/flux/fetching/constants.js"
+ ],
+ "file": "../../../src/flux/fetching/constants.js",
+ "names": [
+  "FETCH",
+  "INITIAL",
+  "LOADING",
+  "SUCCESS",
+  "FAILED"
+ ],
+ "mappings": ";;;;AACO,IAAMA,KAAK,GAAG;AACnBC,EAAAA,OAAO,EAAG,SADS;AAEnBC,EAAAA,OAAO,EAAG,SAFS;AAGnBC,EAAAA,OAAO,EAAG,SAHS;AAInBC,EAAAA,MAAM,EAAG;AAJU,CAAd"
+}

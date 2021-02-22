@@ -17,7 +17,7 @@ var _constants = require("./constants");
 
 var reducer = function reducer(state, action) {
   if (state === void 0) {
-    state = '';
+    state = _constants.FETCH.INITIAL;
   }
 
   switch (action.type) {
