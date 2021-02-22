@@ -1,8 +1,9 @@
 import React from '../_react'
+import { useSelector } from 'react-redux'
 
 const CL_NOT_SELECTED = "not-selected";
 
-const { Component } = React;
+const { useCallback } = React;
 const S = {
   ROOT: {
     display: 'inline-block',
@@ -15,62 +16,35 @@ const S = {
     fontWeight: 'bold',
     cursor: 'pointer'
   },
-  NOT_ACTIVE: {    
+  NOT_ACTIVE: {
     color: '#5b5b5b'
   }
 };
 
-const _getIsActive = (props) => {
-  const { store, storeKey } = props;
-  return store.getState()
-    .layout[storeKey];
-};
 
-class ButtonCircle extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      isActive: _getIsActive(props)
-    }
-  }
-
-  componentDidMount(){
-    this.unsubscribe = this.props.store
-      .subscribe(this._onStore)
-  }
-  _onStore = () => {
-    const isActive = _getIsActive(this.props);
-    if (isActive !== this.state.isActive){
-      this.setState({ isActive })
-    }
-  }
-  componentWillUnmount(){
-    this.unsubscribe()
-  }
-
-  _hClick = () => {
-     const { storeKey, onClick } = this.props;
+const ButtonCircle = ({
+  caption, title, style,
+  storeKey,
+  onClick
+}) => {
+  const isActive = useSelector(state => state.layout[storeKey])
+  , _hClick = useCallback(() => {
      onClick(storeKey)
-  }
+  }, [storeKey])
+  , _style = isActive
+       ? { ...S.ROOT, ...style }
+       : { ...S.ROOT, ...style, ...S.NOT_ACTIVE };
 
-  render(){
-    const { caption, title, style } = this.props
-        , { isActive } = this.state
-        , _style = (isActive)
-            ? { ...S.ROOT, ...style }
-            : { ...S.ROOT, ...style, ...S.NOT_ACTIVE };
-
-    return (
-      <span
-         className={CL_NOT_SELECTED}
-         style={_style}
-         title={title}
-         onClick={this._hClick}
-      >
-         {caption}
-      </span>
-    );
-  }
+  return (
+    <span
+       className={CL_NOT_SELECTED}
+       style={_style}
+       title={title}
+       onClick={_hClick}
+    >
+       {caption}
+    </span>
+  );
 }
 
 export default ButtonCircle
