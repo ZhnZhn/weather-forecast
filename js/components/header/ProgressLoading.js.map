@@ -1,1 +1,21 @@
-{"version":3,"sources":["../../../src/components/header/ProgressLoading.jsx"],"names":["Colors","LOADING","FAILED","Component","React","ProgressLoading","props","_onStore","store","fetching","getState","FETCH","setState","completed","color","SUCCESS","state","componentDidMount","unsubscribe","subscribe","componentWillUnmount","render"],"mappings":";;;;;;;;;AACA;;AAEA;;AACA;;AAJA;AAMA,IAAMA,MAAM,GAAG;AACbC,EAAAA,OAAO,EAAG,SADG;AAEbC,EAAAA,MAAM,EAAG;AAFI,CAAf;IAKQC,S,GAAcC,iB,CAAdD,S;;IAEFE,e;;;;;AAEJ,2BAAYC,KAAZ,EAAkB;AAAA;;AAChB;;AADgB,UAgBlBC,QAhBkB,GAgBP,YAAM;AAAA,UACPC,KADO,GACG,MAAKF,KADR,CACPE,KADO;AAEf,UAAMC,QAAQ,GAAGD,KAAK,CAACE,QAAN,GAAiBD,QAAlC;;AACA,UAAI,MAAKA,QAAL,KAAkBA,QAAtB,EAA+B;AAC7B,cAAKA,QAAL,GAAgBA,QAAhB;;AACA,gBAAOA,QAAP;AACE,eAAKE,iBAAMV,OAAX;AACE,kBAAKW,QAAL,CAAc;AAAEC,cAAAA,SAAS,EAAE,EAAb;AAAiBC,cAAAA,KAAK,EAAEd,MAAM,CAACC;AAA/B,aAAd;;AACA;;AACF,eAAKU,iBAAMI,OAAX;AACE,kBAAKH,QAAL,CAAc;AAAEC,cAAAA,SAAS,EAAE,GAAb;AAAkBC,cAAAA,KAAK,EAAEd,MAAM,CAACC;AAAhC,aAAd;;AACA;;AACF,eAAKU,iBAAMT,MAAX;AACE,kBAAKU,QAAL,CAAc;AAACC,cAAAA,SAAS,EAAE,GAAZ;AAAiBC,cAAAA,KAAK,EAAEd,MAAM,CAACE;AAA/B,aAAd;;AACA;;AACF;AAAU;AAVZ;AAYD;AACF,KAlCiB;;AAEhB,UAAKO,QAAL,GAAgBH,KAAK,CAACE,KAAN,CAAYE,QAAZ,GAAuBD,QAAvC;AACA,UAAKO,KAAL,GAAa;AACXH,MAAAA,SAAS,EAAG,CADD;AAEXC,MAAAA,KAAK,EAAGd,MAAM,CAACC;AAFJ,KAAb;AAHgB;AAOjB;;;;SAEDgB,iB,GAAA,6BAAmB;AACjB,SAAKC,WAAL,GAAmB,KAAKZ,KAAL,CAAWE,KAAX,CAAiBW,SAAjB,CAA2B,KAAKZ,QAAhC,CAAnB;AACD,G;;SACDa,oB,GAAA,gCAAsB;AACpB,SAAKF,WAAL;AACD,G;;SAsBDG,M,GAAA,kBAAQ;AAAA,sBACuB,KAAKL,KAD5B;AAAA,QACEH,SADF,eACEA,SADF;AAAA,QACaC,KADb,eACaA,KADb;AAEN,WACE,gCAAC,wBAAD;AACG,MAAA,MAAM,EAAE,CADX;AAEG,MAAA,KAAK,EAAEA,KAFV;AAGG,MAAA,SAAS,EAAED;AAHd,MADF;AAOD,G;;;EA/C2BV,S;;eAkDfE,e","sourcesContent":["//import React, { Component } from 'react';\r\nimport React from '../_react'\r\n\r\nimport { FETCH } from '../../flux/fetching/constants';\r\nimport ProgressLine from '../zhn-atoms/ProgressLine';\r\n\r\nconst Colors = {\r\n  LOADING : '#2F7ED8',\r\n  FAILED : 'rgb(237, 88, 19)'\r\n};\r\n\r\nconst { Component } = React\r\n\r\nclass ProgressLoading extends Component {\r\n\r\n  constructor(props){\r\n    super();\r\n    this.fetching = props.store.getState().fetching\r\n    this.state = {\r\n      completed : 0,\r\n      color : Colors.LOADING\r\n    }\r\n  }\r\n\r\n  componentDidMount(){\r\n    this.unsubscribe = this.props.store.subscribe(this._onStore);\r\n  }\r\n  componentWillUnmount(){\r\n    this.unsubscribe();\r\n  }\r\n\r\n  _onStore = () => {\r\n    const { store } = this.props\r\n    const fetching = store.getState().fetching\r\n    if (this.fetching !== fetching){\r\n      this.fetching = fetching;\r\n      switch(fetching){\r\n        case FETCH.LOADING:\r\n          this.setState({ completed: 35, color: Colors.LOADING });\r\n          break;\r\n        case FETCH.SUCCESS:\r\n          this.setState({ completed: 100, color: Colors.LOADING });\r\n          break;\r\n        case FETCH.FAILED:\r\n          this.setState({completed: 100, color: Colors.FAILED})\r\n          break;\r\n        default : break;\r\n      }\r\n    }\r\n  }\r\n\r\n  render(){\r\n    const { completed, color } = this.state;\r\n    return (\r\n      <ProgressLine\r\n         height={3}\r\n         color={color}\r\n         completed={completed}\r\n      />\r\n    )\r\n  }\r\n}\r\n\r\nexport default ProgressLoading\r\n"],"file":"ProgressLoading.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/header/ProgressLoading.js"
+ ],
+ "file": "../../../src/components/header/ProgressLoading.js",
+ "names": [
+  "COLOR",
+  "LOADING",
+  "FAILED",
+  "_getDerivedState",
+  "fetching",
+  "FETCH",
+  "SUCCESS",
+  "ProgressLoading",
+  "state",
+  "completed",
+  "color"
+ ],
+ "mappings": ";;;;;;;AAAA;;AACA;;AAEA;;AACA;;AAEA,IAAMA,KAAK,GAAG;AACZC,EAAAA,OAAO,EAAG,SADE;AAEZC,EAAAA,MAAM,EAAG;AAFG,CAAd;;AAKA,IAAMC,gBAAgB,GAAG,SAAnBA,gBAAmB,CAAAC,QAAQ,EAAI;AACnC,UAAOA,QAAP;AACE,SAAKC,iBAAMJ,OAAX;AACE,aAAO,CAAE,EAAF,EAAMD,KAAK,CAACC,OAAZ,CAAP;;AACF,SAAKI,iBAAMC,OAAX;AACE,aAAQ,CAAE,GAAF,EAAON,KAAK,CAACC,OAAb,CAAR;;AACF,SAAKI,iBAAMH,MAAX;AACE,aAAO,CAAE,GAAF,EAAOF,KAAK,CAACE,MAAb,CAAP;;AACF;AACE,aAAO,CAAE,CAAF,EAAKF,KAAK,CAACC,OAAX,CAAP;AARJ;AAUD,CAXD;;AAaA,IAAMM,eAAe,GAAG,SAAlBA,eAAkB,GAAM;AACtB,MAAAH,QAAQ,GAAG,6BAAY,UAAAI,KAAK;AAAA,WAAIA,KAAK,CAACJ,QAAV;AAAA,GAAjB,CAAX;AAAA,0BACiBD,gBAAgB,CAACC,QAAD,CADjC;AAAA,MACHK,SADG;AAAA,MACQC,KADR;;AAGN,sBACE,gCAAC,wBAAD;AACG,IAAA,MAAM,EAAE,CADX;AAEG,IAAA,KAAK,EAAEA,KAFV;AAGG,IAAA,SAAS,EAAED;AAHd,IADF;AAOD,CAXD;;eAaeF,e"
+}

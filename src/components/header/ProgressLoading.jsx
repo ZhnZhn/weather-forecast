@@ -1,64 +1,38 @@
-//import React, { Component } from 'react';
 import React from '../_react'
+import { useSelector } from 'react-redux'
 
 import { FETCH } from '../../flux/fetching/constants';
 import ProgressLine from '../zhn-atoms/ProgressLine';
 
-const Colors = {
-  LOADING : '#2F7ED8',
-  FAILED : 'rgb(237, 88, 19)'
+const COLOR = {
+  LOADING : '#2f7ed8',
+  FAILED : '#ed5813'
 };
 
-const { Component } = React
-
-class ProgressLoading extends Component {
-
-  constructor(props){
-    super();
-    this.fetching = props.store.getState().fetching
-    this.state = {
-      completed : 0,
-      color : Colors.LOADING
-    }
+const _getDerivedState = fetching => {
+  switch(fetching){
+    case FETCH.LOADING:
+      return [ 35, COLOR.LOADING ];
+    case FETCH.SUCCESS:
+      return  [ 100, COLOR.LOADING ];
+    case FETCH.FAILED:
+      return [ 100, COLOR.FAILED ];
+    default:
+      return [ 0, COLOR.LOADING ];
   }
+};
 
-  componentDidMount(){
-    this.unsubscribe = this.props.store.subscribe(this._onStore);
-  }
-  componentWillUnmount(){
-    this.unsubscribe();
-  }
+const ProgressLoading = () => {
+  const fetching = useSelector(state => state.fetching)
+  , [completed, color] = _getDerivedState(fetching);
 
-  _onStore = () => {
-    const { store } = this.props
-    const fetching = store.getState().fetching
-    if (this.fetching !== fetching){
-      this.fetching = fetching;
-      switch(fetching){
-        case FETCH.LOADING:
-          this.setState({ completed: 35, color: Colors.LOADING });
-          break;
-        case FETCH.SUCCESS:
-          this.setState({ completed: 100, color: Colors.LOADING });
-          break;
-        case FETCH.FAILED:
-          this.setState({completed: 100, color: Colors.FAILED})
-          break;
-        default : break;
-      }
-    }
-  }
-
-  render(){
-    const { completed, color } = this.state;
-    return (
-      <ProgressLine
-         height={3}
-         color={color}
-         completed={completed}
-      />
-    )
-  }
-}
+  return (
+    <ProgressLine
+       height={3}
+       color={color}
+       completed={completed}
+    />
+  );
+};
 
 export default ProgressLoading
