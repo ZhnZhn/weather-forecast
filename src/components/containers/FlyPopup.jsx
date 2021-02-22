@@ -1,95 +1,71 @@
-//import React, { Component } from 'react';
 import React from '../_react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Interact from '../../utils/Interact';
 import SvgClose from '../zhn-atoms/SvgClose';
 
 import { toggleLayout } from '../../flux/layout/actions';
 
-const { Component } = React;
+const { useRef, useCallback, useEffect } = React;
 
 const CLASS_SHOW = 'show-popup';
 
-const STYLE = {
-  BLOCK : {
-    display : 'block'
+const S = {
+  BLOCK: {
+    display: 'block'
   },
-  NONE : {
-    display : 'none'
+  NONE: {
+    display: 'none'
   },
-  SVG_CLOSE : {
+  SVG_CLOSE: {
     position: 'absolute',
-    top: '16px',
-    right: '6px'
+    top: 16,
+    right: 6
   }
 }
 
-class FlyPopup extends Component {
+const FlyPopup = ({
+  style,
+  storeKey,
+  children
+}) => {
+  const _refPopup = useRef()
+  , isShow = useSelector(state => state.layout[storeKey])
+  , dispatch = useDispatch()
+  , _hClose = useCallback(() => {
+      dispatch(toggleLayout(storeKey))
+  }, [dispatch, storeKey]);
 
-  /*
-  static propTypes = {
-     rootStyle: PropTypes.object,
-     store: PropTypes.object,
-     storeKey: PropTypes.string
-  }
-  */
+  useEffect(()=>{
+    Interact.makeDragable(_refPopup.current);
+  },[])
 
-  constructor(props){
-    super(props);
-    const { store, storeKey } = props;
-    const state = store.getState();
-    this.state = {
-      isShow : state.layout[storeKey]
-    }
-  }
-
-  componentDidMount(){
-     Interact.makeDragable(this.domRootDiv);
-     const { store } = this.props;
-     this.unsubsribe = store.subscribe(this._onStore)
-  }
-  _onStore = () => {
-    const { store, storeKey } = this.props
-    , { layout } = store.getState()
-    , { isShow } = this.state;
-    if (layout[storeKey] !== isShow){
-      this.setState({ isShow : layout[storeKey] })
-    }
-  }
-  componetWillUnmount(){
-    this.unsubsribe()
-  }
-
-  handleClose = () => {
-    const { store, storeKey } = this.props;
-    store.dispatch(toggleLayout(storeKey))
-  }
-
-  _refRootDiv = c => this.domRootDiv = c
-
-  render(){
-    const { children, rootStyle } = this.props
-        , { isShow } = this.state
-        , _styleShow = isShow
-              ? STYLE.BLOCK
-              : STYLE.NONE
-        , _classShow = isShow
-              ? CLASS_SHOW
-              : undefined;
-    return (
-      <div
-           ref={this._refRootDiv}
-           className={_classShow}
-           style={{ ...rootStyle, ..._styleShow }}
-      >
-        <SvgClose
-           style={STYLE.SVG_CLOSE}
-           onClose={this.handleClose}
-        />
-        {children}
-      </div>
-    );
-  }
+  const _styleShow = isShow
+     ? S.BLOCK
+     : S.NONE
+  , _classShow = isShow
+      ? CLASS_SHOW
+      : void 0;
+  return (
+    <div
+         ref={_refPopup}
+         className={_classShow}
+         style={{...style, ..._styleShow}}
+    >
+      <SvgClose
+         style={S.SVG_CLOSE}
+         onClose={_hClose}
+      />
+      {children}
+    </div>
+  );
 }
+
+/*
+FlyPopup.propTypes = {
+   style: PropTypes.object,
+   storeKey: PropTypes.string
+}
+*/
 
 export default FlyPopup
