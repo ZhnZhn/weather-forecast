@@ -1,7 +1,7 @@
-//import React, { Component } from 'react';
 import React from '../_react'
+import { useSelector } from 'react-redux'
 
-const { Component } = React
+const { useCallback } = React
 const S = {
   HAMBURGER: {
     width: '2.2rem',
@@ -13,53 +13,28 @@ const S = {
   }
 };
 
-class HamburgerButton extends Component{
 
-  constructor(props){
-    super(props);
-    const state = props.store.getState()
-    this.state = {
-      isOpen : state.layout[props.storeKey]
-    }
-  }
+const HamburgerButton = ({
+  storeKey,
+  onClick
+}) => {
+  const isOpen = useSelector(state => state.layout[storeKey])
+  , _hClick = useCallback(()=>{
+    onClick(storeKey)
+  }, [storeKey])
+  , btClass = isOpen
+     ? "bt-hamburger opened"
+     : "bt-hamburger";
 
-  componentDidMount(){
-    this.unsubscribe = this.props.store.subscribe(this._onStore)
-  }
-  _onStore = () => {
-    const { store, storeKey } = this.props
-    , state = store.getState()
-    if (state.layout[storeKey] !== this.state.isOpen){
-      this.setState((prev) => {
-        return { isOpen: !prev.isOpen };
-      })
-    }
-  }
-  componentWillUnmount(){
-    this.unsubscribe()
-  }
-
-  handleClick = () => {
-    const { onClick, store, storeKey } = this.props
-    store.dispatch(onClick(storeKey))
-  }
-
-  render(){
-    const { isOpen } = this.state
-    , btClass = isOpen
-       ? "bt-hamburger opened"
-       : "bt-hamburger";
-
-    return (
-      <button
-         className={btClass}
-         style={S.HAMBURGER}
-         onClick={this.handleClick}
-      >
-        <span />
-      </button>
-    );
-  }
+  return (
+    <button
+       className={btClass}
+       style={S.HAMBURGER}
+       onClick={_hClick}
+    >
+      <span />
+    </button>
+  );
 }
 
 export default HamburgerButton
