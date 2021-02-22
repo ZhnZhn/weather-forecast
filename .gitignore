@@ -15,3 +15,4 @@ dll
 _codemods
 webpack.dev.js
 dev
+template/index-dev.ejs
