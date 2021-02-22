@@ -1,5 +1,6 @@
 import React from './_react'
 //import PropTypes from 'prop-types';
+import { useSelector, useStore } from 'react-redux'
 
 import ThemeContext from './hoc/ThemeContext'
 import theme from './styles/theme';
@@ -9,7 +10,7 @@ import LeftPushMenu from './left-push-menu/LeftPushMenu';
 import LeafletMap from './maps/LeafletMap';
 import PopupForecast from './popups/Forecast';
 
-const { Component } = React
+const { useRef, useEffect } = React
 
 const MAP_ID = 'map_id';
 const PUSH_MENU_ID = 'left_push_menu';
@@ -28,101 +29,77 @@ const S = {
   },
   FLY_ROOT_DIV : {
     position: 'absolute',
-    top: '30px',
-    left: '50px',
+    top: 30,
+    left: 50,
     padding: '10px 5px 5px 4px',
     backgroundColor: '#808080',
     border: '1px solid #999',
-    borderRadius: '5px',
+    borderRadius: 5,
     boxShadow: 'rgba(0, 0, 0, 0.2) 0px 0px 0px 12px',
     zIndex: 500
   }
 };
 
 
-class WeatherSaga extends Component{
-  /*
-  static propTypes = {
-    store: PropTypes.object
-  }
-  */
+const _assign = Object.assign;
 
-  constructor(props){
-    super(props)
-    const layout = props.store.getState().layout;
-    this.layout = layout;
-    this.isPushMenu = layout.isPushMenu
-    this.themeName = layout.themeName
-  }
-  componentDidMount(){
-    this.unsubsribe = this.props.store.subscribe(this._onStore)
-    this.mapEl = document.getElementById(MAP_ID)
-    this.menuEl = document.getElementById(PUSH_MENU_ID)
-  }
-  _onStore = () => {
-    const { store } = this.props
-        , layout = store.getState().layout;
-    if (layout !== this.layout){
-      if (layout.isPushMenu !== this.isPushMenu){
-         if (this.isPushMenu){
+const WeatherSaga = () => {
+  const _refMap = useRef()
+  , _refMenu = useRef()
+  , themeName = useSelector(state => state.layout.themeName)
+  , isPushMenu = useSelector(state => state.layout.isPushMenu)
+  , store = useStore();
 
-           this.mapEl.style.transform = 'translateX(0px)'
-           this.mapEl.style.width = '100vw'
-           this.menuEl.style.transform = `translateX(-100%)`
+  useEffect(()=>{
+    _refMap.current = document.getElementById(MAP_ID)
+    _refMenu.current = document.getElementById(PUSH_MENU_ID)
+  }, [])
 
-         } else {
-           const width = this.menuEl.getBoundingClientRect().width
-           this.mapEl.style.transform = `translateX(${width}px)`
-           this.mapEl.style.width = `calc(100vw - ${width}px)`
-           this.menuEl.style.transform = 'translateX(0px)'
-         }
-         this.isPushMenu = layout.isPushMenu
-      } else if ( layout.themeName !== this.themeName){
-        //console.log('WeatherSaga forceUpdate')
-        this.forceUpdate()
-        this.themeName = layout.themeName
-      }
-      this.layout = layout
+  useEffect(() => {
+    if (isPushMenu){
+      const width = _refMenu.current.getBoundingClientRect().width
+      _assign(_refMap.current.style, {
+        transform: `translateX(${width}px)`,
+        width: `calc(100vw - ${width}px)`
+      })
+      _refMenu.current.style.transform = 'translateX(0px)'
+    } else {
+      _assign(_refMap.current.style, {
+        transform: 'translateX(0px)',
+        width: '100vw'
+      })
+      _refMenu.current.style.transform = `translateX(-100%)`
     }
-  }
-  componentWillUnmount(){
-    this.unsubscribe()
-  }
+  }, [isPushMenu])
 
-  _refMap = n => this._mapComp = n
 
-  render(){
-    const { store } = this.props;
-    return (
-      <ThemeContext.Provider value={theme} >
+  return (
+    <ThemeContext.Provider value={theme} >
+      <div>
+        <ModalDialogContainer
+          store={store}
+        />
+        <Header
+           themeName={themeName}
+           style={S.HEADER}
+        />
         <div>
-          <ModalDialogContainer
-            store={store}
-          />
-          <Header
-             rootStyle={S.HEADER}
+          <LeftPushMenu
+             id={PUSH_MENU_ID}
              store={store}
           />
-          <div>
-            <LeftPushMenu
-               id={PUSH_MENU_ID}
-               store={store}
-            />
-            <LeafletMap
-                id={MAP_ID}
-                rootStyle={S.MAP}
-                store={store}
-            />
-            <PopupForecast
-               rootStyle={S.FLY_ROOT_DIV}
-               isShow={true}
-               store={store}
-            />
-          </div>
+          <LeafletMap
+              id={MAP_ID}
+              rootStyle={S.MAP}
+              store={store}
+          />
+          <PopupForecast
+             style={S.FLY_ROOT_DIV}
+          />
         </div>
-      </ThemeContext.Provider>
-    )
-  }
+      </div>
+    </ThemeContext.Provider>
+  );
 }
 
 export default WeatherSaga

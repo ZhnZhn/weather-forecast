@@ -1,5 +1,6 @@
 import _React from 'react';
 import _ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
 import configStore from './flux/configStore'
 import WeatherSaga from './components/WeatherSaga';
@@ -27,6 +28,8 @@ window.weather = {
 }
 
 render(
-  <WeatherSaga store={store} />,
+  <Provider store={store}>
+    <WeatherSaga/>
+  </Provider>,
   document.getElementById('app')
 )

@@ -6,6 +6,8 @@ var _react = _interopRequireDefault(require("react"));
 
 var _reactDom = _interopRequireDefault(require("react-dom"));
 
+var _reactRedux = require("react-redux");
+
 var _configStore = _interopRequireDefault(require("./flux/configStore"));
 
 var _WeatherSaga = _interopRequireDefault(require("./components/WeatherSaga"));
@@ -35,7 +37,7 @@ window.weather = {
     }
   }
 };
-render(React.createElement(_WeatherSaga["default"], {
+render( /*#__PURE__*/React.createElement(_reactRedux.Provider, {
   store: store
-}), document.getElementById('app'));
+}, /*#__PURE__*/React.createElement(_WeatherSaga["default"], null)), document.getElementById('app'));
 //# sourceMappingURL=index.js.map
