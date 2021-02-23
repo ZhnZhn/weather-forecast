@@ -19,7 +19,13 @@ export const sForecast = {
 
 export const sHourly = {
   recent : (state) => hourly.recent(state.hourly),
-  byId : (state, id) => hourly.byId(state.hourly, id)
+  byId : (state, id) => (hourly.byId(state.hourly, id)  || {}).list,
+  forecast: state => {
+    const recent = sHourly.recent(state);
+    return recent
+      ? sHourly.byId(state, recent)
+      : void 0;
+  }
 }
 
 export const sUV = {

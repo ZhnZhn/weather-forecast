@@ -46,7 +46,11 @@ var sHourly = {
     return hourly.recent(state.hourly);
   },
   byId: function byId(state, id) {
-    return hourly.byId(state.hourly, id);
+    return (hourly.byId(state.hourly, id) || {}).list;
+  },
+  forecast: function forecast(state) {
+    var recent = sHourly.recent(state);
+    return recent ? sHourly.byId(state, recent) : void 0;
   }
 };
 exports.sHourly = sHourly;
