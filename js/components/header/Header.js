@@ -9,8 +9,6 @@ var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
 
 var _react = _interopRequireDefault(require("../_react"));
 
-var _reactRedux = require("react-redux");
-
 var _useTheme = _interopRequireDefault(require("../hooks/useTheme"));
 
 var _ProgressLoading = _interopRequireDefault(require("./ProgressLoading"));
@@ -25,12 +23,11 @@ var _GitHubLink = _interopRequireDefault(require("./GitHubLink"));
 
 var _Header = _interopRequireDefault(require("./Header.Style"));
 
-var _actions = require("../../flux/layout/actions");
-
-var _actions2 = require("../../flux/modal/actions");
+var _handlers = _interopRequireDefault(require("../../flux/handlers"));
 
 //import PropTypes from 'prop-types';
-var useCallback = _react["default"].useCallback;
+var toggleLayout = _handlers["default"].toggleLayout,
+    showSettings = _handlers["default"].showSettings;
 var TITLE = "Weather v0.2.0";
 var CL = {
   TITLE: 'header__title',
@@ -51,22 +48,14 @@ var S = {
 var Header = function Header(_ref) {
   var style = _ref.style;
 
-  var dispatch = (0, _reactRedux.useDispatch)(),
-      _hToggleLayout = useCallback(function (storeKey) {
-    dispatch((0, _actions.toggleLayout)(storeKey));
-  }, [dispatch]),
-      _hSettings = useCallback(function (storeKey) {
-    dispatch((0, _actions.toggleLayout)(storeKey));
-    dispatch((0, _actions2.showModal)('SETTINGS'));
-  }, [dispatch]),
-      _STYLE = (0, _useTheme["default"])(_Header["default"]);
+  var _STYLE = (0, _useTheme["default"])(_Header["default"]);
 
   return /*#__PURE__*/_react["default"].createElement("header", {
     role: "banner",
     style: (0, _extends2["default"])({}, style, _STYLE.HEADER)
   }, /*#__PURE__*/_react["default"].createElement(_ProgressLoading["default"], null), /*#__PURE__*/_react["default"].createElement(_HamburgerButton["default"], {
     storeKey: "isPushMenu",
-    onClick: _hToggleLayout
+    onClick: toggleLayout
   }), /*#__PURE__*/_react["default"].createElement("span", {
     className: CL.TITLE
   }, TITLE), /*#__PURE__*/_react["default"].createElement(_ButtonCircle["default"], {
@@ -74,13 +63,13 @@ var Header = function Header(_ref) {
     caption: "F",
     title: "Toggle Forecast Popup",
     storeKey: "isPopupForecast",
-    onClick: _hToggleLayout
+    onClick: toggleLayout
   }), /*#__PURE__*/_react["default"].createElement(_ButtonCircle["default"], {
     style: S.BT_CIRCLE,
     caption: "S",
     title: "Open Settings Dialog",
     storeKey: "isSettings",
-    onClick: _hSettings
+    onClick: showSettings
   }), /*#__PURE__*/_react["default"].createElement(_ProviderLink["default"], {
     className: CL.LINK,
     prefixCL: CL.LINK_PREF
