@@ -10,7 +10,7 @@ module.exports = {
   entry: {
      lib: [
             "redux", "react-redux", "redux-saga",
-            "interactjs"
+            "dompurify", "interactjs"
           ]
   },
   output: {
