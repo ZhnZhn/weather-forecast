@@ -22,9 +22,10 @@ var styleConfig = {
         transition: 'transform .3s',
         fill: C.BG_MARK.backgroundColor
       }, C.BG, {
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        maxWidth: '100%'
+        //overflowY : 'auto',
+        //overflowX : 'hidden',
+        //maxWidth : '100%',
+        width: 665
       }),
       C_BG_MARK: C.BG_MARK.backgroundColor,
       C_BG_UNMARK: C.BG.backgroundColor

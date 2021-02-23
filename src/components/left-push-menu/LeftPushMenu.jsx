@@ -85,13 +85,13 @@ class LeftPushMenu extends Component {
             key="1" width="100%" tabsStyle={S.TABS}
           >
             <Tab title="7 Days">
-               <ForecastChart store={store} />
+               <ForecastChart />
             </Tab>
             <Tab
                title="5 Days/3 Hours"
                onClick={this.handleRequestHourly}
             >
-               <HourlyChart store={store} />
+               <HourlyChart />
             </Tab>
             <Tab
                title="UV"

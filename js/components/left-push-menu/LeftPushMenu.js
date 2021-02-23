@@ -41,9 +41,7 @@ var S = {
   }
 };
 
-var LeftPushMenu =
-/*#__PURE__*/
-function (_Component) {
+var LeftPushMenu = /*#__PURE__*/function (_Component) {
   (0, _inheritsLoose2["default"])(LeftPushMenu, _Component);
 
   function LeftPushMenu() {
@@ -112,33 +110,29 @@ function (_Component) {
         store = _this$props.store,
         theme = _this$props.theme,
         STYLE = theme.createStyle(_LeftPushMenu["default"]);
-    return _react["default"].createElement("div", {
+    return /*#__PURE__*/_react["default"].createElement("div", {
       id: id,
       style: STYLE.ROOT_DIV
-    }, _react["default"].createElement(_PeriodForecast["default"], {
+    }, /*#__PURE__*/_react["default"].createElement(_PeriodForecast["default"], {
       store: store,
       onUpdate: this.handleCloseDetail,
       onClickItem: this.handleClickItem
-    }), _react["default"].createElement(_DayDetailPopup["default"], {
+    }), /*#__PURE__*/_react["default"].createElement(_DayDetailPopup["default"], {
       ref: this._refDetail,
       onClose: this.handleCloseDetail
-    }), _react["default"].createElement(_TabPane["default"], {
+    }), /*#__PURE__*/_react["default"].createElement(_TabPane["default"], {
       key: "1",
       width: "100%",
       tabsStyle: S.TABS
-    }, _react["default"].createElement(_Tab["default"], {
+    }, /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
       title: "7 Days"
-    }, _react["default"].createElement(_ForecastChart["default"], {
-      store: store
-    })), _react["default"].createElement(_Tab["default"], {
+    }, /*#__PURE__*/_react["default"].createElement(_ForecastChart["default"], null)), /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
       title: "5 Days/3 Hours",
       onClick: this.handleRequestHourly
-    }, _react["default"].createElement(_HourlyChart["default"], {
-      store: store
-    })), _react["default"].createElement(_Tab["default"], {
+    }, /*#__PURE__*/_react["default"].createElement(_HourlyChart["default"], null)), /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
       title: "UV",
       onClick: this.handleRequestUV
-    }, _react["default"].createElement(_UvCard["default"], {
+    }, /*#__PURE__*/_react["default"].createElement(_UvCard["default"], {
       store: store
     }))));
   };

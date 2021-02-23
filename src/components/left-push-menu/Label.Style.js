@@ -42,17 +42,27 @@ const _fnSpan = (color='green') => {
   }
 }
 
+const CAPTION_STYLE = {
+  display: 'inline-block',
+  color: C.LABEL.color,
+  fontWeight: 'bold',
+}
 
 const S = {
   ROOT_DIV : {
     ...P.CHART,
-    padding: '8px 8px'
+    padding: 8
   },
   LABEL : {
-    display: 'inline-block',
-    color: C.LABEL.color,
-    fontWeight: 'bold',
-    width: '50px'
+    ...CAPTION_STYLE,
+    width: 50
+  },
+  CAPTION: {
+    ...CAPTION_STYLE,
+    paddingRight: 4 
+  },
+  ROW: {
+    paddingTop: 8
   },
 
   DAY : _fnSpan(C.DAY.color),
@@ -62,7 +72,7 @@ const S = {
 
   CIRCLE_RAIN : _fnCircle("#0922A5"),
   RECT_RAIN : { stroke : '#0922a5'},
-  RAIN : _fnSpan('#0922a5'),    
+  RAIN : _fnSpan('#0922a5'),
 
   CIRCLE_TEMP_MAX : _fnCircle('#F44336', 'none'),
   TEMP_MAX : _fnSpan('#F44336'),

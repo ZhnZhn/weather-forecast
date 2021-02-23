@@ -65,15 +65,23 @@ var _fnSpan = function _fnSpan(color) {
   };
 };
 
+var CAPTION_STYLE = {
+  display: 'inline-block',
+  color: _theme.COLOR.LABEL.color,
+  fontWeight: 'bold'
+};
 var S = {
   ROOT_DIV: (0, _extends2["default"])({}, _theme.POPUP.CHART, {
-    padding: '8px 8px'
+    padding: 8
   }),
-  LABEL: {
-    display: 'inline-block',
-    color: _theme.COLOR.LABEL.color,
-    fontWeight: 'bold',
-    width: '50px'
+  LABEL: (0, _extends2["default"])({}, CAPTION_STYLE, {
+    width: 50
+  }),
+  CAPTION: (0, _extends2["default"])({}, CAPTION_STYLE, {
+    paddingRight: 4
+  }),
+  ROW: {
+    paddingTop: 8
   },
   DAY: _fnSpan(_theme.COLOR.DAY.color),
   CIRCLE_SPEED: _fnCircle("#3F51B5", "none"),
