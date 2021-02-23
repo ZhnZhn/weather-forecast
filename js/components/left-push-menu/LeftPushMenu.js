@@ -114,7 +114,6 @@ var LeftPushMenu = /*#__PURE__*/function (_Component) {
       id: id,
       style: STYLE.ROOT_DIV
     }, /*#__PURE__*/_react["default"].createElement(_PeriodForecast["default"], {
-      store: store,
       onUpdate: this.handleCloseDetail,
       onClickItem: this.handleClickItem
     }), /*#__PURE__*/_react["default"].createElement(_DayDetailPopup["default"], {

@@ -71,8 +71,7 @@ class LeftPushMenu extends Component {
          , STYLE = theme.createStyle(styleConfig);
     return (
       <div id={id} style={STYLE.ROOT_DIV} >
-         <PeriodForecast
-            store={store}
+         <PeriodForecast            
             onUpdate={this.handleCloseDetail}
             onClickItem={this.handleClickItem}
          />

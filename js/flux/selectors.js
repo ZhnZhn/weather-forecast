@@ -38,6 +38,10 @@ var sForecast = {
   },
   cityCoordById: function cityCoordById(state, id) {
     return forecast.cityCoordById(state.forecast, id);
+  },
+  forecast: function forecast(state) {
+    var recent = sForecast.recent(state);
+    return recent ? sForecast.byId(state, recent) : void 0;
   }
 };
 exports.sForecast = sForecast;

@@ -1,11 +1,11 @@
-//import React, { Component } from 'react';
 import React from '../_react'
+import { useSelector } from 'react-redux'
 
 import PeriodForecast from '../views/PeriodForecast';
 
 import { sForecast } from '../../flux/selectors';
 
-const { Component } = React
+const { useEffect } = React;
 
 const S = {
   DAY: {
@@ -13,48 +13,25 @@ const S = {
   }
 };
 
-const INIT_STATE = {
-  forecast : {
-    cod : 200,
-    list : []
-  }
-}
+const PeriodForecastWrapper = ({
+  onClickItem,
+  onUpdate
+}) => {
+  const forecast = useSelector(sForecast.forecast);
 
-class Wrapper extends Component {
-  state = INIT_STATE
-
-  componentDidMount(){
-    const { store } = this.props
-    this.unsubscribe = store.subscribe(this._onStore)
-  }
-
-  _onStore = () => {
-    const { store, onUpdate } = this.props
-    , state = store.getState()
-    , recent = sForecast.recent(state)
-    if (recent && this.recent !== recent ){
-      this.recent = recent;
-      this.setState({
-        forecast : sForecast.byId(state, recent)
-      }, onUpdate)
+  useEffect(() => {
+    if (forecast) {
+      onUpdate()
     }
-  }
+  }, [forecast])
 
-  componentWillUnmount(){
-    this.unsubscribe()
-  }
-
-  render(){
-    const { onClickItem } = this.props;
-    const { forecast } = this.state;
-    return (
-      <PeriodForecast
-          dayStyle={S.DAY}
-          forecast={forecast}
-          onClickItem={onClickItem}
-      />
-    );
-  }
+  return (
+    <PeriodForecast
+        dayStyle={S.DAY}
+        forecast={forecast}
+        onClickItem={onClickItem}
+    />
+  )
 }
 
-export default Wrapper
+export default PeriodForecastWrapper
