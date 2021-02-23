@@ -7,9 +7,9 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
-
 var _react = _interopRequireDefault(require("../_react"));
+
+var _reactRedux = require("react-redux");
 
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
 
@@ -25,9 +25,11 @@ var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
 
 var _Label = _interopRequireDefault(require("./Label.Style"));
 
-//import React , { Component } from 'react';
 //import PropTypes from 'prop-types';
-var Component = _react["default"].Component;
+var useState = _react["default"].useState,
+    useCallback = _react["default"].useCallback,
+    useMemo = _react["default"].useMemo,
+    memo = _react["default"].memo;
 var CartesianGrid = _Chart["default"].CartesianGrid,
     Bar = _Chart["default"].Bar,
     Line = _Chart["default"].Line,
@@ -37,7 +39,17 @@ var CartesianGrid = _Chart["default"].CartesianGrid,
     Tooltip = _Chart["default"].Tooltip,
     Legend = _Chart["default"].Legend,
     ComposedChart = _Chart["default"].ComposedChart;
-var _data = [{
+var INITIAL_FILTERS = {
+  tempDay: true,
+  tempNight: true,
+  tempMorn: false,
+  tempEve: false,
+  tempMax: false,
+  tempMin: false,
+  rain: true,
+  speed: true
+};
+var INITIAL_DATA = [{
   day: 'Page A',
   tempDay: 40,
   tempNight: 30
@@ -67,30 +79,32 @@ var _data = [{
   tempNight: 30
 }];
 
-var _fnAdapter = function _fnAdapter(arr) {
+var _transformForecast = function _transformForecast(arr) {
   if (arr === void 0) {
     arr = [];
   }
 
-  var data = arr.map(function (item, index) {
-    var timestamp = item.dt,
-        _item$rain = item.rain,
-        rain = _item$rain === void 0 ? 0 : _item$rain,
-        speed = item.speed,
-        _item$temp = item.temp,
-        temp = _item$temp === void 0 ? {} : _item$temp,
-        _temp$day = temp.day,
-        day = _temp$day === void 0 ? null : _temp$day,
-        _temp$night = temp.night,
-        night = _temp$night === void 0 ? null : _temp$night,
-        _temp$morn = temp.morn,
-        morn = _temp$morn === void 0 ? null : _temp$morn,
-        _temp$eve = temp.eve,
-        eve = _temp$eve === void 0 ? null : _temp$eve,
-        _temp$max = temp.max,
-        max = _temp$max === void 0 ? null : _temp$max,
-        _temp$min = temp.min,
-        min = _temp$min === void 0 ? null : _temp$min;
+  return arr.map(function (_ref) {
+    var timestamp = _ref.dt,
+        _ref$rain = _ref.rain,
+        rain = _ref$rain === void 0 ? 0 : _ref$rain,
+        speed = _ref.speed,
+        temp = _ref.temp;
+
+    var _ref2 = temp || {},
+        _ref2$day = _ref2.day,
+        day = _ref2$day === void 0 ? null : _ref2$day,
+        _ref2$night = _ref2.night,
+        night = _ref2$night === void 0 ? null : _ref2$night,
+        _ref2$morn = _ref2.morn,
+        morn = _ref2$morn === void 0 ? null : _ref2$morn,
+        _ref2$eve = _ref2.eve,
+        eve = _ref2$eve === void 0 ? null : _ref2$eve,
+        _ref2$max = _ref2.max,
+        max = _ref2$max === void 0 ? null : _ref2$max,
+        _ref2$min = _ref2.min,
+        min = _ref2$min === void 0 ? null : _ref2$min;
+
     return {
       day: _dt["default"].toShortDayOfWeek(timestamp),
       tempDay: day,
@@ -103,10 +117,9 @@ var _fnAdapter = function _fnAdapter(arr) {
       speed: speed
     };
   });
-  return data;
 };
 
-var fnFilter = function fnFilter(data, filters) {
+var _filterData = function _filterData(data, filters) {
   if (data === void 0) {
     data = [];
   }
@@ -121,7 +134,7 @@ var fnFilter = function fnFilter(data, filters) {
 
   var keys = Object.keys(filters);
   return data.map(function (item) {
-    var _item = Object.assign({}, item);
+    var _item = (0, _extends2["default"])({}, item);
 
     keys.forEach(function (dataKey) {
       if (!filters[dataKey]) {
@@ -132,158 +145,93 @@ var fnFilter = function fnFilter(data, filters) {
   });
 };
 
-var ForecastChart =
-/*#__PURE__*/
-function (_Component) {
-  (0, _inheritsLoose2["default"])(ForecastChart, _Component);
+var areEqual = function areEqual() {
+  return true;
+};
 
-  function ForecastChart() {
-    var _this;
+var ForecastChart = memo(function () {
+  var _useState = useState(INITIAL_FILTERS),
+      filters = _useState[0],
+      setFilters = _useState[1],
+      _hFilter = useCallback(function (dataKey) {
+    setFilters(function (prevFilters) {
+      prevFilters[dataKey] = !prevFilters[dataKey];
+      return (0, _extends2["default"])({}, prevFilters);
+    });
+  }, []),
+      forecastArr = (0, _reactRedux.useSelector)(function (state) {
+    var recent = _selectors.sForecast.recent(state);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
+    return recent ? _selectors.sForecast.listById(state, recent) : void 0;
+  }),
+      data = useMemo(function () {
+    return forecastArr ? _transformForecast(forecastArr) : INITIAL_DATA;
+  }, [forecastArr]),
+      _data = useMemo(function () {
+    return _filterData(data, filters);
+  }, [data, filters]);
+
+  return /*#__PURE__*/_react["default"].createElement(ResponsiveContainer, {
+    width: "100%",
+    height: 300
+  }, /*#__PURE__*/_react["default"].createElement(ComposedChart, (0, _extends2["default"])({
+    data: _data
+  }, _Chart2["default"].ComposedChart), /*#__PURE__*/_react["default"].createElement(XAxis, (0, _extends2["default"])({
+    dataKey: "day"
+  }, _Chart2["default"].XAxis)), /*#__PURE__*/_react["default"].createElement(YAxis, {
+    label: {
+      value: "°C" //offset: -18,
+      //position: 'insideTop'
+      //angle: -90,
+      //position: 'insideLeft'
+      //offset: 10,
+      //position: "insideTopRight",
+      //position: "insideStart"
+
     }
-
-    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
-    _this.state = {
-      data: _data,
-      filters: {
-        tempDay: true,
-        tempNight: true,
-        tempMorn: false,
-        tempEve: false,
-        tempMax: false,
-        tempMin: false,
-        rain: true,
-        speed: true
-      }
-    };
-
-    _this._onStore = function () {
-      var store = _this.props.store,
-          state = store.getState(),
-          recent = _selectors.sForecast.recent(state);
-
-      if (recent && _this.recent !== recent) {
-        _this.recent = recent;
-
-        _this.setState(function (prev) {
-          return {
-            data: _fnAdapter(_selectors.sForecast.listById(state, recent))
-          };
-        });
-      }
-    };
-
-    _this.handleFilter = function (dataKey) {
-      var filters = _this.state.filters;
-
-      var _filters = Object.assign({}, filters);
-
-      if (!filters[dataKey]) {
-        _filters[dataKey] = true;
-      } else {
-        _filters[dataKey] = false;
-      }
-
-      _this.setState({
-        filters: _filters
-      });
-    };
-
-    return _this;
-  }
-
-  var _proto = ForecastChart.prototype;
-
-  _proto.componentDidMount = function componentDidMount() {
-    var store = this.props.store;
-    this.unsubsribe = store.subscribe(this._onStore);
-  };
-
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    this.unsubsribe();
-  };
-
-  _proto.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
-    if (this.props !== nextProps) {
-      return false;
-    }
-
-    return true;
-  };
-
-  _proto.render = function render() {
-    var _this$state = this.state,
-        data = _this$state.data,
-        filters = _this$state.filters,
-        _data = fnFilter(data, filters);
-
-    return _react["default"].createElement(ResponsiveContainer, {
-      width: "100%",
-      height: 300
-    }, _react["default"].createElement(ComposedChart, (0, _extends2["default"])({
-      data: _data
-    }, _Chart2["default"].ComposedChart), _react["default"].createElement(XAxis, (0, _extends2["default"])({
-      dataKey: "day"
-    }, _Chart2["default"].XAxis)), _react["default"].createElement(YAxis, {
-      label: {
-        value: "°C" //offset: -18,
-        //position: 'insideTop'
-        //angle: -90,
-        //position: 'insideLeft'
-        //offset: 10,
-        //position: "insideTopRight",
-        //position: "insideStart"
-
-      }
-    }), _react["default"].createElement(YAxis, (0, _extends2["default"])({
-      yAxisId: 1,
-      dataKey: "rain",
-      orientation: "right",
-      label: "mm"
-    }, _Chart2["default"].YAxisRain)), _react["default"].createElement(YAxis, (0, _extends2["default"])({
-      hide: !filters.speed,
-      yAxisId: 2,
-      dataKey: "speed",
-      orientation: "right",
-      label: "m/s"
-    }, _Chart2["default"].YAxisSpeed)), _react["default"].createElement(CartesianGrid, _Chart2["default"].CartesianGrid), _react["default"].createElement(Tooltip, {
-      offset: 24,
-      content: _react["default"].createElement(_TooltipTemperature["default"], {
-        data: data
-      })
-    }), _react["default"].createElement(Legend, {
-      content: _react["default"].createElement(_LegendTemperature["default"], {
-        styles: _Label["default"].fnLegendLabel(filters),
-        onFilter: this.handleFilter
-      })
-    }), _react["default"].createElement(Bar, {
-      dataKey: "rain",
-      yAxisId: 1,
-      barSize: 20,
-      fill: "#0922a5"
-    }), _react["default"].createElement(Line, (0, _extends2["default"])({
-      dataKey: "speed",
-      yAxisId: 2
-    }, _Chart2["default"].LineSpeed)), _react["default"].createElement(Line, (0, _extends2["default"])({
-      dataKey: "tempMin"
-    }, _Chart2["default"].LineTempMin)), _react["default"].createElement(Line, (0, _extends2["default"])({
-      dataKey: "tempMax"
-    }, _Chart2["default"].LineTempMax)), _react["default"].createElement(Line, (0, _extends2["default"])({
-      dataKey: "tempEve"
-    }, _Chart2["default"].LineTempEve)), _react["default"].createElement(Line, (0, _extends2["default"])({
-      dataKey: "tempMorn"
-    }, _Chart2["default"].LineTempMorn)), _react["default"].createElement(Line, (0, _extends2["default"])({
-      dataKey: "tempNight"
-    }, _Chart2["default"].LineTempNight)), _react["default"].createElement(Line, (0, _extends2["default"])({
-      dataKey: "tempDay"
-    }, _Chart2["default"].LineTempDay))));
-  };
-
-  return ForecastChart;
-}(Component);
-
+  }), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({
+    yAxisId: 1,
+    dataKey: "rain",
+    orientation: "right",
+    label: "mm"
+  }, _Chart2["default"].YAxisRain)), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({
+    hide: !filters.speed,
+    yAxisId: 2,
+    dataKey: "speed",
+    orientation: "right",
+    label: "m/s"
+  }, _Chart2["default"].YAxisSpeed)), /*#__PURE__*/_react["default"].createElement(CartesianGrid, _Chart2["default"].CartesianGrid), /*#__PURE__*/_react["default"].createElement(Tooltip, {
+    offset: 24,
+    content: /*#__PURE__*/_react["default"].createElement(_TooltipTemperature["default"], {
+      data: data
+    })
+  }), /*#__PURE__*/_react["default"].createElement(Legend, {
+    content: /*#__PURE__*/_react["default"].createElement(_LegendTemperature["default"], {
+      styles: _Label["default"].fnLegendLabel(filters),
+      onFilter: _hFilter
+    })
+  }), /*#__PURE__*/_react["default"].createElement(Bar, {
+    dataKey: "rain",
+    yAxisId: 1,
+    barSize: 20,
+    fill: "#0922a5"
+  }), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({
+    dataKey: "speed",
+    yAxisId: 2
+  }, _Chart2["default"].LineSpeed)), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({
+    dataKey: "tempMin"
+  }, _Chart2["default"].LineTempMin)), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({
+    dataKey: "tempMax"
+  }, _Chart2["default"].LineTempMax)), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({
+    dataKey: "tempEve"
+  }, _Chart2["default"].LineTempEve)), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({
+    dataKey: "tempMorn"
+  }, _Chart2["default"].LineTempMorn)), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({
+    dataKey: "tempNight"
+  }, _Chart2["default"].LineTempNight)), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({
+    dataKey: "tempDay"
+  }, _Chart2["default"].LineTempDay))));
+}, areEqual);
 var _default = ForecastChart;
 exports["default"] = _default;
 //# sourceMappingURL=ForecastChart.js.map
