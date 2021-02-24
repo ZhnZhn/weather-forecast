@@ -15,6 +15,10 @@ var _actions2 = require("./layout/actions");
 
 var _actions3 = require("./modal/actions");
 
+var _actions4 = require("./hourly/actions");
+
+var _actions5 = require("./uv/actions");
+
 var dispatch = _store["default"].dispatch;
 
 var MS_PERIOD = 10000,
@@ -39,6 +43,12 @@ var handlers = {
   showSettings: function showSettings(storeKey) {
     dispatch((0, _actions2.toggleLayout)(storeKey));
     dispatch((0, _actions3.showModal)('SETTINGS'));
+  },
+  requestHourly: function requestHourly() {
+    return dispatch((0, _actions4.hourlyRequested)());
+  },
+  requestUvi: function requestUvi() {
+    return dispatch((0, _actions5.uvRequested)());
   }
 };
 var _default = handlers;

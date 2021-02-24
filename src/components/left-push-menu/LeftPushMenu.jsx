@@ -1,4 +1,3 @@
-//import React, { Component } from 'react';
 import React from '../_react'
 
 import PeriodForecast from '../wrapper/PeriodForecast';
@@ -9,18 +8,16 @@ import Tab from '../zhn-atoms/Tab';
 
 import ForecastChart from './ForecastChart';
 import HourlyChart from './HourlyChart';
-import UvCard from './UvCard';
+import UviChart from './UviChart';
 
 import styleConfig from './LeftPushMenu.Style'
-import withTheme from '../hoc/withTheme';
 
-import { hourlyRequested } from '../../flux/hourly/actions';
-import { uvRequested } from '../../flux/uv/actions';
+import handlers from '../../flux/handlers';
 
-const { Component } = React
+const { useRef, useCallback } = React
+const { requestHourly, requestUvi } = handlers
 
-//const BG_MARK = '#646464';
-//const BG_UNMARK = '#808080';
+
 const S  = {
   TABS: {
     textAlign: 'left'
@@ -28,80 +25,60 @@ const S  = {
 };
 
 
-class LeftPushMenu extends Component {
-   state = {}
-
-   _markDay = (currentTarget) => {
-     const _style = this.props.theme.createStyle(styleConfig)
-     this.detailEl = currentTarget;
-     this.detailEl.style.backgroundColor = _style.C_BG_MARK;
-   }
-   _unmarkDay = () => {
-     if (this.detailEl){
-       const _style = this.props.theme.createStyle(styleConfig)
-       this.detailEl.style.backgroundColor = _style.C_BG_UNMARK;
-     }
-   }
-
-   handleClickItem = (item, evn) => {
-    evn.persist();
-    this._unmarkDay();
-    this._markDay(evn.currentTarget);
-    this.detailComp.setItem(item);
+const _setBackgroundColorTo = (theme, ref, styleProperty) => {
+  const _el = ref.current;
+  if (_el) {
+    _el.style.backgroundColor = theme.createStyle(styleConfig)[styleProperty]
   }
+};
 
-  handleRequestHourly = () => {
-    const { store } = this.props
-    store.dispatch(hourlyRequested())
-  }
-  handleRequestUV = () => {
-    const { store } = this.props
-    store.dispatch(uvRequested())
-  }
+const LeftPushMenu = ({ id, theme }) => {
+  const _refDetail = useRef()
+  , _refDetailEl = useRef()
+  , _markDay = useCallback(currentTarget => {
+    _refDetailEl.current = currentTarget;
+    _setBackgroundColorTo(theme, _refDetailEl, 'C_BG_MARK')
+  }, [theme])
+  , _unmarkDay = useCallback(() => {
+    _setBackgroundColorTo(theme, _refDetailEl, 'C_BG_UNMARK')
+  }, [theme])
+  , _hClickItem = useCallback((item, event) => {
+    event.persist()
+    _unmarkDay()
+    _markDay(event.currentTarget)
+    _refDetail.current.setItem(item);
+  }, [_unmarkDay, _markDay])
+  , _hCloseDetail = useCallback(() => {
+    _unmarkDay()
+    _refDetail.current.close();
+  }, [_unmarkDay]);
 
-  handleCloseDetail = () => {
-    this._unmarkDay();
-    this.detailComp.close();
-  }
+  const STYLE = theme.createStyle(styleConfig);
 
-  _refDetail = comp => this.detailComp = comp
+  return (
+    <div id={id} style={STYLE.ROOT_DIV} >
+       <PeriodForecast
+          onUpdate={_hCloseDetail}
+          onClickItem={_hClickItem}
+       />
+       <DayDetailPopup
+          ref={_refDetail}
+          onClose={_hCloseDetail}
+        />
 
-  render(){
-    const { id, store, theme } = this.props
-         , STYLE = theme.createStyle(styleConfig);
-    return (
-      <div id={id} style={STYLE.ROOT_DIV} >
-         <PeriodForecast            
-            onUpdate={this.handleCloseDetail}
-            onClickItem={this.handleClickItem}
-         />
-         <DayDetailPopup
-            ref={this._refDetail}
-            onClose={this.handleCloseDetail}
-          />
-
-          <TabPane
-            key="1" width="100%" tabsStyle={S.TABS}
-          >
-            <Tab title="7 Days">
-               <ForecastChart />
-            </Tab>
-            <Tab
-               title="5 Days/3 Hours"
-               onClick={this.handleRequestHourly}
-            >
-               <HourlyChart />
-            </Tab>
-            <Tab
-               title="UV"
-               onClick={this.handleRequestUV}
-            >
-               <UvCard store={store} />
-            </Tab>
-          </TabPane>
-      </div>
-    );
-  }
+        <TabPane key="1" width="100%" tabsStyle={S.TABS}>
+          <Tab title="7 Days">
+             <ForecastChart />
+          </Tab>
+          <Tab title="5 Days/3 Hours" onClick={requestHourly}>
+             <HourlyChart />
+          </Tab>
+          <Tab title="UV index" onClick={requestUvi}>
+             <UviChart />
+          </Tab>
+        </TabPane>
+    </div>
+  );
 }
 
-export default withTheme(LeftPushMenu)
+export default LeftPushMenu

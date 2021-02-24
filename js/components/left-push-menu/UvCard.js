@@ -5,33 +5,43 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
 var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
 var _react = _interopRequireDefault(require("../_react"));
 
+var _dt = _interopRequireDefault(require("../../utils/dt"));
+
+var _Chart = _interopRequireDefault(require("../charts/Chart"));
+
 var _selectors = require("../../flux/selectors");
 
-//import React, { Component } from 'react';
+var _TooltipUvi = _interopRequireDefault(require("./TooltipUvi"));
+
+var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
+
 var Component = _react["default"].Component;
-var S = {
-  TIME: {
-    paddingTop: '1rem',
-    paddingLeft: '2.5rem',
-    color: '#8bc34a',
-    fontSize: '1rem',
-    fontWeight: 'bold'
-  },
-  VALUE: {
-    paddingTop: '1rem',
-    paddingLeft: '2.5rem',
-    fontSize: '3rem',
-    fontWeight: 'bold'
-  }
+var CartesianGrid = _Chart["default"].CartesianGrid,
+    Line = _Chart["default"].Line,
+    YAxis = _Chart["default"].YAxis,
+    XAxis = _Chart["default"].XAxis,
+    ResponsiveContainer = _Chart["default"].ResponsiveContainer,
+    LineChart = _Chart["default"].LineChart,
+    Tooltip = _Chart["default"].Tooltip;
+
+var _transformUvi = function _transformUvi(hourlyArr) {
+  return hourlyArr.map(function (_ref) {
+    var timestamp = _ref.dt,
+        uvi = _ref.uvi;
+    return {
+      day: _dt["default"].toDayHour(timestamp),
+      uvi: uvi
+    };
+  });
 };
 
-var UvCard =
-/*#__PURE__*/
-function (_Component) {
+var UvCard = /*#__PURE__*/function (_Component) {
   (0, _inheritsLoose2["default"])(UvCard, _Component);
 
   function UvCard() {
@@ -54,7 +64,7 @@ function (_Component) {
       if (recent !== _this.state.recent) {
         _this.setState(function (prev) {
           return {
-            data: _selectors.sUV.byId(state, recent)
+            data: _transformUvi((_selectors.sUV.byId(state, recent) || {}).list || [])
           };
         });
       }
@@ -74,20 +84,30 @@ function (_Component) {
   };
 
   _proto.render = function render() {
-    var _this$state$data = this.state.data,
-        data = _this$state$data === void 0 ? [] : _this$state$data,
-        _ref = data[0] || {},
-        _ref$date_iso = _ref.date_iso,
-        date_iso = _ref$date_iso === void 0 ? '' : _ref$date_iso,
-        _ref$value = _ref.value,
-        value = _ref$value === void 0 ? '' : _ref$value,
-        _date = date_iso.replace('Z', '').replace('T', ' ');
-
-    return _react["default"].createElement("div", null, _react["default"].createElement("div", {
-      style: S.TIME
-    }, _date), _react["default"].createElement("div", {
-      style: S.VALUE
-    }, value));
+    var data = this.state.data;
+    return /*#__PURE__*/_react["default"].createElement(ResponsiveContainer, {
+      width: "100%",
+      height: 300
+    }, /*#__PURE__*/_react["default"].createElement(LineChart, (0, _extends2["default"])({
+      data: data
+    }, _Chart2["default"].HourlyChart), /*#__PURE__*/_react["default"].createElement(XAxis, (0, _extends2["default"])({
+      dataKey: "day"
+    }, _Chart2["default"].XAxis)), /*#__PURE__*/_react["default"].createElement(YAxis, {
+      yAxisId: 1,
+      orientation: "right",
+      width: 45 //label="UV"
+      ,
+      dataKey: "uvi"
+    }), /*#__PURE__*/_react["default"].createElement(CartesianGrid, _Chart2["default"].CartesianGrid), /*#__PURE__*/_react["default"].createElement(Tooltip, {
+      offset: 24,
+      content: /*#__PURE__*/_react["default"].createElement(_TooltipUvi["default"], {
+        data: data
+      })
+    }), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
+      connectNulls: true,
+      yAxisId: 1,
+      dataKey: "uvi"
+    }))));
   };
 
   return UvCard;

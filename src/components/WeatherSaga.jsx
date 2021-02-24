@@ -86,7 +86,7 @@ const WeatherSaga = () => {
         <div>
           <LeftPushMenu
              id={PUSH_MENU_ID}
-             store={store}
+             theme={theme}
           />
           <LeafletMap
               id={MAP_ID}

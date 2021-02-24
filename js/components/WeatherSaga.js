@@ -97,7 +97,7 @@ var WeatherSaga = function WeatherSaga() {
     style: S.HEADER
   }), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_LeftPushMenu["default"], {
     id: PUSH_MENU_ID,
-    store: store
+    theme: _theme["default"]
   }), /*#__PURE__*/_react["default"].createElement(_LeafletMap["default"], {
     id: MAP_ID,
     rootStyle: S.MAP,

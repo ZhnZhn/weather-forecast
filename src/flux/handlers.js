@@ -6,6 +6,9 @@ import { forecastRequested } from './forecast/actions';
 import { toggleLayout } from './layout/actions';
 import { showModal } from './modal/actions';
 
+import { hourlyRequested } from './hourly/actions';
+import { uvRequested } from './uv/actions';
+
 const { dispatch } = store;
 
 const MS_PERIOD = 10000
@@ -27,7 +30,11 @@ const handlers = {
   showSettings: storeKey => {
     dispatch(toggleLayout(storeKey))
     dispatch(showModal('SETTINGS'))
-  }
+  },
+
+  requestHourly: () => dispatch(hourlyRequested()),
+  requestUvi: () => dispatch(uvRequested())
+
 };
 
 export default handlers

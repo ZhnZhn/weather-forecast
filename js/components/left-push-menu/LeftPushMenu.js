@@ -5,8 +5,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
-
 var _react = _interopRequireDefault(require("../_react"));
 
 var _PeriodForecast = _interopRequireDefault(require("../wrapper/PeriodForecast"));
@@ -21,125 +19,84 @@ var _ForecastChart = _interopRequireDefault(require("./ForecastChart"));
 
 var _HourlyChart = _interopRequireDefault(require("./HourlyChart"));
 
-var _UvCard = _interopRequireDefault(require("./UvCard"));
+var _UviChart = _interopRequireDefault(require("./UviChart"));
 
 var _LeftPushMenu = _interopRequireDefault(require("./LeftPushMenu.Style"));
 
-var _withTheme = _interopRequireDefault(require("../hoc/withTheme"));
+var _handlers = _interopRequireDefault(require("../../flux/handlers"));
 
-var _actions = require("../../flux/hourly/actions");
-
-var _actions2 = require("../../flux/uv/actions");
-
-//import React, { Component } from 'react';
-var Component = _react["default"].Component; //const BG_MARK = '#646464';
-//const BG_UNMARK = '#808080';
-
+var useRef = _react["default"].useRef,
+    useCallback = _react["default"].useCallback;
+var requestHourly = _handlers["default"].requestHourly,
+    requestUvi = _handlers["default"].requestUvi;
 var S = {
   TABS: {
     textAlign: 'left'
   }
 };
 
-var LeftPushMenu = /*#__PURE__*/function (_Component) {
-  (0, _inheritsLoose2["default"])(LeftPushMenu, _Component);
+var _setBackgroundColorTo = function _setBackgroundColorTo(theme, ref, styleProperty) {
+  var _el = ref.current;
 
-  function LeftPushMenu() {
-    var _this;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
-    _this.state = {};
-
-    _this._markDay = function (currentTarget) {
-      var _style = _this.props.theme.createStyle(_LeftPushMenu["default"]);
-
-      _this.detailEl = currentTarget;
-      _this.detailEl.style.backgroundColor = _style.C_BG_MARK;
-    };
-
-    _this._unmarkDay = function () {
-      if (_this.detailEl) {
-        var _style = _this.props.theme.createStyle(_LeftPushMenu["default"]);
-
-        _this.detailEl.style.backgroundColor = _style.C_BG_UNMARK;
-      }
-    };
-
-    _this.handleClickItem = function (item, evn) {
-      evn.persist();
-
-      _this._unmarkDay();
-
-      _this._markDay(evn.currentTarget);
-
-      _this.detailComp.setItem(item);
-    };
-
-    _this.handleRequestHourly = function () {
-      var store = _this.props.store;
-      store.dispatch((0, _actions.hourlyRequested)());
-    };
-
-    _this.handleRequestUV = function () {
-      var store = _this.props.store;
-      store.dispatch((0, _actions2.uvRequested)());
-    };
-
-    _this.handleCloseDetail = function () {
-      _this._unmarkDay();
-
-      _this.detailComp.close();
-    };
-
-    _this._refDetail = function (comp) {
-      return _this.detailComp = comp;
-    };
-
-    return _this;
+  if (_el) {
+    _el.style.backgroundColor = theme.createStyle(_LeftPushMenu["default"])[styleProperty];
   }
+};
 
-  var _proto = LeftPushMenu.prototype;
+var LeftPushMenu = function LeftPushMenu(_ref) {
+  var id = _ref.id,
+      theme = _ref.theme;
 
-  _proto.render = function render() {
-    var _this$props = this.props,
-        id = _this$props.id,
-        store = _this$props.store,
-        theme = _this$props.theme,
-        STYLE = theme.createStyle(_LeftPushMenu["default"]);
-    return /*#__PURE__*/_react["default"].createElement("div", {
-      id: id,
-      style: STYLE.ROOT_DIV
-    }, /*#__PURE__*/_react["default"].createElement(_PeriodForecast["default"], {
-      onUpdate: this.handleCloseDetail,
-      onClickItem: this.handleClickItem
-    }), /*#__PURE__*/_react["default"].createElement(_DayDetailPopup["default"], {
-      ref: this._refDetail,
-      onClose: this.handleCloseDetail
-    }), /*#__PURE__*/_react["default"].createElement(_TabPane["default"], {
-      key: "1",
-      width: "100%",
-      tabsStyle: S.TABS
-    }, /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
-      title: "7 Days"
-    }, /*#__PURE__*/_react["default"].createElement(_ForecastChart["default"], null)), /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
-      title: "5 Days/3 Hours",
-      onClick: this.handleRequestHourly
-    }, /*#__PURE__*/_react["default"].createElement(_HourlyChart["default"], null)), /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
-      title: "UV",
-      onClick: this.handleRequestUV
-    }, /*#__PURE__*/_react["default"].createElement(_UvCard["default"], {
-      store: store
-    }))));
-  };
+  var _refDetail = useRef(),
+      _refDetailEl = useRef(),
+      _markDay = useCallback(function (currentTarget) {
+    _refDetailEl.current = currentTarget;
 
-  return LeftPushMenu;
-}(Component);
+    _setBackgroundColorTo(theme, _refDetailEl, 'C_BG_MARK');
+  }, [theme]),
+      _unmarkDay = useCallback(function () {
+    _setBackgroundColorTo(theme, _refDetailEl, 'C_BG_UNMARK');
+  }, [theme]),
+      _hClickItem = useCallback(function (item, event) {
+    event.persist();
 
-var _default = (0, _withTheme["default"])(LeftPushMenu);
+    _unmarkDay();
 
+    _markDay(event.currentTarget);
+
+    _refDetail.current.setItem(item);
+  }, [_unmarkDay, _markDay]),
+      _hCloseDetail = useCallback(function () {
+    _unmarkDay();
+
+    _refDetail.current.close();
+  }, [_unmarkDay]);
+
+  var STYLE = theme.createStyle(_LeftPushMenu["default"]);
+  return /*#__PURE__*/_react["default"].createElement("div", {
+    id: id,
+    style: STYLE.ROOT_DIV
+  }, /*#__PURE__*/_react["default"].createElement(_PeriodForecast["default"], {
+    onUpdate: _hCloseDetail,
+    onClickItem: _hClickItem
+  }), /*#__PURE__*/_react["default"].createElement(_DayDetailPopup["default"], {
+    ref: _refDetail,
+    onClose: _hCloseDetail
+  }), /*#__PURE__*/_react["default"].createElement(_TabPane["default"], {
+    key: "1",
+    width: "100%",
+    tabsStyle: S.TABS
+  }, /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
+    title: "7 Days"
+  }, /*#__PURE__*/_react["default"].createElement(_ForecastChart["default"], null)), /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
+    title: "5 Days/3 Hours",
+    onClick: requestHourly
+  }, /*#__PURE__*/_react["default"].createElement(_HourlyChart["default"], null)), /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
+    title: "UV index",
+    onClick: requestUvi
+  }, /*#__PURE__*/_react["default"].createElement(_UviChart["default"], null))));
+};
+
+var _default = LeftPushMenu;
 exports["default"] = _default;
 //# sourceMappingURL=LeftPushMenu.js.map
