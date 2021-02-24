@@ -1,23 +1,10 @@
 import React from '../_react'
 
 import TooltipContent from './TooltipContent'
-import STYLE from './Label.Style'
+import TooltipRow from './TooltipRow'
 
+const TooltipHourly = ({ active, payload }) => {
 
-const Row = ({ caption, value }) => {
-  if (value == null) {
-    return null;
-  }
-  return (
-   <div style={STYLE.ROW}>
-     <span style={STYLE.CAPTION}>{`${caption}:`}</span>
-     <span style={STYLE.TEMP_MIN}>{value}</span>
-   </div>
-  );
-}
-
-const TooltipHourly = (props) => {
-  const {active, payload} = props;
   if (!active){
     return null;
   }
@@ -32,10 +19,10 @@ const TooltipHourly = (props) => {
 
   return (
    <TooltipContent caption={dt_text}>
-     <Row caption="Temp" value={temp}/>
-     <Row caption="Pressure" value={pressure}/>
-     <Row caption="Speed" value={speed}/>
-     <Row caption="Rain" value={rain}/>
+     <TooltipRow caption="Temp" value={temp}/>
+     <TooltipRow caption="Pressure" value={pressure}/>
+     <TooltipRow caption="Speed" value={speed}/>
+     <TooltipRow caption="Rain" value={rain}/>
    </TooltipContent>
   );
 }

@@ -9,28 +9,11 @@ var _react = _interopRequireDefault(require("../_react"));
 
 var _TooltipContent = _interopRequireDefault(require("./TooltipContent"));
 
-var _Label = _interopRequireDefault(require("./Label.Style"));
+var _TooltipRow = _interopRequireDefault(require("./TooltipRow"));
 
-var Row = function Row(_ref) {
-  var caption = _ref.caption,
-      value = _ref.value;
-
-  if (value == null) {
-    return null;
-  }
-
-  return /*#__PURE__*/_react["default"].createElement("div", {
-    style: _Label["default"].ROW
-  }, /*#__PURE__*/_react["default"].createElement("span", {
-    style: _Label["default"].CAPTION
-  }, caption + ":"), /*#__PURE__*/_react["default"].createElement("span", {
-    style: _Label["default"].TEMP_MIN
-  }, value));
-};
-
-var TooltipHourly = function TooltipHourly(props) {
-  var active = props.active,
-      payload = props.payload;
+var TooltipHourly = function TooltipHourly(_ref) {
+  var active = _ref.active,
+      payload = _ref.payload;
 
   if (!active) {
     return null;
@@ -45,16 +28,16 @@ var TooltipHourly = function TooltipHourly(props) {
 
   return /*#__PURE__*/_react["default"].createElement(_TooltipContent["default"], {
     caption: dt_text
-  }, /*#__PURE__*/_react["default"].createElement(Row, {
+  }, /*#__PURE__*/_react["default"].createElement(_TooltipRow["default"], {
     caption: "Temp",
     value: temp
-  }), /*#__PURE__*/_react["default"].createElement(Row, {
+  }), /*#__PURE__*/_react["default"].createElement(_TooltipRow["default"], {
     caption: "Pressure",
     value: pressure
-  }), /*#__PURE__*/_react["default"].createElement(Row, {
+  }), /*#__PURE__*/_react["default"].createElement(_TooltipRow["default"], {
     caption: "Speed",
     value: speed
-  }), /*#__PURE__*/_react["default"].createElement(Row, {
+  }), /*#__PURE__*/_react["default"].createElement(_TooltipRow["default"], {
     caption: "Rain",
     value: rain
   }));
