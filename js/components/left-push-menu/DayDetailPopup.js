@@ -7,8 +7,6 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
-
 var _react = _interopRequireDefault(require("../_react"));
 
 var _dt = _interopRequireDefault(require("../../utils/dt"));
@@ -17,8 +15,9 @@ var _SvgClose = _interopRequireDefault(require("../zhn-atoms/SvgClose"));
 
 var _theme = require("../styles/theme");
 
-//import React, { Component } from 'react';
-var Component = _react["default"].Component;
+var forwardRef = _react["default"].forwardRef,
+    useState = _react["default"].useState,
+    useImperativeHandle = _react["default"].useImperativeHandle;
 var CL = {
   DATE: 'marker__caption__date',
   DESCR: 'marker__description',
@@ -31,11 +30,11 @@ var CL = {
 var STYLE = {
   ROOT_DIV: {
     position: 'absolute',
-    top: '190px',
-    left: '200px',
+    top: 190,
+    left: 200,
     padding: '8px 8px',
     lineHeight: 1.5,
-    borderRadius: '4px',
+    borderRadius: 4,
     boxShadow: 'rgba(0, 0, 0, 0.2) 0px 0px 0px 6px',
     zIndex: 1,
     transition: 'left 0.5s ease-in 0s'
@@ -48,149 +47,142 @@ var STYLE = {
   },
   BT_CLOSE: {
     position: 'absolute',
-    top: '7px',
-    right: '4px'
+    top: 7,
+    right: 4
   },
   DAY: {
     borderBottom: '2px solid #8bc34a'
   }
 };
 
-var DayDetailPopup =
-/*#__PURE__*/
-function (_Component) {
-  (0, _inheritsLoose2["default"])(DayDetailPopup, _Component);
+var TitleValue = function TitleValue(_ref) {
+  var title = _ref.title,
+      valueCn = _ref.valueCn,
+      value = _ref.value;
+  return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("span", {
+    className: CL.LABEL
+  }, title, "\xA0"), /*#__PURE__*/_react["default"].createElement("span", {
+    className: valueCn
+  }, value, "\xA0"));
+};
 
-  function DayDetailPopup(props) {
-    var _this;
+var DayDetailPopup = forwardRef(function (_ref2, ref) {
+  var onClose = _ref2.onClose;
 
-    _this = _Component.call(this, props) || this;
+  var _useState = useState({}),
+      state = _useState[0],
+      setState = _useState[1],
+      isOpen = state.isOpen,
+      item = state.item;
 
-    _this.setItem = function (item) {
-      _this.setState({
-        item: item,
-        isOpen: true
-      });
+  useImperativeHandle(ref, function () {
+    return {
+      setItem: function setItem(item) {
+        return setState(function () {
+          return {
+            item: item,
+            isOpen: true
+          };
+        });
+      },
+      close: function close() {
+        return setState(function (prevState) {
+          prevState.isOpen = false;
+          return (0, _extends2["default"])({}, prevState);
+        });
+      }
     };
+  });
 
-    _this.close = function () {
-      _this.setState({
-        isOpen: false
-      });
-    };
+  var _ref3 = item || {},
+      timestamp = _ref3.dt,
+      _ref3$rain = _ref3.rain,
+      rain = _ref3$rain === void 0 ? 0 : _ref3$rain,
+      _ref3$snow = _ref3.snow,
+      snow = _ref3$snow === void 0 ? 0 : _ref3$snow,
+      _ref3$clouds = _ref3.clouds,
+      clouds = _ref3$clouds === void 0 ? 0 : _ref3$clouds,
+      _ref3$humidity = _ref3.humidity,
+      humidity = _ref3$humidity === void 0 ? '' : _ref3$humidity,
+      _ref3$pressure = _ref3.pressure,
+      pressure = _ref3$pressure === void 0 ? '' : _ref3$pressure,
+      _ref3$temp = _ref3.temp,
+      temp = _ref3$temp === void 0 ? {} : _ref3$temp,
+      _ref3$weather = _ref3.weather,
+      weather = _ref3$weather === void 0 ? [] : _ref3$weather,
+      _temp$morn = temp.morn,
+      morn = _temp$morn === void 0 ? '' : _temp$morn,
+      _temp$day = temp.day,
+      day = _temp$day === void 0 ? '' : _temp$day,
+      _temp$max = temp.max,
+      max = _temp$max === void 0 ? '' : _temp$max,
+      _temp$eve = temp.eve,
+      eve = _temp$eve === void 0 ? '' : _temp$eve,
+      _temp$night = temp.night,
+      night = _temp$night === void 0 ? '' : _temp$night,
+      _temp$min = temp.min,
+      min = _temp$min === void 0 ? '' : _temp$min,
+      _dateTitle = _dt["default"].toDayOfWeek(timestamp) + " " + _dt["default"].toTime(timestamp),
+      description = weather[0] && weather[0].description || 'Without description',
+      _style = isOpen ? STYLE.BLOCK : STYLE.NONE;
 
-    var isOpen = props.isOpen,
-        style = props.style,
-        _item = props.item;
-    _this.state = {
-      isOpen: isOpen,
-      style: style,
-      item: _item
-    };
-    return _this;
-  }
-
-  var _proto = DayDetailPopup.prototype;
-
-  _proto.render = function render() {
-    var onClose = this.props.onClose,
-        _this$state = this.state,
-        isOpen = _this$state.isOpen,
-        style = _this$state.style,
-        _this$state$item = _this$state.item,
-        item = _this$state$item === void 0 ? {} : _this$state$item,
-        timestamp = item.dt,
-        _item$rain = item.rain,
-        rain = _item$rain === void 0 ? 0 : _item$rain,
-        _item$snow = item.snow,
-        snow = _item$snow === void 0 ? 0 : _item$snow,
-        _item$clouds = item.clouds,
-        clouds = _item$clouds === void 0 ? 0 : _item$clouds,
-        _item$humidity = item.humidity,
-        humidity = _item$humidity === void 0 ? '' : _item$humidity,
-        _item$pressure = item.pressure,
-        pressure = _item$pressure === void 0 ? '' : _item$pressure,
-        _item$temp = item.temp,
-        temp = _item$temp === void 0 ? {} : _item$temp,
-        _item$weather = item.weather,
-        weather = _item$weather === void 0 ? [] : _item$weather,
-        _temp$morn = temp.morn,
-        morn = _temp$morn === void 0 ? '' : _temp$morn,
-        _temp$day = temp.day,
-        day = _temp$day === void 0 ? '' : _temp$day,
-        _temp$max = temp.max,
-        max = _temp$max === void 0 ? '' : _temp$max,
-        _temp$eve = temp.eve,
-        eve = _temp$eve === void 0 ? '' : _temp$eve,
-        _temp$night = temp.night,
-        night = _temp$night === void 0 ? '' : _temp$night,
-        _temp$min = temp.min,
-        min = _temp$min === void 0 ? '' : _temp$min,
-        _dateTitle = _dt["default"].toDayOfWeek(timestamp) + " " + _dt["default"].toTime(timestamp),
-        description = weather[0] && weather[0].description ? weather[0].description : 'Without description',
-        _style = isOpen ? STYLE.BLOCK : STYLE.NONE;
-
-    return _react["default"].createElement("div", {
-      style: (0, _extends2["default"])({}, _theme.POPUP.CHART, {}, STYLE.ROOT_DIV, {}, style, {}, _style)
-    }, _react["default"].createElement(_SvgClose["default"], {
-      style: STYLE.BT_CLOSE,
-      onClose: onClose
-    }), _react["default"].createElement("div", {
-      className: CL.DATE
-    }, _react["default"].createElement("span", {
-      style: STYLE.DAY
-    }, _dateTitle)), _react["default"].createElement("div", null, _react["default"].createElement("span", {
-      className: CL.DESCR
-    }, description)), _react["default"].createElement("div", null, _react["default"].createElement("span", {
-      className: CL.LABEL
-    }, "Rain:\xA0"), _react["default"].createElement("span", {
-      className: CL.V_WATER
-    }, rain, "mm\xA0"), snow > 0.02 && _react["default"].createElement("span", null, _react["default"].createElement("span", {
-      className: CL.LABEL
-    }, "Snow:\xA0"), _react["default"].createElement("span", {
-      className: CL.V_WATER
-    }, snow, "mm\xA0")), _react["default"].createElement("span", {
-      className: CL.LABEL
-    }, "Clouds:\xA0"), _react["default"].createElement("span", {
-      className: CL.V_WATER
-    }, clouds, "%\xA0")), _react["default"].createElement("div", null, _react["default"].createElement("span", {
-      className: CL.LABEL
-    }, "Humidity:\xA0"), _react["default"].createElement("span", {
-      className: CL.V_WATER
-    }, humidity, "%\xA0"), _react["default"].createElement("span", {
-      className: CL.LABEL
-    }, "Pressure:\xA0"), _react["default"].createElement("span", {
-      className: CL.V_PRESSURE
-    }, pressure, "hPa\xA0")), _react["default"].createElement("div", null, _react["default"].createElement("span", {
-      className: CL.LABEL
-    }, "Morn:\xA0"), _react["default"].createElement("span", {
-      className: CL.V_DAY
-    }, morn, "\xA0"), _react["default"].createElement("span", {
-      className: CL.LABEL
-    }, "Day:\xA0"), _react["default"].createElement("span", {
-      className: CL.V_DAY
-    }, day, "\xA0"), _react["default"].createElement("span", {
-      className: CL.LABEL
-    }, "Max:\xA0"), _react["default"].createElement("span", {
-      className: CL.V_DAY
-    }, max, "\xA0")), _react["default"].createElement("div", null, _react["default"].createElement("span", {
-      className: CL.LABEL
-    }, "Eve:\xA0"), _react["default"].createElement("span", {
-      className: CL.V_NIGHT
-    }, eve, "\xA0"), _react["default"].createElement("span", {
-      className: CL.LABEL
-    }, "Night:\xA0"), _react["default"].createElement("span", {
-      className: CL.V_NIGHT
-    }, night, "\xA0"), _react["default"].createElement("span", {
-      className: CL.LABEL
-    }, "Min:\xA0"), _react["default"].createElement("span", {
-      className: CL.V_NIGHT
-    }, min, "\xA0")));
-  };
-
-  return DayDetailPopup;
-}(Component);
-
+  return /*#__PURE__*/_react["default"].createElement("div", {
+    style: (0, _extends2["default"])({}, _theme.POPUP.CHART, STYLE.ROOT_DIV, _style)
+  }, /*#__PURE__*/_react["default"].createElement(_SvgClose["default"], {
+    style: STYLE.BT_CLOSE,
+    onClose: onClose
+  }), /*#__PURE__*/_react["default"].createElement("div", {
+    className: CL.DATE
+  }, /*#__PURE__*/_react["default"].createElement("span", {
+    style: STYLE.DAY
+  }, _dateTitle)), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("span", {
+    className: CL.DESCR
+  }, description)), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: "Rain:",
+    valueCn: CL.V_WATER,
+    value: rain + "mm"
+  }), snow > 0.02 && /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: "Snow:",
+    valueCn: CL.V_WATER,
+    value: snow + "mm"
+  }), /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: "Clouds:",
+    valueCn: CL.V_WATER,
+    value: clouds + "%"
+  })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: "Humidity:",
+    valueCn: CL.V_WATER,
+    value: humidity + "%"
+  }), /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: "Pressure:",
+    valueCn: CL.V_PRESSURE,
+    value: pressure + "hPa"
+  })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: "Morn:",
+    valueCn: CL.V_DAY,
+    value: morn
+  }), /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: "Day:",
+    valueCn: CL.V_DAY,
+    value: day
+  }), /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: "Max:",
+    valueCn: CL.V_DAY,
+    value: max
+  })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: "Eve:",
+    valueCn: CL.V_NIGHT,
+    value: eve
+  }), /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: "Night:",
+    valueCn: CL.V_NIGHT,
+    value: night
+  }), /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: "Min:",
+    valueCn: CL.V_NIGHT,
+    value: min
+  })));
+});
 var _default = DayDetailPopup;
 exports["default"] = _default;
 //# sourceMappingURL=DayDetailPopup.js.map

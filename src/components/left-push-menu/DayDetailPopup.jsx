@@ -1,7 +1,6 @@
-//import React, { Component } from 'react';
 import React from '../_react'
 
-const { Component } = React;
+const { forwardRef, useState, useImperativeHandle } = React;
 import dt from '../../utils/dt';
 
 import SvgClose from '../zhn-atoms/SvgClose'
@@ -18,141 +17,137 @@ const CL = {
 };
 
 const STYLE = {
-  ROOT_DIV : {
-    position : 'absolute',
-    top: '190px',
-    left : '200px',
+  ROOT_DIV: {
+    position: 'absolute',
+    top: 190,
+    left : 200,
     padding: '8px 8px',
     lineHeight: 1.5,
-    borderRadius: '4px',
+    borderRadius: 4,
     boxShadow: 'rgba(0, 0, 0, 0.2) 0px 0px 0px 6px',
-    zIndex : 1,
+    zIndex: 1,
     transition: 'left 0.5s ease-in 0s'
   },
-  BLOCK : {
-    display : 'block'
+  BLOCK: {
+    display: 'block'
   },
-  NONE : {
-    display : 'none'
+  NONE: {
+    display: 'none'
   },
-  BT_CLOSE : {
-    position : 'absolute',
-    top: '7px',
-    right : '4px'
+  BT_CLOSE: {
+    position: 'absolute',
+    top: 7,
+    right: 4
   },
-  DAY : {
-    borderBottom : '2px solid #8bc34a'
+  DAY: {
+    borderBottom: '2px solid #8bc34a'
   }
 };
 
-class DayDetailPopup extends Component {
+const TitleValue = ({ title, valueCn, value }) => (
+  <>
+   <span className={CL.LABEL}>{title}&nbsp;</span>
+   <span className={valueCn}>
+     {value}&nbsp;
+   </span>
+  </>
+);
 
-  constructor(props){
-    super(props)
-    const {
-            isOpen, style, item
-           } = props;
-    this.state = {
-      isOpen, style, item
-    }
-  }
+const DayDetailPopup = forwardRef(({ onClose }, ref) => {
+  const [state, setState] = useState({})
+  , {isOpen, item} = state;
 
+  useImperativeHandle(ref, () => ({
+    setItem: item => setState(() => ({
+       item, isOpen: true
+    })),
+    close: () => setState(prevState => {
+      prevState.isOpen = false
+      return {...prevState};
+    })
+  }))
 
-  render(){
-    const { onClose } = this.props
-    , { isOpen, style, item={} } = this.state
-    , { dt:timestamp, rain=0, snow=0, clouds=0, humidity='', pressure='', temp={}, weather=[] } = item
-    , { morn='', day='', max='', eve='', night='', min='' } = temp
-    , _dateTitle = `${dt.toDayOfWeek(timestamp)} ${dt.toTime(timestamp)}`
-    , description = (weather[0] && weather[0].description)
-        ? weather[0].description
-        : 'Without description'
-    , _style = (isOpen)
-         ? STYLE.BLOCK
-         : STYLE.NONE;
-    return (
-      <div style={{
-          ...POPUP.CHART, ...STYLE.ROOT_DIV,
-          ...style, ..._style
-       }}>
-        <SvgClose
-          style={STYLE.BT_CLOSE}
-          onClose={onClose}
-        />
-        <div className={CL.DATE}>
-          <span style={STYLE.DAY}>
-            {_dateTitle}
-          </span>
-        </div>
-        <div>
-          <span className={CL.DESCR}>{description}</span>
-        </div>
-        <div>
-          <span className={CL.LABEL}>Rain:&nbsp;</span>
-          <span className={CL.V_WATER}>
-            {rain}mm&nbsp;
-          </span>
-          { snow > 0.02 &&
-            <span>
-              <span className={CL.LABEL}>Snow:&nbsp;</span>
-              <span className={CL.V_WATER}>
-                {snow}mm&nbsp;
-              </span>
-            </span>
-          }
-          <span className={CL.LABEL}>Clouds:&nbsp;</span>
-          <span className={CL.V_WATER}>
-            {clouds}%&nbsp;
-          </span>
-        </div>
-        <div>
-          <span className={CL.LABEL}>Humidity:&nbsp;</span>
-          <span className={CL.V_WATER}>
-            {humidity}%&nbsp;
-          </span>
-          <span className={CL.LABEL}>Pressure:&nbsp;</span>
-          <span className={CL.V_PRESSURE}>
-            {pressure}hPa&nbsp;
-          </span>
-        </div>
-        <div>
-          <span className={CL.LABEL}>Morn:&nbsp;</span>
-          <span className={CL.V_DAY}>
-            {morn}&nbsp;
-          </span>
-          <span className={CL.LABEL}>Day:&nbsp;</span>
-          <span className={CL.V_DAY}>
-            {day}&nbsp;
-          </span>
-          <span className={CL.LABEL}>Max:&nbsp;</span>
-          <span className={CL.V_DAY}>
-            {max}&nbsp;
-          </span>
-        </div>
-        <div>
-          <span className={CL.LABEL}>Eve:&nbsp;</span>
-          <span className={CL.V_NIGHT}>
-            {eve}&nbsp;
-          </span>
-          <span className={CL.LABEL}>Night:&nbsp;</span>
-          <span className={CL.V_NIGHT}>
-            {night}&nbsp;
-          </span>
-          <span className={CL.LABEL}>Min:&nbsp;</span>
-          <span className={CL.V_NIGHT}>
-            {min}&nbsp;
-          </span>
-        </div>
+  const { dt:timestamp, rain=0, snow=0, clouds=0, humidity='', pressure='', temp={}, weather=[] } = item || {}
+  , { morn='', day='', max='', eve='', night='', min='' } = temp
+  , _dateTitle = `${dt.toDayOfWeek(timestamp)} ${dt.toTime(timestamp)}`
+  , description = (weather[0] && weather[0].description)
+       || 'Without description'
+  , _style = isOpen
+       ? STYLE.BLOCK
+       : STYLE.NONE;
+
+  return (
+    <div style={{
+        ...POPUP.CHART, ...STYLE.ROOT_DIV,
+        ..._style
+     }}>
+      <SvgClose
+        style={STYLE.BT_CLOSE}
+        onClose={onClose}
+      />
+      <div className={CL.DATE}>
+        <span style={STYLE.DAY}>
+          {_dateTitle}
+        </span>
       </div>
-    );
-  }
-
-  setItem = (item) => {
-     this.setState({ item, isOpen : true })
-  }
-  close = () => {
-    this.setState({ isOpen : false })
-  }
-}
+      <div>
+        <span className={CL.DESCR}>{description}</span>
+      </div>
+      <div>
+        <TitleValue title="Rain:"
+          valueCn={CL.V_WATER}
+          value={`${rain}mm`}
+        />
+        { snow > 0.02 && <TitleValue title="Snow:"
+            valueCn={CL.V_WATER}
+            value={`${snow}mm`}
+          />
+        }
+        <TitleValue title="Clouds:"
+          valueCn={CL.V_WATER}
+          value={`${clouds}%`}
+        />
+      </div>
+      <div>
+        <TitleValue title="Humidity:"
+          valueCn={CL.V_WATER}
+          value={`${humidity}%`}
+        />
+        <TitleValue title="Pressure:"
+          valueCn={CL.V_PRESSURE}
+          value={`${pressure}hPa`}
+        />
+      </div>
+      <div>
+        <TitleValue title="Morn:"
+          valueCn={CL.V_DAY}
+          value={morn}
+        />
+        <TitleValue title="Day:"
+          valueCn={CL.V_DAY}
+          value={day}
+        />
+        <TitleValue title="Max:"
+          valueCn={CL.V_DAY}
+          value={max}
+        />
+      </div>
+      <div>
+        <TitleValue title="Eve:"
+          valueCn={CL.V_NIGHT}
+          value={eve}
+        />
+        <TitleValue title="Night:"
+          valueCn={CL.V_NIGHT}
+          value={night}
+        />
+        <TitleValue title="Min:"
+          valueCn={CL.V_NIGHT}
+          value={min}
+        />
+      </div>
+    </div>
+  );
+})
 
 export default DayDetailPopup
