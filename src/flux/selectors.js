@@ -39,7 +39,14 @@ export const sHourly = {
 
 export const sUV = {
   recent : (state) => uv.recent(state.uv),
-  byId : (state, id) => uv.byId(state.uv, id)
+  byId : (state, id) => uv.byId(state.uv, id),
+
+  forecast : state => {
+    const recent = sUV.recent(state);
+    return recent
+      ? (sUV.byId(state, recent) || {}).list
+      : void 0;
+  }
 }
 
 export const sSettings = {

@@ -64,6 +64,10 @@ var sUV = {
   },
   byId: function byId(state, id) {
     return uv.byId(state.uv, id);
+  },
+  forecast: function forecast(state) {
+    var recent = sUV.recent(state);
+    return recent ? (sUV.byId(state, recent) || {}).list : void 0;
   }
 };
 exports.sUV = sUV;
