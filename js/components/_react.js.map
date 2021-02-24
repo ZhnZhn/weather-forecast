@@ -1,1 +1,11 @@
-{"version":3,"sources":["../../src/components/_react.js"],"names":["React","_React","window"],"mappings":";;;;;;;AAAA;;AAEA,IAAMA,KAAK,GAAGC,qBAAUC,MAAM,CAACF,KAA/B;eAEeA,K","sourcesContent":["import _React from 'react'\r\n\r\nconst React = _React || window.React\r\n\r\nexport default React\r\n"],"file":"_react.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../src/components/_react.js"
+ ],
+ "file": "../../src/components/_react.js",
+ "names": [
+  "_React"
+ ],
+ "mappings": ";;;;;;;AAAA;;eAEeA,iB"
+}

@@ -7,7 +7,6 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var React = _react["default"] || window.React;
-var _default = React;
+var _default = _react["default"];
 exports["default"] = _default;
 //# sourceMappingURL=_react.js.map
