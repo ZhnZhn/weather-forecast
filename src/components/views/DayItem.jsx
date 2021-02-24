@@ -5,38 +5,40 @@ import dt from '../../utils/dt';
 
 import IconVane from './IconVane';
 
-const STYLE = {
+const CL_DAY_ITEM = 'day-item';
+
+const S = {
   ROOT_DIV : {
-    display : 'inline-block',
-    paddingLeft : '12px',
-    paddingRight : '12px',
-    borderRadius : '10px',
-    transition : 'background-color 0.3s'
+    display: 'inline-block',
+    paddingLeft: 12,
+    paddingRight: 12,
+    borderRadius: 10,
+    transition: 'background-color 0.3s'
   },
   DAY : {
     color: '#8bc34a',
+    marginBottom: 4,
+    borderBottom: '2px solid #8bc34a',
+    textAlign: 'center',
     fontSize: '24px',
     fontWeight: 'bold',
-    textAlign: 'center',
-    borderBottom: '2px solid #8bc34a',
-    marginBottom: '4px'
   },
   PRESSURE : {
     display: 'block',
-    color: '#0D2339',
+    marginBottom: -15,
+    color: '#0d2339',
     textAlign: 'center',
     fontSize: '20px',
-    fontWeight: 'bold',
-    marginBottom: '-15px'
+    fontWeight: 'bold'
   },
   ICON : {
-    display:'block',
-    width:'60px',
-    height:'60px',
-    margin:'0 auto'
+    display: 'block',
+    width: 60,
+    height: 60,
+    margin: '0 auto'
   },
   CELL_WIND : {
-    marginTop : '-10px'
+    marginTop: -10
   },
   WIND_SPEED : {
     color: '#3f51b5',
@@ -44,66 +46,73 @@ const STYLE = {
     fontWeight: 'bold'
   },
   CELL_TEMP : {
-    paddingTop : '4px',
-    paddingBottom : '4px',
+    paddingTop: 4,
+    paddingBottom: 4,
     textAlign: 'center'
   },
   TEMP_DAY : {
     color: '#ff9800',
-    paddingLeft: '4px',
+    paddingLeft: 4,
     fontSize: '20px',
     fontWeight: 'bold'
   },
   TEMP_NIGHT : {
     color: '#434348',
-    paddingLeft : '8px',
+    paddingLeft: 8,
     fontSize: '20px',
     fontWeight: 'bold'
   }
-}
+};
 
-const roundProp = (obj={}, prop) => {
-  return Math.round(obj[prop])
-}
+const roundProp = (obj={}, prop) => Math.round(obj[prop])
+, _isNumber = (n) => typeof n === 'number' && n-n === 0
+, _isFn = fn => typeof fn === 'function';
 
-const _isNumber = (n) => typeof n === 'number';
-
-const DayItem = (props) => {
-  const { style, item={}, onClick } = props
-  , { weather, deg, speed, temp, dt:timestamp } = item
+const DayItem = ({
+  style,
+  item={},
+  onClick
+}) => {
+  const { weather, deg, speed, temp, dt:timestamp } = item
   , _speed = _isNumber(speed)
        ? speed.toFixed(2)
        : ''
   , day = dt.toShortDayOfWeek(timestamp)
   , pressure = roundProp(item, 'pressure')
   , icon = weather[0].icon
+  , _srcIcon = icon.length === 3
+      ? `./img/${icon}.png`
+      : void 0
   , tempDay = roundProp(temp, 'day')
-  , tempNight = roundProp(temp, 'night');
+  , tempNight = roundProp(temp, 'night')
+  , _focusableAttr = _isFn(onClick)
+       ? {
+           tabIndex: "-1",
+           className: CL_DAY_ITEM,
+           onClick: () => onClick(item)
+         }
+       : void 0;
 
   return (
     <div
-       style={{ ...STYLE.ROOT_DIV, ...style }}
-       onClick={onClick.bind(null, item)}
+       {..._focusableAttr}
+       style={{...S.ROOT_DIV, ...style}}
      >
-      <div style={STYLE.DAY}>{day}</div>
-      <span style={STYLE.PRESSURE}>{pressure}</span>
-      <img src={`./img/${icon}.png`} style={STYLE.ICON} />
-      <div style={STYLE.CELL_WIND}>
+      <div style={S.DAY}>{day}</div>
+      <span style={S.PRESSURE}>{pressure}</span>
+      <img src={_srcIcon} style={S.ICON} />
+      <div style={S.CELL_WIND}>
         <IconVane deg={deg} />
-        <span style={STYLE.WIND_SPEED}>
+        <span style={S.WIND_SPEED}>
           {_speed}
         </span>
       </div>
-      <div style={STYLE.CELL_TEMP}>
-        <span style={STYLE.TEMP_DAY}>{tempDay}</span>
-        <span style={STYLE.TEMP_NIGHT}>{tempNight}</span>
+      <div style={S.CELL_TEMP}>
+        <span style={S.TEMP_DAY}>{tempDay}</span>
+        <span style={S.TEMP_NIGHT}>{tempNight}</span>
       </div>
     </div>
   );
-}
-
-DayItem.defaultProps = {
-  onClick : () => {}
 }
 
 export default DayItem

@@ -25,33 +25,14 @@ const S  = {
 };
 
 
-const _setBackgroundColorTo = (theme, ref, styleProperty) => {
-  const _el = ref.current;
-  if (_el) {
-    _el.style.backgroundColor = theme.createStyle(styleConfig)[styleProperty]
-  }
-};
-
 const LeftPushMenu = ({ id, theme }) => {
   const _refDetail = useRef()
-  , _refDetailEl = useRef()
-  , _markDay = useCallback(currentTarget => {
-    _refDetailEl.current = currentTarget;
-    _setBackgroundColorTo(theme, _refDetailEl, 'C_BG_MARK')
-  }, [theme])
-  , _unmarkDay = useCallback(() => {
-    _setBackgroundColorTo(theme, _refDetailEl, 'C_BG_UNMARK')
-  }, [theme])
   , _hClickItem = useCallback((item, event) => {
-    event.persist()
-    _unmarkDay()
-    _markDay(event.currentTarget)
     _refDetail.current.setItem(item);
-  }, [_unmarkDay, _markDay])
+  }, [])
   , _hCloseDetail = useCallback(() => {
-    _unmarkDay()
     _refDetail.current.close();
-  }, [_unmarkDay]);
+  }, []);
 
   const STYLE = theme.createStyle(styleConfig);
 
