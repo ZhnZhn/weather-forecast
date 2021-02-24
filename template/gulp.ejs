@@ -6,12 +6,8 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="
-      script-src 'self' 'unsafe-inline'
-      https://unpkg.com/react@16.14.0/umd/react.production.min.js
-      https://unpkg.com/react-dom@16.14.0/umd/react-dom.production.min.js
-      https://unpkg.com/leaflet@1.7.1/dist/leaflet.js
-      https://unpkg.com/prop-types@15.7.2/prop-types.min.js      
-      https://unpkg.com/recharts@1.8.5/umd/Recharts.min.js;
+      script-src 'self' 'unsafe-inline'            
+      https://unpkg.com/leaflet@1.7.1/dist/leaflet.js;            
       style-src 'self' 'unsafe-inline';
       img-src 'self' data: https://*.tile.openstreetmap.org"
   >
@@ -95,23 +91,15 @@
       </div>
    </noscript>
    <!--googleon: snippet-->   
-   <script src="https://unpkg.com/react@16.14.0/umd/react.production.min.js" 
-     integrity="sha384-N7y5SSAooNlIfb9H750GR82ufkn1JXJFaCjg8pmt+OZuKcZoTvTGfog4d4taG/cF" crossorigin="anonymous"></script>   
-   <script src="https://unpkg.com/react-dom@16.14.0/umd/react-dom.production.min.js" 
-     integrity="sha384-j7WmMv3OO6n8pZRATOsaMVEdZcHpoaTBIika/l92YM2AkEex72QunlTQlgmu+pI8" crossorigin="anonymous"></script>          
+      
    <script defer src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" 
      integrity="sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M" crossorigin="anonymous"></script>               
-   <script src="https://unpkg.com/prop-types@15.7.2/prop-types.min.js"
-      integrity="sha384-LYxFDCinsAkMityIwlndisTOMBM5FXNysu758VzqiuCRZmCw7aDRDVn9HlHPi80A" crossorigin="anonymous"></script>
-   <script src="https://unpkg.com/recharts@1.8.5/umd/Recharts.min.js" 
-      integrity="sha384-uaDZzp6D3rGe6+WvDoshYebUL9PzIv15nJB2t7fds7F7Wl6Jz6+SivWV3+BKfH8U" crossorigin="anonymous"></script>      
+      
   <!--script src="app/lib"></script-->
   <%
  for (var index in htmlWebpackPlugin.files.js ) {
     var fileName = htmlWebpackPlugin.files.js[index];
-    if (fileName.indexOf('manifest_') !== -1){ %>
-      <script src="<%=fileName %>"></script>
-    <% } else if (fileName.indexOf('lib_') !== -1) { %>
+    if (fileName.indexOf('lib_') !== -1) { %>
       <script src="<%=fileName %>" defer></script>
     <% } else if (fileName.indexOf('app_') !== -1) { %>
       <script src="<%=fileName %>" defer></script>

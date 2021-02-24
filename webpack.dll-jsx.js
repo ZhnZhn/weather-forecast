@@ -14,32 +14,12 @@ module.exports = {
   entry: {
     app: path.resolve('src', 'index.jsx')
   },
-  externals: {
-    "react": {
-      "commonjs": "react",
-       "amd": "react",
-       "root": "React"
-    },
-    "react-dom": {
-      "commonjs": "react-dom",
-       "amd": "react-dom",
-       "root": "ReactDOM"
-    },  
+  externals: {        
     "leaflet": {
        "commonjs": "leaflet",
        "amd": "leaflet",
        "root": "L"
-    },
-    "prop-types": {
-       "commonjs": "prop-types",
-       "amd": "prop-types",
-       "root": "PropTypes"  
-     },
-     "recharts": {
-      "commonjs": "recharts",
-      "amd": "recharts",   
-      "root": "Recharts" 
-     }
+    }    
   },
   output: {
       path: path.resolve('app'),

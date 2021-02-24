@@ -8,8 +8,21 @@ const path = require('path')
 module.exports = {
   mode: "production",
   entry: {
-     lib: [
-            "redux", "react-redux", "redux-saga",
+     lib: [            
+            "react", "react-dom", 
+            "redux", "react-redux", "redux-saga",            
+
+            "recharts/lib/cartesian/CartesianGrid",
+            "recharts/lib/cartesian/Bar",
+            "recharts/lib/cartesian/Line",
+            "recharts/lib/cartesian/YAxis",
+            "recharts/lib/cartesian/XAxis",
+            "recharts/lib/component/ResponsiveContainer",
+            "recharts/lib/component/Tooltip",
+            "recharts/lib/component/Legend",
+            "recharts/lib/chart/ComposedChart",
+            "recharts/lib/chart/LineChart",
+
             "dompurify", "interactjs"
           ]
   },
