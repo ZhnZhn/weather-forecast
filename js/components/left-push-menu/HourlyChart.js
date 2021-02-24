@@ -29,11 +29,12 @@ var useState = _react["default"].useState,
     memo = _react["default"].memo;
 var CartesianGrid = _Chart["default"].CartesianGrid,
     Line = _Chart["default"].Line,
+    Bar = _Chart["default"].Bar,
     YAxis = _Chart["default"].YAxis,
     XAxis = _Chart["default"].XAxis,
     ResponsiveContainer = _Chart["default"].ResponsiveContainer,
     Legend = _Chart["default"].Legend,
-    LineChart = _Chart["default"].LineChart,
+    ComposedChart = _Chart["default"].ComposedChart,
     Tooltip = _Chart["default"].Tooltip;
 var _isArr = Array.isArray;
 var INITIAL_FILTERED = {
@@ -118,7 +119,7 @@ var HourlyChart = memo(function () {
   return /*#__PURE__*/_react["default"].createElement(ResponsiveContainer, {
     width: "100%",
     height: 300
-  }, /*#__PURE__*/_react["default"].createElement(LineChart, (0, _extends2["default"])({
+  }, /*#__PURE__*/_react["default"].createElement(ComposedChart, (0, _extends2["default"])({
     data: data
   }, _Chart2["default"].HourlyChart), /*#__PURE__*/_react["default"].createElement(XAxis, (0, _extends2["default"])({
     dataKey: "day"
@@ -171,13 +172,12 @@ var HourlyChart = memo(function () {
     strokeDasharray: "5 5",
     yAxisId: 2,
     dataKey: filtered.pressure ? "empty" : "pressure"
-  })), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({}, _Chart2["default"].LineRain, {
-    connectNulls: true,
-    strokeDasharray: "5 5" //strokeDasharray="100 5"
-    ,
+  })), /*#__PURE__*/_react["default"].createElement(Bar, {
+    dataKey: filtered.rain ? "empty" : "rain",
     yAxisId: 3,
-    dataKey: filtered.rain ? "empty" : "rain"
-  })), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({
+    barSize: 20,
+    fill: "#0922a5"
+  }), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({
     connectNulls: true
   }, _Chart2["default"].LineSpeed, {
     strokeDasharray: "5 5" //strokeDasharray={false}

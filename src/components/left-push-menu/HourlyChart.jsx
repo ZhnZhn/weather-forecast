@@ -15,11 +15,12 @@ const { useState, useCallback, useMemo, memo } = React
 const {
  CartesianGrid,
  Line,
+ Bar,
  YAxis,
  XAxis,
  ResponsiveContainer,
  Legend,
- LineChart,
+ ComposedChart,
  Tooltip
 } = Chart;
 
@@ -73,11 +74,11 @@ const HourlyChart = memo(() => {
   , data = useMemo(() => _isArr(hourlyArr)
      ? _transformHourly(hourlyArr)
      : INITIAL_DATA, [hourlyArr]);
-
+  
   return (
     <ResponsiveContainer width="100%" height={300} >
 
-    <LineChart data={data} {...STYLE.HourlyChart} >
+    <ComposedChart data={data} {...STYLE.HourlyChart}>
       <XAxis dataKey="day" {...STYLE.XAxis} />
 
       <YAxis
@@ -143,12 +144,9 @@ const HourlyChart = memo(() => {
           yAxisId={2}
           dataKey={filtered.pressure ? "empty" : "pressure"}
       />
-      <Line {...STYLE.LineRain}
-          connectNulls={true}
-          strokeDasharray="5 5"
-          //strokeDasharray="100 5"
-          yAxisId={3}
-          dataKey={filtered.rain ? "empty" : "rain"}
+      <Bar
+         dataKey={filtered.rain ? "empty" : "rain"}
+         yAxisId={3} barSize={20} fill="#0922a5"
       />
       <Line
           connectNulls={true}
@@ -159,7 +157,7 @@ const HourlyChart = memo(() => {
           dataKey={filtered.speed ? "empty" : "speed"}
       />
 
-    </LineChart>
+    </ComposedChart>
 
     </ResponsiveContainer>
   );
