@@ -7,119 +7,80 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
-
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
-
 var _react = _interopRequireDefault(require("../_react"));
 
-var _withTheme = _interopRequireDefault(require("../hoc/withTheme"));
+var _reactRedux = require("react-redux");
 
 var _fnLeaflet = _interopRequireDefault(require("./fnLeaflet"));
 
 var _throttle = _interopRequireDefault(require("../../utils/throttle"));
 
+var _handlers = _interopRequireDefault(require("../../flux/handlers"));
+
 var _selectors = require("../../flux/selectors");
 
-var _actions = require("../../flux/place/actions");
-
-//import React, { Component } from 'react';
 //import PropTypes from 'prop-types';
-var Component = _react["default"].Component;
+var useState = _react["default"].useState,
+    useRef = _react["default"].useRef,
+    useEffect = _react["default"].useEffect,
+    requestPlace = _handlers["default"].requestPlace;
 var PERIOD_MS = 5000;
 var S = {
-  ROOT_DIV: {
+  DIV: {
     width: '100%',
-    height: '650px',
+    height: 650,
     transition: 'transform .3s, width .6s'
   }
 };
 
-var LeafletMap =
-/*#__PURE__*/
-function (_Component) {
-  (0, _inheritsLoose2["default"])(LeafletMap, _Component);
+var LeafletMap = function LeafletMap(_ref) {
+  var id = _ref.id,
+      style = _ref.style,
+      themeName = _ref.themeName;
 
-  /*
-  static propTypes = {
-    rootStyle: PropTypes.object,
-    store : PropTypes.object
-  }
-  */
-  function LeafletMap(props) {
-    var _this;
+  var _refMap = useRef(),
+      _refThemeName = useRef(themeName),
+      _useState = useState(false),
+      isLoaded = _useState[0],
+      setIsLoaded = _useState[1],
+      forecast = (0, _reactRedux.useSelector)(_selectors.sPlace.forecast);
 
-    _this = _Component.call(this, props) || this;
+  _refThemeName.current = themeName;
+  /*eslint-disable react-hooks/exhaustive-deps */
 
-    _this._handleClickMap = function (e) {
-      var store = _this.props.store;
-      var _e$latlng = e.latlng,
-          lat = _e$latlng.lat,
-          lng = _e$latlng.lng;
-      store.dispatch((0, _actions.placeRequested)({
-        lat: lat,
-        lot: lng
-      }));
-    };
+  useEffect(function () {
+    _refMap.current = _fnLeaflet["default"].createMap(id, function () {
+      return setIsLoaded(true);
+    });
 
-    _this._onStore = function () {
-      var _this$props = _this.props,
-          store = _this$props.store,
-          theme = _this$props.theme,
-          state = store.getState(),
-          recent = _selectors.sPlace.recent(state);
-
-      if (recent || recent === 0) {
-        _fnLeaflet["default"].addMarker(_selectors.sPlace.byId(state, recent), theme.themeName, _this.map); //this.recent = recent;
-
-      }
-    };
-
-    _this._setLoaded = _this._setLoaded.bind((0, _assertThisInitialized2["default"])(_this));
-    _this.state = {
-      isLoaded: false
-    };
-    return _this;
-  }
-
-  var _proto = LeafletMap.prototype;
-
-  _proto.componentDidMount = function componentDidMount() {
-    var _this$props2 = this.props,
-        id = _this$props2.id,
-        store = _this$props2.store;
-    this.unsubsribe = store.subscribe(this._onStore);
-    this.map = _fnLeaflet["default"].createMap(id, this._setLoaded);
-    this.map.on('dblclick', (0, _throttle["default"])(this._handleClickMap, PERIOD_MS, {
+    _refMap.current.on('dblclick', (0, _throttle["default"])(function (e) {
+      return requestPlace(e.latlng);
+    }, PERIOD_MS, {
       trailing: false
     }));
-  };
+  }, []); // id
 
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    this.unsubsribe();
-  };
+  /*eslint-enable react-hooks/exhaustive-deps */
 
-  _proto._setLoaded = function _setLoaded() {
-    this.setState({
-      isLoaded: true
-    });
-  };
+  useEffect(function () {
+    if (forecast) {
+      _fnLeaflet["default"].addMarker(forecast, _refThemeName.current, _refMap.current);
+    }
+  }, [forecast]);
+  return /*#__PURE__*/_react["default"].createElement("div", {
+    style: (0, _extends2["default"])({}, S.DIV, style),
+    id: id
+  }, !isLoaded && /*#__PURE__*/_react["default"].createElement("span", null, "LeafletMap Loading..."));
+};
+/*
+LeafletMap.propTypes = {
+  style: PropTypes.object,
+  id: PropTypes.string,
+  themeName: PropTypes.string
+}
+*/
 
-  _proto.render = function render() {
-    var _this$props3 = this.props,
-        id = _this$props3.id,
-        rootStyle = _this$props3.rootStyle,
-        isLoaded = this.state.isLoaded;
-    return _react["default"].createElement("div", {
-      style: (0, _extends2["default"])({}, S.ROOT_DIV, {}, rootStyle),
-      id: id
-    }, !isLoaded && _react["default"].createElement("span", null, "LeafletMap Loading..."));
-  };
 
-  return LeafletMap;
-}(Component);
-
-var _default = (0, _withTheme["default"])(LeafletMap);
-
+var _default = LeafletMap;
 exports["default"] = _default;
 //# sourceMappingURL=LeafletMap.js.map

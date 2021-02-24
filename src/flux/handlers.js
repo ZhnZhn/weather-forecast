@@ -9,6 +9,8 @@ import { showModal } from './modal/actions';
 import { hourlyRequested } from './hourly/actions';
 import { uvRequested } from './uv/actions';
 
+import { placeRequested } from './place/actions'
+
 const { dispatch } = store;
 
 const MS_PERIOD = 10000
@@ -24,6 +26,7 @@ window.weather = {
 }
 
 const handlers = {
+  //Header
   toggleLayout: storeKey => {
     dispatch(toggleLayout(storeKey))
   },
@@ -32,8 +35,12 @@ const handlers = {
     dispatch(showModal('SETTINGS'))
   },
 
+  //LeftPushMenu
   requestHourly: () => dispatch(hourlyRequested()),
-  requestUvi: () => dispatch(uvRequested())
+  requestUvi: () => dispatch(uvRequested()),
+
+  //LeafletMap
+  requestPlace: ({lat, lng}) => dispatch(placeRequested({ lat, lot:lng }))
 
 };
 

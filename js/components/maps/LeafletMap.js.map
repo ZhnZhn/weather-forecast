@@ -1,1 +1,40 @@
-{"version":3,"sources":["../../../src/components/maps/LeafletMap.jsx"],"names":["Component","React","PERIOD_MS","S","ROOT_DIV","width","height","transition","LeafletMap","props","_handleClickMap","e","store","latlng","lat","lng","dispatch","lot","_onStore","theme","state","getState","recent","sPlace","fnLeaflet","addMarker","byId","themeName","map","_setLoaded","bind","isLoaded","componentDidMount","id","unsubsribe","subscribe","createMap","on","trailing","componentWillUnmount","setState","render","rootStyle"],"mappings":";;;;;;;;;;;;;AACA;;AAGA;;AACA;;AAEA;;AAEA;;AACA;;AAVA;AAEA;IAUQA,S,GAAcC,iB,CAAdD,S;AAER,IAAME,SAAS,GAAG,IAAlB;AAEA,IAAMC,CAAC,GAAG;AACRC,EAAAA,QAAQ,EAAG;AACTC,IAAAA,KAAK,EAAC,MADG;AAETC,IAAAA,MAAM,EAAE,OAFC;AAGTC,IAAAA,UAAU,EAAE;AAHH;AADH,CAAV;;IAQMC,U;;;;;AACJ;;;;;;AAMA,sBAAYC,KAAZ,EAAkB;AAAA;;AAChB,kCAAMA,KAAN;;AADgB,UA0BlBC,eA1BkB,GA0BA,UAACC,CAAD,EAAO;AAAA,UACfC,KADe,GACL,MAAKH,KADA,CACfG,KADe;AAAA,sBAEFD,CAAC,CAACE,MAFA;AAAA,UAEfC,GAFe,aAEfA,GAFe;AAAA,UAEVC,GAFU,aAEVA,GAFU;AAGvBH,MAAAA,KAAK,CAACI,QAAN,CAAe,6BAAe;AAAEF,QAAAA,GAAG,EAAHA,GAAF;AAAOG,QAAAA,GAAG,EAACF;AAAX,OAAf,CAAf;AACD,KA9BiB;;AAAA,UAgCnBG,QAhCmB,GAgCR,YAAM;AAAA,wBACU,MAAKT,KADf;AAAA,UACPG,KADO,eACPA,KADO;AAAA,UACAO,KADA,eACAA,KADA;AAAA,UAETC,KAFS,GAEDR,KAAK,CAACS,QAAN,EAFC;AAAA,UAGTC,MAHS,GAGAC,kBAAOD,MAAP,CAAcF,KAAd,CAHA;;AAKf,UAAKE,MAAM,IAAIA,MAAM,KAAK,CAA1B,EAA6B;AAC3BE,8BAAUC,SAAV,CACGF,kBAAOG,IAAP,CAAYN,KAAZ,EAAmBE,MAAnB,CADH,EAEGH,KAAK,CAACQ,SAFT,EAGG,MAAKC,GAHR,EAD2B,CAM3B;;AACD;AACF,KA7CkB;;AAEhB,UAAKC,UAAL,GAAkB,MAAKA,UAAL,CAAgBC,IAAhB,gDAAlB;AACA,UAAKV,KAAL,GAAa;AACXW,MAAAA,QAAQ,EAAE;AADC,KAAb;AAHgB;AAMjB;;;;SAEDC,iB,GAAA,6BAAmB;AAAA,uBACK,KAAKvB,KADV;AAAA,QACTwB,EADS,gBACTA,EADS;AAAA,QACLrB,KADK,gBACLA,KADK;AAEjB,SAAKsB,UAAL,GAAkBtB,KAAK,CAACuB,SAAN,CAAgB,KAAKjB,QAArB,CAAlB;AACA,SAAKU,GAAL,GAAWJ,sBAAUY,SAAV,CAAoBH,EAApB,EAAwB,KAAKJ,UAA7B,CAAX;AACA,SAAKD,GAAL,CAASS,EAAT,CAAY,UAAZ,EAAwB,0BACtB,KAAK3B,eADiB,EACAR,SADA,EACW;AAC/BoC,MAAAA,QAAQ,EAAE;AADqB,KADX,CAAxB;AAKD,G;;SACDC,oB,GAAA,gCAAsB;AACpB,SAAKL,UAAL;AACD,G;;SAEDL,U,GAAA,sBAAY;AACV,SAAKW,QAAL,CAAc;AAAET,MAAAA,QAAQ,EAAE;AAAZ,KAAd;AACD,G;;SAuBDU,M,GAAA,kBAAQ;AAAA,uBACoB,KAAKhC,KADzB;AAAA,QACEwB,EADF,gBACEA,EADF;AAAA,QACMS,SADN,gBACMA,SADN;AAAA,QAEEX,QAFF,GAEe,KAAKX,KAFpB,CAEEW,QAFF;AAGN,WACE;AACE,MAAA,KAAK,gCAAO5B,CAAC,CAACC,QAAT,MAAsBsC,SAAtB,CADP;AAEE,MAAA,EAAE,EAAET;AAFN,OAKG,CAACF,QAAD,IACA,sEANH,CADF;AAWD,G;;;EApEsB/B,S;;eAwEV,2BAAUQ,UAAV,C","sourcesContent":["//import React, { Component } from 'react';\r\nimport React from '../_react'\r\n//import PropTypes from 'prop-types';\r\n\r\nimport withTheme from '../hoc/withTheme'\r\nimport fnLeaflet from './fnLeaflet';\r\n\r\nimport throttle from '../../utils/throttle'\r\n\r\nimport { sPlace } from '../../flux/selectors';\r\nimport { placeRequested } from '../../flux/place/actions'\r\n\r\nconst { Component } = React\r\n\r\nconst PERIOD_MS = 5000;\r\n\r\nconst S = {\r\n  ROOT_DIV : {\r\n    width:'100%',\r\n    height: '650px',\r\n    transition: 'transform .3s, width .6s'\r\n  }\r\n}\r\n\r\nclass LeafletMap extends Component{\r\n  /*\r\n  static propTypes = {\r\n    rootStyle: PropTypes.object,\r\n    store : PropTypes.object\r\n  }\r\n  */\r\n  constructor(props){\r\n    super(props)\r\n    this._setLoaded = this._setLoaded.bind(this)\r\n    this.state = {\r\n      isLoaded: false\r\n    }\r\n  }\r\n\r\n  componentDidMount(){\r\n    const { id, store } = this.props\r\n    this.unsubsribe = store.subscribe(this._onStore);\r\n    this.map = fnLeaflet.createMap(id, this._setLoaded);\r\n    this.map.on('dblclick', throttle(\r\n      this._handleClickMap, PERIOD_MS, {\r\n        trailing: false\r\n      }\r\n    ))\r\n  }\r\n  componentWillUnmount(){\r\n    this.unsubsribe();\r\n  }\r\n\r\n  _setLoaded(){\r\n    this.setState({ isLoaded: true })\r\n  }\r\n\r\n  _handleClickMap = (e) => {    \r\n    const { store } = this.props;\r\n    const { lat, lng } = e.latlng;\r\n    store.dispatch(placeRequested({ lat, lot:lng }))\r\n  }\r\n\r\n _onStore = () => {\r\n   const { store, theme } = this.props\r\n       , state = store.getState()\r\n       , recent = sPlace.recent(state);\r\n\r\n   if ( recent || recent === 0 ){\r\n     fnLeaflet.addMarker(\r\n        sPlace.byId(state, recent),\r\n        theme.themeName,\r\n        this.map\r\n     );\r\n     //this.recent = recent;\r\n   }\r\n }\r\n\r\n  render(){\r\n    const { id, rootStyle } = this.props\r\n        , { isLoaded } = this.state;\r\n    return (\r\n      <div\r\n        style={{ ...S.ROOT_DIV, ...rootStyle }}\r\n        id={id}\r\n      >\r\n       {\r\n         !isLoaded &&\r\n         <span>LeafletMap Loading...</span>\r\n       }\r\n      </div>\r\n    );\r\n  }\r\n\r\n}\r\n\r\nexport default withTheme(LeafletMap)\r\n"],"file":"LeafletMap.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/maps/LeafletMap.js"
+ ],
+ "file": "../../../src/components/maps/LeafletMap.js",
+ "names": [
+  "useState",
+  "React",
+  "useRef",
+  "useEffect",
+  "requestPlace",
+  "handlers",
+  "PERIOD_MS",
+  "S",
+  "DIV",
+  "width",
+  "height",
+  "transition",
+  "LeafletMap",
+  "id",
+  "style",
+  "themeName",
+  "_refMap",
+  "_refThemeName",
+  "isLoaded",
+  "setIsLoaded",
+  "forecast",
+  "sPlace",
+  "current",
+  "fnLeaflet",
+  "createMap",
+  "on",
+  "e",
+  "latlng",
+  "trailing",
+  "addMarker"
+ ],
+ "mappings": ";;;;;;;;;AACA;;AACA;;AAEA;;AACA;;AAEA;;AACA;;AARA;IAUQA,Q,GAAgCC,iB,CAAhCD,Q;IAAUE,M,GAAsBD,iB,CAAtBC,M;IAAQC,S,GAAcF,iB,CAAdE,S;IACtBC,Y,GAAiBC,oB,CAAjBD,Y;AAEJ,IAAME,SAAS,GAAG,IAAlB;AAEA,IAAMC,CAAC,GAAG;AACRC,EAAAA,GAAG,EAAE;AACHC,IAAAA,KAAK,EAAC,MADH;AAEHC,IAAAA,MAAM,EAAE,GAFL;AAGHC,IAAAA,UAAU,EAAE;AAHT;AADG,CAAV;;AAQA,IAAMC,UAAU,GAAG,SAAbA,UAAa,OAGb;AAAA,MAFJC,EAEI,QAFJA,EAEI;AAAA,MAFAC,KAEA,QAFAA,KAEA;AAAA,MADJC,SACI,QADJA,SACI;;AACE,MAAAC,OAAO,GAAGd,MAAM,EAAhB;AAAA,MACJe,aADI,GACYf,MAAM,CAACa,SAAD,CADlB;AAAA,kBAEsBf,QAAQ,CAAC,KAAD,CAF9B;AAAA,MAEHkB,QAFG;AAAA,MAEOC,WAFP;AAAA,MAGJC,QAHI,GAGO,6BAAYC,kBAAOD,QAAnB,CAHP;;AAKNH,EAAAA,aAAa,CAACK,OAAd,GAAwBP,SAAxB;AAEA;;AACAZ,EAAAA,SAAS,CAAC,YAAM;AACda,IAAAA,OAAO,CAACM,OAAR,GAAkBC,sBAAUC,SAAV,CAAoBX,EAApB,EAAwB;AAAA,aAAMM,WAAW,CAAC,IAAD,CAAjB;AAAA,KAAxB,CAAlB;;AACAH,IAAAA,OAAO,CAACM,OAAR,CAAgBG,EAAhB,CAAmB,UAAnB,EAA+B,0BAC7B,UAAAC,CAAC;AAAA,aAAItB,YAAY,CAACsB,CAAC,CAACC,MAAH,CAAhB;AAAA,KAD4B,EAE7BrB,SAF6B,EAElB;AAACsB,MAAAA,QAAQ,EAAE;AAAX,KAFkB,CAA/B;AAID,GANQ,EAMN,EANM,CAAT,CATI,CAgBJ;;AACA;;AAEAzB,EAAAA,SAAS,CAAC,YAAI;AACZ,QAAIiB,QAAJ,EAAa;AACXG,4BAAUM,SAAV,CACET,QADF,EAEEH,aAAa,CAACK,OAFhB,EAGEN,OAAO,CAACM,OAHV;AAKD;AACF,GARQ,EAQN,CAACF,QAAD,CARM,CAAT;AAUA,sBACE;AACE,IAAA,KAAK,gCAAMb,CAAC,CAACC,GAAR,EAAgBM,KAAhB,CADP;AAEE,IAAA,EAAE,EAAED;AAFN,KAKG,CAACK,QAAD,iBACA,sEANH,CADF;AAWD,CA3CD;AA6CA;AACA;AACA;AACA;AACA;AACA;AACA;;;eAEeN,U"
+}

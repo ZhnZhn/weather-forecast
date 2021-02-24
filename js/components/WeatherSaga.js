@@ -93,15 +93,14 @@ var WeatherSaga = function WeatherSaga() {
   }, /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_ModalDialogContainer["default"], {
     store: store
   }), /*#__PURE__*/_react["default"].createElement(_Header["default"], {
-    themeName: themeName,
     style: S.HEADER
   }), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_LeftPushMenu["default"], {
     id: PUSH_MENU_ID,
     theme: _theme["default"]
   }), /*#__PURE__*/_react["default"].createElement(_LeafletMap["default"], {
     id: MAP_ID,
-    rootStyle: S.MAP,
-    store: store
+    style: S.MAP,
+    themeName: themeName
   }), /*#__PURE__*/_react["default"].createElement(_Forecast["default"], {
     style: S.FLY_ROOT_DIV
   }))));

@@ -7,8 +7,15 @@ import * as modal from './modal/reducer';
 
 export const sPlace = {
   recent : (state) => place.recent(state.place),
-  byId : (state, id) => place.byId(state.place, id)
-}
+  byId : (state, id) => place.byId(state.place, id),
+
+  forecast: state => {
+    const recent = sPlace.recent(state)
+    return recent
+      ? sPlace.byId(state, recent)
+      : void 0
+  }
+};
 
 export const sForecast = {
   byId : (state, id) => forecast.byId(state.forecast, id),

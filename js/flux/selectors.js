@@ -23,6 +23,10 @@ var sPlace = {
   },
   byId: function byId(state, id) {
     return place.byId(state.place, id);
+  },
+  forecast: function forecast(state) {
+    var recent = sPlace.recent(state);
+    return recent ? sPlace.byId(state, recent) : void 0;
   }
 };
 exports.sPlace = sPlace;

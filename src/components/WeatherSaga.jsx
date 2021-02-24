@@ -76,22 +76,17 @@ const WeatherSaga = () => {
   return (
     <ThemeContext.Provider value={theme} >
       <div>
-        <ModalDialogContainer
-          store={store}
-        />
-        <Header
-           themeName={themeName}
-           style={S.HEADER}
-        />
+        <ModalDialogContainer store={store}/>
+        <Header style={S.HEADER} />
         <div>
           <LeftPushMenu
              id={PUSH_MENU_ID}
              theme={theme}
           />
           <LeafletMap
-              id={MAP_ID}
-              rootStyle={S.MAP}
-              store={store}
+             id={MAP_ID}
+             style={S.MAP}
+             themeName={themeName}
           />
           <PopupForecast
              style={S.FLY_ROOT_DIV}

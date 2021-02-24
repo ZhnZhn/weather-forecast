@@ -19,6 +19,8 @@ var _actions4 = require("./hourly/actions");
 
 var _actions5 = require("./uv/actions");
 
+var _actions6 = require("./place/actions");
+
 var dispatch = _store["default"].dispatch;
 
 var MS_PERIOD = 10000,
@@ -37,6 +39,7 @@ window.weather = {
   }
 };
 var handlers = {
+  //Header
   toggleLayout: function toggleLayout(storeKey) {
     dispatch((0, _actions2.toggleLayout)(storeKey));
   },
@@ -44,11 +47,21 @@ var handlers = {
     dispatch((0, _actions2.toggleLayout)(storeKey));
     dispatch((0, _actions3.showModal)('SETTINGS'));
   },
+  //LeftPushMenu
   requestHourly: function requestHourly() {
     return dispatch((0, _actions4.hourlyRequested)());
   },
   requestUvi: function requestUvi() {
     return dispatch((0, _actions5.uvRequested)());
+  },
+  //LeafletMap
+  requestPlace: function requestPlace(_ref) {
+    var lat = _ref.lat,
+        lng = _ref.lng;
+    return dispatch((0, _actions6.placeRequested)({
+      lat: lat,
+      lot: lng
+    }));
   }
 };
 var _default = handlers;
