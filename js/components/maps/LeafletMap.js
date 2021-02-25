@@ -32,6 +32,11 @@ var S = {
     transition: 'transform .3s, width .6s'
   }
 };
+var MAP_STATUS = {
+  LOADING: 'a',
+  LOADED: 'b',
+  FAILED: 'c'
+};
 
 var LeafletMap = function LeafletMap(_ref) {
   var id = _ref.id,
@@ -40,24 +45,30 @@ var LeafletMap = function LeafletMap(_ref) {
 
   var _refMap = useRef(),
       _refThemeName = useRef(themeName),
-      _useState = useState(false),
-      isLoaded = _useState[0],
-      setIsLoaded = _useState[1],
+      _useState = useState(MAP_STATUS.LOADING),
+      mapStatus = _useState[0],
+      setMapStatus = _useState[1],
       forecast = (0, _reactRedux.useSelector)(_selectors.sPlace.forecast);
 
   _refThemeName.current = themeName;
   /*eslint-disable react-hooks/exhaustive-deps */
 
   useEffect(function () {
-    _refMap.current = _fnLeaflet["default"].createMap(id, function () {
-      return setIsLoaded(true);
+    var _map = _fnLeaflet["default"].createMap(id, function () {
+      return setMapStatus(MAP_STATUS.LOADED);
     });
 
-    _refMap.current.on('dblclick', (0, _throttle["default"])(function (e) {
-      return requestPlace(e.latlng);
-    }, PERIOD_MS, {
-      trailing: false
-    }));
+    if (_map) {
+      _refMap.current = _map;
+
+      _refMap.current.on('dblclick', (0, _throttle["default"])(function (e) {
+        return requestPlace(e.latlng);
+      }, PERIOD_MS, {
+        trailing: false
+      }));
+    } else {
+      setMapStatus(MAP_STATUS.FAILED);
+    }
   }, []); // id
 
   /*eslint-enable react-hooks/exhaustive-deps */
@@ -70,7 +81,7 @@ var LeafletMap = function LeafletMap(_ref) {
   return /*#__PURE__*/_react["default"].createElement("div", {
     style: (0, _extends2["default"])({}, S.DIV, style),
     id: id
-  }, !isLoaded && /*#__PURE__*/_react["default"].createElement("span", null, "LeafletMap Loading..."));
+  }, mapStatus === MAP_STATUS.LOADING && /*#__PURE__*/_react["default"].createElement("span", null, "LeafletMap Loading..."), mapStatus === MAP_STATUS.FAILED && /*#__PURE__*/_react["default"].createElement("span", null, "LeafletMap Loading Has Failed"));
 };
 /*
 LeafletMap.propTypes = {

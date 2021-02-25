@@ -29,6 +29,10 @@ var DF = {
 };
 var fnLeaflet = {
   createMap: function createMap(id, onLoad) {
+    if (!L) {
+      return;
+    }
+
     var map = L //.map(id, { zoomControl: true, ...options })
     .map(id, {
       zoomControl: true
@@ -42,18 +46,18 @@ var fnLeaflet = {
     return map;
   },
   addMarker: function addMarker(w, themeName, map) {
-    if (w === void 0) {
-      w = {};
+    if (!L) {
+      return;
     }
 
     var icon = L.divIcon({
       html: _marker["default"].fDivIcon(w)
-    });
-    var _w = w,
-        _w$coord = _w.coord,
-        coord = _w$coord === void 0 ? {} : _w$coord;
-    var lat = coord.lat,
-        lon = coord.lon;
+    }),
+        _ref = w || {},
+        coord = _ref.coord,
+        _ref2 = coord || {},
+        lat = _ref2.lat,
+        lon = _ref2.lon;
 
     if (lat && lon) {
       L.marker([lat, lon], {

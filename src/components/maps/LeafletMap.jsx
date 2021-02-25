@@ -21,24 +21,35 @@ const S = {
   }
 };
 
+const MAP_STATUS = {
+  LOADING: 'a',
+  LOADED: 'b',
+  FAILED: 'c'
+};
+
 const LeafletMap = ({
   id, style,
   themeName
 }) => {
   const _refMap = useRef()
   , _refThemeName = useRef(themeName)
-  , [isLoaded, setIsLoaded] = useState(false)
+  , [mapStatus, setMapStatus] = useState(MAP_STATUS.LOADING)
   , forecast = useSelector(sPlace.forecast);
 
   _refThemeName.current = themeName
 
   /*eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    _refMap.current = fnLeaflet.createMap(id, () => setIsLoaded(true));
-    _refMap.current.on('dblclick', throttle(
-      e => requestPlace(e.latlng),
-      PERIOD_MS, {trailing: false}
-    ))
+    const _map = fnLeaflet.createMap(id, () => setMapStatus(MAP_STATUS.LOADED));
+    if (_map) {
+      _refMap.current = _map
+      _refMap.current.on('dblclick', throttle(
+        e => requestPlace(e.latlng),
+        PERIOD_MS, {trailing: false}
+      ))
+    } else {
+      setMapStatus(MAP_STATUS.FAILED)
+    }
   }, [])
   // id
   /*eslint-enable react-hooks/exhaustive-deps */
@@ -59,8 +70,12 @@ const LeafletMap = ({
       id={id}
     >
      {
-       !isLoaded &&
-       <span>LeafletMap Loading...</span>
+        mapStatus === MAP_STATUS.LOADING &&
+        <span>LeafletMap Loading...</span>
+     }
+     {
+         mapStatus === MAP_STATUS.FAILED &&
+        <span>LeafletMap Loading Has Failed</span>
      }
     </div>
   );
