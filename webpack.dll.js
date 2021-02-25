@@ -8,20 +8,20 @@ const path = require('path')
 module.exports = {
   mode: "production",
   entry: {
-     lib: [            
-            "react", "react-dom", 
-            "redux", "react-redux", "redux-saga",            
+     lib: [
+            "react", "react-dom",
+            "redux", "react-redux", "redux-saga",
 
-            "recharts/lib/cartesian/CartesianGrid",
-            "recharts/lib/cartesian/Bar",
-            "recharts/lib/cartesian/Line",
-            "recharts/lib/cartesian/YAxis",
-            "recharts/lib/cartesian/XAxis",
-            "recharts/lib/component/ResponsiveContainer",
-            "recharts/lib/component/Tooltip",
-            "recharts/lib/component/Legend",
-            "recharts/lib/chart/ComposedChart",
-            "recharts/lib/chart/LineChart",
+            "recharts/es6/cartesian/CartesianGrid",
+            "recharts/es6/cartesian/Bar",
+            "recharts/es6/cartesian/Line",
+            "recharts/es6/cartesian/YAxis",
+            "recharts/es6/cartesian/XAxis",
+            "recharts/es6/component/ResponsiveContainer",
+            "recharts/es6/component/Tooltip",
+            "recharts/es6/component/Legend",
+            "recharts/es6/chart/ComposedChart",
+            "recharts/es6/chart/LineChart",
 
             "dompurify", "interactjs"
           ]
@@ -34,12 +34,12 @@ module.exports = {
   resolve: {
     modules: ['local_modules','node_modules']
   },
-  plugins: [    
-    
+  plugins: [
+
     new webpack.DllPlugin({
       path: path.join(__dirname, 'dll', '[name]-manifest.json'),
-      name: '[name]_vendor'      
-    }),       
+      name: '[name]_vendor'
+    }),
     new WriteDllStatsPlugin()
   ],
   optimization: {
