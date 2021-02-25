@@ -41,42 +41,35 @@ var CartesianGrid = _Chart["default"].CartesianGrid,
     ComposedChart = _Chart["default"].ComposedChart;
 var INITIAL_FILTERS = {
   tempDay: true,
-  tempNight: true,
+  tempNight: false,
   tempMorn: false,
   tempEve: false,
   tempMax: false,
   tempMin: false,
-  rain: true,
-  speed: true
+  rain: false,
+  speed: false
 };
 var INITIAL_DATA = [{
-  day: 'Page A',
-  tempDay: 40,
-  tempNight: 30
+  day: '01 SU',
+  tempDay: 35
 }, {
-  day: 'Page B',
-  tempDay: 30,
-  tempNight: 30
+  day: '02 MO',
+  tempDay: 30
 }, {
-  day: 'Page C',
-  tempDay: 20,
-  tempNight: 30
+  day: '03 TU',
+  tempDay: 20
 }, {
-  day: 'Page D',
-  tempDay: 27,
-  tempNight: 30
+  day: '04 WE',
+  tempDay: 27
 }, {
-  day: 'Page E',
-  tempDay: 18,
-  tempNight: 30
+  day: '05 TH',
+  tempDay: 18
 }, {
-  day: 'Page F',
-  tempDay: 23,
-  tempNight: 30
+  day: '06 FR',
+  tempDay: 23
 }, {
-  day: 'Page G',
-  tempDay: 34,
-  tempNight: 30
+  day: '07 SA',
+  tempDay: 34
 }];
 
 var _transformForecast = function _transformForecast(arr) {
@@ -207,7 +200,7 @@ var ForecastChart = memo(function () {
     })
   }), /*#__PURE__*/_react["default"].createElement(Legend, {
     content: /*#__PURE__*/_react["default"].createElement(_LegendTemperature["default"], {
-      styles: _Label["default"].fnLegendLabel(filters),
+      styles: _Label["default"].crLegendStyles(filters),
       onFilter: _hFilter
     })
   }), /*#__PURE__*/_react["default"].createElement(Bar, {

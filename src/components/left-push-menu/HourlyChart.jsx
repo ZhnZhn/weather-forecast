@@ -34,13 +34,13 @@ const INITIAL_FILTERED = {
 };
 
 const INITIAL_DATA = [
-  {day: 'Page A', temp: 40 },
-  {day: 'Page B', temp: 30 },
-  {day: 'Page C', temp: 20 },
-  {day: 'Page D', temp: 27 },
-  {day: 'Page E', temp: 18 },
-  {day: 'Page F', temp: 23 },
-  {day: 'Page G', temp: 34 }
+  {day: '01 08', temp: 35 },
+  {day: '02 20', temp: 30 },
+  {day: '03 08', temp: 20 },
+  {day: '04 20', temp: 27 },
+  {day: '05 08', temp: 18 },
+  {day: '06 20', temp: 23 },
+  {day: '07 08', temp: 34 }
 ];
 
 const _transformHourly = hourlyArr => hourlyArr
@@ -74,7 +74,7 @@ const HourlyChart = memo(() => {
   , data = useMemo(() => _isArr(hourlyArr)
      ? _transformHourly(hourlyArr)
      : INITIAL_DATA, [hourlyArr]);
-  
+
   return (
     <ResponsiveContainer width="100%" height={300} >
 

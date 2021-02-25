@@ -1,4 +1,6 @@
 
+const _assign = Object.assign
+
 const P = {};
 const TH_GREY = {
   BG: 'grey',
@@ -63,24 +65,24 @@ const _stylePopup = () => {
     .forEach(node => {
       if (node && node.style) {
         node.style.backgroundColor = P.BG
-      }  
+      }
     })
 }
 
 const _setTheme = {
   [THEME_NAME.GREY]: () => {
-    Object.assign(P, TH_GREY)
+    _assign(P, TH_GREY)
     _setStyleTo(COLOR)
     _stylePopup()
   },
   [THEME_NAME.SAND]: () => {
-    Object.assign(P, TH_SAND)
+    _assign(P, TH_SAND)
     _setStyleTo(COLOR)
     _stylePopup()
   },
   [THEME_NAME.WHITE]: () => {
     //#eceae0
-    Object.assign(P, TH_WHITE)
+    _assign(P, TH_WHITE)
     _setStyleTo(COLOR)
     _stylePopup()
   }

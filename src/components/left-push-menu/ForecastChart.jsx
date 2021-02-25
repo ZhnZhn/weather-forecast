@@ -28,23 +28,23 @@ const {
 
 const INITIAL_FILTERS = {
   tempDay : true,
-  tempNight : true,
+  tempNight : false,
   tempMorn : false,
   tempEve : false,
   tempMax : false,
   tempMin : false,
-  rain : true,
-  speed : true
+  rain : false,
+  speed : false
 };
 
 const INITIAL_DATA = [
-  {day: 'Page A', tempDay: 40, tempNight: 30},
-  {day: 'Page B', tempDay: 30, tempNight: 30},
-  {day: 'Page C', tempDay: 20, tempNight: 30},
-  {day: 'Page D', tempDay: 27, tempNight: 30},
-  {day: 'Page E', tempDay: 18, tempNight: 30},
-  {day: 'Page F', tempDay: 23, tempNight: 30},
-  {day: 'Page G', tempDay: 34, tempNight: 30}
+  {day: '01 SU', tempDay: 35 },
+  {day: '02 MO', tempDay: 30 },
+  {day: '03 TU', tempDay: 20 },
+  {day: '04 WE', tempDay: 27 },
+  {day: '05 TH', tempDay: 18 },
+  {day: '06 FR', tempDay: 23 },
+  {day: '07 SA', tempDay: 34 }
 ];
 
 const _transformForecast = (arr=[]) => arr
@@ -107,7 +107,8 @@ const ForecastChart = memo(() => {
   return (
     <ResponsiveContainer width="100%" height={300} >
 
-    <ComposedChart data={_data} {...STYLE.ComposedChart}>
+    <ComposedChart
+       data={_data} {...STYLE.ComposedChart}>
       <XAxis dataKey="day" {...STYLE.XAxis} />
       <YAxis label={{
          value: "°C",
@@ -139,7 +140,7 @@ const ForecastChart = memo(() => {
       <Legend
         content={
            <LegendTemperature
-               styles={LABEL.fnLegendLabel(filters)}
+               styles={LABEL.crLegendStyles(filters)}
                onFilter={_hFilter}
             />
         }
@@ -160,8 +161,8 @@ const ForecastChart = memo(() => {
       <Line dataKey="tempDay" {...STYLE.LineTempDay} />
 
     </ComposedChart>
+   </ResponsiveContainer>
 
-    </ResponsiveContainer>
   );
 }, areEqual)
 

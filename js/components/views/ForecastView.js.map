@@ -1,1 +1,45 @@
-{"version":3,"sources":["../../../src/components/views/ForecastView.jsx"],"names":["NOT_FOUND_MSG","OK_CODE","Component","React","ForecastView","state","forecast","cod","list","_onStore","store","props","getState","recent","setState","_renderForecast","map","item","index","_renderMsg","componentDidMount","isFixed","Interact","makeDragable","domRootDiv","unsubscribe","subscribe","render","isShow","rootStyle","_styleShow","display","_classShow","undefined","c","Object","assign"],"mappings":";;;;;;;;;AACA;;AAEA;;AAEA;;AACA;;AANA;AAQA,IAAMA,aAAa,GAAG,8BAAtB;AACA,IAAMC,OAAO,GAAG,KAAhB;IAEQC,S,GAAcC,iB,CAAdD,S;;IAEFE,Y;;;;;;;;;;;;;UAEJC,K,GAAQ;AACNC,MAAAA,QAAQ,EAAG;AACTC,QAAAA,GAAG,EAAG,GADG;AAETC,QAAAA,IAAI,EAAG;AAFE;AADL,K;;UAeRC,Q,GAAW,YAAM;AACT,UAAEC,KAAF,GAAY,MAAKC,KAAjB,CAAED,KAAF;AAAA,4BACcA,KAAK,CAACE,QAAN,EADd;AAAA,kDACFN,QADE;AAAA,UACFA,QADE,sCACO,EADP;AAAA,UAEFO,MAFE,GAESP,QAFT,CAEFO,MAFE;;AAGN,UAAIA,MAAM,IAAI,MAAKA,MAAL,KAAgBA,MAA9B,EAAsC;AACpC,cAAKC,QAAL,CAAc;AACXR,UAAAA,QAAQ,EAAGA,QAAQ,CAACO,MAAD;AADR,SAAd;AAGD;AACF,K;;UAEDE,e,GAAkB,YAAM;AAChB,UAAET,QAAF,GAAe,MAAKD,KAApB,CAAEC,QAAF;AAAA,2BACUA,QADV,CACFE,IADE;AAAA,UACFA,IADE,+BACG,EADH;AAEN,aAAOA,IAAI,CAACQ,GAAL,CAAS,UAACC,IAAD,EAAOC,KAAP,EAAiB;AAC9B,eAAQ,gCAAC,mBAAD;AAAS,UAAA,GAAG,EAAEA,KAAd;AAAqB,UAAA,IAAI,EAAED;AAA3B,UAAR;AACF,OAFM,CAAP;AAGD,K;;UAEDE,U,GAAa,YAAM;AACjB,aACE,6CACE,8CAAOnB,aAAP,CADF,CADF;AAKD,K;;;;;;;SAjCDoB,iB,GAAA,6BAAmB;AAAA,sBACW,KAAKT,KADhB;AAAA,QACRD,KADQ,eACRA,KADQ;AAAA,QACDW,OADC,eACDA,OADC;;AAEhB,QAAI,CAACA,OAAL,EAAa;AACXC,2BAASC,YAAT,CAAsB,KAAKC,UAA3B;AACD;;AACD,SAAKC,WAAL,GAAmBf,KAAK,CAACgB,SAAN,CAAgB,KAAKjB,QAArB,CAAnB;AACF,G;;SA6BDkB,M,GAAA,kBAAQ;AAAA;;AAAA,uBACwB,KAAKhB,KAD7B;AAAA,QACEiB,MADF,gBACEA,MADF;AAAA,QACUC,SADV,gBACUA,SADV;AAAA,QAEJC,UAFI,GAESF,MAAM,GAAG;AAACG,MAAAA,OAAO,EAAE;AAAV,KAAH,GAAwB;AAACA,MAAAA,OAAO,EAAE;AAAV,KAFvC;AAAA,QAGJC,UAHI,GAGSJ,MAAM,GAAG,YAAH,GAAkBK,SAHjC;AAAA,QAIF3B,QAJE,GAIW,KAAKD,KAJhB,CAIFC,QAJE;AAAA,QAKFC,GALE,GAKMD,QALN,CAKFC,GALE;;AAON,WACE;AACK,MAAA,GAAG,EAAG,aAAA2B,CAAC;AAAA,eAAI,MAAI,CAACV,UAAL,GAAkBU,CAAtB;AAAA,OADZ;AAEK,MAAA,SAAS,EAAEF,UAFhB;AAGK,MAAA,KAAK,EAAEG,MAAM,CAACC,MAAP,CAAc,EAAd,EAAkBP,SAAlB,EAA6BC,UAA7B;AAHZ,OAKE,gCAAC,mBAAD;AAAS,MAAA,QAAQ,EAAExB;AAAnB,MALF,EAME,6CACG,KAAKS,eAAL,EADH,CANF,EASK,KAAGR,GAAJ,KAAaN,OAAb,IAAwB,KAAKkB,UAAL,EAT5B,CADF;AAaD,G;;;EAhEwBjB,S;;eAmEZE,Y","sourcesContent":["//import React, { Component } from 'react';\r\nimport React from '../_react'\r\n\r\nimport Interact from '../../utils/Interact';\r\n\r\nimport Caption from './Caption';\r\nimport DayItem from './DayItem';\r\n\r\nconst NOT_FOUND_MSG = 'Forecast for place not found';\r\nconst OK_CODE = '200'\r\n\r\nconst { Component } = React\r\n\r\nclass ForecastView extends Component {\r\n\r\n  state = {\r\n    forecast : {\r\n      cod : 200,\r\n      list : []\r\n    }\r\n  }\r\n\r\n  componentDidMount(){\r\n     const { store, isFixed } = this.props\r\n     if (!isFixed){\r\n       Interact.makeDragable(this.domRootDiv);\r\n     }\r\n     this.unsubscribe = store.subscribe(this._onStore)\r\n  }\r\n\r\n  _onStore = () => {\r\n    const { store } = this.props\r\n    , { forecast={} } = store.getState()\r\n    , { recent } = forecast;\r\n    if (recent && this.recent !== recent ){\r\n      this.setState({\r\n         forecast : forecast[recent]\r\n      })\r\n    }\r\n  }\r\n\r\n  _renderForecast = () => {\r\n    const { forecast } = this.state\r\n    , { list=[] } = forecast\r\n    return list.map((item, index) => {\r\n       return (<DayItem key={index} item={item} />)\r\n    })\r\n  }\r\n\r\n  _renderMsg = () => {\r\n    return (\r\n      <div>\r\n        <span>{NOT_FOUND_MSG}</span>\r\n      </div>\r\n    )\r\n  }\r\n\r\n  render(){\r\n    const { isShow, rootStyle } = this.props\r\n    , _styleShow = isShow ? {display: 'block'} : {display: 'none'}\r\n    , _classShow = isShow ? 'show-popup' : undefined\r\n    , { forecast } = this.state\r\n    , { cod } = forecast ;\r\n\r\n    return (\r\n      <div\r\n           ref={ c => this.domRootDiv = c }\r\n           className={_classShow}\r\n           style={Object.assign({}, rootStyle, _styleShow)}\r\n      >\r\n        <Caption forecast={forecast} />\r\n        <div>\r\n          {this._renderForecast()}\r\n        </div>\r\n        { (''+cod) !== OK_CODE && this._renderMsg() }\r\n      </div>\r\n    );\r\n  }\r\n}\r\n\r\nexport default ForecastView;\r\n"],"file":"ForecastView.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/views/ForecastView.js"
+ ],
+ "file": "../../../src/components/views/ForecastView.js",
+ "names": [
+  "NOT_FOUND_MSG",
+  "OK_CODE",
+  "Component",
+  "React",
+  "ForecastView",
+  "state",
+  "forecast",
+  "cod",
+  "list",
+  "_onStore",
+  "store",
+  "props",
+  "getState",
+  "recent",
+  "setState",
+  "_renderForecast",
+  "map",
+  "item",
+  "index",
+  "_renderMsg",
+  "componentDidMount",
+  "isFixed",
+  "Interact",
+  "makeDragable",
+  "domRootDiv",
+  "unsubscribe",
+  "subscribe",
+  "render",
+  "isShow",
+  "rootStyle",
+  "_styleShow",
+  "display",
+  "_classShow",
+  "undefined",
+  "c"
+ ],
+ "mappings": ";;;;;;;;;;;AACA;;AAEA;;AAEA;;AACA;;AANA;AAQA,IAAMA,aAAa,GAAG,8BAAtB;AACA,IAAMC,OAAO,GAAG,KAAhB;IAEQC,S,GAAcC,iB,CAAdD,S;;IAEFE,Y;;;;;;;;;;;UAEJC,K,GAAQ;AACNC,MAAAA,QAAQ,EAAG;AACTC,QAAAA,GAAG,EAAG,GADG;AAETC,QAAAA,IAAI,EAAG;AAFE;AADL,K;;UAeRC,Q,GAAW,YAAM;AACT,UAAEC,KAAF,GAAY,MAAKC,KAAjB,CAAED,KAAF;AAAA,4BACcA,KAAK,CAACE,QAAN,EADd;AAAA,kDACFN,QADE;AAAA,UACFA,QADE,sCACO,EADP;AAAA,UAEFO,MAFE,GAESP,QAFT,CAEFO,MAFE;;AAGN,UAAIA,MAAM,IAAI,MAAKA,MAAL,KAAgBA,MAA9B,EAAsC;AACpC,cAAKC,QAAL,CAAc;AACXR,UAAAA,QAAQ,EAAGA,QAAQ,CAACO,MAAD;AADR,SAAd;AAGD;AACF,K;;UAEDE,e,GAAkB,YAAM;AAChB,UAAET,QAAF,GAAe,MAAKD,KAApB,CAAEC,QAAF;AAAA,2BACUA,QADV,CACFE,IADE;AAAA,UACFA,IADE,+BACG,EADH;AAEN,aAAOA,IAAI,CAACQ,GAAL,CAAS,UAACC,IAAD,EAAOC,KAAP,EAAiB;AAC9B,4BAAQ,gCAAC,mBAAD;AAAS,UAAA,GAAG,EAAEA,KAAd;AAAqB,UAAA,IAAI,EAAED;AAA3B,UAAR;AACF,OAFM,CAAP;AAGD,K;;UAEDE,U,GAAa,YAAM;AACjB,0BACE,0DACE,8CAAOnB,aAAP,CADF,CADF;AAKD,K;;;;;;;SAjCDoB,iB,GAAA,6BAAmB;AAAA,sBACW,KAAKT,KADhB;AAAA,QACRD,KADQ,eACRA,KADQ;AAAA,QACDW,OADC,eACDA,OADC;;AAEhB,QAAI,CAACA,OAAL,EAAa;AACXC,2BAASC,YAAT,CAAsB,KAAKC,UAA3B;AACD;;AACD,SAAKC,WAAL,GAAmBf,KAAK,CAACgB,SAAN,CAAgB,KAAKjB,QAArB,CAAnB;AACF,G;;SA6BDkB,M,GAAA,kBAAQ;AAAA;;AAAA,uBACwB,KAAKhB,KAD7B;AAAA,QACEiB,MADF,gBACEA,MADF;AAAA,QACUC,SADV,gBACUA,SADV;AAAA,QAEJC,UAFI,GAESF,MAAM,GAAG;AAACG,MAAAA,OAAO,EAAE;AAAV,KAAH,GAAwB;AAACA,MAAAA,OAAO,EAAE;AAAV,KAFvC;AAAA,QAGJC,UAHI,GAGSJ,MAAM,GAAG,YAAH,GAAkBK,SAHjC;AAAA,QAIF3B,QAJE,GAIW,KAAKD,KAJhB,CAIFC,QAJE;AAAA,QAKFC,GALE,GAKMD,QALN,CAKFC,GALE;;AAON,wBACE;AACK,MAAA,GAAG,EAAG,aAAA2B,CAAC;AAAA,eAAI,MAAI,CAACV,UAAL,GAAkBU,CAAtB;AAAA,OADZ;AAEK,MAAA,SAAS,EAAEF,UAFhB;AAGK,MAAA,KAAK,gCAAMH,SAAN,EAAoBC,UAApB;AAHV,oBAKE,gCAAC,mBAAD;AAAS,MAAA,QAAQ,EAAExB;AAAnB,MALF,eAME,6CACG,KAAKS,eAAL,EADH,CANF,EASK,KAAGR,GAAJ,KAAaN,OAAb,IAAwB,KAAKkB,UAAL,EAT5B,CADF;AAaD,G;;;EAhEwBjB,S;;eAmEZE,Y"
+}

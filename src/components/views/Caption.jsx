@@ -3,23 +3,22 @@ import React from '../_react'
 
 const STYLE = {
   ROOT_DIV : {
-    display: 'inline',
+    display : 'inline',
+    color : '#795548',
     width : '100%',
-    color: '#795548',
-    paddingLeft : '8px',
+    paddingLeft : 8,
+    marginBottom : 8,
+    borderBottom : '3px solid #795548',
     fontSize : '24px',
     fontWeight : 'bold',
-    borderBottom : '3px solid #795548',
-    marginBottom : '8px'
   }
 }
 
-const Caption = (props) => {
-  const { forecast={}, style } = props
-  , { city={} } = forecast
-  , { name='Forecast', country='' } = city;
+const Caption = ({ forecast, style}) => {
+  const { city } = forecast || {}
+  , { name='Forecast', country='' } = city || {};
   return (
-    <div style={Object.assign({}, STYLE.ROOT_DIV, style)}>
+    <div style={{...STYLE.ROOT_DIV, ...style}}>
       <span>{name}</span>
       <span>:</span>
       <span>{country}</span>

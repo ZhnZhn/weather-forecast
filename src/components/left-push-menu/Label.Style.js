@@ -1,30 +1,33 @@
 
 import {COLOR as C, POPUP as P} from '../styles/theme';
 
+
+const _assign = Object.assign;
+/*
 const _assign = (...args) => {
   args.unshift({});
   return Object.assign.apply(Object, args);
 }
+*/
 
-const _fnLabel = (is, style) => {
-  return (is)
-    ? _assign(style, S.POINTER)
-    : _assign(style, S.POINTER, S.FILTERED);
-}
+const _crLabelStyle = (is, style) => is
+  ? _assign({}, style, S.POINTER)
+  : _assign({}, style, S.POINTER, S.FILTERED);
+
 
 let _filters;
 let _styles = {};
-const _fnLegendLabel = (filters) => {
+const _crLegendStyles = (filters) => {
   if (_filters !== filters){
-     _styles.tempMorn = _fnLabel(filters.tempMorn, S.TEMP_DAY)
-     _styles.tempDay = _fnLabel(filters.tempDay, S.TEMP_DAY)
-     _styles.tempEve = _fnLabel(filters.tempEve, S.TEMP_NIGHT)
-     _styles.tempNight = _fnLabel(filters.tempNight, S.TEMP_NIGHT)
-     _styles.tempMax = _fnLabel(filters.tempMax, S.TEMP_MAX)
-     _styles.tempMin = _fnLabel(filters.tempMin, S.TEMP_MIN)
-     _styles.rain = _fnLabel(filters.rain, S.RAIN)
-     _styles.speed = _fnLabel(filters.speed, S.SPEED)
-     return _assign(_styles);
+     _styles.tempMorn = _crLabelStyle(filters.tempMorn, S.TEMP_DAY)
+     _styles.tempDay = _crLabelStyle(filters.tempDay, S.TEMP_DAY)
+     _styles.tempEve = _crLabelStyle(filters.tempEve, S.TEMP_NIGHT)
+     _styles.tempNight = _crLabelStyle(filters.tempNight, S.TEMP_NIGHT)
+     _styles.tempMax = _crLabelStyle(filters.tempMax, S.TEMP_MAX)
+     _styles.tempMin = _crLabelStyle(filters.tempMin, S.TEMP_MIN)
+     _styles.rain = _crLabelStyle(filters.rain, S.RAIN)
+     _styles.speed = _crLabelStyle(filters.speed, S.SPEED)
+     return _assign({}, _styles);
   }
   return _styles;
 }
@@ -59,7 +62,7 @@ const S = {
   },
   CAPTION: {
     ...CAPTION_STYLE,
-    paddingRight: 4 
+    paddingRight: 4
   },
   ROW: {
     paddingTop: 8
@@ -99,7 +102,7 @@ const S = {
   FILTERED : {
     color : '#9e9e9e'
   },
-  fnLegendLabel : _fnLegendLabel
+  crLegendStyles : _crLegendStyles
 }
 
 export default S

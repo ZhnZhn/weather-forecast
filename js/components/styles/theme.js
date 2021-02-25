@@ -5,6 +5,7 @@ exports.POPUP = exports["default"] = exports.COLOR = exports.THEME_NAME = void 0
 
 var _setTheme2;
 
+var _assign = Object.assign;
 var P = {};
 var TH_GREY = {
   BG: 'grey',
@@ -76,20 +77,20 @@ var _stylePopup = function _stylePopup() {
 };
 
 var _setTheme = (_setTheme2 = {}, _setTheme2[THEME_NAME.GREY] = function () {
-  Object.assign(P, TH_GREY);
+  _assign(P, TH_GREY);
 
   _setStyleTo(COLOR);
 
   _stylePopup();
 }, _setTheme2[THEME_NAME.SAND] = function () {
-  Object.assign(P, TH_SAND);
+  _assign(P, TH_SAND);
 
   _setStyleTo(COLOR);
 
   _stylePopup();
 }, _setTheme2[THEME_NAME.WHITE] = function () {
   //#eceae0
-  Object.assign(P, TH_WHITE);
+  _assign(P, TH_WHITE);
 
   _setStyleTo(COLOR);
 

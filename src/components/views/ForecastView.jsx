@@ -66,7 +66,7 @@ class ForecastView extends Component {
       <div
            ref={ c => this.domRootDiv = c }
            className={_classShow}
-           style={Object.assign({}, rootStyle, _styleShow)}
+           style={{...rootStyle, ..._styleShow}}
       >
         <Caption forecast={forecast} />
         <div>

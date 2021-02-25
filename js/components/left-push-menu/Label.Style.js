@@ -9,34 +9,33 @@ var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
 
 var _theme = require("../styles/theme");
 
-var _assign = function _assign() {
-  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
-
+var _assign = Object.assign;
+/*
+const _assign = (...args) => {
   args.unshift({});
   return Object.assign.apply(Object, args);
-};
+}
+*/
 
-var _fnLabel = function _fnLabel(is, style) {
-  return is ? _assign(style, S.POINTER) : _assign(style, S.POINTER, S.FILTERED);
+var _crLabelStyle = function _crLabelStyle(is, style) {
+  return is ? _assign({}, style, S.POINTER) : _assign({}, style, S.POINTER, S.FILTERED);
 };
 
 var _filters;
 
 var _styles = {};
 
-var _fnLegendLabel = function _fnLegendLabel(filters) {
+var _crLegendStyles = function _crLegendStyles(filters) {
   if (_filters !== filters) {
-    _styles.tempMorn = _fnLabel(filters.tempMorn, S.TEMP_DAY);
-    _styles.tempDay = _fnLabel(filters.tempDay, S.TEMP_DAY);
-    _styles.tempEve = _fnLabel(filters.tempEve, S.TEMP_NIGHT);
-    _styles.tempNight = _fnLabel(filters.tempNight, S.TEMP_NIGHT);
-    _styles.tempMax = _fnLabel(filters.tempMax, S.TEMP_MAX);
-    _styles.tempMin = _fnLabel(filters.tempMin, S.TEMP_MIN);
-    _styles.rain = _fnLabel(filters.rain, S.RAIN);
-    _styles.speed = _fnLabel(filters.speed, S.SPEED);
-    return _assign(_styles);
+    _styles.tempMorn = _crLabelStyle(filters.tempMorn, S.TEMP_DAY);
+    _styles.tempDay = _crLabelStyle(filters.tempDay, S.TEMP_DAY);
+    _styles.tempEve = _crLabelStyle(filters.tempEve, S.TEMP_NIGHT);
+    _styles.tempNight = _crLabelStyle(filters.tempNight, S.TEMP_NIGHT);
+    _styles.tempMax = _crLabelStyle(filters.tempMax, S.TEMP_MAX);
+    _styles.tempMin = _crLabelStyle(filters.tempMin, S.TEMP_MIN);
+    _styles.rain = _crLabelStyle(filters.rain, S.RAIN);
+    _styles.speed = _crLabelStyle(filters.speed, S.SPEED);
+    return _assign({}, _styles);
   }
 
   return _styles;
@@ -109,7 +108,7 @@ var S = {
   FILTERED: {
     color: '#9e9e9e'
   },
-  fnLegendLabel: _fnLegendLabel
+  crLegendStyles: _crLegendStyles
 };
 var _default = S;
 exports["default"] = _default;

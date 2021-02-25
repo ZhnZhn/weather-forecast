@@ -5,6 +5,8 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
 var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
 var _react = _interopRequireDefault(require("../_react"));
@@ -20,9 +22,7 @@ var NOT_FOUND_MSG = 'Forecast for place not found';
 var OK_CODE = '200';
 var Component = _react["default"].Component;
 
-var ForecastView =
-/*#__PURE__*/
-function (_Component) {
+var ForecastView = /*#__PURE__*/function (_Component) {
   (0, _inheritsLoose2["default"])(ForecastView, _Component);
 
   function ForecastView() {
@@ -59,7 +59,7 @@ function (_Component) {
           _forecast$list = forecast.list,
           list = _forecast$list === void 0 ? [] : _forecast$list;
       return list.map(function (item, index) {
-        return _react["default"].createElement(_DayItem["default"], {
+        return /*#__PURE__*/_react["default"].createElement(_DayItem["default"], {
           key: index,
           item: item
         });
@@ -67,7 +67,7 @@ function (_Component) {
     };
 
     _this._renderMsg = function () {
-      return _react["default"].createElement("div", null, _react["default"].createElement("span", null, NOT_FOUND_MSG));
+      return /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("span", null, NOT_FOUND_MSG));
     };
 
     return _this;
@@ -102,15 +102,15 @@ function (_Component) {
         forecast = this.state.forecast,
         cod = forecast.cod;
 
-    return _react["default"].createElement("div", {
+    return /*#__PURE__*/_react["default"].createElement("div", {
       ref: function ref(c) {
         return _this2.domRootDiv = c;
       },
       className: _classShow,
-      style: Object.assign({}, rootStyle, _styleShow)
-    }, _react["default"].createElement(_Caption["default"], {
+      style: (0, _extends2["default"])({}, rootStyle, _styleShow)
+    }, /*#__PURE__*/_react["default"].createElement(_Caption["default"], {
       forecast: forecast
-    }), _react["default"].createElement("div", null, this._renderForecast()), '' + cod !== OK_CODE && this._renderMsg());
+    }), /*#__PURE__*/_react["default"].createElement("div", null, this._renderForecast()), '' + cod !== OK_CODE && this._renderMsg());
   };
 
   return ForecastView;

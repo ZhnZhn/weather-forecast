@@ -44,25 +44,25 @@ var INITIAL_FILTERED = {
   speed: true
 };
 var INITIAL_DATA = [{
-  day: 'Page A',
-  temp: 40
+  day: '01 08',
+  temp: 35
 }, {
-  day: 'Page B',
+  day: '02 20',
   temp: 30
 }, {
-  day: 'Page C',
+  day: '03 08',
   temp: 20
 }, {
-  day: 'Page D',
+  day: '04 20',
   temp: 27
 }, {
-  day: 'Page E',
+  day: '05 08',
   temp: 18
 }, {
-  day: 'Page F',
+  day: '06 20',
   temp: 23
 }, {
-  day: 'Page G',
+  day: '07 08',
   temp: 34
 }];
 
