@@ -135,29 +135,34 @@
 
 
 .marker__bt-close {
-  
+
 }
 
 .marker__value {
   //color: #7cb5ec;
-  color: black; 
+  color: black;
+  font-weight: 600;
+}
+
+.marker__v-rain {
+  color: #0922a5; 
   font-weight: 600;
 }
 
 .marker__v-water {
-  color: #3f51b5; 
+  color: #3f51b5;
   font-weight: 600;
 }
 .marker__v-pressure {
-  color: #0d2339; 
+  color: #0d2339;
   font-weight: 600;
 }
 .marker__v-day {
-  color: #ff9800; 
+  color: #ff9800;
   font-weight: 600;
 }
 .marker__v-night {
-  color: #434348; 
+  color: #434348;
   font-weight: 600;
 }
 
