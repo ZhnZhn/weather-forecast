@@ -1,0 +1,23 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/left-push-menu/RouterComp.js"
+ ],
+ "file": "../../../src/components/left-push-menu/RouterComp.js",
+ "names": [
+  "_isFn",
+  "fn",
+  "_router",
+  "COMP_TYPE",
+  "CTB",
+  "then",
+  "module",
+  "RouterComp",
+  "getComp",
+  "type",
+  "_load",
+  "Promise",
+  "resolve"
+ ],
+ "mappings": ";;;;;;;;;AACA;;;;AAEA,IAAMA,KAAK,GAAG,SAARA,KAAQ,CAAAC,EAAE;AAAA,SAAI,OAAOA,EAAP,KAAc,UAAlB;AAAA,CAAhB;;AAEA,IAAMC,OAAO,4BACVC,qBAAUC,GADA,gBACO;AAChB,SAAO;AAAA,4DAGJ,gCAHI;AAAA,KAIJC,IAJI,CAIC,UAAAC,MAAM;AAAA,WAAIA,MAAM,WAAV;AAAA,GAJP,CAAP;AAKD,CAPU,WAAb;;AAUA,IAAMC,UAAU,GAAG;AACjBC,EAAAA,OADiB,mBACTC,IADS,EACJ;AACX,QAAMC,KAAK,GAAGR,OAAO,CAACO,IAAD,CAArB;AACA,WAAOT,KAAK,CAACE,OAAO,CAACO,IAAD,CAAR,CAAL,GACHC,KAAK,EADF,GAEHC,OAAO,CAACC,OAAR,CAAgB,IAAhB,CAFJ;AAGD;AANgB,CAAnB;eASeL,U"
+}

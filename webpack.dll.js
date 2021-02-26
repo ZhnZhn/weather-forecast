@@ -10,19 +10,7 @@ module.exports = {
   entry: {
      lib: [
             "react", "react-dom",
-            "redux", "react-redux", "redux-saga",
-
-            "recharts/es6/cartesian/CartesianGrid",
-            "recharts/es6/cartesian/Bar",
-            "recharts/es6/cartesian/Line",
-            "recharts/es6/cartesian/YAxis",
-            "recharts/es6/cartesian/XAxis",
-            "recharts/es6/component/ResponsiveContainer",
-            "recharts/es6/component/Tooltip",
-            "recharts/es6/component/Legend",
-            "recharts/es6/chart/ComposedChart",
-            "recharts/es6/chart/LineChart",
-
+            "redux", "react-redux", "redux-saga",            
             "dompurify", "interactjs"
           ]
   },

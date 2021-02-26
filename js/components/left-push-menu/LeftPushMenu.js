@@ -7,33 +7,18 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("../_react"));
 
+var _useLoadComp = _interopRequireDefault(require("./useLoadComp"));
+
 var _PeriodForecast = _interopRequireDefault(require("../wrapper/PeriodForecast"));
 
 var _DayDetailPopup = _interopRequireDefault(require("./DayDetailPopup"));
 
-var _TabPane = _interopRequireDefault(require("../zhn-atoms/TabPane"));
-
-var _Tab = _interopRequireDefault(require("../zhn-atoms/Tab"));
-
-var _ForecastChart = _interopRequireDefault(require("./ForecastChart"));
-
-var _HourlyChart = _interopRequireDefault(require("./HourlyChart"));
-
-var _UviChart = _interopRequireDefault(require("./UviChart"));
-
 var _LeftPushMenu = _interopRequireDefault(require("./LeftPushMenu.Style"));
 
-var _handlers = _interopRequireDefault(require("../../flux/handlers"));
+var _CompType = _interopRequireDefault(require("./CompType"));
 
 var useRef = _react["default"].useRef,
     useCallback = _react["default"].useCallback;
-var requestHourly = _handlers["default"].requestHourly,
-    requestUvi = _handlers["default"].requestUvi;
-var S = {
-  TABS: {
-    textAlign: 'left'
-  }
-};
 
 var LeftPushMenu = function LeftPushMenu(_ref) {
   var id = _ref.id,
@@ -45,9 +30,10 @@ var LeftPushMenu = function LeftPushMenu(_ref) {
   }, []),
       _hCloseDetail = useCallback(function () {
     _refDetail.current.close();
-  }, []);
+  }, []),
+      compOrBtOrErr = (0, _useLoadComp["default"])('CHARTS', _CompType["default"].CTB),
+      STYLE = theme.createStyle(_LeftPushMenu["default"]);
 
-  var STYLE = theme.createStyle(_LeftPushMenu["default"]);
   return /*#__PURE__*/_react["default"].createElement("div", {
     id: id,
     style: STYLE.ROOT_DIV
@@ -57,19 +43,7 @@ var LeftPushMenu = function LeftPushMenu(_ref) {
   }), /*#__PURE__*/_react["default"].createElement(_DayDetailPopup["default"], {
     ref: _refDetail,
     onClose: _hCloseDetail
-  }), /*#__PURE__*/_react["default"].createElement(_TabPane["default"], {
-    key: "1",
-    width: "100%",
-    tabsStyle: S.TABS
-  }, /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
-    title: "7 Days"
-  }, /*#__PURE__*/_react["default"].createElement(_ForecastChart["default"], null)), /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
-    title: "5 Days/3 Hours",
-    onClick: requestHourly
-  }, /*#__PURE__*/_react["default"].createElement(_HourlyChart["default"], null)), /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
-    title: "UV index",
-    onClick: requestUvi
-  }, /*#__PURE__*/_react["default"].createElement(_UviChart["default"], null))));
+  }), compOrBtOrErr);
 };
 
 var _default = LeftPushMenu;

@@ -1,29 +1,13 @@
 import React from '../_react'
 
-import PeriodForecast from '../wrapper/PeriodForecast';
-import DayDetailPopup from './DayDetailPopup';
+import useLoadComp from './useLoadComp'
 
-import TabPane from '../zhn-atoms/TabPane';
-import Tab from '../zhn-atoms/Tab';
-
-import ForecastChart from './ForecastChart';
-import HourlyChart from './HourlyChart';
-import UviChart from './UviChart';
-
+import PeriodForecast from '../wrapper/PeriodForecast'
+import DayDetailPopup from './DayDetailPopup'
 import styleConfig from './LeftPushMenu.Style'
+import COMP_TYPE from './CompType'
 
-import handlers from '../../flux/handlers';
-
-const { useRef, useCallback } = React
-const { requestHourly, requestUvi } = handlers
-
-
-const S  = {
-  TABS: {
-    textAlign: 'left'
-  }
-};
-
+const { useRef, useCallback } = React;
 
 const LeftPushMenu = ({ id, theme }) => {
   const _refDetail = useRef()
@@ -32,9 +16,9 @@ const LeftPushMenu = ({ id, theme }) => {
   }, [])
   , _hCloseDetail = useCallback(() => {
     _refDetail.current.close();
-  }, []);
-
-  const STYLE = theme.createStyle(styleConfig);
+  }, [])
+  , compOrBtOrErr = useLoadComp('CHARTS', COMP_TYPE.CTB)
+  , STYLE = theme.createStyle(styleConfig);
 
   return (
     <div id={id} style={STYLE.ROOT_DIV} >
@@ -46,18 +30,7 @@ const LeftPushMenu = ({ id, theme }) => {
           ref={_refDetail}
           onClose={_hCloseDetail}
         />
-
-        <TabPane key="1" width="100%" tabsStyle={S.TABS}>
-          <Tab title="7 Days">
-             <ForecastChart />
-          </Tab>
-          <Tab title="5 Days/3 Hours" onClick={requestHourly}>
-             <HourlyChart />
-          </Tab>
-          <Tab title="UV index" onClick={requestUvi}>
-             <UviChart />
-          </Tab>
-        </TabPane>
+        {compOrBtOrErr}
     </div>
   );
 }
