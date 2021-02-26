@@ -56,7 +56,7 @@ const LegendHourly = ({ filtered, onFilter }) => {
       <LegendCell
         style={L_S.ITEM}
         titleStyle={_speedStyle}
-        title="Speed"
+        title="Wind"
         onClick={() => onFilter('speed')}
       >
         <SvgCircle {...S.CIRCLE_SPEED} />

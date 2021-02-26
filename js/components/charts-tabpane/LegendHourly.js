@@ -69,7 +69,7 @@ var LegendHourly = function LegendHourly(_ref) {
   }, /*#__PURE__*/_react["default"].createElement(_SvgRect["default"], _Label["default"].RECT_RAIN)), /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
     style: L_S.ITEM,
     titleStyle: _speedStyle,
-    title: "Speed",
+    title: "Wind",
     onClick: function onClick() {
       return onFilter('speed');
     }
