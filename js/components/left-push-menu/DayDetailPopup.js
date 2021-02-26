@@ -22,6 +22,7 @@ var CL = {
   DATE: 'marker__caption__date',
   DESCR: 'marker__description',
   LABEL: 'marker__label',
+  V_RAIN: 'marker__v-rain',
   V_WATER: 'marker__v-water',
   V_PRESSURE: 'marker__v-pressure',
   V_DAY: 'marker__v-day',
@@ -124,6 +125,7 @@ var DayDetailPopup = forwardRef(function (_ref2, ref) {
       min = _temp$min === void 0 ? '' : _temp$min,
       _dateTitle = _dt["default"].toDayOfWeek(timestamp) + " " + _dt["default"].toTime(timestamp),
       description = weather[0] && weather[0].description || 'Without description',
+      _pressureTitle = snow > 0.2 ? 'Press.:' : 'Pressure:',
       _style = isOpen ? STYLE.BLOCK : STYLE.NONE;
 
   return /*#__PURE__*/_react["default"].createElement("div", {
@@ -139,24 +141,24 @@ var DayDetailPopup = forwardRef(function (_ref2, ref) {
     className: CL.DESCR
   }, description)), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(TitleValue, {
     title: "Rain:",
-    valueCn: CL.V_WATER,
+    valueCn: CL.V_RAIN,
     value: rain + "mm"
   }), snow > 0.02 && /*#__PURE__*/_react["default"].createElement(TitleValue, {
     title: "Snow:",
     valueCn: CL.V_WATER,
     value: snow + "mm"
   }), /*#__PURE__*/_react["default"].createElement(TitleValue, {
+    title: _pressureTitle,
+    valueCn: CL.V_PRESSURE,
+    value: pressure + "hPa"
+  })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(TitleValue, {
     title: "Clouds:",
     valueCn: CL.V_WATER,
     value: clouds + "%"
-  })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(TitleValue, {
+  }), /*#__PURE__*/_react["default"].createElement(TitleValue, {
     title: "Humidity:",
     valueCn: CL.V_WATER,
     value: humidity + "%"
-  }), /*#__PURE__*/_react["default"].createElement(TitleValue, {
-    title: "Pressure:",
-    valueCn: CL.V_PRESSURE,
-    value: pressure + "hPa"
   })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(TitleValue, {
     title: "Morn:",
     valueCn: CL.V_DAY,

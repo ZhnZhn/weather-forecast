@@ -10,6 +10,7 @@ const CL = {
   DATE: 'marker__caption__date',
   DESCR: 'marker__description',
   LABEL: 'marker__label',
+  V_RAIN: 'marker__v-rain',
   V_WATER: 'marker__v-water',
   V_PRESSURE: 'marker__v-pressure',
   V_DAY: 'marker__v-day',
@@ -72,6 +73,7 @@ const DayDetailPopup = forwardRef(({ onClose }, ref) => {
   , _dateTitle = `${dt.toDayOfWeek(timestamp)} ${dt.toTime(timestamp)}`
   , description = (weather[0] && weather[0].description)
        || 'Without description'
+  , _pressureTitle = snow > 0.2 ? 'Press.:' : 'Pressure:'
   , _style = isOpen
        ? STYLE.BLOCK
        : STYLE.NONE;
@@ -95,7 +97,7 @@ const DayDetailPopup = forwardRef(({ onClose }, ref) => {
       </div>
       <div>
         <TitleValue title="Rain:"
-          valueCn={CL.V_WATER}
+          valueCn={CL.V_RAIN}
           value={`${rain}mm`}
         />
         { snow > 0.02 && <TitleValue title="Snow:"
@@ -103,19 +105,19 @@ const DayDetailPopup = forwardRef(({ onClose }, ref) => {
             value={`${snow}mm`}
           />
         }
+        <TitleValue title={_pressureTitle}
+          valueCn={CL.V_PRESSURE}
+          value={`${pressure}hPa`}
+        />
+      </div>
+      <div>
         <TitleValue title="Clouds:"
           valueCn={CL.V_WATER}
           value={`${clouds}%`}
         />
-      </div>
-      <div>
         <TitleValue title="Humidity:"
           valueCn={CL.V_WATER}
           value={`${humidity}%`}
-        />
-        <TitleValue title="Pressure:"
-          valueCn={CL.V_PRESSURE}
-          value={`${pressure}hPa`}
         />
       </div>
       <div>
