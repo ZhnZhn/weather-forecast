@@ -1,0 +1,18 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/charts-tabpane/SeriesColor.js"
+ ],
+ "file": "../../../src/components/charts-tabpane/SeriesColor.js",
+ "names": [
+  "SeriesColor",
+  "SPEED",
+  "RAIN",
+  "TEMP_MAX",
+  "TEMP_MIN",
+  "PRESSURE",
+  "SERIA",
+  "FILTERED"
+ ],
+ "mappings": ";;;;AACA,IAAMA,WAAW,GAAG;AAClBC,EAAAA,KAAK,EAAE,SADW;AAElBC,EAAAA,IAAI,EAAE,SAFY;AAGlBC,EAAAA,QAAQ,EAAE,SAHQ;AAIlBC,EAAAA,QAAQ,EAAE,SAJQ;AAKlBC,EAAAA,QAAQ,EAAE,SALQ;AAOlBC,EAAAA,KAAK,EAAE,SAPW;AAQlBC,EAAAA,QAAQ,EAAE;AARQ,CAApB;eAWeP,W"
+}
