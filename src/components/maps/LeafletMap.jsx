@@ -8,6 +8,8 @@ import throttle from '../../utils/throttle'
 import handlers  from '../../flux/handlers';
 import { sPlace } from '../../flux/selectors';
 
+import ErrMsg from '../zhn-atoms/ErrMsg';
+
 const { useState, useRef, useEffect } = React
 , { requestPlace } = handlers;
 
@@ -18,6 +20,10 @@ const S = {
     width:'100%',
     height: 650,
     transition: 'transform .3s, width .6s'
+  },
+  ERR_MSG: {
+    marginTop: 8,
+    marginLeft: 8
   }
 };
 
@@ -70,12 +76,12 @@ const LeafletMap = ({
       id={id}
     >
      {
-        mapStatus === MAP_STATUS.LOADING &&
-        <span>LeafletMap Loading...</span>
-     }
-     {
-         mapStatus === MAP_STATUS.FAILED &&
-        <span>LeafletMap Loading Has Failed</span>
+         mapStatus === MAP_STATUS.FAILED && (
+           <ErrMsg
+             style={S.ERR_MSG}
+             msg="LeafletMap Loading Has Failed."
+           />
+         )
      }
     </div>
   );

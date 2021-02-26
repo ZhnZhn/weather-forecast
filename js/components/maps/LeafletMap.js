@@ -19,6 +19,8 @@ var _handlers = _interopRequireDefault(require("../../flux/handlers"));
 
 var _selectors = require("../../flux/selectors");
 
+var _ErrMsg = _interopRequireDefault(require("../zhn-atoms/ErrMsg"));
+
 //import PropTypes from 'prop-types';
 var useState = _react["default"].useState,
     useRef = _react["default"].useRef,
@@ -30,6 +32,10 @@ var S = {
     width: '100%',
     height: 650,
     transition: 'transform .3s, width .6s'
+  },
+  ERR_MSG: {
+    marginTop: 8,
+    marginLeft: 8
   }
 };
 var MAP_STATUS = {
@@ -81,7 +87,10 @@ var LeafletMap = function LeafletMap(_ref) {
   return /*#__PURE__*/_react["default"].createElement("div", {
     style: (0, _extends2["default"])({}, S.DIV, style),
     id: id
-  }, mapStatus === MAP_STATUS.LOADING && /*#__PURE__*/_react["default"].createElement("span", null, "LeafletMap Loading..."), mapStatus === MAP_STATUS.FAILED && /*#__PURE__*/_react["default"].createElement("span", null, "LeafletMap Loading Has Failed"));
+  }, mapStatus === MAP_STATUS.FAILED && /*#__PURE__*/_react["default"].createElement(_ErrMsg["default"], {
+    style: S.ERR_MSG,
+    msg: "LeafletMap Loading Has Failed."
+  }));
 };
 /*
 LeafletMap.propTypes = {
