@@ -1,15 +1,16 @@
-import React from '../_react'
+import React from '../_react';
 
-import TooltipContent from './TooltipContent'
-import TooltipRow2 from './TooltipRow2'
-import TooltipRow1 from './TooltipRow1'
-import STYLE from './Label.Style'
+import getPayload from './getPayload';
+import TooltipContent from './TooltipContent';
+import TooltipRow2 from './TooltipRow2';
+import TooltipRow1 from './TooltipRow1';
+import STYLE from './Label.Style';
 
 const TooltipForecast = (props) => {
-  if (!props.active) {
-    return null;
-  }
-  const { label, payload } = props
+  const payload = getPayload(props);
+  if (!payload) { return null; }
+
+  const { label } = props
   , {
     tempMorn, tempDay,
     tempEve, tempNight,
@@ -17,7 +18,7 @@ const TooltipForecast = (props) => {
     rain, speed,
     pressure,
     humidity
-  } = (payload[0] || {}).payload || {};
+  } = payload;
 
   return (
     <TooltipContent caption={label}>

@@ -1,14 +1,13 @@
-import React from '../_react'
+import React from '../_react';
 
-import TooltipContent from './TooltipContent'
-import TooltipRow1 from './TooltipRow1'
-import STYLE from './Label.Style'
+import getPayload from './getPayload';
+import TooltipContent from './TooltipContent';
+import TooltipRow1 from './TooltipRow1';
+import STYLE from './Label.Style';
 
-const TooltipHourly = ({ active, payload }) => {
-
-  if (!active){
-    return null;
-  }
+const TooltipHourly = (props) => {
+  const payload = getPayload(props);
+  if (!payload){ return null; }
 
   const {
     dt_text,
@@ -16,7 +15,7 @@ const TooltipHourly = ({ active, payload }) => {
     pressure,
     rain,
     speed
-  } = (payload[0] || {}).payload || {};
+  } = payload;
 
   return (
    <TooltipContent caption={dt_text}>

@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("../_react"));
 
+var _getPayload = _interopRequireDefault(require("./getPayload"));
+
 var _TooltipContent = _interopRequireDefault(require("./TooltipContent"));
 
 var _TooltipRow = _interopRequireDefault(require("./TooltipRow2"));
@@ -16,24 +18,23 @@ var _TooltipRow2 = _interopRequireDefault(require("./TooltipRow1"));
 var _Label = _interopRequireDefault(require("./Label.Style"));
 
 var TooltipForecast = function TooltipForecast(props) {
-  if (!props.active) {
+  var payload = (0, _getPayload["default"])(props);
+
+  if (!payload) {
     return null;
   }
 
   var label = props.label,
-      payload = props.payload,
-      _ref = (payload[0] || {}).payload || {},
-      tempMorn = _ref.tempMorn,
-      tempDay = _ref.tempDay,
-      tempEve = _ref.tempEve,
-      tempNight = _ref.tempNight,
-      tempMin = _ref.tempMin,
-      tempMax = _ref.tempMax,
-      rain = _ref.rain,
-      speed = _ref.speed,
-      pressure = _ref.pressure,
-      humidity = _ref.humidity;
-
+      tempMorn = payload.tempMorn,
+      tempDay = payload.tempDay,
+      tempEve = payload.tempEve,
+      tempNight = payload.tempNight,
+      tempMin = payload.tempMin,
+      tempMax = payload.tempMax,
+      rain = payload.rain,
+      speed = payload.speed,
+      pressure = payload.pressure,
+      humidity = payload.humidity;
   return /*#__PURE__*/_react["default"].createElement(_TooltipContent["default"], {
     caption: label
   }, /*#__PURE__*/_react["default"].createElement(_TooltipRow["default"], {

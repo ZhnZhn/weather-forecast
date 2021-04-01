@@ -1,15 +1,16 @@
-import React from '../_react'
+import React from '../_react';
 
-import TooltipContent from './TooltipContent'
-import TooltipRow1 from './TooltipRow1'
+import getPayload from './getPayload';
+import TooltipContent from './TooltipContent';
+import TooltipRow1 from './TooltipRow1';
 
-const TooltipUvi = ({ active, payload }) => {
-  if (!active){
-    return null;
-  }
+const TooltipUvi = (props) => {
+  const payload = getPayload(props);
+  if (!payload) { return null; }
+
   const {
     day, uvi
-  } = (payload[0] || {}).payload || {};
+  } = payload;
 
   return (
     <TooltipContent caption={`${day}:00`}>
