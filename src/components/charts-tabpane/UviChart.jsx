@@ -1,14 +1,14 @@
-import React from '../_react'
-import { useSelector } from 'react-redux'
+import React from '../_react';
+import { useSelector } from 'react-redux';
 import dt from '../../utils/dt';
 
-import Chart from '../charts/Chart'
+import Chart from '../charts/Chart';
 import { sUV } from '../../flux/selectors';
 
-import TooltipUvi from './TooltipUvi'
+import TooltipUvi from './TooltipUvi';
 import STYLE from './Chart.Style';
 
-const { useMemo } = React
+const { useMemo } = React;
 
 const {
  CartesianGrid,
@@ -21,27 +21,24 @@ const {
 } = Chart;
 
 const _transformUvi = hourlyArr => (hourlyArr || [])
-  .map(({ dt:timestamp, uvi }) => ({
-     day: dt.toDayHour(timestamp),
-     uvi
+  .map(({ date, value }) => ({
+     day: dt.toDayHour(date),
+     uvi: value
   }))
 
 const UviChart = () => {
   const uviArr = useSelector(sUV.forecast)
   , data = useMemo(() => _transformUvi(uviArr),
       [uviArr]);
-
   return (
     <ResponsiveContainer width="100%" height={300} >
 
     <LineChart data={data} {...STYLE.HourlyChart} >
       <XAxis dataKey="day" {...STYLE.XAxis} />
-
       <YAxis
          yAxisId={1}
          orientation="right"
          width={45}
-         //label="UV"
          dataKey="uvi"
       />
       <CartesianGrid {...STYLE.CartesianGrid} />

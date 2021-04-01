@@ -71,7 +71,7 @@ var sUV = {
   },
   forecast: function forecast(state) {
     var recent = sUV.recent(state);
-    return recent ? (sUV.byId(state, recent) || {}).list : void 0;
+    return recent ? sUV.byId(state, recent) : void 0;
   }
 };
 exports.sUV = sUV;

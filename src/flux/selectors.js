@@ -50,8 +50,8 @@ export const sUV = {
 
   forecast : state => {
     const recent = sUV.recent(state);
-    return recent
-      ? (sUV.byId(state, recent) || {}).list
+    return recent      
+      ? sUV.byId(state, recent)
       : void 0;
   }
 }

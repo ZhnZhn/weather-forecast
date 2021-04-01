@@ -32,11 +32,11 @@ var CartesianGrid = _Chart["default"].CartesianGrid,
 
 var _transformUvi = function _transformUvi(hourlyArr) {
   return (hourlyArr || []).map(function (_ref) {
-    var timestamp = _ref.dt,
-        uvi = _ref.uvi;
+    var date = _ref.date,
+        value = _ref.value;
     return {
-      day: _dt["default"].toDayHour(timestamp),
-      uvi: uvi
+      day: _dt["default"].toDayHour(date),
+      uvi: value
     };
   });
 };
@@ -56,8 +56,7 @@ var UviChart = function UviChart() {
   }, _Chart2["default"].XAxis)), /*#__PURE__*/_react["default"].createElement(YAxis, {
     yAxisId: 1,
     orientation: "right",
-    width: 45 //label="UV"
-    ,
+    width: 45,
     dataKey: "uvi"
   }), /*#__PURE__*/_react["default"].createElement(CartesianGrid, _Chart2["default"].CartesianGrid), /*#__PURE__*/_react["default"].createElement(Tooltip, {
     offset: 24,
