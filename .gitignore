@@ -1,10 +1,7 @@
 .languagebabel
 node_modules
-local_modules
 _init_checkout.bat
 _start_server.bat
-graph.svg
-graph-2.svg
 weather-saga.html
 lint.txt
 lib-dev
@@ -13,6 +10,6 @@ stat-dll.json
 coverage
 dll
 _codemods
+public
 webpack.dev.js
-dev
 template/index-dev.ejs
