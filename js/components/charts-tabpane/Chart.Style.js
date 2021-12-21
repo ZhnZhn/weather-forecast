@@ -67,7 +67,7 @@ var STYLE = {
     //width: 645,
     //height: 300,
     margin: {
-      top: 20,
+      top: 24,
       right: 10,
       bottom: 30,
       left: 20

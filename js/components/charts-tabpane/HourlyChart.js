@@ -23,6 +23,8 @@ var _TooltipHourly = _interopRequireDefault(require("./TooltipHourly"));
 
 var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
 
+var _SeriesColor = _interopRequireDefault(require("./SeriesColor"));
+
 var useState = _react["default"].useState,
     useCallback = _react["default"].useCallback,
     useMemo = _react["default"].useMemo,
@@ -65,6 +67,30 @@ var INITIAL_DATA = [{
   day: '07 08',
   temp: 34
 }];
+
+var _crLabelColor = function _crLabelColor(color) {
+  return {
+    stroke: color,
+    fill: color
+  };
+};
+
+var LABEL_POSITION = {
+  position: "top",
+  offset: 10
+},
+    LABEL_TEMPERATURE = (0, _extends2["default"])({}, LABEL_POSITION, {
+  value: "C°"
+}),
+    LABEL_PRESSURE = (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].PRESSURE), {
+  value: "hPa"
+}),
+    LABEL_RAIN = (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].RAIN), {
+  value: "mm"
+}),
+    LABEL_WIND_SPEED = (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].SPEED), {
+  value: "m/s"
+});
 
 var _transformHourly = function _transformHourly(hourlyArr) {
   return hourlyArr.map(function (_ref) {
@@ -131,7 +157,7 @@ var HourlyChart = memo(function () {
     yAxisId: 1,
     orientation: "right",
     width: 45,
-    label: "\xB0C",
+    label: LABEL_TEMPERATURE,
     dataKey: "temp",
     hide: filtered.temp
   }), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({
@@ -141,20 +167,20 @@ var HourlyChart = memo(function () {
     dataKey: "pressure",
     type: "number",
     domain: ['dataMin', 'dataMax'],
-    label: "hPa",
+    label: LABEL_PRESSURE,
     hide: filtered.pressure
   }, _Chart2["default"].YAxisPressure)), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({
     yAxisId: 3,
     orientation: "right",
     width: 54,
-    label: "mm",
+    label: LABEL_RAIN,
     dataKey: "rain",
     hide: filtered.rain
   }, _Chart2["default"].YAxisRain)), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({
     yAxisId: 4,
     orientation: "right",
     width: 45,
-    label: "m/s",
+    label: LABEL_WIND_SPEED,
     dataKey: "speed",
     hide: filtered.speed
   }, _Chart2["default"].YAxisSpeed)), /*#__PURE__*/_react["default"].createElement(CartesianGrid, _Chart2["default"].CartesianGrid), /*#__PURE__*/_react["default"].createElement(Tooltip, {

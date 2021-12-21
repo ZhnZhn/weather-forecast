@@ -9,6 +9,7 @@ import { sHourly } from '../../flux/selectors';
 import LegendHourly from './LegendHourly';
 import TooltipHourly from './TooltipHourly';
 import STYLE from './Chart.Style';
+import SC from './SeriesColor';
 
 const { useState, useCallback, useMemo, memo } = React
 
@@ -42,6 +43,36 @@ const INITIAL_DATA = [
   {day: '06 20', temp: 23 },
   {day: '07 08', temp: 34 }
 ];
+
+const _crLabelColor = color => ({
+  stroke: color,
+  fill: color
+});
+
+const LABEL_POSITION = {
+  position: "top",
+  offset: 10
+}
+, LABEL_TEMPERATURE = {
+  ...LABEL_POSITION,
+  value: "C°"
+}
+, LABEL_PRESSURE = {
+  ...LABEL_POSITION,
+  ..._crLabelColor(SC.PRESSURE),
+  value: "hPa"
+}
+, LABEL_RAIN = {
+  ...LABEL_POSITION,
+  ..._crLabelColor(SC.RAIN),
+  value: "mm"
+}
+, LABEL_WIND_SPEED = {
+  ...LABEL_POSITION,
+  ..._crLabelColor(SC.SPEED),
+  value: "m/s"
+};
+
 
 const _transformHourly = hourlyArr => hourlyArr
   .map(({ dt:timestamp, main, wind, rain }) => {
@@ -89,7 +120,7 @@ const HourlyChart = memo(() => {
          yAxisId={1}
          orientation="right"
          width={45}
-         label="°C"
+         label={LABEL_TEMPERATURE}
          dataKey="temp"
          hide={filtered.temp}
       />
@@ -100,7 +131,7 @@ const HourlyChart = memo(() => {
          dataKey="pressure"
          type="number"
          domain={['dataMin', 'dataMax']}
-         label="hPa"
+         label={LABEL_PRESSURE}
          hide={filtered.pressure}
          {...STYLE.YAxisPressure}
       />
@@ -108,7 +139,7 @@ const HourlyChart = memo(() => {
          yAxisId={3}
          orientation="right"
          width={54}
-         label="mm"
+         label={LABEL_RAIN}
          dataKey="rain"
          hide={filtered.rain}
          {...STYLE.YAxisRain}
@@ -117,7 +148,7 @@ const HourlyChart = memo(() => {
         yAxisId={4}
         orientation="right"
         width={45}
-        label="m/s"
+        label={LABEL_WIND_SPEED}
         dataKey="speed"
         hide={filtered.speed}
         {...STYLE.YAxisSpeed}
