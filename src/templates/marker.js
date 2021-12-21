@@ -3,9 +3,12 @@ import dt from '../utils/dt'
 
 const { sanitize } = DOMPurify;
 
-const _getByPropFromArr = (arr=[], prop, i=0, df='no data') => {
-  return (arr && arr[i] && arr[i][prop]) || df;
-};
+const _getByPropFromArr = (
+  arr=[],
+  prop,
+  i=0,
+  df='no data'
+) => (arr && arr[i] && arr[i][prop]) || df;
 
 const _crVane = deg => {
   return `<svg xmlns="http://www.w3.org/2000/svg"
@@ -46,11 +49,11 @@ const marker = {
   fPopup : (w, themeName) => {
     const {
       id, name='', sys, dt:msc, wind, weather,
-      main, visibility='no data'
+      main
     } = w || {}
     , { country='' } = sys || {}
     , description = _getByPropFromArr(weather, 'description')
-    , { temp='', pressure='' } = main || {}
+    , { temp='', pressure='', feels_like } = main || {}
     , { deg=0, speed='no data' } = wind || {}
     , icon = _getByPropFromArr(weather, 'icon');
 
@@ -68,7 +71,7 @@ const marker = {
     , _temp = sanitize(temp)
     , _pressure = sanitize(pressure)
     , _speed = sanitize(speed)
-    , _visibility = sanitize(visibility)
+    , _feels_like = sanitize(feels_like)
     , _deg = sanitize(deg);
 
     return `<div class="marker__caption ${_captionCl}" onclick="${_captionOnClick}">
@@ -87,11 +90,21 @@ const marker = {
           <span class="marker__label" title="Temperature">T:</span>
           <span class="marker__value-odd" style="color:#ff9800;">
              ${_temp}&nbsp;C
-           </span>
-           <span class="marker__label left-5" title="Pressure">Pr:</span>
+          </span>
+          <span class="marker__label left-5" title="Feels Like">FL:</span>
+          <span class="marker__value-even" style="color:#ff9800;">
+            ${_feels_like}&nbsp;C
+          </span>
+          <span class="marker__label left-5" title="Clouds">Cl:</span>
+          <span class="marker__value-even" style="color:#3f51b5;">${w.clouds.all}%</span>
+        </p>
+        <p style="margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;">
+           <span class="marker__label" title="Pressure">Pr:</span>
            <span class="marker__value-odd" style="color:#3f51b5;">
              ${_pressure}&nbsp;hPa
            </span>
+           <span class="marker__label left-5" title="Humidity">H:</span>
+           <span class="marker__value-even" style="color:#3f51b5;">${w.main.humidity}%</span>
         </p>
         <p style="margin: 0 0;font-size: 15px; font-weight: bold;">
           <span class="marker__label" title="Wind">W:</span>
@@ -102,16 +115,6 @@ const marker = {
           <span class="marker__value-odd" style="color:#3f51b5;">
             ${_speed}m/s
           </span>
-        </p>
-        <p style="margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;">
-           <span class="marker__label" title="Clouds">Cl:</span>
-           <span class="marker__value-even" style="color:#3f51b5;">${w.clouds.all}%</span>
-           <span class="marker__label left-5" title="Humidity">H:</span>
-           <span class="marker__value-even" style="color:#3f51b5;">${w.main.humidity}%</span>
-           <span class="marker__label left-5">V:</span>
-           <span class="marker__value-even" style="color:#3f51b5;">
-             ${_visibility}
-            </span>
         </p>`
   }
 };

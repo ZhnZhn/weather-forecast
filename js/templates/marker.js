@@ -62,8 +62,6 @@ var marker = {
         wind = _ref4.wind,
         weather = _ref4.weather,
         main = _ref4.main,
-        _ref4$visibility = _ref4.visibility,
-        visibility = _ref4$visibility === void 0 ? 'no data' : _ref4$visibility,
         _ref5 = sys || {},
         _ref5$country = _ref5.country,
         country = _ref5$country === void 0 ? '' : _ref5$country,
@@ -73,6 +71,7 @@ var marker = {
         temp = _ref6$temp === void 0 ? '' : _ref6$temp,
         _ref6$pressure = _ref6.pressure,
         pressure = _ref6$pressure === void 0 ? '' : _ref6$pressure,
+        feels_like = _ref6.feels_like,
         _ref7 = wind || {},
         _ref7$deg = _ref7.deg,
         deg = _ref7$deg === void 0 ? 0 : _ref7$deg,
@@ -95,10 +94,10 @@ var marker = {
         _temp = sanitize(temp),
         _pressure = sanitize(pressure),
         _speed = sanitize(speed),
-        _visibility = sanitize(visibility),
+        _feels_like = sanitize(feels_like),
         _deg = sanitize(deg);
 
-    return "<div class=\"marker__caption " + _captionCl + "\" onclick=\"" + _captionOnClick + "\">\n           " + _captionCityDiv + "\n           <div class=\"marker__caption__date\">\n             " + _dt["default"].toMonthDayTime(msc) + "\n           </div>\n        </div>\n        <p style=\"display:table;margin: 0 0;font-size: 15px; font-weight: bold;\">\n          <img src=./img/" + _icon + ".png style=\"display:table-cell;width:50px;height:50px;\"></img>\n          <span class=\"marker__description\" style=\"display:table-cell;vertical-align:middle;\">\n            " + _description + "\n          </span>\n        </p>\n        <p style=\"margin: 0 0;margin-top: -8px;font-size: 15px; font-weight: bold;\">\n          <span class=\"marker__label\" title=\"Temperature\">T:</span>\n          <span class=\"marker__value-odd\" style=\"color:#ff9800;\">\n             " + _temp + "&nbsp;C\n           </span>\n           <span class=\"marker__label left-5\" title=\"Pressure\">Pr:</span>\n           <span class=\"marker__value-odd\" style=\"color:#3f51b5;\">\n             " + _pressure + "&nbsp;hPa\n           </span>\n        </p>\n        <p style=\"margin: 0 0;font-size: 15px; font-weight: bold;\">\n          <span class=\"marker__label\" title=\"Wind\">W:</span>\n          " + _crVane(_deg) + "\n          <span class=\"marker__value-odd\" style=\"color:#3f51b5;\">\n            " + _dt["default"].toDirection(_deg) + "\n          </span>\n          <span class=\"marker__value-odd\" style=\"color:#3f51b5;\">\n            " + _speed + "m/s\n          </span>\n        </p>\n        <p style=\"margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;\">\n           <span class=\"marker__label\" title=\"Clouds\">Cl:</span>\n           <span class=\"marker__value-even\" style=\"color:#3f51b5;\">" + w.clouds.all + "%</span>\n           <span class=\"marker__label left-5\" title=\"Humidity\">H:</span>\n           <span class=\"marker__value-even\" style=\"color:#3f51b5;\">" + w.main.humidity + "%</span>\n           <span class=\"marker__label left-5\">V:</span>\n           <span class=\"marker__value-even\" style=\"color:#3f51b5;\">\n             " + _visibility + "\n            </span>\n        </p>";
+    return "<div class=\"marker__caption " + _captionCl + "\" onclick=\"" + _captionOnClick + "\">\n           " + _captionCityDiv + "\n           <div class=\"marker__caption__date\">\n             " + _dt["default"].toMonthDayTime(msc) + "\n           </div>\n        </div>\n        <p style=\"display:table;margin: 0 0;font-size: 15px; font-weight: bold;\">\n          <img src=./img/" + _icon + ".png style=\"display:table-cell;width:50px;height:50px;\"></img>\n          <span class=\"marker__description\" style=\"display:table-cell;vertical-align:middle;\">\n            " + _description + "\n          </span>\n        </p>\n        <p style=\"margin: 0 0;margin-top: -8px;font-size: 15px; font-weight: bold;\">\n          <span class=\"marker__label\" title=\"Temperature\">T:</span>\n          <span class=\"marker__value-odd\" style=\"color:#ff9800;\">\n             " + _temp + "&nbsp;C\n          </span>\n          <span class=\"marker__label left-5\" title=\"Feels Like\">FL:</span>\n          <span class=\"marker__value-even\" style=\"color:#ff9800;\">\n            " + _feels_like + "&nbsp;C\n          </span>\n          <span class=\"marker__label left-5\" title=\"Clouds\">Cl:</span>\n          <span class=\"marker__value-even\" style=\"color:#3f51b5;\">" + w.clouds.all + "%</span>\n        </p>\n        <p style=\"margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;\">\n           <span class=\"marker__label\" title=\"Pressure\">Pr:</span>\n           <span class=\"marker__value-odd\" style=\"color:#3f51b5;\">\n             " + _pressure + "&nbsp;hPa\n           </span>\n           <span class=\"marker__label left-5\" title=\"Humidity\">H:</span>\n           <span class=\"marker__value-even\" style=\"color:#3f51b5;\">" + w.main.humidity + "%</span>\n        </p>\n        <p style=\"margin: 0 0;font-size: 15px; font-weight: bold;\">\n          <span class=\"marker__label\" title=\"Wind\">W:</span>\n          " + _crVane(_deg) + "\n          <span class=\"marker__value-odd\" style=\"color:#3f51b5;\">\n            " + _dt["default"].toDirection(_deg) + "\n          </span>\n          <span class=\"marker__value-odd\" style=\"color:#3f51b5;\">\n            " + _speed + "m/s\n          </span>\n        </p>";
   }
 };
 var _default = marker;
