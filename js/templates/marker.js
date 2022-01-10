@@ -10,6 +10,11 @@ var _dompurify = _interopRequireDefault(require("dompurify"));
 var _dt = _interopRequireDefault(require("../utils/dt"));
 
 var sanitize = _dompurify["default"].sanitize;
+var NO_DATA = 'No data';
+
+var _isNumberNotZero = function _isNumberNotZero(n) {
+  return typeof n === 'number' && n !== 0;
+};
 
 var _getByPropFromArr = function _getByPropFromArr(arr, prop, i, df) {
   if (arr === void 0) {
@@ -21,7 +26,7 @@ var _getByPropFromArr = function _getByPropFromArr(arr, prop, i, df) {
   }
 
   if (df === void 0) {
-    df = 'no data';
+    df = NO_DATA;
   }
 
   return arr && arr[i] && arr[i][prop] || df;
@@ -29,6 +34,50 @@ var _getByPropFromArr = function _getByPropFromArr(arr, prop, i, df) {
 
 var _crVane = function _crVane(deg) {
   return "<svg xmlns=\"http://www.w3.org/2000/svg\"\n       viewBox=\"0 0 17 18\" width=\"100%\" height=\"100%\"\n       preserveAspectRatio=\"none\" aria-labelledby=\"title\"\n       class=\"icon__popup__vane\"\n       style=\"transform:rotate(" + deg + "deg);position:relative;top:4px;\"\n  >\n     <title id=\"title\">Icon Wind Vane</title>\n     <path\n        d=\"M 10,0 L 8,0 8,11 4,11 9,18 14,11 10,11 10,0\"\n     >\n  </svg>";
+};
+
+var _isNaN = function _isNaN(n) {
+  return n - n !== 0;
+};
+
+var _crTemperature = function _crTemperature(t, fl) {
+  var _t = parseFloat(t),
+      _fl = parseFloat(fl),
+      _difference = _t - _fl;
+
+  if (_isNaN(_t)) {
+    return NO_DATA;
+  }
+
+  return _difference < -1 || _difference > 1 ? t + "&nbsp;(Feels&nbsp;Like&nbsp;" + fl + ")&nbsp;\xB0C" : t + "&nbsp;\xB0C";
+};
+
+var _crCaptionConfig = function _crCaptionConfig(id, name, country) {
+  var _captionCl = '',
+      _captionOnClick = '',
+      _captionCityDiv = '';
+
+  if (_isNumberNotZero(id)) {
+    _captionCl = 'marker__caption__not-empty';
+    _captionOnClick = "weather.fnFetchForecast(" + id + ")";
+    _captionCityDiv = "<div class=\"marker__caption__city\">" + name + ":" + country + "</div>";
+  }
+
+  return [_captionCl, _captionOnClick, _captionCityDiv];
+};
+
+var _isEmptyValue = function _isEmptyValue(v) {
+  return v == null || v === '';
+};
+
+var _crWindSpeed = function _crWindSpeed(speed, gust) {
+  if (_isEmptyValue(speed)) {
+    return '';
+  }
+
+  var _gust = _isEmptyValue(gust) ? '' : "-" + gust;
+
+  return "" + speed + _gust + "m/s";
 };
 
 var marker = {
@@ -62,6 +111,7 @@ var marker = {
         wind = _ref4.wind,
         weather = _ref4.weather,
         main = _ref4.main,
+        clouds = _ref4.clouds,
         _ref5 = sys || {},
         _ref5$country = _ref5.country,
         country = _ref5$country === void 0 ? '' : _ref5$country,
@@ -72,32 +122,31 @@ var marker = {
         _ref6$pressure = _ref6.pressure,
         pressure = _ref6$pressure === void 0 ? '' : _ref6$pressure,
         feels_like = _ref6.feels_like,
+        _ref6$humidity = _ref6.humidity,
+        humidity = _ref6$humidity === void 0 ? '' : _ref6$humidity,
         _ref7 = wind || {},
         _ref7$deg = _ref7.deg,
         deg = _ref7$deg === void 0 ? 0 : _ref7$deg,
-        _ref7$speed = _ref7.speed,
-        speed = _ref7$speed === void 0 ? 'no data' : _ref7$speed,
-        icon = _getByPropFromArr(weather, 'icon');
-
-    var _captionCl = '',
-        _captionOnClick = '',
-        _captionCityDiv = '';
-
-    if (typeof id === 'number' && id !== 0) {
-      _captionCl = 'marker__caption__not-empty';
-      _captionOnClick = "weather.fnFetchForecast(" + id + ")";
-      _captionCityDiv = "<div class=\"marker__caption__city\">" + name + ":" + country + "</div>";
-    }
-
-    var _icon = sanitize(icon),
+        speed = _ref7.speed,
+        gust = _ref7.gust,
+        _ref8 = clouds || {},
+        _ref8$all = _ref8.all,
+        cloudsAll = _ref8$all === void 0 ? '' : _ref8$all,
+        icon = _getByPropFromArr(weather, 'icon'),
+        _crCaptionConfig2 = _crCaptionConfig(id, sanitize(name), sanitize(country)),
+        _captionCl = _crCaptionConfig2[0],
+        _captionOnClick = _crCaptionConfig2[1],
+        _captionCityDiv = _crCaptionConfig2[2],
+        _icon = sanitize(icon),
         _description = sanitize(description),
-        _temp = sanitize(temp),
+        _clouds = sanitize(cloudsAll),
         _pressure = sanitize(pressure),
-        _speed = sanitize(speed),
-        _feels_like = sanitize(feels_like),
-        _deg = sanitize(deg);
+        _deg = sanitize(deg),
+        _windSpeed = _crWindSpeed(sanitize(speed), sanitize(gust)),
+        _temp = _crTemperature(sanitize(temp), sanitize(feels_like)),
+        _humidity = sanitize(humidity);
 
-    return "<div class=\"marker__caption " + _captionCl + "\" onclick=\"" + _captionOnClick + "\">\n           " + _captionCityDiv + "\n           <div class=\"marker__caption__date\">\n             " + _dt["default"].toMonthDayTime(msc) + "\n           </div>\n        </div>\n        <p style=\"display:table;margin: 0 0;font-size: 15px; font-weight: bold;\">\n          <img src=./img/" + _icon + ".png style=\"display:table-cell;width:50px;height:50px;\"></img>\n          <span class=\"marker__description\" style=\"display:table-cell;vertical-align:middle;\">\n            " + _description + "\n          </span>\n        </p>\n        <p style=\"margin: 0 0;margin-top: -8px;font-size: 15px; font-weight: bold;\">\n          <span class=\"marker__label\" title=\"Temperature\">T:</span>\n          <span class=\"marker__value-odd\" style=\"color:#ff9800;\">\n             " + _temp + "&nbsp;C\n          </span>\n          <span class=\"marker__label left-5\" title=\"Feels Like\">FL:</span>\n          <span class=\"marker__value-even\" style=\"color:#ff9800;\">\n            " + _feels_like + "&nbsp;C\n          </span>\n          <span class=\"marker__label left-5\" title=\"Clouds\">Cl:</span>\n          <span class=\"marker__value-even\" style=\"color:#3f51b5;\">" + w.clouds.all + "%</span>\n        </p>\n        <p style=\"margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;\">\n           <span class=\"marker__label\" title=\"Pressure\">Pr:</span>\n           <span class=\"marker__value-odd\" style=\"color:#3f51b5;\">\n             " + _pressure + "&nbsp;hPa\n           </span>\n           <span class=\"marker__label left-5\" title=\"Humidity\">H:</span>\n           <span class=\"marker__value-even\" style=\"color:#3f51b5;\">" + w.main.humidity + "%</span>\n        </p>\n        <p style=\"margin: 0 0;font-size: 15px; font-weight: bold;\">\n          <span class=\"marker__label\" title=\"Wind\">W:</span>\n          " + _crVane(_deg) + "\n          <span class=\"marker__value-odd\" style=\"color:#3f51b5;\">\n            " + _dt["default"].toDirection(_deg) + "\n          </span>\n          <span class=\"marker__value-odd\" style=\"color:#3f51b5;\">\n            " + _speed + "m/s\n          </span>\n        </p>";
+    return "<div class=\"marker__caption " + _captionCl + "\" onclick=\"" + _captionOnClick + "\">\n           " + _captionCityDiv + "\n           <div class=\"marker__caption__date\">\n             " + _dt["default"].toMonthDayTime(msc) + "\n           </div>\n        </div>\n        <p style=\"display:table;margin: 0 0;font-size: 15px; font-weight: bold;\">\n          <img src=./img/" + _icon + ".png style=\"display:table-cell;width:50px;height:50px;\"></img>\n          <span class=\"marker__description\" style=\"display:table-cell;vertical-align:middle;\">\n            " + _description + "&nbsp;(" + _clouds + "%)\n          </span>\n        </p>\n        <p style=\"margin: 0 0;margin-top: -8px;font-size: 15px; font-weight: bold;\">\n          <span class=\"marker__value-odd\" style=\"color:#ff9800;\">\n             " + _temp + "\n          </span>\n          <span class=\"marker__value-odd left-5\" style=\"color:#0d2339;\">\n            " + _pressure + "&nbsp;hPa\n          </span>\n        </p>\n        <p style=\"margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;\">\n          " + _crVane(_deg) + "\n          <span class=\"marker__value-odd\" style=\"color:#3f51b5;\">\n            " + _dt["default"].toDirection(_deg) + "\n          </span>\n          <span class=\"marker__value-odd\" style=\"color:#3f51b5;\">\n            " + _windSpeed + "\n          </span>\n           <span class=\"marker__label left-5\" title=\"Humidity\">H:</span>\n           <span class=\"marker__value-even\" style=\"color:#3f51b5;\">" + _humidity + "%</span>\n        </p>";
   }
 };
 var _default = marker;

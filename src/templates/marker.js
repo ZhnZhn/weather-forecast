@@ -3,11 +3,15 @@ import dt from '../utils/dt'
 
 const { sanitize } = DOMPurify;
 
+const NO_DATA = 'No data';
+const _isNumberNotZero = n =>
+  typeof n === 'number' && n !== 0;
+
 const _getByPropFromArr = (
   arr=[],
   prop,
   i=0,
-  df='no data'
+  df=NO_DATA
 ) => (arr && arr[i] && arr[i][prop]) || df;
 
 const _crVane = deg => {
@@ -22,6 +26,50 @@ const _crVane = deg => {
         d="M 10,0 L 8,0 8,11 4,11 9,18 14,11 10,11 10,0"
      >
   </svg>`;
+};
+
+const _isNaN = n => n - n !== 0
+
+const _crTemperature = (t, fl) => {
+  const _t = parseFloat(t)
+  , _fl = parseFloat(fl)
+  , _difference = _t - _fl;
+  if (_isNaN(_t)) {
+    return NO_DATA;
+  }
+
+  return _difference < -1 || _difference > 1
+    ? `${t}&nbsp;(Feels&nbsp;Like&nbsp;${fl})&nbsp;°C`
+    : `${t}&nbsp;°C`
+};
+
+const _crCaptionConfig = (id, name, country) => {
+  let _captionCl=''
+    , _captionOnClick=''
+    , _captionCityDiv='';
+  if (_isNumberNotZero(id)) {
+    _captionCl = 'marker__caption__not-empty'
+    _captionOnClick = `weather.fnFetchForecast(${id})`
+    _captionCityDiv = `<div class="marker__caption__city">${name}:${country}</div>`
+  }
+  return [
+    _captionCl,
+    _captionOnClick,
+    _captionCityDiv
+  ];
+};
+
+const _isEmptyValue = v =>
+  v == null || v === '';
+
+const _crWindSpeed = (speed, gust) => {
+ if (_isEmptyValue(speed)) {
+   return '';
+ }
+ const _gust = _isEmptyValue(gust)
+   ? ''
+   : `-${gust}`;  
+  return `${speed}${_gust}m/s`;
 };
 
 
@@ -48,31 +96,35 @@ const marker = {
 
   fPopup : (w, themeName) => {
     const {
-      id, name='', sys, dt:msc, wind, weather,
-      main
+      id,
+      name='',
+      sys,
+      dt:msc,
+      wind,
+      weather,
+      main,
+      clouds
     } = w || {}
     , { country='' } = sys || {}
     , description = _getByPropFromArr(weather, 'description')
-    , { temp='', pressure='', feels_like } = main || {}
-    , { deg=0, speed='no data' } = wind || {}
-    , icon = _getByPropFromArr(weather, 'icon');
+    , { temp='', pressure='', feels_like, humidity='' } = main || {}
+    , { deg=0, speed, gust } = wind || {}
+    , { all:cloudsAll='' } = clouds || {}
+    , icon = _getByPropFromArr(weather, 'icon')
 
-    let _captionCl=''
-      , _captionOnClick=''
-      , _captionCityDiv='';
-    if (typeof id === 'number' && id !== 0) {
-      _captionCl = 'marker__caption__not-empty'
-      _captionOnClick = `weather.fnFetchForecast(${id})`
-      _captionCityDiv = `<div class="marker__caption__city">${name}:${country}</div>`
-    }
+    , [ _captionCl,
+        _captionOnClick,
+        _captionCityDiv
+      ] = _crCaptionConfig(id, sanitize(name), sanitize(country))
 
-    const _icon = sanitize(icon)
+    , _icon = sanitize(icon)
     , _description = sanitize(description)
-    , _temp = sanitize(temp)
+    , _clouds = sanitize(cloudsAll)
     , _pressure = sanitize(pressure)
-    , _speed = sanitize(speed)
-    , _feels_like = sanitize(feels_like)
-    , _deg = sanitize(deg);
+    , _deg = sanitize(deg)
+    , _windSpeed = _crWindSpeed(sanitize(speed), sanitize(gust))
+    , _temp = _crTemperature(sanitize(temp), sanitize(feels_like))
+    , _humidity = sanitize(humidity);
 
     return `<div class="marker__caption ${_captionCl}" onclick="${_captionOnClick}">
            ${_captionCityDiv}
@@ -83,38 +135,27 @@ const marker = {
         <p style="display:table;margin: 0 0;font-size: 15px; font-weight: bold;">
           <img src=./img/${_icon}.png style="display:table-cell;width:50px;height:50px;"></img>
           <span class="marker__description" style="display:table-cell;vertical-align:middle;">
-            ${_description}
+            ${_description}&nbsp;(${_clouds}%)
           </span>
         </p>
         <p style="margin: 0 0;margin-top: -8px;font-size: 15px; font-weight: bold;">
-          <span class="marker__label" title="Temperature">T:</span>
           <span class="marker__value-odd" style="color:#ff9800;">
-             ${_temp}&nbsp;C
+             ${_temp}
           </span>
-          <span class="marker__label left-5" title="Feels Like">FL:</span>
-          <span class="marker__value-even" style="color:#ff9800;">
-            ${_feels_like}&nbsp;C
+          <span class="marker__value-odd left-5" style="color:#0d2339;">
+            ${_pressure}&nbsp;hPa
           </span>
-          <span class="marker__label left-5" title="Clouds">Cl:</span>
-          <span class="marker__value-even" style="color:#3f51b5;">${w.clouds.all}%</span>
         </p>
         <p style="margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;">
-           <span class="marker__label" title="Pressure">Pr:</span>
-           <span class="marker__value-odd" style="color:#3f51b5;">
-             ${_pressure}&nbsp;hPa
-           </span>
-           <span class="marker__label left-5" title="Humidity">H:</span>
-           <span class="marker__value-even" style="color:#3f51b5;">${w.main.humidity}%</span>
-        </p>
-        <p style="margin: 0 0;font-size: 15px; font-weight: bold;">
-          <span class="marker__label" title="Wind">W:</span>
           ${_crVane(_deg)}
           <span class="marker__value-odd" style="color:#3f51b5;">
             ${dt.toDirection(_deg)}
           </span>
           <span class="marker__value-odd" style="color:#3f51b5;">
-            ${_speed}m/s
+            ${_windSpeed}
           </span>
+           <span class="marker__label left-5" title="Humidity">H:</span>
+           <span class="marker__value-even" style="color:#3f51b5;">${_humidity}%</span>
         </p>`
   }
 };
