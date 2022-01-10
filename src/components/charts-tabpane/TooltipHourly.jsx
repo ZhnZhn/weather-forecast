@@ -14,6 +14,7 @@ const TooltipHourly = (props) => {
     temp,
     pressure,
     rain,
+    snow,
     speed
   } = payload;
 
@@ -23,8 +24,9 @@ const TooltipHourly = (props) => {
      <TooltipRow1 t="Pressure" v={pressure} style={STYLE.PRESSURE} />
      <TooltipRow1 t="Speed" v={speed} style={STYLE.SPEED} />
      <TooltipRow1 t="Rain" v={rain} s={STYLE.RAIN} />
+     <TooltipRow1 t="Snow" v={snow} s={STYLE.RAIN} />
    </TooltipContent>
   );
-}
+};
 
 export default TooltipHourly

@@ -80,7 +80,7 @@ var LABEL_POSITION = {
   offset: 10
 },
     LABEL_TEMPERATURE = (0, _extends2["default"])({}, LABEL_POSITION, {
-  value: "C°"
+  value: "°C"
 }),
     LABEL_PRESSURE = (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].PRESSURE), {
   value: "hPa"
@@ -88,16 +88,24 @@ var LABEL_POSITION = {
     LABEL_RAIN = (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].RAIN), {
   value: "mm"
 }),
+    LABEL_SNOW = (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].SNOW), {
+  value: "mm"
+}),
     LABEL_WIND_SPEED = (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].SPEED), {
   value: "m/s"
 });
+
+var _get3h = function _get3h(data) {
+  return (data || {})['3h'] || null;
+};
 
 var _transformHourly = function _transformHourly(hourlyArr) {
   return hourlyArr.map(function (_ref) {
     var timestamp = _ref.dt,
         main = _ref.main,
         wind = _ref.wind,
-        rain = _ref.rain;
+        rain = _ref.rain,
+        snow = _ref.snow;
 
     var _ref2 = main || {},
         temp = _ref2.temp,
@@ -106,7 +114,6 @@ var _transformHourly = function _transformHourly(hourlyArr) {
         _ref3 = wind || {},
         _ref3$speed = _ref3.speed,
         speed = _ref3$speed === void 0 ? null : _ref3$speed,
-        _rain = (rain || {})['3h'] || null,
         _dh = _dt["default"].toDayHour(timestamp);
 
     return {
@@ -116,9 +123,41 @@ var _transformHourly = function _transformHourly(hourlyArr) {
       pressure: pressure,
       humidity: humidity,
       speed: speed,
-      rain: _rain
+      rain: _get3h(rain),
+      snow: _get3h(snow)
     };
   });
+};
+
+var _isNumber = function _isNumber(n) {
+  return typeof n === 'number';
+};
+
+var _fHasData = function _fHasData(propName, isData) {
+  return function (data) {
+    for (var i = 0; i < data.length; i++) {
+      if (isData(data[i][propName])) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+};
+
+var _isNumberGreaterZero = function _isNumberGreaterZero(value) {
+  return _isNumber(value) && value > 0;
+};
+
+var _hasRain = _fHasData('rain', _isNumberGreaterZero);
+
+var _hasSnow = _fHasData('snow', _isNumberGreaterZero);
+
+var _crYAxisIds = function _crYAxisIds(isRain, isSnow) {
+  var rain = isRain ? 3 : void 0,
+      snow = rain ? isSnow ? 4 : 3 : void 0,
+      speed = rain ? snow ? 5 : 4 : 3;
+  return [rain, snow, speed];
 };
 
 var _crDataKey = function _crDataKey(filtered, propName) {
@@ -144,7 +183,17 @@ var HourlyChart = memo(function () {
   }),
       data = useMemo(function () {
     return _isArr(hourlyArr) ? _transformHourly(hourlyArr) : INITIAL_DATA;
-  }, [hourlyArr]);
+  }, [hourlyArr]),
+      _isRain = useMemo(function () {
+    return _hasRain(data);
+  }, [data]),
+      _isSnow = useMemo(function () {
+    return _hasSnow(data);
+  }, [data]),
+      _crYAxisIds2 = _crYAxisIds(_isRain, _isSnow),
+      rainId = _crYAxisIds2[0],
+      snowId = _crYAxisIds2[1],
+      speedId = _crYAxisIds2[2];
 
   return /*#__PURE__*/_react["default"].createElement(ResponsiveContainer, {
     width: "100%",
@@ -169,15 +218,22 @@ var HourlyChart = memo(function () {
     domain: ['dataMin', 'dataMax'],
     label: LABEL_PRESSURE,
     hide: filtered.pressure
-  }, _Chart2["default"].YAxisPressure)), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({
-    yAxisId: 3,
+  }, _Chart2["default"].YAxisPressure)), _isRain && /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({
+    yAxisId: rainId,
     orientation: "right",
     width: 54,
     label: LABEL_RAIN,
     dataKey: "rain",
     hide: filtered.rain
-  }, _Chart2["default"].YAxisRain)), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({
-    yAxisId: 4,
+  }, _Chart2["default"].YAxisRain)), _isSnow && /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({
+    yAxisId: snowId,
+    orientation: "right",
+    width: 54,
+    label: LABEL_SNOW,
+    dataKey: "snow",
+    hide: filtered.snow
+  }, _Chart2["default"].YAxisSnow)), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({
+    yAxisId: speedId,
     orientation: "right",
     width: 45,
     label: LABEL_WIND_SPEED,
@@ -190,6 +246,8 @@ var HourlyChart = memo(function () {
     })
   }), /*#__PURE__*/_react["default"].createElement(Legend, {
     content: /*#__PURE__*/_react["default"].createElement(_LegendHourly["default"], {
+      isRain: _isRain,
+      isSnow: _isSnow,
       filtered: filtered,
       onFilter: _hFilter
     })
@@ -202,17 +260,22 @@ var HourlyChart = memo(function () {
     strokeDasharray: "5 5",
     yAxisId: 2,
     dataKey: _crDataKey(filtered, 'pressure')
-  })), /*#__PURE__*/_react["default"].createElement(Bar, {
+  })), _isRain && /*#__PURE__*/_react["default"].createElement(Bar, {
     dataKey: _crDataKey(filtered, 'rain'),
-    yAxisId: 3,
+    yAxisId: rainId,
     barSize: 20,
     fill: "#0922a5"
+  }), _isSnow && /*#__PURE__*/_react["default"].createElement(Bar, {
+    dataKey: _crDataKey(filtered, 'snow'),
+    yAxisId: snowId,
+    barSize: 20,
+    fill: _SeriesColor["default"].SNOW
   }), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({
     connectNulls: true
   }, _Chart2["default"].LineSpeed, {
     strokeDasharray: "5 5" //strokeDasharray={false}
     ,
-    yAxisId: 4,
+    yAxisId: speedId,
     dataKey: _crDataKey(filtered, 'speed')
   }))));
 }, areEqual);

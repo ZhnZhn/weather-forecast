@@ -17,17 +17,13 @@ var _SvgRect = _interopRequireDefault(require("./SvgRect"));
 
 var _Label = _interopRequireDefault(require("./Label.Style"));
 
-var L_S = {
-  ROOT: {
-    marginTop: '1rem'
-  },
-  ITEM: {
-    display: 'inline-block',
-    marginRight: '1rem',
-    paddingLeft: 4,
-    paddingRight: 4,
-    paddingBottom: 4
-  }
+var LS_ROOT = {
+  marginTop: '1rem'
+},
+    LS_ITEM = {
+  display: 'inline-block',
+  marginRight: '1rem',
+  padding: '0 4px 4px 4px'
 };
 
 var _crLabelStyle = function _crLabelStyle(is, style) {
@@ -35,39 +31,49 @@ var _crLabelStyle = function _crLabelStyle(is, style) {
 };
 
 var LegendHourly = function LegendHourly(_ref) {
-  var filtered = _ref.filtered,
+  var isRain = _ref.isRain,
+      isSnow = _ref.isSnow,
+      filtered = _ref.filtered,
       onFilter = _ref.onFilter;
 
   var _tempStyle = _crLabelStyle(!filtered.temp, _Label["default"].SERIA),
       _pressureStyle = _crLabelStyle(!filtered.pressure, _Label["default"].PRESSURE),
       _rainStyle = _crLabelStyle(!filtered.rain, _Label["default"].RAIN),
+      _snowStyle = _crLabelStyle(!filtered.snow, _Label["default"].SNOW),
       _speedStyle = _crLabelStyle(!filtered.speed, _Label["default"].SPEED);
 
   return /*#__PURE__*/_react["default"].createElement("div", {
-    style: L_S.ROOT
+    style: LS_ROOT
   }, /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
-    style: L_S.ITEM,
+    style: LS_ITEM,
     titleStyle: _tempStyle,
     title: "T",
     onClick: function onClick() {
       return onFilter('temp');
     }
   }, /*#__PURE__*/_react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_SERIA)), /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
-    style: L_S.ITEM,
+    style: LS_ITEM,
     titleStyle: _pressureStyle,
     title: "Pressure",
     onClick: function onClick() {
       return onFilter('pressure');
     }
-  }, /*#__PURE__*/_react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_PRESSURE)), /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
-    style: L_S.ITEM,
+  }, /*#__PURE__*/_react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_PRESSURE)), isRain && /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
+    style: LS_ITEM,
     titleStyle: _rainStyle,
     title: "Rain",
     onClick: function onClick() {
       return onFilter('rain');
     }
-  }, /*#__PURE__*/_react["default"].createElement(_SvgRect["default"], _Label["default"].RECT_RAIN)), /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
-    style: L_S.ITEM,
+  }, /*#__PURE__*/_react["default"].createElement(_SvgRect["default"], _Label["default"].RECT_RAIN)), isSnow && /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
+    style: LS_ITEM,
+    titleStyle: _snowStyle,
+    title: "Snow",
+    onClick: function onClick() {
+      return onFilter('snow');
+    }
+  }, /*#__PURE__*/_react["default"].createElement(_SvgRect["default"], _Label["default"].RECT_SNOW)), /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
+    style: LS_ITEM,
     titleStyle: _speedStyle,
     title: "Wind",
     onClick: function onClick() {

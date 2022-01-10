@@ -42,9 +42,13 @@ const STYLE = {
   CIRCLE_HUMIDITY : _crCircleStyle(SC.SPEED),
   HUMIDITY : _crSpanStyle(SC.SPEED),
 
-  CIRCLE_RAIN : _crCircleStyle(SC.RAIN),
+  //CIRCLE_RAIN : _crCircleStyle(SC.RAIN),
   RECT_RAIN : { stroke : SC.RAIN},
   RAIN : _crSpanStyle(SC.RAIN),
+
+  RECT_SNOW : { stroke : SC.SNOW},
+  SNOW: _crSpanStyle(SC.SNOW),
+
 
   CIRCLE_TEMP_MAX : _crCircleStyle(SC.TEMP_MAX, 'none'),
   TEMP_MAX : _crSpanStyle(SC.TEMP_MAX),

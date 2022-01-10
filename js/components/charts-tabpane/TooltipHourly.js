@@ -26,6 +26,7 @@ var TooltipHourly = function TooltipHourly(props) {
       temp = payload.temp,
       pressure = payload.pressure,
       rain = payload.rain,
+      snow = payload.snow,
       speed = payload.speed;
   return /*#__PURE__*/_react["default"].createElement(_TooltipContent["default"], {
     caption: dt_text
@@ -43,6 +44,10 @@ var TooltipHourly = function TooltipHourly(props) {
   }), /*#__PURE__*/_react["default"].createElement(_TooltipRow["default"], {
     t: "Rain",
     v: rain,
+    s: _Label["default"].RAIN
+  }), /*#__PURE__*/_react["default"].createElement(_TooltipRow["default"], {
+    t: "Snow",
+    v: snow,
     s: _Label["default"].RAIN
   }));
 };

@@ -56,11 +56,15 @@ var STYLE = {
   SPEED: _crSpanStyle(_SeriesColor["default"].SPEED),
   CIRCLE_HUMIDITY: _crCircleStyle(_SeriesColor["default"].SPEED),
   HUMIDITY: _crSpanStyle(_SeriesColor["default"].SPEED),
-  CIRCLE_RAIN: _crCircleStyle(_SeriesColor["default"].RAIN),
+  //CIRCLE_RAIN : _crCircleStyle(SC.RAIN),
   RECT_RAIN: {
     stroke: _SeriesColor["default"].RAIN
   },
   RAIN: _crSpanStyle(_SeriesColor["default"].RAIN),
+  RECT_SNOW: {
+    stroke: _SeriesColor["default"].SNOW
+  },
+  SNOW: _crSpanStyle(_SeriesColor["default"].SNOW),
   CIRCLE_TEMP_MAX: _crCircleStyle(_SeriesColor["default"].TEMP_MAX, 'none'),
   TEMP_MAX: _crSpanStyle(_SeriesColor["default"].TEMP_MAX),
   CIRCLE_TEMP_MIN: _crCircleStyle(_SeriesColor["default"].TEMP_MIN, 'none'),
