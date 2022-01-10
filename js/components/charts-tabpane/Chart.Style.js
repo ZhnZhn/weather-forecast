@@ -9,6 +9,8 @@ var _theme = require("../styles/theme");
 
 var _SeriesColor = _interopRequireDefault(require("./SeriesColor"));
 
+var DF_DASH_FILL = '#808080';
+
 var _crLineStyle = function _crLineStyle(_ref) {
   var stroke = _ref.stroke,
       _ref$fill = _ref.fill,
@@ -37,6 +39,14 @@ var _crLineStyle = function _crLineStyle(_ref) {
   };
 };
 
+var _crLineDashStyle = function _crLineDashStyle(stroke, fill) {
+  return _crLineStyle({
+    stroke: stroke,
+    fill: fill,
+    dash: "5 5"
+  });
+};
+
 var _crYAxisStyle = function _crYAxisStyle(color) {
   return {
     axisLine: {
@@ -54,8 +64,6 @@ var _crYAxisStyle = function _crYAxisStyle(color) {
 
 var STYLE = {
   ComposedChart: {
-    //width: 645,
-    //height: 300,
     margin: {
       top: 20,
       right: 10,
@@ -64,8 +72,6 @@ var STYLE = {
     }
   },
   HourlyChart: {
-    //width: 645,
-    //height: 300,
     margin: {
       top: 24,
       right: 10,
@@ -82,50 +88,25 @@ var STYLE = {
   },
   YAxisSpeed: _crYAxisStyle(_SeriesColor["default"].SPEED),
   YAxisRain: _crYAxisStyle(_SeriesColor["default"].RAIN),
+  YAxisSnow: _crYAxisStyle(_SeriesColor["default"].SNOW),
   YAxisPressure: _crYAxisStyle(_SeriesColor["default"].PRESSURE),
   CartesianGrid: {
     stroke: "#555",
     vertical: false
   },
-  LinePressure: _crLineStyle({
-    stroke: _SeriesColor["default"].PRESSURE,
-    dash: "5 5"
-  }),
-  LineRain: _crLineStyle({
-    stroke: _SeriesColor["default"].RAIN,
-    dash: "5 5"
-  }),
-  LineSpeed: _crLineStyle({
-    stroke: _SeriesColor["default"].SPEED,
-    fill: '#808080',
-    dash: "5 5"
-  }),
+  LinePressure: _crLineDashStyle(_SeriesColor["default"].PRESSURE),
+  LineRain: _crLineDashStyle(_SeriesColor["default"].RAIN),
+  LineSpeed: _crLineDashStyle(_SeriesColor["default"].SPEED, DF_DASH_FILL),
   LineHumidity: _crLineStyle({
     stroke: _SeriesColor["default"].SPEED
   }),
-  LineTempMax: _crLineStyle({
-    stroke: _SeriesColor["default"].TEMP_MAX,
-    fill: "#808080",
-    dash: "5 5"
-  }),
-  LineTempMin: _crLineStyle({
-    stroke: _SeriesColor["default"].TEMP_MIN,
-    fill: "#808080",
-    dash: "5 5"
-  }),
-  LineTempMorn: _crLineStyle({
-    stroke: _theme.COLOR.TEMP_DAY.color,
-    fill: "#808080",
-    dash: "5 5"
-  }),
+  LineTempMax: _crLineDashStyle(_SeriesColor["default"].TEMP_MAX, DF_DASH_FILL),
+  LineTempMin: _crLineDashStyle(_SeriesColor["default"].TEMP_MIN, DF_DASH_FILL),
+  LineTempMorn: _crLineDashStyle(_theme.COLOR.TEMP_DAY.color, DF_DASH_FILL),
   LineTempDay: _crLineStyle({
     stroke: _theme.COLOR.TEMP_DAY.color
   }),
-  LineTempEve: _crLineStyle({
-    stroke: _theme.COLOR.TEMP_NIGHT.color,
-    fill: "#808080",
-    dash: "5 5"
-  }),
+  LineTempEve: _crLineDashStyle(_theme.COLOR.TEMP_NIGHT.color, DF_DASH_FILL),
   LineTempNight: _crLineStyle({
     stroke: _theme.COLOR.TEMP_NIGHT.color
   })
