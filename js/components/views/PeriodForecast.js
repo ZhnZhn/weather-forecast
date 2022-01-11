@@ -15,46 +15,40 @@ var _Caption = _interopRequireDefault(require("./Caption"));
 
 var _DayItem = _interopRequireDefault(require("./DayItem"));
 
-//import React from 'react';
-var S = {
-  ROOT: {
-    cursor: 'auto'
-  },
-  OPEN_CLOSE: {
-    lineHeight: 1.5
-  }
-};
-
-var _renderForecast = function _renderForecast(dayStyle, forecast, onClick) {
-  var _forecast$list = forecast.list,
-      list = _forecast$list === void 0 ? [] : _forecast$list;
-  return list.map(function (item, index) {
-    return _react["default"].createElement(_DayItem["default"], {
-      key: index,
-      style: dayStyle,
-      item: item,
-      onClick: onClick
-    });
-  });
+var S_ROOT = {
+  cursor: 'auto'
+},
+    S_OPEN_CLOSE = {
+  lineHeight: 1.5
 };
 
 var PeriodForecast = function PeriodForecast(_ref) {
-  var dayStyle = _ref.dayStyle,
-      _ref$forecast = _ref.forecast,
-      forecast = _ref$forecast === void 0 ? {} : _ref$forecast,
-      captionStyle = _ref.captionStyle,
+  var captionStyle = _ref.captionStyle,
+      dayStyle = _ref.dayStyle,
+      forecast = _ref.forecast,
       onClickItem = _ref.onClickItem;
-  return _react["default"].createElement("div", {
-    style: S.ROOT
-  }, _react["default"].createElement(_OpenClose["default"], {
-    rootStyle: S.OPEN_CLOSE,
+
+  var _ref2 = forecast || {},
+      list = _ref2.list;
+
+  return /*#__PURE__*/_react["default"].createElement("div", {
+    style: S_ROOT
+  }, /*#__PURE__*/_react["default"].createElement(_OpenClose["default"], {
+    rootStyle: S_OPEN_CLOSE,
     openColor: _Color["default"].BROWN,
     isClickableCompAfter: true,
-    CompAfter: _react["default"].createElement(_Caption["default"], {
+    CompAfter: /*#__PURE__*/_react["default"].createElement(_Caption["default"], {
       style: captionStyle,
       forecast: forecast
     })
-  }, _react["default"].createElement("div", null, _renderForecast(dayStyle, forecast, onClickItem))));
+  }, /*#__PURE__*/_react["default"].createElement("div", null, (list || []).map(function (item, index) {
+    return /*#__PURE__*/_react["default"].createElement(_DayItem["default"], {
+      key: index,
+      style: dayStyle,
+      item: item,
+      onClick: onClickItem
+    });
+  }))));
 };
 
 var _default = PeriodForecast;
