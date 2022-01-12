@@ -1,26 +1,18 @@
 import React from '../_react'
 const { Component } = React;
 
-const CL = {
-  SELECT: 'm-select',
-  LABEL: 'm-select__label',
-  DIV: 'm-textfield-input__div',
-  INPUT: 'm-textfield-input',
-  INPUT_LINE: 'm-input__line',
-  INPUT_MSG_ERR: 'm-input__msg-err'
-};
+const CL_SELECT = 'm-select'
+, CL_LABEL = 'm-select__label'
+, CL_DIV = 'm-textfield-input__div'
+, CL_INPUT = 'm-textfield-input'
+, CL_INPUT_LINE = 'm-input__line'
+, CL_INPUT_MSG_ERR = 'm-input__msg-err'
 
-const S = {
-  LABEL_TO_INPUT: {
-     transform: 'scale(1) translate(0px, -6px)'
-  },
-  LABEL_ON_ERROR: {
-    color: '#F44336'
-  },
-  LINE_ERROR: {
-    borderBottom: '2px solid #F44336'
-  }
-};
+, ERROR_COLOR = '#f44336'
+, S_LABEL_TO_INPUT = { transform: 'scale(1) translate(0px, -6px)' }
+, S_LABEL_ON_ERROR = { color: ERROR_COLOR }
+, S_LINE_ERROR = { borderBottom: `2px solid ${ERROR_COLOR}` };
+
 
 const _crValue = (_v, v) => {
   let value;
@@ -133,20 +125,20 @@ class SecretField extends Component {
 
   render(){
     const {
-            rootStyle, caption,
+            style, caption,
             isAllowRemember, name,
             maxLength, errorMsg=''
           } = this.props
         , { value, isPassTest } = this.state
         , _labelStyle = (this._isValue(isAllowRemember) || this.isFocus)
-            ? undefined
-            : S.LABEL_TO_INPUT
+            ? void 0
+            : S_LABEL_TO_INPUT
         , _labelErrStyle = (isPassTest)
-            ? undefined
-            : S.LABEL_ON_ERROR
+            ? void 0
+            : S_LABEL_ON_ERROR
         , _lineStyle = (isPassTest)
-            ? undefined
-            : S.LINE_ERROR
+            ? void 0
+            : S_LINE_ERROR
         , _inputProps = isAllowRemember
              ? {
                  autoComplete: "current-password",
@@ -163,17 +155,17 @@ class SecretField extends Component {
 
     return (
       <form
-        className={CL.SELECT}
-        style={rootStyle}
+        className={CL_SELECT}
+        style={style}
       >
         <label
-          className={CL.LABEL}
+          className={CL_LABEL}
           style={{..._labelStyle, ..._labelErrStyle}}
           htmlFor={this._id}
          >
           {caption}
         </label>
-        <div className={CL.DIV}>
+        <div className={CL_DIV}>
           <input
             hidden={true}
             autoComplete="username"
@@ -184,15 +176,15 @@ class SecretField extends Component {
             ref = {this._refInput}
             id={this._id}
             type="password"
-            className={CL.INPUT}
+            className={CL_INPUT}
             maxLength={maxLength}
             onFocus={this._handleFocusInput}
             onBlur={this._handleBlurInput}
             {..._inputProps}
           />
-          <div className={CL.INPUT_LINE} style={_lineStyle} />
+          <div className={CL_INPUT_LINE} style={_lineStyle} />
           {
-             _lineStyle && <div className={CL.INPUT_MSG_ERR}>
+             _lineStyle && <div className={CL_INPUT_MSG_ERR}>
                  {errorMsg}
                </div>
           }

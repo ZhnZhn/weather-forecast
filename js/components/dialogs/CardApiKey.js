@@ -52,12 +52,12 @@ var CardApiKey = function CardApiKey(_ref) {
     style: style
   }, /*#__PURE__*/_react["default"].createElement(_SecretField["default"], {
     ref: _refInput,
-    rootStyle: S_SECRET,
+    style: S_SECRET,
     isAllowRemember: isAllow,
     caption: "OpenWeatherMap API Key",
     name: "openweathermap"
   }), /*#__PURE__*/_react["default"].createElement(_RowCheckBox["default"], {
-    rootStyle: S_CHECK_BOX,
+    style: S_CHECK_BOX,
     initValue: IS_ALLOW,
     caption: CAPTION_ALLOW,
     captionStyle: S_CHECK_CAPTION,

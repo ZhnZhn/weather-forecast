@@ -34,13 +34,13 @@ const CardApiKey = ({
     <div style={style}>
       <SecretField
         ref={_refInput}
-        rootStyle={S_SECRET}
+        style={S_SECRET}
         isAllowRemember={isAllow}
         caption="OpenWeatherMap API Key"
         name="openweathermap"
       />
       <RowCheckBox
-        rootStyle={S_CHECK_BOX}
+        style={S_CHECK_BOX}
         initValue={IS_ALLOW}
         caption={CAPTION_ALLOW}
         captionStyle={S_CHECK_CAPTION}

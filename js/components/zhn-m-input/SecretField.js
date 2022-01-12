@@ -12,24 +12,21 @@ var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inh
 var _react = _interopRequireDefault(require("../_react"));
 
 var Component = _react["default"].Component;
-var CL = {
-  SELECT: 'm-select',
-  LABEL: 'm-select__label',
-  DIV: 'm-textfield-input__div',
-  INPUT: 'm-textfield-input',
-  INPUT_LINE: 'm-input__line',
-  INPUT_MSG_ERR: 'm-input__msg-err'
-};
-var S = {
-  LABEL_TO_INPUT: {
-    transform: 'scale(1) translate(0px, -6px)'
-  },
-  LABEL_ON_ERROR: {
-    color: '#F44336'
-  },
-  LINE_ERROR: {
-    borderBottom: '2px solid #F44336'
-  }
+var CL_SELECT = 'm-select',
+    CL_LABEL = 'm-select__label',
+    CL_DIV = 'm-textfield-input__div',
+    CL_INPUT = 'm-textfield-input',
+    CL_INPUT_LINE = 'm-input__line',
+    CL_INPUT_MSG_ERR = 'm-input__msg-err',
+    ERROR_COLOR = '#f44336',
+    S_LABEL_TO_INPUT = {
+  transform: 'scale(1) translate(0px, -6px)'
+},
+    S_LABEL_ON_ERROR = {
+  color: ERROR_COLOR
+},
+    S_LINE_ERROR = {
+  borderBottom: "2px solid " + ERROR_COLOR
 };
 
 var _crValue = function _crValue(_v, v) {
@@ -173,7 +170,7 @@ var SecretField = /*#__PURE__*/function (_Component) {
 
   _proto.render = function render() {
     var _this$props = this.props,
-        rootStyle = _this$props.rootStyle,
+        style = _this$props.style,
         caption = _this$props.caption,
         isAllowRemember = _this$props.isAllowRemember,
         name = _this$props.name,
@@ -183,9 +180,9 @@ var SecretField = /*#__PURE__*/function (_Component) {
         _this$state = this.state,
         value = _this$state.value,
         isPassTest = _this$state.isPassTest,
-        _labelStyle = this._isValue(isAllowRemember) || this.isFocus ? undefined : S.LABEL_TO_INPUT,
-        _labelErrStyle = isPassTest ? undefined : S.LABEL_ON_ERROR,
-        _lineStyle = isPassTest ? undefined : S.LINE_ERROR,
+        _labelStyle = this._isValue(isAllowRemember) || this.isFocus ? void 0 : S_LABEL_TO_INPUT,
+        _labelErrStyle = isPassTest ? void 0 : S_LABEL_ON_ERROR,
+        _lineStyle = isPassTest ? void 0 : S_LINE_ERROR,
         _inputProps = isAllowRemember ? {
       autoComplete: "current-password",
       value: value,
@@ -199,14 +196,14 @@ var SecretField = /*#__PURE__*/function (_Component) {
     };
 
     return /*#__PURE__*/_react["default"].createElement("form", {
-      className: CL.SELECT,
-      style: rootStyle
+      className: CL_SELECT,
+      style: style
     }, /*#__PURE__*/_react["default"].createElement("label", {
-      className: CL.LABEL,
+      className: CL_LABEL,
       style: (0, _extends2["default"])({}, _labelStyle, _labelErrStyle),
       htmlFor: this._id
     }, caption), /*#__PURE__*/_react["default"].createElement("div", {
-      className: CL.DIV
+      className: CL_DIV
     }, /*#__PURE__*/_react["default"].createElement("input", {
       hidden: true,
       autoComplete: "username",
@@ -216,15 +213,15 @@ var SecretField = /*#__PURE__*/function (_Component) {
       ref: this._refInput,
       id: this._id,
       type: "password",
-      className: CL.INPUT,
+      className: CL_INPUT,
       maxLength: maxLength,
       onFocus: this._handleFocusInput,
       onBlur: this._handleBlurInput
     }, _inputProps)), /*#__PURE__*/_react["default"].createElement("div", {
-      className: CL.INPUT_LINE,
+      className: CL_INPUT_LINE,
       style: _lineStyle
     }), _lineStyle && /*#__PURE__*/_react["default"].createElement("div", {
-      className: CL.INPUT_MSG_ERR
+      className: CL_INPUT_MSG_ERR
     }, errorMsg)));
   };
 
