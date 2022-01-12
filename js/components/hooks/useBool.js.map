@@ -1,0 +1,19 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/hooks/useBool.js"
+ ],
+ "file": "../../../src/components/hooks/useBool.js",
+ "names": [
+  "useState",
+  "React",
+  "useCallback",
+  "useBool",
+  "initialValue",
+  "is",
+  "setIs",
+  "setTrue",
+  "setFalse"
+ ],
+ "mappings": ";;;;;;;AAAA;;AAEA,IAAQA,QAAR,GAAkCC,iBAAlC,CAAQD,QAAR;AAAA,IAAkBE,WAAlB,GAAkCD,iBAAlC,CAAkBC,WAAlB;;AAEA,IAAMC,OAAO,GAAG,SAAVA,OAAU,CAACC,YAAD,EAAkB;AAChC,kBAAoBJ,QAAQ,CAAC;AAAA,WAAM,CAAC,CAACI,YAAR;AAAA,GAAD,CAA5B;AAAA,MAAOC,EAAP;AAAA,MAAWC,KAAX;AAAA,MAEEC,OAFF,GAEYL,WAAW,CAAC;AAAA,WAAMI,KAAK,CAAC,IAAD,CAAX;AAAA,GAAD,EAAoB,EAApB,CAFvB;AAAA,MAGEE,QAHF,GAGaN,WAAW,CAAC;AAAA,WAAMI,KAAK,CAAC,KAAD,CAAX;AAAA,GAAD,EAAqB,EAArB,CAHxB,CADgC,CAKhC;;AACA;;;AACA,SAAO,CAACD,EAAD,EAAKE,OAAL,EAAcC,QAAd,CAAP;AACD,CARD;;eAUeL,O"
+}
