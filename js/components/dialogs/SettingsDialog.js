@@ -27,36 +27,31 @@ var _CardUi = _interopRequireDefault(require("./CardUi"));
 
 //import PropTypes from 'prop-types';
 var Component = _react["default"].Component;
-var S = {
-  MODAL: {
-    position: 'static',
-    width: '342px',
-    height: '285px',
-    margin: '70px auto 0px'
-  },
-  TABS: {
-    textAlign: 'left',
-    marginLeft: '24px'
-  },
-  TAB_SELECTED: {
-    //color: '#2f7ed8'
-    color: 'black'
-  },
-  CARD_ROOT: {
-    position: 'relative',
-    height: '200px'
-  },
-  CARD_BUTTONS: {
-    position: 'absolute',
-    right: '4px',
-    bottom: 0,
-    cursor: 'default'
-  }
+var S_MODAL = {
+  position: 'static',
+  width: 342,
+  height: 285,
+  margin: '70px auto 0px'
+},
+    S_TABS = {
+  textAlign: 'left',
+  marginLeft: 24
+},
+    S_TAB_SELECTED = {
+  color: 'black'
+},
+    S_CARD_ROOT = {
+  position: 'relative',
+  height: 200
+},
+    S_CARD_BUTTONS = {
+  position: 'absolute',
+  right: 4,
+  bottom: 0,
+  cursor: 'default'
 };
 
-var SettingsDialog =
-/*#__PURE__*/
-function (_Component) {
+var SettingsDialog = /*#__PURE__*/function (_Component) {
   (0, _inheritsLoose2["default"])(SettingsDialog, _Component);
 
   function SettingsDialog() {
@@ -72,19 +67,10 @@ function (_Component) {
       return nextProps !== _this.props && nextProps.isShow === _this.props.isShow;
     };
 
-    _this._handleSet = function () {
-      var _this$props = _this.props,
-          data = _this$props.data,
-          onClose = _this$props.onClose,
-          onSet = data.onSet;
-      onSet(_this.inputApiKey.getValue());
-      onClose();
-    };
-
     _this._handleSetTheme = function (item) {
-      var _this$props2 = _this.props,
-          theme = _this$props2.theme,
-          data = _this$props2.data,
+      var _this$props = _this.props,
+          theme = _this$props.theme,
+          data = _this$props.data,
           onSetTheme = data.onSetTheme,
           prevTheme = theme.themeName;
       onSetTheme(theme, item.value);
@@ -92,10 +78,6 @@ function (_Component) {
       if (prevTheme !== item.value) {
         _this.forceUpdate();
       }
-    };
-
-    _this._refInput = function (c) {
-      return _this.inputApiKey = c;
     };
 
     return _this;
@@ -112,35 +94,36 @@ function (_Component) {
   };
 
   _proto.render = function render() {
-    var _this$props3 = this.props,
-        theme = _this$props3.theme,
-        isShow = _this$props3.isShow,
-        onClose = _this$props3.onClose,
+    var _this$props2 = this.props,
+        theme = _this$props2.theme,
+        isShow = _this$props2.isShow,
+        onClose = _this$props2.onClose,
+        data = _this$props2.data,
+        onSet = data.onSet,
         TS = theme.createStyle(_Dialog["default"]);
-    return _react["default"].createElement(_ModalDialog["default"], {
-      style: (0, _extends2["default"])({}, S.MODAL, {}, TS.R_DIALOG),
+    return /*#__PURE__*/_react["default"].createElement(_ModalDialog["default"], {
+      style: (0, _extends2["default"])({}, S_MODAL, TS.R_DIALOG),
       caption: "User Settings",
       isShow: isShow,
       isWithButton: false,
       onClose: onClose
-    }, _react["default"].createElement(_TabPane["default"], {
+    }, /*#__PURE__*/_react["default"].createElement(_TabPane["default"], {
       width: "100%",
-      tabsStyle: S.TABS
-    }, _react["default"].createElement(_Tab["default"], {
+      tabsStyle: S_TABS
+    }, /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
       title: "API Key",
-      selectedStyle: S.TAB_SELECTED
-    }, _react["default"].createElement(_CardApiKey["default"], {
-      ref: this._refInput,
-      style: S.CARD_ROOT,
-      buttonsStyle: S.CARD_BUTTONS,
-      onSet: this._handleSet,
+      selectedStyle: S_TAB_SELECTED
+    }, /*#__PURE__*/_react["default"].createElement(_CardApiKey["default"], {
+      style: S_CARD_ROOT,
+      buttonsStyle: S_CARD_BUTTONS,
+      onSet: onSet,
       onClose: onClose
-    })), _react["default"].createElement(_Tab["default"], {
+    })), /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
       title: "UI Theme",
-      selectedStyle: S.TAB_SELECTED
-    }, _react["default"].createElement(_CardUi["default"], {
-      style: S.CARD_ROOT,
-      buttonsStyle: S.CARD_BUTTONS,
+      selectedStyle: S_TAB_SELECTED
+    }, /*#__PURE__*/_react["default"].createElement(_CardUi["default"], {
+      style: S_CARD_ROOT,
+      buttonsStyle: S_CARD_BUTTONS,
       onSetTheme: this._handleSetTheme,
       onClose: onClose
     }))));

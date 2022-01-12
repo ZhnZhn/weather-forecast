@@ -1,95 +1,65 @@
 import React from '../_react'
 
+import useBool from '../hooks/useBool'
+
 import SecretField from '../zhn-m-input/SecretField'
 import RowCheckBox from './RowCheckBox'
 import RaisedButton from '../zhn-atoms/RaisedButton'
 
-const { Component } = React
+const { useRef, useCallback } = React;
 
 const CAPTION_ALLOW = "Allow Remember Enter of API Key by Browser Password Manager";
 
-const S  = {
-  ROOT: {
-    position: 'relative',
-    height: '200px'
-  },
-  SECRET: {
-    width: '280px'
-  },
-  CHECK_BOX: {
-    paddingLeft: '24px',
-    paddingTop: '16px',
-    paddingRight: '24px'
-  },
-  CHECK_CAPTION: {
-    display: 'inline'
-  },
-  BUTTONS: {
-    position: 'absolute',
-    right: '4px',
-    bottom: 0,
-    cursor: 'default'
-  }
-}
+const S_SECRET = { width: 280 }
+, S_CHECK_BOX = { padding: '16px 24px 0 24px'}
+, S_CHECK_CAPTION = { display: 'inline' }
+, IS_ALLOW = false;
 
-class CardApiKey extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      isAllow: false
-    }
-  }
-
-  _checkAllow = () => {
-    this.setState({ isAllow: true })
-  }
-  _uncheckAllow = () => {
-    this.setState({ isAllow: false })
-  }
-
-  _refInput = c => this._input = c
-
-  render(){
-    const {
-            style, buttonsStyle,
-            onClose, onSet
-          } = this.props;
-    const { isAllow } = this.state;
-    return(
-      <div style={style}>
-        <SecretField
-          ref={this._refInput}
-          rootStyle={S.SECRET}
-          caption="OpenWeatherMap API Key"
-          isAllowRemember={isAllow}
-          name="openweathermap"
+const CardApiKey = ({
+  style,
+  buttonsStyle,
+  onClose,
+  onSet
+}) => {
+  const _refInput = useRef()
+  , [isAllow, _checkAllow, _uncheckAllow] = useBool(IS_ALLOW)
+  /*eslint-disable react-hooks/exhaustive-deps */
+  , _onSet = useCallback(() => {
+    onSet(_refInput.current.getValue())
+    onClose()
+  }, [])
+  // onSet, onClose
+  /*eslint-enable react-hooks/exhaustive-deps */
+  return (
+    <div style={style}>
+      <SecretField
+        ref={_refInput}
+        rootStyle={S_SECRET}
+        isAllowRemember={isAllow}
+        caption="OpenWeatherMap API Key"
+        name="openweathermap"
+      />
+      <RowCheckBox
+        rootStyle={S_CHECK_BOX}
+        initValue={IS_ALLOW}
+        caption={CAPTION_ALLOW}
+        captionStyle={S_CHECK_CAPTION}
+        onCheck={_checkAllow}
+        onUnCheck={_uncheckAllow}
+      />
+      <div style={buttonsStyle}>
+        <RaisedButton
+          caption="Set & Close"
+          onClick={_onSet}
         />
-        <RowCheckBox
-          rootStyle={S.CHECK_BOX}
-          initValue={false}
-          caption={CAPTION_ALLOW}
-          captionStyle={S.CHECK_CAPTION}
-          onCheck={this._checkAllow}
-          onUnCheck={this._uncheckAllow}
+        <RaisedButton
+          isPrimary={true}
+          caption="Close"
+          onClick={onClose}
         />
-        <div style={buttonsStyle}>
-          <RaisedButton
-            caption="Set & Close"
-            onClick={onSet}
-          />
-          <RaisedButton
-            isPrimary={true}
-            caption="Close"
-            onClick={onClose}
-          />
-        </div>
       </div>
-    );
-  }
-
-  getValue(){
-    return this._input.getValue();
-  }
-}
+    </div>
+  );
+};
 
 export default CardApiKey

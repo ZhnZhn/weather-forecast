@@ -13,33 +13,27 @@ import CardUi from './CardUi'
 
 const { Component } = React;
 
-const S = {
-  MODAL: {
-    position: 'static',
-    width: '342px',
-    height: '285px',
-    margin: '70px auto 0px'
-  },
-  TABS: {
-    textAlign: 'left',
-    marginLeft: '24px'
-  },
-  TAB_SELECTED: {
-    //color: '#2f7ed8'
-    color: 'black'
-  },
-  CARD_ROOT: {
-    position: 'relative',
-    height: '200px'
-  },
-  CARD_BUTTONS: {
-    position: 'absolute',
-    right: '4px',
-    bottom: 0,
-    cursor: 'default'
-  }
+const S_MODAL = {
+  position: 'static',
+  width: 342,
+  height: 285,
+  margin: '70px auto 0px'
+}
+, S_TABS = {
+  textAlign: 'left',
+  marginLeft: 24
+}
+, S_TAB_SELECTED = { color: 'black' }
+, S_CARD_ROOT = {
+  position: 'relative',
+  height: 200
+}
+, S_CARD_BUTTONS = {
+  position: 'absolute',
+  right: 4,
+  bottom: 0,
+  cursor: 'default'
 };
-
 
 class SettingsDialog extends Component {
   /*
@@ -64,12 +58,6 @@ class SettingsDialog extends Component {
     return true;
   }
 
-  _handleSet = () => {
-    const { data, onClose } = this.props
-        , { onSet } = data;
-    onSet(this.inputApiKey.getValue())
-    onClose()
-  }
   _handleSetTheme = (item) => {
     const { theme, data } = this.props
         , { onSetTheme } = data
@@ -80,43 +68,42 @@ class SettingsDialog extends Component {
     }
   }
 
-  _refInput = c => this.inputApiKey = c
-
   render(){
     const {
             theme,
             isShow,
-            onClose
+            onClose,
+            data
           } = this.props
+        , { onSet } = data
         , TS = theme.createStyle(styleConfig);
     return (
          <ModalDialog
-            style={{ ...S.MODAL, ...TS.R_DIALOG }}
+            style={{...S_MODAL, ...TS.R_DIALOG}}
             caption="User Settings"
             isShow={isShow}
             isWithButton={false}
             onClose={onClose}
          >
-           <TabPane width="100%" tabsStyle={S.TABS}>
+           <TabPane width="100%" tabsStyle={S_TABS}>
              <Tab
                title="API Key"
-               selectedStyle={S.TAB_SELECTED}
+               selectedStyle={S_TAB_SELECTED}
               >
                 <CardApiKey
-                  ref={this._refInput}
-                  style={S.CARD_ROOT}
-                  buttonsStyle={S.CARD_BUTTONS}
-                  onSet={this._handleSet}
+                  style={S_CARD_ROOT}
+                  buttonsStyle={S_CARD_BUTTONS}
+                  onSet={onSet}
                   onClose={onClose}
                 />
              </Tab>
              <Tab
                title="UI Theme"
-               selectedStyle={S.TAB_SELECTED}
+               selectedStyle={S_TAB_SELECTED}
              >
                 <CardUi
-                  style={S.CARD_ROOT}
-                  buttonsStyle={S.CARD_BUTTONS}
+                  style={S_CARD_ROOT}
+                  buttonsStyle={S_CARD_BUTTONS}
                   onSetTheme={this._handleSetTheme}
                   onClose={onClose}
                 />
