@@ -1,34 +1,31 @@
-//import React, { Component } from 'react';
 //import PropTypes from "prop-types";
 import React from '../_react'
+
+import withTheme from '../hoc/withTheme'
+import styleConfig from './Dialog.Style'
 
 import SvgCheckBox from '../zhn-atoms/SvgCheckBox'
 
 const { Component } = React
 
-const STYLE = {
-  ROOT : {
-    paddingTop: '6px',
-    paddingLeft: '16px'
-  },
-  CAPTION : {
-    display: 'inline-block',
-    color: 'grey',
-    paddingLeft: '12px',
-    fontSize: '16px',
-    fontWeight: 'bold',
-    userSelect: 'none',
-    cursor: 'pointer'
-  },
-  CHECKED : {
-    color: 'black'
-  }
+const CHB_COLOR = 'black'
+, S_ROOT = { padding: '6px 0 0 16px' }
+, S_CAPTION = {
+  display: 'inline-block',
+  color: 'grey',
+  paddingLeft: 8,
+  fontSize: '16px',
+  fontWeight: 'bold',
+  userSelect: 'none',
+  cursor: 'pointer'
 }
+, S_CHECKED = { color: 'black' };
+
 
 class RowCheckBox extends Component {
   /*
   static propTypes = {
-    rootStyle : PropTypes.object,
+    style : PropTypes.object,
     caption: PropTypes.string,
     initValue: PropTypes.bool,
     onCheck: PropTypes.func,
@@ -68,16 +65,21 @@ class RowCheckBox extends Component {
 
   render(){
     const {
-           rootStyle,
-           caption, captionStyle
-          } = this.props
-        , { isChecked } = this.state
-        , _style = isChecked
-             ? STYLE.CHECKED
-             : null;
+      style,
+      caption,
+      captionStyle,
+      theme
+    } = this.props
+    , { isChecked } = this.state
+    , _style = isChecked
+         ? S_CHECKED
+         : null
+    , TS = theme.createStyle(styleConfig);
     return (
-      <div style={{...STYLE.ROOT, ...rootStyle}}>
+      <div style={{...S_ROOT, ...style}}>
         <SvgCheckBox
+          color={CHB_COLOR}
+          checkedColor={TS.R_DIALOG.backgroundColor}
           value={isChecked}
           onCheck={this._handleCheck}
           onUnCheck={this._handleUnCheck}
@@ -85,7 +87,7 @@ class RowCheckBox extends Component {
         {
           caption && (
             <span
-              style={{...STYLE.CAPTION, ...captionStyle, ..._style }}
+              style={{...S_CAPTION, ...captionStyle, ..._style }}
               onClick={this._handleToggle}
             >
               {caption}
@@ -97,4 +99,4 @@ class RowCheckBox extends Component {
   }
 }
 
-export default RowCheckBox
+export default withTheme(RowCheckBox)

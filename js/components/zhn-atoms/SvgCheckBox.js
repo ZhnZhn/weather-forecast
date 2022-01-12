@@ -5,104 +5,123 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-
-var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
-
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
-
 var _react = _interopRequireDefault(require("../_react"));
+
+var _useRefInit = _interopRequireDefault(require("../hooks/useRefInit"));
+
+var _useKeyEnter = _interopRequireDefault(require("../hooks/useKeyEnter"));
 
 var _Color = _interopRequireDefault(require("../styles/Color"));
 
-//import React, { Component } from 'react';
+var _Svg = _interopRequireDefault(require("./svg/Svg100"));
+
 //import PropTypes from "prop-types";
-var Component = _react["default"].Component;
-var S = {
-  DIV: {
-    display: 'inline-block',
-    width: 16,
-    height: 16,
-    cursor: 'pointer'
-  },
-  SVG: {
-    display: 'inline-block'
-  }
+var useState = _react["default"].useState,
+    useMemo = _react["default"].useMemo,
+    useCallback = _react["default"].useCallback;
+var CL_CHB = 'chb',
+    S_SVG = {
+  display: 'inline-block'
+},
+    C_GREY = "#777777";
+
+var SvgChecked = function SvgChecked(_ref) {
+  var stroke = _ref.stroke;
+  return /*#__PURE__*/_react["default"].createElement("path", {
+    d: "M 2,5 L 8,14 14,1",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    stroke: stroke,
+    fill: _Color["default"].BLANK
+  });
 };
 
-var EL_CHECKED = _react["default"].createElement("path", {
-  d: "M 2,3 L 8,14 14,3",
-  strokeWidth: "2",
-  stroke: _Color["default"].YELLOW,
-  fill: _Color["default"].BLANK
-});
-
-var _isFn = function _isFn(fn) {
-  return typeof fn === 'function';
+var _isBool = function _isBool(bool) {
+  return typeof bool === 'boolean';
 };
 
-var SvgCheckBox =
-/*#__PURE__*/
-function (_Component) {
-  (0, _inheritsLoose2["default"])(SvgCheckBox, _Component);
+var _noopFn = function _noopFn() {};
 
-  function SvgCheckBox() {
-    var _this;
+var SvgCheckBox = function SvgCheckBox(_ref2) {
+  var initialValue = _ref2.initialValue,
+      value = _ref2.value,
+      style = _ref2.style,
+      color = _ref2.color,
+      _ref2$checkedColor = _ref2.checkedColor,
+      checkedColor = _ref2$checkedColor === void 0 ? _Color["default"].YELLOW : _ref2$checkedColor,
+      _ref2$onCheck = _ref2.onCheck,
+      onCheck = _ref2$onCheck === void 0 ? _noopFn : _ref2$onCheck,
+      _ref2$onUnCheck = _ref2.onUnCheck,
+      onUnCheck = _ref2$onUnCheck === void 0 ? _noopFn : _ref2$onUnCheck;
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
-
-    _this._hClick = function () {
-      var _this$props = _this.props,
-          value = _this$props.value,
-          onCheck = _this$props.onCheck,
-          onUnCheck = _this$props.onUnCheck;
-
-      if (!value && _isFn(onCheck)) {
-        onCheck((0, _assertThisInitialized2["default"])(_this));
-      } else if (_isFn(onUnCheck)) {
-        onUnCheck((0, _assertThisInitialized2["default"])(_this));
+  var _useState = useState(function () {
+    return _isBool(value) ? void 0 : !!initialValue;
+  }),
+      valueState = _useState[0],
+      setValueState = _useState[1],
+      _isValueState = (0, _useRefInit["default"])(function () {
+    return _isBool(valueState);
+  }),
+      _value = _isValueState ? valueState : value,
+      _comp = useMemo(function () {
+    return {
+      setUnchecked: function setUnchecked() {
+        return setValueState(false);
       }
     };
+  }, []),
+      _hToggle = useCallback(function (evt) {
+    evt.preventDefault();
 
-    return _this;
-  }
+    var _toggle = _value ? onUnCheck : onCheck;
 
-  var _proto = SvgCheckBox.prototype;
+    _toggle(_comp);
 
-  _proto.render = function render() {
-    var _this$props2 = this.props,
-        style = _this$props2.style,
-        value = _this$props2.value,
-        _elChecked = value ? EL_CHECKED : null;
+    if (_isValueState) {
+      setValueState(!_value);
+    }
+  }, [_value, onCheck, onUnCheck]),
+      _hKeyDown = (0, _useKeyEnter["default"])(_hToggle, [_hToggle]),
+      _restStroke = _value ? color || C_GREY : C_GREY,
+      _restFill = _value ? color || _Color["default"].BLANK : _Color["default"].BLANK;
 
-    return _react["default"].createElement("div", {
-      style: (0, _extends2["default"])({}, S.DIV, {}, style),
-      onClick: this._hClick
-    }, _react["default"].createElement("svg", {
-      viewBox: "0 0 16 16",
-      width: "100%",
-      height: "100%",
-      preserveAspectRatio: "none",
-      xmlns: "http://www.w3.org/2000/svg",
-      style: S.SVG
-    }, _react["default"].createElement("rect", {
-      x: "1",
-      y: "1",
-      height: "14",
-      width: "14",
-      strokeWidth: "2",
-      rx: "3",
-      stroke: _Color["default"].GREY,
-      fill: _Color["default"].BLANK
-    }), _elChecked));
-  };
+  return /*#__PURE__*/_react["default"].createElement("div", {
+    role: "checkbox",
+    tabIndex: "0",
+    "aria-checked": _value //aria-labelledby
+    ,
+    className: CL_CHB,
+    style: style,
+    onClick: _hToggle,
+    onKeyDown: _hKeyDown
+  }, /*#__PURE__*/_react["default"].createElement(_Svg["default"], {
+    w: "16",
+    style: S_SVG
+  }, /*#__PURE__*/_react["default"].createElement("rect", {
+    x: "1",
+    y: "1",
+    height: "14",
+    width: "14",
+    strokeWidth: "2",
+    rx: "3",
+    stroke: _restStroke,
+    fill: _restFill
+  }), _value ? /*#__PURE__*/_react["default"].createElement(SvgChecked, {
+    stroke: checkedColor
+  }) : null));
+};
+/*
+SvgCheckBox.propTypes = {
+  initValue: PropTypes.bool,
+  value: PropTypes.bool,
+  style: PropTypes.object,
+  color: PropTypes.string,
+  checkedColor: PropTypes.string,
+  onCheck: PropTypes.func,
+  onUnCheck: PropTypes.func
+}
+*/
 
-  return SvgCheckBox;
-}(Component);
 
 var _default = SvgCheckBox;
 exports["default"] = _default;
