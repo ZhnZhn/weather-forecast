@@ -1,4 +1,4 @@
-import React from '../_react'
+
 //import PropTypes from 'prop-types';
 import useTheme from '../hooks/useTheme'
 
@@ -15,64 +15,60 @@ const { toggleLayout, showSettings } = handlers;
 
 const TITLE = "Weather v0.2.0";
 
-const CL = {
-  TITLE: 'header__title',
-  LINK_PREF: 'header__link-pref',
-  LINK: 'header__link-provider',
-  GITHUB: 'header__github-link'
-};
+const CL_TITLE = 'header__title'
+, CL_LINK_PREF = 'header__link-pref'
+, CL_LINK = 'header__link-provider'
+, CL_GITHUB = 'header__github-link'
 
-const S = {
-  BT_CIRCLE: {
-    width: '1.8rem',
-    height: '1.8rem',
-    lineHeight: '1rem',
-    marginLeft: '1rem',
-    paddingTop: '0.3rem'
-  }
+, S_BT_CIRCLE = {
+  position: 'relative',
+  top: '-2px',
+  width: '1.8rem',
+  height: '1.8rem',
+  marginLeft: '1rem'
 };
 
 const Header = ({ style }) => {
-  const _STYLE = useTheme(styleConfig);
+  const TS = useTheme(styleConfig);
 
   return (
     <header
        role="banner"
-       style={{...style, ..._STYLE.HEADER}}
+       style={{...style, ...TS.HEADER}}
     >
       <ProgressLoading />
       <HamburgerButton
          storeKey="isPushMenu"
          onClick={toggleLayout}
       />
-      <span className={CL.TITLE}>
+      <span className={CL_TITLE}>
         {TITLE}
       </span>
       <ButtonCircle
-         style={S.BT_CIRCLE}
+         style={S_BT_CIRCLE}
          caption="F"
          title="Toggle Forecast Popup"
          storeKey="isPopupForecast"
          onClick={toggleLayout}
        />
        <ButtonCircle
-         style={S.BT_CIRCLE}
+         style={S_BT_CIRCLE}
          caption="S"
          title="Open Settings Dialog"
          storeKey="isSettings"
          onClick={showSettings}
        />
        <ProviderLink
-         className={CL.LINK}
-         prefixCL={CL.LINK_PREF}
+         className={CL_LINK}
+         prefixCL={CL_LINK_PREF}
        />
        <GitHubLink
-         className={CL.GITHUB}
+         className={CL_GITHUB}
          title="GitHub Repository"
          href="https://github.com/zhnzhn/weather-forecast"
        />
      </header>
   );
-}
+};
 
 export  default Header
