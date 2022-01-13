@@ -1,5 +1,5 @@
 module.exports = {
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
     "env": {
         "es6" : true,
         "browser": true
@@ -52,6 +52,10 @@ module.exports = {
 
     "react/sort-comp": 0,
     "react/wrap-multilines": [0, {"declaration": false, "assignment": false}],
+
+    //jsx-transform
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
 
     //set react-hooks rules
     "react-hooks/rules-of-hooks": "error",
