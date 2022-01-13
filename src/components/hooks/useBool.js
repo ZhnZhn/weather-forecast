@@ -1,6 +1,4 @@
-import React from '../_react';
-
-const { useState, useCallback } = React;
+import { useState, useCallback } from '../uiApi';
 
 const useBool = (initialValue) => {
   const [is, setIs] = useState(() => !!initialValue)

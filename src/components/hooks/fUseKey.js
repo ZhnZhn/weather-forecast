@@ -1,6 +1,4 @@
-import React from '../_react';
-
-const { useCallback } = React;
+import { useCallback } from '../uiApi';
 
 /*eslint-disable react-hooks/exhaustive-deps */
 const fUseKey = isKey => (fn, deps) => useCallback(event => {

@@ -1,25 +1,20 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _react = _interopRequireDefault(require("../_react"));
-
-var useState = _react["default"].useState,
-    useCallback = _react["default"].useCallback;
+var _uiApi = require("../uiApi");
 
 var useBool = function useBool(initialValue) {
-  var _useState = useState(function () {
+  var _useState = (0, _uiApi.useState)(function () {
     return !!initialValue;
   }),
       is = _useState[0],
       setIs = _useState[1],
-      setTrue = useCallback(function () {
+      setTrue = (0, _uiApi.useCallback)(function () {
     return setIs(true);
   }, []),
-      setFalse = useCallback(function () {
+      setFalse = (0, _uiApi.useCallback)(function () {
     return setIs(false);
   }, []); //setIs
 

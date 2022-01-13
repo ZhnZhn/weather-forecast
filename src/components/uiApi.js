@@ -3,5 +3,6 @@ export {
   useState,
   useCallback,
   useMemo,
-  useEffect
+  useEffect,
+  useContext
 } from 'react';

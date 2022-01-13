@@ -1,6 +1,4 @@
-import React from '../_react';
-
-const { useRef } = React;
+import { useRef } from '../uiApi';
 
 const useRefInit = (crValue) => {
   const ref = useRef(null);
