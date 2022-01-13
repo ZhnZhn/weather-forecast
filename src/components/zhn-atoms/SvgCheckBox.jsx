@@ -1,4 +1,5 @@
-import React from '../_react';
+import { useState, useMemo, useCallback } from '../uiApi';
+
 //import PropTypes from "prop-types";
 import useRefInit from '../hooks/useRefInit';
 import useKeyEnter from '../hooks/useKeyEnter';
@@ -6,7 +7,6 @@ import useKeyEnter from '../hooks/useKeyEnter';
 import C from '../styles/Color';
 import Svg100 from './svg/Svg100';
 
-const { useState, useMemo, useCallback } = React;
 
 const CL_CHB = 'chb'
 , S_SVG = { display: 'inline-block' }

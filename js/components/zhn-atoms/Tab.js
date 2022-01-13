@@ -1,22 +1,18 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _react = _interopRequireDefault(require("../_react"));
+var _jsxRuntime = require("react/jsx-runtime");
 
-//import React, { Component } from 'react';
-var CL = "tab";
-var S = {
-  BT: {
-    color: '#2f7ed8',
-    borderBottom: '3px solid #2f7ed8'
-  },
-  TITLE: {
-    color: '#2f7ed8'
-  }
+var CL_TAB = "tab",
+    TAB_COLOR = '#2f7ed8',
+    S_BT = {
+  color: TAB_COLOR,
+  borderBottom: "3px solid " + TAB_COLOR
+},
+    S_TITLE = {
+  color: TAB_COLOR
 };
 
 var Tab = function Tab(_ref) {
@@ -25,21 +21,23 @@ var Tab = function Tab(_ref) {
       isSelected = _ref.isSelected,
       onClick = _ref.onClick;
 
-  var _btStyle = isSelected ? S.BT : null,
-      _titleStyle = isSelected ? S.TITLE : null;
+  var _btStyle = isSelected ? S_BT : null,
+      _titleStyle = isSelected ? S_TITLE : null;
 
-  return _react["default"].createElement("button", {
-    className: CL,
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+    className: CL_TAB,
     style: _btStyle,
     id: "tab-" + id,
     role: "tab",
     "aria-selected": isSelected,
     "aria-controls": "tabpanel-" + id,
     tabIndex: "0",
-    onClick: onClick
-  }, _react["default"].createElement("span", {
-    style: _titleStyle
-  }, title));
+    onClick: onClick,
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      style: _titleStyle,
+      children: title
+    })
+  });
 };
 
 var _default = Tab;

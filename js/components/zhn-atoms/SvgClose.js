@@ -5,40 +5,38 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _react = _interopRequireDefault(require("../_react"));
+var _Svg = _interopRequireDefault(require("./svg/Svg100"));
 
-//import React from 'react';
-var S = {
-  SVG: {
-    padding: 3
-  }
+var _jsxRuntime = require("react/jsx-runtime");
+
+var CL_SVG_CLOSE = "svg-close",
+    S_SVG = {
+  padding: 3
 };
 
 var SvgClose = function SvgClose(_ref) {
   var style = _ref.style,
       onClose = _ref.onClose;
-  return _react["default"].createElement("div", {
-    className: "svg-close",
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    className: CL_SVG_CLOSE,
     style: style,
-    onClick: onClose
-  }, _react["default"].createElement("svg", {
-    viewBox: "0 0 12 12",
-    width: "100%",
-    height: "100%",
-    style: S.SVG,
-    preserveAspectRatio: "none",
-    xmlns: "http://www.w3.org/2000/svg"
-  }, _react["default"].createElement("path", {
-    d: "M 0,0 L 12,12",
-    strokeWidth: "2",
-    stroke: "#ED5813",
-    strokeLinecap: "round"
-  }), _react["default"].createElement("path", {
-    d: "M 12,0 L 0,12",
-    strokeWidth: "2",
-    stroke: "#ED5813",
-    strokeLinecap: "round"
-  })));
+    onClick: onClose,
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Svg["default"], {
+      w: "12",
+      style: S_SVG,
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
+        d: "M 0,0 L 12,12",
+        strokeWidth: "2",
+        stroke: "#ed5813",
+        strokeLinecap: "round"
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
+        d: "M 12,0 L 0,12",
+        strokeWidth: "2",
+        stroke: "#ed5813",
+        strokeLinecap: "round"
+      })]
+    })
+  });
 };
 
 var _default = SvgClose;

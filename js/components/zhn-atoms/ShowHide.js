@@ -7,31 +7,32 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = _interopRequireDefault(require("../_react"));
+var _crCn = _interopRequireDefault(require("../zhn-utils/crCn"));
 
-var SHOW_POPUP = 'show-popup';
-var S = {
-  SHOW: {
-    display: 'block'
-  },
-  HIDE: {
-    display: 'none'
-  }
+var _jsxRuntime = require("react/jsx-runtime");
+
+var CL_SHOW_POPUP = 'show-popup',
+    S_SHOW = {
+  display: 'block'
+},
+    S_HIDE = {
+  display: 'none'
 };
 
-var ShowHide = function ShowHide(props) {
-  var isShow = props.isShow,
-      className = props.className,
-      style = props.style,
-      children = props.children,
-      _styleShow = isShow ? S.SHOW : S.HIDE,
-      _classShow = isShow ? SHOW_POPUP : '',
-      _className = className ? className + " " + _classShow : _classShow || void 0;
+var ShowHide = function ShowHide(_ref) {
+  var isShow = _ref.isShow,
+      className = _ref.className,
+      style = _ref.style,
+      children = _ref.children;
 
-  return _react["default"].createElement("div", {
+  var _className = (0, _crCn["default"])(className, [isShow, CL_SHOW_POPUP]),
+      _styleShow = isShow ? S_SHOW : S_HIDE;
+
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: _className,
-    style: (0, _extends2["default"])({}, style, {}, _styleShow)
-  }, children);
+    style: (0, _extends2["default"])({}, style, _styleShow),
+    children: children
+  });
 };
 
 var _default = ShowHide;

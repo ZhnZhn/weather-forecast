@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _react = _interopRequireDefault(require("../_react"));
+var _uiApi = require("../uiApi");
 
 var _useRefInit = _interopRequireDefault(require("../hooks/useRefInit"));
 
@@ -15,10 +15,9 @@ var _Color = _interopRequireDefault(require("../styles/Color"));
 
 var _Svg = _interopRequireDefault(require("./svg/Svg100"));
 
+var _jsxRuntime = require("react/jsx-runtime");
+
 //import PropTypes from "prop-types";
-var useState = _react["default"].useState,
-    useMemo = _react["default"].useMemo,
-    useCallback = _react["default"].useCallback;
 var CL_CHB = 'chb',
     S_SVG = {
   display: 'inline-block'
@@ -27,7 +26,7 @@ var CL_CHB = 'chb',
 
 var SvgChecked = function SvgChecked(_ref) {
   var stroke = _ref.stroke;
-  return /*#__PURE__*/_react["default"].createElement("path", {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
     d: "M 2,5 L 8,14 14,1",
     strokeWidth: "2",
     strokeLinecap: "round",
@@ -54,7 +53,7 @@ var SvgCheckBox = function SvgCheckBox(_ref2) {
       _ref2$onUnCheck = _ref2.onUnCheck,
       onUnCheck = _ref2$onUnCheck === void 0 ? _noopFn : _ref2$onUnCheck;
 
-  var _useState = useState(function () {
+  var _useState = (0, _uiApi.useState)(function () {
     return _isBool(value) ? void 0 : !!initialValue;
   }),
       valueState = _useState[0],
@@ -63,14 +62,14 @@ var SvgCheckBox = function SvgCheckBox(_ref2) {
     return _isBool(valueState);
   }),
       _value = _isValueState ? valueState : value,
-      _comp = useMemo(function () {
+      _comp = (0, _uiApi.useMemo)(function () {
     return {
       setUnchecked: function setUnchecked() {
         return setValueState(false);
       }
     };
   }, []),
-      _hToggle = useCallback(function (evt) {
+      _hToggle = (0, _uiApi.useCallback)(function (evt) {
     evt.preventDefault();
 
     var _toggle = _value ? onUnCheck : onCheck;
@@ -85,7 +84,7 @@ var SvgCheckBox = function SvgCheckBox(_ref2) {
       _restStroke = _value ? color || C_GREY : C_GREY,
       _restFill = _value ? color || _Color["default"].BLANK : _Color["default"].BLANK;
 
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     role: "checkbox",
     tabIndex: "0",
     "aria-checked": _value //aria-labelledby
@@ -93,22 +92,24 @@ var SvgCheckBox = function SvgCheckBox(_ref2) {
     className: CL_CHB,
     style: style,
     onClick: _hToggle,
-    onKeyDown: _hKeyDown
-  }, /*#__PURE__*/_react["default"].createElement(_Svg["default"], {
-    w: "16",
-    style: S_SVG
-  }, /*#__PURE__*/_react["default"].createElement("rect", {
-    x: "1",
-    y: "1",
-    height: "14",
-    width: "14",
-    strokeWidth: "2",
-    rx: "3",
-    stroke: _restStroke,
-    fill: _restFill
-  }), _value ? /*#__PURE__*/_react["default"].createElement(SvgChecked, {
-    stroke: checkedColor
-  }) : null));
+    onKeyDown: _hKeyDown,
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Svg["default"], {
+      w: "16",
+      style: S_SVG,
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("rect", {
+        x: "1",
+        y: "1",
+        height: "14",
+        width: "14",
+        strokeWidth: "2",
+        rx: "3",
+        stroke: _restStroke,
+        fill: _restFill
+      }), _value ? /*#__PURE__*/(0, _jsxRuntime.jsx)(SvgChecked, {
+        stroke: checkedColor
+      }) : null]
+    })
+  });
 };
 /*
 SvgCheckBox.propTypes = {

@@ -1,24 +1,23 @@
 
-//import React, { Component } from 'react';
-import React from '../_react'
+const CL_TAB = "tab"
+, TAB_COLOR = '#2f7ed8'
+, S_BT = {
+  color: TAB_COLOR,
+  borderBottom : `3px solid ${TAB_COLOR}`
+}
+, S_TITLE = { color: TAB_COLOR };
 
-const CL = "tab";
-const S = {
-  BT : {
-    color: '#2f7ed8',
-    borderBottom : '3px solid #2f7ed8'
-  },
-  TITLE: {
-    color: '#2f7ed8'
-  }
-};
-
-const Tab = ({ id, title, isSelected, onClick }) => {
-  const _btStyle = isSelected ? S.BT : null
-  , _titleStyle = isSelected ? S.TITLE : null;
+const Tab = ({
+  id,
+  title,
+  isSelected,
+  onClick
+}) => {
+  const _btStyle = isSelected ? S_BT : null
+  , _titleStyle = isSelected ? S_TITLE : null;
   return (
     <button
-       className={CL}
+       className={CL_TAB}
        style={_btStyle}
        id={`tab-${id}`}
        role="tab"
@@ -27,9 +26,11 @@ const Tab = ({ id, title, isSelected, onClick }) => {
        tabIndex="0"
        onClick={onClick}
     >
-       <span style={_titleStyle}>{title}</span>
+       <span style={_titleStyle}>
+         {title}
+       </span>
     </button>
   );
-}
+};
 
 export default Tab

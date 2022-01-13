@@ -1,15 +1,13 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _react = _interopRequireDefault(require("../_react"));
+var _jsxRuntime = require("react/jsx-runtime");
 
 var SpinnerLoading = function SpinnerLoading(_ref) {
   var style = _ref.style;
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     "data-loader": "circle",
     style: style
   });

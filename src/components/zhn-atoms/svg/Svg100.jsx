@@ -1,4 +1,3 @@
-import React from '../../_react';
 
 const Svg100 = ({
   w,
