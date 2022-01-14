@@ -1,113 +1,112 @@
-//import React, { Component } from 'react';
-import React from '../_react'
+//import PropTypes from "prop-types";
+import {
+  cloneElement,
+  forwardRef,
+  useState,
+  useCallback,
+  useImperativeHandle
+} from '../uiApi';
 
-const { Component } = React
-
-const S = {
-  UL: {
-    listStyle: 'outside none none',
-    marginTop: 5,
-    marginLeft: 10,
-    marginRight: 5,
-    marginBottom: 5,
-    textAlign: 'center'
-  },
-  TABS: {
-    width: "100%",
-    height : "100%"
-  },
-  TAB_SELECTED: {
-    display: 'block',
-    width: "100%",
-    height : "100%"
-  },
-  NONE: {
-    display: 'none',
-  }
+const S_TABS = {
+  marginTop: 5,
+  marginRight: 5,
+  marginBottom: 10,
+  marginLeft: 24
+}, S_BLOCK = {
+  display: 'block',
+  width: "100%",
+  height: "100%"
+}, S_NONE = { display: 'none'}
+, S_COMPONENTS = {
+  width: "100%",
+  height: "100%"
 };
 
-
 const _isFn = fn => typeof fn === 'function';
+const _isElement = el => el && _isFn(el.type);
 
-class TabPane extends Component {
+const _reduceElements = (elements, crElement) =>
+(elements||[])
+  .reduce((els, el, index) => {
+     if (_isElement(el)) {
+       els.push(crElement(el, index))
+     }
+     return els;
+  }, []);
 
-  constructor(props){
-    super(props);
-    const components = props.children.map((tab, index) => {
-       return  React.cloneElement(tab.props.children, {
-          key : 'comp' + index
-        });
-    })
-    this.state = {
-      selectedTabIndex : 0,
-      components
+const _renderTabs = (
+  children,
+  selectedTabIndex,
+  hClickTab
+) => _reduceElements(children, (tabEl, index) =>
+   cloneElement(tabEl, {
+     key: index,
+     id: index,
+     onClick: () => hClickTab(index, tabEl),
+     isSelected: index === selectedTabIndex
+   })
+ );
+
+ const _renderComponents = (
+   children,
+   selectedTabIndex
+ ) => _reduceElements(children, (tabEl, index) => {
+   const _isSelected = (index === selectedTabIndex)
+   , _divStyle = _isSelected ? S_BLOCK : S_NONE;
+   return (
+     <div
+        key={'a'+index}
+        style={_divStyle}
+        role="tabpanel"
+        id={`tabpanel-${index}`}
+        aria-labelledby={`tab-${index}`}
+     >
+        {cloneElement(tabEl.props.children, {
+           isSelected: _isSelected
+        })}
+    </div>
+   );
+ });
+
+
+
+const TabPane = forwardRef(({
+  width,
+  height,
+  children
+}, ref) => {
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0)
+  , _hClickTab = useCallback((index, tabEl) => {
+    setSelectedTabIndex(index)
+    const { props } = tabEl || {}
+    , { onClick } = props || {};
+    if (_isFn(onClick)) {
+      onClick()
     }
-  }
+  }, []);
 
-  _handlerClickTab = (index, tabEl) => {
-    this.setState({ selectedTabIndex : index });
-    if (_isFn(tabEl.props.onClick)){
-      tabEl.props.onClick();
-    }
-  }
+  useImperativeHandle(ref, () => ({
+    getSelectedTabIndex: () => selectedTabIndex
+  }), [selectedTabIndex])
 
-  _renderTabs = (children) => {
-       const { selectedTabIndex } = this.state;
-       return children.map((tab, index) => {
-          const isSelected = index === selectedTabIndex
-            ? true : false;
-          return React.cloneElement(tab, {
-             key : index,
-             id: index,
-             onClick : this._handlerClickTab.bind(this, index, tab),
-             isSelected
-           }
-         );
-       });
-  }
-
-
-  _renderComponents = () => {
-      const { selectedTabIndex, components } = this.state;
-      return components.map((comp, index) => {
-         const divStyle = (index === selectedTabIndex)
-                    ? S.TAB_SELECTED
-                    : S.NONE;
-          return (
-             <div
-               style={divStyle}
-               key={'a'+index}
-               role="tabpanel"
-               id={`tabpanel-${index}`}
-               aria-labelledby={`tab-${index}`}
-              >
-                {comp}
-             </div>
-           );
-      });
-  }
-
-  render(){
-    const {
-      width, height,
-      tabsStyle,
-      children
-    } = this.props;
-    return (
-      <div style={{ width, height }}>
-        <ul style={{...S.UL, ...tabsStyle }}>
-           {this._renderTabs(children)}
-        </ul>
-        <div style={S.TABS}>
-           {this._renderComponents()}
-        </div>
+  return (
+    <div style={{ width, height }}>
+      <div style={S_TABS}>
+         {_renderTabs(children, selectedTabIndex, _hClickTab)}
       </div>
-    )
-  }
+      <div style={S_COMPONENTS}>
+         {_renderComponents(children, selectedTabIndex)}
+      </div>
+    </div>
+  );
+})
 
-  getSelectedTabIndex() {
-    return this.state.selectedTabIndex;
-  }
+/*
+TabPane.propTypes = {
+  width: PropTypes.number,
+  height: PropTypes.number,
+  children: PropTypes.arrayOf(PropTypes.node)
 }
+*/
 
 export default TabPane
