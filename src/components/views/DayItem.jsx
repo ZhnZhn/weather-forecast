@@ -1,8 +1,4 @@
-//import React from 'react';
-import React from '../_react'
-
 import dt from '../../utils/dt';
-
 import IconVane from './IconVane';
 
 const CL_DAY_ITEM = 'day-item'

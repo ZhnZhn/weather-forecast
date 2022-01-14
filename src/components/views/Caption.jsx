@@ -1,4 +1,3 @@
-import React from '../_react';
 
 const CL_SELECT_NONE = 'select-none'
 , ROOT_DIV = {

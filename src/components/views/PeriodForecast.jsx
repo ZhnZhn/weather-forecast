@@ -1,4 +1,3 @@
-import React from '../_react';
 
 import OpenClose from '../zhn-atoms/OpenClose';
 import C from '../styles/Color';
@@ -19,7 +18,8 @@ const PeriodForecast = ({
   return (
     <div style={S_ROOT}>
       <OpenClose
-        rootStyle={S_OPEN_CLOSE}
+        isInitial={true}
+        style={S_OPEN_CLOSE}
         openColor={C.BROWN}
         isClickableCompAfter={true}
         CompAfter={<Caption

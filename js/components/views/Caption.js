@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = _interopRequireDefault(require("../_react"));
+var _jsxRuntime = require("react/jsx-runtime");
 
 var CL_SELECT_NONE = 'select-none',
     ROOT_DIV = {
@@ -33,10 +33,11 @@ var Caption = function Caption(_ref) {
       country = _ref3.country,
       _caption = [name, country].filter(Boolean).join(':');
 
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: CL_SELECT_NONE,
-    style: (0, _extends2["default"])({}, ROOT_DIV, style)
-  }, _caption);
+    style: (0, _extends2["default"])({}, ROOT_DIV, style),
+    children: _caption
+  });
 };
 
 var _default = Caption;

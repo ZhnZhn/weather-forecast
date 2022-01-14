@@ -1,5 +1,3 @@
-//import React from 'react';
-import React from '../_react'
 //import PropTypes from 'prop-types';
 
 const CL_VANE = "icon__popup__vane"

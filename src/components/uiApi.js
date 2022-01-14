@@ -4,5 +4,9 @@ export {
   useCallback,
   useMemo,
   useEffect,
-  useContext
+  useContext,
+  useImperativeHandle,
+  forwardRef,
+  cloneElement,
+  memo
 } from 'react';
