@@ -1,5 +1,7 @@
-import React from '../_react'
+import { memo, useMemo } from '../uiApi';
 import { useSelector } from 'react-redux'
+
+import useSeriesFilter from './useSeriesFilter'
 //import PropTypes from 'prop-types';
 
 import Chart from '../charts/Chart'
@@ -13,7 +15,6 @@ import LegendForecast from './LegendForecast';
 import STYLE from './Chart.Style';
 import SC from './SeriesColor'
 
-const { useState, useCallback, useMemo, memo } = React;
 const {
   CartesianGrid,
   Bar,
@@ -85,13 +86,7 @@ const _filterData = (data=[], filters={}) => {
 const areEqual = () => true;
 
 const ForecastChart = () => {
-  const [filters, setFilters] = useState(INITIAL_FILTERS)
-  , _hFilter = useCallback(dataKey => {
-    setFilters(prevFilters => {
-       prevFilters[dataKey] = !prevFilters[dataKey]
-       return {...prevFilters};
-    })
-  }, [])
+  const [filters, _hFilter] = useSeriesFilter(INITIAL_FILTERS)  
   , forecastArr = useSelector(state => {
     const recent = sForecast.recent(state);
     return recent

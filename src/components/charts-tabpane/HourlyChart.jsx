@@ -1,6 +1,7 @@
-import React from '../_react'
+import { memo, useMemo } from '../uiApi'
 import { useSelector } from 'react-redux'
 
+import useSeriesFilter from './useSeriesFilter'
 import Chart from '../charts/Chart'
 
 import dt from '../../utils/dt';
@@ -10,8 +11,6 @@ import LegendHourly from './LegendHourly';
 import TooltipHourly from './TooltipHourly';
 import STYLE from './Chart.Style';
 import SC from './SeriesColor';
-
-const { useState, useCallback, useMemo, memo } = React
 
 const {
  CartesianGrid,
@@ -132,13 +131,7 @@ const _crDataKey = (filtered, propName) => filtered[propName]
 const areEqual = () => true;
 
 const HourlyChart = memo(() => {
-  const [filtered, setFiltered] = useState(INITIAL_FILTERED)
-  , _hFilter = useCallback(dataKey => {
-    setFiltered(prevFiltered => {
-      prevFiltered[dataKey] = !prevFiltered[dataKey]
-      return {...prevFiltered};
-    })
-  }, [])
+  const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)  
   , hourlyArr = useSelector(state => sHourly.forecast(state))
   , data = useMemo(() => _isArr(hourlyArr)
      ? _transformHourly(hourlyArr)

@@ -7,9 +7,11 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = _interopRequireDefault(require("../_react"));
+var _uiApi = require("../uiApi");
 
 var _reactRedux = require("react-redux");
+
+var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
 
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
 
@@ -25,11 +27,9 @@ var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
 
 var _SeriesColor = _interopRequireDefault(require("./SeriesColor"));
 
+var _jsxRuntime = require("react/jsx-runtime");
+
 //import PropTypes from 'prop-types';
-var useState = _react["default"].useState,
-    useCallback = _react["default"].useCallback,
-    useMemo = _react["default"].useMemo,
-    memo = _react["default"].memo;
 var CartesianGrid = _Chart["default"].CartesianGrid,
     Bar = _Chart["default"].Bar,
     Line = _Chart["default"].Line,
@@ -145,119 +145,115 @@ var areEqual = function areEqual() {
 };
 
 var ForecastChart = function ForecastChart() {
-  var _useState = useState(INITIAL_FILTERS),
-      filters = _useState[0],
-      setFilters = _useState[1],
-      _hFilter = useCallback(function (dataKey) {
-    setFilters(function (prevFilters) {
-      prevFilters[dataKey] = !prevFilters[dataKey];
-      return (0, _extends2["default"])({}, prevFilters);
-    });
-  }, []),
+  var _useSeriesFilter = (0, _useSeriesFilter2["default"])(INITIAL_FILTERS),
+      filters = _useSeriesFilter[0],
+      _hFilter = _useSeriesFilter[1],
       forecastArr = (0, _reactRedux.useSelector)(function (state) {
     var recent = _selectors.sForecast.recent(state);
 
     return recent ? _selectors.sForecast.listById(state, recent) : void 0;
   }),
-      data = useMemo(function () {
+      data = (0, _uiApi.useMemo)(function () {
     return forecastArr ? _transformForecast(forecastArr) : INITIAL_DATA;
   }, [forecastArr]),
-      _data = useMemo(function () {
+      _data = (0, _uiApi.useMemo)(function () {
     return _filterData(data, filters);
   }, [data, filters]);
 
-  return /*#__PURE__*/_react["default"].createElement(ResponsiveContainer, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(ResponsiveContainer, {
     width: "100%",
-    height: 300
-  }, /*#__PURE__*/_react["default"].createElement(ComposedChart, (0, _extends2["default"])({}, _Chart2["default"].ComposedChart, {
-    data: _data
-  }), /*#__PURE__*/_react["default"].createElement(XAxis, (0, _extends2["default"])({
-    dataKey: "day"
-  }, _Chart2["default"].XAxis)), /*#__PURE__*/_react["default"].createElement(YAxis, {
-    yAxisId: 1,
-    label: {
-      value: "°C" //offset: -18,
-      //position: 'insideTop'
-      //angle: -90,
-      //position: 'insideLeft'
-      //offset: 10,
-      //position: "insideTopRight",
-      //position: "insideStart"
+    height: 300,
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(ComposedChart, (0, _extends2["default"])({}, _Chart2["default"].ComposedChart, {
+      data: _data,
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(XAxis, (0, _extends2["default"])({
+        dataKey: "day"
+      }, _Chart2["default"].XAxis)), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, {
+        yAxisId: 1,
+        label: {
+          value: "°C" //offset: -18,
+          //position: 'insideTop'
+          //angle: -90,
+          //position: 'insideLeft'
+          //offset: 10,
+          //position: "insideTopRight",
+          //position: "insideStart"
 
-    }
-  }), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisRain, {
-    yAxisId: 2,
-    hide: !filters.rain,
-    dataKey: "rain",
-    orientation: "right",
-    label: "mm"
-  })), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
-    hide: !filters.speed,
-    yAxisId: 3,
-    dataKey: "speed",
-    orientation: "right",
-    label: "m/s"
-  })), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisPressure, {
-    hide: !filters.pressure,
-    yAxisId: 4,
-    dataKey: "pressure",
-    width: 80,
-    orientation: "right",
-    label: "hPa",
-    type: "number",
-    domain: ['dataMin', 'dataMax']
-  })), /*#__PURE__*/_react["default"].createElement(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
-    hide: !filters.humidity,
-    yAxisId: 5,
-    dataKey: "humidity",
-    orientation: "right",
-    label: "%"
-  })), /*#__PURE__*/_react["default"].createElement(CartesianGrid, _Chart2["default"].CartesianGrid), /*#__PURE__*/_react["default"].createElement(Tooltip, {
-    offset: 24,
-    content: /*#__PURE__*/_react["default"].createElement(_TooltipForecast["default"], {
-      data: data
-    })
-  }), /*#__PURE__*/_react["default"].createElement(Legend, {
-    content: /*#__PURE__*/_react["default"].createElement(_LegendForecast["default"], {
-      filters: filters,
-      onFilter: _hFilter
-    })
-  }), /*#__PURE__*/_react["default"].createElement(Bar, {
-    yAxisId: 2,
-    dataKey: "rain",
-    barSize: 20,
-    fill: _SeriesColor["default"].RAIN
-  }), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({}, _Chart2["default"].LineSpeed, {
-    yAxisId: 3,
-    dataKey: "speed"
-  })), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({}, _Chart2["default"].LinePressure, {
-    yAxisId: 4,
-    dataKey: "pressure"
-  })), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({}, _Chart2["default"].LineHumidity, {
-    yAxisId: 5,
-    dataKey: "humidity"
-  })), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMin, {
-    yAxisId: 1,
-    dataKey: "tempMin"
-  })), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMax, {
-    yAxisId: 1,
-    dataKey: "tempMax"
-  })), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempEve, {
-    yAxisId: 1,
-    dataKey: "tempEve"
-  })), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMorn, {
-    yAxisId: 1,
-    dataKey: "tempMorn"
-  })), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
-    yAxisId: 1,
-    dataKey: "tempNight"
-  })), /*#__PURE__*/_react["default"].createElement(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempDay, {
-    yAxisId: 1,
-    dataKey: "tempDay"
-  }))));
+        }
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisRain, {
+        yAxisId: 2,
+        hide: !filters.rain,
+        dataKey: "rain",
+        orientation: "right",
+        label: "mm"
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
+        hide: !filters.speed,
+        yAxisId: 3,
+        dataKey: "speed",
+        orientation: "right",
+        label: "m/s"
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisPressure, {
+        hide: !filters.pressure,
+        yAxisId: 4,
+        dataKey: "pressure",
+        width: 80,
+        orientation: "right",
+        label: "hPa",
+        type: "number",
+        domain: ['dataMin', 'dataMax']
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
+        hide: !filters.humidity,
+        yAxisId: 5,
+        dataKey: "humidity",
+        orientation: "right",
+        label: "%"
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(CartesianGrid, (0, _extends2["default"])({}, _Chart2["default"].CartesianGrid)), /*#__PURE__*/(0, _jsxRuntime.jsx)(Tooltip, {
+        offset: 24,
+        content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_TooltipForecast["default"], {
+          data: data
+        })
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
+        content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendForecast["default"], {
+          filters: filters,
+          onFilter: _hFilter
+        })
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Bar, {
+        yAxisId: 2,
+        dataKey: "rain",
+        barSize: 20,
+        fill: _SeriesColor["default"].RAIN
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineSpeed, {
+        yAxisId: 3,
+        dataKey: "speed"
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LinePressure, {
+        yAxisId: 4,
+        dataKey: "pressure"
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineHumidity, {
+        yAxisId: 5,
+        dataKey: "humidity"
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMin, {
+        yAxisId: 1,
+        dataKey: "tempMin"
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMax, {
+        yAxisId: 1,
+        dataKey: "tempMax"
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempEve, {
+        yAxisId: 1,
+        dataKey: "tempEve"
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMorn, {
+        yAxisId: 1,
+        dataKey: "tempMorn"
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
+        yAxisId: 1,
+        dataKey: "tempNight"
+      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempDay, {
+        yAxisId: 1,
+        dataKey: "tempDay"
+      }))]
+    }))
+  });
 };
 
-var _default = memo(ForecastChart, areEqual);
+var _default = (0, _uiApi.memo)(ForecastChart, areEqual);
 
 exports["default"] = _default;
 //# sourceMappingURL=ForecastChart.js.map
