@@ -1,6 +1,6 @@
-import store from './store'
+import store from './store';
 
-import throttle from '../utils/throttle'
+import throttle from '../utils/throttle';
 
 import { forecastRequested } from './forecast/actions';
 import { toggleLayout } from './layout/actions';
@@ -8,6 +8,7 @@ import { showModal } from './modal/actions';
 
 import { hourlyRequested } from './hourly/actions';
 import { uvRequested } from './uv/actions';
+import { airForecastReq } from './air/actions';
 
 import { placeRequested } from './place/actions'
 
@@ -38,6 +39,7 @@ const handlers = {
   //LeftPushMenu
   requestHourly: () => dispatch(hourlyRequested()),
   requestUvi: () => dispatch(uvRequested()),
+  requestAirForecast: () => dispatch(airForecastReq()),
 
   //LeafletMap
   requestPlace: ({lat, lng}) => dispatch(placeRequested({ lat, lot:lng }))

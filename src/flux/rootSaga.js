@@ -4,6 +4,7 @@ import watchPlaceRequested from './place/saga';
 import watchForecastRequested from './forecast/saga';
 import watchHourlyRequested from './hourly/saga';
 import watchUvRequested from './uv/saga';
+import watchAirForecastRequested from './air/saga';
 
 import watchSettingSet from './settings/saga';
 
@@ -14,6 +15,7 @@ const rootSaga = function* () {
      watchForecastRequested(),
      watchHourlyRequested(),
      watchUvRequested(),
+     watchAirForecastRequested(),
      watchSettingSet()
    ]);
    /*eslint-enable redux-saga/no-unhandled-errors*/

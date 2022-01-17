@@ -1,0 +1,23 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/flux/air/actions.js"
+ ],
+ "file": "../../../src/flux/air/actions.js",
+ "names": [
+  "ACTION_AIR_FORECAST_REQ",
+  "ACTION_AIR_FORECAST_REQ_OK",
+  "ACTION_AIR_FORECAST_REQ_INCACHE",
+  "airForecastReq",
+  "type",
+  "airForecastReqOk",
+  "forecast",
+  "id",
+  "airForecastReqInCache",
+  "actions",
+  "requested",
+  "requestedOk",
+  "requestedInCache"
+ ],
+ "mappings": ";;;;AACO,IAAMA,uBAAuB,GAAG,yBAAhC;;AACA,IAAMC,0BAA0B,GAAG,4BAAnC;;AACA,IAAMC,+BAA+B,GAAG,iCAAxC;;;AAEA,IAAMC,cAAc,GAAG,SAAjBA,cAAiB;AAAA,SAAO;AACnCC,IAAAA,IAAI,EAAEJ;AAD6B,GAAP;AAAA,CAAvB;;;;AAGA,IAAMK,gBAAgB,GAAG,SAAnBA,gBAAmB,CAACC,QAAD,EAAWC,EAAX;AAAA,SAAmB;AACjDH,IAAAA,IAAI,EAAEH,0BAD2C;AACfK,IAAAA,QAAQ,EAARA,QADe;AACLC,IAAAA,EAAE,EAAFA;AADK,GAAnB;AAAA,CAAzB;;;;AAGA,IAAMC,qBAAqB,GAAG,SAAxBA,qBAAwB;AAAA,SAAO;AAC1CJ,IAAAA,IAAI,EAAEF;AADoC,GAAP;AAAA,CAA9B;;;AAIP,IAAMO,OAAO,GAAG;AACdC,EAAAA,SAAS,EAAGP,cADE;AAEdQ,EAAAA,WAAW,EAAGN,gBAFA;AAGdO,EAAAA,gBAAgB,EAAGJ;AAHL,CAAhB;eAMeC,O"
+}

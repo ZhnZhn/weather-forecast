@@ -1,1 +1,20 @@
-{"version":3,"sources":["../../../src/flux/settings/actions.js"],"names":["ACTION","SETTINGS_SET","SETTINGS_SET_APIKEY","setSettings","apiKey","type","setApiKey","actions"],"mappings":";;;;AACO,IAAMA,MAAM,GAAG;AACpBC,EAAAA,YAAY,EAAE,cADM;AAEpBC,EAAAA,mBAAmB,EAAE;AAFD,CAAf;;;AAKA,IAAMC,WAAW,GAAG,SAAdA,WAAc,CAACC,MAAD;AAAA,SAAa;AACtCC,IAAAA,IAAI,EAAEL,MAAM,CAACC,YADyB;AACXG,IAAAA,MAAM,EAANA;AADW,GAAb;AAAA,CAApB;;;;AAIA,IAAME,SAAS,GAAG,SAAZA,SAAY;AAAA,SAAO;AAC9BD,IAAAA,IAAI,EAAEL,MAAM,CAACE;AADiB,GAAP;AAAA,CAAlB;;;AAIP,IAAMK,OAAO,GAAG;AACdJ,EAAAA,WAAW,EAAEA,WADC;AAEdG,EAAAA,SAAS,EAAEA;AAFG,CAAhB;eAKeC,O","sourcesContent":["\r\nexport const ACTION = {\r\n  SETTINGS_SET: 'SETTINGS_SET',\r\n  SETTINGS_SET_APIKEY: 'SETTINGS_SET_APIKEY'\r\n};\r\n\r\nexport const setSettings = (apiKey) => ({\r\n  type: ACTION.SETTINGS_SET, apiKey\r\n})\r\n\r\nexport const setApiKey = () => ({\r\n  type: ACTION.SETTINGS_SET_APIKEY\r\n})\r\n\r\nconst actions = {\r\n  setSettings: setSettings,\r\n  setApiKey: setApiKey\r\n};\r\n\r\nexport default actions\r\n"],"file":"actions.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/flux/settings/actions.js"
+ ],
+ "file": "../../../src/flux/settings/actions.js",
+ "names": [
+  "ACTION_SETTINGS_SET",
+  "ACTION_SETTINGS_SET_APIKEY",
+  "ACTION_SETTINGS_SET_AIR",
+  "setSettings",
+  "apiKey",
+  "type",
+  "setApiKey",
+  "setAir",
+  "is",
+  "actions"
+ ],
+ "mappings": ";;;;AACO,IAAMA,mBAAmB,GAAG,cAA5B;;AACA,IAAMC,0BAA0B,GAAG,qBAAnC;;AACA,IAAMC,uBAAuB,GAAG,kBAAhC;;;AAEA,IAAMC,WAAW,GAAG,SAAdA,WAAc,CAACC,MAAD;AAAA,SAAa;AACtCC,IAAAA,IAAI,EAAEL,mBADgC;AACXI,IAAAA,MAAM,EAANA;AADW,GAAb;AAAA,CAApB;;;;AAIA,IAAME,SAAS,GAAG,SAAZA,SAAY;AAAA,SAAO;AAC9BD,IAAAA,IAAI,EAAEJ;AADwB,GAAP;AAAA,CAAlB;;;;AAIA,IAAMM,MAAM,GAAG,SAATA,MAAS,CAACC,EAAD;AAAA,SAAS;AAC7BH,IAAAA,IAAI,EAAEH,uBADuB;AACEM,IAAAA,EAAE,EAAFA;AADF,GAAT;AAAA,CAAf;;;AAIP,IAAMC,OAAO,GAAG;AACdN,EAAAA,WAAW,EAAXA,WADc;AAEdG,EAAAA,SAAS,EAATA;AAFc,CAAhB;eAKeG,O"
+}

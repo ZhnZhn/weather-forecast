@@ -1,1 +1,20 @@
-{"version":3,"sources":["../../src/flux/rootReducer.js"],"names":["reducer","fetching","layout","modal","settings","place","forecast","hourly","uv"],"mappings":";;;;;;;AAAA;;AAEA;;AACA;;AACA;;AACA;;AACA;;AACA;;AACA;;AACA;;AAEA,IAAMA,OAAO,GAAG,4BAAgB;AAC9BC,EAAAA,QAAQ,EAARA,mBAD8B;AACpBC,EAAAA,MAAM,EAANA,oBADoB;AACZC,EAAAA,KAAK,EAALA,oBADY;AACLC,EAAAA,QAAQ,EAARA,oBADK;AAE9BC,EAAAA,KAAK,EAALA,oBAF8B;AAEvBC,EAAAA,QAAQ,EAARA,oBAFuB;AAEbC,EAAAA,MAAM,EAANA,oBAFa;AAELC,EAAAA,EAAE,EAAFA;AAFK,CAAhB,CAAhB;eAKeR,O","sourcesContent":["import { combineReducers } from 'redux';\r\n\r\nimport fetching from './fetching/reducer';\r\nimport layout from './layout/reducer';\r\nimport modal from './modal/reducer';\r\nimport settings from './settings/reducer';\r\nimport place from './place/reducer';\r\nimport forecast from './forecast/reducer';\r\nimport hourly from './hourly/reducer';\r\nimport uv from './uv/reducer';\r\n\r\nconst reducer = combineReducers({\r\n  fetching, layout, modal, settings,\r\n  place, forecast, hourly, uv\r\n});\r\n\r\nexport default reducer\r\n"],"file":"rootReducer.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../src/flux/rootReducer.js"
+ ],
+ "file": "../../src/flux/rootReducer.js",
+ "names": [
+  "reducer",
+  "fetching",
+  "layout",
+  "modal",
+  "settings",
+  "place",
+  "forecast",
+  "hourly",
+  "uv",
+  "air"
+ ],
+ "mappings": ";;;;;;;AAAA;;AAEA;;AACA;;AACA;;AACA;;AACA;;AACA;;AACA;;AACA;;AACA;;AAEA,IAAMA,OAAO,GAAG,4BAAgB;AAC9BC,EAAAA,QAAQ,EAARA,oBAD8B;AACpBC,EAAAA,MAAM,EAANA,oBADoB;AACZC,EAAAA,KAAK,EAALA,oBADY;AACLC,EAAAA,QAAQ,EAARA,oBADK;AAE9BC,EAAAA,KAAK,EAALA,oBAF8B;AAEvBC,EAAAA,QAAQ,EAARA,oBAFuB;AAEbC,EAAAA,MAAM,EAANA,oBAFa;AAELC,EAAAA,EAAE,EAAFA,oBAFK;AAEDC,EAAAA,GAAG,EAAHA;AAFC,CAAhB,CAAhB;eAKeT,O"
+}

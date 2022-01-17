@@ -19,7 +19,9 @@ var _actions4 = require("./hourly/actions");
 
 var _actions5 = require("./uv/actions");
 
-var _actions6 = require("./place/actions");
+var _actions6 = require("./air/actions");
+
+var _actions7 = require("./place/actions");
 
 var dispatch = _store["default"].dispatch;
 
@@ -54,11 +56,14 @@ var handlers = {
   requestUvi: function requestUvi() {
     return dispatch((0, _actions5.uvRequested)());
   },
+  requestAirForecast: function requestAirForecast() {
+    return dispatch((0, _actions6.airForecastReq)());
+  },
   //LeafletMap
   requestPlace: function requestPlace(_ref) {
     var lat = _ref.lat,
         lng = _ref.lng;
-    return dispatch((0, _actions6.placeRequested)({
+    return dispatch((0, _actions7.placeRequested)({
       lat: lat,
       lot: lng
     }));

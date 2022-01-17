@@ -17,17 +17,17 @@ var _saga3 = _interopRequireDefault(require("./hourly/saga"));
 
 var _saga4 = _interopRequireDefault(require("./uv/saga"));
 
-var _saga5 = _interopRequireDefault(require("./settings/saga"));
+var _saga5 = _interopRequireDefault(require("./air/saga"));
 
-var rootSaga =
-/*#__PURE__*/
-_regenerator["default"].mark(function rootSaga() {
+var _saga6 = _interopRequireDefault(require("./settings/saga"));
+
+var rootSaga = /*#__PURE__*/_regenerator["default"].mark(function rootSaga() {
   return _regenerator["default"].wrap(function rootSaga$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return (0, _effects.all)([(0, _saga["default"])(), (0, _saga2["default"])(), (0, _saga3["default"])(), (0, _saga4["default"])(), (0, _saga5["default"])()]);
+          return (0, _effects.all)([(0, _saga["default"])(), (0, _saga2["default"])(), (0, _saga3["default"])(), (0, _saga4["default"])(), (0, _saga5["default"])(), (0, _saga6["default"])()]);
 
         case 2:
         case "end":

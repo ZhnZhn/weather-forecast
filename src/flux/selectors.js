@@ -1,6 +1,7 @@
 import * as place from './place/reducer';
 import * as forecast from './forecast/reducer';
 import * as hourly from './hourly/reducer';
+import * as air from './air/reducer';
 import * as uv from './uv/reducer';
 import * as settings from './settings/reducer';
 import * as modal from './modal/reducer';
@@ -44,20 +45,34 @@ export const sHourly = {
   }
 }
 
+export const sAir = {
+  recent : (state) => air.recent(state.air),
+  byId : (state, id) => (air.byId(state.air, id)  || {}).list,
+
+  forecast: state => {
+    const recent = sAir.recent(state);
+    return recent
+      ? sAir.byId(state, recent)
+      : void 0;
+  }
+}
+
 export const sUV = {
   recent : (state) => uv.recent(state.uv),
   byId : (state, id) => uv.byId(state.uv, id),
 
   forecast : state => {
     const recent = sUV.recent(state);
-    return recent      
+    return recent
       ? sUV.byId(state, recent)
       : void 0;
   }
 }
 
+const _getSettingsSlice = state => state.settings;
 export const sSettings = {
-  isApiKey : (state) => settings.isApiKey(state.settings)
+  isApiKey : (state) => settings.isApiKey(_getSettingsSlice(state)),
+  isAir: state => settings.isAir(_getSettingsSlice(state))
 }
 
 export const sModal = {
