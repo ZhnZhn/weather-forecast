@@ -19,13 +19,16 @@ var RouterData = {
             theme.setThemeName(themeName);
             store.dispatch((0, _actions2.setThemeName)(themeName));
           },
+          onAir: function onAir(is) {
+            store.dispatch((0, _actions.setAir)(is));
+          },
           onBeforeClose: function onBeforeClose() {
             store.dispatch((0, _actions2.toggleLayout)('isSettings'));
           }
         };
 
       default:
-        return undefined;
+        return;
     }
   }
 };

@@ -100,6 +100,7 @@ var SettingsDialog = /*#__PURE__*/function (_Component) {
         onClose = _this$props2.onClose,
         data = _this$props2.data,
         onSet = data.onSet,
+        onAir = data.onAir,
         TS = theme.createStyle(_Dialog["default"]);
     return /*#__PURE__*/_react["default"].createElement(_ModalDialog["default"], {
       style: (0, _extends2["default"])({}, S_MODAL, TS.R_DIALOG),
@@ -125,6 +126,7 @@ var SettingsDialog = /*#__PURE__*/function (_Component) {
       style: S_CARD_ROOT,
       buttonsStyle: S_CARD_BUTTONS,
       onSetTheme: this._handleSetTheme,
+      onAir: onAir,
       onClose: onClose
     }))));
   };

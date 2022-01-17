@@ -40,7 +40,8 @@ class SettingsDialog extends Component {
   static propTypes = {
     isShow: PropTypes.bool,
     data: PropTypes.shape({
-      onSet: PropTypes.func
+      onSet: PropTypes.func,
+      onAir: PropTypes.func,
     }),
     onClose: PropTypes.func
   }
@@ -75,7 +76,7 @@ class SettingsDialog extends Component {
             onClose,
             data
           } = this.props
-        , { onSet } = data
+        , { onSet, onAir } = data
         , TS = theme.createStyle(styleConfig);
     return (
          <ModalDialog
@@ -105,6 +106,7 @@ class SettingsDialog extends Component {
                   style={S_CARD_ROOT}
                   buttonsStyle={S_CARD_BUTTONS}
                   onSetTheme={this._handleSetTheme}
+                  onAir={onAir}
                   onClose={onClose}
                 />
              </Tab>

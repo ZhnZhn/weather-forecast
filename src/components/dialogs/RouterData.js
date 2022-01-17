@@ -1,6 +1,12 @@
 
-import { setSettings } from '../../flux/settings/actions'
-import { toggleLayout, setThemeName } from '../../flux/layout/actions'
+import {
+  setSettings,
+  setAir
+} from '../../flux/settings/actions'
+import {
+  toggleLayout,
+  setThemeName
+} from '../../flux/layout/actions'
 
 const RouterData = {
   getData: (store, type) => {
@@ -14,12 +20,15 @@ const RouterData = {
             theme.setThemeName(themeName)
             store.dispatch(setThemeName(themeName))
           },
+          onAir: (is) => {
+            store.dispatch(setAir(is))
+          },
           onBeforeClose: () => {
             store.dispatch(toggleLayout('isSettings'))
           }
 
         };
-      default: return undefined;
+      default: return;
     }
   }
 }
