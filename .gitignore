@@ -10,6 +10,6 @@ stat-dll.json
 coverage
 dll
 _codemods
-public
+dev
 webpack.dev.js
 template/index-dev.ejs
