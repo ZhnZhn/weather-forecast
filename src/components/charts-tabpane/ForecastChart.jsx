@@ -5,6 +5,7 @@ import useSeriesFilter from './useSeriesFilter'
 //import PropTypes from 'prop-types';
 
 import Chart from '../charts/Chart'
+import ChartType1 from './ChartType1'
 
 import dt from '../../utils/dt';
 import { sForecast } from '../../flux/selectors';
@@ -16,16 +17,11 @@ import STYLE from './Chart.Style';
 import SC from './SeriesColor'
 
 const {
-  CartesianGrid,
-  Bar,
-  Line,
   YAxis,
-  XAxis,
-  ResponsiveContainer,
-  Tooltip,
-  Legend,
-  ComposedChart
-} = Chart
+  Line,
+  Bar,
+  Legend
+} = Chart;
 
 const INITIAL_FILTERS = {
   tempDay : true,
@@ -86,7 +82,7 @@ const _filterData = (data=[], filters={}) => {
 const areEqual = () => true;
 
 const ForecastChart = () => {
-  const [filters, _hFilter] = useSeriesFilter(INITIAL_FILTERS)  
+  const [filters, _hFilter] = useSeriesFilter(INITIAL_FILTERS)
   , forecastArr = useSelector(state => {
     const recent = sForecast.recent(state);
     return recent
@@ -100,13 +96,11 @@ const ForecastChart = () => {
       , [data, filters]);
 
   return (
-    <ResponsiveContainer width="100%" height={300} >
-
-    <ComposedChart
-       {...STYLE.ComposedChart}
+    <ChartType1
+       chartStyle={STYLE.ComposedChart}
        data={_data}
+       TooltipComp={TooltipForecast}
     >
-      <XAxis dataKey="day" {...STYLE.XAxis} />
       <YAxis
          yAxisId={1}
          label={{
@@ -150,14 +144,6 @@ const ForecastChart = () => {
          dataKey="humidity"
          orientation="right" label="%"
       />
-
-      <CartesianGrid {...STYLE.CartesianGrid} />
-
-      <Tooltip
-        offset={24}
-        content={<TooltipForecast data={data} />}
-      />
-
       <Legend
         content={(
            <LegendForecast
@@ -217,10 +203,7 @@ const ForecastChart = () => {
         yAxisId={1}
         dataKey="tempDay"
       />
-
-    </ComposedChart>
-   </ResponsiveContainer>
-
+    </ChartType1>
   );
 }
 

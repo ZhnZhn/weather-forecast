@@ -4,24 +4,21 @@ import { useSelector } from 'react-redux'
 import useSeriesFilter from './useSeriesFilter'
 import Chart from '../charts/Chart'
 
+
 import dt from '../../utils/dt';
 import { sHourly } from '../../flux/selectors';
 
+import ChartType1 from './ChartType1';
 import LegendHourly from './LegendHourly';
 import TooltipHourly from './TooltipHourly';
 import STYLE from './Chart.Style';
 import SC from './SeriesColor';
 
 const {
- CartesianGrid,
+ YAxis,
  Line,
  Bar,
- YAxis,
- XAxis,
- ResponsiveContainer,
- Legend,
- ComposedChart,
- Tooltip
+ Legend
 } = Chart;
 
 const _isArr = Array.isArray;
@@ -131,7 +128,7 @@ const _crDataKey = (filtered, propName) => filtered[propName]
 const areEqual = () => true;
 
 const HourlyChart = memo(() => {
-  const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)  
+  const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
   , hourlyArr = useSelector(state => sHourly.forecast(state))
   , data = useMemo(() => _isArr(hourlyArr)
      ? _transformHourly(hourlyArr)
@@ -141,11 +138,10 @@ const HourlyChart = memo(() => {
   , [rainId, snowId, speedId] = _crYAxisIds(_isRain, _isSnow);
 
   return (
-    <ResponsiveContainer width="100%" height={300} >
-
-    <ComposedChart data={data} {...STYLE.HourlyChart}>
-      <XAxis dataKey="day" {...STYLE.XAxis} />
-
+    <ChartType1
+      data={data}
+      TooltipComp={TooltipHourly}
+    >
       <YAxis
          yAxisId={1}
          orientation="right"
@@ -195,13 +191,7 @@ const HourlyChart = memo(() => {
         dataKey="speed"
         hide={filtered.speed}
         {...STYLE.YAxisSpeed}
-      />
-
-      <CartesianGrid {...STYLE.CartesianGrid} />
-      <Tooltip
-        offset={24}
-        content={<TooltipHourly data={data} />}
-      />
+      />      
       <Legend
          content={
              <LegendHourly
@@ -247,11 +237,8 @@ const HourlyChart = memo(() => {
           //strokeDasharray={false}
           yAxisId={speedId}
           dataKey={_crDataKey(filtered, 'speed')}
-      />
-
-    </ComposedChart>
-
-    </ResponsiveContainer>
+       />
+     </ChartType1>
   );
 }, areEqual)
 

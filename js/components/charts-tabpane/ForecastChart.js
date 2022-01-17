@@ -15,6 +15,8 @@ var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
 
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
 
+var _ChartType = _interopRequireDefault(require("./ChartType1"));
+
 var _dt = _interopRequireDefault(require("../../utils/dt"));
 
 var _selectors = require("../../flux/selectors");
@@ -30,15 +32,10 @@ var _SeriesColor = _interopRequireDefault(require("./SeriesColor"));
 var _jsxRuntime = require("react/jsx-runtime");
 
 //import PropTypes from 'prop-types';
-var CartesianGrid = _Chart["default"].CartesianGrid,
-    Bar = _Chart["default"].Bar,
+var YAxis = _Chart["default"].YAxis,
     Line = _Chart["default"].Line,
-    YAxis = _Chart["default"].YAxis,
-    XAxis = _Chart["default"].XAxis,
-    ResponsiveContainer = _Chart["default"].ResponsiveContainer,
-    Tooltip = _Chart["default"].Tooltip,
-    Legend = _Chart["default"].Legend,
-    ComposedChart = _Chart["default"].ComposedChart;
+    Bar = _Chart["default"].Bar,
+    Legend = _Chart["default"].Legend;
 var INITIAL_FILTERS = {
   tempDay: true,
   tempNight: false,
@@ -160,96 +157,87 @@ var ForecastChart = function ForecastChart() {
     return _filterData(data, filters);
   }, [data, filters]);
 
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(ResponsiveContainer, {
-    width: "100%",
-    height: 300,
-    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(ComposedChart, (0, _extends2["default"])({}, _Chart2["default"].ComposedChart, {
-      data: _data,
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(XAxis, (0, _extends2["default"])({
-        dataKey: "day"
-      }, _Chart2["default"].XAxis)), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, {
-        yAxisId: 1,
-        label: {
-          value: "°C" //offset: -18,
-          //position: 'insideTop'
-          //angle: -90,
-          //position: 'insideLeft'
-          //offset: 10,
-          //position: "insideTopRight",
-          //position: "insideStart"
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_ChartType["default"], {
+    chartStyle: _Chart2["default"].ComposedChart,
+    data: _data,
+    TooltipComp: _TooltipForecast["default"],
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, {
+      yAxisId: 1,
+      label: {
+        value: "°C" //offset: -18,
+        //position: 'insideTop'
+        //angle: -90,
+        //position: 'insideLeft'
+        //offset: 10,
+        //position: "insideTopRight",
+        //position: "insideStart"
 
-        }
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisRain, {
-        yAxisId: 2,
-        hide: !filters.rain,
-        dataKey: "rain",
-        orientation: "right",
-        label: "mm"
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
-        hide: !filters.speed,
-        yAxisId: 3,
-        dataKey: "speed",
-        orientation: "right",
-        label: "m/s"
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisPressure, {
-        hide: !filters.pressure,
-        yAxisId: 4,
-        dataKey: "pressure",
-        width: 80,
-        orientation: "right",
-        label: "hPa",
-        type: "number",
-        domain: ['dataMin', 'dataMax']
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
-        hide: !filters.humidity,
-        yAxisId: 5,
-        dataKey: "humidity",
-        orientation: "right",
-        label: "%"
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(CartesianGrid, (0, _extends2["default"])({}, _Chart2["default"].CartesianGrid)), /*#__PURE__*/(0, _jsxRuntime.jsx)(Tooltip, {
-        offset: 24,
-        content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_TooltipForecast["default"], {
-          data: data
-        })
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
-        content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendForecast["default"], {
-          filters: filters,
-          onFilter: _hFilter
-        })
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Bar, {
-        yAxisId: 2,
-        dataKey: "rain",
-        barSize: 20,
-        fill: _SeriesColor["default"].RAIN
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineSpeed, {
-        yAxisId: 3,
-        dataKey: "speed"
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LinePressure, {
-        yAxisId: 4,
-        dataKey: "pressure"
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineHumidity, {
-        yAxisId: 5,
-        dataKey: "humidity"
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMin, {
-        yAxisId: 1,
-        dataKey: "tempMin"
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMax, {
-        yAxisId: 1,
-        dataKey: "tempMax"
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempEve, {
-        yAxisId: 1,
-        dataKey: "tempEve"
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMorn, {
-        yAxisId: 1,
-        dataKey: "tempMorn"
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
-        yAxisId: 1,
-        dataKey: "tempNight"
-      })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempDay, {
-        yAxisId: 1,
-        dataKey: "tempDay"
-      }))]
-    }))
+      }
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisRain, {
+      yAxisId: 2,
+      hide: !filters.rain,
+      dataKey: "rain",
+      orientation: "right",
+      label: "mm"
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
+      hide: !filters.speed,
+      yAxisId: 3,
+      dataKey: "speed",
+      orientation: "right",
+      label: "m/s"
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisPressure, {
+      hide: !filters.pressure,
+      yAxisId: 4,
+      dataKey: "pressure",
+      width: 80,
+      orientation: "right",
+      label: "hPa",
+      type: "number",
+      domain: ['dataMin', 'dataMax']
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
+      hide: !filters.humidity,
+      yAxisId: 5,
+      dataKey: "humidity",
+      orientation: "right",
+      label: "%"
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
+      content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendForecast["default"], {
+        filters: filters,
+        onFilter: _hFilter
+      })
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Bar, {
+      yAxisId: 2,
+      dataKey: "rain",
+      barSize: 20,
+      fill: _SeriesColor["default"].RAIN
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineSpeed, {
+      yAxisId: 3,
+      dataKey: "speed"
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LinePressure, {
+      yAxisId: 4,
+      dataKey: "pressure"
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineHumidity, {
+      yAxisId: 5,
+      dataKey: "humidity"
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMin, {
+      yAxisId: 1,
+      dataKey: "tempMin"
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMax, {
+      yAxisId: 1,
+      dataKey: "tempMax"
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempEve, {
+      yAxisId: 1,
+      dataKey: "tempEve"
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempMorn, {
+      yAxisId: 1,
+      dataKey: "tempMorn"
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
+      yAxisId: 1,
+      dataKey: "tempNight"
+    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempDay, {
+      yAxisId: 1,
+      dataKey: "tempDay"
+    }))]
   });
 };
 
