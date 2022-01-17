@@ -1,23 +1,25 @@
-import React from '../_react'
+import { useRef, useCallback, cloneElement } from '../uiApi';
+import { useSelector } from 'react-redux';
 
-import useLoadComp from './useLoadComp'
+import { sSettings } from '../../flux/selectors';
+
+import useLoadComp from './useLoadComp';
 
 import PeriodForecast from '../wrapper/PeriodForecast'
 import DayDetailPopup from './DayDetailPopup'
 import styleConfig from './LeftPushMenu.Style'
 import COMP_TYPE from './CompType'
 
-const { useRef, useCallback } = React;
-
 const LeftPushMenu = ({ id, theme }) => {
-  const _refDetail = useRef()
+  const isAir = useSelector(sSettings.isAir)
+  , _refDetail = useRef()
   , _hClickItem = useCallback((item, event) => {
     _refDetail.current.setItem(item);
   }, [])
   , _hCloseDetail = useCallback(() => {
     _refDetail.current.close();
   }, [])
-  , compOrBtOrErr = useLoadComp('CHARTS', COMP_TYPE.CTB)
+  , CompOrBtOrErrEl = useLoadComp('CHARTS', COMP_TYPE.CTB)
   , STYLE = theme.createStyle(styleConfig);
 
   return (
@@ -30,7 +32,7 @@ const LeftPushMenu = ({ id, theme }) => {
           ref={_refDetail}
           onClose={_hCloseDetail}
         />
-        {compOrBtOrErr}
+        {cloneElement(CompOrBtOrErrEl, { isAir })}
     </div>
   );
 }

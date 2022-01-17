@@ -1,5 +1,5 @@
 
-import COMP_TYPE from './CompType'
+import COMP_TYPE from './CompType';
 
 const _isFn = fn => typeof fn === 'function';
 
@@ -16,7 +16,7 @@ const _router = {
 const RouterComp = {
   getComp(type){
     const _load = _router[type];
-    return _isFn(_router[type])
+    return _isFn(_load)
       ? _load()
       : Promise.resolve(null);
   }
