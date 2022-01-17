@@ -68,8 +68,30 @@ const _crWindSpeed = (speed, gust) => {
  }
  const _gust = _isEmptyValue(gust)
    ? ''
-   : `-${gust}`;  
+   : `-${gust}`;
   return `${speed}${_gust}m/s`;
+};
+
+const AQ = [
+  'Good (1)',
+  'Fair (2)',
+  'Moderate (3)',
+  'Poor (4)',
+  'Very Poor (5)'
+];
+
+const _crAirQuailityRow = aqiSlice => {
+ const { main } = aqiSlice || {}
+ , { aqi } = main || {}
+ , _aqv = typeof aqi === 'number'
+     ? AQ[aqi-1]
+     : '';
+  return _aqv
+    ? `<p style="margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;">
+        <span class="marker__label" title="AirQuaility">AirQuaility:</span>
+        <span class="marker__value-even" style="color:#3f51b5;">${_aqv}</span>
+      </p>`
+    : ''
 };
 
 
@@ -103,7 +125,8 @@ const marker = {
       wind,
       weather,
       main,
-      clouds
+      clouds,
+      aqi
     } = w || {}
     , { country='' } = sys || {}
     , description = _getByPropFromArr(weather, 'description')
@@ -111,6 +134,7 @@ const marker = {
     , { deg=0, speed, gust } = wind || {}
     , { all:cloudsAll='' } = clouds || {}
     , icon = _getByPropFromArr(weather, 'icon')
+    , _aqr = _crAirQuailityRow(aqi)
 
     , [ _captionCl,
         _captionOnClick,
@@ -146,6 +170,7 @@ const marker = {
             ${_pressure}&nbsp;hPa
           </span>
         </p>
+        ${_aqr}
         <p style="margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;">
           ${_crVane(_deg)}
           <span class="marker__value-odd" style="color:#3f51b5;">
