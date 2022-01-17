@@ -7,8 +7,6 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = _interopRequireDefault(require("../_react"));
-
 var _LegendCell = _interopRequireDefault(require("./LegendCell"));
 
 var _SvgCircle = _interopRequireDefault(require("./SvgCircle"));
@@ -16,6 +14,8 @@ var _SvgCircle = _interopRequireDefault(require("./SvgCircle"));
 var _SvgRect = _interopRequireDefault(require("./SvgRect"));
 
 var _Label = _interopRequireDefault(require("./Label.Style"));
+
+var _jsxRuntime = require("react/jsx-runtime");
 
 var LS_ROOT = {
   marginTop: '1rem'
@@ -42,44 +42,50 @@ var LegendHourly = function LegendHourly(_ref) {
       _snowStyle = _crLabelStyle(!filtered.snow, _Label["default"].SNOW),
       _speedStyle = _crLabelStyle(!filtered.speed, _Label["default"].SPEED);
 
-  return /*#__PURE__*/_react["default"].createElement("div", {
-    style: LS_ROOT
-  }, /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
-    style: LS_ITEM,
-    titleStyle: _tempStyle,
-    title: "T",
-    onClick: function onClick() {
-      return onFilter('temp');
-    }
-  }, /*#__PURE__*/_react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_SERIA)), /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
-    style: LS_ITEM,
-    titleStyle: _pressureStyle,
-    title: "Pressure",
-    onClick: function onClick() {
-      return onFilter('pressure');
-    }
-  }, /*#__PURE__*/_react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_PRESSURE)), isRain && /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
-    style: LS_ITEM,
-    titleStyle: _rainStyle,
-    title: "Rain",
-    onClick: function onClick() {
-      return onFilter('rain');
-    }
-  }, /*#__PURE__*/_react["default"].createElement(_SvgRect["default"], _Label["default"].RECT_RAIN)), isSnow && /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
-    style: LS_ITEM,
-    titleStyle: _snowStyle,
-    title: "Snow",
-    onClick: function onClick() {
-      return onFilter('snow');
-    }
-  }, /*#__PURE__*/_react["default"].createElement(_SvgRect["default"], _Label["default"].RECT_SNOW)), /*#__PURE__*/_react["default"].createElement(_LegendCell["default"], {
-    style: LS_ITEM,
-    titleStyle: _speedStyle,
-    title: "Wind",
-    onClick: function onClick() {
-      return onFilter('speed');
-    }
-  }, /*#__PURE__*/_react["default"].createElement(_SvgCircle["default"], _Label["default"].CIRCLE_SPEED)));
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    style: LS_ROOT,
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendCell["default"], {
+      style: LS_ITEM,
+      titleStyle: _tempStyle,
+      title: "T",
+      onClick: function onClick() {
+        return onFilter('temp');
+      },
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_SvgCircle["default"], (0, _extends2["default"])({}, _Label["default"].CIRCLE_SERIA))
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendCell["default"], {
+      style: LS_ITEM,
+      titleStyle: _pressureStyle,
+      title: "Pressure",
+      onClick: function onClick() {
+        return onFilter('pressure');
+      },
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_SvgCircle["default"], (0, _extends2["default"])({}, _Label["default"].CIRCLE_PRESSURE))
+    }), isRain && /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendCell["default"], {
+      style: LS_ITEM,
+      titleStyle: _rainStyle,
+      title: "Rain",
+      onClick: function onClick() {
+        return onFilter('rain');
+      },
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_SvgRect["default"], (0, _extends2["default"])({}, _Label["default"].RECT_RAIN))
+    }), isSnow && /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendCell["default"], {
+      style: LS_ITEM,
+      titleStyle: _snowStyle,
+      title: "Snow",
+      onClick: function onClick() {
+        return onFilter('snow');
+      },
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_SvgRect["default"], (0, _extends2["default"])({}, _Label["default"].RECT_SNOW))
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendCell["default"], {
+      style: LS_ITEM,
+      titleStyle: _speedStyle,
+      title: "Wind",
+      onClick: function onClick() {
+        return onFilter('speed');
+      },
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_SvgCircle["default"], (0, _extends2["default"])({}, _Label["default"].CIRCLE_SPEED))
+    })]
+  });
 };
 
 var _default = LegendHourly;

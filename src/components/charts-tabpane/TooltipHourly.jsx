@@ -1,5 +1,3 @@
-import React from '../_react';
-
 import getPayload from './getPayload';
 import TooltipContent from './TooltipContent';
 import TooltipRow1 from './TooltipRow1';

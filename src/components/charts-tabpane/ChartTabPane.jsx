@@ -1,5 +1,3 @@
-import React from '../_react';
-
 import handlers from '../../flux/handlers';
 
 import TabPane from '../zhn-atoms/TabPane';
@@ -8,17 +6,18 @@ import Tab from '../zhn-atoms/Tab';
 import ForecastChart from './ForecastChart';
 import HourlyChart from './HourlyChart';
 import UviChart from './UviChart';
+import AirForecastChart from './AirForecastChart';
 
-const { requestHourly, requestUvi } = handlers;
+const {
+  requestHourly,
+  requestUvi,
+  requestAirForecast
+} = handlers;
 
-const S  = {
-  TABS: {
-    textAlign: 'left'
-  }
-};
+const S_TABS = { textAlign: 'left' };
 
-const ChartTabPane = () => (
-  <TabPane key="1" width="100%" tabsStyle={S.TABS}>
+const ChartTabPane = ({ isAir }) => (
+  <TabPane key="1" width="100%" tabsStyle={S_TABS}>
     <Tab title="7 Days">
        <ForecastChart />
     </Tab>
@@ -28,7 +27,13 @@ const ChartTabPane = () => (
     <Tab title="UV index" onClick={requestUvi}>
        <UviChart />
     </Tab>
+    {
+      isAir && <Tab title="Air Forecast" onClick={requestAirForecast}>
+          <AirForecastChart />
+      </Tab>
+    }
   </TabPane>
 );
+
 
 export default ChartTabPane

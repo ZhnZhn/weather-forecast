@@ -1,4 +1,4 @@
-import React from '../_react';
+import { useMemo } from '../uiApi';
 import { useSelector } from 'react-redux';
 import dt from '../../utils/dt';
 
@@ -8,8 +8,6 @@ import { sUV } from '../../flux/selectors';
 
 import TooltipUvi from './TooltipUvi';
 import STYLE from './Chart.Style';
-
-const { useMemo } = React;
 
 const {
  YAxis,

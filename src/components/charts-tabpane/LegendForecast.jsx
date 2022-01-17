@@ -1,12 +1,10 @@
-import React from '../_react';
+import { memo } from '../uiApi';
 
 import SvgCircle from './SvgCircle';
 import SvgRect from './SvgRect';
 import LegendCell from './LegendCell';
 import crForecastLegendStyle from './crForecastLegendStyle'
 import S from './Label.Style';
-
-const { memo } = React;
 
 const K = {
   T_DAY : 'tempDay',
@@ -21,24 +19,16 @@ const K = {
   HUMIDITY: 'humidity'
 };
 
-const L = {
-  ROOT_DIV : {
-    marginLeft: '3rem',
-    marginTop: '1rem'
-  },
-  COL_1 : {
-    display: 'inline-block',
-    marginRight: '1rem'
-  },
-  COL_2 : {
-    display: 'inline-block'
-  },
-  COL_3: {
-    display: 'inline-block',
-    marginLeft: '1rem'
-  }
+const S_ROOT_DIV = { margin: '1rem 0 0 3rem' }
+, S_COL_1 = {
+  display: 'inline-block',
+  marginRight: '1rem'
+}
+, S_COL_2 = { display: 'inline-block' }
+, S_COL_3 = {
+  display: 'inline-block',
+  marginLeft: '1rem'
 };
-
 
 const areEqual = (prevProps, nextProps) => prevProps
   .filters === nextProps.filters;
@@ -46,8 +36,8 @@ const areEqual = (prevProps, nextProps) => prevProps
 const LegendForecast = ({ filters, onFilter }) => {
   const styles = crForecastLegendStyle(filters);
   return (
-  <div style={L.ROOT_DIV}>
-     <div style={L.COL_1}>
+  <div style={S_ROOT_DIV}>
+     <div style={S_COL_1}>
        <LegendCell
          titleStyle={styles.tempMorn}
          title="T Morn"
@@ -63,7 +53,7 @@ const LegendForecast = ({ filters, onFilter }) => {
          <SvgCircle {...S.CIRCLE_TEMP_DAY} />
        </LegendCell>
      </div>
-     <div style={L.COL_2}>
+     <div style={S_COL_2}>
        <LegendCell
          titleStyle={styles.tempEve}
          title="T Eve"
@@ -79,7 +69,7 @@ const LegendForecast = ({ filters, onFilter }) => {
          <SvgCircle {...S.CIRCLE_TEMP_NIGHT} />
        </LegendCell>
      </div>
-     <div style={L.COL_3}>
+     <div style={S_COL_3}>
        <LegendCell
          titleStyle={styles.tempMax}
          title="T Max"
@@ -95,7 +85,7 @@ const LegendForecast = ({ filters, onFilter }) => {
          <SvgCircle {...S.CIRCLE_TEMP_MIN} />
        </LegendCell>
      </div>
-     <div style={L.COL_3}>
+     <div style={S_COL_3}>
        <LegendCell
          titleStyle={styles.rain}
          title="Rain"
@@ -111,7 +101,7 @@ const LegendForecast = ({ filters, onFilter }) => {
          <SvgCircle {...S.CIRCLE_SPEED} />
        </LegendCell>
      </div>
-     <div style={L.COL_3}>
+     <div style={S_COL_3}>
        <LegendCell
          titleStyle={styles.pressure}
          title="Pressure"

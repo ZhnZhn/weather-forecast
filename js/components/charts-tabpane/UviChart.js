@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = _interopRequireDefault(require("../_react"));
+var _uiApi = require("../uiApi");
 
 var _reactRedux = require("react-redux");
 
@@ -25,7 +25,6 @@ var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
-var useMemo = _react["default"].useMemo;
 var YAxis = _Chart["default"].YAxis,
     Line = _Chart["default"].Line;
 
@@ -42,7 +41,7 @@ var _transformUvi = function _transformUvi(hourlyArr) {
 
 var UviChart = function UviChart() {
   var uviArr = (0, _reactRedux.useSelector)(_selectors.sUV.forecast),
-      data = useMemo(function () {
+      data = (0, _uiApi.useMemo)(function () {
     return _transformUvi(uviArr);
   }, [uviArr]);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_ChartType["default"], {

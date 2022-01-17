@@ -1,20 +1,20 @@
-import React from '../_react'
 
-const S = {
-  SVG : {
-    position: 'relative',
-    top: 2,
-    display: 'inline-block',
-    width: 18,
-    height: 18
-  }
+const S_SVG = {
+  position: 'relative',
+  top: 2,
+  display: 'inline-block',
+  width: 18,
+  height: 18
 };
 
-const SvgRest = ({ stroke='green', fill=stroke }) => (
+const SvgRest = ({
+  stroke='green',
+  fill=stroke
+}) => (
   <svg xmlns="http://www.w3.org/2000/svg"
      viewBox="0 0 18 18" width="100%" height="100%"
      preserveAspectRatio="none" aria-labelledby="title"
-     style={S.SVG}
+     style={S_SVG}
   >
    <title id="title">Rest Marker</title>
    <rect
@@ -23,6 +23,5 @@ const SvgRest = ({ stroke='green', fill=stroke }) => (
    />
   </svg>
 );
-
 
 export default SvgRest

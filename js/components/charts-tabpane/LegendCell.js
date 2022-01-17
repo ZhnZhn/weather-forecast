@@ -7,14 +7,11 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = _interopRequireDefault(require("../_react"));
+var _jsxRuntime = require("react/jsx-runtime");
 
-var CL = "legend-cell";
-var S = {
-  CELL: {
-    paddingLeft: 4,
-    paddingRight: 4
-  }
+var CL_LEGEND_CELL = "legend-cell",
+    S_CELL = {
+  padding: '0 4px'
 };
 
 var LegendCell = function LegendCell(_ref) {
@@ -24,13 +21,15 @@ var LegendCell = function LegendCell(_ref) {
       titleStyle = _ref.titleStyle,
       _ref$title = _ref.title,
       title = _ref$title === void 0 ? '' : _ref$title;
-  return /*#__PURE__*/_react["default"].createElement("div", {
-    className: CL,
-    style: (0, _extends2["default"])({}, S.CELL, style),
-    onClick: onClick
-  }, children, /*#__PURE__*/_react["default"].createElement("span", {
-    style: titleStyle
-  }, title));
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    className: CL_LEGEND_CELL,
+    style: (0, _extends2["default"])({}, S_CELL, style),
+    onClick: onClick,
+    children: [children, /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      style: titleStyle,
+      children: title
+    })]
+  });
 };
 
 var _default = LegendCell;

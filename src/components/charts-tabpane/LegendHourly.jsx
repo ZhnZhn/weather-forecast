@@ -1,6 +1,4 @@
-import React from '../_react';
-
-import LegendCell from './LegendCell'
+import LegendCell from './LegendCell';
 import SvgCircle from './SvgCircle';
 import SvgRect from './SvgRect';
 import S from './Label.Style';

@@ -1,5 +1,4 @@
-import React from '../_react'
-import STYLE from './Label.Style'
+import STYLE from './Label.Style';
 
 const TooltipRow1 = ({
   t,
@@ -15,6 +14,6 @@ const TooltipRow1 = ({
      <span style={style}>{v}</span>
    </div>
   );
-}
+};
 
 export default TooltipRow1

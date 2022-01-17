@@ -1,13 +1,6 @@
-import React from '../_react'
 
-const CL = "legend-cell";
-
-const S = {
-  CELL: {
-    paddingLeft: 4,
-    paddingRight: 4
-  }
-};
+const CL_LEGEND_CELL = "legend-cell"
+, S_CELL = { padding: '0 4px' };
 
 const LegendCell = ({
   style,
@@ -15,17 +8,17 @@ const LegendCell = ({
   children,
   titleStyle,
   title=''
-}) =>
-<div
-  className={CL}
-  style={{...S.CELL, ...style}}
-  onClick={onClick}
->
-  {children}
-  <span style={titleStyle}>
-    {title}
-  </span>
-</div>
-
+}) => (
+  <div
+    className={CL_LEGEND_CELL}
+    style={{...S_CELL, ...style}}
+    onClick={onClick}
+  >
+    {children}
+    <span style={titleStyle}>
+      {title}
+    </span>
+  </div>
+);
 
 export default LegendCell

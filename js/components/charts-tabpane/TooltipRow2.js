@@ -5,9 +5,9 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _react = _interopRequireDefault(require("../_react"));
-
 var _Label = _interopRequireDefault(require("./Label.Style"));
+
+var _jsxRuntime = require("react/jsx-runtime");
 
 var _crValue = function _crValue(v) {
   return v == null ? '' : v;
@@ -16,12 +16,17 @@ var _crValue = function _crValue(v) {
 var TitleValue = function TitleValue(_ref) {
   var t = _ref.t,
       v = _ref.v,
-      style = _ref.style;
-  return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("span", {
-    style: _Label["default"].LABEL
-  }, t + ":"), /*#__PURE__*/_react["default"].createElement("span", {
-    style: style
-  }, _crValue(v), "\xA0"));
+      _ref$style = _ref.style,
+      style = _ref$style === void 0 ? _Label["default"].SERIA : _ref$style;
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      style: _Label["default"].LABEL,
+      children: t + ":"
+    }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
+      style: style,
+      children: [_crValue(v), "\xA0"]
+    })]
+  });
 };
 
 var TooltipRow2 = function TooltipRow2(_ref2) {
@@ -36,17 +41,18 @@ var TooltipRow2 = function TooltipRow2(_ref2) {
     return null;
   }
 
-  return /*#__PURE__*/_react["default"].createElement("div", {
-    style: _Label["default"].ROW
-  }, /*#__PURE__*/_react["default"].createElement(TitleValue, {
-    t: t1,
-    v: v1,
-    style: style1
-  }), /*#__PURE__*/_react["default"].createElement(TitleValue, {
-    t: t2,
-    v: v2,
-    style: style2 || style1
-  }));
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    style: _Label["default"].ROW,
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
+      t: t1,
+      v: v1,
+      style: style1
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
+      t: t2,
+      v: v2,
+      style: style2 || style1
+    })]
+  });
 };
 
 var _default = TooltipRow2;

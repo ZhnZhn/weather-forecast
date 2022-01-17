@@ -1,12 +1,14 @@
-import React from '../_react'
-
-import STYLE from './Label.Style'
+import STYLE from './Label.Style';
 
 const _crValue = v => v == null
  ? ''
  : v;
 
-const TitleValue = ({ t, v, style }) => (
+const TitleValue = ({
+  t,
+  v,
+  style=STYLE.SERIA
+}) => (
   <>
    <span style={STYLE.LABEL}>{`${t}:`}</span>
    <span style={style}>{_crValue(v)}&nbsp;</span>

@@ -5,9 +5,9 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _react = _interopRequireDefault(require("../_react"));
-
 var _Label = _interopRequireDefault(require("./Label.Style"));
+
+var _jsxRuntime = require("react/jsx-runtime");
 
 var TooltipRow1 = function TooltipRow1(_ref) {
   var t = _ref.t,
@@ -19,13 +19,16 @@ var TooltipRow1 = function TooltipRow1(_ref) {
     return null;
   }
 
-  return /*#__PURE__*/_react["default"].createElement("div", {
-    style: _Label["default"].ROW
-  }, /*#__PURE__*/_react["default"].createElement("span", {
-    style: _Label["default"].CAPTION
-  }, t + ":"), /*#__PURE__*/_react["default"].createElement("span", {
-    style: style
-  }, v));
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    style: _Label["default"].ROW,
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      style: _Label["default"].CAPTION,
+      children: t + ":"
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      style: style,
+      children: v
+    })]
+  });
 };
 
 var _default = TooltipRow1;
