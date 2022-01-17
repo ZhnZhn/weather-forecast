@@ -2,14 +2,15 @@
 
 exports.__esModule = true;
 exports["default"] = void 0;
-var METRIC = '&units=metric';
-var LANG = '&lang=en';
-var PERIOD = '&cnt=7';
-var BASE_URL = 'https://api.openweathermap.org/data/2.5/';
-var WEATHER = 'weather';
-var FORECAST_DAILY = 'forecast/daily';
-var FORECAST = 'forecast';
-var UVI = 'uvi';
+var METRIC = '&units=metric',
+    LANG = '&lang=en',
+    PERIOD = '&cnt=7',
+    BASE_URL = 'https://api.openweathermap.org/data/2.5/',
+    WEATHER = 'weather',
+    AIR_POLLUTION = 'air_pollution',
+    FORECAST_DAILY = 'forecast/daily',
+    FORECAST = 'forecast',
+    UVI = 'uvi';
 var DF = {
   LAT: 51.48,
   LNG: -0.13
@@ -43,6 +44,28 @@ var OpenWeather = {
   },
   crForecastById: function crForecastById(id) {
     return "" + BASE_URL + FORECAST_DAILY + "?appid=" + _apiKey + PERIOD + METRIC + "&id=" + id + LANG;
+  },
+  crAirQualityIndex: function crAirQualityIndex(lat, lon) {
+    if (lat === void 0) {
+      lat = DF.LAT;
+    }
+
+    if (lon === void 0) {
+      lon = DF.LNG;
+    }
+
+    return "" + BASE_URL + AIR_POLLUTION + "?appid=" + _apiKey + METRIC + LANG + "&lat=" + lat + "&lon=" + lon;
+  },
+  crAirForecast: function crAirForecast(lat, lon) {
+    if (lat === void 0) {
+      lat = DF.LAT;
+    }
+
+    if (lon === void 0) {
+      lon = DF.LNG;
+    }
+
+    return "" + BASE_URL + AIR_POLLUTION + "/" + FORECAST + "?appid=" + _apiKey + LANG + "&lat=" + lat + "&lon=" + lon;
   },
   crHourlyById: function crHourlyById(id) {
     return "" + BASE_URL + FORECAST + "?appid=" + _apiKey + METRIC + "&id=" + id + LANG;
