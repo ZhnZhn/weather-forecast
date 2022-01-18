@@ -1,21 +1,25 @@
-import { memo, useMemo } from '../uiApi'
-import { useSelector } from 'react-redux'
+import { memo, useMemo } from '../uiApi';
+import { useSelector } from 'react-redux';
 
-import useSeriesFilter from './useSeriesFilter'
-import Chart from '../charts/Chart'
-
+import useSeriesFilter from './useSeriesFilter';
+import Chart from '../charts/Chart';
 
 import dt from '../../utils/dt';
 import { sHourly } from '../../flux/selectors';
 
 import ChartType1 from './ChartType1';
+import {
+  crYAxisTemp,
+  crYAxisPressure,
+  crYAxisWindSpeed,
+  crYAxisRain,
+  crYAxisSnow
+} from './crYAxis';
 import LegendHourly from './LegendHourly';
 import TooltipHourly from './TooltipHourly';
 import STYLE from './Chart.Style';
-import SC from './SeriesColor';
 
 const {
- YAxis,
  Line,
  Bar,
  Legend
@@ -30,50 +34,7 @@ const INITIAL_FILTERED = {
   speed: true
 };
 
-const INITIAL_DATA = [
-  {day: '01 08', temp: 35 },
-  {day: '02 20', temp: 30 },
-  {day: '03 08', temp: 20 },
-  {day: '04 20', temp: 27 },
-  {day: '05 08', temp: 18 },
-  {day: '06 20', temp: 23 },
-  {day: '07 08', temp: 34 }
-];
-
-const _crLabelColor = color => ({
-  stroke: color,
-  fill: color
-});
-
-const LABEL_POSITION = {
-  position: "top",
-  offset: 10
-}
-, LABEL_TEMPERATURE = {
-  ...LABEL_POSITION,
-  value: "°C"
-}
-, LABEL_PRESSURE = {
-  ...LABEL_POSITION,
-  ..._crLabelColor(SC.PRESSURE),
-  value: "hPa"
-}
-, LABEL_RAIN = {
-  ...LABEL_POSITION,
-  ..._crLabelColor(SC.RAIN),
-  value: "mm"
-}
-, LABEL_SNOW = {
-  ...LABEL_POSITION,
-  ..._crLabelColor(SC.SNOW),
-  value: "mm"
-}
-, LABEL_WIND_SPEED = {
-  ...LABEL_POSITION,
-  ..._crLabelColor(SC.SPEED),
-  value: "m/s"
-};
-
+const INITIAL_DATA = [];
 
 const _get3h = data => (data || {})['3h'] || null;
 
@@ -95,7 +56,7 @@ const _transformHourly = hourlyArr => hourlyArr
 })
 
 const _isNumber = n => typeof n === 'number';
-
+const _isNumberGreaterZero = value => _isNumber(value) && value > 0
 const _fHasData = (propName, isData) => (data) => {
   for(let i=0; i<data.length; i++) {
     if (isData(data[i][propName])) {
@@ -104,11 +65,8 @@ const _fHasData = (propName, isData) => (data) => {
   }
   return false;
 };
-
-
-const _isNumberGreaterZero = value => _isNumber(value) && value > 0
-const _hasRain = _fHasData('rain', _isNumberGreaterZero)
-const _hasSnow = _fHasData('snow', _isNumberGreaterZero)
+const _hasRain = _fHasData('rain', _isNumberGreaterZero);
+const _hasSnow = _fHasData('snow', _isNumberGreaterZero);
 
 const _crYAxisIds = (isRain, isSnow) => {
   const rain = isRain ? 3 : void 0
@@ -142,56 +100,11 @@ const HourlyChart = memo(() => {
       data={data}
       TooltipComp={TooltipHourly}
     >
-      <YAxis
-         yAxisId={1}
-         orientation="right"
-         width={45}
-         label={LABEL_TEMPERATURE}
-         dataKey="temp"
-         hide={filtered.temp}
-      />
-      <YAxis
-         yAxisId={2}
-         orientation="right"
-         width={80}
-         dataKey="pressure"
-         type="number"
-         domain={['dataMin', 'dataMax']}
-         label={LABEL_PRESSURE}
-         hide={filtered.pressure}
-         {...STYLE.YAxisPressure}
-      />
-      {
-        _isRain && <YAxis
-            yAxisId={rainId}
-            orientation="right"
-            width={54}
-            label={LABEL_RAIN}
-            dataKey="rain"
-            hide={filtered.rain}
-            {...STYLE.YAxisRain}
-         />
-      }
-      {
-        _isSnow && <YAxis
-            yAxisId={snowId}
-            orientation="right"
-            width={54}
-            label={LABEL_SNOW}
-            dataKey="snow"
-            hide={filtered.snow}
-            {...STYLE.YAxisSnow}
-         />
-      }
-      <YAxis
-        yAxisId={speedId}
-        orientation="right"
-        width={45}
-        label={LABEL_WIND_SPEED}
-        dataKey="speed"
-        hide={filtered.speed}
-        {...STYLE.YAxisSpeed}
-      />      
+      {crYAxisTemp(1, filtered)}
+      {crYAxisPressure(2, filtered)}
+      {_isRain && crYAxisRain(rainId, filtered)}
+      {_isSnow && crYAxisSnow(snowId, filtered)}
+      {crYAxisWindSpeed(speedId, filtered)}
       <Legend
          content={
              <LegendHourly
@@ -210,31 +123,23 @@ const HourlyChart = memo(() => {
       />
       <Line {...STYLE.LinePressure}
           connectNulls={true}
-          strokeDasharray="5 5"
           yAxisId={2}
           dataKey={_crDataKey(filtered, 'pressure')}
       />
       {
-        _isRain && <Bar
-           dataKey={_crDataKey(filtered, 'rain')}
+        _isRain && <Bar {...STYLE.BarRain}
            yAxisId={rainId}
-           barSize={20}
-           fill="#0922a5"
+           dataKey={_crDataKey(filtered, 'rain')}
          />
       }
       {
-        _isSnow && <Bar
-           dataKey={_crDataKey(filtered, 'snow')}
+        _isSnow && <Bar {...STYLE.BarSnow}
            yAxisId={snowId}
-           barSize={20}
-           fill={SC.SNOW}
+           dataKey={_crDataKey(filtered, 'snow')}
          />
       }
-      <Line
+      <Line {...STYLE.LineSpeed}
           connectNulls={true}
-          {...STYLE.LineSpeed}
-          strokeDasharray="5 5"
-          //strokeDasharray={false}
           yAxisId={speedId}
           dataKey={_crDataKey(filtered, 'speed')}
        />
