@@ -8,6 +8,11 @@ import { sForecast } from '../../flux/selectors';
 
 import useSeriesFilter from './useSeriesFilter';
 import ChartType1 from './ChartType1';
+import {
+  crYAxisRain,
+  crYAxisPressure,
+  crYAxisWindSpeed
+} from './crYAxis';
 import crListSeries from './crListSeries';
 import TooltipForecast from './TooltipForecast';
 import LegendForecast from './LegendForecast';
@@ -17,6 +22,20 @@ const {
   YAxis,
   Legend
 } = Chart;
+
+const YAXIS_LABEL_TEMP = {
+    value: "°C",
+    //position: "top",
+    //offset: 8,
+
+   //offset: -18,
+   //position: 'insideTop'
+   //angle: -90,
+   //position: 'insideLeft'
+   //offset: 10,
+   //position: "insideTopRight",
+   //position: "insideStart"
+};
 
 const INITIAL_FILTERED = {
   tempDay: false,
@@ -89,45 +108,12 @@ const ChartForecast = () => {
     >
       <YAxis
          yAxisId={1}
-         label={{
-           value: "°C",
-          //offset: -18,
-          //position: 'insideTop'
-          //angle: -90,
-          //position: 'insideLeft'
-          //offset: 10,
-          //position: "insideTopRight",
-          //position: "insideStart"
-       }}/>
-      <YAxis {...STYLE.YAxisRain}
-         yAxisId={2}
-         hide={filtered.rain}
-         dataKey="rain"
-         orientation="right" label="mm"
+         label={YAXIS_LABEL_TEMP}
       />
-      <YAxis {...STYLE.YAxisSpeed}
-         yAxisId={3}
-         hide={filtered.speed}
-         dataKey="speed"
-         orientation="right" label="m/s"
-      />
-      <YAxis {...STYLE.YAxisPressure}
-         yAxisId={4}
-         hide={filtered.pressure}
-         dataKey="pressure"
-         width={80}
-         orientation="right"
-         label="hPa"
-         type="number"
-         domain={['dataMin', 'dataMax']}
-      />
-      <YAxis {...STYLE.YAxisSpeed}
-         yAxisId={5}
-         hide={filtered.humidity}
-         dataKey="humidity"
-         orientation="right"
-         label="%"
-      />
+      {crYAxisRain(2, filtered)}
+      {crYAxisWindSpeed(3, filtered)}
+      {crYAxisPressure(4, filtered)}
+      {crYAxisWindSpeed(5, filtered, 'humidity', '%')}
       <Legend
         content={(
            <LegendForecast

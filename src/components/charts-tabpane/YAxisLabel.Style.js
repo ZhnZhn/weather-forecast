@@ -21,11 +21,11 @@ export const YAXIS_LABEL_PRESSURE = {
   value: "hPa"
 };
 
-export const YAXIS_LABEL_WIND = {
+export const crYAxisLabelWind = (value='m/s') => ({
   ...LABEL_POSITION,
   ..._crLabelColor(SC.SPEED),
-  value: "m/s"
-};
+  value
+});
 
 export const YAXIS_LABEL_RAIN = {
   ...LABEL_POSITION,

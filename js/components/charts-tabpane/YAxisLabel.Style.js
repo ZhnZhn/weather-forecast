@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports.YAXIS_LABEL_WIND = exports.YAXIS_LABEL_TEMPERATURE = exports.YAXIS_LABEL_SNOW = exports.YAXIS_LABEL_RAIN = exports.YAXIS_LABEL_PRESSURE = void 0;
+exports.crYAxisLabelWind = exports.YAXIS_LABEL_TEMPERATURE = exports.YAXIS_LABEL_SNOW = exports.YAXIS_LABEL_RAIN = exports.YAXIS_LABEL_PRESSURE = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
@@ -29,10 +29,18 @@ var YAXIS_LABEL_PRESSURE = (0, _extends2["default"])({}, LABEL_POSITION, _crLabe
   value: "hPa"
 });
 exports.YAXIS_LABEL_PRESSURE = YAXIS_LABEL_PRESSURE;
-var YAXIS_LABEL_WIND = (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].SPEED), {
-  value: "m/s"
-});
-exports.YAXIS_LABEL_WIND = YAXIS_LABEL_WIND;
+
+var crYAxisLabelWind = function crYAxisLabelWind(value) {
+  if (value === void 0) {
+    value = 'm/s';
+  }
+
+  return (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].SPEED), {
+    value: value
+  });
+};
+
+exports.crYAxisLabelWind = crYAxisLabelWind;
 var YAXIS_LABEL_RAIN = (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].RAIN), {
   value: "mm"
 });

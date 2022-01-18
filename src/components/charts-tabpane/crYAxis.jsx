@@ -3,7 +3,7 @@ import STYLE from './Chart.Style';
 import {
   YAXIS_LABEL_TEMPERATURE,
   YAXIS_LABEL_PRESSURE,
-  YAXIS_LABEL_WIND,
+  crYAxisLabelWind,
   YAXIS_LABEL_RAIN,
   YAXIS_LABEL_SNOW,
 } from './YAxisLabel.Style';
@@ -34,14 +34,19 @@ export const crYAxisPressure = (yId, filtered) => (
   />
 );
 
-export const crYAxisWindSpeed = (yId, filtered) => (
+export const crYAxisWindSpeed = (
+  yId,
+  filtered,
+  id='speed',
+  value
+) => (
   <YAxis {...STYLE.YAxisSpeed}
-    label={YAXIS_LABEL_WIND}
+    label={crYAxisLabelWind(value)}
     orientation="right"
     width={45}
     yAxisId={yId}
-    hide={filtered.speed}
-    dataKey="speed"
+    hide={filtered[id]}
+    dataKey={id}
   />
 );
 

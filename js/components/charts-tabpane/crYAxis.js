@@ -45,14 +45,18 @@ var crYAxisPressure = function crYAxisPressure(yId, filtered) {
 
 exports.crYAxisPressure = crYAxisPressure;
 
-var crYAxisWindSpeed = function crYAxisWindSpeed(yId, filtered) {
+var crYAxisWindSpeed = function crYAxisWindSpeed(yId, filtered, id, value) {
+  if (id === void 0) {
+    id = 'speed';
+  }
+
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
-    label: _YAxisLabel.YAXIS_LABEL_WIND,
+    label: (0, _YAxisLabel.crYAxisLabelWind)(value),
     orientation: "right",
     width: 45,
     yAxisId: yId,
-    hide: filtered.speed,
-    dataKey: "speed"
+    hide: filtered[id],
+    dataKey: id
   }));
 };
 

@@ -5,8 +5,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-
 var _uiApi = require("../uiApi");
 
 var _reactRedux = require("react-redux");
@@ -23,6 +21,8 @@ var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
 
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
+var _crYAxis = require("./crYAxis");
+
 var _crListSeries = _interopRequireDefault(require("./crListSeries"));
 
 var _TooltipForecast = _interopRequireDefault(require("./TooltipForecast"));
@@ -35,6 +35,18 @@ var _jsxRuntime = require("react/jsx-runtime");
 
 var YAxis = _Chart["default"].YAxis,
     Legend = _Chart["default"].Legend;
+var YAXIS_LABEL_TEMP = {
+  value: "°C" //position: "top",
+  //offset: 8,
+  //offset: -18,
+  //position: 'insideTop'
+  //angle: -90,
+  //position: 'insideLeft'
+  //offset: 10,
+  //position: "insideTopRight",
+  //position: "insideStart"
+
+};
 var INITIAL_FILTERED = {
   tempDay: false,
   tempNight: true,
@@ -149,44 +161,8 @@ var ChartForecast = function ChartForecast() {
     TooltipComp: _TooltipForecast["default"],
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, {
       yAxisId: 1,
-      label: {
-        value: "°C" //offset: -18,
-        //position: 'insideTop'
-        //angle: -90,
-        //position: 'insideLeft'
-        //offset: 10,
-        //position: "insideTopRight",
-        //position: "insideStart"
-
-      }
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisRain, {
-      yAxisId: 2,
-      hide: filtered.rain,
-      dataKey: "rain",
-      orientation: "right",
-      label: "mm"
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
-      yAxisId: 3,
-      hide: filtered.speed,
-      dataKey: "speed",
-      orientation: "right",
-      label: "m/s"
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisPressure, {
-      yAxisId: 4,
-      hide: filtered.pressure,
-      dataKey: "pressure",
-      width: 80,
-      orientation: "right",
-      label: "hPa",
-      type: "number",
-      domain: ['dataMin', 'dataMax']
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
-      yAxisId: 5,
-      hide: filtered.humidity,
-      dataKey: "humidity",
-      orientation: "right",
-      label: "%"
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
+      label: YAXIS_LABEL_TEMP
+    }), (0, _crYAxis.crYAxisRain)(2, filtered), (0, _crYAxis.crYAxisWindSpeed)(3, filtered), (0, _crYAxis.crYAxisPressure)(4, filtered), (0, _crYAxis.crYAxisWindSpeed)(5, filtered, 'humidity', '%'), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
       content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendForecast["default"], {
         filtered: filtered,
         onFilter: _hFilter
