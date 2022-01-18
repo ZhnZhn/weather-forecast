@@ -25,14 +25,15 @@ var _TooltipAirForecast = _interopRequireDefault(require("./TooltipAirForecast")
 
 var _LegendAirForecast = _interopRequireDefault(require("./LegendAirForecast"));
 
+var _crListSeries = _interopRequireDefault(require("./crListSeries"));
+
 var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
 
 var _SeriesColor = _interopRequireDefault(require("./SeriesColor"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
-var Line = _Chart["default"].Line,
-    YAxis = _Chart["default"].YAxis,
+var YAxis = _Chart["default"].YAxis,
     Legend = _Chart["default"].Legend;
 var _isArr = Array.isArray;
 var INITIAL_DATA = [];
@@ -66,10 +67,6 @@ var INITIAL_FILTERED = {
   nh3: true,
   so2: true
 };
-
-var _crDataKey = function _crDataKey(filtered, propName) {
-  return filtered[propName] ? 'empty' : propName;
-};
 /*
 co: 283.72
 nh3: 0.39
@@ -80,7 +77,6 @@ pm2_5: 19.57
 pm10: 21.37
 so2: 2.12
 */
-
 
 var _transformAirForecast = function _transformAirForecast(arr) {
   return arr.map(function (_ref) {
@@ -99,6 +95,30 @@ var _transformAirForecast = function _transformAirForecast(arr) {
     });
   });
 };
+
+var LINE_CONFIGS = [{
+  id: 'aqi',
+  yId: 2,
+  style: _Chart2["default"].LineSpeed
+}, {
+  id: 'no2'
+}, {
+  id: 'o3'
+}, {
+  id: 'pm2_5'
+}, {
+  id: 'pm10'
+}, {
+  id: 'co',
+  yId: 3,
+  style: _Chart2["default"].LinePressure
+}, {
+  id: 'no'
+}, {
+  id: 'nh3'
+}, {
+  id: 'so2'
+}];
 
 var AirForecastChart = function AirForecastChart() {
   var _useSeriesFilter = (0, _useSeriesFilter2["default"])(INITIAL_FILTERED),
@@ -140,46 +160,7 @@ var AirForecastChart = function AirForecastChart() {
         filtered: filtered,
         onFilter: _hFilter
       })
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
-      connectNulls: true,
-      yAxisId: 2,
-      dataKey: _crDataKey(filtered, 'aqi')
-    }, _Chart2["default"].LineSpeed, {
-      strokeDasharray: "5 5"
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
-      connectNulls: true,
-      yAxisId: 1,
-      dataKey: _crDataKey(filtered, 'no2')
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
-      connectNulls: true,
-      yAxisId: 1,
-      dataKey: _crDataKey(filtered, 'o3')
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
-      connectNulls: true,
-      yAxisId: 1,
-      dataKey: _crDataKey(filtered, 'pm2_5')
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
-      connectNulls: true,
-      yAxisId: 1,
-      dataKey: _crDataKey(filtered, 'pm10')
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LinePressure, {
-      strokeDasharray: "5 5",
-      connectNulls: true,
-      yAxisId: 3,
-      dataKey: _crDataKey(filtered, 'co')
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
-      connectNulls: true,
-      yAxisId: 1,
-      dataKey: _crDataKey(filtered, 'no')
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
-      connectNulls: true,
-      yAxisId: 1,
-      dataKey: _crDataKey(filtered, 'nh3')
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
-      connectNulls: true,
-      yAxisId: 1,
-      dataKey: _crDataKey(filtered, 'so2')
-    }))]
+    }), (0, _crListSeries["default"])(LINE_CONFIGS, filtered)]
   });
 };
 

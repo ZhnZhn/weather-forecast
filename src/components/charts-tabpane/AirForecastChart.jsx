@@ -1,21 +1,19 @@
-import { useMemo } from '../uiApi'
-import { useSelector } from 'react-redux'
-import useSeriesFilter from './useSeriesFilter'
+import { useMemo } from '../uiApi';
+import { useSelector } from 'react-redux';
+import useSeriesFilter from './useSeriesFilter';
 
 import { sAir } from '../../flux/selectors';
 import dt from '../../utils/dt';
 
-import Chart from '../charts/Chart'
+import Chart from '../charts/Chart';
 import ChartType1 from './ChartType1';
-import TooltipAirForecast from './TooltipAirForecast'
-import LegendAirForecast from './LegendAirForecast'
+import TooltipAirForecast from './TooltipAirForecast';
+import LegendAirForecast from './LegendAirForecast';
+import crListSeries from './crListSeries';
 import STYLE from './Chart.Style';
 import SC from './SeriesColor';
 
-
 const {
- Line,
- //Bar,
  YAxis,
  Legend,
 } = Chart;
@@ -59,10 +57,6 @@ const INITIAL_FILTERED = {
   so2: true
 };
 
-const _crDataKey = (filtered, propName) => filtered[propName]
-  ? 'empty'
-  : propName;
-
 /*
 co: 283.72
 nh3: 0.39
@@ -85,6 +79,21 @@ const _transformAirForecast = arr => arr
      aqi
    };
  })
+
+
+
+const LINE_CONFIGS = [
+  {
+    id: 'aqi',
+    yId: 2,
+    style: STYLE.LineSpeed
+},{ id: 'no2' },{ id: 'o3'}, { id: 'pm2_5'}, { id: 'pm10' },{
+  id: 'co',
+  yId: 3,
+  style: STYLE.LinePressure,
+}, { id: 'no'}, { id: 'nh3'}, { id: 'so2'}
+];
+
 
 const AirForecastChart = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
@@ -138,54 +147,7 @@ const AirForecastChart = () => {
                />
             }
         />
-        <Line {...STYLE.LineTempNight}
-            connectNulls={true}
-            yAxisId={2}
-            dataKey={_crDataKey(filtered, 'aqi')}
-            {...STYLE.LineSpeed}
-            strokeDasharray="5 5"
-        />
-        <Line {...STYLE.LineTempNight}
-            connectNulls={true}
-            yAxisId={1}
-            dataKey={_crDataKey(filtered, 'no2')}
-        />
-        <Line {...STYLE.LineTempNight}
-            connectNulls={true}
-            yAxisId={1}
-            dataKey={_crDataKey(filtered, 'o3')}
-        />
-        <Line {...STYLE.LineTempNight}
-            connectNulls={true}
-            yAxisId={1}
-            dataKey={_crDataKey(filtered, 'pm2_5')}
-        />
-        <Line {...STYLE.LineTempNight}
-            connectNulls={true}
-            yAxisId={1}
-            dataKey={_crDataKey(filtered, 'pm10')}
-        />
-        <Line {...STYLE.LinePressure}
-            strokeDasharray="5 5"
-            connectNulls={true}
-            yAxisId={3}
-            dataKey={_crDataKey(filtered, 'co')}
-        />
-        <Line {...STYLE.LineTempNight}
-            connectNulls={true}
-            yAxisId={1}
-            dataKey={_crDataKey(filtered, 'no')}
-        />
-        <Line {...STYLE.LineTempNight}
-            connectNulls={true}
-            yAxisId={1}
-            dataKey={_crDataKey(filtered, 'nh3')}
-        />
-        <Line {...STYLE.LineTempNight}
-            connectNulls={true}
-            yAxisId={1}
-            dataKey={_crDataKey(filtered, 'so2')}
-        />
+        {crListSeries(LINE_CONFIGS, filtered)}
       </ChartType1>
   );
 };
