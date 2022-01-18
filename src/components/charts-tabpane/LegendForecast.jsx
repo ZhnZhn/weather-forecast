@@ -31,10 +31,13 @@ const S_ROOT_DIV = { margin: '1rem 0 0 3rem' }
 };
 
 const areEqual = (prevProps, nextProps) => prevProps
-  .filters === nextProps.filters;
+  .filtered === nextProps.filtered;
 
-const LegendForecast = ({ filters, onFilter }) => {
-  const styles = crForecastLegendStyle(filters);
+const LegendForecast = ({
+  filtered,
+  onFilter
+}) => {
+  const styles = crForecastLegendStyle(filtered);
   return (
   <div style={S_ROOT_DIV}>
      <div style={S_COL_1}>

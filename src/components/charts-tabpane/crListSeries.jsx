@@ -1,7 +1,10 @@
 import Chart from '../charts/Chart';
 import STYLE from './Chart.Style';
 
-const { Line } = Chart;
+const {
+  Bar,
+  Line
+} = Chart;
 
 const _crDataKey = (filtered, propName) =>
  filtered[propName]
@@ -13,16 +16,22 @@ const crListSeries = (
   filtered
 ) => configs.map(({
   id,
+  type,
   yId=1,
   style=STYLE.LineTempNight
-}) => (
-  <Line
-    key={id}
-    {...style}
-    connectNulls={true}
-    yAxisId={yId}
-    dataKey={_crDataKey(filtered, id)}
-  />
-));
+}) => {
+  const SeriaComp = (type === 'bar')
+    ? Bar
+    : Line;
+  return (
+    <SeriaComp
+      key={id}
+      {...style}
+      connectNulls={true}
+      yAxisId={yId}
+      dataKey={_crDataKey(filtered, id)}
+    />
+  );
+});
 
 export default crListSeries

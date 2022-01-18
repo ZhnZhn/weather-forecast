@@ -49,13 +49,13 @@ var S_ROOT_DIV = {
 };
 
 var areEqual = function areEqual(prevProps, nextProps) {
-  return prevProps.filters === nextProps.filters;
+  return prevProps.filtered === nextProps.filtered;
 };
 
 var LegendForecast = function LegendForecast(_ref) {
-  var filters = _ref.filters,
+  var filtered = _ref.filtered,
       onFilter = _ref.onFilter;
-  var styles = (0, _crForecastLegendStyle["default"])(filters);
+  var styles = (0, _crForecastLegendStyle["default"])(filtered);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     style: S_ROOT_DIV,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {

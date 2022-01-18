@@ -47,6 +47,13 @@ var _crLineDashStyle = function _crLineDashStyle(stroke, fill) {
   });
 };
 
+var _crBarStyle = function _crBarStyle(fill) {
+  return {
+    barSize: 20,
+    fill: fill
+  };
+};
+
 var _crYAxisStyle = function _crYAxisStyle(color) {
   return {
     axisLine: {
@@ -109,7 +116,9 @@ var STYLE = {
   LineTempEve: _crLineDashStyle(_theme.COLOR.TEMP_NIGHT.color, DF_DASH_FILL),
   LineTempNight: _crLineStyle({
     stroke: _theme.COLOR.TEMP_NIGHT.color
-  })
+  }),
+  BarRain: _crBarStyle(_SeriesColor["default"].RAIN),
+  BarSnow: _crBarStyle(_SeriesColor["default"].SNOW)
 };
 var _default = STYLE;
 exports["default"] = _default;

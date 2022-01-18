@@ -1,50 +1,40 @@
 import { memo, useMemo } from '../uiApi';
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 
-import useSeriesFilter from './useSeriesFilter'
+import useSeriesFilter from './useSeriesFilter';
 //import PropTypes from 'prop-types';
 
-import Chart from '../charts/Chart'
-import ChartType1 from './ChartType1'
+import Chart from '../charts/Chart';
+import ChartType1 from './ChartType1';
 
 import dt from '../../utils/dt';
 import { sForecast } from '../../flux/selectors';
 
+import crListSeries from './crListSeries';
 import TooltipForecast from './TooltipForecast';
 import LegendForecast from './LegendForecast';
 
 import STYLE from './Chart.Style';
-import SC from './SeriesColor'
 
 const {
   YAxis,
-  Line,
-  Bar,
   Legend
 } = Chart;
 
-const INITIAL_FILTERS = {
-  tempDay : true,
-  tempNight : false,
-  tempMorn : false,
-  tempEve : false,
-  tempMax : false,
-  tempMin : false,
-  rain : false,
-  speed : false,
-  pressure : false,
-  humidity : false
+const INITIAL_FILTERED = {
+  tempDay: false,
+  tempNight: true,
+  tempMorn: true,
+  tempEve: true,
+  tempMax: true,
+  tempMin: true,
+  rain: true,
+  speed: true,
+  pressure: true,
+  humidity: true
 };
 
-const INITIAL_DATA = [
-  {day: '01 SU', tempDay: 35 },
-  {day: '02 MO', tempDay: 30 },
-  {day: '03 TU', tempDay: 20 },
-  {day: '04 WE', tempDay: 27 },
-  {day: '05 TH', tempDay: 18 },
-  {day: '06 FR', tempDay: 23 },
-  {day: '07 SA', tempDay: 34 }
-];
+const INITIAL_DATA = [];
 
 const _transformForecast = (arr=[]) => arr
  .map(({ dt:timestamp, rain=0, speed, temp, pressure, humidity }) => {
@@ -66,23 +56,27 @@ const _transformForecast = (arr=[]) => arr
     };
 });
 
-const _filterData = (data=[], filters={}) => {
-  const keys = Object.keys(filters);
-  return data.map(item => {
-     const _item = {...item};
-     keys.forEach(dataKey => {
-        if (!filters[dataKey]) {
-          _item[dataKey] = null;
-        }
-     })
-     return _item;
-  });
-};
 
 const areEqual = () => true;
 
+const SERIA_CONFIGS = [{
+  id: 'rain',
+  type: 'bar',
+  yId: 2,
+  style: STYLE.BarRain,
+},{ id: 'speed', yId: 3 , style: STYLE.LineSpeed
+},{ id: 'pressure', yId: 4, style: STYLE.LinePressure
+},{ id: 'humidity', yId: 5, style: STYLE.LineHumidity
+},{ id: 'tempMin', style: STYLE.LineTempMin
+},{ id: 'tempMax', style: STYLE.LineTempMax
+},{ id: 'tempEve', style: STYLE.LineTempEve
+},{ id: 'tempMorn', style: STYLE.LineTempMorn
+},{ id: 'tempNight', style: STYLE.LineTempNight
+},{ id: 'tempDay', style: STYLE.LineTempDay}
+]
+
 const ForecastChart = () => {
-  const [filters, _hFilter] = useSeriesFilter(INITIAL_FILTERS)
+  const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
   , forecastArr = useSelector(state => {
     const recent = sForecast.recent(state);
     return recent
@@ -91,14 +85,12 @@ const ForecastChart = () => {
   })
   , data = useMemo(() => forecastArr
       ? _transformForecast(forecastArr)
-      : INITIAL_DATA, [forecastArr])
-  , _data = useMemo(() => _filterData(data, filters)
-      , [data, filters]);
+      : INITIAL_DATA, [forecastArr]);
 
   return (
     <ChartType1
        chartStyle={STYLE.ComposedChart}
-       data={_data}
+       data={data}
        TooltipComp={TooltipForecast}
     >
       <YAxis
@@ -113,98 +105,47 @@ const ForecastChart = () => {
           //position: "insideTopRight",
           //position: "insideStart"
        }}/>
-      <YAxis
-         {...STYLE.YAxisRain}
+      <YAxis {...STYLE.YAxisRain}
          yAxisId={2}
-         hide={!filters.rain}
+         hide={filtered.rain}
          dataKey="rain"
          orientation="right" label="mm"
       />
-      <YAxis
-         {...STYLE.YAxisSpeed}
-         hide={!filters.speed}
+      <YAxis {...STYLE.YAxisSpeed}
          yAxisId={3}
+         hide={filtered.speed}
          dataKey="speed"
          orientation="right" label="m/s"
       />
-      <YAxis
-         {...STYLE.YAxisPressure}
-         hide={!filters.pressure}
+      <YAxis {...STYLE.YAxisPressure}
          yAxisId={4}
+         hide={filtered.pressure}
          dataKey="pressure"
          width={80}
-         orientation="right" label="hPa"
+         orientation="right"
+         label="hPa"
          type="number"
          domain={['dataMin', 'dataMax']}
       />
-      <YAxis
-         {...STYLE.YAxisSpeed}
-         hide={!filters.humidity}
+      <YAxis {...STYLE.YAxisSpeed}
          yAxisId={5}
+         hide={filtered.humidity}
          dataKey="humidity"
-         orientation="right" label="%"
+         orientation="right"
+         label="%"
       />
       <Legend
         content={(
            <LegendForecast
-               filters={filters}
+               filtered={filtered}
                onFilter={_hFilter}
             />
         )}
       />
-      <Bar
-         yAxisId={2}
-         dataKey="rain"
-         barSize={20} fill={SC.RAIN}
-      />
-      <Line
-        {...STYLE.LineSpeed}
-        yAxisId={3}
-        dataKey="speed"
-      />
-      <Line
-        {...STYLE.LinePressure}
-        yAxisId={4}
-        dataKey="pressure"
-      />
-      <Line
-        {...STYLE.LineHumidity}
-        yAxisId={5}
-        dataKey="humidity"
-      />
+      {crListSeries(SERIA_CONFIGS, filtered)}
 
-      <Line
-        {...STYLE.LineTempMin}
-        yAxisId={1}
-        dataKey="tempMin"
-      />
-      <Line
-        {...STYLE.LineTempMax}
-        yAxisId={1}
-        dataKey="tempMax"
-      />
-      <Line
-        {...STYLE.LineTempEve}
-        yAxisId={1}
-        dataKey="tempEve"
-      />
-      <Line
-        {...STYLE.LineTempMorn}
-        yAxisId={1}
-        dataKey="tempMorn"
-      />
-      <Line
-        {...STYLE.LineTempNight}
-        yAxisId={1}
-        dataKey="tempNight"
-      />
-      <Line
-        {...STYLE.LineTempDay}
-        yAxisId={1}
-        dataKey="tempDay"
-      />
     </ChartType1>
   );
-}
+};
 
 export default memo(ForecastChart, areEqual)

@@ -36,6 +36,11 @@ const _crLineDashStyle = (stroke, fill) => _crLineStyle({
   dash: "5 5"
 });
 
+const _crBarStyle = fill => ({
+  barSize: 20,
+  fill
+});
+
 const _crYAxisStyle = (color) => ({
   axisLine: { stroke: color },
   tickLine: { stroke: color },
@@ -83,7 +88,10 @@ const STYLE = {
   LineTempMorn: _crLineDashStyle(C.TEMP_DAY.color, DF_DASH_FILL),
   LineTempDay: _crLineStyle({ stroke: C.TEMP_DAY.color }),
   LineTempEve: _crLineDashStyle(C.TEMP_NIGHT.color, DF_DASH_FILL),
-  LineTempNight: _crLineStyle({ stroke: C.TEMP_NIGHT.color })
+  LineTempNight: _crLineStyle({ stroke: C.TEMP_NIGHT.color }),
+
+  BarRain: _crBarStyle(SC.RAIN),
+  BarSnow: _crBarStyle(SC.SNOW)
 };
 
 export default STYLE
