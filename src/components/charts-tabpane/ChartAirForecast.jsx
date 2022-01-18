@@ -1,11 +1,12 @@
 import { useMemo } from '../uiApi';
 import { useSelector } from 'react-redux';
-import useSeriesFilter from './useSeriesFilter';
 
+import memoEqual from '../hoc/memoEqual';
+import Chart from '../charts/Chart';
 import { sAir } from '../../flux/selectors';
 import dt from '../../utils/dt';
 
-import Chart from '../charts/Chart';
+import useSeriesFilter from './useSeriesFilter';
 import ChartType1 from './ChartType1';
 import TooltipAirForecast from './TooltipAirForecast';
 import LegendAirForecast from './LegendAirForecast';
@@ -19,8 +20,7 @@ const {
 } = Chart;
 
 const _isArr = Array.isArray
-
-const INITIAL_DATA = []
+, INITIAL_DATA = [];
 
 const _crLabelColor = color => ({
   stroke: color,
@@ -83,10 +83,10 @@ const _transformAirForecast = arr => arr
 
 
 const LINE_CONFIGS = [
-  {
-    id: 'aqi',
-    yId: 2,
-    style: STYLE.LineSpeed
+{
+  id: 'aqi',
+  yId: 2,
+  style: STYLE.LineSpeed
 },{ id: 'no2' },{ id: 'o3'}, { id: 'pm2_5'}, { id: 'pm10' },{
   id: 'co',
   yId: 3,
@@ -95,7 +95,7 @@ const LINE_CONFIGS = [
 ];
 
 
-const AirForecastChart = () => {
+const ChartAirForecast = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
   , airForecastArr = useSelector(state => sAir.forecast(state))
   , data = useMemo(() => _isArr(airForecastArr)
@@ -152,4 +152,4 @@ const AirForecastChart = () => {
   );
 };
 
-export default AirForecastChart
+export default memoEqual(ChartAirForecast)

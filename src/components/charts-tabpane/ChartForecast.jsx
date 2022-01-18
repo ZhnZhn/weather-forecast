@@ -1,19 +1,16 @@
-import { memo, useMemo } from '../uiApi';
+import { useMemo } from '../uiApi';
 import { useSelector } from 'react-redux';
 
-import useSeriesFilter from './useSeriesFilter';
-//import PropTypes from 'prop-types';
-
+import memoEqual from '../hoc/memoEqual'
 import Chart from '../charts/Chart';
-import ChartType1 from './ChartType1';
-
 import dt from '../../utils/dt';
 import { sForecast } from '../../flux/selectors';
 
+import useSeriesFilter from './useSeriesFilter';
+import ChartType1 from './ChartType1';
 import crListSeries from './crListSeries';
 import TooltipForecast from './TooltipForecast';
 import LegendForecast from './LegendForecast';
-
 import STYLE from './Chart.Style';
 
 const {
@@ -56,9 +53,6 @@ const _transformForecast = (arr=[]) => arr
     };
 });
 
-
-const areEqual = () => true;
-
 const SERIA_CONFIGS = [{
   id: 'rain',
   type: 'bar',
@@ -75,7 +69,7 @@ const SERIA_CONFIGS = [{
 },{ id: 'tempDay', style: STYLE.LineTempDay}
 ]
 
-const ForecastChart = () => {
+const ChartForecast = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
   , forecastArr = useSelector(state => {
     const recent = sForecast.recent(state);
@@ -148,4 +142,4 @@ const ForecastChart = () => {
   );
 };
 
-export default memo(ForecastChart, areEqual)
+export default memoEqual(ChartForecast)

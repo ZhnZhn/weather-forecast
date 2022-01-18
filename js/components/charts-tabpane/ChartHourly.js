@@ -11,13 +11,15 @@ var _uiApi = require("../uiApi");
 
 var _reactRedux = require("react-redux");
 
-var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
+var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
 
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
 
 var _dt = _interopRequireDefault(require("../../utils/dt"));
 
 var _selectors = require("../../flux/selectors");
+
+var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
 
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
@@ -112,11 +114,7 @@ var _crDataKey = function _crDataKey(filtered, propName) {
   return filtered[propName] ? 'empty' : propName;
 };
 
-var areEqual = function areEqual() {
-  return true;
-};
-
-var HourlyChart = (0, _uiApi.memo)(function () {
+var ChartHourly = function ChartHourly() {
   var _useSeriesFilter = (0, _useSeriesFilter2["default"])(INITIAL_FILTERED),
       filtered = _useSeriesFilter[0],
       _hFilter = _useSeriesFilter[1],
@@ -167,7 +165,9 @@ var HourlyChart = (0, _uiApi.memo)(function () {
       dataKey: _crDataKey(filtered, 'speed')
     }))]
   });
-}, areEqual);
-var _default = HourlyChart;
+};
+
+var _default = (0, _memoEqual["default"])(ChartHourly);
+
 exports["default"] = _default;
-//# sourceMappingURL=HourlyChart.js.map
+//# sourceMappingURL=ChartHourly.js.map

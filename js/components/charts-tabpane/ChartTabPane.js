@@ -11,13 +11,13 @@ var _TabPane = _interopRequireDefault(require("../zhn-atoms/TabPane"));
 
 var _Tab = _interopRequireDefault(require("../zhn-atoms/Tab"));
 
-var _ForecastChart = _interopRequireDefault(require("./ForecastChart"));
+var _ChartForecast = _interopRequireDefault(require("./ChartForecast"));
 
-var _HourlyChart = _interopRequireDefault(require("./HourlyChart"));
+var _ChartHourly = _interopRequireDefault(require("./ChartHourly"));
 
-var _UviChart = _interopRequireDefault(require("./UviChart"));
+var _ChartUvi = _interopRequireDefault(require("./ChartUvi"));
 
-var _AirForecastChart = _interopRequireDefault(require("./AirForecastChart"));
+var _ChartAirForecast = _interopRequireDefault(require("./ChartAirForecast"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
@@ -28,28 +28,27 @@ var S_TABS = {
   textAlign: 'left'
 };
 
-var ChartTabPane = function ChartTabPane(_ref) {
-  var isAir = _ref.isAir;
+var ChartTabPane = function ChartTabPane() {
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_TabPane["default"], {
     width: "100%",
     tabsStyle: S_TABS,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Tab["default"], {
       title: "7 Days",
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ForecastChart["default"], {})
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ChartForecast["default"], {})
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Tab["default"], {
       title: "5 Days/3 Hours",
       onClick: requestHourly,
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_HourlyChart["default"], {})
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ChartHourly["default"], {})
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Tab["default"], {
       title: "UV index",
       onClick: requestUvi,
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_UviChart["default"], {})
-    }), isAir && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Tab["default"], {
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ChartUvi["default"], {})
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Tab["default"], {
       title: "Air Forecast",
       onClick: requestAirForecast,
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_AirForecastChart["default"], {})
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ChartAirForecast["default"], {})
     })]
-  }, "1");
+  });
 };
 
 var _default = ChartTabPane;

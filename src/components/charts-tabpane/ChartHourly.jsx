@@ -1,12 +1,12 @@
-import { memo, useMemo } from '../uiApi';
+import { useMemo } from '../uiApi';
 import { useSelector } from 'react-redux';
 
-import useSeriesFilter from './useSeriesFilter';
+import memoEqual from '../hoc/memoEqual';
 import Chart from '../charts/Chart';
-
 import dt from '../../utils/dt';
 import { sHourly } from '../../flux/selectors';
 
+import useSeriesFilter from './useSeriesFilter';
 import ChartType1 from './ChartType1';
 import {
   crYAxisTemp,
@@ -83,9 +83,7 @@ const _crDataKey = (filtered, propName) => filtered[propName]
   ? 'empty'
   : propName;
 
-const areEqual = () => true;
-
-const HourlyChart = memo(() => {
+const ChartHourly = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
   , hourlyArr = useSelector(state => sHourly.forecast(state))
   , data = useMemo(() => _isArr(hourlyArr)
@@ -145,6 +143,6 @@ const HourlyChart = memo(() => {
        />
      </ChartType1>
   );
-}, areEqual)
+}
 
-export default HourlyChart
+export default memoEqual(ChartHourly)

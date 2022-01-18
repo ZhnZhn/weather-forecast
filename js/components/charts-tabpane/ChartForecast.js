@@ -11,15 +11,17 @@ var _uiApi = require("../uiApi");
 
 var _reactRedux = require("react-redux");
 
-var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
+var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
 
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
-
-var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
 var _dt = _interopRequireDefault(require("../../utils/dt"));
 
 var _selectors = require("../../flux/selectors");
+
+var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
+
+var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
 var _crListSeries = _interopRequireDefault(require("./crListSeries"));
 
@@ -31,7 +33,6 @@ var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
-//import PropTypes from 'prop-types';
 var YAxis = _Chart["default"].YAxis,
     Legend = _Chart["default"].Legend;
 var INITIAL_FILTERED = {
@@ -92,10 +93,6 @@ var _transformForecast = function _transformForecast(arr) {
   });
 };
 
-var areEqual = function areEqual() {
-  return true;
-};
-
 var SERIA_CONFIGS = [{
   id: 'rain',
   type: 'bar',
@@ -133,7 +130,7 @@ var SERIA_CONFIGS = [{
   style: _Chart2["default"].LineTempDay
 }];
 
-var ForecastChart = function ForecastChart() {
+var ChartForecast = function ChartForecast() {
   var _useSeriesFilter = (0, _useSeriesFilter2["default"])(INITIAL_FILTERED),
       filtered = _useSeriesFilter[0],
       _hFilter = _useSeriesFilter[1],
@@ -198,7 +195,7 @@ var ForecastChart = function ForecastChart() {
   });
 };
 
-var _default = (0, _uiApi.memo)(ForecastChart, areEqual);
+var _default = (0, _memoEqual["default"])(ChartForecast);
 
 exports["default"] = _default;
-//# sourceMappingURL=ForecastChart.js.map
+//# sourceMappingURL=ChartForecast.js.map

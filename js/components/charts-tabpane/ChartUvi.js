@@ -11,13 +11,15 @@ var _uiApi = require("../uiApi");
 
 var _reactRedux = require("react-redux");
 
+var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
+
 var _dt = _interopRequireDefault(require("../../utils/dt"));
 
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
 
-var _ChartType = _interopRequireDefault(require("./ChartType1"));
-
 var _selectors = require("../../flux/selectors");
+
+var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
 var _TooltipUvi = _interopRequireDefault(require("./TooltipUvi"));
 
@@ -39,7 +41,7 @@ var _transformUvi = function _transformUvi(hourlyArr) {
   });
 };
 
-var UviChart = function UviChart() {
+var ChartUvi = function ChartUvi() {
   var uviArr = (0, _reactRedux.useSelector)(_selectors.sUV.forecast),
       data = (0, _uiApi.useMemo)(function () {
     return _transformUvi(uviArr);
@@ -61,6 +63,7 @@ var UviChart = function UviChart() {
   });
 };
 
-var _default = UviChart;
+var _default = (0, _memoEqual["default"])(ChartUvi);
+
 exports["default"] = _default;
-//# sourceMappingURL=UviChart.js.map
+//# sourceMappingURL=ChartUvi.js.map

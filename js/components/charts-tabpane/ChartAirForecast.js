@@ -11,13 +11,15 @@ var _uiApi = require("../uiApi");
 
 var _reactRedux = require("react-redux");
 
-var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
+var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
+
+var _Chart = _interopRequireDefault(require("../charts/Chart"));
 
 var _selectors = require("../../flux/selectors");
 
 var _dt = _interopRequireDefault(require("../../utils/dt"));
 
-var _Chart = _interopRequireDefault(require("../charts/Chart"));
+var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
 
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
@@ -35,8 +37,8 @@ var _jsxRuntime = require("react/jsx-runtime");
 
 var YAxis = _Chart["default"].YAxis,
     Legend = _Chart["default"].Legend;
-var _isArr = Array.isArray;
-var INITIAL_DATA = [];
+var _isArr = Array.isArray,
+    INITIAL_DATA = [];
 
 var _crLabelColor = function _crLabelColor(color) {
   return {
@@ -120,7 +122,7 @@ var LINE_CONFIGS = [{
   id: 'so2'
 }];
 
-var AirForecastChart = function AirForecastChart() {
+var ChartAirForecast = function ChartAirForecast() {
   var _useSeriesFilter = (0, _useSeriesFilter2["default"])(INITIAL_FILTERED),
       filtered = _useSeriesFilter[0],
       _hFilter = _useSeriesFilter[1],
@@ -164,6 +166,7 @@ var AirForecastChart = function AirForecastChart() {
   });
 };
 
-var _default = AirForecastChart;
+var _default = (0, _memoEqual["default"])(ChartAirForecast);
+
 exports["default"] = _default;
-//# sourceMappingURL=AirForecastChart.js.map
+//# sourceMappingURL=ChartAirForecast.js.map

@@ -1,11 +1,12 @@
 import { useMemo } from '../uiApi';
 import { useSelector } from 'react-redux';
-import dt from '../../utils/dt';
 
+import memoEqual from '../hoc/memoEqual';
+import dt from '../../utils/dt';
 import Chart from '../charts/Chart';
-import ChartType1 from './ChartType1';
 import { sUV } from '../../flux/selectors';
 
+import ChartType1 from './ChartType1';
 import TooltipUvi from './TooltipUvi';
 import STYLE from './Chart.Style';
 
@@ -20,7 +21,7 @@ const _transformUvi = hourlyArr => (hourlyArr || [])
      uvi: value
   }))
 
-const UviChart = () => {
+const ChartUvi = () => {
   const uviArr = useSelector(sUV.forecast)
   , data = useMemo(() => _transformUvi(uviArr),
       [uviArr]);
@@ -45,4 +46,4 @@ const UviChart = () => {
   );
 };
 
-export default UviChart
+export default memoEqual(ChartUvi)

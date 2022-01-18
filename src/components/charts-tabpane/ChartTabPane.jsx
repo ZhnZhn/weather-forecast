@@ -3,10 +3,10 @@ import handlers from '../../flux/handlers';
 import TabPane from '../zhn-atoms/TabPane';
 import Tab from '../zhn-atoms/Tab';
 
-import ForecastChart from './ForecastChart';
-import HourlyChart from './HourlyChart';
-import UviChart from './UviChart';
-import AirForecastChart from './AirForecastChart';
+import ChartForecast from './ChartForecast';
+import ChartHourly from './ChartHourly';
+import ChartUvi from './ChartUvi';
+import ChartAirForecast from './ChartAirForecast';
 
 const {
   requestHourly,
@@ -16,24 +16,21 @@ const {
 
 const S_TABS = { textAlign: 'left' };
 
-const ChartTabPane = ({ isAir }) => (
-  <TabPane key="1" width="100%" tabsStyle={S_TABS}>
+const ChartTabPane = () => (
+  <TabPane width="100%" tabsStyle={S_TABS}>
     <Tab title="7 Days">
-       <ForecastChart />
+       <ChartForecast />
     </Tab>
     <Tab title="5 Days/3 Hours" onClick={requestHourly}>
-       <HourlyChart />
+       <ChartHourly />
     </Tab>
     <Tab title="UV index" onClick={requestUvi}>
-       <UviChart />
+       <ChartUvi />
     </Tab>
-    {
-      isAir && <Tab title="Air Forecast" onClick={requestAirForecast}>
-          <AirForecastChart />
-      </Tab>
-    }
+    <Tab title="Air Forecast" onClick={requestAirForecast}>
+       <ChartAirForecast />
+    </Tab>
   </TabPane>
 );
-
 
 export default ChartTabPane
