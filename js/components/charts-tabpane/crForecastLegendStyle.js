@@ -23,7 +23,8 @@ var crForecastLegendStyle = function crForecastLegendStyle(filtered) {
     rain: _crLabelStyle(filtered.rain, _Label["default"].RAIN),
     speed: _crLabelStyle(filtered.speed, _Label["default"].SPEED),
     pressure: _crLabelStyle(filtered.pressure, _Label["default"].PRESSURE),
-    humidity: _crLabelStyle(filtered.humidity, _Label["default"].HUMIDITY)
+    humidity: _crLabelStyle(filtered.humidity, _Label["default"].HUMIDITY),
+    snow: _crLabelStyle(filtered.snow, _Label["default"].SNOW)
   });
 };
 

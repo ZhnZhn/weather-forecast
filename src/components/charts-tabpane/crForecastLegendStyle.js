@@ -15,7 +15,8 @@ const crForecastLegendStyle = (filtered) => _assign({}, {
   rain: _crLabelStyle(filtered.rain, S.RAIN),
   speed: _crLabelStyle(filtered.speed, S.SPEED),
   pressure: _crLabelStyle(filtered.pressure, S.PRESSURE),
-  humidity: _crLabelStyle(filtered.humidity, S.HUMIDITY)
+  humidity: _crLabelStyle(filtered.humidity, S.HUMIDITY),
+  snow: _crLabelStyle(filtered.snow, S.SNOW)
 });
 
 export default crForecastLegendStyle

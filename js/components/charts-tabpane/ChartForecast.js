@@ -5,6 +5,8 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
+var _uiApi = require("../uiApi");
+
 var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
 
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
@@ -16,6 +18,8 @@ var _selectors = require("../../flux/selectors");
 var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
 
 var _useSelectorData = _interopRequireDefault(require("./useSelectorData"));
+
+var _useIsData = require("./useIsData");
 
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
@@ -55,7 +59,8 @@ var INITIAL_FILTERED = {
   rain: true,
   speed: true,
   pressure: true,
-  humidity: true
+  humidity: true,
+  snow: true
 };
 
 var _transformForecast = function _transformForecast(arr) {
@@ -70,7 +75,9 @@ var _transformForecast = function _transformForecast(arr) {
         speed = _ref.speed,
         temp = _ref.temp,
         pressure = _ref.pressure,
-        humidity = _ref.humidity;
+        humidity = _ref.humidity,
+        _ref$snow = _ref.snow,
+        snow = _ref$snow === void 0 ? 0 : _ref$snow;
 
     var _ref2 = temp || {},
         _ref2$day = _ref2.day,
@@ -97,28 +104,40 @@ var _transformForecast = function _transformForecast(arr) {
       rain: rain,
       speed: speed,
       pressure: pressure,
-      humidity: humidity
+      humidity: humidity,
+      snow: snow
     };
   });
 };
 
-var SERIA_CONFIGS = [{
+var T_Y_ID = 1,
+    RAIN_Y_ID = 2,
+    WIND_SPEED_Y_ID = 3,
+    PRESSURE_Y_ID = 4,
+    HUMIDITY_Y_ID = 5,
+    SNOW_Y_ID = 6,
+    SERIA_CONFIGS = [{
   id: 'rain',
   type: 'bar',
-  yId: 2,
+  yId: RAIN_Y_ID,
   style: _Chart2["default"].BarRain
 }, {
   id: 'speed',
-  yId: 3,
+  yId: WIND_SPEED_Y_ID,
   style: _Chart2["default"].LineSpeed
 }, {
   id: 'pressure',
-  yId: 4,
+  yId: PRESSURE_Y_ID,
   style: _Chart2["default"].LinePressure
 }, {
   id: 'humidity',
-  yId: 5,
+  yId: HUMIDITY_Y_ID,
   style: _Chart2["default"].LineHumidity
+}, {
+  id: 'snow',
+  type: 'bar',
+  yId: SNOW_Y_ID,
+  style: _Chart2["default"].BarSnow
 }, {
   id: 'tempMin',
   style: _Chart2["default"].LineTempMin
@@ -149,21 +168,28 @@ var ChartForecast = function ChartForecast() {
   var _useSeriesFilter = (0, _useSeriesFilter2["default"])(INITIAL_FILTERED),
       filtered = _useSeriesFilter[0],
       _hFilter = _useSeriesFilter[1],
-      data = (0, _useSelectorData["default"])(_selectRecentById, _transformForecast);
+      data = (0, _useSelectorData["default"])(_selectRecentById, _transformForecast),
+      _isSnow = (0, _useIsData.useIsSnow)(data),
+      isNot = (0, _uiApi.useMemo)(function () {
+    return {
+      snow: !_isSnow
+    };
+  }, [_isSnow]);
 
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_ChartType["default"], {
     chartStyle: _Chart2["default"].ComposedChart,
     data: data,
     TooltipComp: _TooltipForecast["default"],
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, {
-      yAxisId: 1,
+      yAxisId: T_Y_ID,
       label: YAXIS_LABEL_TEMP
-    }), (0, _crYAxis.crYAxisRain)(2, filtered), (0, _crYAxis.crYAxisWindSpeed)(3, filtered), (0, _crYAxis.crYAxisPressure)(4, filtered), (0, _crYAxis.crYAxisWindSpeed)(5, filtered, 'humidity', '%'), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
+    }), (0, _crYAxis.crYAxisRain)(RAIN_Y_ID, filtered), (0, _crYAxis.crYAxisWindSpeed)(WIND_SPEED_Y_ID, filtered), (0, _crYAxis.crYAxisPressure)(PRESSURE_Y_ID, filtered), (0, _crYAxis.crYAxisWindSpeed)(HUMIDITY_Y_ID, filtered, 'humidity', '%'), _isSnow && (0, _crYAxis.crYAxisSnow)(SNOW_Y_ID, filtered), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
       content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendForecast["default"], {
+        isSnow: _isSnow,
         filtered: filtered,
         onFilter: _hFilter
       })
-    }), (0, _crListSeries["default"])(SERIA_CONFIGS, filtered)]
+    }), (0, _crListSeries["default"])(SERIA_CONFIGS, filtered, isNot)]
   });
 };
 

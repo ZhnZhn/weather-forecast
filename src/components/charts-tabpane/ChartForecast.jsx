@@ -1,3 +1,5 @@
+import { useMemo } from '../uiApi';
+
 import memoEqual from '../hoc/memoEqual'
 import Chart from '../charts/Chart';
 import dt from '../../utils/dt';
@@ -5,11 +7,13 @@ import { sForecast } from '../../flux/selectors';
 
 import useSeriesFilter from './useSeriesFilter';
 import useSelectorData from './useSelectorData';
+import { useIsSnow } from './useIsData';
 import ChartType1 from './ChartType1';
 import {
   crYAxisRain,
   crYAxisPressure,
-  crYAxisWindSpeed
+  crYAxisWindSpeed,
+  crYAxisSnow
 } from './crYAxis';
 import crListSeries from './crListSeries';
 import TooltipForecast from './TooltipForecast';
@@ -45,11 +49,12 @@ const INITIAL_FILTERED = {
   rain: true,
   speed: true,
   pressure: true,
-  humidity: true
+  humidity: true,
+  snow: true
 };
 
 const _transformForecast = (arr=[]) => arr
- .map(({ dt:timestamp, rain=0, speed, temp, pressure, humidity }) => {
+ .map(({ dt:timestamp, rain=0, speed, temp, pressure, humidity, snow=0 }) => {
    const {
        day=null, night=null, morn=null,
        eve=null, max=null, min=null
@@ -62,20 +67,29 @@ const _transformForecast = (arr=[]) => arr
        tempEve: eve,
        tempMax: max,
        tempMin: min,
-       rain, speed,
+       rain,
+       speed,
        pressure,
-       humidity
+       humidity,
+       snow
     };
 });
 
-const SERIA_CONFIGS = [{
+const T_Y_ID = 1
+, RAIN_Y_ID = 2
+, WIND_SPEED_Y_ID = 3
+, PRESSURE_Y_ID = 4
+, HUMIDITY_Y_ID = 5
+, SNOW_Y_ID = 6
+, SERIA_CONFIGS = [{
   id: 'rain',
   type: 'bar',
-  yId: 2,
+  yId: RAIN_Y_ID,
   style: STYLE.BarRain,
-},{ id: 'speed', yId: 3 , style: STYLE.LineSpeed
-},{ id: 'pressure', yId: 4, style: STYLE.LinePressure
-},{ id: 'humidity', yId: 5, style: STYLE.LineHumidity
+},{ id: 'speed', yId: WIND_SPEED_Y_ID , style: STYLE.LineSpeed
+},{ id: 'pressure', yId: PRESSURE_Y_ID, style: STYLE.LinePressure
+},{ id: 'humidity', yId: HUMIDITY_Y_ID, style: STYLE.LineHumidity
+},{ id: 'snow', type: 'bar', yId: SNOW_Y_ID, style: STYLE.BarSnow
 },{ id: 'tempMin', style: STYLE.LineTempMin
 },{ id: 'tempMax', style: STYLE.LineTempMax
 },{ id: 'tempEve', style: STYLE.LineTempEve
@@ -93,7 +107,11 @@ const _selectRecentById = state => {
 
 const ChartForecast = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
-  , data = useSelectorData(_selectRecentById, _transformForecast);
+  , data = useSelectorData(_selectRecentById, _transformForecast)
+  , _isSnow = useIsSnow(data)
+  , isNot = useMemo(() => ({
+    snow: !_isSnow
+  }), [_isSnow]);
 
   return (
     <ChartType1
@@ -102,22 +120,24 @@ const ChartForecast = () => {
        TooltipComp={TooltipForecast}
     >
       <YAxis
-         yAxisId={1}
+         yAxisId={T_Y_ID}
          label={YAXIS_LABEL_TEMP}
       />
-      {crYAxisRain(2, filtered)}
-      {crYAxisWindSpeed(3, filtered)}
-      {crYAxisPressure(4, filtered)}
-      {crYAxisWindSpeed(5, filtered, 'humidity', '%')}
+      {crYAxisRain(RAIN_Y_ID, filtered)}
+      {crYAxisWindSpeed(WIND_SPEED_Y_ID, filtered)}
+      {crYAxisPressure(PRESSURE_Y_ID, filtered)}
+      {crYAxisWindSpeed(HUMIDITY_Y_ID, filtered, 'humidity', '%')}
+      {_isSnow && crYAxisSnow(SNOW_Y_ID, filtered)}
       <Legend
         content={(
            <LegendForecast
+               isSnow={_isSnow}
                filtered={filtered}
                onFilter={_hFilter}
             />
         )}
       />
-      {crListSeries(SERIA_CONFIGS, filtered)}
+      {crListSeries(SERIA_CONFIGS, filtered, isNot)}
     </ChartType1>
   );
 };
