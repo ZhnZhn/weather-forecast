@@ -1,93 +1,75 @@
-import React from '../_react'
+import { useState, useCallback } from '../uiApi';
+import useBool from '../hooks/useBool';
 
-import ArrowCell from './ArrowCell'
-import OptionsPane from './OptionsPane'
+import ArrowCell from './ArrowCell';
+import OptionsPane from './OptionsPane';
 
-const { Component } = React;
-const CL = {
-  SELECT: 'm-select',
-  LABEL: 'm-select__label',
-  DIV: 'm-select__div',
-  DIV_VALUE: 'm-select__div__value',
-  DIV_BT: 'm-select__div__bt',
-  INPUT_LINE: 'm-select__line',
-  ITEM: 'm-select__item'
-};
-
-class InputSelect extends Component {
-  static defaultProps = {
-    initItem: {
-      caption: '',
-      value: ''
-    }
-  }
-
-  constructor(props){
-    super()
-    this.state = {
-      isShow: false,
-      item: props.initItem
-    }
-  }
-
-  _handleOpen = () => {
-    this.setState({ isShow: true })
-  }
-  _handleClose = () => {
-    this.setState({ isShow: false })
-  }
-  _handleSelect = (item, event) => {
-    event.stopPropagation()
-    this.props.onSelect(item)
-    this.setState({
-      isShow: false,
-      item: item
-    })
-  }
-
-
-  render(){
-    const {
-            caption,
-            options,
-            styleConfig:TS={},
-            selectedItem
-          } = this.props
-        , { isShow, item } = this.state
-        , _item = selectedItem || item;
-
-    return (
-      <div
-        className={CL.SELECT}
-        style={TS.ROOT}
-        onClick={this._handleOpen}
-      >
-        <OptionsPane
-           rootStyle={TS.MODAL_PANE}
-           isShow={isShow}
-           item={_item}
-           options={options}
-           clItem={TS.CL_ITEM || CL.ITEM}
-           onSelect={this._handleSelect}
-           onClose={this._handleClose}
-         />
-        <label className={CL.LABEL}>
-          {caption}
-        </label>
-        <div className={CL.DIV}>
-          <div className={CL.DIV_VALUE}>
-             {_item.caption}
-          </div>
-          <button className={CL.DIV_BT} tabIndex="0">
-            <div>
-              <ArrowCell />
-            </div>
-          </button>
-          <div className={CL.INPUT_LINE} />
-        </div>
-      </div>
-    );
-  }
+const CL_SELECT = 'm-select'
+, CL_LABEL = 'm-select__label'
+, CL_DIV = 'm-select__div'
+, CL_DIV_VALUE = 'm-select__div__value'
+, CL_DIV_BT = 'm-select__div__bt'
+, CL_INPUT_LINE = 'm-select__line'
+, CL_ITEM = 'm-select__item'
+, DF_INIT_ITEM = {
+  caption: '',
+  value: ''
 }
+, DF_TS = {};
+
+
+const InputSelect = ({
+  caption,
+  options,
+  styleConfig:TS=DF_TS,
+  selectedItem,
+  initItem=DF_INIT_ITEM,
+  onSelect
+}) => {
+  const [isShow, _handleOpen, _handleClose] = useBool(false)
+  , [item, setItem] = useState(initItem)
+  /*eslint-disable react-hooks/exhaustive-deps */
+  , _handleSelect = useCallback((item, event) => {
+      event.stopPropagation()
+      onSelect(item)
+      _handleClose()
+      setItem(item)
+  }, [])
+  // _handleClose, onSelect
+  /*eslint-enable react-hooks/exhaustive-deps */
+  , _item = selectedItem || item;
+
+  return (
+    <div
+      className={CL_SELECT}
+      style={TS.ROOT}
+      onClick={_handleOpen}
+    >
+      <OptionsPane
+         style={TS.MODAL_PANE}
+         isShow={isShow}
+         item={_item}
+         options={options}
+         clItem={TS.CL_ITEM || CL_ITEM}
+         onSelect={_handleSelect}
+         onClose={_handleClose}
+       />
+      <label className={CL_LABEL}>
+        {caption}
+      </label>
+      <div className={CL_DIV}>
+        <div className={CL_DIV_VALUE}>
+           {_item.caption}
+        </div>
+        <button className={CL_DIV_BT} tabIndex="0">
+          <div>
+            <ArrowCell />
+          </div>
+        </button>
+        <div className={CL_INPUT_LINE} />
+      </div>
+    </div>
+  );
+};
 
 export default InputSelect

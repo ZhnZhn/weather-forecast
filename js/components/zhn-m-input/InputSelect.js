@@ -5,114 +5,89 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+var _uiApi = require("../uiApi");
 
-var _react = _interopRequireDefault(require("../_react"));
+var _useBool2 = _interopRequireDefault(require("../hooks/useBool"));
 
 var _ArrowCell = _interopRequireDefault(require("./ArrowCell"));
 
 var _OptionsPane = _interopRequireDefault(require("./OptionsPane"));
 
-var Component = _react["default"].Component;
-var CL = {
-  SELECT: 'm-select',
-  LABEL: 'm-select__label',
-  DIV: 'm-select__div',
-  DIV_VALUE: 'm-select__div__value',
-  DIV_BT: 'm-select__div__bt',
-  INPUT_LINE: 'm-select__line',
-  ITEM: 'm-select__item'
-};
+var _jsxRuntime = require("react/jsx-runtime");
 
-var InputSelect =
-/*#__PURE__*/
-function (_Component) {
-  (0, _inheritsLoose2["default"])(InputSelect, _Component);
+var CL_SELECT = 'm-select',
+    CL_LABEL = 'm-select__label',
+    CL_DIV = 'm-select__div',
+    CL_DIV_VALUE = 'm-select__div__value',
+    CL_DIV_BT = 'm-select__div__bt',
+    CL_INPUT_LINE = 'm-select__line',
+    CL_ITEM = 'm-select__item',
+    DF_INIT_ITEM = {
+  caption: '',
+  value: ''
+},
+    DF_TS = {};
 
-  function InputSelect(props) {
-    var _this;
+var InputSelect = function InputSelect(_ref) {
+  var caption = _ref.caption,
+      options = _ref.options,
+      _ref$styleConfig = _ref.styleConfig,
+      TS = _ref$styleConfig === void 0 ? DF_TS : _ref$styleConfig,
+      selectedItem = _ref.selectedItem,
+      _ref$initItem = _ref.initItem,
+      initItem = _ref$initItem === void 0 ? DF_INIT_ITEM : _ref$initItem,
+      onSelect = _ref.onSelect;
 
-    _this = _Component.call(this) || this;
+  var _useBool = (0, _useBool2["default"])(false),
+      isShow = _useBool[0],
+      _handleOpen = _useBool[1],
+      _handleClose = _useBool[2],
+      _useState = (0, _uiApi.useState)(initItem),
+      item = _useState[0],
+      setItem = _useState[1],
+      _handleSelect = (0, _uiApi.useCallback)(function (item, event) {
+    event.stopPropagation();
+    onSelect(item);
 
-    _this._handleOpen = function () {
-      _this.setState({
-        isShow: true
-      });
-    };
+    _handleClose();
 
-    _this._handleClose = function () {
-      _this.setState({
-        isShow: false
-      });
-    };
+    setItem(item);
+  }, []),
+      _item = selectedItem || item;
 
-    _this._handleSelect = function (item, event) {
-      event.stopPropagation();
-
-      _this.props.onSelect(item);
-
-      _this.setState({
-        isShow: false,
-        item: item
-      });
-    };
-
-    _this.state = {
-      isShow: false,
-      item: props.initItem
-    };
-    return _this;
-  }
-
-  var _proto = InputSelect.prototype;
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-        caption = _this$props.caption,
-        options = _this$props.options,
-        _this$props$styleConf = _this$props.styleConfig,
-        TS = _this$props$styleConf === void 0 ? {} : _this$props$styleConf,
-        selectedItem = _this$props.selectedItem,
-        _this$state = this.state,
-        isShow = _this$state.isShow,
-        item = _this$state.item,
-        _item = selectedItem || item;
-
-    return _react["default"].createElement("div", {
-      className: CL.SELECT,
-      style: TS.ROOT,
-      onClick: this._handleOpen
-    }, _react["default"].createElement(_OptionsPane["default"], {
-      rootStyle: TS.MODAL_PANE,
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    className: CL_SELECT,
+    style: TS.ROOT,
+    onClick: _handleOpen,
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_OptionsPane["default"], {
+      style: TS.MODAL_PANE,
       isShow: isShow,
       item: _item,
       options: options,
-      clItem: TS.CL_ITEM || CL.ITEM,
-      onSelect: this._handleSelect,
-      onClose: this._handleClose
-    }), _react["default"].createElement("label", {
-      className: CL.LABEL
-    }, caption), _react["default"].createElement("div", {
-      className: CL.DIV
-    }, _react["default"].createElement("div", {
-      className: CL.DIV_VALUE
-    }, _item.caption), _react["default"].createElement("button", {
-      className: CL.DIV_BT,
-      tabIndex: "0"
-    }, _react["default"].createElement("div", null, _react["default"].createElement(_ArrowCell["default"], null))), _react["default"].createElement("div", {
-      className: CL.INPUT_LINE
-    })));
-  };
-
-  return InputSelect;
-}(Component);
-
-InputSelect.defaultProps = {
-  initItem: {
-    caption: '',
-    value: ''
-  }
+      clItem: TS.CL_ITEM || CL_ITEM,
+      onSelect: _handleSelect,
+      onClose: _handleClose
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+      className: CL_LABEL,
+      children: caption
+    }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      className: CL_DIV,
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: CL_DIV_VALUE,
+        children: _item.caption
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+        className: CL_DIV_BT,
+        tabIndex: "0",
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ArrowCell["default"], {})
+        })
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: CL_INPUT_LINE
+      })]
+    })]
+  });
 };
+
 var _default = InputSelect;
 exports["default"] = _default;
 //# sourceMappingURL=InputSelect.js.map
