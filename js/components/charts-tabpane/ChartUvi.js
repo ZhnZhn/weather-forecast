@@ -7,10 +7,6 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _uiApi = require("../uiApi");
-
-var _reactRedux = require("react-redux");
-
 var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
 
 var _dt = _interopRequireDefault(require("../../utils/dt"));
@@ -18,6 +14,8 @@ var _dt = _interopRequireDefault(require("../../utils/dt"));
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
 
 var _selectors = require("../../flux/selectors");
+
+var _useSelectorData = _interopRequireDefault(require("./useSelectorData"));
 
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
@@ -28,9 +26,8 @@ var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
 var _jsxRuntime = require("react/jsx-runtime");
 
 var YAxis = _Chart["default"].YAxis,
-    Line = _Chart["default"].Line;
-
-var _transformUvi = function _transformUvi(hourlyArr) {
+    Line = _Chart["default"].Line,
+    _transformUvi = function _transformUvi(hourlyArr) {
   return (hourlyArr || []).map(function (_ref) {
     var date = _ref.date,
         value = _ref.value;
@@ -42,10 +39,7 @@ var _transformUvi = function _transformUvi(hourlyArr) {
 };
 
 var ChartUvi = function ChartUvi() {
-  var uviArr = (0, _reactRedux.useSelector)(_selectors.sUV.forecast),
-      data = (0, _uiApi.useMemo)(function () {
-    return _transformUvi(uviArr);
-  }, [uviArr]);
+  var data = (0, _useSelectorData["default"])(_selectors.sUV.forecast, _transformUvi);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_ChartType["default"], {
     type: "line",
     data: data,

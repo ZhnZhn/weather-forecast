@@ -7,10 +7,6 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _uiApi = require("../uiApi");
-
-var _reactRedux = require("react-redux");
-
 var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
 
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
@@ -20,6 +16,8 @@ var _selectors = require("../../flux/selectors");
 var _dt = _interopRequireDefault(require("../../utils/dt"));
 
 var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
+
+var _useSelectorData = _interopRequireDefault(require("./useSelectorData"));
 
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
@@ -37,8 +35,6 @@ var _jsxRuntime = require("react/jsx-runtime");
 
 var YAxis = _Chart["default"].YAxis,
     Legend = _Chart["default"].Legend;
-var _isArr = Array.isArray,
-    INITIAL_DATA = [];
 
 var _crLabelColor = function _crLabelColor(color) {
   return {
@@ -126,12 +122,7 @@ var ChartAirForecast = function ChartAirForecast() {
   var _useSeriesFilter = (0, _useSeriesFilter2["default"])(INITIAL_FILTERED),
       filtered = _useSeriesFilter[0],
       _hFilter = _useSeriesFilter[1],
-      airForecastArr = (0, _reactRedux.useSelector)(function (state) {
-    return _selectors.sAir.forecast(state);
-  }),
-      data = (0, _uiApi.useMemo)(function () {
-    return _isArr(airForecastArr) ? _transformAirForecast(airForecastArr) : INITIAL_DATA;
-  }, [airForecastArr]),
+      data = (0, _useSelectorData["default"])(_selectors.sAir.forecast, _transformAirForecast),
       _isHideYAxis1 = filtered.no2 && filtered.o3 && filtered.pm10 && filtered.pm2_5 && filtered.no && filtered.nh3 && filtered.so2;
 
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_ChartType["default"], {

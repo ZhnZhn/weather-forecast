@@ -1,0 +1,18 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/charts-tabpane/useSelectorData.js"
+ ],
+ "file": "../../../src/components/charts-tabpane/useSelectorData.js",
+ "names": [
+  "_isArr",
+  "Array",
+  "isArray",
+  "INITIAL_DATA",
+  "useSelectorData",
+  "selector",
+  "transform",
+  "data"
+ ],
+ "mappings": ";;;;;AAAA;;AACA;;AAEA,IAAMA,MAAM,GAAGC,KAAK,CAACC,OAArB;AAAA,IACEC,YAAY,GAAG,EADjB;;AAGA,IAAMC,eAAe,GAAG,SAAlBA,eAAkB,CAACC,QAAD,EAAWC,SAAX,EAAyB;AAC/C,MAAMC,IAAI,GAAG,6BAAYF,QAAZ,CAAb;AACA;;AACA,SAAO,oBAAQ;AAAA,WAAML,MAAM,CAACO,IAAD,CAAN,GAChBD,SAAS,CAACC,IAAD,CADO,GAEhBJ,YAFU;AAAA,GAAR,EAEY,CAACI,IAAD,CAFZ,CAAP,CAH+C,CAM/C;;AACA;AACD,CARD;;eAUeH,e"
+}

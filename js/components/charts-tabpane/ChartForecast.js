@@ -5,10 +5,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _uiApi = require("../uiApi");
-
-var _reactRedux = require("react-redux");
-
 var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
 
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
@@ -18,6 +14,8 @@ var _dt = _interopRequireDefault(require("../../utils/dt"));
 var _selectors = require("../../flux/selectors");
 
 var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
+
+var _useSelectorData = _interopRequireDefault(require("./useSelectorData"));
 
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
@@ -59,7 +57,6 @@ var INITIAL_FILTERED = {
   pressure: true,
   humidity: true
 };
-var INITIAL_DATA = [];
 
 var _transformForecast = function _transformForecast(arr) {
   if (arr === void 0) {
@@ -142,18 +139,17 @@ var SERIA_CONFIGS = [{
   style: _Chart2["default"].LineTempDay
 }];
 
+var _selectRecentById = function _selectRecentById(state) {
+  var recent = _selectors.sForecast.recent(state);
+
+  return recent ? _selectors.sForecast.listById(state, recent) : void 0;
+};
+
 var ChartForecast = function ChartForecast() {
   var _useSeriesFilter = (0, _useSeriesFilter2["default"])(INITIAL_FILTERED),
       filtered = _useSeriesFilter[0],
       _hFilter = _useSeriesFilter[1],
-      forecastArr = (0, _reactRedux.useSelector)(function (state) {
-    var recent = _selectors.sForecast.recent(state);
-
-    return recent ? _selectors.sForecast.listById(state, recent) : void 0;
-  }),
-      data = (0, _uiApi.useMemo)(function () {
-    return forecastArr ? _transformForecast(forecastArr) : INITIAL_DATA;
-  }, [forecastArr]);
+      data = (0, _useSelectorData["default"])(_selectRecentById, _transformForecast);
 
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_ChartType["default"], {
     chartStyle: _Chart2["default"].ComposedChart,

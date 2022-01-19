@@ -1,4 +1,3 @@
-import { useMemo } from '../uiApi';
 import LegendRowSvg from './LegendRowSvg';
 import S from './Label.Style';
 
@@ -30,24 +29,17 @@ const LS_ROOT = { marginTop: '1rem' }
 ];
 
 const LegendHourly = ({
-  isRain,
-  isSnow,
+  isNot,
   filtered,
   onFilter
-}) => {
-  const notIs = useMemo(() => ({
-    snow: !isSnow,
-    rain: !isRain
-  }), [isSnow, isRain]);
-  return (
-    <LegendRowSvg
-      style={LS_ROOT}
-      notIs={notIs}
-      configs={CONFIGS_ROW_1}
-      filtered={filtered}
-      onFilter={onFilter}
-    />
-  );
-};
+}) => (
+  <LegendRowSvg
+    style={LS_ROOT}
+    notIs={isNot}
+    configs={CONFIGS_ROW_1}
+    filtered={filtered}
+    onFilter={onFilter}
+  />
+);
 
 export default LegendHourly

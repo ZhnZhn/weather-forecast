@@ -1,12 +1,10 @@
-import { useMemo } from '../uiApi';
-import { useSelector } from 'react-redux';
-
 import memoEqual from '../hoc/memoEqual'
 import Chart from '../charts/Chart';
 import dt from '../../utils/dt';
 import { sForecast } from '../../flux/selectors';
 
 import useSeriesFilter from './useSeriesFilter';
+import useSelectorData from './useSelectorData';
 import ChartType1 from './ChartType1';
 import {
   crYAxisRain,
@@ -50,8 +48,6 @@ const INITIAL_FILTERED = {
   humidity: true
 };
 
-const INITIAL_DATA = [];
-
 const _transformForecast = (arr=[]) => arr
  .map(({ dt:timestamp, rain=0, speed, temp, pressure, humidity }) => {
    const {
@@ -88,17 +84,16 @@ const SERIA_CONFIGS = [{
 },{ id: 'tempDay', style: STYLE.LineTempDay}
 ]
 
+const _selectRecentById = state => {
+  const recent = sForecast.recent(state);
+  return recent
+    ? sForecast.listById(state, recent)
+    : void 0;
+};
+
 const ChartForecast = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
-  , forecastArr = useSelector(state => {
-    const recent = sForecast.recent(state);
-    return recent
-      ? sForecast.listById(state, recent)
-      : void 0;
-  })
-  , data = useMemo(() => forecastArr
-      ? _transformForecast(forecastArr)
-      : INITIAL_DATA, [forecastArr]);
+  , data = useSelectorData(_selectRecentById, _transformForecast);
 
   return (
     <ChartType1
@@ -123,7 +118,6 @@ const ChartForecast = () => {
         )}
       />
       {crListSeries(SERIA_CONFIGS, filtered)}
-
     </ChartType1>
   );
 };

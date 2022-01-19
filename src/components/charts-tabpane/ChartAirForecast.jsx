@@ -1,5 +1,3 @@
-import { useMemo } from '../uiApi';
-import { useSelector } from 'react-redux';
 
 import memoEqual from '../hoc/memoEqual';
 import Chart from '../charts/Chart';
@@ -7,6 +5,7 @@ import { sAir } from '../../flux/selectors';
 import dt from '../../utils/dt';
 
 import useSeriesFilter from './useSeriesFilter';
+import useSelectorData from './useSelectorData';
 import ChartType1 from './ChartType1';
 import TooltipAirForecast from './TooltipAirForecast';
 import LegendAirForecast from './LegendAirForecast';
@@ -18,9 +17,6 @@ const {
  YAxis,
  Legend,
 } = Chart;
-
-const _isArr = Array.isArray
-, INITIAL_DATA = [];
 
 const _crLabelColor = color => ({
   stroke: color,
@@ -97,10 +93,7 @@ const LINE_CONFIGS = [
 
 const ChartAirForecast = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
-  , airForecastArr = useSelector(state => sAir.forecast(state))
-  , data = useMemo(() => _isArr(airForecastArr)
-     ? _transformAirForecast(airForecastArr)
-     : INITIAL_DATA, [airForecastArr])
+  , data = useSelectorData(sAir.forecast, _transformAirForecast)
   , _isHideYAxis1 = filtered.no2
        && filtered.o3
        && filtered.pm10

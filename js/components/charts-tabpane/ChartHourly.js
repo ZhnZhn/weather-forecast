@@ -5,11 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-
 var _uiApi = require("../uiApi");
-
-var _reactRedux = require("react-redux");
 
 var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
 
@@ -21,6 +17,8 @@ var _selectors = require("../../flux/selectors");
 
 var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
 
+var _useSelectorData = _interopRequireDefault(require("./useSelectorData"));
+
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
 var _crYAxis = require("./crYAxis");
@@ -29,27 +27,23 @@ var _LegendHourly = _interopRequireDefault(require("./LegendHourly"));
 
 var _TooltipHourly = _interopRequireDefault(require("./TooltipHourly"));
 
+var _crListSeries = _interopRequireDefault(require("./crListSeries"));
+
 var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
-var Line = _Chart["default"].Line,
-    Bar = _Chart["default"].Bar,
-    Legend = _Chart["default"].Legend;
-var _isArr = Array.isArray;
-var INITIAL_FILTERED = {
+var Legend = _Chart["default"].Legend,
+    INITIAL_FILTERED = {
   temp: false,
   pressure: true,
   rain: true,
   speed: true
-};
-var INITIAL_DATA = [];
-
-var _get3h = function _get3h(data) {
+},
+    _get3h = function _get3h(data) {
   return (data || {})['3h'] || null;
-};
-
-var _transformHourly = function _transformHourly(hourlyArr) {
+},
+    _transformHourly = function _transformHourly(hourlyArr) {
   return hourlyArr.map(function (_ref) {
     var timestamp = _ref.dt,
         main = _ref.main,
@@ -77,17 +71,14 @@ var _transformHourly = function _transformHourly(hourlyArr) {
       snow: _get3h(snow)
     };
   });
-};
-
-var _isNumber = function _isNumber(n) {
+},
+    _isNumber = function _isNumber(n) {
   return typeof n === 'number';
-};
-
-var _isNumberGreaterZero = function _isNumberGreaterZero(value) {
+},
+    _isNumberGreaterZero = function _isNumberGreaterZero(value) {
   return _isNumber(value) && value > 0;
-};
-
-var _fHasData = function _fHasData(propName, isData) {
+},
+    _fHasData = function _fHasData(propName, isData) {
   return function (data) {
     for (var i = 0; i < data.length; i++) {
       if (isData(data[i][propName])) {
@@ -97,73 +88,65 @@ var _fHasData = function _fHasData(propName, isData) {
 
     return false;
   };
-};
-
-var _hasRain = _fHasData('rain', _isNumberGreaterZero);
-
-var _hasSnow = _fHasData('snow', _isNumberGreaterZero);
-
-var _crYAxisIds = function _crYAxisIds(isRain, isSnow) {
-  var rain = isRain ? 3 : void 0,
-      snow = rain ? isSnow ? 4 : 3 : void 0,
-      speed = rain ? snow ? 5 : 4 : 3;
-  return [rain, snow, speed];
-};
-
-var _crDataKey = function _crDataKey(filtered, propName) {
-  return filtered[propName] ? 'empty' : propName;
-};
+},
+    _hasRain = _fHasData('rain', _isNumberGreaterZero),
+    _hasSnow = _fHasData('snow', _isNumberGreaterZero),
+    TEMP_ID = 1,
+    PRESSURE_ID = 2,
+    RAIN_ID = 3,
+    SNOW_ID = 4,
+    SPEED_ID = 5,
+    SERIA_CONFIGS = [{
+  id: 'temp',
+  yId: TEMP_ID
+}, {
+  id: 'pressure',
+  yId: PRESSURE_ID,
+  style: _Chart2["default"].LinePressure
+}, {
+  id: 'rain',
+  type: 'bar',
+  yId: RAIN_ID,
+  style: _Chart2["default"].BarRain
+}, {
+  id: 'snow',
+  type: 'bar',
+  yId: SNOW_ID,
+  style: _Chart2["default"].BarSnow
+}, {
+  id: 'speed',
+  yId: SPEED_ID,
+  style: _Chart2["default"].LineSpeed
+}];
 
 var ChartHourly = function ChartHourly() {
   var _useSeriesFilter = (0, _useSeriesFilter2["default"])(INITIAL_FILTERED),
       filtered = _useSeriesFilter[0],
       _hFilter = _useSeriesFilter[1],
-      hourlyArr = (0, _reactRedux.useSelector)(function (state) {
-    return _selectors.sHourly.forecast(state);
-  }),
-      data = (0, _uiApi.useMemo)(function () {
-    return _isArr(hourlyArr) ? _transformHourly(hourlyArr) : INITIAL_DATA;
-  }, [hourlyArr]),
+      data = (0, _useSelectorData["default"])(_selectors.sHourly.forecast, _transformHourly),
       _isRain = (0, _uiApi.useMemo)(function () {
     return _hasRain(data);
   }, [data]),
       _isSnow = (0, _uiApi.useMemo)(function () {
     return _hasSnow(data);
   }, [data]),
-      _crYAxisIds2 = _crYAxisIds(_isRain, _isSnow),
-      rainId = _crYAxisIds2[0],
-      snowId = _crYAxisIds2[1],
-      speedId = _crYAxisIds2[2];
+      isNot = (0, _uiApi.useMemo)(function () {
+    return {
+      rain: !_isRain,
+      snow: !_isSnow
+    };
+  }, [_isRain, _isSnow]);
 
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_ChartType["default"], {
     data: data,
     TooltipComp: _TooltipHourly["default"],
-    children: [(0, _crYAxis.crYAxisTemp)(1, filtered), (0, _crYAxis.crYAxisPressure)(2, filtered), _isRain && (0, _crYAxis.crYAxisRain)(rainId, filtered), _isSnow && (0, _crYAxis.crYAxisSnow)(snowId, filtered), (0, _crYAxis.crYAxisWindSpeed)(speedId, filtered), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
+    children: [(0, _crYAxis.crYAxisTemp)(TEMP_ID, filtered), (0, _crYAxis.crYAxisPressure)(PRESSURE_ID, filtered), _isRain && (0, _crYAxis.crYAxisRain)(RAIN_ID, filtered), _isSnow && (0, _crYAxis.crYAxisSnow)(SNOW_ID, filtered), (0, _crYAxis.crYAxisWindSpeed)(SPEED_ID, filtered), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
       content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendHourly["default"], {
-        isRain: _isRain,
-        isSnow: _isSnow,
+        isNot: isNot,
         filtered: filtered,
         onFilter: _hFilter
       })
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
-      connectNulls: true,
-      yAxisId: 1,
-      dataKey: _crDataKey(filtered, 'temp')
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LinePressure, {
-      connectNulls: true,
-      yAxisId: 2,
-      dataKey: _crDataKey(filtered, 'pressure')
-    })), _isRain && /*#__PURE__*/(0, _jsxRuntime.jsx)(Bar, (0, _extends2["default"])({}, _Chart2["default"].BarRain, {
-      yAxisId: rainId,
-      dataKey: _crDataKey(filtered, 'rain')
-    })), _isSnow && /*#__PURE__*/(0, _jsxRuntime.jsx)(Bar, (0, _extends2["default"])({}, _Chart2["default"].BarSnow, {
-      yAxisId: snowId,
-      dataKey: _crDataKey(filtered, 'snow')
-    })), /*#__PURE__*/(0, _jsxRuntime.jsx)(Line, (0, _extends2["default"])({}, _Chart2["default"].LineSpeed, {
-      connectNulls: true,
-      yAxisId: speedId,
-      dataKey: _crDataKey(filtered, 'speed')
-    }))]
+    }), (0, _crListSeries["default"])(SERIA_CONFIGS, filtered, isNot)]
   });
 };
 

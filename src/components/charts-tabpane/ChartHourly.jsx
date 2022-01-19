@@ -1,12 +1,11 @@
 import { useMemo } from '../uiApi';
-import { useSelector } from 'react-redux';
-
 import memoEqual from '../hoc/memoEqual';
 import Chart from '../charts/Chart';
 import dt from '../../utils/dt';
 import { sHourly } from '../../flux/selectors';
 
 import useSeriesFilter from './useSeriesFilter';
+import useSelectorData from './useSelectorData';
 import ChartType1 from './ChartType1';
 import {
   crYAxisTemp,
@@ -17,28 +16,18 @@ import {
 } from './crYAxis';
 import LegendHourly from './LegendHourly';
 import TooltipHourly from './TooltipHourly';
+import crListSeries from './crListSeries';
 import STYLE from './Chart.Style';
 
-const {
- Line,
- Bar,
- Legend
-} = Chart;
-
-const _isArr = Array.isArray;
-
-const INITIAL_FILTERED = {
+const { Legend } = Chart
+, INITIAL_FILTERED = {
   temp: false,
   pressure: true,
   rain: true,
   speed: true
-};
-
-const INITIAL_DATA = [];
-
-const _get3h = data => (data || {})['3h'] || null;
-
-const _transformHourly = hourlyArr => hourlyArr
+}
+, _get3h = data => (data || {})['3h'] || null
+, _transformHourly = hourlyArr => hourlyArr
   .map(({ dt:timestamp, main, wind, rain, snow }) => {
     const { temp, pressure, humidity } = main || {}
     , { speed=null } = wind || {}
@@ -54,95 +43,80 @@ const _transformHourly = hourlyArr => hourlyArr
       snow: _get3h(snow)
     };
 })
-
-const _isNumber = n => typeof n === 'number';
-const _isNumberGreaterZero = value => _isNumber(value) && value > 0
-const _fHasData = (propName, isData) => (data) => {
+, _isNumber = n => typeof n === 'number'
+, _isNumberGreaterZero = value => _isNumber(value) && value > 0
+, _fHasData = (propName, isData) => (data) => {
   for(let i=0; i<data.length; i++) {
     if (isData(data[i][propName])) {
       return true;
     }
   }
   return false;
-};
-const _hasRain = _fHasData('rain', _isNumberGreaterZero);
-const _hasSnow = _fHasData('snow', _isNumberGreaterZero);
-
-const _crYAxisIds = (isRain, isSnow) => {
-  const rain = isRain ? 3 : void 0
-  , snow = rain
-      ? isSnow ? 4 : 3
-      : void 0
-  , speed = rain
-      ? snow ? 5 : 4
-      : 3;
-  return [rain, snow, speed];
-};
-
-const _crDataKey = (filtered, propName) => filtered[propName]
-  ? 'empty'
-  : propName;
+}
+, _hasRain = _fHasData('rain', _isNumberGreaterZero)
+, _hasSnow = _fHasData('snow', _isNumberGreaterZero)
+, TEMP_ID = 1
+, PRESSURE_ID = 2
+, RAIN_ID = 3
+, SNOW_ID = 4
+, SPEED_ID = 5
+, SERIA_CONFIGS = [
+  {
+    id: 'temp',
+    yId: TEMP_ID
+  },{
+    id: 'pressure',
+    yId: PRESSURE_ID,
+    style: STYLE.LinePressure
+  },{
+    id: 'rain',
+    type: 'bar',
+    yId: RAIN_ID,
+    style: STYLE.BarRain
+  },{
+    id: 'snow',
+    type: 'bar',
+    yId: SNOW_ID,
+    style: STYLE.BarSnow
+  },{
+    id: 'speed',
+    yId: SPEED_ID,
+    style: STYLE.LineSpeed
+  }
+];
 
 const ChartHourly = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
-  , hourlyArr = useSelector(state => sHourly.forecast(state))
-  , data = useMemo(() => _isArr(hourlyArr)
-     ? _transformHourly(hourlyArr)
-     : INITIAL_DATA, [hourlyArr])
+  , data = useSelectorData(sHourly.forecast, _transformHourly)
   , _isRain = useMemo(() => _hasRain(data), [data])
   , _isSnow = useMemo(() => _hasSnow(data), [data])
-  , [rainId, snowId, speedId] = _crYAxisIds(_isRain, _isSnow);
+  , isNot = useMemo(() => ({
+    rain: !_isRain,
+    snow: !_isSnow
+  }), [_isRain, _isSnow])
 
   return (
     <ChartType1
       data={data}
       TooltipComp={TooltipHourly}
     >
-      {crYAxisTemp(1, filtered)}
-      {crYAxisPressure(2, filtered)}
-      {_isRain && crYAxisRain(rainId, filtered)}
-      {_isSnow && crYAxisSnow(snowId, filtered)}
-      {crYAxisWindSpeed(speedId, filtered)}
+      {crYAxisTemp(TEMP_ID, filtered)}
+      {crYAxisPressure(PRESSURE_ID, filtered)}
+      {_isRain && crYAxisRain(RAIN_ID, filtered)}
+      {_isSnow && crYAxisSnow(SNOW_ID, filtered)}
+      {crYAxisWindSpeed(SPEED_ID, filtered)}
       <Legend
          content={
-             <LegendHourly
-                isRain={_isRain}
-                isSnow={_isSnow}
-                filtered={filtered}
-                onFilter={_hFilter}
-             />
-          }
+           <LegendHourly
+             isNot={isNot}
+             filtered={filtered}
+             onFilter={_hFilter}
+           />
+        }
       />
-
-      <Line {...STYLE.LineTempNight}
-          connectNulls={true}
-          yAxisId={1}
-          dataKey={_crDataKey(filtered, 'temp')}
-      />
-      <Line {...STYLE.LinePressure}
-          connectNulls={true}
-          yAxisId={2}
-          dataKey={_crDataKey(filtered, 'pressure')}
-      />
-      {
-        _isRain && <Bar {...STYLE.BarRain}
-           yAxisId={rainId}
-           dataKey={_crDataKey(filtered, 'rain')}
-         />
-      }
-      {
-        _isSnow && <Bar {...STYLE.BarSnow}
-           yAxisId={snowId}
-           dataKey={_crDataKey(filtered, 'snow')}
-         />
-      }
-      <Line {...STYLE.LineSpeed}
-          connectNulls={true}
-          yAxisId={speedId}
-          dataKey={_crDataKey(filtered, 'speed')}
-       />
-     </ChartType1>
+      {crListSeries(SERIA_CONFIGS, filtered, isNot)}
+    </ChartType1>
   );
-}
+};
 
 export default memoEqual(ChartHourly)

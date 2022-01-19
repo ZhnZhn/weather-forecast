@@ -5,8 +5,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _uiApi = require("../uiApi");
-
 var _LegendRowSvg = _interopRequireDefault(require("./LegendRowSvg"));
 
 var _Label = _interopRequireDefault(require("./Label.Style"));
@@ -41,19 +39,12 @@ var LS_ROOT = {
 }];
 
 var LegendHourly = function LegendHourly(_ref) {
-  var isRain = _ref.isRain,
-      isSnow = _ref.isSnow,
+  var isNot = _ref.isNot,
       filtered = _ref.filtered,
       onFilter = _ref.onFilter;
-  var notIs = (0, _uiApi.useMemo)(function () {
-    return {
-      snow: !isSnow,
-      rain: !isRain
-    };
-  }, [isSnow, isRain]);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendRowSvg["default"], {
     style: LS_ROOT,
-    notIs: notIs,
+    notIs: isNot,
     configs: CONFIGS_ROW_1,
     filtered: filtered,
     onFilter: onFilter
