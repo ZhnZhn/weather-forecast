@@ -1,16 +1,15 @@
 
-
 const styleConfig = {
-  _themeName : undefined,
-  _style : undefined,
+  _themeName: void 0,
+  _style: void 0,
 
-  _createStyle : (C) => {
+  _createStyle: (C) => {
     return {
-      HEADER : {
-        ...C.BG,        
+      HEADER: {
+        ...C.BG,
         //boxShadow: 'rgba(0,0,0, 0.14) 0px 0px 4px, rgba(0,0,0, 0.6) 0px 4px 8px'
       }
-    }
+    };
   }
 };
 

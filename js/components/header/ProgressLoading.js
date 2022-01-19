@@ -5,32 +5,29 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _react = _interopRequireDefault(require("../_react"));
-
 var _reactRedux = require("react-redux");
 
 var _constants = require("../../flux/fetching/constants");
 
 var _ProgressLine = _interopRequireDefault(require("../zhn-atoms/ProgressLine"));
 
-var COLOR = {
-  LOADING: '#2f7ed8',
-  FAILED: '#ed5813'
-};
+var _jsxRuntime = require("react/jsx-runtime");
 
-var _getDerivedState = function _getDerivedState(fetching) {
+var COLOR_LOADING = '#2f7ed8',
+    COLOR_FAILED = '#ed5813',
+    _getDerivedState = function _getDerivedState(fetching) {
   switch (fetching) {
     case _constants.FETCH.LOADING:
-      return [35, COLOR.LOADING];
+      return [35, COLOR_LOADING];
 
     case _constants.FETCH.SUCCESS:
-      return [100, COLOR.LOADING];
+      return [100, COLOR_LOADING];
 
     case _constants.FETCH.FAILED:
-      return [100, COLOR.FAILED];
+      return [100, COLOR_FAILED];
 
     default:
-      return [0, COLOR.LOADING];
+      return [0, COLOR_LOADING];
   }
 };
 
@@ -42,7 +39,7 @@ var ProgressLoading = function ProgressLoading() {
       completed = _getDerivedState2[0],
       color = _getDerivedState2[1];
 
-  return /*#__PURE__*/_react["default"].createElement(_ProgressLine["default"], {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ProgressLine["default"], {
     height: 3,
     color: color,
     completed: completed

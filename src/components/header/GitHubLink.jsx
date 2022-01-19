@@ -1,7 +1,9 @@
-//import React from 'react'
-import React from '../_react'
 
-const GitHubLink = ({ className, title, href }) => (
+const GitHubLink = ({
+  className,
+  title,
+  href
+}) => (
   <a
     className={className}
     title={title}
@@ -9,7 +11,7 @@ const GitHubLink = ({ className, title, href }) => (
     tabIndex="-1"
   >
     <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"
-      fillRule="evenodd" clipRule="evenodd" 
+      fillRule="evenodd" clipRule="evenodd"
       strokeLinejoin="round" strokeMiterlimit="1.414"
      >
       <title>GitHub Logo</title>
@@ -17,13 +19,5 @@ const GitHubLink = ({ className, title, href }) => (
     </svg>
   </a>
 );
-
-/*
-GitHubLink.propTypes = {
-  className: PropTypes.string,
-  title: PropTypes.string,
-  href: PropTypes.string
-}
-*/
 
 export default GitHubLink
