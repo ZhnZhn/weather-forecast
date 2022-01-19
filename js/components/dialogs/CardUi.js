@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _react = _interopRequireDefault(require("../_react"));
+var _uiApi = require("../uiApi");
 
 var _InputSelect = _interopRequireDefault(require("../zhn-m-input/InputSelect"));
 
@@ -13,7 +13,8 @@ var _RowCheckBox = _interopRequireDefault(require("./RowCheckBox"));
 
 var _RaisedButton = _interopRequireDefault(require("../zhn-atoms/RaisedButton"));
 
-var useCallback = _react["default"].useCallback;
+var _jsxRuntime = require("react/jsx-runtime");
+
 var S_SELECT = {
   ROOT: {
     width: 280
@@ -47,38 +48,40 @@ var CardUi = function CardUi(_ref) {
       onClose = _ref.onClose;
 
   /*eslint-disable react-hooks/exhaustive-deps */
-  var _checkAir = useCallback(function () {
+  var _checkAir = (0, _uiApi.useCallback)(function () {
     onAir(true);
   }, []),
-      _uncheckAir = useCallback(function () {
+      _uncheckAir = (0, _uiApi.useCallback)(function () {
     onAir(false);
   }, []); // onAir
 
   /*eslint-enable react-hooks/exhaustive-deps */
 
 
-  return /*#__PURE__*/_react["default"].createElement("div", {
-    style: style
-  }, /*#__PURE__*/_react["default"].createElement(_InputSelect["default"], {
-    styleConfig: S_SELECT,
-    caption: "Theme (Default: Grey)",
-    initItem: DF_THEME,
-    options: _themeOptions,
-    onSelect: onSetTheme
-  }), /*#__PURE__*/_react["default"].createElement(_RowCheckBox["default"], {
-    style: S_CHECK_BOX,
-    initValue: IS_AIR,
-    caption: CAPTION_AIR,
-    captionStyle: S_CHECK_CAPTION,
-    onCheck: _checkAir,
-    onUnCheck: _uncheckAir
-  }), /*#__PURE__*/_react["default"].createElement("div", {
-    style: buttonsStyle
-  }, /*#__PURE__*/_react["default"].createElement(_RaisedButton["default"], {
-    isPrimary: true,
-    caption: "Close",
-    onClick: onClose
-  })));
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    style: style,
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_InputSelect["default"], {
+      styleConfig: S_SELECT,
+      caption: "Theme (Default: Grey)",
+      initItem: DF_THEME,
+      options: _themeOptions,
+      onSelect: onSetTheme
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_RowCheckBox["default"], {
+      style: S_CHECK_BOX,
+      initValue: IS_AIR,
+      caption: CAPTION_AIR,
+      captionStyle: S_CHECK_CAPTION,
+      onCheck: _checkAir,
+      onUnCheck: _uncheckAir
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      style: buttonsStyle,
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_RaisedButton["default"], {
+        isPrimary: true,
+        caption: "Close",
+        onClick: onClose
+      })
+    })]
+  });
 };
 
 var _default = CardUi;

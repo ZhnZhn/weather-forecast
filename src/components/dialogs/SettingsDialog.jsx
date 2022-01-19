@@ -1,17 +1,16 @@
-import React from '../_react'
+import { useContext, useCallback } from '../uiApi';
 //import PropTypes from 'prop-types';
 
-import withTheme from '../hoc/withTheme'
-import styleConfig from './Dialog.Style'
+import memoIsShow from '../hoc/memoIsShow';
+import ThemeContext from '../hoc/ThemeContext';
+import styleConfig from './Dialog.Style';
+import useForceUpdate from '../hooks/useForceUpdate';
 
 import ModalDialog from '../zhn-moleculs/ModalDialog';
-
-import TabPane from '../zhn-atoms/TabPane'
-import Tab from '../zhn-atoms/Tab'
-import CardApiKey from './CardApiKey'
-import CardUi from './CardUi'
-
-const { Component } = React;
+import TabPane from '../zhn-atoms/TabPane';
+import Tab from '../zhn-atoms/Tab';
+import CardApiKey from './CardApiKey';
+import CardUi from './CardUi';
 
 const S_MODAL = {
   position: 'static',
@@ -35,85 +34,70 @@ const S_MODAL = {
   cursor: 'default'
 };
 
-class SettingsDialog extends Component {
-  /*
-  static propTypes = {
-    isShow: PropTypes.bool,
-    data: PropTypes.shape({
-      onSet: PropTypes.func,
-      onAir: PropTypes.func,
-    }),
-    onClose: PropTypes.func
-  }
-  */
+const SettingsDialog = ({
+  isShow,
+  data,
+  onClose,
+}) => {
+  const { onSetTheme, onSet, onAir } = data
+  , theme = useContext(ThemeContext)
+  /*eslint-disable react-hooks/exhaustive-deps */
+  , forceUpdate = useForceUpdate()
+  , _handleSetTheme = useCallback((item) => {
+     onSetTheme(theme, item.value)
+     forceUpdate()
+  }, [])
+  // theme, onSetTheme, forceUpdate
+  /*eslint-enable react-hooks/exhaustive-deps */
+  , TS = theme.createStyle(styleConfig);
 
-  _isNextPropIsShowSame = (nextProps) => {
-    return nextProps !== this.props
-      && nextProps.isShow === this.props.isShow;
-  }
-
-  shouldComponentUpdate(nextProps, nextState){
-    if ( this._isNextPropIsShowSame(nextProps) ) {
-      return false;
-    }
-    return true;
-  }
-
-  _handleSetTheme = (item) => {
-    const { theme, data } = this.props
-        , { onSetTheme } = data
-        , prevTheme = theme.themeName;
-    onSetTheme(theme, item.value)
-    if (prevTheme !== item.value) {
-      this.forceUpdate()
-    }
-  }
-
-  render(){
-    const {
-            theme,
-            isShow,
-            onClose,
-            data
-          } = this.props
-        , { onSet, onAir } = data
-        , TS = theme.createStyle(styleConfig);
-    return (
-         <ModalDialog
-            style={{...S_MODAL, ...TS.R_DIALOG}}
-            caption="User Settings"
-            isShow={isShow}
-            isWithButton={false}
-            onClose={onClose}
+  return (
+    <ModalDialog
+       style={{...S_MODAL, ...TS.R_DIALOG}}
+       caption="User Settings"
+       isShow={isShow}
+       isWithButton={false}
+       onClose={onClose}
+    >
+      <TabPane width="100%" tabsStyle={S_TABS}>
+        <Tab
+          title="API Key"
+          selectedStyle={S_TAB_SELECTED}
          >
-           <TabPane width="100%" tabsStyle={S_TABS}>
-             <Tab
-               title="API Key"
-               selectedStyle={S_TAB_SELECTED}
-              >
-                <CardApiKey
-                  style={S_CARD_ROOT}
-                  buttonsStyle={S_CARD_BUTTONS}
-                  onSet={onSet}
-                  onClose={onClose}
-                />
-             </Tab>
-             <Tab
-               title="UI Theme"
-               selectedStyle={S_TAB_SELECTED}
-             >
-                <CardUi
-                  style={S_CARD_ROOT}
-                  buttonsStyle={S_CARD_BUTTONS}
-                  onSetTheme={this._handleSetTheme}
-                  onAir={onAir}
-                  onClose={onClose}
-                />
-             </Tab>
-           </TabPane>
-         </ModalDialog>
-    );
-  }
-}
+           <CardApiKey
+             style={S_CARD_ROOT}
+             buttonsStyle={S_CARD_BUTTONS}
+             onSet={onSet}
+             onClose={onClose}
+           />
+        </Tab>
+        <Tab
+          title="UI Theme"
+          selectedStyle={S_TAB_SELECTED}
+        >
+           <CardUi
+             style={S_CARD_ROOT}
+             buttonsStyle={S_CARD_BUTTONS}
+             onSetTheme={_handleSetTheme}
+             onAir={onAir}
+             onClose={onClose}
+           />
+        </Tab>
+      </TabPane>
+    </ModalDialog>
+  );
+};
 
-export default withTheme(SettingsDialog)
+/*
+SettingsDialog.propTypes = {
+  isShow: PropTypes.bool,
+  data: PropTypes.shape({
+    onSet: PropTypes.func,
+    onAir: PropTypes.func,
+    onSetTheme: PropTypes.func,
+  }),
+  onClose: PropTypes.func
+}
+*/
+
+export default memoIsShow(SettingsDialog)

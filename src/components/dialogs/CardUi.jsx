@@ -1,10 +1,8 @@
-import React from '../_react'
+import { useCallback } from '../uiApi';
 
-import InputSelect from '../zhn-m-input/InputSelect'
-import RowCheckBox from './RowCheckBox'
-import RaisedButton from '../zhn-atoms/RaisedButton'
-
-const { useCallback } = React;
+import InputSelect from '../zhn-m-input/InputSelect';
+import RowCheckBox from './RowCheckBox';
+import RaisedButton from '../zhn-atoms/RaisedButton';
 
 const S_SELECT = {
   ROOT: { width: 280 }
@@ -15,7 +13,6 @@ const S_SELECT = {
   { caption: 'White', value: 'WHITE' }
 ]
 , DF_THEME = _themeOptions[0]
-
 , CAPTION_AIR = "Air Quality"
 , S_CHECK_BOX = { padding: '24px 24px 0 24px'}
 , S_CHECK_CAPTION = { display: 'inline' }

@@ -1,16 +1,12 @@
-import React from '../_react'
+import { useRef, useCallback } from '../uiApi';
+import useBool from '../hooks/useBool';
 
-import useBool from '../hooks/useBool'
+import SecretField from '../zhn-m-input/SecretField';
+import RowCheckBox from './RowCheckBox';
+import RaisedButton from '../zhn-atoms/RaisedButton';
 
-import SecretField from '../zhn-m-input/SecretField'
-import RowCheckBox from './RowCheckBox'
-import RaisedButton from '../zhn-atoms/RaisedButton'
-
-const { useRef, useCallback } = React;
-
-const CAPTION_ALLOW = "Allow Remember Enter of API Key by Browser Password Manager";
-
-const S_SECRET = { width: 280 }
+const CAPTION_ALLOW = "Allow Remember Enter of API Key by Browser Password Manager"
+, S_SECRET = { width: 280 }
 , S_CHECK_BOX = { padding: '16px 24px 0 24px'}
 , S_CHECK_CAPTION = { display: 'inline' }
 , IS_ALLOW = false;

@@ -1,1 +1,15 @@
-{"version":3,"sources":["../../../src/components/dialogs/Router.js"],"names":["Router","SETTINGS","SettingsDialog","ERROR","ErrorDialog"],"mappings":";;;;;;;AACA;;AACA;;AAEA,IAAMA,MAAM,GAAG;AACbC,EAAAA,QAAQ,EAAEC,0BADG;AAEbC,EAAAA,KAAK,EAAEC;AAFM,CAAf;eAKeJ,M","sourcesContent":["\r\nimport SettingsDialog from './SettingsDialog'\r\nimport ErrorDialog from './ErrorDialog'\r\n\r\nconst Router = {\r\n  SETTINGS: SettingsDialog,\r\n  ERROR: ErrorDialog\r\n}\r\n\r\nexport default Router\r\n"],"file":"Router.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/dialogs/Router.js"
+ ],
+ "file": "../../../src/components/dialogs/Router.js",
+ "names": [
+  "Router",
+  "SETTINGS",
+  "SettingsDialog",
+  "ERROR",
+  "ErrorDialog"
+ ],
+ "mappings": ";;;;;;;AACA;;AACA;;AAEA,IAAMA,MAAM,GAAG;AACbC,EAAAA,QAAQ,EAAEC,0BADG;AAEbC,EAAAA,KAAK,EAAEC;AAFM,CAAf;eAKeJ,M"
+}

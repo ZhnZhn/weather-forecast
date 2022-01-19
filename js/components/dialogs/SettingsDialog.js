@@ -7,13 +7,15 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+var _uiApi = require("../uiApi");
 
-var _react = _interopRequireDefault(require("../_react"));
+var _memoIsShow = _interopRequireDefault(require("../hoc/memoIsShow"));
 
-var _withTheme = _interopRequireDefault(require("../hoc/withTheme"));
+var _ThemeContext = _interopRequireDefault(require("../hoc/ThemeContext"));
 
 var _Dialog = _interopRequireDefault(require("./Dialog.Style"));
+
+var _useForceUpdate = _interopRequireDefault(require("../hooks/useForceUpdate"));
 
 var _ModalDialog = _interopRequireDefault(require("../zhn-moleculs/ModalDialog"));
 
@@ -25,8 +27,9 @@ var _CardApiKey = _interopRequireDefault(require("./CardApiKey"));
 
 var _CardUi = _interopRequireDefault(require("./CardUi"));
 
+var _jsxRuntime = require("react/jsx-runtime");
+
 //import PropTypes from 'prop-types';
-var Component = _react["default"].Component;
 var S_MODAL = {
   position: 'static',
   width: 342,
@@ -51,90 +54,68 @@ var S_MODAL = {
   cursor: 'default'
 };
 
-var SettingsDialog = /*#__PURE__*/function (_Component) {
-  (0, _inheritsLoose2["default"])(SettingsDialog, _Component);
+var SettingsDialog = function SettingsDialog(_ref) {
+  var isShow = _ref.isShow,
+      data = _ref.data,
+      onClose = _ref.onClose;
 
-  function SettingsDialog() {
-    var _this;
+  var onSetTheme = data.onSetTheme,
+      onSet = data.onSet,
+      onAir = data.onAir,
+      theme = (0, _uiApi.useContext)(_ThemeContext["default"]),
+      forceUpdate = (0, _useForceUpdate["default"])(),
+      _handleSetTheme = (0, _uiApi.useCallback)(function (item) {
+    onSetTheme(theme, item.value);
+    forceUpdate();
+  }, []),
+      TS = theme.createStyle(_Dialog["default"]);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
-
-    _this._isNextPropIsShowSame = function (nextProps) {
-      return nextProps !== _this.props && nextProps.isShow === _this.props.isShow;
-    };
-
-    _this._handleSetTheme = function (item) {
-      var _this$props = _this.props,
-          theme = _this$props.theme,
-          data = _this$props.data,
-          onSetTheme = data.onSetTheme,
-          prevTheme = theme.themeName;
-      onSetTheme(theme, item.value);
-
-      if (prevTheme !== item.value) {
-        _this.forceUpdate();
-      }
-    };
-
-    return _this;
-  }
-
-  var _proto = SettingsDialog.prototype;
-
-  _proto.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
-    if (this._isNextPropIsShowSame(nextProps)) {
-      return false;
-    }
-
-    return true;
-  };
-
-  _proto.render = function render() {
-    var _this$props2 = this.props,
-        theme = _this$props2.theme,
-        isShow = _this$props2.isShow,
-        onClose = _this$props2.onClose,
-        data = _this$props2.data,
-        onSet = data.onSet,
-        onAir = data.onAir,
-        TS = theme.createStyle(_Dialog["default"]);
-    return /*#__PURE__*/_react["default"].createElement(_ModalDialog["default"], {
-      style: (0, _extends2["default"])({}, S_MODAL, TS.R_DIALOG),
-      caption: "User Settings",
-      isShow: isShow,
-      isWithButton: false,
-      onClose: onClose
-    }, /*#__PURE__*/_react["default"].createElement(_TabPane["default"], {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ModalDialog["default"], {
+    style: (0, _extends2["default"])({}, S_MODAL, TS.R_DIALOG),
+    caption: "User Settings",
+    isShow: isShow,
+    isWithButton: false,
+    onClose: onClose,
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_TabPane["default"], {
       width: "100%",
-      tabsStyle: S_TABS
-    }, /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
-      title: "API Key",
-      selectedStyle: S_TAB_SELECTED
-    }, /*#__PURE__*/_react["default"].createElement(_CardApiKey["default"], {
-      style: S_CARD_ROOT,
-      buttonsStyle: S_CARD_BUTTONS,
-      onSet: onSet,
-      onClose: onClose
-    })), /*#__PURE__*/_react["default"].createElement(_Tab["default"], {
-      title: "UI Theme",
-      selectedStyle: S_TAB_SELECTED
-    }, /*#__PURE__*/_react["default"].createElement(_CardUi["default"], {
-      style: S_CARD_ROOT,
-      buttonsStyle: S_CARD_BUTTONS,
-      onSetTheme: this._handleSetTheme,
-      onAir: onAir,
-      onClose: onClose
-    }))));
-  };
+      tabsStyle: S_TABS,
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Tab["default"], {
+        title: "API Key",
+        selectedStyle: S_TAB_SELECTED,
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_CardApiKey["default"], {
+          style: S_CARD_ROOT,
+          buttonsStyle: S_CARD_BUTTONS,
+          onSet: onSet,
+          onClose: onClose
+        })
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Tab["default"], {
+        title: "UI Theme",
+        selectedStyle: S_TAB_SELECTED,
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_CardUi["default"], {
+          style: S_CARD_ROOT,
+          buttonsStyle: S_CARD_BUTTONS,
+          onSetTheme: _handleSetTheme,
+          onAir: onAir,
+          onClose: onClose
+        })
+      })]
+    })
+  });
+};
+/*
+SettingsDialog.propTypes = {
+  isShow: PropTypes.bool,
+  data: PropTypes.shape({
+    onSet: PropTypes.func,
+    onAir: PropTypes.func,
+    onSetTheme: PropTypes.func,
+  }),
+  onClose: PropTypes.func
+}
+*/
 
-  return SettingsDialog;
-}(Component);
 
-var _default = (0, _withTheme["default"])(SettingsDialog);
+var _default = (0, _memoIsShow["default"])(SettingsDialog);
 
 exports["default"] = _default;
 //# sourceMappingURL=SettingsDialog.js.map
