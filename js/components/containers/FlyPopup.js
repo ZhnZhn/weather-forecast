@@ -7,32 +7,30 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _react = _interopRequireDefault(require("../_react"));
+var _uiApi = require("../uiApi");
 
 var _reactRedux = require("react-redux");
 
-var _Interact = _interopRequireDefault(require("../../utils/Interact"));
+var _useDragable = _interopRequireDefault(require("../hooks/useDragable"));
+
+var _handlers = _interopRequireDefault(require("../../flux/handlers"));
 
 var _SvgClose = _interopRequireDefault(require("../zhn-atoms/SvgClose"));
 
-var _actions = require("../../flux/layout/actions");
+var _jsxRuntime = require("react/jsx-runtime");
 
-var useRef = _react["default"].useRef,
-    useCallback = _react["default"].useCallback,
-    useEffect = _react["default"].useEffect;
-var CLASS_SHOW = 'show-popup';
-var S = {
-  BLOCK: {
-    display: 'block'
-  },
-  NONE: {
-    display: 'none'
-  },
-  SVG_CLOSE: {
-    position: 'absolute',
-    top: 16,
-    right: 6
-  }
+var toggleLayout = _handlers["default"].toggleLayout,
+    CL_SHOW_POPUP = 'show-popup',
+    S_BLOCK = {
+  display: 'block'
+},
+    S_NONE = {
+  display: 'none'
+},
+    S_SVG_CLOSE = {
+  position: 'absolute',
+  top: 16,
+  right: 6
 };
 
 var FlyPopup = function FlyPopup(_ref) {
@@ -40,38 +38,26 @@ var FlyPopup = function FlyPopup(_ref) {
       storeKey = _ref.storeKey,
       children = _ref.children;
 
-  var _refPopup = useRef(),
+  var _refPopup = (0, _useDragable["default"])(),
       isShow = (0, _reactRedux.useSelector)(function (state) {
     return state.layout[storeKey];
   }),
-      dispatch = (0, _reactRedux.useDispatch)(),
-      _hClose = useCallback(function () {
-    dispatch((0, _actions.toggleLayout)(storeKey));
-  }, [dispatch, storeKey]);
+      _hClose = (0, _uiApi.useCallback)(function () {
+    toggleLayout(storeKey);
+  }, [storeKey]),
+      _className = isShow ? CL_SHOW_POPUP : void 0,
+      _style = isShow ? S_BLOCK : S_NONE;
 
-  useEffect(function () {
-    _Interact["default"].makeDragable(_refPopup.current);
-  }, []);
-
-  var _styleShow = isShow ? S.BLOCK : S.NONE,
-      _classShow = isShow ? CLASS_SHOW : void 0;
-
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     ref: _refPopup,
-    className: _classShow,
-    style: (0, _extends2["default"])({}, style, _styleShow)
-  }, /*#__PURE__*/_react["default"].createElement(_SvgClose["default"], {
-    style: S.SVG_CLOSE,
-    onClose: _hClose
-  }), children);
+    className: _className,
+    style: (0, _extends2["default"])({}, style, _style),
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_SvgClose["default"], {
+      style: S_SVG_CLOSE,
+      onClose: _hClose
+    }), children]
+  });
 };
-/*
-FlyPopup.propTypes = {
-   style: PropTypes.object,
-   storeKey: PropTypes.string
-}
-*/
-
 
 var _default = FlyPopup;
 exports["default"] = _default;

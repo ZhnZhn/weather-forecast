@@ -1,71 +1,46 @@
-import React from '../_react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useCallback } from '../uiApi';
+import { useSelector } from 'react-redux';
 
-import Interact from '../../utils/Interact';
+import useDragable from '../hooks/useDragable';
+import handlers from '../../flux/handlers';
 import SvgClose from '../zhn-atoms/SvgClose';
 
-import { toggleLayout } from '../../flux/layout/actions';
-
-const { useRef, useCallback, useEffect } = React;
-
-const CLASS_SHOW = 'show-popup';
-
-const S = {
-  BLOCK: {
-    display: 'block'
-  },
-  NONE: {
-    display: 'none'
-  },
-  SVG_CLOSE: {
-    position: 'absolute',
-    top: 16,
-    right: 6
-  }
-}
+const { toggleLayout } = handlers
+, CL_SHOW_POPUP = 'show-popup'
+, S_BLOCK = { display: 'block' }
+, S_NONE = { display: 'none' }
+, S_SVG_CLOSE = {
+   position: 'absolute',
+   top: 16,
+   right: 6
+};
 
 const FlyPopup = ({
   style,
   storeKey,
   children
 }) => {
-  const _refPopup = useRef()
+  const _refPopup = useDragable()
   , isShow = useSelector(state => state.layout[storeKey])
-  , dispatch = useDispatch()
   , _hClose = useCallback(() => {
-      dispatch(toggleLayout(storeKey))
-  }, [dispatch, storeKey]);
+      toggleLayout(storeKey)
+  }, [storeKey])
+  , _className = isShow ? CL_SHOW_POPUP : void 0
+  , _style = isShow ? S_BLOCK : S_NONE;
 
-  useEffect(()=>{
-    Interact.makeDragable(_refPopup.current);
-  },[])
-
-  const _styleShow = isShow
-     ? S.BLOCK
-     : S.NONE
-  , _classShow = isShow
-      ? CLASS_SHOW
-      : void 0;
   return (
     <div
-         ref={_refPopup}
-         className={_classShow}
-         style={{...style, ..._styleShow}}
+       ref={_refPopup}
+       className={_className}
+       style={{...style, ..._style}}
     >
       <SvgClose
-         style={S.SVG_CLOSE}
+         style={S_SVG_CLOSE}
          onClose={_hClose}
       />
       {children}
     </div>
   );
-}
-
-/*
-FlyPopup.propTypes = {
-   style: PropTypes.object,
-   storeKey: PropTypes.string
-}
-*/
+};
 
 export default FlyPopup
