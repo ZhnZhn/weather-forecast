@@ -4,22 +4,25 @@ import STYLE from './Chart.Style';
 const {
   Bar,
   Line
-} = Chart;
-
-const _crDataKey = (filtered, propName) =>
- filtered[propName]
-   ? 'empty'
-   : propName;
+} = Chart
+, _crDataKey = (filtered, propName) => filtered[propName]
+    ? 'empty'
+    : propName
+, DF_IS_NOT = Object.create(null);
 
 const crListSeries = (
   configs,
-  filtered
+  filtered,
+  isNot=DF_IS_NOT
 ) => configs.map(({
   id,
   type,
   yId=1,
-  style=STYLE.LineTempNight
+  style=STYLE.LineTempNight,
 }) => {
+  if (isNot[id]) {
+    return null;
+  }
   const SeriaComp = (type === 'bar')
     ? Bar
     : Line;
