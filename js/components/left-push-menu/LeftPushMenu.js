@@ -13,7 +13,7 @@ var _selectors = require("../../flux/selectors");
 
 var _useLoadComp = _interopRequireDefault(require("./useLoadComp"));
 
-var _PeriodForecast = _interopRequireDefault(require("../wrapper/PeriodForecast"));
+var _WrapperPeriodForecast = _interopRequireDefault(require("../wrapper/WrapperPeriodForecast"));
 
 var _DayDetailPopup = _interopRequireDefault(require("./DayDetailPopup"));
 
@@ -41,7 +41,7 @@ var LeftPushMenu = function LeftPushMenu(_ref) {
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     id: id,
     style: STYLE.ROOT_DIV,
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_PeriodForecast["default"], {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_WrapperPeriodForecast["default"], {
       onUpdate: _hCloseDetail,
       onClickItem: _hClickItem
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_DayDetailPopup["default"], {

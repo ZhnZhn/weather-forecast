@@ -5,10 +5,10 @@ import { sSettings } from '../../flux/selectors';
 
 import useLoadComp from './useLoadComp';
 
-import PeriodForecast from '../wrapper/PeriodForecast'
-import DayDetailPopup from './DayDetailPopup'
-import styleConfig from './LeftPushMenu.Style'
-import COMP_TYPE from './CompType'
+import WrapperPeriodForecast from '../wrapper/WrapperPeriodForecast';
+import DayDetailPopup from './DayDetailPopup';
+import styleConfig from './LeftPushMenu.Style';
+import COMP_TYPE from './CompType';
 
 const LeftPushMenu = ({ id, theme }) => {
   const isAir = useSelector(sSettings.isAir)
@@ -24,7 +24,7 @@ const LeftPushMenu = ({ id, theme }) => {
 
   return (
     <div id={id} style={STYLE.ROOT_DIV} >
-       <PeriodForecast
+       <WrapperPeriodForecast
           onUpdate={_hCloseDetail}
           onClickItem={_hClickItem}
        />
