@@ -8,7 +8,7 @@ exports["default"] = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
 var styleConfig = {
-  _themeName: undefined,
+  _themeName: void 0,
   _style: {},
   _createStyle: function _createStyle(C) {
     return {

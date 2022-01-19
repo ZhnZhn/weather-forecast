@@ -1,22 +1,16 @@
-import React from '../_react'
-//import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux'
-import useTheme from '../hooks/useTheme'
+
+import { useSelector } from 'react-redux';
+import useTheme from '../hooks/useTheme';
 
 import { sForecast } from '../../flux/selectors';
 
-import FlyPopup from '../containers/FlyPopup';
+import DragablePopup from '../containers/DragablePopup';
 import PeriodForecast from '../views/PeriodForecast';
 import styleConfig from './Forecast.Style';
 
-const S  = {
-  CAPTION: {
-    marginRight: 40
-  }
-};
-
-const NOT_FOUND_MSG = 'Forecast for place not found';
-const OK_CODE = '200'
+const S_CAPTION = { marginRight: 40 }
+, NOT_FOUND_MSG = 'Forecast for place not found'
+, OK_CODE = '200';
 
 const NotFoundMsg = () => (
   <div>
@@ -24,34 +18,24 @@ const NotFoundMsg = () => (
   </div>
 );
 
-
 const Forecast = ({ style }) => {
-  const forecast = useSelector(state => {
-    const recent = sForecast.recent(state)
-    return sForecast.byId(state, recent);
-  })
-  , _style = useTheme(styleConfig);
-
-  const { cod } = forecast || {};
+  const forecast = useSelector(sForecast.forecast)
+  , _style = useTheme(styleConfig)
+  , { cod } = forecast || {}
+  , _isNotFoundMsg = cod && (''+cod) !== OK_CODE;
 
   return (
-    <FlyPopup
+    <DragablePopup
         style={{...style, ..._style.ROOT_DIV}}
         storeKey="isPopupForecast"
      >
       <PeriodForecast
           forecast={forecast}
-          captionStyle={S.CAPTION}
+          captionStyle={S_CAPTION}
       />
-      { cod && (''+cod) !== OK_CODE && <NotFoundMsg /> }
-    </FlyPopup>
+      {_isNotFoundMsg && <NotFoundMsg />}
+    </DragablePopup>
   );
-}
-
-/*
-Forecast.propTypes = {
-  style: PropTypes.object
-}
-*/
+};
 
 export default Forecast

@@ -1,13 +1,13 @@
 
 const styleConfig = {
-  _themeName : undefined,
-  _style : {},
-  _createStyle : (C) => {
+  _themeName: void 0,
+  _style: {},
+  _createStyle: (C) => {
     return {
       ROOT_DIV : {
         ...C.BG
       }
-    }
+    };
   }
 }
 

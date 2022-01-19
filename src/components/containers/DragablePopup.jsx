@@ -15,12 +15,12 @@ const { toggleLayout } = handlers
    right: 6
 };
 
-const FlyPopup = ({
+const DragablePopup = ({
   style,
   storeKey,
   children
 }) => {
-  const _refPopup = useDragable()
+  const _refDragablePopup = useDragable()
   , isShow = useSelector(state => state.layout[storeKey])
   , _hClose = useCallback(() => {
       toggleLayout(storeKey)
@@ -30,7 +30,7 @@ const FlyPopup = ({
 
   return (
     <div
-       ref={_refPopup}
+       ref={_refDragablePopup}
        className={_className}
        style={{...style, ..._style}}
     >
@@ -43,4 +43,4 @@ const FlyPopup = ({
   );
 };
 
-export default FlyPopup
+export default DragablePopup
