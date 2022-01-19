@@ -19,6 +19,8 @@ var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
 
 var _useSelectorData = _interopRequireDefault(require("./useSelectorData"));
 
+var _useIsData = require("./useIsData");
+
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
 var _crYAxis = require("./crYAxis");
@@ -28,8 +30,6 @@ var _LegendHourly = _interopRequireDefault(require("./LegendHourly"));
 var _TooltipHourly = _interopRequireDefault(require("./TooltipHourly"));
 
 var _crListSeries = _interopRequireDefault(require("./crListSeries"));
-
-var _fHasData = require("./_fHasData");
 
 var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
 
@@ -107,12 +107,8 @@ var ChartHourly = function ChartHourly() {
       filtered = _useSeriesFilter[0],
       _hFilter = _useSeriesFilter[1],
       data = (0, _useSelectorData["default"])(_selectors.sHourly.forecast, _transformHourly),
-      _isRain = (0, _uiApi.useMemo)(function () {
-    return (0, _fHasData.hasRain)(data);
-  }, [data]),
-      _isSnow = (0, _uiApi.useMemo)(function () {
-    return (0, _fHasData.hasSnow)(data);
-  }, [data]),
+      _isRain = (0, _useIsData.useIsRain)(data),
+      _isSnow = (0, _useIsData.useIsSnow)(data),
       isNot = (0, _uiApi.useMemo)(function () {
     return {
       rain: !_isRain,

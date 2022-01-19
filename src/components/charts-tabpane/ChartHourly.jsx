@@ -6,6 +6,7 @@ import { sHourly } from '../../flux/selectors';
 
 import useSeriesFilter from './useSeriesFilter';
 import useSelectorData from './useSelectorData';
+import { useIsRain, useIsSnow } from './useIsData';
 import ChartType1 from './ChartType1';
 import {
   crYAxisTemp,
@@ -17,9 +18,7 @@ import {
 import LegendHourly from './LegendHourly';
 import TooltipHourly from './TooltipHourly';
 import crListSeries from './crListSeries';
-import { hasRain, hasSnow } from './_fHasData';
 import STYLE from './Chart.Style';
-
 
 const { Legend } = Chart
 , INITIAL_FILTERED = {
@@ -78,8 +77,8 @@ const { Legend } = Chart
 const ChartHourly = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
   , data = useSelectorData(sHourly.forecast, _transformHourly)
-  , _isRain = useMemo(() => hasRain(data), [data])
-  , _isSnow = useMemo(() => hasSnow(data), [data])
+  , _isRain = useIsRain(data)
+  , _isSnow = useIsSnow(data)
   , isNot = useMemo(() => ({
     rain: !_isRain,
     snow: !_isSnow
