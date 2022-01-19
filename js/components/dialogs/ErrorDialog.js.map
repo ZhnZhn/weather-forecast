@@ -1,1 +1,30 @@
-{"version":3,"sources":["../../../src/components/dialogs/ErrorDialog.jsx"],"names":["Component","React","S","MODAL","position","width","height","margin","MSG","lineHeight","padding","fontWeight","ErrorDialog","_isNextPropIsShowSame","nextProps","props","isShow","shouldComponentUpdate","nextState","render","theme","store","onClose","TS","createStyle","styleConfig","_errMsg","sModal","errMsg","getState","R_DIALOG"],"mappings":";;;;;;;;;;;AAAA;;AAGA;;AACA;;AAEA;;AAEA;;AAPA;IASQA,S,GAAcC,iB,CAAdD,S;AAER,IAAME,CAAC,GAAG;AACRC,EAAAA,KAAK,EAAE;AACLC,IAAAA,QAAQ,EAAE,QADL;AAELC,IAAAA,KAAK,EAAE,OAFF;AAGLC,IAAAA,MAAM,EAAE,OAHH;AAILC,IAAAA,MAAM,EAAE;AAJH,GADC;AAORC,EAAAA,GAAG,EAAG;AACJF,IAAAA,MAAM,EAAE,OADJ;AAEJG,IAAAA,UAAU,EAAE,GAFR;AAGJC,IAAAA,OAAO,EAAE,MAHL;AAIJC,IAAAA,UAAU,EAAE;AAJR;AAPE,CAAV;;IAeMC,W;;;;;;;;;;;;;;UACJC,qB,GAAwB,UAACC,SAAD,EAAe;AACrC,aAAOA,SAAS,KAAK,MAAKC,KAAnB,IACFD,SAAS,CAACE,MAAV,KAAqB,MAAKD,KAAL,CAAWC,MADrC;AAED,K;;;;;;;SAEDC,qB,GAAA,+BAAsBH,SAAtB,EAAiCI,SAAjC,EAA2C;AACzC,QAAK,KAAKL,qBAAL,CAA2BC,SAA3B,CAAL,EAA6C;AAC3C,aAAO,KAAP;AACD;;AACD,WAAO,IAAP;AACD,G;;SAEDK,M,GAAA,kBAAQ;AAAA,sBAMI,KAAKJ,KANT;AAAA,QAEEK,KAFF,eAEEA,KAFF;AAAA,QAGEJ,MAHF,eAGEA,MAHF;AAAA,QAIEK,KAJF,eAIEA,KAJF;AAAA,QAKEC,OALF,eAKEA,OALF;AAAA,QAOAC,EAPA,GAOKH,KAAK,CAACI,WAAN,CAAkBC,kBAAlB,CAPL;AAAA,QAQAC,OARA,GAQUC,kBAAOC,MAAP,CAAcP,KAAK,CAACQ,QAAN,EAAd,CARV;;AASN,WACE,gCAAC,uBAAD;AACG,MAAA,KAAK,gCAAO3B,CAAC,CAACC,KAAT,MAAmBoB,EAAE,CAACO,QAAtB,CADR;AAEG,MAAA,OAAO,EAAC,mBAFX;AAGG,MAAA,MAAM,EAAEd,MAHX;AAIG,MAAA,OAAO,EAAEM;AAJZ,OAME;AAAK,MAAA,KAAK,EAAEpB,CAAC,CAACM;AAAd,OACGkB,OADH,CANF,CADF;AAYD,G;;;EAlCuB1B,S;;eAqCX,2BAAUY,WAAV,C","sourcesContent":["import React from '../_react'\r\n//import PropTypes from 'prop-types';\r\n\r\nimport withTheme from '../hoc/withTheme'\r\nimport styleConfig from './Dialog.Style'\r\n\r\nimport ModalDialog from '../zhn-moleculs/ModalDialog';\r\n\r\nimport { sModal } from '../../flux/selectors'\r\n\r\nconst { Component } = React;\r\n\r\nconst S = {\r\n  MODAL: {\r\n    position: 'static',\r\n    width: '335px',\r\n    height: '285px',\r\n    margin: '70px auto 0px'\r\n  },\r\n  MSG : {\r\n    height: '200px',\r\n    lineHeight: 1.2,\r\n    padding: '16px',\r\n    fontWeight: 600\r\n  }\r\n};\r\n\r\nclass ErrorDialog extends Component {\r\n  _isNextPropIsShowSame = (nextProps) => {\r\n    return nextProps !== this.props\r\n      && nextProps.isShow === this.props.isShow;\r\n  }\r\n\r\n  shouldComponentUpdate(nextProps, nextState){\r\n    if ( this._isNextPropIsShowSame(nextProps) ) {\r\n      return false;\r\n    }\r\n    return true;\r\n  }\r\n\r\n  render(){\r\n    const {\r\n            theme,\r\n            isShow,\r\n            store,\r\n            onClose\r\n          } = this.props\r\n        , TS = theme.createStyle(styleConfig)\r\n        , _errMsg = sModal.errMsg(store.getState());\r\n    return (\r\n      <ModalDialog\r\n         style={{ ...S.MODAL, ...TS.R_DIALOG }}\r\n         caption=\"Error Description\"\r\n         isShow={isShow}\r\n         onClose={onClose}\r\n      >\r\n        <div style={S.MSG}>\r\n          {_errMsg}\r\n        </div>\r\n      </ModalDialog>\r\n    );\r\n  }\r\n}\r\n\r\nexport default withTheme(ErrorDialog)\r\n"],"file":"ErrorDialog.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/dialogs/ErrorDialog.js"
+ ],
+ "file": "../../../src/components/dialogs/ErrorDialog.js",
+ "names": [
+  "S_MODAL",
+  "position",
+  "width",
+  "height",
+  "margin",
+  "S_MSG",
+  "padding",
+  "lineHeight",
+  "fontWeight",
+  "ErrorDialog",
+  "isShow",
+  "store",
+  "onClose",
+  "TS",
+  "styleConfig",
+  "_errMsg",
+  "sModal",
+  "errMsg",
+  "getState",
+  "R_DIALOG"
+ ],
+ "mappings": ";;;;;;;;;AAAA;;AACA;;AACA;;AAEA;;AACA;;;;AAEA,IAAMA,OAAO,GAAG;AACdC,EAAAA,QAAQ,EAAE,QADI;AAEdC,EAAAA,KAAK,EAAE,GAFO;AAGdC,EAAAA,MAAM,EAAE,GAHM;AAIdC,EAAAA,MAAM,EAAE;AAJM,CAAhB;AAAA,IAMEC,KAAK,GAAG;AACRF,EAAAA,MAAM,EAAE,GADA;AAERG,EAAAA,OAAO,EAAE,EAFD;AAGRC,EAAAA,UAAU,EAAE,GAHJ;AAIRC,EAAAA,UAAU,EAAE;AAJJ,CANV;;AAcA,IAAMC,WAAW,GAAG,SAAdA,WAAc,OAId;AAAA,MAHJC,MAGI,QAHJA,MAGI;AAAA,MAFJC,KAEI,QAFJA,KAEI;AAAA,MADJC,OACI,QADJA,OACI;;AACJ,MAAMC,EAAE,GAAG,0BAASC,kBAAT,CAAX;AAAA,MACEC,OAAO,GAAGC,kBAAOC,MAAP,CAAcN,KAAK,CAACO,QAAN,EAAd,CADZ;;AAGA,sBACE,qBAAC,uBAAD;AACG,IAAA,KAAK,gCAAMlB,OAAN,EAAkBa,EAAE,CAACM,QAArB,CADR;AAEG,IAAA,OAAO,EAAC,mBAFX;AAGG,IAAA,MAAM,EAAET,MAHX;AAIG,IAAA,OAAO,EAAEE,OAJZ;AAAA,2BAME;AAAK,MAAA,KAAK,EAAEP,KAAZ;AAAA,gBACGU;AADH;AANF,IADF;AAYD,CApBD;;eAsBe,4BAAWN,WAAX,C"
+}
