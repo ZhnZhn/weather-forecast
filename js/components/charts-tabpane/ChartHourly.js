@@ -29,6 +29,8 @@ var _TooltipHourly = _interopRequireDefault(require("./TooltipHourly"));
 
 var _crListSeries = _interopRequireDefault(require("./crListSeries"));
 
+var _fHasData = require("./_fHasData");
+
 var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
 
 var _jsxRuntime = require("react/jsx-runtime");
@@ -72,25 +74,6 @@ var Legend = _Chart["default"].Legend,
     };
   });
 },
-    _isNumber = function _isNumber(n) {
-  return typeof n === 'number';
-},
-    _isNumberGreaterZero = function _isNumberGreaterZero(value) {
-  return _isNumber(value) && value > 0;
-},
-    _fHasData = function _fHasData(propName, isData) {
-  return function (data) {
-    for (var i = 0; i < data.length; i++) {
-      if (isData(data[i][propName])) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-},
-    _hasRain = _fHasData('rain', _isNumberGreaterZero),
-    _hasSnow = _fHasData('snow', _isNumberGreaterZero),
     TEMP_ID = 1,
     PRESSURE_ID = 2,
     RAIN_ID = 3,
@@ -125,10 +108,10 @@ var ChartHourly = function ChartHourly() {
       _hFilter = _useSeriesFilter[1],
       data = (0, _useSelectorData["default"])(_selectors.sHourly.forecast, _transformHourly),
       _isRain = (0, _uiApi.useMemo)(function () {
-    return _hasRain(data);
+    return (0, _fHasData.hasRain)(data);
   }, [data]),
       _isSnow = (0, _uiApi.useMemo)(function () {
-    return _hasSnow(data);
+    return (0, _fHasData.hasSnow)(data);
   }, [data]),
       isNot = (0, _uiApi.useMemo)(function () {
     return {

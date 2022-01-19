@@ -17,7 +17,9 @@ import {
 import LegendHourly from './LegendHourly';
 import TooltipHourly from './TooltipHourly';
 import crListSeries from './crListSeries';
+import { hasRain, hasSnow } from './_fHasData';
 import STYLE from './Chart.Style';
+
 
 const { Legend } = Chart
 , INITIAL_FILTERED = {
@@ -43,18 +45,6 @@ const { Legend } = Chart
       snow: _get3h(snow)
     };
 })
-, _isNumber = n => typeof n === 'number'
-, _isNumberGreaterZero = value => _isNumber(value) && value > 0
-, _fHasData = (propName, isData) => (data) => {
-  for(let i=0; i<data.length; i++) {
-    if (isData(data[i][propName])) {
-      return true;
-    }
-  }
-  return false;
-}
-, _hasRain = _fHasData('rain', _isNumberGreaterZero)
-, _hasSnow = _fHasData('snow', _isNumberGreaterZero)
 , TEMP_ID = 1
 , PRESSURE_ID = 2
 , RAIN_ID = 3
@@ -88,8 +78,8 @@ const { Legend } = Chart
 const ChartHourly = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
   , data = useSelectorData(sHourly.forecast, _transformHourly)
-  , _isRain = useMemo(() => _hasRain(data), [data])
-  , _isSnow = useMemo(() => _hasSnow(data), [data])
+  , _isRain = useMemo(() => hasRain(data), [data])
+  , _isSnow = useMemo(() => hasSnow(data), [data])
   , isNot = useMemo(() => ({
     rain: !_isRain,
     snow: !_isSnow
