@@ -1,6 +1,4 @@
-import React from '../_react'
-
-const { forwardRef, useState, useImperativeHandle } = React;
+import { forwardRef, useState, useImperativeHandle } from '../uiApi';
 import dt from '../../utils/dt';
 
 import SvgClose from '../zhn-atoms/SvgClose'
