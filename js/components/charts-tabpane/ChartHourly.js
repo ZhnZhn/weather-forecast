@@ -5,8 +5,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _uiApi = require("../uiApi");
-
 var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
 
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
@@ -19,7 +17,7 @@ var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
 
 var _useSelectorData = _interopRequireDefault(require("./useSelectorData"));
 
-var _useIsData = require("./useIsData");
+var _useIsNoData = _interopRequireDefault(require("./useIsNoData"));
 
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
@@ -107,19 +105,12 @@ var ChartHourly = function ChartHourly() {
       filtered = _useSeriesFilter[0],
       _hFilter = _useSeriesFilter[1],
       data = (0, _useSelectorData["default"])(_selectors.sHourly.forecast, _transformHourly),
-      _isRain = (0, _useIsData.useIsRain)(data),
-      _isSnow = (0, _useIsData.useIsSnow)(data),
-      isNot = (0, _uiApi.useMemo)(function () {
-    return {
-      rain: !_isRain,
-      snow: !_isSnow
-    };
-  }, [_isRain, _isSnow]);
+      isNot = (0, _useIsNoData["default"])(data);
 
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_ChartType["default"], {
     data: data,
     TooltipComp: _TooltipHourly["default"],
-    children: [(0, _crYAxis.crYAxisTemp)(TEMP_ID, filtered), (0, _crYAxis.crYAxisPressure)(PRESSURE_ID, filtered), _isRain && (0, _crYAxis.crYAxisRain)(RAIN_ID, filtered), _isSnow && (0, _crYAxis.crYAxisSnow)(SNOW_ID, filtered), (0, _crYAxis.crYAxisWindSpeed)(SPEED_ID, filtered), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
+    children: [(0, _crYAxis.crYAxisTemp)(TEMP_ID, filtered), (0, _crYAxis.crYAxisPressure)(PRESSURE_ID, filtered), !isNot.rain && (0, _crYAxis.crYAxisRain)(RAIN_ID, filtered), !isNot.snow && (0, _crYAxis.crYAxisSnow)(SNOW_ID, filtered), (0, _crYAxis.crYAxisWindSpeed)(SPEED_ID, filtered), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
       content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendHourly["default"], {
         isNot: isNot,
         filtered: filtered,

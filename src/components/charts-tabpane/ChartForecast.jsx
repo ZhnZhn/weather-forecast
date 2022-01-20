@@ -1,5 +1,3 @@
-import { useMemo } from '../uiApi';
-
 import memoEqual from '../hoc/memoEqual'
 import Chart from '../charts/Chart';
 import dt from '../../utils/dt';
@@ -7,7 +5,7 @@ import { sForecast } from '../../flux/selectors';
 
 import useSeriesFilter from './useSeriesFilter';
 import useSelectorData from './useSelectorData';
-import { useIsSnow } from './useIsData';
+import useIsNoData from './useIsNoData';
 import ChartType1 from './ChartType1';
 import {
   crYAxisRain,
@@ -76,10 +74,10 @@ const _transformForecast = (arr=[]) => arr
 });
 
 const T_Y_ID = 1
-, RAIN_Y_ID = 2
-, WIND_SPEED_Y_ID = 3
-, PRESSURE_Y_ID = 4
-, HUMIDITY_Y_ID = 5
+, WIND_SPEED_Y_ID = 2
+, PRESSURE_Y_ID = 3
+, HUMIDITY_Y_ID = 4
+, RAIN_Y_ID = 5
 , SNOW_Y_ID = 6
 , SERIA_CONFIGS = [{
   id: 'rain',
@@ -96,7 +94,7 @@ const T_Y_ID = 1
 },{ id: 'tempMorn', style: STYLE.LineTempMorn
 },{ id: 'tempNight', style: STYLE.LineTempNight
 },{ id: 'tempDay', style: STYLE.LineTempDay}
-]
+];
 
 const _selectRecentById = state => {
   const recent = sForecast.recent(state);
@@ -108,10 +106,7 @@ const _selectRecentById = state => {
 const ChartForecast = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
   , data = useSelectorData(_selectRecentById, _transformForecast)
-  , _isSnow = useIsSnow(data)
-  , isNot = useMemo(() => ({
-    snow: !_isSnow
-  }), [_isSnow]);
+  , isNot = useIsNoData(data);
 
   return (
     <ChartType1
@@ -123,17 +118,17 @@ const ChartForecast = () => {
          yAxisId={T_Y_ID}
          label={YAXIS_LABEL_TEMP}
       />
-      {crYAxisRain(RAIN_Y_ID, filtered)}
       {crYAxisWindSpeed(WIND_SPEED_Y_ID, filtered)}
       {crYAxisPressure(PRESSURE_Y_ID, filtered)}
       {crYAxisWindSpeed(HUMIDITY_Y_ID, filtered, 'humidity', '%')}
-      {_isSnow && crYAxisSnow(SNOW_Y_ID, filtered)}
+      {!isNot.rain && crYAxisRain(RAIN_Y_ID, filtered)}
+      {!isNot.snow && crYAxisSnow(SNOW_Y_ID, filtered)}
       <Legend
         content={(
            <LegendForecast
-               isSnow={_isSnow}
-               filtered={filtered}
-               onFilter={_hFilter}
+              isNot={isNot}
+              filtered={filtered}
+              onFilter={_hFilter}
             />
         )}
       />

@@ -1,4 +1,3 @@
-import { useMemo } from '../uiApi';
 import memoEqual from '../hoc/memoEqual';
 import Chart from '../charts/Chart';
 import dt from '../../utils/dt';
@@ -6,7 +5,7 @@ import { sHourly } from '../../flux/selectors';
 
 import useSeriesFilter from './useSeriesFilter';
 import useSelectorData from './useSelectorData';
-import { useIsRain, useIsSnow } from './useIsData';
+import useIsNoData from './useIsNoData';
 import ChartType1 from './ChartType1';
 import {
   crYAxisTemp,
@@ -77,12 +76,7 @@ const { Legend } = Chart
 const ChartHourly = () => {
   const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
   , data = useSelectorData(sHourly.forecast, _transformHourly)
-  , _isRain = useIsRain(data)
-  , _isSnow = useIsSnow(data)
-  , isNot = useMemo(() => ({
-    rain: !_isRain,
-    snow: !_isSnow
-  }), [_isRain, _isSnow])
+  , isNot = useIsNoData(data);
 
   return (
     <ChartType1
@@ -91,8 +85,8 @@ const ChartHourly = () => {
     >
       {crYAxisTemp(TEMP_ID, filtered)}
       {crYAxisPressure(PRESSURE_ID, filtered)}
-      {_isRain && crYAxisRain(RAIN_ID, filtered)}
-      {_isSnow && crYAxisSnow(SNOW_ID, filtered)}
+      {!isNot.rain && crYAxisRain(RAIN_ID, filtered)}
+      {!isNot.snow && crYAxisSnow(SNOW_ID, filtered)}
       {crYAxisWindSpeed(SPEED_ID, filtered)}
       <Legend
          content={

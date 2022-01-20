@@ -5,8 +5,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _uiApi = require("../uiApi");
-
 var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
 
 var _Chart = _interopRequireDefault(require("../charts/Chart"));
@@ -19,7 +17,7 @@ var _useSeriesFilter2 = _interopRequireDefault(require("./useSeriesFilter"));
 
 var _useSelectorData = _interopRequireDefault(require("./useSelectorData"));
 
-var _useIsData = require("./useIsData");
+var _useIsNoData = _interopRequireDefault(require("./useIsNoData"));
 
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 
@@ -111,10 +109,10 @@ var _transformForecast = function _transformForecast(arr) {
 };
 
 var T_Y_ID = 1,
-    RAIN_Y_ID = 2,
-    WIND_SPEED_Y_ID = 3,
-    PRESSURE_Y_ID = 4,
-    HUMIDITY_Y_ID = 5,
+    WIND_SPEED_Y_ID = 2,
+    PRESSURE_Y_ID = 3,
+    HUMIDITY_Y_ID = 4,
+    RAIN_Y_ID = 5,
     SNOW_Y_ID = 6,
     SERIA_CONFIGS = [{
   id: 'rain',
@@ -169,12 +167,7 @@ var ChartForecast = function ChartForecast() {
       filtered = _useSeriesFilter[0],
       _hFilter = _useSeriesFilter[1],
       data = (0, _useSelectorData["default"])(_selectRecentById, _transformForecast),
-      _isSnow = (0, _useIsData.useIsSnow)(data),
-      isNot = (0, _uiApi.useMemo)(function () {
-    return {
-      snow: !_isSnow
-    };
-  }, [_isSnow]);
+      isNot = (0, _useIsNoData["default"])(data);
 
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_ChartType["default"], {
     chartStyle: _Chart2["default"].ComposedChart,
@@ -183,9 +176,9 @@ var ChartForecast = function ChartForecast() {
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(YAxis, {
       yAxisId: T_Y_ID,
       label: YAXIS_LABEL_TEMP
-    }), (0, _crYAxis.crYAxisRain)(RAIN_Y_ID, filtered), (0, _crYAxis.crYAxisWindSpeed)(WIND_SPEED_Y_ID, filtered), (0, _crYAxis.crYAxisPressure)(PRESSURE_Y_ID, filtered), (0, _crYAxis.crYAxisWindSpeed)(HUMIDITY_Y_ID, filtered, 'humidity', '%'), _isSnow && (0, _crYAxis.crYAxisSnow)(SNOW_Y_ID, filtered), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
+    }), (0, _crYAxis.crYAxisWindSpeed)(WIND_SPEED_Y_ID, filtered), (0, _crYAxis.crYAxisPressure)(PRESSURE_Y_ID, filtered), (0, _crYAxis.crYAxisWindSpeed)(HUMIDITY_Y_ID, filtered, 'humidity', '%'), !isNot.rain && (0, _crYAxis.crYAxisRain)(RAIN_Y_ID, filtered), !isNot.snow && (0, _crYAxis.crYAxisSnow)(SNOW_Y_ID, filtered), /*#__PURE__*/(0, _jsxRuntime.jsx)(Legend, {
       content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendForecast["default"], {
-        isSnow: _isSnow,
+        isNot: isNot,
         filtered: filtered,
         onFilter: _hFilter
       })
