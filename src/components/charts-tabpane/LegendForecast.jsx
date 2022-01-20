@@ -1,126 +1,45 @@
 import { memo } from '../uiApi';
-
-import SvgCircle from './SvgCircle';
-import SvgRect from './SvgRect';
-import LegendCell from './LegendCell';
-import crForecastLegendStyle from './crForecastLegendStyle'
+import LegendRowSvg from './LegendRowSvg';
 import S from './Label.Style';
 
-const S_ROOT_DIV = { margin: '1rem 0 0 3rem' }
-, S_INLINE = { display: 'inline-block' }
-, S_COL_MR1 = {
-  ...S_INLINE,
-  marginRight: '1rem'
-}
-, S_COL_ML1 = {
-  ...S_INLINE,
-  marginLeft: '1rem'
-};
-
-const areEqual = (prevProps, nextProps) =>
-  prevProps.filtered === nextProps.filtered
-  && prevProps.isSnow === nextProps.isSnow;
+const S_ROW = { margin: '1rem 0 0 2rem' }
+, CONFIGS_ROW_1 = [
+{ id: 'tempDay', title: 'T Day', titleStyle: S.TEMP_DAY, svgStyle: S.CIRCLE_TEMP_DAY },
+{ id: 'tempMorn', title: 'T Morn', titleStyle: S.TEMP_DAY, svgStyle: S.CIRCLE_TEMP_MORN },
+{ id: 'tempMax', title: 'T Max', titleStyle: S.TEMP_MAX, svgStyle: S.CIRCLE_TEMP_MAX },
+{ id: 'pressure', titleStyle: S.PRESSURE, svgStyle: S.CIRCLE_PRESSURE },
+{ id: 'rain', titleStyle: S.RAIN, svgType: 'rect', svgStyle: S.RECT_RAIN },
+{ id: 'snow', titleStyle: S.SNOW, svgType: 'rect', svgStyle: S.RECT_SNOW }
+]
+, CONFIGS_ROW_2 = [
+{ id: 'tempEve', title: 'T Eve', titleStyle: S.TEMP_NIGHT, svgStyle: S.CIRCLE_TEMP_EVE },
+{ id: 'tempNight', title: 'T Night', titleStyle: S.TEMP_NIGHT, svgStyle: S.CIRCLE_TEMP_NIGHT },
+{ id: 'tempMin', title: 'T Min', titleStyle: S.TEMP_MIN, svgStyle: S.CIRCLE_TEMP_MIN },
+{ id: 'humidity', titleStyle: S.HUMIDITY, svgStyle: S.CIRCLE_HUMIDITY },
+{ id: 'speed', title: 'Wind', titleStyle: S.SPEED, svgStyle: S.CIRCLE_SPEED },
+];
 
 const LegendForecast = ({
-  isSnow,
+  isNot,
   filtered,
   onFilter
-}) => {
-  const styles = crForecastLegendStyle(filtered);
-  return (
-  <div style={S_ROOT_DIV}>
-     <div style={S_COL_MR1}>
-       <LegendCell
-         titleStyle={styles.tempMorn}
-         title="T Morn"
-         onClick={() => onFilter('tempMorn')}
-       >
-         <SvgCircle {...S.CIRCLE_TEMP_MORN} />
-       </LegendCell>
-       <LegendCell
-         titleStyle={styles.tempDay}
-         title="T Day"
-         onClick={() => onFilter('tempDay')}
-       >
-         <SvgCircle {...S.CIRCLE_TEMP_DAY} />
-       </LegendCell>
-     </div>
-     <div style={S_INLINE}>
-       <LegendCell
-         titleStyle={styles.tempEve}
-         title="T Eve"
-         onClick={() => onFilter('tempEve')}
-       >
-         <SvgCircle {...S.CIRCLE_TEMP_EVE} />
-       </LegendCell>
-       <LegendCell
-         titleStyle={styles.tempNight}
-         title="T Night"
-         onClick={() => onFilter('tempNight')}
-       >
-         <SvgCircle {...S.CIRCLE_TEMP_NIGHT} />
-       </LegendCell>
-     </div>
-     <div style={S_COL_ML1}>
-       <LegendCell
-         titleStyle={styles.tempMax}
-         title="T Max"
-         onClick={() => onFilter('tempMax')}
-       >
-         <SvgCircle {...S.CIRCLE_TEMP_MAX} />
-       </LegendCell>
-       <LegendCell
-         titleStyle={styles.tempMin}
-         title="T Min"
-         onClick={() => onFilter('tempMin')}
-       >
-         <SvgCircle {...S.CIRCLE_TEMP_MIN} />
-       </LegendCell>
-     </div>
-     <div style={S_COL_ML1}>
-       <LegendCell
-         titleStyle={styles.rain}
-         title="Rain"
-         onClick={() => onFilter('rain')}
-       >
-         <SvgRect {...S.RECT_RAIN} />
-       </LegendCell>
-       <LegendCell
-         titleStyle={styles.speed}
-         title="Wind"
-         onClick={() => onFilter('speed')}
-       >
-         <SvgCircle {...S.CIRCLE_SPEED} />
-       </LegendCell>
-     </div>
-     <div style={S_COL_ML1}>
-       <LegendCell
-         titleStyle={styles.pressure}
-         title="Pressure"
-         onClick={() => onFilter('pressure')}
-       >
-         <SvgCircle {...S.CIRCLE_PRESSURE} />
-       </LegendCell>
-       <LegendCell
-         titleStyle={styles.humidity}
-         title="Humidity"
-         onClick={() => onFilter('humidity')}
-       >
-         <SvgCircle {...S.CIRCLE_HUMIDITY} />
-       </LegendCell>
-     </div>
-     {
-       isSnow && <div style={S_COL_ML1}>
-          <LegendCell
-            titleStyle={styles.snow}
-            title="Snow"
-            onClick={() => onFilter('snow')}
-          >
-            <SvgRect {...S.RECT_SNOW} />
-          </LegendCell>
-       </div>
-     }
-  </div>
-)}
+}) => (
+  <>
+    <LegendRowSvg
+      style={S_ROW}
+      notIs={isNot}
+      configs={CONFIGS_ROW_1}
+      filtered={filtered}
+      onFilter={onFilter}
+    />
+    <LegendRowSvg
+      style={S_ROW}
+      notIs={isNot}
+      configs={CONFIGS_ROW_2}
+      filtered={filtered}
+      onFilter={onFilter}
+    />
+  </>
+);
 
-export default memo(LegendForecast, areEqual)
+export default memo(LegendForecast)
