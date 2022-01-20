@@ -1,73 +1,62 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+var _uiApi = require("../uiApi");
 
-var _react = _interopRequireDefault(require("../_react"));
+var _jsxRuntime = require("react/jsx-runtime");
 
-var Component = _react["default"].Component;
-
-var ModalPane =
-/*#__PURE__*/
-function (_Component) {
-  (0, _inheritsLoose2["default"])(ModalPane, _Component);
-
-  function ModalPane() {
-    var _this;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
-
-    _this._handleClickOutside = function (event) {
-      var onClose = _this.props.onClose;
-
-      if (_this.rootNode && !_this.rootNode.contains(event.target)) {
-        onClose(event);
-      }
-    };
-
-    _this._refRootNode = function (n) {
-      return _this.rootNode = n;
-    };
-
-    return _this;
+var _removeClickListener = function _removeClickListener(listener, ref) {
+  if (ref.current) {
+    document.removeEventListener('click', listener, true);
+    ref.current = null;
   }
-
-  var _proto = ModalPane.prototype;
-
-  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
-    if (this.props !== prevProps) {
-      if (this.props.isShow) {
-        document.addEventListener('click', this._handleClickOutside, true);
-      } else {
-        document.removeEventListener('click', this._handleClickOutside, true);
-      }
-    }
-  };
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-        style = _this$props.style,
-        children = _this$props.children;
-    return _react["default"].createElement("div", {
-      style: style,
-      ref: this._refRootNode
-    }, children);
-  };
-
-  return ModalPane;
-}(Component);
-
-ModalPane.defaultProps = {
-  onClose: function onClose() {}
 };
+
+var ModalPane = function ModalPane(_ref) {
+  var isShow = _ref.isShow,
+      style = _ref.style,
+      onClose = _ref.onClose,
+      children = _ref.children;
+
+  var _refNode = (0, _uiApi.useRef)(null),
+      _refIs = (0, _uiApi.useRef)(null)
+  /*eslint-disable react-hooks/exhaustive-deps */
+  ,
+      _hClickOutside = (0, _uiApi.useCallback)(function (event) {
+    var _refNode$current;
+
+    if (_refNode != null && (_refNode$current = _refNode.current) != null && _refNode$current.contains && !_refNode.current.contains(event.target)) {
+      event.stopPropagation();
+      onClose(event);
+    }
+  }, []); // onClose
+
+
+  (0, _uiApi.useEffect)(function () {
+    if (isShow && !_refIs.current) {
+      document.addEventListener('click', _hClickOutside, true);
+      _refIs.current = true;
+    } else if (!isShow) {
+      _removeClickListener(_hClickOutside, _refIs);
+    }
+  });
+  (0, _uiApi.useEffect)(function () {
+    return function () {
+      return _removeClickListener(_hClickOutside, _refIs);
+    };
+  }, []); // _hClickOutside
+
+  /*eslint-enable react-hooks/exhaustive-deps */
+
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    ref: _refNode,
+    style: style,
+    children: children
+  });
+};
+
 var _default = ModalPane;
 exports["default"] = _default;
 //# sourceMappingURL=ModalPane.js.map
