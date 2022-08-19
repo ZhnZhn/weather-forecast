@@ -2,7 +2,6 @@
 node_modules
 _init_checkout.bat
 _start_server.bat
-weather-saga.html
 lint.txt
 lib-dev
 stats.json
