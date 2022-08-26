@@ -1,5 +1,7 @@
-import { useCallback } from '../uiApi';
-import { useSelector } from 'react-redux';
+import {
+  useSelector,
+  useCallback
+} from '../uiApi';
 
 import crCn from '../zhn-utils/crCn';
 
@@ -19,13 +21,14 @@ const HamburgerButton = ({
   storeKey,
   onClick
 }) => {
-  const isOpen = useSelector(state => state.layout[storeKey])
-  /*eslint-disable react-hooks/exhaustive-deps */
+  const _selectIsOpen = useCallback(
+    state => state.layout[storeKey],
+    [storeKey]
+  )
+  , isOpen = useSelector(_selectIsOpen)
   , _hClick = useCallback(()=>{
     onClick(storeKey)
-  }, [storeKey])
-  // onClick
-  /*eslint-enable react-hooks/exhaustive-deps */
+  }, [storeKey, onClick])
   , btClass = crCn(CL_BT_HAMBURGER, [isOpen, CL_OPENED]);
 
   return (

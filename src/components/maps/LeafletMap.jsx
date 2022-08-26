@@ -1,10 +1,10 @@
 //import PropTypes from 'prop-types';
 import {
+  useSelector,
   useState,
   useRef,
   useEffect
 } from '../uiApi';
-import { useSelector } from 'react-redux';
 
 import {
   createMap,

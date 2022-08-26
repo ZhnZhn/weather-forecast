@@ -1,9 +1,13 @@
-import { useRef, useEffect } from './uiApi';
-import { useSelector, useStore } from 'react-redux'
+import {
+  useSelector,
+  useStore,
+  useRef,
+  useEffect
+} from './uiApi';
 
-import ThemeContext from './hoc/ThemeContext'
+import ThemeContext from './hoc/ThemeContext';
 import theme from './styles/theme';
-import ModalDialogContainer from './containers/ModalDialogContainer'
+import ModalDialogContainer from './containers/ModalDialogContainer';
 import Header from './header/Header';
 import LeftPushMenu from './left-push-menu/LeftPushMenu';
 import LeafletMap from './maps/LeafletMap';

@@ -7,8 +7,6 @@ exports["default"] = void 0;
 
 var _uiApi = require("../uiApi");
 
-var _reactRedux = require("react-redux");
-
 var _PeriodForecast = _interopRequireDefault(require("../views/PeriodForecast"));
 
 var _selectors = require("../../flux/selectors");
@@ -22,7 +20,7 @@ var S_DAY = {
 var WrapperPeriodForecast = function WrapperPeriodForecast(_ref) {
   var onClickItem = _ref.onClickItem,
       onUpdate = _ref.onUpdate;
-  var forecast = (0, _reactRedux.useSelector)(_selectors.sForecast.forecast);
+  var forecast = (0, _uiApi.useSelector)(_selectors.sForecast.forecast);
   /*eslint-disable react-hooks/exhaustive-deps */
 
   (0, _uiApi.useEffect)(function () {

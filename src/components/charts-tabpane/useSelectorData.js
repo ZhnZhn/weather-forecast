@@ -1,10 +1,15 @@
-import { useMemo } from '../uiApi';
-import { useSelector } from 'react-redux';
+import {
+  useSelector,
+  useMemo
+} from '../uiApi';
 
 const _isArr = Array.isArray
 , INITIAL_DATA = [];
 
-const useSelectorData = (selector, transform) => {
+const useSelectorData = (
+  selector,
+  transform
+) => {
   const data = useSelector(selector)
   /*eslint-disable react-hooks/exhaustive-deps */
   return useMemo(() => _isArr(data)

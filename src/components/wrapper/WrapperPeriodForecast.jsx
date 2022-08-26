@@ -1,5 +1,7 @@
-import { useEffect } from '../uiApi';
-import { useSelector } from 'react-redux';
+import {
+  useSelector,
+  useEffect
+} from '../uiApi';
 
 import PeriodForecast from '../views/PeriodForecast';
 import { sForecast } from '../../flux/selectors';

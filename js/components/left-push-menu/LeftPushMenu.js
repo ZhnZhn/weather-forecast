@@ -7,8 +7,6 @@ exports["default"] = void 0;
 
 var _uiApi = require("../uiApi");
 
-var _reactRedux = require("react-redux");
-
 var _selectors = require("../../flux/selectors");
 
 var _useLoadComp = _interopRequireDefault(require("./useLoadComp"));
@@ -27,7 +25,7 @@ var LeftPushMenu = function LeftPushMenu(_ref) {
   var id = _ref.id,
       theme = _ref.theme;
 
-  var isAir = (0, _reactRedux.useSelector)(_selectors.sSettings.isAir),
+  var isAir = (0, _uiApi.useSelector)(_selectors.sSettings.isAir),
       _refDetail = (0, _uiApi.useRef)(),
       _hClickItem = (0, _uiApi.useCallback)(function (item, event) {
     _refDetail.current.setItem(item);

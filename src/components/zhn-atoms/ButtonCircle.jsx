@@ -1,5 +1,7 @@
-import { useCallback } from '../uiApi';
-import { useSelector } from 'react-redux';
+import {
+  useSelector,
+  useCallback
+} from '../uiApi';
 
 const CL_BT_CIRCLE = "bt-circle not-selected"
 , S_ROOT = {
@@ -21,7 +23,11 @@ const ButtonCircle = ({
   storeKey,
   onClick
 }) => {
-  const isActive = useSelector(state => state.layout[storeKey])
+  const _selectIsActive = useCallback(
+    state => state.layout[storeKey],
+    [storeKey]
+  )
+  , isActive = useSelector(_selectIsActive)
   , _hClick = useCallback(() => {
      onClick(storeKey)
   }, [storeKey, onClick])

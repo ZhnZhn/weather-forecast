@@ -9,8 +9,6 @@ var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
 
 var _uiApi = require("../uiApi");
 
-var _reactRedux = require("react-redux");
-
 var _jsxRuntime = require("react/jsx-runtime");
 
 var CL_BT_CIRCLE = "bt-circle not-selected",
@@ -35,9 +33,10 @@ var ButtonCircle = function ButtonCircle(_ref) {
       storeKey = _ref.storeKey,
       onClick = _ref.onClick;
 
-  var isActive = (0, _reactRedux.useSelector)(function (state) {
+  var _selectIsActive = (0, _uiApi.useCallback)(function (state) {
     return state.layout[storeKey];
-  }),
+  }, [storeKey]),
+      isActive = (0, _uiApi.useSelector)(_selectIsActive),
       _hClick = (0, _uiApi.useCallback)(function () {
     onClick(storeKey);
   }, [storeKey, onClick]),

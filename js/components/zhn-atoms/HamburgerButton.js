@@ -7,8 +7,6 @@ exports["default"] = void 0;
 
 var _uiApi = require("../uiApi");
 
-var _reactRedux = require("react-redux");
-
 var _crCn = _interopRequireDefault(require("../zhn-utils/crCn"));
 
 var _jsxRuntime = require("react/jsx-runtime");
@@ -28,17 +26,13 @@ var HamburgerButton = function HamburgerButton(_ref) {
   var storeKey = _ref.storeKey,
       onClick = _ref.onClick;
 
-  var isOpen = (0, _reactRedux.useSelector)(function (state) {
+  var _selectIsOpen = (0, _uiApi.useCallback)(function (state) {
     return state.layout[storeKey];
-  })
-  /*eslint-disable react-hooks/exhaustive-deps */
-  ,
+  }, [storeKey]),
+      isOpen = (0, _uiApi.useSelector)(_selectIsOpen),
       _hClick = (0, _uiApi.useCallback)(function () {
     onClick(storeKey);
-  }, [storeKey]) // onClick
-
-  /*eslint-enable react-hooks/exhaustive-deps */
-  ,
+  }, [storeKey, onClick]),
       btClass = (0, _crCn["default"])(CL_BT_HAMBURGER, [isOpen, CL_OPENED]);
 
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {

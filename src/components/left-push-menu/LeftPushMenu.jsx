@@ -1,5 +1,9 @@
-import { useRef, useCallback, cloneElement } from '../uiApi';
-import { useSelector } from 'react-redux';
+import {
+  useSelector,
+  cloneElement,
+  useRef,
+  useCallback,
+} from '../uiApi';
 
 import { sSettings } from '../../flux/selectors';
 
@@ -10,7 +14,10 @@ import DayDetailPopup from './DayDetailPopup';
 import styleConfig from './LeftPushMenu.Style';
 import COMP_TYPE from './CompType';
 
-const LeftPushMenu = ({ id, theme }) => {
+const LeftPushMenu = ({
+  id,
+  theme
+}) => {
   const isAir = useSelector(sSettings.isAir)
   , _refDetail = useRef()
   , _hClickItem = useCallback((item, event) => {

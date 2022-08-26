@@ -1,5 +1,4 @@
-
-import { useSelector } from 'react-redux';
+import { useSelector } from '../uiApi';
 import useTheme from '../hooks/useTheme';
 
 import { sForecast } from '../../flux/selectors';

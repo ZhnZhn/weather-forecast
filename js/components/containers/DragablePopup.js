@@ -9,8 +9,6 @@ var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
 
 var _uiApi = require("../uiApi");
 
-var _reactRedux = require("react-redux");
-
 var _useDragable = _interopRequireDefault(require("../hooks/useDragable"));
 
 var _handlers = _interopRequireDefault(require("../../flux/handlers"));
@@ -39,14 +37,19 @@ var DragablePopup = function DragablePopup(_ref) {
       children = _ref.children;
 
   var _refDragablePopup = (0, _useDragable["default"])(),
-      isShow = (0, _reactRedux.useSelector)(function (state) {
-    return state.layout[storeKey];
-  }),
-      _hClose = (0, _uiApi.useCallback)(function () {
-    toggleLayout(storeKey);
+      _useMemo = (0, _uiApi.useMemo)(function () {
+    return [function (state) {
+      return state.layout[storeKey];
+    }, function () {
+      return toggleLayout(storeKey);
+    }];
   }, [storeKey]),
-      _className = isShow ? CL_SHOW_POPUP : void 0,
-      _style = isShow ? S_BLOCK : S_NONE;
+      _selectIsShow = _useMemo[0],
+      _hClose = _useMemo[1],
+      isShow = (0, _uiApi.useSelector)(_selectIsShow),
+      _ref2 = isShow ? [S_BLOCK, CL_SHOW_POPUP] : [S_NONE],
+      _style = _ref2[0],
+      _className = _ref2[1];
 
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     ref: _refDragablePopup,

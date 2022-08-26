@@ -1,5 +1,7 @@
-import { useCallback } from '../uiApi';
-import { useSelector } from 'react-redux';
+import {
+  useSelector,
+  useMemo,
+} from '../uiApi';
 
 import useDragable from '../hooks/useDragable';
 import handlers from '../../flux/handlers';
@@ -21,12 +23,20 @@ const DragablePopup = ({
   children
 }) => {
   const _refDragablePopup = useDragable()
-  , isShow = useSelector(state => state.layout[storeKey])
-  , _hClose = useCallback(() => {
-      toggleLayout(storeKey)
-  }, [storeKey])
-  , _className = isShow ? CL_SHOW_POPUP : void 0
-  , _style = isShow ? S_BLOCK : S_NONE;
+  , [
+    _selectIsShow,
+    _hClose
+  ]  = useMemo(() => [
+     state => state.layout[storeKey],
+     () => toggleLayout(storeKey)
+  ], [storeKey])
+  , isShow = useSelector(_selectIsShow)
+  , [
+    _style,
+    _className
+  ] = isShow
+    ? [S_BLOCK, CL_SHOW_POPUP]
+    : [S_NONE];
 
   return (
     <div

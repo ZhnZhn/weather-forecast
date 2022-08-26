@@ -9,8 +9,6 @@ var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
 
 var _uiApi = require("../uiApi");
 
-var _reactRedux = require("react-redux");
-
 var _fnLeaflet = require("./fnLeaflet");
 
 var _throttle = _interopRequireDefault(require("../../utils/throttle"));
@@ -49,7 +47,7 @@ var LeafletMap = function LeafletMap(_ref) {
       _useState = (0, _uiApi.useState)(MAP_STATUS_LOADING),
       mapStatus = _useState[0],
       setMapStatus = _useState[1],
-      forecast = (0, _reactRedux.useSelector)(_selectors.sPlace.forecast);
+      forecast = (0, _uiApi.useSelector)(_selectors.sPlace.forecast);
 
   _refThemeName.current = themeName;
   /*eslint-disable react-hooks/exhaustive-deps */

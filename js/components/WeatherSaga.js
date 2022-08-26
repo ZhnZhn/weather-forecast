@@ -7,8 +7,6 @@ exports["default"] = void 0;
 
 var _uiApi = require("./uiApi");
 
-var _reactRedux = require("react-redux");
-
 var _ThemeContext = _interopRequireDefault(require("./hoc/ThemeContext"));
 
 var _theme = _interopRequireDefault(require("./styles/theme"));
@@ -56,9 +54,9 @@ var _assign = Object.assign;
 var WeatherSaga = function WeatherSaga() {
   var _refMap = (0, _uiApi.useRef)(),
       _refMenu = (0, _uiApi.useRef)(),
-      themeName = (0, _reactRedux.useSelector)(_selectors.sLayout.themeName),
-      isPushMenu = (0, _reactRedux.useSelector)(_selectors.sLayout.isPushMenu),
-      store = (0, _reactRedux.useStore)();
+      themeName = (0, _uiApi.useSelector)(_selectors.sLayout.themeName),
+      isPushMenu = (0, _uiApi.useSelector)(_selectors.sLayout.isPushMenu),
+      store = (0, _uiApi.useStore)();
 
   (0, _uiApi.useEffect)(function () {
     _refMap.current = document.getElementById(MAP_ID);

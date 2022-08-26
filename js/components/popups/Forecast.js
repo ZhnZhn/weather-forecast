@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _reactRedux = require("react-redux");
+var _uiApi = require("../uiApi");
 
 var _useTheme = _interopRequireDefault(require("../hooks/useTheme"));
 
@@ -38,7 +38,7 @@ var NotFoundMsg = function NotFoundMsg() {
 var Forecast = function Forecast(_ref) {
   var style = _ref.style;
 
-  var forecast = (0, _reactRedux.useSelector)(_selectors.sForecast.forecast),
+  var forecast = (0, _uiApi.useSelector)(_selectors.sForecast.forecast),
       _style = (0, _useTheme["default"])(_Forecast["default"]),
       _ref2 = forecast || {},
       cod = _ref2.cod,
