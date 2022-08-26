@@ -11,7 +11,7 @@ var _useRefInit = _interopRequireDefault(require("../hooks/useRefInit"));
 
 var _useKeyEnter = _interopRequireDefault(require("../hooks/useKeyEnter"));
 
-var _Color = _interopRequireDefault(require("../styles/Color"));
+var _Color = require("../styles/Color");
 
 var _Svg = _interopRequireDefault(require("./svg/Svg100"));
 
@@ -21,8 +21,7 @@ var _jsxRuntime = require("react/jsx-runtime");
 var CL_CHB = 'chb',
     S_SVG = {
   display: 'inline-block'
-},
-    C_GREY = "#777777";
+};
 
 var SvgChecked = function SvgChecked(_ref) {
   var stroke = _ref.stroke;
@@ -31,7 +30,7 @@ var SvgChecked = function SvgChecked(_ref) {
     strokeWidth: "2",
     strokeLinecap: "round",
     stroke: stroke,
-    fill: _Color["default"].BLANK
+    fill: _Color.COLOR_BLANK
   });
 };
 
@@ -39,7 +38,7 @@ var _isBool = function _isBool(bool) {
   return typeof bool === 'boolean';
 };
 
-var _noopFn = function _noopFn() {};
+var FN_NOOP = function FN_NOOP() {};
 
 var SvgCheckBox = function SvgCheckBox(_ref2) {
   var initialValue = _ref2.initialValue,
@@ -47,11 +46,11 @@ var SvgCheckBox = function SvgCheckBox(_ref2) {
       style = _ref2.style,
       color = _ref2.color,
       _ref2$checkedColor = _ref2.checkedColor,
-      checkedColor = _ref2$checkedColor === void 0 ? _Color["default"].YELLOW : _ref2$checkedColor,
+      checkedColor = _ref2$checkedColor === void 0 ? _Color.COLOR_YELLOW : _ref2$checkedColor,
       _ref2$onCheck = _ref2.onCheck,
-      onCheck = _ref2$onCheck === void 0 ? _noopFn : _ref2$onCheck,
+      onCheck = _ref2$onCheck === void 0 ? FN_NOOP : _ref2$onCheck,
       _ref2$onUnCheck = _ref2.onUnCheck,
-      onUnCheck = _ref2$onUnCheck === void 0 ? _noopFn : _ref2$onUnCheck;
+      onUnCheck = _ref2$onUnCheck === void 0 ? FN_NOOP : _ref2$onUnCheck;
 
   var _useState = (0, _uiApi.useState)(function () {
     return _isBool(value) ? void 0 : !!initialValue;
@@ -81,8 +80,8 @@ var SvgCheckBox = function SvgCheckBox(_ref2) {
     }
   }, [_value, onCheck, onUnCheck]),
       _hKeyDown = (0, _useKeyEnter["default"])(_hToggle, [_hToggle]),
-      _restStroke = _value ? color || C_GREY : C_GREY,
-      _restFill = _value ? color || _Color["default"].BLANK : _Color["default"].BLANK;
+      _restStroke = _value ? color || _Color.COLOR_GREY : _Color.COLOR_GREY,
+      _restFill = _value ? color || _Color.COLOR_BLANK : _Color.COLOR_BLANK;
 
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     role: "checkbox",

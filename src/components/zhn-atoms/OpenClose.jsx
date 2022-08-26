@@ -1,13 +1,16 @@
 import Svg100 from './svg/Svg100';
 
 import useToggle from '../hooks/useToggle';
-import C from '../styles/Color';
+import {
+  COLOR_YELLOW,
+  COLOR_BLANK
+} from '../styles/Color';
 
 const CL_SHOW_POPUP = 'show-popup'
 , CL_SELECT_NONE = 'select-none'
 
-, DF_OPEN_COLOR = C.YELLOW
-, DF_CLOSE_COLOR = C.BLANK
+, DF_OPEN_COLOR = COLOR_YELLOW
+, DF_CLOSE_COLOR = COLOR_BLANK
 
 , S_ROOT_DIV = { lineHeight: 2 }
 , S_ROOT_SVG = {
@@ -17,7 +20,6 @@ const CL_SHOW_POPUP = 'show-popup'
   marginLeft: 8
 }
 , S_CAPTION = {
-  color: C.SIREN,
   paddingLeft: 4,
   verticalAlign: 'top',
   fontFamily: 'Roboto, Arial Unicode MS, Arial, sans-serif',

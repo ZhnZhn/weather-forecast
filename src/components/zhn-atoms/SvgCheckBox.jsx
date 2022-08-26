@@ -1,16 +1,22 @@
-import { useState, useMemo, useCallback } from '../uiApi';
-
 //import PropTypes from "prop-types";
+import {
+  useState,
+  useMemo,
+  useCallback
+} from '../uiApi';
+
 import useRefInit from '../hooks/useRefInit';
 import useKeyEnter from '../hooks/useKeyEnter';
 
-import C from '../styles/Color';
+import {
+  COLOR_GREY,
+  COLOR_YELLOW,
+  COLOR_BLANK
+} from '../styles/Color';
 import Svg100 from './svg/Svg100';
-
 
 const CL_CHB = 'chb'
 , S_SVG = { display: 'inline-block' }
-, C_GREY = "#777777";
 
 const SvgChecked = ({ stroke }) => (
   <path
@@ -18,23 +24,26 @@ const SvgChecked = ({ stroke }) => (
       strokeWidth="2"
       strokeLinecap="round"
       stroke={stroke}
-      fill={C.BLANK}
+      fill={COLOR_BLANK}
   />
 );
 
 const _isBool = bool => typeof bool === 'boolean';
-const _noopFn = () => {};
+const FN_NOOP = () => {};
 
 const SvgCheckBox = ({
   initialValue,
   value,
   style,
   color,
-  checkedColor=C.YELLOW,
-  onCheck=_noopFn,
-  onUnCheck=_noopFn
+  checkedColor=COLOR_YELLOW,
+  onCheck=FN_NOOP,
+  onUnCheck=FN_NOOP
 }) => {
-  const [valueState, setValueState] = useState(() => _isBool(value) ? void 0: !!initialValue)
+  const [
+    valueState,
+    setValueState
+  ] = useState(() => _isBool(value) ? void 0: !!initialValue)
   , _isValueState = useRefInit(() => _isBool(valueState))
   , _value = _isValueState ? valueState : value
   , _comp = useMemo(() => ({
@@ -54,8 +63,12 @@ const SvgCheckBox = ({
   //_comp, _isValueState
   /*eslint-enable react-hooks/exhaustive-deps */
   , _hKeyDown = useKeyEnter(_hToggle, [_hToggle])
-  , _restStroke = _value ? color || C_GREY : C_GREY
-  , _restFill = _value ? color || C.BLANK : C.BLANK;
+  , _restStroke = _value
+       ? color || COLOR_GREY
+       : COLOR_GREY
+  , _restFill = _value
+       ? color || COLOR_BLANK
+       : COLOR_BLANK;
 
   return (
     <div

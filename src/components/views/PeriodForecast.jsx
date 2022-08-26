@@ -1,6 +1,5 @@
-
 import OpenClose from '../zhn-atoms/OpenClose';
-import C from '../styles/Color';
+import { COLOR_BROWN } from '../styles/Color';
 
 import Caption from './Caption';
 import DayItem from './DayItem';
@@ -20,7 +19,7 @@ const PeriodForecast = ({
       <OpenClose
         isInitial={true}
         style={S_OPEN_CLOSE}
-        openColor={C.BROWN}
+        openColor={COLOR_BROWN}
         isClickableCompAfter={true}
         CompAfter={<Caption
            style={captionStyle}

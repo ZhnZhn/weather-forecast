@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _OpenClose = _interopRequireDefault(require("../zhn-atoms/OpenClose"));
 
-var _Color = _interopRequireDefault(require("../styles/Color"));
+var _Color = require("../styles/Color");
 
 var _Caption = _interopRequireDefault(require("./Caption"));
 
@@ -36,7 +36,7 @@ var PeriodForecast = function PeriodForecast(_ref) {
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_OpenClose["default"], {
       isInitial: true,
       style: S_OPEN_CLOSE,
-      openColor: _Color["default"].BROWN,
+      openColor: _Color.COLOR_BROWN,
       isClickableCompAfter: true,
       CompAfter: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Caption["default"], {
         style: captionStyle,

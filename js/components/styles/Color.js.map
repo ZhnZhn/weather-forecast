@@ -1,1 +1,14 @@
-{"version":3,"sources":["../../../src/components/styles/Color.js"],"names":["COLOR","YELLOW","BROWN","GREY","BLANK"],"mappings":";;;;AAAA,IAAMA,KAAK,GAAG;AACZC,EAAAA,MAAM,EAAE,SADI;AAEZC,EAAAA,KAAK,EAAE,SAFK;AAGZC,EAAAA,IAAI,EAAE,SAHM;AAIZ;AACAC,EAAAA,KAAK,EAAE;AALK,CAAd;eAQeJ,K","sourcesContent":["const COLOR = {\r\n  YELLOW: '#f1d600',\r\n  BROWN: \"#795548\",\r\n  GREY: \"#777777\",\r\n  //BLANK: 'transparent',\r\n  BLANK: 'rgba(0, 0, 0, 0)'\r\n};\r\n\r\nexport default COLOR\r\n"],"file":"Color.js"}
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/styles/Color.js"
+ ],
+ "file": "../../../src/components/styles/Color.js",
+ "names": [
+  "COLOR_BROWN",
+  "COLOR_GREY",
+  "COLOR_YELLOW",
+  "COLOR_BLANK"
+ ],
+ "mappings": ";;;;AACO,IAAMA,WAAW,GAAG,SAApB;;AACA,IAAMC,UAAU,GAAG,SAAnB;;AACA,IAAMC,YAAY,GAAG,SAArB;;AACA,IAAMC,WAAW,GAAG,kBAApB"
+}

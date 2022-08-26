@@ -11,14 +11,14 @@ var _Svg = _interopRequireDefault(require("./svg/Svg100"));
 
 var _useToggle2 = _interopRequireDefault(require("../hooks/useToggle"));
 
-var _Color = _interopRequireDefault(require("../styles/Color"));
+var _Color = require("../styles/Color");
 
 var _jsxRuntime = require("react/jsx-runtime");
 
 var CL_SHOW_POPUP = 'show-popup',
     CL_SELECT_NONE = 'select-none',
-    DF_OPEN_COLOR = _Color["default"].YELLOW,
-    DF_CLOSE_COLOR = _Color["default"].BLANK,
+    DF_OPEN_COLOR = _Color.COLOR_YELLOW,
+    DF_CLOSE_COLOR = _Color.COLOR_BLANK,
     S_ROOT_DIV = {
   lineHeight: 2
 },
@@ -29,7 +29,6 @@ var CL_SHOW_POPUP = 'show-popup',
   marginLeft: 8
 },
     S_CAPTION = {
-  color: _Color["default"].SIREN,
   paddingLeft: 4,
   verticalAlign: 'top',
   fontFamily: 'Roboto, Arial Unicode MS, Arial, sans-serif',
