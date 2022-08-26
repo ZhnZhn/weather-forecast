@@ -1,91 +1,82 @@
-//import React, { Component } from 'react';
-import React from '../_react'
+import {
+  memo,
+  useRef,
+  useEffect,
+  getRefValue,
+  setRefValue
+} from '../uiApi';
 
-const { PureComponent } = React
-const Transitions = {
-  WIDTH : 'width 500ms ease-out',
-  OPACITY : 'opacity 400ms linear'
-}
+import useRerender from '../hooks/useRerender';
 
-class ProgressLine extends PureComponent {
-  static defaultProps = {
-    color : '#2f7ed8',
-    height : 3
+const CL = "progress-line"
+, DF_COLOR = '#2f7ed8'
+, DF_HEIGHT = 3
+, TM_PERIOD = 800
+, T_WIDTH = 'width 500ms linear'
+, T_OPACITY = 'opacity 400ms linear';
+
+const _crStyle = (
+  backgroundColor,
+  opacity,
+  width,
+  height,
+  transition
+) => ({
+   backgroundColor,
+   width,
+   height,
+   opacity,
+   transition
+});
+
+const ProgressLine = memo(({
+  color=DF_COLOR,
+  height=DF_HEIGHT,
+  completed
+}) => {
+  const _rerenderComp = useRerender()
+  , _refWasCompleted = useRef(false)
+  , _refIdCompleted = useRef(null)
+  , _refWasOpacied = useRef(false)
+  , _refIdOpacied = useRef(null);
+
+  useEffect(()=>{
+    if (getRefValue(_refWasCompleted)){
+      setRefValue(_refIdCompleted, setTimeout(_rerenderComp, TM_PERIOD))
+    } else if (getRefValue(_refWasOpacied)){
+      setRefValue(_refIdOpacied, setTimeout(_rerenderComp, TM_PERIOD))
+    }
+  })
+
+  useEffect(()=>{
+    return () => {
+      clearTimeout(getRefValue(_refIdCompleted))
+      clearTimeout(getRefValue(_refIdOpacied))
+    }
+  }, [])
+
+  let _style;
+
+  if (getRefValue(_refWasOpacied)) {
+    _style = _crStyle(color, 1, 0, height)
+    setRefValue(_refWasOpacied, false);
+  } else if (getRefValue(_refWasCompleted)) {
+    _style = _crStyle(color, 0, '100%', height, T_OPACITY)
+    setRefValue(_refWasCompleted, false);
+    setRefValue(_refWasOpacied, true);
+  } else {
+     if (completed < 0) {
+       completed = 0;
+     } else if (completed >= 100) {
+       completed = 100;
+       setRefValue(_refWasCompleted, true)
+     }
+     _style = _crStyle(color, 1, completed+'%', height, T_WIDTH)
   }
 
-  wasCompleted = false;
-  idCompleted = null;
-  wasOpacied = false;
-  idOpacied = null;
-
-
-  componentWillUnmount(){
-    if (this.idCompleted){
-      clearTimeout(this.idCompleted)
-    }
-    if (this.idOpacied){
-      clearTimeout(this.idOpacied)
-    }
-  }
-
-  componentDidUpdate(){
-    if (this.wasCompleted){
-      this.idCompleted = setTimeout(()=>{
-        this.idCompleted = null;
-        this.forceUpdate();
-      }, 800)
-    } else if (this.wasOpacied){
-      this.idOpacied = setTimeout(()=>{
-        this.idOpacied = null;
-        this.forceUpdate();
-      }, 800)
-    }
-  }
-
-  render(){
-    const { color, height } = this.props;
-    let _style;
-
-    if (this.wasOpacied) {
-      _style = {
-          backgroundColor: color,
-          width: 0,
-          opacity : 1,
-          height: height
-      };
-      this.wasOpacied = false;
-    } else if (this.wasCompleted) {
-      _style = {
-          backgroundColor: color,
-          width: '100%',
-          opacity : 0,
-          transition: Transitions.OPACITY,
-          height: height
-      };
-      this.wasCompleted = false;
-      this.wasOpacied = true;
-    } else {
-       let {completed} = this.props;
-       if (completed < 0) {
-         completed = 0;
-       } else if (completed >= 100) {
-         completed = 100;
-         this.wasCompleted = true
-       }
-
-       _style = {
-         backgroundColor: color,
-         opacity: 1,
-         width: completed + '%',
-         transition: Transitions.WIDTH,
-         height: height
-       };
-    }
-
-    return (
-      <div className="progress-line" style={_style} />
-    )
-  }
-}
+  return (
+    <div className={CL} style={_style} />
+  );
+});
 
 export default ProgressLine
