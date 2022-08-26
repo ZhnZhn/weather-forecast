@@ -1,52 +1,55 @@
 //import PropTypes from 'prop-types';
-import React from '../_react'
-import { useSelector } from 'react-redux'
+import {
+  useState,
+  useRef,
+  useEffect
+} from '../uiApi';
+import { useSelector } from 'react-redux';
 
-import fnLeaflet from './fnLeaflet';
-import throttle from '../../utils/throttle'
+import {
+  createMap,
+  addMarker
+} from './fnLeaflet';
+import throttle from '../../utils/throttle';
 
 import handlers  from '../../flux/handlers';
 import { sPlace } from '../../flux/selectors';
 
 import ErrMsg from '../zhn-atoms/ErrMsg';
 
-const { useState, useRef, useEffect } = React
-, { requestPlace } = handlers;
+const { requestPlace } = handlers;
 
 const PERIOD_MS = 5000;
 
-const S = {
-  DIV: {
-    width:'100%',
-    height: 650,
-    transition: 'transform .3s, width .6s'
-  },
-  ERR_MSG: {
-    marginTop: 8,
-    marginLeft: 8
-  }
+const S_DIV = {
+  width:'100%',
+  height: 650,
+  transition: 'transform .3s, width .6s'
+}
+, S_ERR_MSG = {
+  marginTop: 8,
+  marginLeft: 8
 };
 
-const MAP_STATUS = {
-  LOADING: 'a',
-  LOADED: 'b',
-  FAILED: 'c'
-};
+const MAP_STATUS_LOADING = 'a'
+, MAP_STATUS_LOADED = 'b'
+, MAP_STATUS_FAILED = 'c';
 
 const LeafletMap = ({
-  id, style,
+  id,
+  style,
   themeName
 }) => {
   const _refMap = useRef()
   , _refThemeName = useRef(themeName)
-  , [mapStatus, setMapStatus] = useState(MAP_STATUS.LOADING)
+  , [mapStatus, setMapStatus] = useState(MAP_STATUS_LOADING)
   , forecast = useSelector(sPlace.forecast);
 
   _refThemeName.current = themeName
 
   /*eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    const _map = fnLeaflet.createMap(id, () => setMapStatus(MAP_STATUS.LOADED));
+    const _map = createMap(id, () => setMapStatus(MAP_STATUS_LOADED));
     if (_map) {
       _refMap.current = _map
       _refMap.current.on('dblclick', throttle(
@@ -54,7 +57,7 @@ const LeafletMap = ({
         PERIOD_MS, {trailing: false}
       ))
     } else {
-      setMapStatus(MAP_STATUS.FAILED)
+      setMapStatus(MAP_STATUS_FAILED)
     }
   }, [])
   // id
@@ -62,7 +65,7 @@ const LeafletMap = ({
 
   useEffect(()=>{
     if (forecast){
-      fnLeaflet.addMarker(
+      addMarker(
         forecast,
         _refThemeName.current,
         _refMap.current
@@ -72,25 +75,23 @@ const LeafletMap = ({
 
   return (
     <div
-      style={{...S.DIV, ...style}}
+      style={{...S_DIV, ...style}}
       id={id}
     >
-     {
-         mapStatus === MAP_STATUS.FAILED && (
-           <ErrMsg
-             style={S.ERR_MSG}
-             msg="LeafletMap Loading Has Failed."
-           />
-         )
-     }
+     {mapStatus === MAP_STATUS_FAILED && (
+       <ErrMsg
+         style={S_ERR_MSG}
+         msg="LeafletMap Loading Has Failed."
+       />
+     )}
     </div>
   );
 }
 
 /*
 LeafletMap.propTypes = {
-  style: PropTypes.object,
   id: PropTypes.string,
+  style: PropTypes.object,
   themeName: PropTypes.string
 }
 */
