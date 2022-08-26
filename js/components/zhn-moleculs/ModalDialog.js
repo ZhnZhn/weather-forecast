@@ -9,7 +9,7 @@ var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
 
 var _uiApi = require("../uiApi");
 
-var _useForceUpdate = _interopRequireDefault(require("../hooks/useForceUpdate"));
+var _useRerender = _interopRequireDefault(require("../hooks/useRerender"));
 
 var _SvgClose = _interopRequireDefault(require("../zhn-atoms/SvgClose"));
 
@@ -111,11 +111,11 @@ var ModalDialog = function ModalDialog(_ref3) {
       onClose = _ref3.onClose;
 
   var _refClosing = (0, _uiApi.useRef)(false),
-      forceUpdate = (0, _useForceUpdate["default"])();
+      rerender = (0, _useRerender["default"])();
 
   (0, _uiApi.useEffect)(function () {
     if (_getCurrent(_refClosing)) {
-      setTimeout(forceUpdate, timeout);
+      setTimeout(rerender, timeout);
     }
   });
 

@@ -15,7 +15,7 @@ var _ThemeContext = _interopRequireDefault(require("../hoc/ThemeContext"));
 
 var _Dialog = _interopRequireDefault(require("./Dialog.Style"));
 
-var _useForceUpdate = _interopRequireDefault(require("../hooks/useForceUpdate"));
+var _useRerender = _interopRequireDefault(require("../hooks/useRerender"));
 
 var _ModalDialog = _interopRequireDefault(require("../zhn-moleculs/ModalDialog"));
 
@@ -63,10 +63,10 @@ var SettingsDialog = function SettingsDialog(_ref) {
       onSet = data.onSet,
       onAir = data.onAir,
       theme = (0, _uiApi.useContext)(_ThemeContext["default"]),
-      forceUpdate = (0, _useForceUpdate["default"])(),
+      rerender = (0, _useRerender["default"])(),
       _handleSetTheme = (0, _uiApi.useCallback)(function (item) {
     onSetTheme(theme, item.value);
-    forceUpdate();
+    rerender();
   }, []),
       TS = theme.createStyle(_Dialog["default"]);
 

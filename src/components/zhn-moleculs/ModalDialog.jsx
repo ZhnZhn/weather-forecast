@@ -1,6 +1,9 @@
 //import PropTypes from 'prop-types'
-import { useRef, useEffect } from '../uiApi';
-import useForceUpdate from '../hooks/useForceUpdate';
+import {
+  useRef,
+  useEffect
+} from '../uiApi';
+import useRerender from '../hooks/useRerender';
 
 import SvgClose from '../zhn-atoms/SvgClose';
 import RaisedButton from '../zhn-atoms/RaisedButton';
@@ -89,11 +92,11 @@ const ModalDialog = ({
   onClose
 }) => {
   const _refClosing = useRef(false)
-  , forceUpdate = useForceUpdate();
+  , rerender = useRerender();
 
   useEffect(() => {
     if (_getCurrent(_refClosing)){
-      setTimeout(forceUpdate, timeout)
+      setTimeout(rerender, timeout)
     }
   })
 

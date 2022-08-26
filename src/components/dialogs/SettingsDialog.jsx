@@ -1,10 +1,13 @@
-import { useContext, useCallback } from '../uiApi';
 //import PropTypes from 'prop-types';
+import {
+  useContext,
+  useCallback
+} from '../uiApi';
 
 import memoIsShow from '../hoc/memoIsShow';
 import ThemeContext from '../hoc/ThemeContext';
 import styleConfig from './Dialog.Style';
-import useForceUpdate from '../hooks/useForceUpdate';
+import useRerender from '../hooks/useRerender';
 
 import ModalDialog from '../zhn-moleculs/ModalDialog';
 import TabPane from '../zhn-atoms/TabPane';
@@ -39,15 +42,19 @@ const SettingsDialog = ({
   data,
   onClose,
 }) => {
-  const { onSetTheme, onSet, onAir } = data
+  const {
+    onSetTheme,
+    onSet,
+    onAir
+  } = data
   , theme = useContext(ThemeContext)
+  , rerender = useRerender()
   /*eslint-disable react-hooks/exhaustive-deps */
-  , forceUpdate = useForceUpdate()
   , _handleSetTheme = useCallback((item) => {
      onSetTheme(theme, item.value)
-     forceUpdate()
+     rerender()
   }, [])
-  // theme, onSetTheme, forceUpdate
+  // theme, onSetTheme, rerender
   /*eslint-enable react-hooks/exhaustive-deps */
   , TS = theme.createStyle(styleConfig);
 
