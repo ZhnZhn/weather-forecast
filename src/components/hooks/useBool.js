@@ -1,12 +1,20 @@
-import { useState, useCallback } from '../uiApi';
+import {
+  useState,
+  useMemo
+} from '../uiApi';
 
 const useBool = (initialValue) => {
-  const [is, setIs] = useState(() => !!initialValue)
-  /*eslint-disable react-hooks/exhaustive-deps */
-  , setTrue = useCallback(() => setIs(true), [])
-  , setFalse = useCallback(() => setIs(false), []);
-  //setIs
-  /*eslint-enable react-hooks/exhaustive-deps */
+  const [
+    is,
+    setIs
+  ] = useState(() => !!initialValue)
+  , [
+    setTrue,
+    setFalse
+  ] = useMemo(() => [
+    () => setIs(true),
+    () => setIs(false)
+  ], []);
   return [is, setTrue, setFalse];
 };
 

@@ -11,15 +11,15 @@ var useBool = function useBool(initialValue) {
   }),
       is = _useState[0],
       setIs = _useState[1],
-      setTrue = (0, _uiApi.useCallback)(function () {
-    return setIs(true);
+      _useMemo = (0, _uiApi.useMemo)(function () {
+    return [function () {
+      return setIs(true);
+    }, function () {
+      return setIs(false);
+    }];
   }, []),
-      setFalse = (0, _uiApi.useCallback)(function () {
-    return setIs(false);
-  }, []); //setIs
-
-  /*eslint-enable react-hooks/exhaustive-deps */
-
+      setTrue = _useMemo[0],
+      setFalse = _useMemo[1];
 
   return [is, setTrue, setFalse];
 };
