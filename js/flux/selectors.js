@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.sUV = exports.sSettings = exports.sPlace = exports.sModal = exports.sLayout = exports.sHourly = exports.sForecast = exports.sAir = void 0;
+exports.sUV = exports.sSettings = exports.sPlace = exports.sModal = exports.sLayout = exports.sHourly = exports.sForecast = exports.sApp = exports.sAir = void 0;
 
 var place = _interopRequireWildcard(require("./place/reducer"));
 
@@ -121,4 +121,10 @@ var sLayout = {
   }
 };
 exports.sLayout = sLayout;
+var sApp = {
+  fetching: function fetching(state) {
+    return state.fetching;
+  }
+};
+exports.sApp = sApp;
 //# sourceMappingURL=selectors.js.map

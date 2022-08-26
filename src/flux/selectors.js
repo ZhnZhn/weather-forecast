@@ -83,3 +83,7 @@ export const sLayout = {
   themeName: state => state.layout.themeName,
   isPushMenu: state => state.layout.isPushMenu
 }
+
+export const sApp = {
+  fetching: state => state.fetching
+}

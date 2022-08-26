@@ -1,5 +1,6 @@
-import { useSelector } from 'react-redux';
+import { useSelector } from '../uiApi';
 
+import { sApp } from '../../flux/selectors';
 import { FETCH } from '../../flux/fetching/constants';
 import ProgressLine from '../zhn-atoms/ProgressLine';
 
@@ -19,7 +20,7 @@ const COLOR_LOADING = '#2f7ed8'
 };
 
 const ProgressLoading = () => {
-  const fetching = useSelector(state => state.fetching)
+  const fetching = useSelector(sApp.fetching)
   , [completed, color] = _getDerivedState(fetching);
 
   return (

@@ -5,7 +5,9 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _reactRedux = require("react-redux");
+var _uiApi = require("../uiApi");
+
+var _selectors = require("../../flux/selectors");
 
 var _constants = require("../../flux/fetching/constants");
 
@@ -32,9 +34,7 @@ var COLOR_LOADING = '#2f7ed8',
 };
 
 var ProgressLoading = function ProgressLoading() {
-  var fetching = (0, _reactRedux.useSelector)(function (state) {
-    return state.fetching;
-  }),
+  var fetching = (0, _uiApi.useSelector)(_selectors.sApp.fetching),
       _getDerivedState2 = _getDerivedState(fetching),
       completed = _getDerivedState2[0],
       color = _getDerivedState2[1];
