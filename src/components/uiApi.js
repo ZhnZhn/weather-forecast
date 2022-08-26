@@ -1,4 +1,8 @@
 export {
+  createElement,
+  cloneElement,
+  memo,
+  forwardRef,
   useRef,
   useState,
   useReducer,
@@ -6,8 +10,16 @@ export {
   useMemo,
   useEffect,
   useContext,
-  useImperativeHandle,
-  forwardRef,
-  cloneElement,
-  memo
+  useImperativeHandle
 } from 'react';
+
+export const getRefValue = ref => (ref || {}).current
+
+export const setRefValue = (
+  ref,
+  value
+) => {
+  if (ref) {
+    ref.current = value
+  }
+}

@@ -4,6 +4,12 @@
   "../../src/components/uiApi.js"
  ],
  "file": "../../src/components/uiApi.js",
- "names": [],
- "mappings": ";;;;;AAAA"
+ "names": [
+  "getRefValue",
+  "ref",
+  "current",
+  "setRefValue",
+  "value"
+ ],
+ "mappings": ";;;;;AAAA;;;;;;;;;;;;;;;AAeO,IAAMA,WAAW,GAAG,SAAdA,WAAc,CAAAC,GAAG;EAAA,OAAI,CAACA,GAAG,IAAI,EAAR,EAAYC,OAAhB;AAAA,CAAvB;;;;AAEA,IAAMC,WAAW,GAAG,SAAdA,WAAc,CACzBF,GADyB,EAEzBG,KAFyB,EAGtB;EACH,IAAIH,GAAJ,EAAS;IACPA,GAAG,CAACC,OAAJ,GAAcE,KAAd;EACD;AACF,CAPM"
 }
