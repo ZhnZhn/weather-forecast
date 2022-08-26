@@ -78,3 +78,8 @@ export const sSettings = {
 export const sModal = {
   errMsg: state => modal.errMsg(state.modal)
 }
+
+export const sLayout = {
+  themeName: state => state.layout.themeName,
+  isPushMenu: state => state.layout.isPushMenu
+}
