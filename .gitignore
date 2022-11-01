@@ -3,7 +3,6 @@ node_modules
 _init_checkout.bat
 _start_server.bat
 lint.txt
-lib-dev
 stats.json
 stat-dll.json
 coverage
