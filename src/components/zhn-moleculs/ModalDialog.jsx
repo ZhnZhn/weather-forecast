@@ -1,8 +1,11 @@
 //import PropTypes from 'prop-types'
 import {
   useRef,
-  useEffect
+  useEffect,
+  getRefValue,
+  setRefValue
 } from '../uiApi';
+
 import useRerender from '../hooks/useRerender';
 
 import SvgClose from '../zhn-atoms/SvgClose';
@@ -35,7 +38,7 @@ const CL_SHOWING = 'show-popup'
     fontSize: '18px'
   }
 , S_COMMAND_DIV = {
-    float: 'right',
+    textAlign: 'right',
     margin: '8px 4px 10px 0',
     cursor: 'default'
  };
@@ -69,12 +72,8 @@ const CommandButtons = ({
   </div>
 );
 
-const _getCurrent = ref => ref.current
-, _setCurrent = (ref, value) => {
-  ref.current = value
-}
-, _hClickDialog = event => {
-  event.stopPropagation()
+const _hClickDialog = evt => {
+  evt.stopPropagation()
 };
 
 const ModalDialog = ({
@@ -95,20 +94,20 @@ const ModalDialog = ({
   , rerender = useRerender();
 
   useEffect(() => {
-    if (_getCurrent(_refClosing)){
+    if (getRefValue(_refClosing)){
       setTimeout(rerender, timeout)
     }
   })
 
   let _className, _style;
-  if (_getCurrent(_refClosing)){
+  if (getRefValue(_refClosing)){
     _style = S_HIDE
-    _setCurrent(_refClosing, false)
+    setRefValue(_refClosing, false)
   } else {
     _className = isShow ? CL_SHOWING : CL_HIDING
     _style = isShow ? S_SHOW : S_HIDE_POPUP
     if (!isShow){
-      _setCurrent(_refClosing, true)
+      setRefValue(_refClosing, true)
     }
   }
 
