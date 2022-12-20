@@ -1,0 +1,13 @@
+{
+ "version": 3,
+ "sources": [
+  "../../src/components/has.js"
+ ],
+ "file": "../../src/components/has.js",
+ "names": [
+  "HAS_TOUCH_EVENTS",
+  "document",
+  "documentElement"
+ ],
+ "mappings": ";;;;AAAO,IAAMA,gBAAgB,GAAGC,QAAQ,IACjC,cAAc,IAAIA,QAAQ,CAACC,eAAe;AAAC"
+}
