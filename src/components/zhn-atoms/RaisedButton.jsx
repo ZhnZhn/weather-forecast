@@ -1,11 +1,11 @@
 const CL_BT = 'bt-raised'
-, CL_BT_DIV = 'bt-raised__div'
-, CL_BT_SPAN = 'bt-raised__span'
+, CL_BT_DIV = `${CL_BT}__div`
+, CL_BT_SPAN = `${CL_BT}__span`
 
 , S_PRIMARY_SPAN = { color: 'greenyellow' };
 
 const RaisedButton = ({
-  rootStyle,
+  style,
   clDiv=CL_BT_DIV,
   caption,
   isPrimary,
@@ -16,9 +16,10 @@ const RaisedButton = ({
     : void 0;
   return (
     <button
+      type="button"
       tabIndex={0}
       className={CL_BT}
-      style={rootStyle}
+      style={style}
       onClick={onClick}
     >
       <div className={clDiv}>
