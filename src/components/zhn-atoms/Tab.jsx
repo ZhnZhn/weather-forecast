@@ -1,4 +1,3 @@
-
 const CL_TAB = "tab"
 , TAB_COLOR = '#2f7ed8'
 , S_BT = {
@@ -13,10 +12,15 @@ const Tab = ({
   isSelected,
   onClick
 }) => {
-  const _btStyle = isSelected ? S_BT : null
-  , _titleStyle = isSelected ? S_TITLE : null;
+  const [
+    _btStyle,
+    _titleStyle
+  ] = isSelected
+    ? [S_BT, S_TITLE]
+    : [];
   return (
     <button
+       type="button"
        className={CL_TAB}
        style={_btStyle}
        id={`tab-${id}`}
