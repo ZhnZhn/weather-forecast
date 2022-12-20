@@ -1,9 +1,10 @@
 import {
+  useRef,
   useSelector,
-  useMemo,
+  useMemo
 } from '../uiApi';
 
-import useDragable from '../hooks/useDragable';
+import useXYMovable from '../hooks/useXYMovable';
 import handlers from '../../flux/handlers';
 import SvgClose from '../zhn-atoms/SvgClose';
 
@@ -22,7 +23,7 @@ const DragablePopup = ({
   storeKey,
   children
 }) => {
-  const _refDragablePopup = useDragable()
+  const _refPopup = useRef()
   , [
     _selectIsShow,
     _hClose
@@ -38,9 +39,11 @@ const DragablePopup = ({
     ? [S_BLOCK, CL_SHOW_POPUP]
     : [S_NONE];
 
+  useXYMovable(_refPopup)
+
   return (
     <div
-       ref={_refDragablePopup}
+       ref={_refPopup}
        className={_className}
        style={{...style, ..._style}}
     >
