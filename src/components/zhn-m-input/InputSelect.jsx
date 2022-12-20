@@ -1,16 +1,19 @@
-import { useState, useCallback } from '../uiApi';
+import {
+  useState,
+  useCallback
+} from '../uiApi';
 import useBool from '../hooks/useBool';
 
 import ArrowCell from './ArrowCell';
 import OptionsPane from './OptionsPane';
 
 const CL_SELECT = 'm-select'
-, CL_LABEL = 'm-select__label'
-, CL_DIV = 'm-select__div'
-, CL_DIV_VALUE = 'm-select__div__value'
-, CL_DIV_BT = 'm-select__div__bt'
-, CL_INPUT_LINE = 'm-select__line'
-, CL_ITEM = 'm-select__item'
+, CL_LABEL = `${CL_SELECT}__label`
+, CL_DIV = `${CL_SELECT}__div`
+, CL_DIV_VALUE = `${CL_SELECT}__div__value`
+, CL_DIV_BT = `${CL_SELECT}__div__bt`
+, CL_INPUT_LINE = `${CL_SELECT}__line`
+, CL_ITEM = `${CL_SELECT}__item`
 , DF_INIT_ITEM = {
   caption: '',
   value: ''
@@ -26,13 +29,20 @@ const InputSelect = ({
   initItem=DF_INIT_ITEM,
   onSelect
 }) => {
-  const [isShow, _handleOpen, _handleClose] = useBool(false)
-  , [item, setItem] = useState(initItem)
+  const [
+    isShow,
+    _hOpen,
+    _hClose
+  ] = useBool(false)
+  , [
+    item,
+    setItem
+  ] = useState(initItem)
   /*eslint-disable react-hooks/exhaustive-deps */
-  , _handleSelect = useCallback((item, event) => {
-      event.stopPropagation()
+  , _hSelect = useCallback((item, evt) => {
+      evt.stopPropagation()
       onSelect(item)
-      _handleClose()
+      _hClose()
       setItem(item)
   }, [])
   // _handleClose, onSelect
@@ -43,7 +53,7 @@ const InputSelect = ({
     <div
       className={CL_SELECT}
       style={TS.ROOT}
-      onClick={_handleOpen}
+      onClick={_hOpen}
     >
       <OptionsPane
          style={TS.MODAL_PANE}
@@ -51,8 +61,8 @@ const InputSelect = ({
          item={_item}
          options={options}
          clItem={TS.CL_ITEM || CL_ITEM}
-         onSelect={_handleSelect}
-         onClose={_handleClose}
+         onSelect={_hSelect}
+         onClose={_hClose}
        />
       <label className={CL_LABEL}>
         {caption}
@@ -61,7 +71,11 @@ const InputSelect = ({
         <div className={CL_DIV_VALUE}>
            {_item.caption}
         </div>
-        <button className={CL_DIV_BT} tabIndex="0">
+        <button
+          type="button"
+          className={CL_DIV_BT}
+          tabIndex="0"
+        >
           <div>
             <ArrowCell />
           </div>
