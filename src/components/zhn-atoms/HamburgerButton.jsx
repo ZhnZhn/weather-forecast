@@ -1,8 +1,4 @@
-import {
-  useSelector,
-  useCallback
-} from '../uiApi';
-
+import useLayoutButton from './useLayoutButton';
 import crCn from '../zhn-utils/crCn';
 
 const CL_BT_HAMBURGER = "bt-hamburger"
@@ -21,18 +17,21 @@ const HamburgerButton = ({
   storeKey,
   onClick
 }) => {
-  const _selectIsOpen = useCallback(
-    state => state.layout[storeKey],
-    [storeKey]
+  const [
+    isOpen,
+    _hClick
+  ] = useLayoutButton(
+    storeKey,
+    onClick
   )
-  , isOpen = useSelector(_selectIsOpen)
-  , _hClick = useCallback(()=>{
-    onClick(storeKey)
-  }, [storeKey, onClick])
-  , btClass = crCn(CL_BT_HAMBURGER, [isOpen, CL_OPENED]);
+  , btClass = crCn(
+    CL_BT_HAMBURGER,
+    [isOpen, CL_OPENED]
+  );
 
   return (
     <button
+       type="button"
        className={btClass}
        style={S_HAMBURGER}
        onClick={_hClick}

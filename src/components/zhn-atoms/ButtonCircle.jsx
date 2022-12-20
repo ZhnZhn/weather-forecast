@@ -1,9 +1,7 @@
-import {
-  useSelector,
-  useCallback
-} from '../uiApi';
+import useLayoutButton from './useLayoutButton';
 
-const CL_BT_CIRCLE = "bt-circle not-selected"
+const _assign = Object.assign
+, CL_BT_CIRCLE = "bt-circle not-selected"
 , S_ROOT = {
   display: 'inline-block',
   color: '#80c040',
@@ -23,21 +21,21 @@ const ButtonCircle = ({
   storeKey,
   onClick
 }) => {
-  const _selectIsActive = useCallback(
-    state => state.layout[storeKey],
-    [storeKey]
+  const [
+    isActive,
+    _hClick
+  ] = useLayoutButton(
+    storeKey,
+    onClick
   )
-  , isActive = useSelector(_selectIsActive)
-  , _hClick = useCallback(() => {
-     onClick(storeKey)
-  }, [storeKey, onClick])
-  , _styleRoot = {...S_ROOT, ...style}
-  , _style = isActive
-       ? _styleRoot
-       : {..._styleRoot, ...S_NOT_ACTIVE};
+  , _style = _assign(
+    {...S_ROOT, ...style},
+    isActive && S_NOT_ACTIVE
+  );
 
   return (
     <button
+       type="button"
        className={CL_BT_CIRCLE}
        style={_style}
        title={title}
