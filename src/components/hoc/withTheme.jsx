@@ -1,10 +1,9 @@
-//import React , { Component } from 'react';
-import React from '../_react'
-import ThemeContext from './ThemeContext'
+import { Component } from '../uiApi';
+import ThemeContext from './ThemeContext';
 
-const { Component } = React;
-
-const withTheme = (Wrapper) => class extends Component {
+const withTheme = (
+  Wrapper
+) => class extends Component {
   render(){
     return (
       <ThemeContext.Consumer>

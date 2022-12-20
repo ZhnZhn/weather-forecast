@@ -4,6 +4,8 @@ export {
 } from 'react-redux';
 
 export {
+  Component,
+  createContext,
   createElement,
   cloneElement,
   memo,

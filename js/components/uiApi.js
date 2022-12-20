@@ -1,11 +1,13 @@
 "use strict";
 
 exports.__esModule = true;
-exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useImperativeHandle = exports.useEffect = exports.useContext = exports.useCallback = exports.setRefValue = exports.memo = exports.getRefValue = exports.getClientY = exports.getClientX = exports.forwardRef = exports.createElement = exports.cloneElement = void 0;
+exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useImperativeHandle = exports.useEffect = exports.useContext = exports.useCallback = exports.setRefValue = exports.memo = exports.getRefValue = exports.getClientY = exports.getClientX = exports.forwardRef = exports.createElement = exports.createContext = exports.cloneElement = exports.Component = void 0;
 var _reactRedux = require("react-redux");
 exports.useSelector = _reactRedux.useSelector;
 exports.useStore = _reactRedux.useStore;
 var _react = require("react");
+exports.Component = _react.Component;
+exports.createContext = _react.createContext;
 exports.createElement = _react.createElement;
 exports.cloneElement = _react.cloneElement;
 exports.memo = _react.memo;

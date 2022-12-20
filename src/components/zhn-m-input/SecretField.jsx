@@ -1,5 +1,4 @@
-import React from '../_react'
-const { Component } = React;
+import { Component } from '../uiApi';
 
 const CL_SELECT = 'm-select'
 , CL_LABEL = 'm-select__label'

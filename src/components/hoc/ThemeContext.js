@@ -1,5 +1,5 @@
-import React from '../_react'
+import { createContext } from '../uiApi'
 
-const ThemeContext = React.createContext();
+const ThemeContext = createContext();
 
 export default ThemeContext
