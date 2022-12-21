@@ -63,9 +63,9 @@
 
 
 .bt-raised__div {
-  @include raised-div(rgb(48, 48, 48));
+  @include raised-div(#303030);
 }
 
 .bt-raised__div--white {
-  @include raised-div(rgb(255,255,255));
+  @include raised-div(white);
 }
