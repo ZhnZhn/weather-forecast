@@ -5,15 +5,14 @@
  ],
  "file": "../src/index.js",
  "names": [
-  "React",
-  "_React",
+  "_ReactDOM",
   "window",
   "ReactDOM",
-  "_ReactDOM",
-  "render",
-  "store",
+  "createRoot",
   "document",
-  "getElementById"
+  "getElementById",
+  "render",
+  "store"
  ],
- "mappings": ";;;;AAAA;;AACA;;AACA;;AAEA;;AACA;;AAEA,IAAMA,KAAK,GAAGC,qBAAUC,MAAM,CAACF,KAA/B;AACA,IAAMG,QAAQ,GAAGC,wBAAaF,MAAM,CAACC,QAArC;IACQE,M,GAAWF,Q,CAAXE,M;AAERA,MAAM,eACJ,oBAAC,oBAAD;AAAU,EAAA,KAAK,EAAEC;AAAjB,gBACE,oBAAC,uBAAD,OADF,CADI,EAIJC,QAAQ,CAACC,cAAT,CAAwB,KAAxB,CAJI,CAAN"
+ "mappings": ";;;AAAA;AACA;AAEA;AACA;AAAmD;AAEnD,WAEIA,kBAAS,IAAIC,MAAM,CAACC,QAAQ;EAD9BC,UAAU,QAAVA,UAAU;AAGZA,UAAU,CAACC,QAAQ,CAACC,cAAc,CAAC,KAAK,CAAC,CAAC,CACxCC,MAAM,eACL,qBAAC,oBAAQ;EAAC,KAAK,EAAEC,iBAAM;EAAA,uBACrB,qBAAC,uBAAW;AAAE,EACL,CACZ"
 }

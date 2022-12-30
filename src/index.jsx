@@ -1,17 +1,16 @@
-import _React from 'react';
-import _ReactDOM from 'react-dom';
+import _ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 
-import store from './flux/store'
+import store from './flux/store';
 import WeatherSaga from './components/WeatherSaga';
 
-const React = _React || window.React
-const ReactDOM = _ReactDOM || window.ReactDOM
-const { render } = ReactDOM;
+const {
+  createRoot
+} = _ReactDOM || window.ReactDOM;
 
-render(
-  <Provider store={store}>
-    <WeatherSaga/>
-  </Provider>,
-  document.getElementById('app')
-)
+createRoot(document.getElementById('app'))
+ .render((
+   <Provider store={store}>
+     <WeatherSaga/>
+   </Provider>
+))
