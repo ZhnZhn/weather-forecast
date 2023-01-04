@@ -1,6 +1,6 @@
 import store from './store';
 
-import throttle from '../utils/throttle';
+import throttleFn from '../utils/throttleFn';
 
 import { forecastRequested } from './forecast/actions';
 import { toggleLayout } from './layout/actions';
@@ -16,7 +16,7 @@ const { dispatch } = store;
 
 const MS_PERIOD = 10000
 , _forecastRequest = id => dispatch(forecastRequested(id))
-, _forecastRequestTh = throttle(_forecastRequest, MS_PERIOD, {trailing: false})
+, _forecastRequestTh = throttleFn(_forecastRequest, MS_PERIOD)
 
 window.weather = {
   fnFetchForecast : (id) => {

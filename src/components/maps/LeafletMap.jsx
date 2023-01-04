@@ -10,7 +10,7 @@ import {
   createMap,
   addMarker
 } from './fnLeaflet';
-import throttle from '../../utils/throttle';
+import throttleFn from '../../utils/throttleFn';
 
 import handlers  from '../../flux/handlers';
 import { sPlace } from '../../flux/selectors';
@@ -52,9 +52,9 @@ const LeafletMap = ({
     const _map = createMap(id, () => setMapStatus(MAP_STATUS_LOADED));
     if (_map) {
       _refMap.current = _map
-      _refMap.current.on('dblclick', throttle(
+      _refMap.current.on('dblclick', throttleFn(
         e => requestPlace(e.latlng),
-        PERIOD_MS, {trailing: false}
+        PERIOD_MS
       ))
     } else {
       setMapStatus(MAP_STATUS_FAILED)
