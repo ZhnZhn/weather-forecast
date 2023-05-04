@@ -1,5 +1,4 @@
 import {
-  memo,
   useRef,
   useEffect,
   getRefValue,
@@ -10,73 +9,69 @@ import useRerender from '../hooks/useRerender';
 
 const CL = "progress-line"
 , DF_COLOR = '#2f7ed8'
-, DF_HEIGHT = 3
 , TM_PERIOD = 800
-, T_WIDTH = 'width 500ms linear'
-, T_OPACITY = 'opacity 400ms linear';
+, WIDTH_TRANSITION = 'width 400ms linear';
 
-const _crStyle = (
+const _crLineStyle = (
   backgroundColor,
-  opacity,
   width,
-  height,
   transition
 ) => ({
    backgroundColor,
-   width,
-   height,
-   opacity,
-   transition
+   width: width + '%',
+   transition,
+   opacity: 1
 });
 
-const ProgressLine = memo(({
+const _crCompleted = (
+  completed,
+  _refWasCompleted
+) => completed < 0
+  ? 0
+  : completed >= 100
+     ? (setRefValue(_refWasCompleted, true), 100)
+     : completed;
+
+const _crStyle = (
+  _refWasCompleted,
+  color,
+  completed
+) => getRefValue(_refWasCompleted)
+  ? (setRefValue(_refWasCompleted, false), _crLineStyle(color, 0))
+  : _crLineStyle(color, _crCompleted(completed, _refWasCompleted), WIDTH_TRANSITION);
+
+const ProgressLine = ({
   color=DF_COLOR,
-  height=DF_HEIGHT,
   completed
 }) => {
-  const _rerenderComp = useRerender()
+  const rerender = useRerender()
   , _refWasCompleted = useRef(false)
-  , _refIdCompleted = useRef(null)
-  , _refWasOpacied = useRef(false)
-  , _refIdOpacied = useRef(null);
+  , _refIdCompleted= useRef(null);
 
   useEffect(()=>{
     if (getRefValue(_refWasCompleted)){
-      setRefValue(_refIdCompleted, setTimeout(_rerenderComp, TM_PERIOD))
-    } else if (getRefValue(_refWasOpacied)){
-      setRefValue(_refIdOpacied, setTimeout(_rerenderComp, TM_PERIOD))
+      setRefValue(_refIdCompleted, setTimeout(rerender, TM_PERIOD))
     }
   })
 
   useEffect(()=>{
     return () => {
       clearTimeout(getRefValue(_refIdCompleted))
-      clearTimeout(getRefValue(_refIdOpacied))
     }
   }, [])
 
-  let _style;
-
-  if (getRefValue(_refWasOpacied)) {
-    _style = _crStyle(color, 1, 0, height)
-    setRefValue(_refWasOpacied, false);
-  } else if (getRefValue(_refWasCompleted)) {
-    _style = _crStyle(color, 0, '100%', height, T_OPACITY)
-    setRefValue(_refWasCompleted, false);
-    setRefValue(_refWasOpacied, true);
-  } else {
-     if (completed < 0) {
-       completed = 0;
-     } else if (completed >= 100) {
-       completed = 100;
-       setRefValue(_refWasCompleted, true)
-     }
-     _style = _crStyle(color, 1, completed+'%', height, T_WIDTH)
-  }
+  const _style = _crStyle(
+    _refWasCompleted,
+    color,
+    completed
+  );
 
   return (
-    <div className={CL} style={_style} />
+    <div
+      className={CL}
+      style={_style}
+    />
   );
-});
+};
 
 export default ProgressLine
