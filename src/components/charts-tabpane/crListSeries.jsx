@@ -1,11 +1,13 @@
-import Chart from '../charts/Chart';
-import STYLE from './Chart.Style';
-
-const {
+import {
   Bar,
   Line
-} = Chart
-, _crDataKey = (filtered, propName) => filtered[propName]
+} from '../charts/Chart';
+import STYLE from './Chart.Style';
+
+const _crDataKey = (
+  filtered,
+  propName
+) => filtered[propName]
     ? 'empty'
     : propName
 , DF_IS_NOT = Object.create(null);

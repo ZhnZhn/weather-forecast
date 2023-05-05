@@ -1,5 +1,10 @@
 import memoEqual from '../hoc/memoEqual'
-import Chart from '../charts/Chart';
+
+import {
+  YAxis,
+  Legend
+} from '../charts/Chart';
+
 import dt from '../../utils/dt';
 import { sForecast } from '../../flux/selectors';
 
@@ -17,11 +22,6 @@ import crListSeries from './crListSeries';
 import TooltipForecast from './TooltipForecast';
 import LegendForecast from './LegendForecast';
 import STYLE from './Chart.Style';
-
-const {
-  YAxis,
-  Legend
-} = Chart;
 
 const YAXIS_LABEL_TEMP = {
     value: "°C",

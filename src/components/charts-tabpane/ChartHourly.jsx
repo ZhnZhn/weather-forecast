@@ -1,5 +1,5 @@
 import memoEqual from '../hoc/memoEqual';
-import Chart from '../charts/Chart';
+import { Legend } from '../charts/Chart';
 import dt from '../../utils/dt';
 import { sHourly } from '../../flux/selectors';
 
@@ -19,8 +19,7 @@ import TooltipHourly from './TooltipHourly';
 import crListSeries from './crListSeries';
 import STYLE from './Chart.Style';
 
-const { Legend } = Chart
-, INITIAL_FILTERED = {
+const INITIAL_FILTERED = {
   temp: false,
   pressure: true,
   rain: true,

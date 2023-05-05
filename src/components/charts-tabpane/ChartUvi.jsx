@@ -1,6 +1,10 @@
 import memoEqual from '../hoc/memoEqual';
+
 import dt from '../../utils/dt';
-import Chart from '../charts/Chart';
+import {
+  YAxis,
+  Line
+} from '../charts/Chart';
 import { sUV } from '../../flux/selectors';
 
 import useSelectorData from './useSelectorData';
@@ -8,11 +12,7 @@ import ChartType1 from './ChartType1';
 import TooltipUvi from './TooltipUvi';
 import STYLE from './Chart.Style';
 
-const {
- YAxis,
- Line
-} = Chart
-, _transformUvi = hourlyArr => (hourlyArr || [])
+const _transformUvi = hourlyArr => (hourlyArr || [])
    .map(({ date, value }) => ({
       day: dt.toDayHour(date),
       uvi: value

@@ -1,15 +1,13 @@
-
-import Chart from '../charts/Chart';
-import STYLE from './Chart.Style';
-
-const {
+import {
   ResponsiveContainer,
   ComposedChart,
   LineChart,
   XAxis,
   CartesianGrid,
   Tooltip
-} = Chart;
+} from '../charts/Chart';
+
+import STYLE from './Chart.Style';
 
 const ChartType1 = ({
   chartStyle=STYLE.HourlyChart,

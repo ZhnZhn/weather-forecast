@@ -1,4 +1,4 @@
-import Chart from '../charts/Chart';
+import { YAxis } from '../charts/Chart';
 import STYLE from './Chart.Style';
 import {
   YAXIS_LABEL_TEMPERATURE,
@@ -7,8 +7,6 @@ import {
   YAXIS_LABEL_RAIN,
   YAXIS_LABEL_SNOW,
 } from './YAxisLabel.Style';
-
-const { YAxis } = Chart;
 
 export const crYAxisTemp = (yId, filtered) => (
   <YAxis

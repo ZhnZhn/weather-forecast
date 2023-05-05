@@ -1,6 +1,10 @@
-
 import memoEqual from '../hoc/memoEqual';
-import Chart from '../charts/Chart';
+
+import {
+  YAxis,
+  Legend,
+} from '../charts/Chart';
+
 import { sAir } from '../../flux/selectors';
 import dt from '../../utils/dt';
 
@@ -12,11 +16,6 @@ import LegendAirForecast from './LegendAirForecast';
 import crListSeries from './crListSeries';
 import STYLE from './Chart.Style';
 import SC from './SeriesColor';
-
-const {
- YAxis,
- Legend,
-} = Chart;
 
 const _crLabelColor = color => ({
   stroke: color,
