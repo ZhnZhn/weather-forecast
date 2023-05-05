@@ -1,15 +1,13 @@
-import { useRef, useCallback } from '../uiApi';
-import useBool from '../hooks/useBool';
+import {
+  useRef,
+  useCallback
+} from '../uiApi';
 
-import SecretField from '../zhn-m-input/SecretField';
-import RowCheckBox from './RowCheckBox';
+import PasswordField from '../zhn-m-input/PasswordField';
 import RaisedButton from '../zhn-atoms/RaisedButton';
 
-const CAPTION_ALLOW = "Allow Remember Enter of API Key by Browser Password Manager"
-, S_SECRET = { width: 280 }
-, S_CHECK_BOX = { padding: '16px 24px 0 24px'}
-, S_CHECK_CAPTION = { display: 'inline' }
-, IS_ALLOW = false;
+const S_SECRET = { width: 280 }
+, FN_TEST = v => !v || v.length === 32;
 
 const CardApiKey = ({
   style,
@@ -18,7 +16,6 @@ const CardApiKey = ({
   onSet
 }) => {
   const _refInput = useRef()
-  , [isAllow, _checkAllow, _uncheckAllow] = useBool(IS_ALLOW)
   /*eslint-disable react-hooks/exhaustive-deps */
   , _onSet = useCallback(() => {
     onSet(_refInput.current.getValue())
@@ -28,20 +25,13 @@ const CardApiKey = ({
   /*eslint-enable react-hooks/exhaustive-deps */
   return (
     <div style={style}>
-      <SecretField
+      <PasswordField
         ref={_refInput}
         style={S_SECRET}
-        isAllowRemember={isAllow}
-        caption="OpenWeatherMap API Key"
+        caption="OpenWeatherMap API Key (32)"
         name="openweathermap"
-      />
-      <RowCheckBox
-        style={S_CHECK_BOX}
-        initValue={IS_ALLOW}
-        caption={CAPTION_ALLOW}
-        captionStyle={S_CHECK_CAPTION}
-        onCheck={_checkAllow}
-        onUnCheck={_uncheckAllow}
+        onEnter={_onSet}
+        onTest={FN_TEST}
       />
       <div style={buttonsStyle}>
         <RaisedButton

@@ -4,7 +4,6 @@ export {
 } from 'react-redux';
 
 export {
-  Component,
   createContext,
   createElement,
   cloneElement,
@@ -29,6 +28,12 @@ export const setRefValue = (
   if (ref) {
     ref.current = value
   }
+}
+
+export const stopDefaultFor = (evt) => {
+  evt.stopPropagation()
+  evt.nativeEvent.stopImmediatePropagation()
+  evt.preventDefault()
 }
 
 const _getFirstTouches = (
