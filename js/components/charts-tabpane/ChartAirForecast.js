@@ -14,7 +14,7 @@ var _ChartType = _interopRequireDefault(require("./ChartType1"));
 var _TooltipAirForecast = _interopRequireDefault(require("./TooltipAirForecast"));
 var _LegendAirForecast = _interopRequireDefault(require("./LegendAirForecast"));
 var _crListSeries = _interopRequireDefault(require("./crListSeries"));
-var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
+var _Chart2 = require("./Chart.Style");
 var _SeriesColor = _interopRequireDefault(require("./SeriesColor"));
 var _jsxRuntime = require("react/jsx-runtime");
 var _crLabelColor = function _crLabelColor(color) {
@@ -58,7 +58,7 @@ so2: 2.12
 */
 
 var _transformAirForecast = function _transformAirForecast(arr) {
-  return arr.map(function (_ref) {
+  return (arr || []).map(function (_ref) {
     var timestamp = _ref.dt,
       components = _ref.components,
       main = _ref.main;
@@ -75,7 +75,7 @@ var _transformAirForecast = function _transformAirForecast(arr) {
 var LINE_CONFIGS = [{
   id: 'aqi',
   yId: 2,
-  style: _Chart2["default"].LineSpeed
+  style: _Chart2.S_LINE_SPEED
 }, {
   id: 'no2'
 }, {
@@ -87,7 +87,7 @@ var LINE_CONFIGS = [{
 }, {
   id: 'co',
   yId: 3,
-  style: _Chart2["default"].LinePressure
+  style: _Chart2.S_LINE_PRESSURE
 }, {
   id: 'no'
 }, {
@@ -117,14 +117,14 @@ var ChartAirForecast = function ChartAirForecast() {
       label: LABEL_AQI,
       dataKey: "aqi",
       hide: filtered.aqi
-    }, _Chart2["default"].YAxisSpeed)), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, (0, _extends2["default"])({
+    }, _Chart2.S_YAXIS_SPEED)), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, (0, _extends2["default"])({
       yAxisId: 3,
       orientation: "right",
       width: 45,
       label: LABEL_CO,
       dataKey: "co",
       hide: filtered.co
-    }, _Chart2["default"].YAxisPressure)), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.Legend, {
+    }, _Chart2.S_YAXIS_PRESSURE)), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.Legend, {
       content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendAirForecast["default"], {
         filtered: filtered,
         onFilter: _hFilter

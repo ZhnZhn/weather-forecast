@@ -14,7 +14,12 @@ import ChartType1 from './ChartType1';
 import TooltipAirForecast from './TooltipAirForecast';
 import LegendAirForecast from './LegendAirForecast';
 import crListSeries from './crListSeries';
-import STYLE from './Chart.Style';
+import {
+  S_LINE_SPEED,
+  S_LINE_PRESSURE,
+  S_YAXIS_SPEED,
+  S_YAXIS_PRESSURE
+} from './Chart.Style';
 import SC from './SeriesColor';
 
 const _crLabelColor = color => ({
@@ -63,7 +68,9 @@ pm10: 21.37
 so2: 2.12
 */
 
-const _transformAirForecast = arr => arr
+const _transformAirForecast = (
+  arr
+) => (arr||[])
  .map(({ dt:timestamp, components, main }) => {
    const _dh = dt.toDayHour(timestamp)
    , { aqi } = main || {};
@@ -73,25 +80,26 @@ const _transformAirForecast = arr => arr
      dt_text: `${_dh}:00`,
      aqi
    };
- })
-
-
+ });
 
 const LINE_CONFIGS = [
 {
   id: 'aqi',
   yId: 2,
-  style: STYLE.LineSpeed
+  style: S_LINE_SPEED
 },{ id: 'no2' },{ id: 'o3'}, { id: 'pm2_5'}, { id: 'pm10' },{
   id: 'co',
   yId: 3,
-  style: STYLE.LinePressure,
+  style: S_LINE_PRESSURE,
 }, { id: 'no'}, { id: 'nh3'}, { id: 'so2'}
 ];
 
 
 const ChartAirForecast = () => {
-  const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
+  const [
+    filtered,
+    _hFilter
+  ] = useSeriesFilter(INITIAL_FILTERED)
   , data = useSelectorData(sAir.forecast, _transformAirForecast)
   , _isHideYAxis1 = filtered.no2
        && filtered.o3
@@ -120,7 +128,7 @@ const ChartAirForecast = () => {
            label={LABEL_AQI}
            dataKey="aqi"
            hide={filtered.aqi}
-           {...STYLE.YAxisSpeed}
+           {...S_YAXIS_SPEED}
         />
         <YAxis
            yAxisId={3}
@@ -129,7 +137,7 @@ const ChartAirForecast = () => {
            label={LABEL_CO}
            dataKey="co"
            hide={filtered.co}
-           {...STYLE.YAxisPressure}
+           {...S_YAXIS_PRESSURE}
         />
         <Legend
            content={

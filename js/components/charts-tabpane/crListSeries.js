@@ -5,7 +5,7 @@ exports.__esModule = true;
 exports["default"] = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _Chart = require("../charts/Chart");
-var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
+var _Chart2 = require("./Chart.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 var _crDataKey = function _crDataKey(filtered, propName) {
     return filtered[propName] ? 'empty' : propName;
@@ -21,7 +21,7 @@ var crListSeries = function crListSeries(configs, filtered, isNot) {
       _ref$yId = _ref.yId,
       yId = _ref$yId === void 0 ? 1 : _ref$yId,
       _ref$style = _ref.style,
-      style = _ref$style === void 0 ? _Chart2["default"].LineTempNight : _ref$style;
+      style = _ref$style === void 0 ? _Chart2.S_LINE_TEMP_NIGHT : _ref$style;
     if (isNot[id]) {
       return null;
     }

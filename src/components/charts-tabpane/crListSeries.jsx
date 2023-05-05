@@ -2,7 +2,7 @@ import {
   Bar,
   Line
 } from '../charts/Chart';
-import STYLE from './Chart.Style';
+import { S_LINE_TEMP_NIGHT } from './Chart.Style';
 
 const _crDataKey = (
   filtered,
@@ -20,7 +20,7 @@ const crListSeries = (
   id,
   type,
   yId=1,
-  style=STYLE.LineTempNight,
+  style=S_LINE_TEMP_NIGHT,
 }) => {
   if (isNot[id]) {
     return null;

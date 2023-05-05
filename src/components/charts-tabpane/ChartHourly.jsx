@@ -17,7 +17,12 @@ import {
 import LegendHourly from './LegendHourly';
 import TooltipHourly from './TooltipHourly';
 import crListSeries from './crListSeries';
-import STYLE from './Chart.Style';
+import {
+  S_LINE_SPEED,
+  S_LINE_PRESSURE,
+  S_BAR_RAIN,
+  S_BAR_SNOW
+} from './Chart.Style';
 
 const INITIAL_FILTERED = {
   temp: false,
@@ -26,10 +31,18 @@ const INITIAL_FILTERED = {
   speed: true
 }
 , _get3h = data => (data || {})['3h'] || null
-, _transformHourly = hourlyArr => hourlyArr
+, _transformHourly = (
+  hourlyArr
+) => hourlyArr
   .map(({ dt:timestamp, main, wind, rain, snow }) => {
-    const { temp, pressure, humidity } = main || {}
-    , { speed=null } = wind || {}
+    const {
+      temp,
+      pressure,
+      humidity
+    } = main || {}
+    , {
+      speed=null
+    } = wind || {}
     , _dh = dt.toDayHour(timestamp);
     return {
       day: _dh,
@@ -54,26 +67,29 @@ const INITIAL_FILTERED = {
   },{
     id: 'pressure',
     yId: PRESSURE_ID,
-    style: STYLE.LinePressure
+    style: S_LINE_PRESSURE
   },{
     id: 'rain',
     type: 'bar',
     yId: RAIN_ID,
-    style: STYLE.BarRain
+    style: S_BAR_RAIN
   },{
     id: 'snow',
     type: 'bar',
     yId: SNOW_ID,
-    style: STYLE.BarSnow
+    style: S_BAR_SNOW
   },{
     id: 'speed',
     yId: SPEED_ID,
-    style: STYLE.LineSpeed
+    style: S_LINE_SPEED
   }
 ];
 
 const ChartHourly = () => {
-  const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
+  const [
+    filtered,
+    _hFilter
+  ] = useSeriesFilter(INITIAL_FILTERED)
   , data = useSelectorData(sHourly.forecast, _transformHourly)
   , isNot = useIsNoData(data);
 

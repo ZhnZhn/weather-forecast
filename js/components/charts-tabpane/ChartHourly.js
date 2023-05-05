@@ -15,7 +15,7 @@ var _crYAxis = require("./crYAxis");
 var _LegendHourly = _interopRequireDefault(require("./LegendHourly"));
 var _TooltipHourly = _interopRequireDefault(require("./TooltipHourly"));
 var _crListSeries = _interopRequireDefault(require("./crListSeries"));
-var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
+var _Chart2 = require("./Chart.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 var INITIAL_FILTERED = {
     temp: false,
@@ -64,21 +64,21 @@ var INITIAL_FILTERED = {
   }, {
     id: 'pressure',
     yId: PRESSURE_ID,
-    style: _Chart2["default"].LinePressure
+    style: _Chart2.S_LINE_PRESSURE
   }, {
     id: 'rain',
     type: 'bar',
     yId: RAIN_ID,
-    style: _Chart2["default"].BarRain
+    style: _Chart2.S_BAR_RAIN
   }, {
     id: 'snow',
     type: 'bar',
     yId: SNOW_ID,
-    style: _Chart2["default"].BarSnow
+    style: _Chart2.S_BAR_SNOW
   }, {
     id: 'speed',
     yId: SPEED_ID,
-    style: _Chart2["default"].LineSpeed
+    style: _Chart2.S_LINE_SPEED
   }];
 var ChartHourly = function ChartHourly() {
   var _useSeriesFilter = (0, _useSeriesFilter2["default"])(INITIAL_FILTERED),

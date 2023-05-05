@@ -11,7 +11,7 @@ var _selectors = require("../../flux/selectors");
 var _useSelectorData = _interopRequireDefault(require("./useSelectorData"));
 var _ChartType = _interopRequireDefault(require("./ChartType1"));
 var _TooltipUvi = _interopRequireDefault(require("./TooltipUvi"));
-var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
+var _Chart2 = require("./Chart.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 var _transformUvi = function _transformUvi(hourlyArr) {
   return (hourlyArr || []).map(function (_ref) {
@@ -34,7 +34,7 @@ var ChartUvi = function ChartUvi() {
       orientation: "right",
       width: 45,
       dataKey: "uvi"
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.Line, (0, _extends2["default"])({}, _Chart2["default"].LineTempNight, {
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.Line, (0, _extends2["default"])({}, _Chart2.S_LINE_TEMP_NIGHT, {
       connectNulls: true,
       yAxisId: 1,
       dataKey: "uvi"

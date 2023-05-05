@@ -5,7 +5,7 @@ exports.__esModule = true;
 exports.crYAxisWindSpeed = exports.crYAxisTemp = exports.crYAxisSnow = exports.crYAxisRain = exports.crYAxisPressure = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _Chart = require("../charts/Chart");
-var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
+var _Chart2 = require("./Chart.Style");
 var _YAxisLabel = require("./YAxisLabel.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 var crYAxisTemp = function crYAxisTemp(yId, filtered) {
@@ -20,7 +20,7 @@ var crYAxisTemp = function crYAxisTemp(yId, filtered) {
 };
 exports.crYAxisTemp = crYAxisTemp;
 var crYAxisPressure = function crYAxisPressure(yId, filtered) {
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisPressure, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, (0, _extends2["default"])({}, _Chart2.S_YAXIS_PRESSURE, {
     label: _YAxisLabel.YAXIS_LABEL_PRESSURE,
     orientation: "right",
     width: 80,
@@ -36,7 +36,7 @@ var crYAxisWindSpeed = function crYAxisWindSpeed(yId, filtered, id, value) {
   if (id === void 0) {
     id = 'speed';
   }
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSpeed, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, (0, _extends2["default"])({}, _Chart2.S_YAXIS_SPEED, {
     label: (0, _YAxisLabel.crYAxisLabelWind)(value),
     orientation: "right",
     width: 45,
@@ -47,7 +47,7 @@ var crYAxisWindSpeed = function crYAxisWindSpeed(yId, filtered, id, value) {
 };
 exports.crYAxisWindSpeed = crYAxisWindSpeed;
 var crYAxisRain = function crYAxisRain(yId, filtered) {
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisRain, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, (0, _extends2["default"])({}, _Chart2.S_YAXIS_RAIN, {
     label: _YAxisLabel.YAXIS_LABEL_RAIN,
     orientation: "right",
     width: 54,
@@ -58,7 +58,7 @@ var crYAxisRain = function crYAxisRain(yId, filtered) {
 };
 exports.crYAxisRain = crYAxisRain;
 var crYAxisSnow = function crYAxisSnow(yId, filtered) {
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, (0, _extends2["default"])({}, _Chart2["default"].YAxisSnow, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, (0, _extends2["default"])({}, _Chart2.S_YAXIS_SNOW, {
     label: _YAxisLabel.YAXIS_LABEL_SNOW,
     orientation: "right",
     width: 54,

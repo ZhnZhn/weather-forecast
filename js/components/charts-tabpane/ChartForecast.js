@@ -15,7 +15,7 @@ var _crYAxis = require("./crYAxis");
 var _crListSeries = _interopRequireDefault(require("./crListSeries"));
 var _TooltipForecast = _interopRequireDefault(require("./TooltipForecast"));
 var _LegendForecast = _interopRequireDefault(require("./LegendForecast"));
-var _Chart2 = _interopRequireDefault(require("./Chart.Style"));
+var _Chart2 = require("./Chart.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 var YAXIS_LABEL_TEMP = {
   value: "°C"
@@ -45,10 +45,7 @@ var INITIAL_FILTERED = {
   snow: true
 };
 var _transformForecast = function _transformForecast(arr) {
-  if (arr === void 0) {
-    arr = [];
-  }
-  return arr.map(function (_ref) {
+  return (arr || []).map(function (_ref) {
     var timestamp = _ref.dt,
       _ref$rain = _ref.rain,
       rain = _ref$rain === void 0 ? 0 : _ref$rain,
@@ -97,42 +94,42 @@ var T_Y_ID = 1,
     id: 'rain',
     type: 'bar',
     yId: RAIN_Y_ID,
-    style: _Chart2["default"].BarRain
+    style: _Chart2.S_BAR_RAIN
   }, {
     id: 'speed',
     yId: WIND_SPEED_Y_ID,
-    style: _Chart2["default"].LineSpeed
+    style: _Chart2.S_LINE_SPEED
   }, {
     id: 'pressure',
     yId: PRESSURE_Y_ID,
-    style: _Chart2["default"].LinePressure
+    style: _Chart2.S_LINE_PRESSURE
   }, {
     id: 'humidity',
     yId: HUMIDITY_Y_ID,
-    style: _Chart2["default"].LineHumidity
+    style: _Chart2.S_LINE_HUMIDITY
   }, {
     id: 'snow',
     type: 'bar',
     yId: SNOW_Y_ID,
-    style: _Chart2["default"].BarSnow
+    style: _Chart2.S_BAR_SNOW
   }, {
     id: 'tempMin',
-    style: _Chart2["default"].LineTempMin
+    style: _Chart2.S_LINE_TEMP_MIN
   }, {
     id: 'tempMax',
-    style: _Chart2["default"].LineTempMax
+    style: _Chart2.S_LINE_TEMP_MAX
   }, {
     id: 'tempEve',
-    style: _Chart2["default"].LineTempEve
+    style: _Chart2.S_LINE_TEMP_EVE
   }, {
     id: 'tempMorn',
-    style: _Chart2["default"].LineTempMorn
+    style: _Chart2.S_LINE_TEMP_MORNING
   }, {
     id: 'tempNight',
-    style: _Chart2["default"].LineTempNight
+    style: _Chart2.S_LINE_TEMP_NIGHT
   }, {
     id: 'tempDay',
-    style: _Chart2["default"].LineTempDay
+    style: _Chart2.S_LINE_TEMP_DAY
   }];
 var _selectRecentById = function _selectRecentById(state) {
   var recent = _selectors.sForecast.recent(state);
@@ -145,7 +142,7 @@ var ChartForecast = function ChartForecast() {
     data = (0, _useSelectorData["default"])(_selectRecentById, _transformForecast),
     isNot = (0, _useIsNoData["default"])(data);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_ChartType["default"], {
-    chartStyle: _Chart2["default"].ComposedChart,
+    chartStyle: _Chart2.S_COMPOSED_CHART,
     data: data,
     TooltipComp: _TooltipForecast["default"],
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, {

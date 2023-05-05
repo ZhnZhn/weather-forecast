@@ -10,9 +10,11 @@ import { sUV } from '../../flux/selectors';
 import useSelectorData from './useSelectorData';
 import ChartType1 from './ChartType1';
 import TooltipUvi from './TooltipUvi';
-import STYLE from './Chart.Style';
+import { S_LINE_TEMP_NIGHT } from './Chart.Style';
 
-const _transformUvi = hourlyArr => (hourlyArr || [])
+const _transformUvi = (
+  hourlyArr
+) => (hourlyArr || [])
    .map(({ date, value }) => ({
       day: dt.toDayHour(date),
       uvi: value
@@ -32,7 +34,7 @@ const ChartUvi = () => {
          width={45}
          dataKey="uvi"
       />
-      <Line {...STYLE.LineTempNight}
+      <Line {...S_LINE_TEMP_NIGHT}
           connectNulls={true}
           yAxisId={1}
           dataKey="uvi"

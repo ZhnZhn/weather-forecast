@@ -21,7 +21,20 @@ import {
 import crListSeries from './crListSeries';
 import TooltipForecast from './TooltipForecast';
 import LegendForecast from './LegendForecast';
-import STYLE from './Chart.Style';
+import {
+  S_COMPOSED_CHART,
+  S_BAR_RAIN,
+  S_BAR_SNOW,
+  S_LINE_SPEED,
+  S_LINE_PRESSURE,
+  S_LINE_HUMIDITY,
+  S_LINE_TEMP_MIN,
+  S_LINE_TEMP_MAX,
+  S_LINE_TEMP_MORNING,
+  S_LINE_TEMP_DAY,
+  S_LINE_TEMP_EVE,
+  S_LINE_TEMP_NIGHT
+} from './Chart.Style';
 
 const YAXIS_LABEL_TEMP = {
     value: "°C",
@@ -51,11 +64,17 @@ const INITIAL_FILTERED = {
   snow: true
 };
 
-const _transformForecast = (arr=[]) => arr
+const _transformForecast = (
+  arr
+) => (arr||[])
  .map(({ dt:timestamp, rain=0, speed, temp, pressure, humidity, snow=0 }) => {
    const {
-       day=null, night=null, morn=null,
-       eve=null, max=null, min=null
+       day=null,
+       night=null,
+       morn=null,
+       eve=null,
+       max=null,
+       min=null
     } = temp || {};
     return {
        day: dt.toShortDayOfWeek(timestamp),
@@ -83,20 +102,22 @@ const T_Y_ID = 1
   id: 'rain',
   type: 'bar',
   yId: RAIN_Y_ID,
-  style: STYLE.BarRain,
-},{ id: 'speed', yId: WIND_SPEED_Y_ID , style: STYLE.LineSpeed
-},{ id: 'pressure', yId: PRESSURE_Y_ID, style: STYLE.LinePressure
-},{ id: 'humidity', yId: HUMIDITY_Y_ID, style: STYLE.LineHumidity
-},{ id: 'snow', type: 'bar', yId: SNOW_Y_ID, style: STYLE.BarSnow
-},{ id: 'tempMin', style: STYLE.LineTempMin
-},{ id: 'tempMax', style: STYLE.LineTempMax
-},{ id: 'tempEve', style: STYLE.LineTempEve
-},{ id: 'tempMorn', style: STYLE.LineTempMorn
-},{ id: 'tempNight', style: STYLE.LineTempNight
-},{ id: 'tempDay', style: STYLE.LineTempDay}
+  style: S_BAR_RAIN,
+},{ id: 'speed', yId: WIND_SPEED_Y_ID , style: S_LINE_SPEED
+},{ id: 'pressure', yId: PRESSURE_Y_ID, style: S_LINE_PRESSURE
+},{ id: 'humidity', yId: HUMIDITY_Y_ID, style: S_LINE_HUMIDITY
+},{ id: 'snow', type: 'bar', yId: SNOW_Y_ID, style: S_BAR_SNOW
+},{ id: 'tempMin', style: S_LINE_TEMP_MIN
+},{ id: 'tempMax', style: S_LINE_TEMP_MAX
+},{ id: 'tempEve', style: S_LINE_TEMP_EVE
+},{ id: 'tempMorn', style: S_LINE_TEMP_MORNING
+},{ id: 'tempNight', style: S_LINE_TEMP_NIGHT
+},{ id: 'tempDay', style: S_LINE_TEMP_DAY}
 ];
 
-const _selectRecentById = state => {
+const _selectRecentById = (
+  state
+) => {
   const recent = sForecast.recent(state);
   return recent
     ? sForecast.listById(state, recent)
@@ -104,13 +125,16 @@ const _selectRecentById = state => {
 };
 
 const ChartForecast = () => {
-  const [filtered, _hFilter] = useSeriesFilter(INITIAL_FILTERED)
+  const [
+    filtered,
+    _hFilter
+  ] = useSeriesFilter(INITIAL_FILTERED)
   , data = useSelectorData(_selectRecentById, _transformForecast)
   , isNot = useIsNoData(data);
 
   return (
     <ChartType1
-       chartStyle={STYLE.ComposedChart}
+       chartStyle={S_COMPOSED_CHART}
        data={data}
        TooltipComp={TooltipForecast}
     >

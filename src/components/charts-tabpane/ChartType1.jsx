@@ -7,10 +7,14 @@ import {
   Tooltip
 } from '../charts/Chart';
 
-import STYLE from './Chart.Style';
+import {
+  S_HOURLY_CHART,
+  S_XAXIS,
+  S_CARTESIAN_GRID
+} from './Chart.Style';
 
 const ChartType1 = ({
-  chartStyle=STYLE.HourlyChart,
+  chartStyle=S_HOURLY_CHART,
   data,
   type,
   TooltipComp,
@@ -22,8 +26,8 @@ const ChartType1 = ({
   return (
     <ResponsiveContainer width="100%" height={300} >
       <ChartComp {...chartStyle} data={data}>
-        <XAxis {...STYLE.XAxis} dataKey="day" />
-        <CartesianGrid {...STYLE.CartesianGrid} />
+        <XAxis {...S_XAXIS} dataKey="day" />
+        <CartesianGrid {...S_CARTESIAN_GRID} />
         <Tooltip
           offset={24}
           content={<TooltipComp data={data} />}
