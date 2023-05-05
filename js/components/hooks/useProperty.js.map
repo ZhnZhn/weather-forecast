@@ -1,0 +1,22 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/hooks/useProperty.js"
+ ],
+ "file": "../../../src/components/hooks/useProperty.js",
+ "names": [
+  "_uiApi",
+  "require",
+  "useProperty",
+  "initialValue",
+  "dfValue",
+  "ref",
+  "useRef",
+  "useMemo",
+  "v",
+  "current",
+  "_default",
+  "exports"
+ ],
+ "mappings": ";;;;AAAA,IAAAA,MAAA,GAAAC,OAAA;AAKA,IAAMC,WAAW,GAAG,SAAdA,WAAWA,CACfC,YAAY,EACZC,OAAO,EACJ;EACH,IAAMC,GAAG,GAAG,IAAAC,aAAM,EAACH,YAAY,CAAC;EAChC;EACA,OAAO,IAAAI,cAAO,EAAC;IAAA,OAAM;IACnB;IACA,UAAAC,CAAC,EAAI;MAAEH,GAAG,CAACI,OAAO,GAAGD,CAAC;IAAC,CAAC;IACxB;IACA;MAAA,OAAMH,GAAG,CAACI,OAAO,IAAIL,OAAO;IAAA,EAC7B;EAAA,GAAE,EAAE,CAAC;EACN;EACA;AACF,CAAC;AAAC,IAAAM,QAAA,GAEaR,WAAW;AAAAS,OAAA,cAAAD,QAAA"
+}
