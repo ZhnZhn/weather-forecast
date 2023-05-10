@@ -1,5 +1,7 @@
 import { isNumber } from '../util/DataUtils';
 
+export const originCoordinate = { x: 0, y: 0 };
+
 export const crAxisComponent = (
   axisType,
   AxisComp
