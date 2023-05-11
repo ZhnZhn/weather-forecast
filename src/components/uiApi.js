@@ -4,7 +4,15 @@ export {
 } from 'react-redux';
 
 export {
+  findDOMNode
+} from 'react-dom';
+
+export {
+  isValidElement,
+  Component,
+  PureComponent,
   createContext,
+  createRef,
   createElement,
   cloneElement,
   memo,
