@@ -1,12 +1,6 @@
-import {
-  isValidElement,
-  cloneElement
-} from '../../uiApi';
-
 import classNames from 'classnames';
 
 import _some from 'lodash/some';
-import { _isFn } from '../util/FnUtils';
 
 import { Layer } from '../container/Layer';
 import { Label } from '../component/Label';
@@ -14,6 +8,7 @@ import { ifOverflowMatches } from '../util/IfOverflowMatches';
 import { isNumOrStr } from '../util/DataUtils';
 import { createLabeledScales, rectWithCoords } from '../util/CartesianUtils';
 import { filterProps } from '../util/ReactUtils';
+import { fCreateElement } from './cartesianFn';
 
 const CL_REFERENCE_LINE = 'recharts-reference-line'
 , CL_REFERENCE_LINE_LINE = `${CL_REFERENCE_LINE}-line`
@@ -21,14 +16,13 @@ const CL_REFERENCE_LINE = 'recharts-reference-line'
 , ORIENTATION_LEFT = 'left'
 , ORIENTATION_TOP = 'top';
 
-const renderLine = (
-  option,
+const _crLineElement = (
   props
-) => isValidElement(option)
-  ? cloneElement(option, props)
-  : _isFn(option)
-      ? option(props)
-      : <line {...props} className={CL_REFERENCE_LINE_LINE} />
+) => (
+  <line {...props} className={CL_REFERENCE_LINE_LINE} />
+);
+
+const _renderLine = fCreateElement(_crLineElement);
 
 const getEndPoints = (
   scales,
@@ -137,7 +131,7 @@ export const ReferenceLine = (props) => {
 
   return (
    <Layer className={classNames(CL_REFERENCE_LINE, className)}>
-     {renderLine(shape, lineProps)}
+     {_renderLine(shape, lineProps)}
      {Label.renderCallByParent(props, rectWithCoords({ x1, y1, x2, y2 }))}
    </Layer>
   );

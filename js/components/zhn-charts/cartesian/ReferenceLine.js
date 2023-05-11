@@ -4,27 +4,27 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.ReferenceLine = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _uiApi = require("../../uiApi");
 var _classnames = _interopRequireDefault(require("classnames"));
 var _some2 = _interopRequireDefault(require("lodash/some"));
-var _FnUtils = require("../util/FnUtils");
 var _Layer = require("../container/Layer");
 var _Label = require("../component/Label");
 var _IfOverflowMatches = require("../util/IfOverflowMatches");
 var _DataUtils = require("../util/DataUtils");
 var _CartesianUtils = require("../util/CartesianUtils");
 var _ReactUtils = require("../util/ReactUtils");
+var _cartesianFn = require("./cartesianFn");
 var _jsxRuntime = require("react/jsx-runtime");
 var CL_REFERENCE_LINE = 'recharts-reference-line',
   CL_REFERENCE_LINE_LINE = CL_REFERENCE_LINE + "-line",
   DISCARD = 'discard',
   ORIENTATION_LEFT = 'left',
   ORIENTATION_TOP = 'top';
-var renderLine = function renderLine(option, props) {
-  return (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneElement)(option, props) : (0, _FnUtils._isFn)(option) ? option(props) : /*#__PURE__*/(0, _jsxRuntime.jsx)("line", (0, _extends2["default"])({}, props, {
+var _crLineElement = function _crLineElement(props) {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("line", (0, _extends2["default"])({}, props, {
     className: CL_REFERENCE_LINE_LINE
   }));
 };
+var _renderLine = (0, _cartesianFn.fCreateElement)(_crLineElement);
 var getEndPoints = function getEndPoints(scales, isFixedX, isFixedY, isSegment, props) {
   var _props$viewBox = props.viewBox,
     x = _props$viewBox.x,
@@ -118,7 +118,7 @@ var ReferenceLine = function ReferenceLine(props) {
     });
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     className: (0, _classnames["default"])(CL_REFERENCE_LINE, className),
-    children: [renderLine(shape, lineProps), _Label.Label.renderCallByParent(props, (0, _CartesianUtils.rectWithCoords)({
+    children: [_renderLine(shape, lineProps), _Label.Label.renderCallByParent(props, (0, _CartesianUtils.rectWithCoords)({
       x1: x1,
       y1: y1,
       x2: x2,
