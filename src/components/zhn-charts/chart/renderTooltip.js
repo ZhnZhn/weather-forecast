@@ -1,4 +1,4 @@
-import { cloneElement } from '../../uApi';
+import { cloneElement } from '../../uiApi';
 
 import { findChildByType } from '../util/ReactUtils';
 import { Tooltip } from '../component/Tooltip';

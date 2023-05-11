@@ -4,7 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.renderTooltip = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _uApi = require("../../uApi");
+var _uiApi = require("../../uiApi");
 var _ReactUtils = require("../util/ReactUtils");
 var _Tooltip = require("../component/Tooltip");
 var renderTooltip = function renderTooltip(chartInst) {
@@ -20,7 +20,7 @@ var renderTooltip = function renderTooltip(chartInst) {
     activePayload = state.activePayload,
     activeLabel = state.activeLabel,
     offset = state.offset;
-  return (0, _uApi.cloneElement)(tooltipItem, {
+  return (0, _uiApi.cloneElement)(tooltipItem, {
     viewBox: (0, _extends2["default"])({}, offset, {
       x: offset.left,
       y: offset.top
