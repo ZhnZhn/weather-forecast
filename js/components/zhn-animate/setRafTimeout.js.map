@@ -1,0 +1,17 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/zhn-animate/setRafTimeout.js"
+ ],
+ "file": "../../../src/components/zhn-animate/setRafTimeout.js",
+ "names": [
+  "setRafTimeout",
+  "callback",
+  "timeout",
+  "currTime",
+  "shouldUpdate",
+  "now",
+  "requestAnimationFrame"
+ ],
+ "mappings": ";;;;AAAe,SAASA,aAAaA,CACnCC,QAAQ,EACRC,OAAO,EACP;EAAA,IADAA,OAAO;IAAPA,OAAO,GAAG,CAAC;EAAA;EAEX,IAAIC,QAAQ,GAAG,CAAC,CAAC;EAEjB,IAAMC,YAAY,GAAG,SAAfA,YAAYA,CAAIC,GAAG,EAAK;IAC5B,IAAIF,QAAQ,GAAG,CAAC,EAAE;MAChBA,QAAQ,GAAGE,GAAG;IAChB;IAEA,IAAIA,GAAG,GAAGF,QAAQ,GAAGD,OAAO,EAAE;MAC5BD,QAAQ,CAACI,GAAG,CAAC;MACbF,QAAQ,GAAG,CAAC,CAAC;IACf,CAAC,MAAM;MACLG,qBAAqB,CAACF,YAAY,CAAC;IACrC;EACF,CAAC;EAEDE,qBAAqB,CAACF,YAAY,CAAC;AACrC"
+}
