@@ -1,0 +1,15 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../../src/components/zhn-charts/scale/index.js"
+ ],
+ "file": "../../../../src/components/zhn-charts/scale/index.js",
+ "names": [
+  "_getNiceTickValues",
+  "require",
+  "exports",
+  "getNiceTickValues",
+  "getTickValuesFixedDomain"
+ ],
+ "mappings": ";;;;AAAA,IAAAA,kBAAA,GAAAC,OAAA;AAG6BC,OAAA,CAAAC,iBAAA,GAAAH,kBAAA,CAAAG,iBAAA;AAAAD,OAAA,CAAAE,wBAAA,GAAAJ,kBAAA,CAAAI,wBAAA"
+}
