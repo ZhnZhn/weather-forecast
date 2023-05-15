@@ -24,18 +24,14 @@ import {
   renderRectangles
 } from './BarRenderFn';
 
+import { isNeedClip } from './cartesianFn';
+
 import useAnimationHandle from './useAnimationHandle';
 import usePrevCurData from './usePrevCurData';
 import useClipPathId from './useClipPathId';
 
 const CL_BAR = "recharts-bar"
 , CL_BAR_RECTANGLES = `${CL_BAR}-rectangles`;
-
-const _isNeedClip = ({
- xAxis,
- yAxis
-}) => (xAxis && xAxis.allowDataOverflow)
-  || (yAxis && yAxis.allowDataOverflow);
 
 export const Bar = memo((props) => {
   const {
@@ -66,13 +62,13 @@ export const Bar = memo((props) => {
      CL_BAR,
      id
   );
-  
+
   if (hide || !data || !data.length) {
     return null;
   }
 
   const layerClass = classNames(CL_BAR, className)
-  , needClip = _isNeedClip(props);
+  , needClip = isNeedClip(props);
 
   return (
     <Layer className={layerClass}>

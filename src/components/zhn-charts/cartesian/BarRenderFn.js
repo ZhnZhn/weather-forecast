@@ -8,16 +8,17 @@ import {
 import {
   interpolateNumber
 } from '../util/DataUtils';
-import {
-  getValueByDataKey
-} from '../util/ChartUtils';
 import { adaptEventsOfChild } from '../util/types';
 
 import { Rectangle } from '../shape/Rectangle';
 import { Layer } from '../container/Layer';
 import { ErrorBar } from './ErrorBar';
 
-import { fCreateElement } from './cartesianFn';
+import {
+  fCreateElement,
+  dataPointFormatter,
+  crClipPathProps
+} from './cartesianFn';
 
 const CL_BAR_RECTANGLES = "recharts-bar-rectangle"
 , CL_BAR_BACKGROUND_RECTANGLES = "recharts-bar-background-rectangle"
@@ -103,8 +104,8 @@ export const renderErrorBar = (
     children
   } = props
   , errorBarItems = findAllByType(
-    children,
-    ErrorBar
+     children,
+     ErrorBar
   );
 
   if (!errorBarItems) {
@@ -113,20 +114,12 @@ export const renderErrorBar = (
 
   const offset = layout === 'vertical'
     ? data[0].height / 2
-    : data[0].width / 2;
-  function dataPointFormatter(dataPoint, dataKey) {
-    return {
-      x: dataPoint.x,
-      y: dataPoint.y,
-      value: dataPoint.value,
-      errorVal: getValueByDataKey(dataPoint, dataKey)
-    };
-  }
-  const errorBarProps = {
-    clipPath: needClip
-      ? `url(#clipPath-${clipPathId})`
-      : null
-  };
+    : data[0].width / 2
+  , errorBarProps = crClipPathProps(
+     needClip,
+     clipPathId
+  );
+
   return (
     <Layer {...errorBarProps}>
        {errorBarItems.map((item, i) => cloneElement(item, {

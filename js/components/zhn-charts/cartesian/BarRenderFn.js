@@ -9,7 +9,6 @@ var _uiApi = require("../../uiApi");
 var _zhnAnimate = require("../../zhn-animate");
 var _ReactUtils = require("../util/ReactUtils");
 var _DataUtils = require("../util/DataUtils");
-var _ChartUtils = require("../util/ChartUtils");
 var _types = require("../util/types");
 var _Rectangle = require("../shape/Rectangle");
 var _Layer = require("../container/Layer");
@@ -76,18 +75,8 @@ var renderErrorBar = function renderErrorBar(needClip, clipPathId, isAnimationFi
   if (!errorBarItems) {
     return null;
   }
-  var offset = layout === 'vertical' ? data[0].height / 2 : data[0].width / 2;
-  function dataPointFormatter(dataPoint, dataKey) {
-    return {
-      x: dataPoint.x,
-      y: dataPoint.y,
-      value: dataPoint.value,
-      errorVal: (0, _ChartUtils.getValueByDataKey)(dataPoint, dataKey)
-    };
-  }
-  var errorBarProps = {
-    clipPath: needClip ? "url(#clipPath-" + clipPathId + ")" : null
-  };
+  var offset = layout === 'vertical' ? data[0].height / 2 : data[0].width / 2,
+    errorBarProps = (0, _cartesianFn.crClipPathProps)(needClip, clipPathId);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, (0, _extends2["default"])({}, errorBarProps, {
     children: errorBarItems.map(function (item, i) {
       return (0, _uiApi.cloneElement)(item, {
@@ -97,7 +86,7 @@ var renderErrorBar = function renderErrorBar(needClip, clipPathId, isAnimationFi
         yAxis: yAxis,
         layout: layout,
         offset: offset,
-        dataPointFormatter: dataPointFormatter
+        dataPointFormatter: _cartesianFn.dataPointFormatter
       });
     })
   }));

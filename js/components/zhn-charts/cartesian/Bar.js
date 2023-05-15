@@ -15,17 +15,13 @@ var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _BarRenderFn = require("./BarRenderFn");
+var _cartesianFn = require("./cartesianFn");
 var _useAnimationHandle2 = _interopRequireDefault(require("./useAnimationHandle"));
 var _usePrevCurData2 = _interopRequireDefault(require("./usePrevCurData"));
 var _useClipPathId = _interopRequireDefault(require("./useClipPathId"));
 var _jsxRuntime = require("react/jsx-runtime");
 var CL_BAR = "recharts-bar",
   CL_BAR_RECTANGLES = CL_BAR + "-rectangles";
-var _isNeedClip = function _isNeedClip(_ref) {
-  var xAxis = _ref.xAxis,
-    yAxis = _ref.yAxis;
-  return xAxis && xAxis.allowDataOverflow || yAxis && yAxis.allowDataOverflow;
-};
 var Bar = (0, _uiApi.memo)(function (props) {
   var hide = props.hide,
     data = props.data,
@@ -49,7 +45,7 @@ var Bar = (0, _uiApi.memo)(function (props) {
     return null;
   }
   var layerClass = (0, _classnames["default"])(CL_BAR, className),
-    needClip = _isNeedClip(props);
+    needClip = (0, _cartesianFn.isNeedClip)(props);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     className: layerClass,
     children: [needClip ? /*#__PURE__*/(0, _jsxRuntime.jsx)("defs", {
@@ -96,19 +92,19 @@ Bar.defaultProps = {
  * @param {Array} stackedData  The stacked data of a bar item
  * @return{Array} Composed data
  */
-Bar.getComposedData = function (_ref2) {
-  var props = _ref2.props,
-    item = _ref2.item,
-    barPosition = _ref2.barPosition,
-    bandSize = _ref2.bandSize,
-    xAxis = _ref2.xAxis,
-    yAxis = _ref2.yAxis,
-    xAxisTicks = _ref2.xAxisTicks,
-    yAxisTicks = _ref2.yAxisTicks,
-    stackedData = _ref2.stackedData,
-    dataStartIndex = _ref2.dataStartIndex,
-    displayedData = _ref2.displayedData,
-    offset = _ref2.offset;
+Bar.getComposedData = function (_ref) {
+  var props = _ref.props,
+    item = _ref.item,
+    barPosition = _ref.barPosition,
+    bandSize = _ref.bandSize,
+    xAxis = _ref.xAxis,
+    yAxis = _ref.yAxis,
+    xAxisTicks = _ref.xAxisTicks,
+    yAxisTicks = _ref.yAxisTicks,
+    stackedData = _ref.stackedData,
+    dataStartIndex = _ref.dataStartIndex,
+    displayedData = _ref.displayedData,
+    offset = _ref.offset;
   var pos = (0, _ChartUtils.findPositionOfBar)(barPosition, item);
   if (!pos) {
     return null;
@@ -135,10 +131,10 @@ Bar.getComposedData = function (_ref2) {
       }
     }
     if (layout === 'horizontal') {
-      var _ref4;
-      var _ref3 = [yAxis.scale(value[0]), yAxis.scale(value[1])],
-        baseValueScale = _ref3[0],
-        currentValueScale = _ref3[1];
+      var _ref3;
+      var _ref2 = [yAxis.scale(value[0]), yAxis.scale(value[1])],
+        baseValueScale = _ref2[0],
+        currentValueScale = _ref2[1];
       x = (0, _ChartUtils.getCateCoordinateOfBar)({
         axis: xAxis,
         ticks: xAxisTicks,
@@ -147,7 +143,7 @@ Bar.getComposedData = function (_ref2) {
         entry: entry,
         index: index
       });
-      y = (_ref4 = currentValueScale != null ? currentValueScale : baseValueScale) != null ? _ref4 : void 0;
+      y = (_ref3 = currentValueScale != null ? currentValueScale : baseValueScale) != null ? _ref3 : void 0;
       width = pos.size;
       var computedHeight = baseValueScale - currentValueScale;
       height = Number.isNaN(computedHeight) ? 0 : computedHeight;
@@ -163,9 +159,9 @@ Bar.getComposedData = function (_ref2) {
         height += delta;
       }
     } else {
-      var _ref5 = [xAxis.scale(value[0]), xAxis.scale(value[1])],
-        _baseValueScale = _ref5[0],
-        _currentValueScale = _ref5[1];
+      var _ref4 = [xAxis.scale(value[0]), xAxis.scale(value[1])],
+        _baseValueScale = _ref4[0],
+        _currentValueScale = _ref4[1];
       x = _baseValueScale;
       y = (0, _ChartUtils.getCateCoordinateOfBar)({
         axis: yAxis,
