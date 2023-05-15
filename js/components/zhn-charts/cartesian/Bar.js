@@ -15,6 +15,7 @@ var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _BarRenderFn = require("./BarRenderFn");
+var _useAnimationHandle2 = _interopRequireDefault(require("./useAnimationHandle"));
 var _jsxRuntime = require("react/jsx-runtime");
 var CL_BAR = "recharts-bar",
   CL_BAR_RECTANGLES = CL_BAR + "-rectangles";
@@ -23,7 +24,6 @@ var _isNeedClip = function _isNeedClip(_ref) {
     yAxis = _ref.yAxis;
   return xAxis && xAxis.allowDataOverflow || yAxis && yAxis.allowDataOverflow;
 };
-var FN_NOOP = function FN_NOOP() {};
 var Bar = (0, _uiApi.memo)(function (props) {
   var hide = props.hide,
     data = props.data,
@@ -36,30 +36,19 @@ var Bar = (0, _uiApi.memo)(function (props) {
     background = props.background,
     id = props.id,
     animationId = props.animationId,
-    _props$onAnimationSta = props.onAnimationStart,
-    onAnimationStart = _props$onAnimationSta === void 0 ? FN_NOOP : _props$onAnimationSta,
-    _props$onAnimationEnd = props.onAnimationEnd,
-    onAnimationEnd = _props$onAnimationEnd === void 0 ? FN_NOOP : _props$onAnimationEnd,
-    _useState = (0, _uiApi.useState)(false),
-    isAnimationFinished = _useState[0],
-    setIsAnimationFinished = _useState[1],
+    _useAnimationHandle = (0, _useAnimationHandle2["default"])(props),
+    isAnimationFinished = _useAnimationHandle[0],
+    handleAnimationStart = _useAnimationHandle[1],
+    handleAnimationEnd = _useAnimationHandle[2],
+    _useState = (0, _uiApi.useState)([]),
+    curData = _useState[0],
+    setCurDate = _useState[1],
     _useState2 = (0, _uiApi.useState)([]),
-    curData = _useState2[0],
-    setCurDate = _useState2[1],
-    _useState3 = (0, _uiApi.useState)([]),
-    prevData = _useState3[0],
-    setPrevData = _useState3[1],
+    prevData = _useState2[0],
+    setPrevData = _useState2[1],
     clipPathId = (0, _uiApi.useMemo)(function () {
       return (0, _FnUtils._isNil)(id) ? (0, _DataUtils.uniqueId)(CL_BAR + "-") : id;
-    }, [id]),
-    handleAnimationStart = (0, _uiApi.useCallback)(function () {
-      setIsAnimationFinished(false);
-      onAnimationStart();
-    }, [onAnimationStart]),
-    handleAnimationEnd = (0, _uiApi.useCallback)(function () {
-      setIsAnimationFinished(true);
-      onAnimationEnd();
-    }, [onAnimationEnd]);
+    }, [id]);
 
   /*eslint-disable react-hooks/exhaustive-deps */
   (0, _uiApi.useEffect)(function () {

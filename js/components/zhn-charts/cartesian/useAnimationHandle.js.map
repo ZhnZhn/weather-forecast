@@ -1,0 +1,28 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../../src/components/zhn-charts/cartesian/useAnimationHandle.js"
+ ],
+ "file": "../../../../src/components/zhn-charts/cartesian/useAnimationHandle.js",
+ "names": [
+  "_uiApi",
+  "require",
+  "FN_NOOP",
+  "useAnimationHandle",
+  "props",
+  "_props$onAnimationSta",
+  "onAnimationStart",
+  "_props$onAnimationEnd",
+  "onAnimationEnd",
+  "_useState",
+  "useState",
+  "isAnimationFinished",
+  "setIsAnimationFinished",
+  "handleAnimationStart",
+  "useCallback",
+  "handleAnimationEnd",
+  "_default",
+  "exports"
+ ],
+ "mappings": ";;;;AAAA,IAAAA,MAAA,GAAAC,OAAA;AAKA,IAAMC,OAAO,GAAG,SAAVA,OAAOA,CAAA,EAAS,CAAC,CAAC;AAExB,IAAMC,kBAAkB,GAAG,SAArBA,kBAAkBA,CACtBC,KAAK,EACF;EACH,IAAAC,qBAAA,GAGID,KAAK,CAFPE,gBAAgB;IAAhBA,gBAAgB,GAAAD,qBAAA,cAACH,OAAO,GAAAG,qBAAA;IAAAE,qBAAA,GAEtBH,KAAK,CADPI,cAAc;IAAdA,cAAc,GAAAD,qBAAA,cAACL,OAAO,GAAAK,qBAAA;IAAAE,SAAA,GAKpB,IAAAC,eAAQ,EAAC,KAAK,CAAC;IAFjBC,mBAAmB,GAAAF,SAAA;IACnBG,sBAAsB,GAAAH,SAAA;IAEtBI,oBAAoB,GAAG,IAAAC,kBAAW,EAAC,YAAM;MACxCF,sBAAsB,CAAC,KAAK,CAAC;MAC7BN,gBAAgB,CAAC,CAAC;IACrB,CAAC,EAAE,CAACA,gBAAgB,CAAC,CAAC;IACpBS,kBAAkB,GAAG,IAAAD,kBAAW,EAAC,YAAM;MACtCF,sBAAsB,CAAC,IAAI,CAAC;MAC5BJ,cAAc,CAAC,CAAC;IACnB,CAAC,EAAE,CAACA,cAAc,CAAC,CAAC;EACpB,OAAO,CACLG,mBAAmB,EACnBE,oBAAoB,EACpBE,kBAAkB,CACnB;AACH,CAAC;AAAC,IAAAC,QAAA,GAEab,kBAAkB;AAAAc,OAAA,cAAAD,QAAA"
+}

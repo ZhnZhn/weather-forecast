@@ -1,7 +1,6 @@
 import {
   memo,
   useState,
-  useCallback,
   useMemo,
   useEffect
 } from '../../uiApi';
@@ -38,6 +37,8 @@ import {
   renderRectangles
 } from './BarRenderFn';
 
+import useAnimationHandle from './useAnimationHandle';
+
 const CL_BAR = "recharts-bar"
 , CL_BAR_RECTANGLES = `${CL_BAR}-rectangles`;
 
@@ -46,9 +47,6 @@ const _isNeedClip = ({
  yAxis
 }) => (xAxis && xAxis.allowDataOverflow)
   || (yAxis && yAxis.allowDataOverflow);
-
-
-const FN_NOOP = () => {};
 
 export const Bar = memo((props) => {
   const {
@@ -62,30 +60,20 @@ export const Bar = memo((props) => {
     isAnimationActive,
     background,
     id,
-    animationId,
-
-    onAnimationStart=FN_NOOP,
-    onAnimationEnd=FN_NOOP
+    animationId
   } = props
   , [
     isAnimationFinished,
-    setIsAnimationFinished
-  ] = useState(false)
+    handleAnimationStart,
+    handleAnimationEnd
+  ] = useAnimationHandle(props)
   , [curData, setCurDate] = useState([])
   , [prevData, setPrevData] = useState([])
   , clipPathId = useMemo(() => _isNil(id)
       ? uniqueId(`${CL_BAR}-`)
       : id
-    , [id])
-  , handleAnimationStart = useCallback(() => {
-     setIsAnimationFinished(false);
-     onAnimationStart();
-  }, [onAnimationStart])
-  , handleAnimationEnd = useCallback(() => {
-     setIsAnimationFinished(true);
-     onAnimationEnd();
-  }, [onAnimationEnd])
-
+    , [id]);
+  
   /*eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     setCurDate(data)
