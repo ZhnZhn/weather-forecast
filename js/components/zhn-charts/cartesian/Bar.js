@@ -17,6 +17,7 @@ var _ChartUtils = require("../util/ChartUtils");
 var _BarRenderFn = require("./BarRenderFn");
 var _useAnimationHandle2 = _interopRequireDefault(require("./useAnimationHandle"));
 var _usePrevCurData2 = _interopRequireDefault(require("./usePrevCurData"));
+var _useClipPathId = _interopRequireDefault(require("./useClipPathId"));
 var _jsxRuntime = require("react/jsx-runtime");
 var CL_BAR = "recharts-bar",
   CL_BAR_RECTANGLES = CL_BAR + "-rectangles";
@@ -43,9 +44,7 @@ var Bar = (0, _uiApi.memo)(function (props) {
     handleAnimationEnd = _useAnimationHandle[2],
     _usePrevCurData = (0, _usePrevCurData2["default"])(data, animationId),
     prevData = _usePrevCurData[0],
-    clipPathId = (0, _uiApi.useMemo)(function () {
-      return (0, _FnUtils._isNil)(id) ? (0, _DataUtils.uniqueId)(CL_BAR + "-") : id;
-    }, [id]);
+    clipPathId = (0, _useClipPathId["default"])(CL_BAR, id);
   if (hide || !data || !data.length) {
     return null;
   }

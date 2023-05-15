@@ -1,7 +1,7 @@
 import {
   useState,
   useEffect
-} from '../../uApi';
+} from '../../uiApi';
 
 const usePrevCurData = (
   data,

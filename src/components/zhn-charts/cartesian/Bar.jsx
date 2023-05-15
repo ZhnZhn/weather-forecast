@@ -1,26 +1,15 @@
-import {
-  memo,
-  useMemo
-} from '../../uiApi';
+import { memo } from '../../uiApi';
 import classNames from 'classnames';
 
-import {
-  _isArr,
-  _isNil
-} from '../util/FnUtils';
+import { _isArr } from '../util/FnUtils';
 
 import { Layer } from '../container/Layer';
 import { Cell } from '../component/Cell';
 import { LabelList } from '../component/LabelList';
 
 import { Global } from '../util/Global';
-import {
-  uniqueId,
-  mathSign
-} from '../util/DataUtils';
-import {
-  findAllByType
-} from '../util/ReactUtils';
+import { mathSign } from '../util/DataUtils';
+import { findAllByType } from '../util/ReactUtils';
 import {
   getCateCoordinateOfBar,
   getValueByDataKey,
@@ -37,6 +26,7 @@ import {
 
 import useAnimationHandle from './useAnimationHandle';
 import usePrevCurData from './usePrevCurData';
+import useClipPathId from './useClipPathId';
 
 const CL_BAR = "recharts-bar"
 , CL_BAR_RECTANGLES = `${CL_BAR}-rectangles`;
@@ -72,13 +62,11 @@ export const Bar = memo((props) => {
      data,
      animationId
    )
-  , clipPathId = useMemo(() => _isNil(id)
-      ? uniqueId(`${CL_BAR}-`)
-      : id,
-    [id]
+  , clipPathId = useClipPathId(
+     CL_BAR,
+     id
   );
-
-
+  
   if (hide || !data || !data.length) {
     return null;
   }
