@@ -1,8 +1,6 @@
 import {
   memo,
-  useState,
-  useMemo,
-  useEffect
+  useMemo
 } from '../../uiApi';
 import classNames from 'classnames';
 
@@ -38,6 +36,7 @@ import {
 } from './BarRenderFn';
 
 import useAnimationHandle from './useAnimationHandle';
+import usePrevCurData from './usePrevCurData';
 
 const CL_BAR = "recharts-bar"
 , CL_BAR_RECTANGLES = `${CL_BAR}-rectangles`;
@@ -67,24 +66,18 @@ export const Bar = memo((props) => {
     handleAnimationStart,
     handleAnimationEnd
   ] = useAnimationHandle(props)
-  , [curData, setCurDate] = useState([])
-  , [prevData, setPrevData] = useState([])
+  , [
+    prevData
+  ] = usePrevCurData(
+     data,
+     animationId
+   )
   , clipPathId = useMemo(() => _isNil(id)
       ? uniqueId(`${CL_BAR}-`)
-      : id
-    , [id]);
-  
-  /*eslint-disable react-hooks/exhaustive-deps */
-  useEffect(() => {
-    setCurDate(data)
-    setPrevData(curData)
-  }, [animationId])
-  //curData, data
-  /*eslint-enable react-hooks/exhaustive-deps */
+      : id,
+    [id]
+  );
 
-  useEffect(() => {
-    setCurDate(data)
-  }, [data])
 
   if (hide || !data || !data.length) {
     return null;

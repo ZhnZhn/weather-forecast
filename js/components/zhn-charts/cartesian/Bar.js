@@ -16,6 +16,7 @@ var _ReactUtils = require("../util/ReactUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _BarRenderFn = require("./BarRenderFn");
 var _useAnimationHandle2 = _interopRequireDefault(require("./useAnimationHandle"));
+var _usePrevCurData2 = _interopRequireDefault(require("./usePrevCurData"));
 var _jsxRuntime = require("react/jsx-runtime");
 var CL_BAR = "recharts-bar",
   CL_BAR_RECTANGLES = CL_BAR + "-rectangles";
@@ -40,27 +41,11 @@ var Bar = (0, _uiApi.memo)(function (props) {
     isAnimationFinished = _useAnimationHandle[0],
     handleAnimationStart = _useAnimationHandle[1],
     handleAnimationEnd = _useAnimationHandle[2],
-    _useState = (0, _uiApi.useState)([]),
-    curData = _useState[0],
-    setCurDate = _useState[1],
-    _useState2 = (0, _uiApi.useState)([]),
-    prevData = _useState2[0],
-    setPrevData = _useState2[1],
+    _usePrevCurData = (0, _usePrevCurData2["default"])(data, animationId),
+    prevData = _usePrevCurData[0],
     clipPathId = (0, _uiApi.useMemo)(function () {
       return (0, _FnUtils._isNil)(id) ? (0, _DataUtils.uniqueId)(CL_BAR + "-") : id;
     }, [id]);
-
-  /*eslint-disable react-hooks/exhaustive-deps */
-  (0, _uiApi.useEffect)(function () {
-    setCurDate(data);
-    setPrevData(curData);
-  }, [animationId]);
-  //curData, data
-  /*eslint-enable react-hooks/exhaustive-deps */
-
-  (0, _uiApi.useEffect)(function () {
-    setCurDate(data);
-  }, [data]);
   if (hide || !data || !data.length) {
     return null;
   }
