@@ -1,23 +1,19 @@
 import { generateCategoricalChart } from './generateCategoricalChart';
 
-import { Area } from '../cartesian/Area';
 import { Bar } from '../cartesian/Bar';
 import { Line } from '../cartesian/Line';
-import { Scatter } from '../cartesian/Scatter';
 import { XAxis } from '../cartesian/XAxis';
 import { YAxis } from '../cartesian/YAxis';
-import { ZAxis } from '../cartesian/ZAxis';
 import { formatAxisMap } from '../util/CartesianUtils';
 
 import { crAxisComponent } from './chartFn';
 
 export const ComposedChart = generateCategoricalChart({
   chartName: 'ComposedChart',
-  GraphicalChild: [Line, Area, Bar, Scatter],
+  GraphicalChild: [Line, Bar],
   axisComponents: [
       crAxisComponent('xAxis', XAxis),
-      crAxisComponent('yAxis', YAxis),
-      crAxisComponent('zAxis', ZAxis)
+      crAxisComponent('yAxis', YAxis)
   ],
   formatAxisMap
 });
