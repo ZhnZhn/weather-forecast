@@ -11,6 +11,7 @@ export {
   isValidElement,
   Component,
   PureComponent,
+  Children,
   createContext,
   createRef,
   createElement,
