@@ -1,0 +1,18 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../../src/components/zhn-charts/util/IfOverflowMatches.js"
+ ],
+ "file": "../../../../src/components/zhn-charts/util/IfOverflowMatches.js",
+ "names": [
+  "ifOverflowMatches",
+  "props",
+  "value",
+  "_props",
+  "_ifOverflow",
+  "alwaysShow",
+  "ifOverflow",
+  "exports"
+ ],
+ "mappings": ";;;;AAAO,IAAMA,iBAAiB,GAAG,SAApBA,iBAAiBA,CAC5BC,KAAK,EACLC,KAAK,EACF;EACH,IAAMC,MAAM,GAAGF,KAAK,IAAI,CAAC,CAAC;IACxBG,WAAW,GAAGD,MAAM,CAACE,UAAU,GAC7B,cAAc,GACdF,MAAM,CAACG,UAAU;EACrB,OAAOF,WAAW,KAAKF,KAAK;AAC9B,CAAC;AAACK,OAAA,CAAAP,iBAAA,GAAAA,iBAAA"
+}
