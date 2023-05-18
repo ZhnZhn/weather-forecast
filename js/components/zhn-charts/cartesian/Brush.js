@@ -17,7 +17,17 @@ var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _jsxRuntime = require("react/jsx-runtime");
-var createScale = function createScale(_ref) {
+var CL_BRUSH = "recharts-brush",
+  CL_BRUSH_TRAVELLER = CL_BRUSH + "-traveller",
+  CL_BRUSH_SLIDE = CL_BRUSH + "-slide",
+  CL_BRUSH_TEXTS = CL_BRUSH + "-texts",
+  S_CURSOR_COL_RESIZE = {
+    cursor: 'col-resize'
+  },
+  S_CURSOR_MOVE = {
+    cursor: 'move'
+  };
+var _createScale = function _createScale(_ref) {
   var data = _ref.data,
     startIndex = _ref.startIndex,
     endIndex = _ref.endIndex,
@@ -27,11 +37,11 @@ var createScale = function createScale(_ref) {
   if (!data || !data.length) {
     return {};
   }
-  var len = data.length;
-  var scale = (0, _d3Scale.scalePoint)().domain((0, _range2["default"])(0, len)).range([x, x + width - travellerWidth]);
-  var scaleValues = scale.domain().map(function (entry) {
-    return scale(entry);
-  });
+  var len = data.length,
+    scale = (0, _d3Scale.scalePoint)().domain((0, _range2["default"])(0, len)).range([x, x + width - travellerWidth]),
+    scaleValues = scale.domain().map(function (entry) {
+      return scale(entry);
+    });
   return {
     isTextActive: false,
     isSlideMoving: false,
@@ -42,8 +52,60 @@ var createScale = function createScale(_ref) {
     scaleValues: scaleValues
   };
 };
-var isTouch = function isTouch(e) {
+var _isTouchEvent = function _isTouchEvent(e) {
   return e.changedTouches && !!e.changedTouches.length;
+};
+var _getEvent = function _getEvent(e) {
+  return _isTouchEvent(e) ? e.changedTouches[0] : e;
+};
+var _renderDefaultTraveller = function _renderDefaultTraveller(props) {
+  var x = props.x,
+    y = props.y,
+    width = props.width,
+    height = props.height,
+    stroke = props.stroke,
+    lineY = Math.floor(y + height / 2) - 1;
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("rect", {
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      fill: stroke,
+      stroke: "none"
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("line", {
+      x1: x + 1,
+      y1: lineY,
+      x2: x + width - 1,
+      y2: lineY,
+      fill: "none",
+      stroke: "#fff"
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("line", {
+      x1: x + 1,
+      y1: lineY + 2,
+      x2: x + width - 1,
+      y2: lineY + 2,
+      fill: "none",
+      stroke: "#fff"
+    })]
+  });
+};
+var _renderTraveller = function _renderTraveller(option, props) {
+  return (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneElement)(option, props) : (0, _FnUtils._isFn)(option) ? option(props) : _renderDefaultTraveller(props);
+};
+var _getIndexInRange = function _getIndexInRange(range, x) {
+  var len = range.length;
+  var start = 0,
+    end = len - 1;
+  while (end - start > 1) {
+    var middle = Math.floor((start + end) / 2);
+    if (range[middle] > x) {
+      end = middle;
+    } else {
+      start = middle;
+    }
+  }
+  return x >= range[end] ? end : start;
 };
 var Brush = /*#__PURE__*/function (_PureComponent) {
   (0, _inheritsLoose2["default"])(Brush, _PureComponent);
@@ -89,7 +151,7 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
       });
     };
     _this.handleSlideDragStart = function (e) {
-      var event = isTouch(e) ? e.changedTouches[0] : e;
+      var event = _getEvent(e);
       _this.setState({
         isTravellerMoving: false,
         isSlideMoving: true,
@@ -104,49 +166,6 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
     _this.state = {};
     return _this;
   }
-  Brush.renderDefaultTraveller = function renderDefaultTraveller(props) {
-    var x = props.x,
-      y = props.y,
-      width = props.width,
-      height = props.height,
-      stroke = props.stroke;
-    var lineY = Math.floor(y + height / 2) - 1;
-    return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("rect", {
-        x: x,
-        y: y,
-        width: width,
-        height: height,
-        fill: stroke,
-        stroke: "none"
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("line", {
-        x1: x + 1,
-        y1: lineY,
-        x2: x + width - 1,
-        y2: lineY,
-        fill: "none",
-        stroke: "#fff"
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("line", {
-        x1: x + 1,
-        y1: lineY + 2,
-        x2: x + width - 1,
-        y2: lineY + 2,
-        fill: "none",
-        stroke: "#fff"
-      })]
-    });
-  };
-  Brush.renderTraveller = function renderTraveller(option, props) {
-    var rectangle;
-    if ((0, _uiApi.isValidElement)(option)) {
-      rectangle = (0, _uiApi.cloneElement)(option, props);
-    } else if ((0, _FnUtils._isFn)(option)) {
-      rectangle = option(props);
-    } else {
-      rectangle = Brush.renderDefaultTraveller(props);
-    }
-    return rectangle;
-  };
   Brush.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, prevState) {
     var data = nextProps.data,
       width = nextProps.width,
@@ -162,7 +181,7 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
         prevUpdateId: updateId,
         prevX: x,
         prevWidth: width
-      }, data && data.length ? createScale({
+      }, data && data.length ? _createScale({
         data: data,
         width: width,
         x: x,
@@ -200,32 +219,18 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
     }
     this.detachDragEndListener();
   };
-  Brush.getIndexInRange = function getIndexInRange(range, x) {
-    var len = range.length;
-    var start = 0;
-    var end = len - 1;
-    while (end - start > 1) {
-      var middle = Math.floor((start + end) / 2);
-      if (range[middle] > x) {
-        end = middle;
-      } else {
-        start = middle;
-      }
-    }
-    return x >= range[end] ? end : start;
-  };
   _proto.getIndex = function getIndex(_ref2) {
     var startX = _ref2.startX,
       endX = _ref2.endX;
-    var scaleValues = this.state.scaleValues;
-    var _this$props = this.props,
+    var scaleValues = this.state.scaleValues,
+      _this$props = this.props,
       gap = _this$props.gap,
-      data = _this$props.data;
-    var lastIndex = data.length - 1;
-    var min = Math.min(startX, endX);
-    var max = Math.max(startX, endX);
-    var minIndex = Brush.getIndexInRange(scaleValues, min);
-    var maxIndex = Brush.getIndexInRange(scaleValues, max);
+      data = _this$props.data,
+      lastIndex = data.length - 1,
+      min = Math.min(startX, endX),
+      max = Math.max(startX, endX),
+      minIndex = _getIndexInRange(scaleValues, min),
+      maxIndex = _getIndexInRange(scaleValues, max);
     return {
       startIndex: minIndex - minIndex % gap,
       endIndex: maxIndex === lastIndex ? lastIndex : maxIndex - maxIndex % gap
@@ -235,8 +240,8 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
     var _this$props2 = this.props,
       data = _this$props2.data,
       tickFormatter = _this$props2.tickFormatter,
-      dataKey = _this$props2.dataKey;
-    var text = (0, _ChartUtils.getValueByDataKey)(data[index], dataKey, index);
+      dataKey = _this$props2.dataKey,
+      text = (0, _ChartUtils.getValueByDataKey)(data[index], dataKey, index);
     return (0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(text, index) : text;
   };
   _proto.attachDragEndListener = function attachDragEndListener() {
@@ -253,8 +258,8 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
     var _this$state = this.state,
       slideMoveStartX = _this$state.slideMoveStartX,
       startX = _this$state.startX,
-      endX = _this$state.endX;
-    var _this$props3 = this.props,
+      endX = _this$state.endX,
+      _this$props3 = this.props,
       x = _this$props3.x,
       width = _this$props3.width,
       travellerWidth = _this$props3.travellerWidth,
@@ -281,7 +286,7 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
     });
   };
   _proto.handleTravellerDragStart = function handleTravellerDragStart(id, e) {
-    var event = isTouch(e) ? e.changedTouches[0] : e;
+    var event = _getEvent(e);
     this.setState({
       isSlideMoving: false,
       isTravellerMoving: true,
@@ -296,19 +301,19 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
       brushMoveStartX = _this$state2.brushMoveStartX,
       movingTravellerId = _this$state2.movingTravellerId,
       endX = _this$state2.endX,
-      startX = _this$state2.startX;
-    var prevValue = this.state[movingTravellerId];
-    var _this$props4 = this.props,
+      startX = _this$state2.startX,
+      prevValue = this.state[movingTravellerId],
+      _this$props4 = this.props,
       x = _this$props4.x,
       width = _this$props4.width,
       travellerWidth = _this$props4.travellerWidth,
       onChange = _this$props4.onChange,
       gap = _this$props4.gap,
-      data = _this$props4.data;
-    var params = {
-      startX: this.state.startX,
-      endX: this.state.endX
-    };
+      data = _this$props4.data,
+      params = {
+        startX: this.state.startX,
+        endX: this.state.endX
+      };
     var delta = e.pageX - brushMoveStartX;
     if (delta > 0) {
       delta = Math.min(delta, x + width - travellerWidth - prevValue);
@@ -316,21 +321,16 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
       delta = Math.max(delta, x - prevValue);
     }
     params[movingTravellerId] = prevValue + delta;
-    var newIndex = this.getIndex(params);
-    var startIndex = newIndex.startIndex,
-      endIndex = newIndex.endIndex;
-    var isFullGap = function isFullGap() {
-      var lastIndex = data.length - 1;
-      if (movingTravellerId === 'startX' && (endX > startX ? startIndex % gap === 0 : endIndex % gap === 0) || endX < startX && endIndex === lastIndex || movingTravellerId === 'endX' && (endX > startX ? endIndex % gap === 0 : startIndex % gap === 0) || endX > startX && endIndex === lastIndex) {
-        return true;
-      }
-      return false;
-    };
+    var newIndex = this.getIndex(params),
+      startIndex = newIndex.startIndex,
+      endIndex = newIndex.endIndex,
+      isFullGap = function isFullGap() {
+        var lastIndex = data.length - 1;
+        return movingTravellerId === 'startX' && (endX > startX ? startIndex % gap === 0 : endIndex % gap === 0) || endX < startX && endIndex === lastIndex || movingTravellerId === 'endX' && (endX > startX ? endIndex % gap === 0 : startIndex % gap === 0) || endX > startX && endIndex === lastIndex;
+      };
     this.setState((_this$setState = {}, _this$setState[movingTravellerId] = prevValue + delta, _this$setState.brushMoveStartX = e.pageX, _this$setState), function () {
-      if (onChange) {
-        if (isFullGap()) {
-          onChange(newIndex);
-        }
+      if (onChange && isFullGap()) {
+        onChange(newIndex);
       }
     });
   };
@@ -359,8 +359,8 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
       height = _this$props6.height,
       data = _this$props6.data,
       children = _this$props6.children,
-      padding = _this$props6.padding;
-    var chartElement = _uiApi.Children.only(children);
+      padding = _this$props6.padding,
+      chartElement = _uiApi.Children.only(children);
     if (!chartElement) {
       return null;
     }
@@ -379,24 +379,22 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
       y = _this$props7.y,
       travellerWidth = _this$props7.travellerWidth,
       height = _this$props7.height,
-      traveller = _this$props7.traveller;
-    var x = Math.max(travellerX, this.props.x);
-    var travellerProps = (0, _extends2["default"])({}, (0, _ReactUtils.filterProps)(this.props), {
-      x: x,
-      y: y,
-      width: travellerWidth,
-      height: height
-    });
+      traveller = _this$props7.traveller,
+      x = Math.max(travellerX, this.props.x),
+      travellerProps = (0, _extends2["default"])({}, (0, _ReactUtils.filterProps)(this.props), {
+        x: x,
+        y: y,
+        width: travellerWidth,
+        height: height
+      });
     return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
-      className: "recharts-brush-traveller",
+      className: CL_BRUSH_TRAVELLER,
+      style: S_CURSOR_COL_RESIZE,
       onMouseEnter: this.handleEnterSlideOrTraveller,
       onMouseLeave: this.handleLeaveSlideOrTraveller,
       onMouseDown: this.travellerDragStartHandlers[id],
       onTouchStart: this.travellerDragStartHandlers[id],
-      style: {
-        cursor: 'col-resize'
-      },
-      children: Brush.renderTraveller(traveller, travellerProps)
+      children: _renderTraveller(traveller, travellerProps)
     });
   };
   _proto.renderSlide = function renderSlide(startX, endX) {
@@ -404,25 +402,23 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
       y = _this$props8.y,
       height = _this$props8.height,
       stroke = _this$props8.stroke,
-      travellerWidth = _this$props8.travellerWidth;
-    var x = Math.min(startX, endX) + travellerWidth;
-    var width = Math.max(Math.abs(endX - startX) - travellerWidth, 0);
+      travellerWidth = _this$props8.travellerWidth,
+      x = Math.min(startX, endX) + travellerWidth,
+      width = Math.max(Math.abs(endX - startX) - travellerWidth, 0);
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("rect", {
-      className: "recharts-brush-slide",
-      onMouseEnter: this.handleEnterSlideOrTraveller,
-      onMouseLeave: this.handleLeaveSlideOrTraveller,
-      onMouseDown: this.handleSlideDragStart,
-      onTouchStart: this.handleSlideDragStart,
-      style: {
-        cursor: 'move'
-      },
+      className: CL_BRUSH_SLIDE,
+      style: S_CURSOR_MOVE,
       stroke: "none",
       fill: stroke,
       fillOpacity: 0.2,
       x: x,
       y: y,
       width: width,
-      height: height
+      height: height,
+      onMouseEnter: this.handleEnterSlideOrTraveller,
+      onMouseLeave: this.handleLeaveSlideOrTraveller,
+      onMouseDown: this.handleSlideDragStart,
+      onTouchStart: this.handleSlideDragStart
     });
   };
   _proto.renderText = function renderText() {
@@ -432,17 +428,17 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
       y = _this$props9.y,
       height = _this$props9.height,
       travellerWidth = _this$props9.travellerWidth,
-      stroke = _this$props9.stroke;
-    var _this$state3 = this.state,
+      stroke = _this$props9.stroke,
+      _this$state3 = this.state,
       startX = _this$state3.startX,
-      endX = _this$state3.endX;
-    var offset = 5;
-    var attrs = {
-      pointerEvents: 'none',
-      fill: stroke
-    };
+      endX = _this$state3.endX,
+      offset = 5,
+      attrs = {
+        pointerEvents: 'none',
+        fill: stroke
+      };
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
-      className: "recharts-brush-texts",
+      className: CL_BRUSH_TEXTS,
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, (0, _extends2["default"])({
         textAnchor: "end",
         verticalAnchor: "middle",
@@ -469,8 +465,8 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
       y = _this$props10.y,
       width = _this$props10.width,
       height = _this$props10.height,
-      alwaysShowText = _this$props10.alwaysShowText;
-    var _this$state4 = this.state,
+      alwaysShowText = _this$props10.alwaysShowText,
+      _this$state4 = this.state,
       startX = _this$state4.startX,
       endX = _this$state4.endX,
       isTextActive = _this$state4.isTextActive,
@@ -479,11 +475,11 @@ var Brush = /*#__PURE__*/function (_PureComponent) {
     if (!data || !data.length || !(0, _DataUtils.isNumber)(x) || !(0, _DataUtils.isNumber)(y) || !(0, _DataUtils.isNumber)(width) || !(0, _DataUtils.isNumber)(height) || width <= 0 || height <= 0) {
       return null;
     }
-    var layerClass = (0, _classnames["default"])('recharts-brush', className);
-    var isPanoramic = _uiApi.Children.count(children) === 1;
-    var style = {
-      userSelect: 'none'
-    };
+    var layerClass = (0, _classnames["default"])(CL_BRUSH, className),
+      isPanoramic = _uiApi.Children.count(children) === 1,
+      style = {
+        userSelect: 'none'
+      };
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
       className: layerClass,
       onMouseLeave: this.handleLeaveWrapper,
