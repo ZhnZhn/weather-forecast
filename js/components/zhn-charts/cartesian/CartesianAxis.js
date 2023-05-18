@@ -22,14 +22,26 @@ var _jsxRuntime = require("react/jsx-runtime");
 var _excluded = ["viewBox"],
   _excluded2 = ["viewBox"],
   _excluded3 = ["ticks"];
+var CL_AXIS = "recharts-cartesian-axis",
+  CL_AXIS_LINE = CL_AXIS + "-line",
+  CL_AXIS_TICK = CL_AXIS + "-tick",
+  CL_AXIS_TICKS = CL_AXIS_TICK + "s",
+  CL_AXIS_TICK_LINE = CL_AXIS_TICK + "-line",
+  CL_AXIS_TICK_VALUE = CL_AXIS_TICK + "-value";
 var CartesianAxis = /*#__PURE__*/function (_Component) {
   (0, _inheritsLoose2["default"])(CartesianAxis, _Component);
-  function CartesianAxis(props) {
+  function CartesianAxis() {
     var _this;
-    _this = _Component.call(this, props) || this;
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
     _this.state = {
       fontSize: '',
       letterSpacing: ''
+    };
+    _this._refLayerReference = function (ref) {
+      _this.layerReference = ref;
     };
     return _this;
   }
@@ -46,8 +58,10 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
   };
   _proto.componentDidMount = function componentDidMount() {
     var htmlLayer = this.layerReference;
-    if (!htmlLayer) return;
-    var tick = htmlLayer.getElementsByClassName('recharts-cartesian-axis-tick-value')[0];
+    if (!htmlLayer) {
+      return;
+    }
+    var tick = htmlLayer.getElementsByClassName(CL_AXIS_TICK_VALUE)[0];
     if (tick) {
       this.setState({
         fontSize: window.getComputedStyle(tick).fontSize,
@@ -55,6 +69,7 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
       });
     }
   }
+
   /**
    * Calculate the coordinates of endpoints in ticks
    * @param  {Object} data The data of a simple tick
@@ -70,11 +85,11 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
       orientation = _this$props2.orientation,
       tickSize = _this$props2.tickSize,
       mirror = _this$props2.mirror,
-      tickMargin = _this$props2.tickMargin;
+      tickMargin = _this$props2.tickMargin,
+      sign = mirror ? -1 : 1,
+      finalTickSize = data.tickSize || tickSize,
+      tickCoord = (0, _DataUtils.isNumber)(data.tickCoord) ? data.tickCoord : data.coordinate;
     var x1, x2, y1, y2, tx, ty;
-    var sign = mirror ? -1 : 1;
-    var finalTickSize = data.tickSize || tickSize;
-    var tickCoord = (0, _DataUtils.isNumber)(data.tickCoord) ? data.tickCoord : data.coordinate;
     switch (orientation) {
       case 'top':
         x1 = x2 = data.coordinate;
@@ -185,7 +200,7 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
       });
     }
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("line", (0, _extends2["default"])({}, props, {
-      className: (0, _classnames["default"])('recharts-cartesian-axis-line', (0, _get2["default"])(axisLine, 'className'))
+      className: (0, _classnames["default"])(CL_AXIS_LINE, (0, _get2["default"])(axisLine, 'className'))
     }));
   };
   CartesianAxis.renderTickItem = function renderTickItem(option, props, value) {
@@ -196,12 +211,13 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
       tickItem = option(props);
     } else {
       tickItem = /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, (0, _extends2["default"])({}, props, {
-        className: "recharts-cartesian-axis-tick-value",
+        className: CL_AXIS_TICK_VALUE,
         children: value
       }));
     }
     return tickItem;
   }
+
   /**
    * render the ticks
    * @param {Array} ticks The ticks to actually render (overrides what was passed in props)
@@ -216,48 +232,47 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
       stroke = _this$props6.stroke,
       tick = _this$props6.tick,
       tickFormatter = _this$props6.tickFormatter,
-      unit = _this$props6.unit;
-    var finalTicks = (0, _getTicks.getTicks)((0, _extends2["default"])({}, this.props, {
-      ticks: ticks
-    }), fontSize, letterSpacing);
-    var textAnchor = this.getTickTextAnchor();
-    var verticalAnchor = this.getTickVerticalAnchor();
-    var axisProps = (0, _ReactUtils.filterProps)(this.props);
-    var customTickProps = (0, _ReactUtils.filterProps)(tick);
-    var tickLineProps = (0, _extends2["default"])({}, axisProps, {
-      fill: 'none'
-    }, (0, _ReactUtils.filterProps)(tickLine));
-    var items = finalTicks.map(function (entry, i) {
-      var _this2$getTickLineCoo = _this2.getTickLineCoord(entry),
-        lineCoord = _this2$getTickLineCoo.line,
-        tickCoord = _this2$getTickLineCoo.tick;
-      var tickProps = (0, _extends2["default"])({
-        textAnchor: textAnchor,
-        verticalAnchor: verticalAnchor
-      }, axisProps, {
-        stroke: 'none',
-        fill: stroke
-      }, customTickProps, tickCoord, {
-        index: i,
-        payload: entry,
-        visibleTicksCount: finalTicks.length,
-        tickFormatter: tickFormatter
+      unit = _this$props6.unit,
+      finalTicks = (0, _getTicks.getTicks)((0, _extends2["default"])({}, this.props, {
+        ticks: ticks
+      }), fontSize, letterSpacing),
+      textAnchor = this.getTickTextAnchor(),
+      verticalAnchor = this.getTickVerticalAnchor(),
+      axisProps = (0, _ReactUtils.filterProps)(this.props),
+      customTickProps = (0, _ReactUtils.filterProps)(tick),
+      tickLineProps = (0, _extends2["default"])({}, axisProps, {
+        fill: 'none'
+      }, (0, _ReactUtils.filterProps)(tickLine)),
+      items = finalTicks.map(function (entry, i) {
+        var _this2$getTickLineCoo = _this2.getTickLineCoord(entry),
+          lineCoord = _this2$getTickLineCoo.line,
+          tickCoord = _this2$getTickLineCoo.tick,
+          tickProps = (0, _extends2["default"])({
+            textAnchor: textAnchor,
+            verticalAnchor: verticalAnchor
+          }, axisProps, {
+            stroke: 'none',
+            fill: stroke
+          }, customTickProps, tickCoord, {
+            index: i,
+            payload: entry,
+            visibleTicksCount: finalTicks.length,
+            tickFormatter: tickFormatter
+          });
+        return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, (0, _extends2["default"])({
+          className: CL_AXIS_TICK
+        }, (0, _types.adaptEventsOfChild)(_this2.props, entry, i), {
+          children: [tickLine && /*#__PURE__*/(0, _jsxRuntime.jsx)("line", (0, _extends2["default"])({}, tickLineProps, lineCoord, {
+            className: (0, _classnames["default"])(CL_AXIS_TICK_LINE, (0, _get2["default"])(tickLine, 'className'))
+          })), tick && CartesianAxis.renderTickItem(tick, tickProps, "" + ((0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value) + (unit || ''))]
+        }), "tick-" + i);
       });
-      return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, (0, _extends2["default"])({
-        className: "recharts-cartesian-axis-tick"
-      }, (0, _types.adaptEventsOfChild)(_this2.props, entry, i), {
-        children: [tickLine && /*#__PURE__*/(0, _jsxRuntime.jsx)("line", (0, _extends2["default"])({}, tickLineProps, lineCoord, {
-          className: (0, _classnames["default"])('recharts-cartesian-axis-tick-line', (0, _get2["default"])(tickLine, 'className'))
-        })), tick && CartesianAxis.renderTickItem(tick, tickProps, "" + ((0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value) + (unit || ''))]
-      }), "tick-" + i);
-    });
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
-      className: "recharts-cartesian-axis-ticks",
+      className: CL_AXIS_TICKS,
       children: items
     });
   };
   _proto.render = function render() {
-    var _this3 = this;
     var _this$props7 = this.props,
       axisLine = _this$props7.axisLine,
       width = _this$props7.width,
@@ -279,10 +294,8 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
       return null;
     }
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
-      className: (0, _classnames["default"])('recharts-cartesian-axis', className),
-      ref: function ref(_ref2) {
-        _this3.layerReference = _ref2;
-      },
+      className: (0, _classnames["default"])(CL_AXIS, className),
+      ref: this._refLayerReference,
       children: [axisLine && this.renderAxisLine(), this.renderTicks(finalTicks, this.state.fontSize, this.state.letterSpacing), _Label.Label.renderCallByParent(this.props)]
     });
   };
