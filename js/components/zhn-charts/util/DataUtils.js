@@ -1,9 +1,7 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.uniqueId = exports.mathSign = exports.isPercent = exports.isNumber = exports.isNumOrStr = exports.interpolateNumber = exports.hasDuplicate = exports.getPercentValue = exports.getAnyElementOfObject = exports.findEntryInArray = void 0;
-var _isNumber2 = _interopRequireDefault(require("lodash/isNumber"));
 var _FnUtils = require("./FnUtils");
 var _getObjectKeys = Object.keys;
 var mathSign = function mathSign(value) {
@@ -15,7 +13,7 @@ var isPercent = function isPercent(value) {
 };
 exports.isPercent = isPercent;
 var isNumber = function isNumber(value) {
-  return (0, _isNumber2["default"])(value) && !(0, _FnUtils._isNaN)(value);
+  return (0, _FnUtils._isNumber)(value) && !(0, _FnUtils._isNaN)(value);
 };
 exports.isNumber = isNumber;
 var isNumOrStr = function isNumOrStr(value) {

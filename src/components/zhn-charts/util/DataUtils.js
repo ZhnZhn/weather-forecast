@@ -1,9 +1,8 @@
-import _isNumber from 'lodash/isNumber';
-
 import {
   _isNaN,
   _isArr,
   _isStr,
+  _isNumber,
   _isFn,
   _getByPropName
 } from './FnUtils';

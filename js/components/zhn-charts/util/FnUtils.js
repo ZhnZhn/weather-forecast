@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports._upperFirst = exports._range = exports._isStr = exports._isObject = exports._isNil = exports._isNaN = exports._isFn = exports._isBool = exports._isArr = exports._getByPropName = void 0;
+exports._upperFirst = exports._range = exports._isStr = exports._isObject = exports._isNumber = exports._isNil = exports._isNaN = exports._isFn = exports._isBool = exports._isArr = exports._getByPropName = void 0;
 var _isArr = Array.isArray;
 exports._isArr = _isArr;
 var _isFn = function _isFn(v) {
@@ -16,6 +16,10 @@ var _isStr = function _isStr(v) {
   return typeof v === 'string';
 };
 exports._isStr = _isStr;
+var _isNumber = function _isNumber(v) {
+  return typeof v === 'number';
+};
+exports._isNumber = _isNumber;
 var _isNil = function _isNil(v) {
   return v == null;
 };
