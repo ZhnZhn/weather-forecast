@@ -6,7 +6,6 @@ exports.LabelList = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _uiApi = require("../../uiApi");
-var _last2 = _interopRequireDefault(require("lodash/last"));
 var _FnUtils = require("../util/FnUtils");
 var _Label = require("./Label");
 var _Layer = require("../container/Layer");
@@ -18,7 +17,9 @@ var _excluded = ["data", "valueAccessor", "dataKey", "clockWise", "id", "textBre
 var CL_LABEL_LIST = "recharts-label-list";
 var defaultProps = {
   valueAccessor: function valueAccessor(entry) {
-    return (0, _FnUtils._isArr)(entry.value) ? (0, _last2["default"])(entry.value) : entry.value;
+    var _ref = entry || {},
+      value = _ref.value;
+    return (0, _FnUtils._isArr)(value) ? value[value.length - 1] : value;
   }
 };
 var LabelList = function LabelList(props) {

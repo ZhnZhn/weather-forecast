@@ -3,7 +3,6 @@ import {
   cloneElement
 } from '../../uiApi';
 
-import _last from 'lodash/last';
 import {
   _isArr,
   _isNil,
@@ -22,9 +21,12 @@ import { getValueByDataKey } from '../util/ChartUtils';
 const CL_LABEL_LIST = "recharts-label-list";
 
 const defaultProps = {
-  valueAccessor: (entry) => _isArr(entry.value)
-    ? _last(entry.value)
-    : entry.value
+  valueAccessor: (entry) => {
+    const { value } = entry || {};
+    return _isArr(value)
+      ? value[value.length-1]
+      : value
+  }
 };
 
 export const LabelList = (
