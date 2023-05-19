@@ -1,4 +1,5 @@
 const _getObjectKeys = Object.keys;
+const _hasOwnProperty = Object.prototype.hasOwnProperty;
 
 export const shallowEqual = (
   objA,
@@ -24,7 +25,7 @@ export const shallowEqual = (
     const key = aKeys[i];
 
     if (objA[key] !== objB[key]
-      || !Object.prototyp.hasOwnProperty.call(objB, key)
+      || !_hasOwnProperty.call(objB, key)
     ) {
       return false;
     }

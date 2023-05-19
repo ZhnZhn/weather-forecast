@@ -3,6 +3,7 @@
 exports.__esModule = true;
 exports.shallowEqual = void 0;
 var _getObjectKeys = Object.keys;
+var _hasOwnProperty = Object.prototype.hasOwnProperty;
 var shallowEqual = function shallowEqual(objA, objB) {
   if (objA === objB) {
     return true;
@@ -18,7 +19,7 @@ var shallowEqual = function shallowEqual(objA, objB) {
   }
   for (var i = 0; i < len; i++) {
     var key = aKeys[i];
-    if (objA[key] !== objB[key] || !Object.prototyp.hasOwnProperty.call(objB, key)) {
+    if (objA[key] !== objB[key] || !_hasOwnProperty.call(objB, key)) {
       return false;
     }
   }
