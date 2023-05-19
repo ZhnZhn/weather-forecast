@@ -1,4 +1,3 @@
-import _get from 'lodash/get';
 import _range from 'lodash/range';
 
 import {
@@ -22,6 +21,16 @@ const ORIENT_MAP = {
   xAxis: ['bottom', 'top'],
   yAxis: ['left', 'right']
 };
+
+const _getOrientMapValue = (
+  propName,
+  index
+) => {
+  const _axis = propName && ORIENT_MAP[propName];
+  return _axis && index-index === 0
+    ? _axis[index] || null
+    : null;
+}
 
 const _isNotEmpty = arr => arr && arr.length;
 
@@ -89,7 +98,7 @@ const getAxisMapByItems = (
             axisType,
             ...Axis.defaultProps,
             hide: true,
-            orientation: _get(ORIENT_MAP, `${axisType}.${index % 2}`, null),
+            orientation: _getOrientMapValue(`${axisType}`, `${index % 2}`),
             domain,
             originalDomain,
             isCategorical,

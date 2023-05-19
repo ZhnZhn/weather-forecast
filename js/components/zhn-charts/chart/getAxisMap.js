@@ -4,7 +4,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.getAxisMap = void 0;
 var _extends3 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _get2 = _interopRequireDefault(require("lodash/get"));
 var _range2 = _interopRequireDefault(require("lodash/range"));
 var _ChartUtils = require("../util/ChartUtils");
 var _ReactUtils = require("../util/ReactUtils");
@@ -14,6 +13,10 @@ var _getAxisMapByAxes = require("./getAxisMapByAxes");
 var ORIENT_MAP = {
   xAxis: ['bottom', 'top'],
   yAxis: ['left', 'right']
+};
+var _getOrientMapValue = function _getOrientMapValue(propName, index) {
+  var _axis = propName && ORIENT_MAP[propName];
+  return _axis && index - index === 0 ? _axis[index] || null : null;
 };
 var _isNotEmpty = function _isNotEmpty(arr) {
   return arr && arr.length;
@@ -76,7 +79,7 @@ var getAxisMapByItems = function getAxisMapByItems(props, _ref) {
         axisType: axisType
       }, Axis.defaultProps, {
         hide: true,
-        orientation: (0, _get2["default"])(ORIENT_MAP, axisType + "." + index % 2, null),
+        orientation: _getOrientMapValue("" + axisType, "" + index % 2),
         domain: domain,
         originalDomain: originalDomain,
         isCategorical: isCategorical,
