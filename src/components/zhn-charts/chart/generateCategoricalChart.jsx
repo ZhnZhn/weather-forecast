@@ -2,8 +2,8 @@ import { Component } from '../../uiApi';
 
 import classNames from 'classnames';
 
-import _throttle from 'lodash/throttle';
 import {
+  _throttle,
   _isBool,
   _isNil,
   _isFn,

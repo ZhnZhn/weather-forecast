@@ -1,3 +1,6 @@
+import throttleFn from '../../../utils/throttleFn';
+export const _throttle = throttleFn;
+
 export const _isArr = Array.isArray
 export const _isFn = v => typeof v === 'function'
 export const _isBool = v => typeof v === 'boolean'

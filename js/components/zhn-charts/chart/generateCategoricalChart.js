@@ -9,7 +9,6 @@ var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/hel
 var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 var _uiApi = require("../../uiApi");
 var _classnames = _interopRequireDefault(require("classnames"));
-var _throttle2 = _interopRequireDefault(require("lodash/throttle"));
 var _FnUtils = require("../util/FnUtils");
 var _getTicks = require("../cartesian/getTicks");
 var _CartesianAxis = require("../cartesian/CartesianAxis");
@@ -290,7 +289,7 @@ var generateCategoricalChart = function generateCategoricalChart(_ref) {
       _this.uniqueChartId = (0, _FnUtils._isNil)(props.id) ? (0, _DataUtils.uniqueId)('recharts') : props.id;
       _this.clipPathId = _this.uniqueChartId + "-clip";
       if (props.throttleDelay) {
-        _this.triggeredAfterMouseMove = (0, _throttle2["default"])(_this.triggeredAfterMouseMove, props.throttleDelay);
+        _this.triggeredAfterMouseMove = (0, _FnUtils._throttle)(_this.triggeredAfterMouseMove, props.throttleDelay);
       }
       _this.state = {};
       return _this;

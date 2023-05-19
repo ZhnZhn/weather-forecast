@@ -1,7 +1,11 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports._upperFirst = exports._uniqBy = exports._range = exports._min = exports._max = exports._isStr = exports._isObject = exports._isNumber = exports._isNil = exports._isNaN = exports._isFn = exports._isEqual = exports._isBool = exports._isArr = exports._getByPropName = void 0;
+exports._upperFirst = exports._uniqBy = exports._throttle = exports._range = exports._min = exports._max = exports._isStr = exports._isObject = exports._isNumber = exports._isNil = exports._isNaN = exports._isFn = exports._isEqual = exports._isBool = exports._isArr = exports._getByPropName = void 0;
+var _throttleFn = _interopRequireDefault(require("../../../utils/throttleFn"));
+var _throttle = _throttleFn["default"];
+exports._throttle = _throttle;
 var _isArr = Array.isArray;
 exports._isArr = _isArr;
 var _isFn = function _isFn(v) {
