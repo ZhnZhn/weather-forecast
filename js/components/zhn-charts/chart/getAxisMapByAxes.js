@@ -4,7 +4,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.getAxisMapByAxes = void 0;
 var _extends3 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _range2 = _interopRequireDefault(require("lodash/range"));
 var _FnUtils = require("../util/FnUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ChartUtils = require("../util/ChartUtils");
@@ -122,7 +121,7 @@ var getAxisMapByAxes = function getAxisMapByAxes(props, _ref) {
           if (allowDuplicatedCategory && duplicate) {
             duplicateDomain = domain;
             // When category axis has duplicated text, serial numbers are used to generate scale
-            domain = (0, _range2["default"])(0, len);
+            domain = (0, _FnUtils._range)(0, len);
           } else if (!allowDuplicatedCategory) {
             // remove duplicated category
             domain = (0, _ChartUtils.parseDomainOfCategoryAxis)(childDomain, domain, child).reduce(function (finalDomain, entry) {
@@ -155,7 +154,7 @@ var getAxisMapByAxes = function getAxisMapByAxes(props, _ref) {
         }
       } else if (isCategorical) {
         // the axis is a categorical axis
-        domain = (0, _range2["default"])(0, len);
+        domain = (0, _FnUtils._range)(0, len);
       } else if (stackGroups && stackGroups[axisId] && stackGroups[axisId].hasStack && _isValueNumber(type)) {
         // when stackOffset is 'expand', the domain may be calculated as [0, 1.000000000002]
         domain = stackOffset === 'expand' ? [0, 1] : (0, _ChartUtils.getDomainOfStackGroups)(stackGroups[axisId].stackGroups, dataStartIndex, dataEndIndex);

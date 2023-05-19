@@ -1,4 +1,4 @@
-import _range from 'lodash/range';
+import { _range } from '../util/FnUtils';
 
 import {
   isCategoricalAxis,

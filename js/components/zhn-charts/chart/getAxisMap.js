@@ -4,7 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.getAxisMap = void 0;
 var _extends3 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _range2 = _interopRequireDefault(require("lodash/range"));
+var _FnUtils = require("../util/FnUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _DetectReferenceElementsDomain = require("../util/DetectReferenceElementsDomain");
@@ -65,7 +65,7 @@ var getAxisMapByItems = function getAxisMapByItems(props, _ref) {
       index++;
       var domain;
       if (isCategorical) {
-        domain = (0, _range2["default"])(0, len);
+        domain = (0, _FnUtils._range)(0, len);
       } else if (stackGroups && stackGroups[axisId] && stackGroups[axisId].hasStack) {
         domain = (0, _ChartUtils.getDomainOfStackGroups)(stackGroups[axisId].stackGroups, dataStartIndex, dataEndIndex);
         domain = (0, _DetectReferenceElementsDomain.detectReferenceElementsDomain)(children, domain, axisId, axisType);

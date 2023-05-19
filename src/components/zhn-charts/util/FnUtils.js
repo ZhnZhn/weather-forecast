@@ -26,4 +26,33 @@ export const _getByPropName = (
   dfValue
 ) => obj && propName
    ? obj[propName] || dfValue
-   : dfValue 
+   : dfValue
+
+const _isUndef = v => typeof v === 'undefined';
+export const _range = (
+  startValue,
+  endValue,
+  increment
+) => {
+  const isEndDef = !_isUndef(endValue)
+  endValue = isEndDef ? endValue : startValue
+  startValue = isEndDef ? startValue : 0
+  const _diff = endValue - startValue
+
+  if (_isUndef(increment)) {
+    increment = Math.sign(_diff)
+  }
+
+  const length = Math.abs(_diff / (increment || 1))
+
+  const { result } = Array.from({ length })
+   .reduce(
+     ({ result, current }) => ({
+       result: [...result, current],
+       current: current + increment
+     }),
+     { current: startValue, result: [] }
+  )
+
+  return result;
+}

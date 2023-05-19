@@ -9,7 +9,6 @@ var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inh
 var _uiApi = require("../../uiApi");
 var _classnames = _interopRequireDefault(require("classnames"));
 var _d3Scale = require("d3-scale");
-var _range2 = _interopRequireDefault(require("lodash/range"));
 var _FnUtils = require("../util/FnUtils");
 var _Layer = require("../container/Layer");
 var _Text = require("../component/Text");
@@ -38,7 +37,7 @@ var _createScale = function _createScale(_ref) {
     return {};
   }
   var len = data.length,
-    scale = (0, _d3Scale.scalePoint)().domain((0, _range2["default"])(0, len)).range([x, x + width - travellerWidth]),
+    scale = (0, _d3Scale.scalePoint)().domain((0, _FnUtils._range)(0, len)).range([x, x + width - travellerWidth]),
     scaleValues = scale.domain().map(function (entry) {
       return scale(entry);
     });

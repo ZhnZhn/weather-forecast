@@ -1,7 +1,7 @@
-import _range from 'lodash/range';
 import {
   _isArr,
-  _isNil
+  _isNil,
+  _range
 } from '../util/FnUtils';
 
 import {

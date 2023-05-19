@@ -8,9 +8,9 @@ import {
 import classNames from 'classnames';
 import { scalePoint } from 'd3-scale';
 
-import _range from 'lodash/range';
 import {
-  _isFn
+  _isFn,
+  _range
 } from '../util/FnUtils';
 
 import { Layer } from '../container/Layer';

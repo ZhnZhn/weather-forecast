@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports._upperFirst = exports._isStr = exports._isObject = exports._isNil = exports._isNaN = exports._isFn = exports._isBool = exports._isArr = exports._getByPropName = void 0;
+exports._upperFirst = exports._range = exports._isStr = exports._isObject = exports._isNil = exports._isNaN = exports._isFn = exports._isBool = exports._isArr = exports._getByPropName = void 0;
 var _isArr = Array.isArray;
 exports._isArr = _isArr;
 var _isFn = function _isFn(v) {
@@ -35,4 +35,33 @@ var _getByPropName = function _getByPropName(obj, propName, dfValue) {
   return obj && propName ? obj[propName] || dfValue : dfValue;
 };
 exports._getByPropName = _getByPropName;
+var _isUndef = function _isUndef(v) {
+  return typeof v === 'undefined';
+};
+var _range = function _range(startValue, endValue, increment) {
+  var isEndDef = !_isUndef(endValue);
+  endValue = isEndDef ? endValue : startValue;
+  startValue = isEndDef ? startValue : 0;
+  var _diff = endValue - startValue;
+  if (_isUndef(increment)) {
+    increment = Math.sign(_diff);
+  }
+  var length = Math.abs(_diff / (increment || 1));
+  var _Array$from$reduce = Array.from({
+      length: length
+    }).reduce(function (_ref) {
+      var result = _ref.result,
+        current = _ref.current;
+      return {
+        result: [].concat(result, [current]),
+        current: current + increment
+      };
+    }, {
+      current: startValue,
+      result: []
+    }),
+    result = _Array$from$reduce.result;
+  return result;
+};
+exports._range = _range;
 //# sourceMappingURL=FnUtils.js.map
