@@ -1,8 +1,21 @@
-import { warn } from './util';
+/*
+configBezier arguments should be one of
+'ease', 'ease-in', 'ease-out', ease-in-out',
+'linear', 'spring', 'cubic-bezier(x1,y1,x2,y2)
+
+configBezier arguments should be
+x1, y1, x2, y2 of [0, 1]
+
+configEasing first argument type should be
+function or string
+*/
 
 const ACCURACY = 1e-4;
 
-const cubicBezierFactor = (c1, c2) => [
+const cubicBezierFactor = (
+  c1,
+  c2
+) => [
   0,
   3 * c1,
   3 * c2 - 6 * c1,
@@ -64,20 +77,10 @@ export const configBezier = (...args) => {
         const easing = args[0].split('(');
         if (easing[0] === 'cubic-bezier' && easing[1].split(')')[0].split(',').length === 4) {
           [x1, y1, x2, y2] = easing[1].split(')')[0].split(',').map(x => parseFloat(x));
-        } else {
-          warn(false, '[configBezier]: arguments should be one of ' +
-            'oneOf \'linear\', \'ease\', \'ease-in\', \'ease-out\', ' +
-            '\'ease-in-out\',\'cubic-bezier(x1,y1,x2,y2)\', instead received %s', args);
         }
       }
     }
   }
-
-  warn(
-    [x1, x2, y1, y2].every(num => (typeof num === 'number' && num >= 0 && num <= 1)),
-    '[configBezier]: arguments should be x1, y1, x2, y2 of [0, 1] instead received %s',
-    args,
-  );
 
   const curveX = cubicBezier(x1, x2)
   , curveY = cubicBezier(y1, y2)
@@ -152,21 +155,12 @@ export const configEasing = (...args) => {
         if (easing.split('(')[0] === 'cubic-bezier') {
           return configBezier(easing);
         }
-        warn(
-          false,
-          '[configEasing]: first argument should be one of \'ease\', \'ease-in\', ' +
-          '\'ease-out\', \'ease-in-out\',\'cubic-bezier(x1,y1,x2,y2)\', \'linear\' and \'spring\', instead  received %s',
-          args,
-        );
     }
   }
 
   if (typeof easing === 'function') {
     return easing;
   }
-
-  warn(false, '[configEasing]: first argument type should be function or ' +
-    'string, instead received %s', args);
 
   return null;
 };
