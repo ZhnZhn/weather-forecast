@@ -6,16 +6,16 @@ import {
 
 import classNames from 'classnames';
 
-import _get from 'lodash/get';
 import { _isFn } from '../util/FnUtils';
-
 import { shallowEqual } from '../util/ShallowEqual';
-import { Layer } from '../container/Layer';
-import { Text } from '../component/Text';
-import { Label } from '../component/Label';
 import { isNumber } from '../util/DataUtils';
 import { adaptEventsOfChild, } from '../util/types';
 import { filterProps } from '../util/ReactUtils';
+
+import { Layer } from '../container/Layer';
+import { Text } from '../component/Text';
+import { Label } from '../component/Label';
+
 import { getTicks } from './getTicks';
 
 const CL_AXIS = "recharts-cartesian-axis"
@@ -24,6 +24,12 @@ const CL_AXIS = "recharts-cartesian-axis"
 , CL_AXIS_TICKS = `${CL_AXIS_TICK}s`
 , CL_AXIS_TICK_LINE = `${CL_AXIS_TICK}-line`
 , CL_AXIS_TICK_VALUE = `${CL_AXIS_TICK}-value`;
+
+const _getClassName = (
+  obj
+) => obj
+  ? obj.className
+  : void 0;
 
 export class CartesianAxis extends Component {
   state = { fontSize: '', letterSpacing: '' }
@@ -186,10 +192,11 @@ export class CartesianAxis extends Component {
          y2: y + height
        };
     }
+    const _axisLineClassName = _getClassName(axisLine);
     return (
       <line
         {...props}
-        className={classNames(CL_AXIS_LINE, _get(axisLine, 'className'))}
+        className={classNames(CL_AXIS_LINE, _axisLineClassName)}
       />
     );
   }
@@ -253,10 +260,11 @@ export class CartesianAxis extends Component {
             visibleTicksCount: finalTicks.length,
             tickFormatter
         };
+        const _tickLineClassName = _getClassName(tickLine);
         return (
           <Layer className={CL_AXIS_TICK} key={`tick-${i}`}
             {...adaptEventsOfChild(this.props, entry, i)}>
-            {tickLine && (<line {...tickLineProps} {...lineCoord} className={classNames(CL_AXIS_TICK_LINE, _get(tickLine, 'className'))}/>)}
+            {tickLine && (<line {...tickLineProps} {...lineCoord} className={classNames(CL_AXIS_TICK_LINE, _tickLineClassName)} />)}
             {tick && CartesianAxis.renderTickItem(tick, tickProps, `${_isFn(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)}
           </Layer>
         );
