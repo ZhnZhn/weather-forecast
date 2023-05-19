@@ -10,7 +10,6 @@ exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = e
 var _extends7 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var d3Scales = _interopRequireWildcard(require("d3-scale"));
 var _d3Shape = require("d3-shape");
-var _get2 = _interopRequireDefault(require("lodash/get"));
 var _min2 = _interopRequireDefault(require("lodash/min"));
 var _max2 = _interopRequireDefault(require("lodash/max"));
 var _isEqual2 = _interopRequireDefault(require("lodash/isEqual"));
@@ -23,12 +22,15 @@ var _ReactUtils = require("./ReactUtils");
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 var _getObjectKeys = Object.keys;
+var _getAxisDomain = function _getAxisDomain(axis) {
+  return (((axis || {}).type || {}).defaultProps || {}).domain;
+};
 function getValueByDataKey(obj, dataKey, defaultValue) {
   if ((0, _FnUtils._isNil)(obj) || (0, _FnUtils._isNil)(dataKey)) {
     return defaultValue;
   }
   if ((0, _DataUtils.isNumOrStr)(dataKey)) {
-    return (0, _get2["default"])(obj, dataKey, defaultValue);
+    return (0, _FnUtils._getByPropName)(obj, dataKey, defaultValue);
   }
   if ((0, _FnUtils._isFn)(dataKey)) {
     return dataKey(obj);
@@ -1006,7 +1008,7 @@ var getBandSizeOfAxis = function getBandSizeOfAxis(axis, ticks, isBar) {
  */
 exports.getBandSizeOfAxis = getBandSizeOfAxis;
 var parseDomainOfCategoryAxis = function parseDomainOfCategoryAxis(specifiedDomain, calculatedDomain, axisChild) {
-  return !specifiedDomain || !specifiedDomain.length ? calculatedDomain : (0, _isEqual2["default"])(specifiedDomain, (0, _get2["default"])(axisChild, 'type.defaultProps.domain')) ? calculatedDomain : specifiedDomain;
+  return !specifiedDomain || !specifiedDomain.length ? calculatedDomain : (0, _isEqual2["default"])(specifiedDomain, _getAxisDomain(axisChild)) ? calculatedDomain : specifiedDomain;
 };
 exports.parseDomainOfCategoryAxis = parseDomainOfCategoryAxis;
 var getTooltipItem = function getTooltipItem(graphicalItem, payload) {

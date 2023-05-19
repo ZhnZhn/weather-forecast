@@ -9,7 +9,6 @@ import {
   stackOrderNone
 } from 'd3-shape';
 
-import _get from 'lodash/get';
 import _min from 'lodash/min';
 import _max from 'lodash/max';
 import _isEqual from 'lodash/isEqual';
@@ -20,6 +19,7 @@ import {
   _isArr,
   _isStr,
   _isNaN,
+  _getByPropName,
   _upperFirst
 } from './FnUtils';
 
@@ -47,6 +47,14 @@ import {
 
 const _getObjectKeys = Object.keys;
 
+const _getAxisDomain = (
+  axis
+) => (((axis || {})
+  .type || {})
+  .defaultProps || {})
+  .domain;
+
+
 export function getValueByDataKey(
   obj,
   dataKey,
@@ -56,7 +64,7 @@ export function getValueByDataKey(
     return defaultValue;
   }
   if (isNumOrStr(dataKey)) {
-    return _get(obj, dataKey, defaultValue);
+    return _getByPropName(obj, dataKey, defaultValue);
   }
   if (_isFn(dataKey)) {
     return dataKey(obj);
@@ -1166,7 +1174,7 @@ export const parseDomainOfCategoryAxis = (
   axisChild
 ) => !specifiedDomain || !specifiedDomain.length
   ? calculatedDomain
-  : _isEqual(specifiedDomain, _get(axisChild, 'type.defaultProps.domain'))
+  : _isEqual(specifiedDomain, _getAxisDomain(axisChild))
      ? calculatedDomain
      : specifiedDomain
 
