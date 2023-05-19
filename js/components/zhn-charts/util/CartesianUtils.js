@@ -5,7 +5,6 @@ exports.__esModule = true;
 exports.rectWithPoints = exports.rectWithCoords = exports.formatAxisMap = exports.createLabeledScales = exports.ScaleHelper = void 0;
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 var _extends4 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _mapValues2 = _interopRequireDefault(require("lodash/mapValues"));
 var _ChartUtils = require("./ChartUtils");
 var _ReactUtils = require("./ReactUtils");
 var _DataUtils = require("./DataUtils");
@@ -236,7 +235,8 @@ var createLabeledScales = function createLabeledScales(options) {
       var _ref5 = _temp2 === void 0 ? {} : _temp2,
         bandAware = _ref5.bandAware,
         position = _ref5.position;
-      return (0, _mapValues2["default"])(coord, function (value, label) {
+      //return _mapValues(coord, (value, label) => scales[label].apply(value, { bandAware, position }));
+      return coord.map(function (value, label) {
         return scales[label].apply(value, {
           bandAware: bandAware,
           position: position

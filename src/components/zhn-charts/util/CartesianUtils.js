@@ -1,5 +1,3 @@
-import _mapValues from 'lodash/mapValues';
-
 import {
   getTicksOfScale,
   parseScale,
@@ -236,7 +234,8 @@ export const createLabeledScales = (options) => {
   return {
     ...scales,
     apply(coord, { bandAware, position } = {}) {
-      return _mapValues(coord, (value, label) => scales[label].apply(value, { bandAware, position }));
+      //return _mapValues(coord, (value, label) => scales[label].apply(value, { bandAware, position }));
+      return coord.map((value, label) => scales[label].apply(value, { bandAware, position }));
     },
     isInRange(coord) {
       return coord.every((value, label) => scales[label].isInRange(value));
