@@ -9,7 +9,6 @@ var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/hel
 var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 var _uiApi = require("../../uiApi");
 var _classnames = _interopRequireDefault(require("classnames"));
-var _get2 = _interopRequireDefault(require("lodash/get"));
 var _throttle2 = _interopRequireDefault(require("lodash/throttle"));
 var _FnUtils = require("../util/FnUtils");
 var _getTicks = require("../cartesian/getTicks");
@@ -37,6 +36,9 @@ var _renderClipPath = require("./renderClipPath");
 var _react = require("react");
 var _jsxRuntime = require("react/jsx-runtime");
 var _excluded = ["className", "width", "height", "style", "compact", "title", "desc"];
+var _getPropName = function _getPropName(obj, propName) {
+  return obj && propName ? obj[propName] : void 0;
+};
 var _inRange = function _inRange(x, y, props, state) {
   var layout = props.layout;
   if ((0, _chartFn.isLayoutHorizontal)(layout) || (0, _chartFn.isLayoutVertical)(layout)) {
@@ -235,7 +237,7 @@ var generateCategoricalChart = function generateCategoricalChart(_ref) {
       };
       _this.handleOuterEvent = function (e) {
         var eventName = (0, _ReactUtils.getReactEventByType)(e),
-          event = (0, _get2["default"])(_this.props, "" + eventName);
+          event = _getPropName(_this.props, "" + eventName);
         if (eventName && (0, _FnUtils._isFn)(event)) {
           var mouse = /.*touch.*/i.test(eventName) ? _this.getMouseInfo(e.changedTouches[0]) : _this.getMouseInfo(e);
           // handler event case;

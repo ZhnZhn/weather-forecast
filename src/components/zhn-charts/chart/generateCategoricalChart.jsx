@@ -2,7 +2,6 @@ import { Component } from '../../uiApi';
 
 import classNames from 'classnames';
 
-import _get from 'lodash/get';
 import _throttle from 'lodash/throttle';
 import {
   _isBool,
@@ -71,6 +70,13 @@ import { renderMap } from './renderFn';
 import { renderLegend } from './renderLegend';
 import { renderTooltip } from './renderTooltip';
 import { renderClipPath } from './renderClipPath';
+
+const _getPropName = (
+  obj,
+  propName
+) => obj && propName
+  ? obj[propName]
+  : void 0;
 
 const _inRange = (
   x,
@@ -283,7 +289,7 @@ export const generateCategoricalChart = ({
 
             handleOuterEvent = (e) => {
               const eventName = getReactEventByType(e)
-              , event = _get(this.props, `${eventName}`);
+              , event = _getPropName(this.props, `${eventName}`);
               if (eventName && _isFn(event)) {
                 const mouse = /.*touch.*/i.test(eventName)
                   ? this.getMouseInfo(e.changedTouches[0])
