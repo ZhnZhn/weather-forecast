@@ -9,8 +9,6 @@ import {
   stackOrderNone
 } from 'd3-shape';
 
-import _isEqual from 'lodash/isEqual';
-
 import {
   _isNil,
   _isFn,
@@ -20,7 +18,8 @@ import {
   _getByPropName,
   _upperFirst,
   _min,
-  _max
+  _max,
+  _isEqual
 } from './FnUtils';
 
 import {

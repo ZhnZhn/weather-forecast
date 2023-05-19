@@ -10,7 +10,6 @@ exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = e
 var _extends7 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var d3Scales = _interopRequireWildcard(require("d3-scale"));
 var _d3Shape = require("d3-shape");
-var _isEqual2 = _interopRequireDefault(require("lodash/isEqual"));
 var _FnUtils = require("./FnUtils");
 var _scale = require("../scale");
 var _ErrorBar = require("../cartesian/ErrorBar");
@@ -1006,7 +1005,7 @@ var getBandSizeOfAxis = function getBandSizeOfAxis(axis, ticks, isBar) {
  */
 exports.getBandSizeOfAxis = getBandSizeOfAxis;
 var parseDomainOfCategoryAxis = function parseDomainOfCategoryAxis(specifiedDomain, calculatedDomain, axisChild) {
-  return !specifiedDomain || !specifiedDomain.length ? calculatedDomain : (0, _isEqual2["default"])(specifiedDomain, _getAxisDomain(axisChild)) ? calculatedDomain : specifiedDomain;
+  return !specifiedDomain || !specifiedDomain.length ? calculatedDomain : (0, _FnUtils._isEqual)(specifiedDomain, _getAxisDomain(axisChild)) ? calculatedDomain : specifiedDomain;
 };
 exports.parseDomainOfCategoryAxis = parseDomainOfCategoryAxis;
 var getTooltipItem = function getTooltipItem(graphicalItem, payload) {
