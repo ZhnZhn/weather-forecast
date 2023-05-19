@@ -10,13 +10,19 @@ var _Curve = require("../shape/Curve");
 var _Cross = require("../shape/Cross");
 var _Sector = require("../shape/Sector");
 var _Rectangle = require("../shape/Rectangle");
-var _find2 = _interopRequireDefault(require("lodash/find"));
 var _FnUtils = require("../util/FnUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _renderActivePoints = require("./renderActivePoints");
 var isFinit = Number.isFinite || isFinite;
+var _getObjectKeys = Object.keys;
+var _crArrFromObjByKeys = function _crArrFromObjByKeys(obj) {
+  return obj && typeof obj === 'object' ? _getObjectKeys(obj).reduce(function (arr, key) {
+    arr.push(obj[key]);
+    return arr;
+  }, []) : [];
+};
 var renderGrid = function renderGrid(_ref) {
   var chartInst = _ref.chartInst,
     element = _ref.element;
@@ -30,7 +36,8 @@ var renderGrid = function renderGrid(_ref) {
     xAxis = (0, _DataUtils.getAnyElementOfObject)(xAxisMap);
 
   //const yAxisWithFiniteDomain = _find(yAxisMap, axis => _every(axis.domain, isFinit));
-  var yAxisWithFiniteDomain = (0, _find2["default"])(yAxisMap, function (axis) {
+  //const yAxisWithFiniteDomain = _find(yAxisMap, axis => axis.domain.every(isFinit))
+  var yAxisWithFiniteDomain = _crArrFromObjByKeys(yAxisMap).find(function (axis) {
       return axis.domain.every(isFinit);
     }),
     yAxis = yAxisWithFiniteDomain || (0, _DataUtils.getAnyElementOfObject)(yAxisMap),

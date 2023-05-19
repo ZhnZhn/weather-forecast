@@ -10,8 +10,6 @@ import { Cross } from '../shape/Cross';
 import { Sector } from '../shape/Sector';
 import { Rectangle } from '../shape/Rectangle';
 
-import _find from 'lodash/find';
-
 import {
   _isNil,
   _isFn
@@ -36,6 +34,17 @@ import {
 import { renderActivePoints } from './renderActivePoints';
 
 const isFinit = Number.isFinite || isFinite;
+const _getObjectKeys = Object.keys;
+const _crArrFromObjByKeys = (
+  obj
+) => obj && typeof obj === 'object'
+   ? _getObjectKeys(obj)
+       .reduce((arr, key) => {
+          arr.push(obj[key])
+          return arr
+        }, [])
+   : [];
+
 
 const renderGrid = ({
   chartInst,
@@ -57,7 +66,9 @@ const renderGrid = ({
     , xAxis = getAnyElementOfObject(xAxisMap);
 
     //const yAxisWithFiniteDomain = _find(yAxisMap, axis => _every(axis.domain, isFinit));
-    const yAxisWithFiniteDomain = _find(yAxisMap, axis => axis.domain.every(isFinit))
+    //const yAxisWithFiniteDomain = _find(yAxisMap, axis => axis.domain.every(isFinit))
+    const yAxisWithFiniteDomain = _crArrFromObjByKeys(yAxisMap)
+      .find(axis => axis.domain.every(isFinit))
     , yAxis = yAxisWithFiniteDomain || getAnyElementOfObject(yAxisMap)
     , _props = element.props || {};
 
@@ -336,7 +347,7 @@ const renderCursor = ({
     || (_chartName !== 'ScatterChart' && tooltipEventType !== 'axis')) {
     return null;
   }
-  
+
   const { layout } = props;
   let restProps, cursorComp = Curve;
   if (_chartName === 'ScatterChart') {
