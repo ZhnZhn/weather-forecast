@@ -1,16 +1,11 @@
 import { findChildByType } from '../util/ReactUtils';
 import { appendOffsetOfLegend } from '../util/ChartUtils';
+import { _getByPropName } from '../util/FnUtils';
 
 import { Brush } from '../cartesian/Brush';
 import { Legend } from '../component/Legend';
 
 const _getObjectKeys = Object.keys;
-const _getPropName = (
-  obj,
-  propName
-) => obj && propName
-  ? obj[propName] || ''
-  : ''
 
 /**
  * Calculate the offset of main part in the svg element
@@ -58,7 +53,7 @@ export const calculateOffset = ({
          return !entry.mirror && !entry.hide
            ? {
                ...result,
-               [orientation]: _getPropName(result, `${orientation}`) + entry.height
+               [orientation]: _getByPropName(result, `${orientation}`, '') + entry.height
              }
            : result;
     }, {

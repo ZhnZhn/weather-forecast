@@ -19,3 +19,11 @@ export const _upperFirst = (
 ) => _isStr(str) && str.length > 0
   ? str[0].toUpperCase() + str.slice(1)
   : '';
+
+export const _getByPropName = (
+  obj,
+  propName,
+  dfValue
+) => obj && propName
+   ? obj[propName] || dfValue
+   : dfValue 

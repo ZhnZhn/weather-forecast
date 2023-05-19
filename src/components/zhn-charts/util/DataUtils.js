@@ -4,16 +4,11 @@ import {
   _isNaN,
   _isArr,
   _isStr,
-  _isFn
+  _isFn,
+  _getByPropName
 } from './FnUtils';
 
 const _getObjectKeys = Object.keys;
-const _getByPropName = (
-  obj,
-  propName
-) => obj && propName
-  ? obj[propName]
-  : void 0
 
 export const mathSign = (
   value

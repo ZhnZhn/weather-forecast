@@ -6,12 +6,10 @@ exports.calculateOffset = void 0;
 var _extends4 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _ReactUtils = require("../util/ReactUtils");
 var _ChartUtils = require("../util/ChartUtils");
+var _FnUtils = require("../util/FnUtils");
 var _Brush = require("../cartesian/Brush");
 var _Legend = require("../component/Legend");
 var _getObjectKeys = Object.keys;
-var _getPropName = function _getPropName(obj, propName) {
-  return obj && propName ? obj[propName] || '' : '';
-};
 
 /**
  * Calculate the offset of main part in the svg element
@@ -48,7 +46,7 @@ var calculateOffset = function calculateOffset(_ref, prevLegendBBox) {
     var _extends3;
     var entry = xAxisMap[id],
       orientation = entry.orientation;
-    return !entry.mirror && !entry.hide ? (0, _extends4["default"])({}, result, (_extends3 = {}, _extends3[orientation] = _getPropName(result, "" + orientation) + entry.height, _extends3)) : result;
+    return !entry.mirror && !entry.hide ? (0, _extends4["default"])({}, result, (_extends3 = {}, _extends3[orientation] = (0, _FnUtils._getByPropName)(result, "" + orientation, '') + entry.height, _extends3)) : result;
   }, {
     top: margin.top || 0,
     bottom: margin.bottom || 0

@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports._upperFirst = exports._isStr = exports._isObject = exports._isNil = exports._isNaN = exports._isFn = exports._isBool = exports._isArr = void 0;
+exports._upperFirst = exports._isStr = exports._isObject = exports._isNil = exports._isNaN = exports._isFn = exports._isBool = exports._isArr = exports._getByPropName = void 0;
 var _isArr = Array.isArray;
 exports._isArr = _isArr;
 var _isFn = function _isFn(v) {
@@ -31,4 +31,8 @@ var _upperFirst = function _upperFirst(str) {
   return _isStr(str) && str.length > 0 ? str[0].toUpperCase() + str.slice(1) : '';
 };
 exports._upperFirst = _upperFirst;
+var _getByPropName = function _getByPropName(obj, propName, dfValue) {
+  return obj && propName ? obj[propName] || dfValue : dfValue;
+};
+exports._getByPropName = _getByPropName;
 //# sourceMappingURL=FnUtils.js.map

@@ -6,9 +6,6 @@ exports.uniqueId = exports.mathSign = exports.isPercent = exports.isNumber = exp
 var _isNumber2 = _interopRequireDefault(require("lodash/isNumber"));
 var _FnUtils = require("./FnUtils");
 var _getObjectKeys = Object.keys;
-var _getByPropName = function _getByPropName(obj, propName) {
-  return obj && propName ? obj[propName] : void 0;
-};
 var mathSign = function mathSign(value) {
   return value === 0 ? 0 : value > 0 ? 1 : -1;
 };
@@ -106,7 +103,7 @@ var findEntryInArray = function findEntryInArray(arr, specifiedKey, specifiedVal
     return null;
   }
   return arr.find(function (entry) {
-    return entry && ((0, _FnUtils._isFn)(specifiedKey) ? specifiedKey(entry) : _getByPropName(entry, specifiedKey)) === specifiedValue;
+    return entry && ((0, _FnUtils._isFn)(specifiedKey) ? specifiedKey(entry) : (0, _FnUtils._getByPropName)(entry, specifiedKey)) === specifiedValue;
   });
 };
 exports.findEntryInArray = findEntryInArray;

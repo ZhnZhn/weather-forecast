@@ -6,7 +6,8 @@ import _throttle from 'lodash/throttle';
 import {
   _isBool,
   _isNil,
-  _isFn
+  _isFn,
+  _getByPropName
 } from '../util/FnUtils';
 
 import { getTicks } from '../cartesian/getTicks';
@@ -70,13 +71,6 @@ import { renderMap } from './renderFn';
 import { renderLegend } from './renderLegend';
 import { renderTooltip } from './renderTooltip';
 import { renderClipPath } from './renderClipPath';
-
-const _getPropName = (
-  obj,
-  propName
-) => obj && propName
-  ? obj[propName]
-  : void 0;
 
 const _inRange = (
   x,
@@ -289,7 +283,7 @@ export const generateCategoricalChart = ({
 
             handleOuterEvent = (e) => {
               const eventName = getReactEventByType(e)
-              , event = _getPropName(this.props, `${eventName}`);
+              , event = _getByPropName(this.props, `${eventName}`);
               if (eventName && _isFn(event)) {
                 const mouse = /.*touch.*/i.test(eventName)
                   ? this.getMouseInfo(e.changedTouches[0])
