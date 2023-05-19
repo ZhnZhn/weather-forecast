@@ -104,3 +104,17 @@ export const _max = (
 ) => arr && arr.length
   ? _findExtremum(arr, _identity, _baseGt)
   : void 0;
+
+export const _uniqBy = (
+  arr,
+  iteratee
+) => {
+  if (_isStr(iteratee)) {
+    const prop = iteratee
+    iteratee = item => item[prop]
+  }
+
+  return arr.filter(
+    (x, i, arrSelf) => i === arrSelf.findIndex(y => iteratee(x) === iteratee(y))
+  )
+}

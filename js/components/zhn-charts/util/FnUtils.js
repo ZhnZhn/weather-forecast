@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports._upperFirst = exports._range = exports._min = exports._max = exports._isStr = exports._isObject = exports._isNumber = exports._isNil = exports._isNaN = exports._isFn = exports._isBool = exports._isArr = exports._getByPropName = void 0;
+exports._upperFirst = exports._uniqBy = exports._range = exports._min = exports._max = exports._isStr = exports._isObject = exports._isNumber = exports._isNil = exports._isNaN = exports._isFn = exports._isBool = exports._isArr = exports._getByPropName = void 0;
 var _isArr = Array.isArray;
 exports._isArr = _isArr;
 var _isFn = function _isFn(v) {
@@ -103,4 +103,18 @@ var _max = function _max(arr) {
   return arr && arr.length ? _findExtremum(arr, _identity, _baseGt) : void 0;
 };
 exports._max = _max;
+var _uniqBy = function _uniqBy(arr, iteratee) {
+  if (_isStr(iteratee)) {
+    var prop = iteratee;
+    iteratee = function iteratee(item) {
+      return item[prop];
+    };
+  }
+  return arr.filter(function (x, i, arrSelf) {
+    return i === arrSelf.findIndex(function (y) {
+      return iteratee(x) === iteratee(y);
+    });
+  });
+};
+exports._uniqBy = _uniqBy;
 //# sourceMappingURL=FnUtils.js.map

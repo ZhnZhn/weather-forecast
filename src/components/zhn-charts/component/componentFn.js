@@ -1,5 +1,7 @@
-import _uniqBy from 'lodash/uniqBy'
-import { _isFn } from '../util/FnUtils';
+import {
+  _isFn,
+  _uniqBy
+} from '../util/FnUtils';
 
 export const getUniqPayload = (
   option,
