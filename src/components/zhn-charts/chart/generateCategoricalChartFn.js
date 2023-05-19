@@ -1,5 +1,3 @@
-import _sortBy from 'lodash/sortBy';
-
 import {
   _isFn
 } from '../util/FnUtils';
@@ -171,7 +169,8 @@ export const tooltipTicksGenerator = (
   , tooltipTicks = getTicksOfAxis(axis, false, true);
   return {
     tooltipTicks,
-    orderedTooltipTicks: _sortBy(tooltipTicks, o => o.coordinate),
+    //orderedTooltipTicks: _sortBy(tooltipTicks, o => o.coordinate),
+    orderedTooltipTicks: tooltipTicks.sort(o => o.coordinate),
     tooltipAxis: axis,
     tooltipAxisBandSize: getBandSizeOfAxis(axis, tooltipTicks),
   };

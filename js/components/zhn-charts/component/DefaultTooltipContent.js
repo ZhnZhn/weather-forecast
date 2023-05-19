@@ -6,7 +6,6 @@ exports.DefaultTooltipContent = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _uiApi = require("../../uiApi");
 var _classnames = _interopRequireDefault(require("classnames"));
-var _sortBy2 = _interopRequireDefault(require("lodash/sortBy"));
 var _FnUtils = require("../util/FnUtils");
 var _DataUtils = require("../util/DataUtils");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -33,7 +32,9 @@ var _renderContent = function _renderContent(props) {
         padding: 0,
         margin: 0
       },
-      items = (itemSorter ? (0, _sortBy2["default"])(payload, itemSorter) : payload).map(function (entry, i) {
+      items = (itemSorter
+      //? _sortBy(payload, itemSorter)
+      ? payload.sort(itemSorter) : payload).map(function (entry, i) {
         if (entry.type === 'none') {
           return null;
         }

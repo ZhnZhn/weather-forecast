@@ -12,7 +12,6 @@ import {
 import _get from 'lodash/get';
 import _min from 'lodash/min';
 import _max from 'lodash/max';
-import _sortBy from 'lodash/sortBy';
 import _isEqual from 'lodash/isEqual';
 
 import {
@@ -1141,7 +1140,8 @@ export const getBandSizeOfAxis = (
     }
   }
   if (axis && ticks && ticks.length >= 2) {
-    const orderedTicks = _sortBy(ticks, o => o.coordinate);
+    //const orderedTicks = _sortBy(ticks, o => o.coordinate);
+    const orderedTicks = ticks.sort(o => o.coordinate);
     let bandSize = Infinity;
     for (let i = 1, len = orderedTicks.length; i < len; i++) {
       const cur = orderedTicks[i]

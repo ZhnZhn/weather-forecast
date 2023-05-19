@@ -13,7 +13,6 @@ var _d3Shape = require("d3-shape");
 var _get2 = _interopRequireDefault(require("lodash/get"));
 var _min2 = _interopRequireDefault(require("lodash/min"));
 var _max2 = _interopRequireDefault(require("lodash/max"));
-var _sortBy2 = _interopRequireDefault(require("lodash/sortBy"));
 var _isEqual2 = _interopRequireDefault(require("lodash/isEqual"));
 var _FnUtils = require("./FnUtils");
 var _scale = require("../scale");
@@ -983,7 +982,8 @@ var getBandSizeOfAxis = function getBandSizeOfAxis(axis, ticks, isBar) {
     }
   }
   if (axis && ticks && ticks.length >= 2) {
-    var orderedTicks = (0, _sortBy2["default"])(ticks, function (o) {
+    //const orderedTicks = _sortBy(ticks, o => o.coordinate);
+    var orderedTicks = ticks.sort(function (o) {
       return o.coordinate;
     });
     var bandSize = Infinity;

@@ -5,7 +5,6 @@ import {
 
 import classNames from 'classnames';
 
-import _sortBy from 'lodash/sortBy';
 import {
   _isArr,
   _isNil
@@ -46,7 +45,8 @@ const _renderContent = (
       margin: 0
     }
     , items = (itemSorter
-      ? _sortBy(payload, itemSorter)
+      //? _sortBy(payload, itemSorter)
+      ? payload.sort(itemSorter)
       : payload
     ).map((entry, i) => {
         if (entry.type === 'none') {

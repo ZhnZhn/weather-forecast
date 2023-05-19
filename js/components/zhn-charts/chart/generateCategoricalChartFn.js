@@ -4,7 +4,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.tooltipTicksGenerator = exports.hasGraphicalBarItem = exports.getTooltipData = exports.getAxisNameByLayout = exports.deferClear = exports.defer = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _sortBy2 = _interopRequireDefault(require("lodash/sortBy"));
 var _FnUtils = require("../util/FnUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
@@ -91,7 +90,8 @@ var tooltipTicksGenerator = function tooltipTicksGenerator(axisMap) {
     tooltipTicks = (0, _ChartUtils.getTicksOfAxis)(axis, false, true);
   return {
     tooltipTicks: tooltipTicks,
-    orderedTooltipTicks: (0, _sortBy2["default"])(tooltipTicks, function (o) {
+    //orderedTooltipTicks: _sortBy(tooltipTicks, o => o.coordinate),
+    orderedTooltipTicks: tooltipTicks.sort(function (o) {
       return o.coordinate;
     }),
     tooltipAxis: axis,
