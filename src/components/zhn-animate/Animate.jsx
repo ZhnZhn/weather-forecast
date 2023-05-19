@@ -4,8 +4,6 @@ import {
   Children
 } from '../uiApi';
 
-import { deepEqual } from 'fast-equals';
-
 import createAnimateManager from './AnimateManager';
 import { configEasing } from './easing';
 import configUpdate from './configUpdate';
@@ -13,8 +11,31 @@ import configUpdate from './configUpdate';
 import {
   getTransitionVal,
   identity,
-  translateStyle
+  translateStyle,
+  shallowEqual
 } from './util';
+
+const _isFn = v => typeof v === 'function';
+const _getObjectKeys = Object.keys;
+
+const _fCloneContainer = (
+  restProps,
+  stateStyle
+) => (container) => {
+  const {
+    style = {},
+    className
+  } = container.props;
+
+  return cloneElement(container, {
+    ...restProps,
+    style: {
+      ...style,
+      ...stateStyle
+    },
+    className
+  });
+};
 
 const FN_NOOP = () => {}
 
@@ -82,19 +103,19 @@ export class Animate extends PureComponent {
     this.changeStyle = this.changeStyle.bind(this);
 
     if (!isActive) {
-      this.state = { style: {} };
-
       // if children is a function and animation is not active, set style to 'to'
-      if (typeof children === 'function') {
-        this.state = { style: to };
-      }
+      this.state = _isFn(children)
+        ? { style: to }
+        : { style: {} };
       return;
     }
 
     if (steps && steps.length) {
-      this.state = { style: steps[0].style };
+      this.state = {
+        style: steps[0].style
+      };
     } else if (from) {
-      if (typeof children === 'function') {
+      if (_isFn(children)) {
         this.state = { style: from };
         return;
       }
@@ -142,9 +163,8 @@ export class Animate extends PureComponent {
           : this.props.to
       };
       if (this.state && this.state.style) {
-        if (
-          (attributeName && this.state.style[attributeName] !== this.props.to) ||
-          (!attributeName && this.state.style !== this.props.to)
+        if ((attributeName && this.state.style[attributeName] !== this.props.to)
+          || (!attributeName && this.state.style !== this.props.to)
         ) {
           // eslint-disable-next-line react/no-did-update-set-state
           this.setState(newState);
@@ -153,11 +173,15 @@ export class Animate extends PureComponent {
       return;
     }
 
-    if (deepEqual(prevProps.to, this.props.to) && prevProps.canBegin && prevProps.isActive) {
+    if (shallowEqual(prevProps.to, this.props.to)
+      && prevProps.canBegin
+      && prevProps.isActive
+    ) {
       return;
     }
 
-    const isTriggered = !prevProps.canBegin || !prevProps.isActive;
+    const isTriggered = !prevProps.canBegin
+      || !prevProps.isActive;
 
     if (this.manager) {
       this.manager.stop();
@@ -177,9 +201,8 @@ export class Animate extends PureComponent {
           ? { [attributeName]: from }
           : from
       };
-      if (
-        (attributeName && this.state.style[attributeName] !== from) ||
-        (!attributeName && this.state.style !== from)
+      if ((attributeName && this.state.style[attributeName] !== from)
+        || (!attributeName && this.state.style !== from)
       ) {
         // eslint-disable-next-line react/no-did-update-set-state
         this.setState(newState);
@@ -267,15 +290,20 @@ export class Animate extends PureComponent {
       const preItem = index > 0
         ? steps[index - 1]
         : nextItem
-      , properties = nextProperties || Object.keys(style);
+      , properties = nextProperties
+         || _getObjectKeys(style);
 
-      if (typeof easing === 'function' || easing === 'spring') {
-        return [...sequence, this.runJSAnimation.bind(this, {
-          from: preItem.style,
-          to: style,
-          duration,
-          easing,
-        }), duration];
+      if (_isFn(easing) || easing === 'spring') {
+        return [
+          ...sequence,
+          this.runJSAnimation.bind(this, {
+            from: preItem.style,
+            to: style,
+            duration,
+            easing,
+          }),
+          duration
+        ];
       }
 
       const transition = getTransitionVal(
@@ -300,7 +328,7 @@ export class Animate extends PureComponent {
     return this.manager.start([
       onAnimationStart,
       ...steps.reduce(addStyle, [initialStyle, Math.max(initialTime, begin)]),
-      props.onAnimationEnd,
+      props.onAnimationEnd
     ]);
   }
 
@@ -308,7 +336,8 @@ export class Animate extends PureComponent {
     if (!this.manager) {
       this.manager = createAnimateManager();
     }
-    const {
+    const manager = this.manager
+    , {
       begin,
       duration,
       attributeName,
@@ -320,11 +349,12 @@ export class Animate extends PureComponent {
       children,
     } = props;
 
-    const manager = this.manager;
-
     this.unSubscribe = manager.subscribe(this.handleStyleChange);
 
-    if (typeof easing === 'function' || typeof children === 'function' || easing === 'spring') {
+    if (_isFn(easing)
+      || _isFn(children)
+      || easing === 'spring'
+    ) {
       this.runJSAnimation(props);
       return;
     }
@@ -338,9 +368,9 @@ export class Animate extends PureComponent {
        ? { [attributeName]: propsTo }
        : propsTo
     , transition = getTransitionVal(
-       Object.keys(to),
-       duration,
-       easing
+        _getObjectKeys(to),
+        duration,
+        easing
     );
 
     manager.start([
@@ -384,7 +414,7 @@ export class Animate extends PureComponent {
     , count = Children.count(children)
     , stateStyle = translateStyle(this.state.style);
 
-    if (typeof children === 'function') {
+    if (_isFn(children)) {
       return children(stateStyle);
     }
 
@@ -392,30 +422,17 @@ export class Animate extends PureComponent {
       return children;
     }
 
-    const cloneContainer = (container) => {
-      const {
-        style = {},
-        className
-      } = container.props;
-
-      return cloneElement(container, {
-        ...restProps,
-        style: {
-          ...style,
-          ...stateStyle
-        },
-        className
-      });
-    };
-
-    if (count === 1) {
-      return cloneContainer(Children.only(children));
-    }
-
-    return (
-      <div>
-        {Children.map(children, child => cloneContainer(child))}
-      </div>
+    const cloneContainer = _fCloneContainer(
+      restProps,
+      stateStyle
     );
+
+    return count === 1
+      ? cloneContainer(Children.only(children))
+      : (
+         <div>
+           {Children.map(children, child => cloneContainer(child))}
+         </div>
+       );
   }
 }

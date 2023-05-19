@@ -4,17 +4,32 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.Animate = void 0;
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
 var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _uiApi = require("../uiApi");
-var _fastEquals = require("fast-equals");
 var _AnimateManager = _interopRequireDefault(require("./AnimateManager"));
 var _easing = require("./easing");
 var _configUpdate = _interopRequireDefault(require("./configUpdate"));
 var _util = require("./util");
 var _jsxRuntime = require("react/jsx-runtime");
 var _excluded = ["children", "begin", "duration", "attributeName", "easing", "isActive", "steps", "from", "to", "canBegin", "onAnimationEnd", "shouldReAnimate", "onAnimationReStart"];
+var _isFn = function _isFn(v) {
+  return typeof v === 'function';
+};
+var _getObjectKeys = Object.keys;
+var _fCloneContainer = function _fCloneContainer(restProps, stateStyle) {
+  return function (container) {
+    var _container$props = container.props,
+      _container$props$styl = _container$props.style,
+      style = _container$props$styl === void 0 ? {} : _container$props$styl,
+      className = _container$props.className;
+    return (0, _uiApi.cloneElement)(container, (0, _extends2["default"])({}, restProps, {
+      style: (0, _extends2["default"])({}, style, stateStyle),
+      className: className
+    }));
+  };
+};
 var FN_NOOP = function FN_NOOP() {};
 var Animate = /*#__PURE__*/function (_PureComponent) {
   (0, _inheritsLoose2["default"])(Animate, _PureComponent);
@@ -62,16 +77,12 @@ var Animate = /*#__PURE__*/function (_PureComponent) {
     _this.handleStyleChange = _this.handleStyleChange.bind((0, _assertThisInitialized2["default"])(_this));
     _this.changeStyle = _this.changeStyle.bind((0, _assertThisInitialized2["default"])(_this));
     if (!isActive) {
-      _this.state = {
+      // if children is a function and animation is not active, set style to 'to'
+      _this.state = _isFn(children) ? {
+        style: to
+      } : {
         style: {}
       };
-
-      // if children is a function and animation is not active, set style to 'to'
-      if (typeof children === 'function') {
-        _this.state = {
-          style: to
-        };
-      }
       return (0, _assertThisInitialized2["default"])(_this);
     }
     if (steps && steps.length) {
@@ -80,7 +91,7 @@ var Animate = /*#__PURE__*/function (_PureComponent) {
       };
     } else if (from) {
       var _ref;
-      if (typeof children === 'function') {
+      if (_isFn(children)) {
         _this.state = {
           style: from
         };
@@ -129,7 +140,7 @@ var Animate = /*#__PURE__*/function (_PureComponent) {
       }
       return;
     }
-    if ((0, _fastEquals.deepEqual)(prevProps.to, this.props.to) && prevProps.canBegin && prevProps.isActive) {
+    if ((0, _util.shallowEqual)(prevProps.to, this.props.to) && prevProps.canBegin && prevProps.isActive) {
       return;
     }
     var isTriggered = !prevProps.canBegin || !prevProps.isActive;
@@ -203,8 +214,8 @@ var Animate = /*#__PURE__*/function (_PureComponent) {
         nextProperties = nextItem.properties,
         onAnimationEnd = nextItem.onAnimationEnd;
       var preItem = index > 0 ? steps[index - 1] : nextItem,
-        properties = nextProperties || Object.keys(style);
-      if (typeof easing === 'function' || easing === 'spring') {
+        properties = nextProperties || _getObjectKeys(style);
+      if (_isFn(easing) || easing === 'spring') {
         return [].concat(sequence, [_this3.runJSAnimation.bind(_this3, {
           from: preItem.style,
           to: style,
@@ -225,7 +236,8 @@ var Animate = /*#__PURE__*/function (_PureComponent) {
     if (!this.manager) {
       this.manager = (0, _AnimateManager["default"])();
     }
-    var begin = props.begin,
+    var manager = this.manager,
+      begin = props.begin,
       duration = props.duration,
       attributeName = props.attributeName,
       propsTo = props.to,
@@ -234,9 +246,8 @@ var Animate = /*#__PURE__*/function (_PureComponent) {
       onAnimationEnd = props.onAnimationEnd,
       steps = props.steps,
       children = props.children;
-    var manager = this.manager;
     this.unSubscribe = manager.subscribe(this.handleStyleChange);
-    if (typeof easing === 'function' || typeof children === 'function' || easing === 'spring') {
+    if (_isFn(easing) || _isFn(children) || easing === 'spring') {
       this.runJSAnimation(props);
       return;
     }
@@ -245,7 +256,7 @@ var Animate = /*#__PURE__*/function (_PureComponent) {
       return;
     }
     var to = attributeName ? (_ref4 = {}, _ref4[attributeName] = propsTo, _ref4) : propsTo,
-      transition = (0, _util.getTransitionVal)(Object.keys(to), duration, easing);
+      transition = (0, _util.getTransitionVal)(_getObjectKeys(to), duration, easing);
     manager.start([onAnimationStart, begin, (0, _extends2["default"])({}, to, {
       transition: transition
     }), duration, onAnimationEnd]);
@@ -279,26 +290,14 @@ var Animate = /*#__PURE__*/function (_PureComponent) {
       restProps = (0, _objectWithoutPropertiesLoose2["default"])(_this$props4, _excluded),
       count = _uiApi.Children.count(children),
       stateStyle = (0, _util.translateStyle)(this.state.style);
-    if (typeof children === 'function') {
+    if (_isFn(children)) {
       return children(stateStyle);
     }
     if (!isActive || count === 0) {
       return children;
     }
-    var cloneContainer = function cloneContainer(container) {
-      var _container$props = container.props,
-        _container$props$styl = _container$props.style,
-        style = _container$props$styl === void 0 ? {} : _container$props$styl,
-        className = _container$props.className;
-      return (0, _uiApi.cloneElement)(container, (0, _extends2["default"])({}, restProps, {
-        style: (0, _extends2["default"])({}, style, stateStyle),
-        className: className
-      }));
-    };
-    if (count === 1) {
-      return cloneContainer(_uiApi.Children.only(children));
-    }
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    var cloneContainer = _fCloneContainer(restProps, stateStyle);
+    return count === 1 ? cloneContainer(_uiApi.Children.only(children)) : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       children: _uiApi.Children.map(children, function (child) {
         return cloneContainer(child);
       })
