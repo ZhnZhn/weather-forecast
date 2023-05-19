@@ -1,5 +1,4 @@
 import _isNumber from 'lodash/isNumber';
-import _get from 'lodash/get';
 
 import {
   _isNaN,
@@ -9,6 +8,12 @@ import {
 } from './FnUtils';
 
 const _getObjectKeys = Object.keys;
+const _getByPropName = (
+  obj,
+  propName
+) => obj && propName
+  ? obj[propName]
+  : void 0
 
 export const mathSign = (
   value
@@ -130,7 +135,7 @@ export const findEntryInArray = (
     entry => entry
      && (_isFn(specifiedKey)
            ? specifiedKey(entry)
-           : _get(entry, specifiedKey)
+           : _getByPropName(entry, specifiedKey)
          ) === specifiedValue
   );
 }
