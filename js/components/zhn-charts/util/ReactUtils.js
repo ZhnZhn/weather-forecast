@@ -8,7 +8,6 @@ exports.findChildByType = findChildByType;
 exports.validateWidthHeight = exports.toArray = exports.renderByMap = exports.parseChildIndex = exports.isValidSpreadableProp = exports.isSingleChildEqual = exports.isChildrenEqual = exports.getReactEventByType = exports.getDisplayName = void 0;
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _uiApi = require("../../uiApi");
-var _get2 = _interopRequireDefault(require("lodash/get"));
 var _FnUtils = require("./FnUtils");
 var _DataUtils = require("./DataUtils");
 var _ShallowEqual = require("./ShallowEqual");
@@ -16,6 +15,10 @@ var _types = require("./types");
 var _excluded = ["children"],
   _excluded2 = ["children"];
 var _getObjectKeys = Object.keys;
+var _getElementType = function _getElementType(element) {
+  var _elementType = element && element.type;
+  return _elementType ? _elementType.displayName || _elementType.name : void 0;
+};
 var REACT_ELEMENT_TYPE = Symbol["for"]('react.element'),
   REACT_FRAGMENT_TYPE = Symbol["for"]('react.fragment'),
   typeOf = function typeOf(object) {
@@ -87,7 +90,7 @@ function findAllByType(children, type) {
     types = [getDisplayName(type)];
   }
   toArray(children).forEach(function (child) {
-    var childType = (0, _get2["default"])(child, 'type.displayName') || (0, _get2["default"])(child, 'type.name');
+    var childType = _getElementType(child);
     if (types.indexOf(childType) !== -1) {
       result.push(child);
     }

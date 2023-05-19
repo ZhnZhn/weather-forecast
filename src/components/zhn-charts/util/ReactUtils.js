@@ -3,8 +3,6 @@ import {
   Children
 } from '../../uiApi';
 
-import _get from 'lodash/get';
-
 import  {
   _isNil,
   _isArr,
@@ -23,6 +21,14 @@ import {
 } from './types';
 
 const _getObjectKeys = Object.keys;
+const _getElementType = (
+  element
+) => {
+  const _elementType = element && element.type;
+  return _elementType
+   ? _elementType.displayName || _elementType.name
+   : void 0
+};
 
 const REACT_ELEMENT_TYPE = Symbol.for('react.element')
 , REACT_FRAGMENT_TYPE = Symbol.for('react.fragment')
@@ -104,7 +110,7 @@ export function findAllByType(children, type) {
     types = [getDisplayName(type)];
   }
   toArray(children).forEach(child => {
-    const childType = _get(child, 'type.displayName') || _get(child, 'type.name');
+    const childType = _getElementType(child);
     if (types.indexOf(childType) !== -1) {
       result.push(child);
     }
