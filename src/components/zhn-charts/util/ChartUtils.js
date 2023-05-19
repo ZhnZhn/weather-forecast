@@ -9,8 +9,6 @@ import {
   stackOrderNone
 } from 'd3-shape';
 
-import _min from 'lodash/min';
-import _max from 'lodash/max';
 import _isEqual from 'lodash/isEqual';
 
 import {
@@ -20,7 +18,9 @@ import {
   _isStr,
   _isNaN,
   _getByPropName,
-  _upperFirst
+  _upperFirst,
+  _min,
+  _max
 } from './FnUtils';
 
 import {

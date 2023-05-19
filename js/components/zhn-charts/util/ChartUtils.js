@@ -10,8 +10,6 @@ exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = e
 var _extends7 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var d3Scales = _interopRequireWildcard(require("d3-scale"));
 var _d3Shape = require("d3-shape");
-var _min2 = _interopRequireDefault(require("lodash/min"));
-var _max2 = _interopRequireDefault(require("lodash/max"));
 var _isEqual2 = _interopRequireDefault(require("lodash/isEqual"));
 var _FnUtils = require("./FnUtils");
 var _scale = require("../scale");
@@ -55,7 +53,7 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
     var domain = flattenData.filter(function (entry) {
       return (0, _DataUtils.isNumber)(entry) || parseFloat(entry);
     });
-    return domain.length ? [(0, _min2["default"])(domain), (0, _max2["default"])(domain)] : [Infinity, -Infinity];
+    return domain.length ? [(0, _FnUtils._min)(domain), (0, _FnUtils._max)(domain)] : [Infinity, -Infinity];
   }
   var validateData = filterNil ? flattenData.filter(function (entry) {
     return !(0, _FnUtils._isNil)(entry);
@@ -391,7 +389,7 @@ var getDomainOfErrorBars = function getDomainOfErrorBars(data, item, dataKey, la
     });
     return data.reduce(function (result, entry) {
       var entryValue = getValueByDataKey(entry, dataKey, 0),
-        mainValue = (0, _FnUtils._isArr)(entryValue) ? [(0, _min2["default"])(entryValue), (0, _max2["default"])(entryValue)] : [entryValue, entryValue],
+        mainValue = (0, _FnUtils._isArr)(entryValue) ? [(0, _FnUtils._min)(entryValue), (0, _FnUtils._max)(entryValue)] : [entryValue, entryValue],
         errorDomain = keys.reduce(function (prevErrorArr, k) {
           var errorValue = getValueByDataKey(entry, k, 0),
             lowerValue = mainValue[0] - Math.abs((0, _FnUtils._isArr)(errorValue) ? errorValue[0] : errorValue),
@@ -829,7 +827,7 @@ var getTicksOfScale = function getTicksOfScale(scale, opts) {
       return null;
     }
     var tickValues = (0, _scale.getNiceTickValues)(domain, tickCount, allowDecimals);
-    scale.domain([(0, _min2["default"])(tickValues), (0, _max2["default"])(tickValues)]);
+    scale.domain([(0, _FnUtils._min)(tickValues), (0, _FnUtils._max)(tickValues)]);
     return {
       niceTicks: tickValues
     };
@@ -916,7 +914,7 @@ var getStackedDataOfItem = function getStackedDataOfItem(item, stackGroups) {
 exports.getStackedDataOfItem = getStackedDataOfItem;
 var getDomainOfSingle = function getDomainOfSingle(data) {
   return data.reduce(function (result, entry) {
-    return [(0, _min2["default"])(entry.concat([result[0]]).filter(_DataUtils.isNumber)), (0, _max2["default"])(entry.concat([result[1]]).filter(_DataUtils.isNumber))];
+    return [(0, _FnUtils._min)(entry.concat([result[0]]).filter(_DataUtils.isNumber)), (0, _FnUtils._max)(entry.concat([result[1]]).filter(_DataUtils.isNumber))];
   }, [Infinity, -Infinity]);
 };
 var getDomainOfStackGroups = function getDomainOfStackGroups(stackGroups, startIndex, endIndex) {

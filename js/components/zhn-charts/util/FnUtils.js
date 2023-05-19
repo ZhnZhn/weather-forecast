@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports._upperFirst = exports._range = exports._isStr = exports._isObject = exports._isNumber = exports._isNil = exports._isNaN = exports._isFn = exports._isBool = exports._isArr = exports._getByPropName = void 0;
+exports._upperFirst = exports._range = exports._min = exports._max = exports._isStr = exports._isObject = exports._isNumber = exports._isNil = exports._isNaN = exports._isFn = exports._isBool = exports._isArr = exports._getByPropName = void 0;
 var _isArr = Array.isArray;
 exports._isArr = _isArr;
 var _isFn = function _isFn(v) {
@@ -68,4 +68,39 @@ var _range = function _range(startValue, endValue, increment) {
   return result;
 };
 exports._range = _range;
+var _isSymbol = function _isSymbol(v) {
+  return typeof v === 'symbol';
+};
+var _findExtremum = function _findExtremum(arr, iteratee, comparator) {
+  var index = -1,
+    length = arr.length,
+    computed,
+    result;
+  while (++index < length) {
+    var value = arr[index],
+      current = iteratee(value);
+    if (current != null && (computed === void 0 ? current === current && !_isSymbol(current) : comparator(current, computed))) {
+      computed = current;
+      result = value;
+    }
+  }
+  return result;
+};
+var _identity = function _identity(v) {
+  return v;
+};
+var _baseLt = function _baseLt(valueA, valueB) {
+  return valueA < valueB;
+};
+var _baseGt = function _baseGt(valueA, valueB) {
+  return valueA > valueB;
+};
+var _min = function _min(arr) {
+  return arr && arr.length ? _findExtremum(arr, _identity, _baseLt) : void 0;
+};
+exports._min = _min;
+var _max = function _max(arr) {
+  return arr && arr.length ? _findExtremum(arr, _identity, _baseGt) : void 0;
+};
+exports._max = _max;
 //# sourceMappingURL=FnUtils.js.map
