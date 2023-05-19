@@ -5,7 +5,6 @@ exports.__esModule = true;
 exports.ReferenceLine = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _classnames = _interopRequireDefault(require("classnames"));
-var _some2 = _interopRequireDefault(require("lodash/some"));
 var _Layer = require("../container/Layer");
 var _Label = require("../component/Label");
 var _IfOverflowMatches = require("../util/IfOverflowMatches");
@@ -75,7 +74,7 @@ var getEndPoints = function getEndPoints(scales, isFixedX, isFixedY, isSegment, 
           position: position
         });
       });
-    return (0, _IfOverflowMatches.ifOverflowMatches)(props, DISCARD) && (0, _some2["default"])(_points2, function (p) {
+    return (0, _IfOverflowMatches.ifOverflowMatches)(props, DISCARD) && _points2.some(function (p) {
       return !scales.isInRange(p);
     }) ? null : _points2;
   }

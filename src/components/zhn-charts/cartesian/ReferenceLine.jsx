@@ -1,7 +1,5 @@
 import classNames from 'classnames';
 
-import _some from 'lodash/some';
-
 import { Layer } from '../container/Layer';
 import { Label } from '../component/Label';
 import { ifOverflowMatches } from '../util/IfOverflowMatches';
@@ -76,7 +74,7 @@ const getEndPoints = (
     , points = segment
        .map(p => scales.apply(p, { position }));
     return ifOverflowMatches(props, DISCARD)
-      && _some(points, p => !scales.isInRange(p))
+      && points.some(p => !scales.isInRange(p))
       ? null
       : points;
   }
