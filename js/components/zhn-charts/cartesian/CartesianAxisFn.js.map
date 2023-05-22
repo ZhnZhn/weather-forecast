@@ -1,0 +1,14 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../../src/components/zhn-charts/cartesian/CartesianAxisFn.js"
+ ],
+ "file": "../../../../src/components/zhn-charts/cartesian/CartesianAxisFn.js",
+ "names": [
+  "getTickAnchors",
+  "orientation",
+  "mirror",
+  "exports"
+ ],
+ "mappings": ";;;;AAAA;AACO,IAAMA,cAAc,GAAG,SAAjBA,cAAcA,CACzBC,WAAW,EACXC,MAAM;EAAA,OACH,CACHD,WAAW,KAAK,MAAM,GACjBC,MAAM,GAAG,OAAO,GAAG,KAAK,GACxBD,WAAW,KAAK,OAAO,GACpBC,MAAM,GAAG,KAAK,GAAG,OAAO,GACxB,QAAQ,EAChBD,WAAW,KAAK,MAAM,IAAIA,WAAW,KAAK,OAAO,GAC7C,QAAQ,GACRA,WAAW,KAAK,KAAK,GAClBC,MAAM,GAAG,OAAO,GAAG,KAAK,GACxBA,MAAM,GAAG,KAAK,GAAG,OAAO,CAChC;AAAA;AAACC,OAAA,CAAAH,cAAA,GAAAA,cAAA"
+}

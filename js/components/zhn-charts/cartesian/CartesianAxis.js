@@ -18,6 +18,7 @@ var _Text = require("../component/Text");
 var _Label = require("../component/Label");
 var _getTicks = require("./getTicks");
 var _cartesianFn = require("./cartesianFn");
+var _CartesianAxisFn = require("./CartesianAxisFn");
 var _jsxRuntime = require("react/jsx-runtime");
 var _excluded = ["ticks", "ticksGenerator"],
   _excluded2 = ["viewBox"],
@@ -150,52 +151,15 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
       }
     };
   };
-  _proto.getTickTextAnchor = function getTickTextAnchor() {
-    var _this$props3 = this.props,
-      orientation = _this$props3.orientation,
-      mirror = _this$props3.mirror;
-    var textAnchor;
-    switch (orientation) {
-      case 'left':
-        textAnchor = mirror ? 'start' : 'end';
-        break;
-      case 'right':
-        textAnchor = mirror ? 'end' : 'start';
-        break;
-      default:
-        textAnchor = 'middle';
-        break;
-    }
-    return textAnchor;
-  };
-  _proto.getTickVerticalAnchor = function getTickVerticalAnchor() {
-    var _this$props4 = this.props,
-      orientation = _this$props4.orientation,
-      mirror = _this$props4.mirror;
-    var verticalAnchor = 'end';
-    switch (orientation) {
-      case 'left':
-      case 'right':
-        verticalAnchor = 'middle';
-        break;
-      case 'top':
-        verticalAnchor = mirror ? 'start' : 'end';
-        break;
-      default:
-        verticalAnchor = mirror ? 'end' : 'start';
-        break;
-    }
-    return verticalAnchor;
-  };
   _proto.renderAxisLine = function renderAxisLine() {
-    var _this$props5 = this.props,
-      x = _this$props5.x,
-      y = _this$props5.y,
-      width = _this$props5.width,
-      height = _this$props5.height,
-      orientation = _this$props5.orientation,
-      mirror = _this$props5.mirror,
-      axisLine = _this$props5.axisLine;
+    var _this$props3 = this.props,
+      x = _this$props3.x,
+      y = _this$props3.y,
+      width = _this$props3.width,
+      height = _this$props3.height,
+      orientation = _this$props3.orientation,
+      mirror = _this$props3.mirror,
+      axisLine = _this$props3.axisLine;
     var props = (0, _extends2["default"])({}, (0, _ReactUtils.filterProps)(this.props), (0, _ReactUtils.filterProps)(axisLine), {
       fill: 'none'
     });
@@ -231,17 +195,20 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
    */;
   _proto.renderTicks = function renderTicks(ticks, fontSize, letterSpacing) {
     var _this2 = this;
-    var _this$props6 = this.props,
-      tickLine = _this$props6.tickLine,
-      stroke = _this$props6.stroke,
-      tick = _this$props6.tick,
-      tickFormatter = _this$props6.tickFormatter,
-      unit = _this$props6.unit,
+    var _this$props4 = this.props,
+      tickLine = _this$props4.tickLine,
+      stroke = _this$props4.stroke,
+      tick = _this$props4.tick,
+      tickFormatter = _this$props4.tickFormatter,
+      unit = _this$props4.unit,
+      orientation = _this$props4.orientation,
+      mirror = _this$props4.mirror,
       finalTicks = (0, _getTicks.getTicks)((0, _extends2["default"])({}, this.props, {
         ticks: ticks
       }), fontSize, letterSpacing),
-      textAnchor = this.getTickTextAnchor(),
-      verticalAnchor = this.getTickVerticalAnchor(),
+      _getTickAnchors = (0, _CartesianAxisFn.getTickAnchors)(orientation, mirror),
+      textAnchor = _getTickAnchors[0],
+      verticalAnchor = _getTickAnchors[1],
       axisProps = (0, _ReactUtils.filterProps)(this.props),
       customTickProps = (0, _ReactUtils.filterProps)(tick),
       tickLineProps = (0, _extends2["default"])({}, axisProps, {
@@ -278,12 +245,12 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
     });
   };
   _proto.render = function render() {
-    var _this$props7 = this.props,
-      axisLine = _this$props7.axisLine,
-      width = _this$props7.width,
-      height = _this$props7.height,
-      className = _this$props7.className,
-      hide = _this$props7.hide;
+    var _this$props5 = this.props,
+      axisLine = _this$props5.axisLine,
+      width = _this$props5.width,
+      height = _this$props5.height,
+      className = _this$props5.className,
+      hide = _this$props5.hide;
     if (hide) {
       return null;
     }

@@ -14,6 +14,9 @@ import { Label } from '../component/Label';
 
 import { getTicks } from './getTicks';
 import { fCreateElement } from './cartesianFn';
+import {
+  getTickAnchors
+} from './CartesianAxisFn';
 
 const CL_AXIS = "recharts-cartesian-axis"
 , CL_AXIS_LINE = `${CL_AXIS}-line`
@@ -145,47 +148,6 @@ export class CartesianAxis extends Component {
     };
   }
 
-  getTickTextAnchor() {
-    const {
-      orientation,
-      mirror
-    } = this.props;
-    let textAnchor;
-    switch (orientation) {
-      case 'left':
-        textAnchor = mirror ? 'start' : 'end';
-        break;
-      case 'right':
-        textAnchor = mirror ? 'end' : 'start';
-        break;
-      default:
-        textAnchor = 'middle';
-        break;
-    }
-    return textAnchor;
-  }
-
-  getTickVerticalAnchor() {
-    const {
-      orientation,
-      mirror
-    } = this.props;
-    let verticalAnchor = 'end';
-    switch (orientation) {
-      case 'left':
-      case 'right':
-        verticalAnchor = 'middle';
-        break;
-      case 'top':
-        verticalAnchor = mirror ? 'start' : 'end';
-        break;
-      default:
-        verticalAnchor = mirror ? 'end' : 'start';
-        break;
-    }
-    return verticalAnchor;
-  }
-
   renderAxisLine() {
     const {
       x,
@@ -242,11 +204,20 @@ export class CartesianAxis extends Component {
       stroke,
       tick,
       tickFormatter,
-      unit
+      unit,
+      orientation,
+      mirror
     } = this.props
-    , finalTicks = getTicks({ ...this.props, ticks }, fontSize, letterSpacing)
-    , textAnchor = this.getTickTextAnchor()
-    , verticalAnchor = this.getTickVerticalAnchor()
+    , finalTicks = getTicks(
+       { ...this.props, ticks },
+       fontSize,
+       letterSpacing
+     )
+    , [
+      textAnchor,
+      verticalAnchor
+    ] = getTickAnchors(orientation, mirror)
+
     , axisProps = filterProps(this.props)
     , customTickProps = filterProps(tick)
     , tickLineProps = {
