@@ -2,7 +2,7 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports["default"] = void 0;
+exports.rangeStep = exports.getDigitCount = void 0;
 var _decimal = _interopRequireDefault(require("decimal.js-light"));
 /**
  *
@@ -24,6 +24,7 @@ var getDigitCount = function getDigitCount(value) {
  * @param  {Decimal} step
  * @return {Array}
  */
+exports.getDigitCount = getDigitCount;
 var rangeStep = function rangeStep(start, end, step) {
   var result = [];
   var num = new _decimal["default"](start),
@@ -36,9 +37,5 @@ var rangeStep = function rangeStep(start, end, step) {
   }
   return result;
 };
-var _default = {
-  rangeStep: rangeStep,
-  getDigitCount: getDigitCount
-};
-exports["default"] = _default;
+exports.rangeStep = rangeStep;
 //# sourceMappingURL=arithmetic.js.map

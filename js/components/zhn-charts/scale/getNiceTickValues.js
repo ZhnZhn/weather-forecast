@@ -5,7 +5,7 @@ exports.__esModule = true;
 exports.getTickValuesFixedDomain = exports.getNiceTickValues = void 0;
 var _decimal = _interopRequireDefault(require("decimal.js-light"));
 var _utils = require("./util/utils");
-var _arithmetic = _interopRequireDefault(require("./util/arithmetic"));
+var _arithmetic = require("./util/arithmetic");
 var _getValidInterval = function _getValidInterval(_ref) {
   var min = _ref[0],
     max = _ref[1];
@@ -25,7 +25,7 @@ function getFormatStep(roughStep, allowDecimals, correctionFactor) {
   if (roughStep.lte(0)) {
     return new _decimal["default"](0);
   }
-  var digitCount = _arithmetic["default"].getDigitCount(roughStep.toNumber())
+  var digitCount = (0, _arithmetic.getDigitCount)(roughStep.toNumber())
     // The ratio between the rough step and the smallest number which has a bigger
     // order of magnitudes than the rough step
     ,
@@ -55,7 +55,7 @@ function getTickOfSingleValue(value, tickCount, allowDecimals) {
     var absVal = Math.abs(value);
     if (absVal < 1) {
       // The step should be a float number when the difference is smaller than 1
-      step = new _decimal["default"](10).pow(_arithmetic["default"].getDigitCount(value) - 1);
+      step = new _decimal["default"](10).pow((0, _arithmetic.getDigitCount)(value) - 1);
       middle = new _decimal["default"](Math.floor(middle.div(step).toNumber())).mul(step);
     } else if (absVal > 1) {
       // Return the maximum integer which is smaller than 'value' when 'value' is greater than 1
@@ -168,7 +168,7 @@ function getNiceTickValuesFn(_ref2, tickCount, allowDecimals) {
     step = _calculateStep.step,
     tickMin = _calculateStep.tickMin,
     tickMax = _calculateStep.tickMax,
-    values = _arithmetic["default"].rangeStep(tickMin, tickMax.add(new _decimal["default"](0.1).mul(step)), step);
+    values = (0, _arithmetic.rangeStep)(tickMin, tickMax.add(new _decimal["default"](0.1).mul(step)), step);
   return min > max ? (0, _utils.reverse)(values) : values;
 }
 
@@ -199,7 +199,7 @@ function getTickValuesFixedDomainFn(_ref3, tickCount, allowDecimals) {
   }
   var count = Math.max(tickCount, 2),
     step = getFormatStep(new _decimal["default"](cormax).sub(cormin).div(count - 1), allowDecimals, 0),
-    values = [].concat(_arithmetic["default"].rangeStep(new _decimal["default"](cormin), new _decimal["default"](cormax).sub(new _decimal["default"](0.99).mul(step)), step), [cormax]);
+    values = [].concat((0, _arithmetic.rangeStep)(new _decimal["default"](cormin), new _decimal["default"](cormax).sub(new _decimal["default"](0.99).mul(step)), step), [cormax]);
   return min > max ? (0, _utils.reverse)(values) : values;
 }
 var getNiceTickValues = (0, _utils.memoize)(getNiceTickValuesFn);

@@ -7,7 +7,10 @@ import {
   map,
   reverse,
 } from './util/utils';
-import Arithmetic from './util/arithmetic';
+import {
+  getDigitCount,
+  rangeStep
+} from './util/arithmetic';
 
 const _getValidInterval = (
   [min, max]
@@ -33,7 +36,7 @@ function getFormatStep(
     return new Decimal(0);
   }
 
-  const digitCount = Arithmetic.getDigitCount(roughStep.toNumber())
+  const digitCount = getDigitCount(roughStep.toNumber())
   // The ratio between the rough step and the smallest number which has a bigger
   // order of magnitudes than the rough step
   , digitCountValue = new Decimal(10).pow(digitCount)
@@ -75,7 +78,7 @@ function getTickOfSingleValue(
 
     if (absVal < 1) {
       // The step should be a float number when the difference is smaller than 1
-      step = new Decimal(10).pow(Arithmetic.getDigitCount(value) - 1);
+      step = new Decimal(10).pow(getDigitCount(value) - 1);
 
       middle = new Decimal(Math.floor(middle.div(step).toNumber())).mul(step);
     } else if (absVal > 1) {
@@ -208,7 +211,7 @@ function getNiceTickValuesFn(
     count,
     allowDecimals
   )
-  , values = Arithmetic.rangeStep(
+  , values = rangeStep(
      tickMin,
      tickMax.add(new Decimal(0.1).mul(step)),
      step
@@ -251,10 +254,10 @@ function getTickValuesFixedDomainFn(
      0
    )
   , values = [
-     ...Arithmetic.rangeStep(
+     ...rangeStep(
        new Decimal(cormin),
        new Decimal(cormax).sub(new Decimal(0.99).mul(step)),
-       step,
+       step
     ),
     cormax
   ];

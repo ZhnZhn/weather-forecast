@@ -9,7 +9,7 @@ import Decimal from 'decimal.js-light';
  * @param  {Number} value ??
  * @return {Integer}
  */
-const getDigitCount = (
+export const getDigitCount = (
   value
 ) => value === 0
   ? 1
@@ -23,7 +23,7 @@ const getDigitCount = (
  * @param  {Decimal} step
  * @return {Array}
  */
-const rangeStep = (
+export const rangeStep = (
   start,
   end,
   step
@@ -41,8 +41,3 @@ const rangeStep = (
 
   return result;
 }
-
-export default {
-  rangeStep,
-  getDigitCount
-};
