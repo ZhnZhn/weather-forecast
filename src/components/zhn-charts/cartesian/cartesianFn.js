@@ -34,12 +34,13 @@ export const fCreateElement = (
   crElement
 ) => (
   option,
-  props
+  props,
+  value
 ) => isValidElement(option)
   ? cloneElement(option, props)
   : _isFn(option)
      ? option(props)
-     : crElement(props, option)
+     : crElement(props, option, value)
 
 export const dataPointFormatter = (
   dataPoint,

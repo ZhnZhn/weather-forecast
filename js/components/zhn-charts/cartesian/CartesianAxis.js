@@ -3,9 +3,9 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.CartesianAxis = void 0;
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _uiApi = require("../../uiApi");
 var _classnames = _interopRequireDefault(require("classnames"));
 var _FnUtils = require("../util/FnUtils");
@@ -17,6 +17,7 @@ var _Layer = require("../container/Layer");
 var _Text = require("../component/Text");
 var _Label = require("../component/Label");
 var _getTicks = require("./getTicks");
+var _cartesianFn = require("./cartesianFn");
 var _jsxRuntime = require("react/jsx-runtime");
 var _excluded = ["ticks", "ticksGenerator"],
   _excluded2 = ["viewBox"],
@@ -27,6 +28,12 @@ var CL_AXIS = "recharts-cartesian-axis",
   CL_AXIS_TICKS = CL_AXIS_TICK + "s",
   CL_AXIS_TICK_LINE = CL_AXIS_TICK + "-line",
   CL_AXIS_TICK_VALUE = CL_AXIS_TICK + "-value";
+var _crTextElement = function _crTextElement(props, option, value) {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, (0, _extends2["default"])({}, props, {
+    className: CL_AXIS_TICK_VALUE,
+    children: value
+  }));
+};
 var _getClassName = function _getClassName(obj) {
   return obj ? obj.className : void 0;
 };
@@ -36,6 +43,7 @@ var _crFinalTicks = function _crFinalTicks(props) {
     noTicksProps = (0, _objectWithoutPropertiesLoose2["default"])(props, _excluded);
   return (0, _FnUtils._isFn)(ticksGenerator) ? ticks && ticks.length > 0 ? ticksGenerator(props) : ticksGenerator(noTicksProps) : ticks;
 };
+var _renderTickItem = (0, _cartesianFn.fCreateElement)(_crTextElement);
 var CartesianAxis = /*#__PURE__*/function (_Component) {
   (0, _inheritsLoose2["default"])(CartesianAxis, _Component);
   function CartesianAxis() {
@@ -71,9 +79,10 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
     }
     var tick = htmlLayer.getElementsByClassName(CL_AXIS_TICK_VALUE)[0];
     if (tick) {
+      var _tickComputedStyle = window.getComputedStyle(tick);
       this.setState({
-        fontSize: window.getComputedStyle(tick).fontSize,
-        letterSpacing: window.getComputedStyle(tick).letterSpacing
+        fontSize: _tickComputedStyle.fontSize,
+        letterSpacing: _tickComputedStyle.letterSpacing
       });
     }
   }
@@ -211,20 +220,6 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("line", (0, _extends2["default"])({}, props, {
       className: (0, _classnames["default"])(CL_AXIS_LINE, _axisLineClassName)
     }));
-  };
-  CartesianAxis.renderTickItem = function renderTickItem(option, props, value) {
-    var tickItem;
-    if ((0, _uiApi.isValidElement)(option)) {
-      tickItem = (0, _uiApi.cloneElement)(option, props);
-    } else if ((0, _FnUtils._isFn)(option)) {
-      tickItem = option(props);
-    } else {
-      tickItem = /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, (0, _extends2["default"])({}, props, {
-        className: CL_AXIS_TICK_VALUE,
-        children: value
-      }));
-    }
-    return tickItem;
   }
 
   /**
@@ -274,7 +269,7 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
         }, (0, _types.adaptEventsOfChild)(_this2.props, entry, i), {
           children: [tickLine && /*#__PURE__*/(0, _jsxRuntime.jsx)("line", (0, _extends2["default"])({}, tickLineProps, lineCoord, {
             className: (0, _classnames["default"])(CL_AXIS_TICK_LINE, _tickLineClassName)
-          })), tick && CartesianAxis.renderTickItem(tick, tickProps, "" + ((0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value) + (unit || ''))]
+          })), tick && _renderTickItem(tick, tickProps, "" + ((0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value) + (unit || ''))]
         }), "tick-" + i);
       });
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {

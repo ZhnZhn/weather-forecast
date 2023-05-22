@@ -28,8 +28,8 @@ var crClipPathIdIf = function crClipPathIdIf(props) {
 };
 exports.crClipPathIdIf = crClipPathIdIf;
 var fCreateElement = function fCreateElement(crElement) {
-  return function (option, props) {
-    return (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneElement)(option, props) : (0, _FnUtils._isFn)(option) ? option(props) : crElement(props, option);
+  return function (option, props, value) {
+    return (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneElement)(option, props) : (0, _FnUtils._isFn)(option) ? option(props) : crElement(props, option, value);
   };
 };
 exports.fCreateElement = fCreateElement;

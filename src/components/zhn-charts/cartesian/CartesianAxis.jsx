@@ -1,8 +1,4 @@
-import {
-  isValidElement,
-  cloneElement,
-  Component
-} from '../../uiApi';
+import { Component } from '../../uiApi';
 
 import classNames from 'classnames';
 
@@ -17,6 +13,7 @@ import { Text } from '../component/Text';
 import { Label } from '../component/Label';
 
 import { getTicks } from './getTicks';
+import { fCreateElement } from './cartesianFn';
 
 const CL_AXIS = "recharts-cartesian-axis"
 , CL_AXIS_LINE = `${CL_AXIS}-line`
@@ -24,6 +21,16 @@ const CL_AXIS = "recharts-cartesian-axis"
 , CL_AXIS_TICKS = `${CL_AXIS_TICK}s`
 , CL_AXIS_TICK_LINE = `${CL_AXIS_TICK}-line`
 , CL_AXIS_TICK_VALUE = `${CL_AXIS_TICK}-value`;
+
+const _crTextElement = (
+  props,
+  option,
+  value
+) => (
+  <Text {...props} className={CL_AXIS_TICK_VALUE}>
+    {value}
+  </Text>
+);
 
 const _getClassName = (
   obj
@@ -47,6 +54,8 @@ const _crFinalTicks = (
     : ticks;
 };
 
+const _renderTickItem = fCreateElement(_crTextElement);
+
 export class CartesianAxis extends Component {
   state = { fontSize: '', letterSpacing: '' }
 
@@ -69,9 +78,10 @@ export class CartesianAxis extends Component {
     }
     const tick = htmlLayer.getElementsByClassName(CL_AXIS_TICK_VALUE)[0];
     if (tick) {
+      const _tickComputedStyle = window.getComputedStyle(tick);
       this.setState({
-        fontSize: window.getComputedStyle(tick).fontSize,
-        letterSpacing: window.getComputedStyle(tick).letterSpacing,
+        fontSize: _tickComputedStyle.fontSize,
+        letterSpacing: _tickComputedStyle.letterSpacing,
       });
     }
   }
@@ -95,7 +105,9 @@ export class CartesianAxis extends Component {
     } = this.props
     , sign = mirror ? -1 : 1
     , finalTickSize = data.tickSize || tickSize
-    , tickCoord = isNumber(data.tickCoord) ? data.tickCoord : data.coordinate;
+    , tickCoord = isNumber(data.tickCoord)
+       ? data.tickCoord
+       : data.coordinate;
     let x1, x2, y1, y2, tx, ty;
     switch (orientation) {
       case 'top':
@@ -217,22 +229,6 @@ export class CartesianAxis extends Component {
     );
   }
 
-  static renderTickItem(option, props, value) {
-    let tickItem;
-    if (isValidElement(option)) {
-      tickItem = cloneElement(option, props);
-    } else if (_isFn(option)) {
-      tickItem = option(props);
-    } else {
-      tickItem = (
-        <Text {...props} className={CL_AXIS_TICK_VALUE}>
-          {value}
-        </Text>
-      );
-    }
-    return tickItem;
-  }
-
   /**
    * render the ticks
    * @param {Array} ticks The ticks to actually render (overrides what was passed in props)
@@ -280,8 +276,14 @@ export class CartesianAxis extends Component {
         return (
           <Layer className={CL_AXIS_TICK} key={`tick-${i}`}
             {...adaptEventsOfChild(this.props, entry, i)}>
-            {tickLine && (<line {...tickLineProps} {...lineCoord} className={classNames(CL_AXIS_TICK_LINE, _tickLineClassName)} />)}
-            {tick && CartesianAxis.renderTickItem(tick, tickProps, `${_isFn(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)}
+            {tickLine && (
+               <line
+                  {...tickLineProps}
+                  {...lineCoord}
+                  className={classNames(CL_AXIS_TICK_LINE, _tickLineClassName)}
+               />
+             )}
+            {tick && _renderTickItem(tick, tickProps, `${_isFn(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)}
           </Layer>
         );
     });
