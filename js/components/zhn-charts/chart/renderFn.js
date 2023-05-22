@@ -15,6 +15,7 @@ var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _renderActivePoints = require("./renderActivePoints");
+var CL_TOOLTIP_CURSOR = "recharts-tooltip-cursor";
 var isFinit = Number.isFinite || isFinite;
 var _getObjectKeys = Object.keys;
 var _crArrFromObjByKeys = function _crArrFromObjByKeys(obj) {
@@ -22,6 +23,9 @@ var _crArrFromObjByKeys = function _crArrFromObjByKeys(obj) {
     arr.push(obj[key]);
     return arr;
   }, []) : [];
+};
+var _getNumberValue = function _getNumberValue(value, dfValue) {
+  return (0, _DataUtils.isNumber)(value) ? value : dfValue;
 };
 var renderGrid = function renderGrid(_ref) {
   var chartInst = _ref.chartInst,
@@ -44,10 +48,10 @@ var renderGrid = function renderGrid(_ref) {
     _props = element.props || {};
   return (0, _uiApi.cloneElement)(element, {
     key: element.key || 'grid',
-    x: (0, _DataUtils.isNumber)(_props.x) ? _props.x : offset.left,
-    y: (0, _DataUtils.isNumber)(_props.y) ? _props.y : offset.top,
-    width: (0, _DataUtils.isNumber)(_props.width) ? _props.width : offset.width,
-    height: (0, _DataUtils.isNumber)(_props.height) ? _props.height : offset.height,
+    x: _getNumberValue(_props.x, offset.left),
+    y: _getNumberValue(_props.y, offset.top),
+    width: _getNumberValue(_props.width, offset.width),
+    height: _getNumberValue(_props.height, offset.height),
     xAxis: xAxis,
     yAxis: yAxis,
     offset: offset,
@@ -116,15 +120,17 @@ var renderBrush = function renderBrush(_ref5) {
     offset = state.offset,
     dataStartIndex = state.dataStartIndex,
     dataEndIndex = state.dataEndIndex,
-    updateId = state.updateId;
+    updateId = state.updateId,
+    _ref6 = element || {},
+    elementProps = _ref6.props;
   // TODO: update brush when children update
   return (0, _uiApi.cloneElement)(element, {
     key: element.key || '_recharts-brush',
     onChange: (0, _ChartUtils.combineEventHandlers)(chartInst.handleBrushChange, null, element.props.onChange),
     data: data,
-    x: (0, _DataUtils.isNumber)(element.props.x) ? element.props.x : offset.left,
-    y: (0, _DataUtils.isNumber)(element.props.y) ? element.props.y : offset.top + offset.height + offset.brushBottom - (margin.bottom || 0),
-    width: (0, _DataUtils.isNumber)(element.props.width) ? element.props.width : offset.width,
+    x: _getNumberValue(elementProps.x, offset.left),
+    y: _getNumberValue(elementProps.y, offset.top + offset.height + offset.brushBottom - (margin.bottom || 0)),
+    width: _getNumberValue(elementProps.width, offset.width),
     startIndex: dataStartIndex,
     endIndex: dataEndIndex,
     updateId: "brush-" + updateId
@@ -139,11 +145,11 @@ var _filterFormatItem = function _filterFormatItem(item, displayName, childIndex
   }
   return null;
 };
-var renderGraphicChild = function renderGraphicChild(_ref6) {
-  var chartInst = _ref6.chartInst,
-    element = _ref6.element,
-    displayName = _ref6.displayName,
-    index = _ref6.index;
+var renderGraphicChild = function renderGraphicChild(_ref7) {
+  var chartInst = _ref7.chartInst,
+    element = _ref7.element,
+    displayName = _ref7.displayName,
+    index = _ref7.index;
   var props = chartInst.props,
     state = chartInst.state,
     item = _filterFormatItem(element, displayName, index, state.formattedGraphicalItems);
@@ -198,9 +204,9 @@ var renderGraphicChild = function renderGraphicChild(_ref6) {
   }
   return isRange ? [graphicalItem, null, null] : [graphicalItem, null];
 };
-var renderCursor = function renderCursor(_ref7) {
-  var chartInst = _ref7.chartInst,
-    element = _ref7.element;
+var renderCursor = function renderCursor(_ref8) {
+  var chartInst = _ref8.chartInst,
+    element = _ref8.element;
   var props = chartInst.props,
     state = chartInst.state,
     _chartName = chartInst._chartName,
@@ -250,7 +256,7 @@ var renderCursor = function renderCursor(_ref7) {
       pointerEvents: 'none'
     }, offset, restProps, (0, _ReactUtils.filterProps)(element.props.cursor), {
       key: key,
-      className: 'recharts-tooltip-cursor',
+      className: CL_TOOLTIP_CURSOR,
       payload: activePayload,
       payloadIndex: activeTooltipIndex
     });

@@ -33,6 +33,8 @@ import {
 
 import { renderActivePoints } from './renderActivePoints';
 
+const CL_TOOLTIP_CURSOR = "recharts-tooltip-cursor"
+
 const isFinit = Number.isFinite || isFinite;
 const _getObjectKeys = Object.keys;
 const _crArrFromObjByKeys = (
@@ -45,6 +47,12 @@ const _crArrFromObjByKeys = (
         }, [])
    : [];
 
+const _getNumberValue = (
+  value,
+  dfValue
+) => isNumber(value)
+   ? value
+   : dfValue;
 
 const renderGrid = ({
   chartInst,
@@ -73,26 +81,18 @@ const renderGrid = ({
     , _props = element.props || {};
 
     return cloneElement(element, {
-        key: element.key || 'grid',
-        x: isNumber(_props.x)
-           ? _props.x
-           : offset.left,
-        y: isNumber(_props.y)
-           ? _props.y
-           : offset.top,
-        width: isNumber(_props.width)
-           ? _props.width
-           : offset.width,
-        height: isNumber(_props.height)
-           ? _props.height
-           : offset.height,
-        xAxis,
-        yAxis,
-        offset,
-        chartWidth: width,
-        chartHeight: height,
-        verticalCoordinatesGenerator: _props.verticalCoordinatesGenerator || chartInst.verticalCoordinatesGenerator,
-        horizontalCoordinatesGenerator: _props.horizontalCoordinatesGenerator || chartInst.horizontalCoordinatesGenerator,
+      key: element.key || 'grid',
+      x: _getNumberValue(_props.x, offset.left),
+      y: _getNumberValue(_props.y, offset.top),
+      width: _getNumberValue(_props.width, offset.width),
+      height: _getNumberValue(_props.height, offset.height),
+      xAxis,
+      yAxis,
+      offset,
+      chartWidth: width,
+      chartHeight: height,
+      verticalCoordinatesGenerator: _props.verticalCoordinatesGenerator || chartInst.verticalCoordinatesGenerator,
+      horizontalCoordinatesGenerator: _props.horizontalCoordinatesGenerator || chartInst.horizontalCoordinatesGenerator,
     });
 };
 
@@ -186,21 +186,21 @@ const renderBrush = ({
     dataStartIndex,
     dataEndIndex,
     updateId
-  } = state;
+  } = state
+  , {
+    props: elementProps
+  } = element || {};
   // TODO: update brush when children update
   return cloneElement(element, {
     key: element.key || '_recharts-brush',
     onChange: combineEventHandlers(chartInst.handleBrushChange, null, element.props.onChange),
     data,
-    x: isNumber(element.props.x)
-        ? element.props.x
-        : offset.left,
-    y: isNumber(element.props.y)
-        ? element.props.y
-        : offset.top + offset.height + offset.brushBottom - (margin.bottom || 0),
-    width: isNumber(element.props.width)
-        ? element.props.width
-        : offset.width,
+    x: _getNumberValue(elementProps.x, offset.left),
+    y: _getNumberValue(
+      elementProps.y,
+      offset.top + offset.height + offset.brushBottom - (margin.bottom || 0)
+    ),
+    width: _getNumberValue(elementProps.width, offset.width),
     startIndex: dataStartIndex,
     endIndex: dataEndIndex,
     updateId: `brush-${updateId}`
@@ -386,7 +386,7 @@ const renderCursor = ({
       ...restProps,
       ...filterProps(element.props.cursor),
       key,
-      className: 'recharts-tooltip-cursor',
+      className: CL_TOOLTIP_CURSOR,
       payload: activePayload,
       payloadIndex: activeTooltipIndex
   };
