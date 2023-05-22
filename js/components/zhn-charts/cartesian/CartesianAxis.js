@@ -4,8 +4,8 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.CartesianAxis = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _uiApi = require("../../uiApi");
 var _classnames = _interopRequireDefault(require("classnames"));
 var _FnUtils = require("../util/FnUtils");
@@ -18,9 +18,9 @@ var _Text = require("../component/Text");
 var _Label = require("../component/Label");
 var _getTicks = require("./getTicks");
 var _jsxRuntime = require("react/jsx-runtime");
-var _excluded = ["viewBox"],
+var _excluded = ["ticks", "ticksGenerator"],
   _excluded2 = ["viewBox"],
-  _excluded3 = ["ticks"];
+  _excluded3 = ["viewBox"];
 var CL_AXIS = "recharts-cartesian-axis",
   CL_AXIS_LINE = CL_AXIS + "-line",
   CL_AXIS_TICK = CL_AXIS + "-tick",
@@ -29,6 +29,12 @@ var CL_AXIS = "recharts-cartesian-axis",
   CL_AXIS_TICK_VALUE = CL_AXIS_TICK + "-value";
 var _getClassName = function _getClassName(obj) {
   return obj ? obj.className : void 0;
+};
+var _crFinalTicks = function _crFinalTicks(props) {
+  var ticks = props.ticks,
+    ticksGenerator = props.ticksGenerator,
+    noTicksProps = (0, _objectWithoutPropertiesLoose2["default"])(props, _excluded);
+  return (0, _FnUtils._isFn)(ticksGenerator) ? ticks && ticks.length > 0 ? ticksGenerator(props) : ticksGenerator(noTicksProps) : ticks;
 };
 var CartesianAxis = /*#__PURE__*/function (_Component) {
   (0, _inheritsLoose2["default"])(CartesianAxis, _Component);
@@ -50,12 +56,12 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
   var _proto = CartesianAxis.prototype;
   _proto.shouldComponentUpdate = function shouldComponentUpdate(_ref, nextState) {
     var viewBox = _ref.viewBox,
-      restProps = (0, _objectWithoutPropertiesLoose2["default"])(_ref, _excluded);
+      restProps = (0, _objectWithoutPropertiesLoose2["default"])(_ref, _excluded2);
     // props.viewBox is sometimes generated every time -
     // check that specially as object equality is likely to fail
     var _this$props = this.props,
       viewBoxOld = _this$props.viewBox,
-      restPropsOld = (0, _objectWithoutPropertiesLoose2["default"])(_this$props, _excluded2);
+      restPropsOld = (0, _objectWithoutPropertiesLoose2["default"])(_this$props, _excluded3);
     return !(0, _ShallowEqual.shallowEqual)(viewBox, viewBoxOld) || !(0, _ShallowEqual.shallowEqual)(restProps, restPropsOld) || !(0, _ShallowEqual.shallowEqual)(nextState, this.state);
   };
   _proto.componentDidMount = function componentDidMount() {
@@ -281,26 +287,22 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
       axisLine = _this$props7.axisLine,
       width = _this$props7.width,
       height = _this$props7.height,
-      ticksGenerator = _this$props7.ticksGenerator,
       className = _this$props7.className,
       hide = _this$props7.hide;
     if (hide) {
       return null;
     }
-    var _this$props8 = this.props,
-      ticks = _this$props8.ticks,
-      noTicksProps = (0, _objectWithoutPropertiesLoose2["default"])(_this$props8, _excluded3);
-    var finalTicks = ticks;
-    if ((0, _FnUtils._isFn)(ticksGenerator)) {
-      finalTicks = ticks && ticks.length > 0 ? ticksGenerator(this.props) : ticksGenerator(noTicksProps);
-    }
+    var finalTicks = _crFinalTicks(this.props);
     if (width <= 0 || height <= 0 || !finalTicks || !finalTicks.length) {
       return null;
     }
+    var _this$state = this.state,
+      fontSize = _this$state.fontSize,
+      letterSpacing = _this$state.letterSpacing;
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
       className: (0, _classnames["default"])(CL_AXIS, className),
       ref: this._refLayerReference,
-      children: [axisLine && this.renderAxisLine(), this.renderTicks(finalTicks, this.state.fontSize, this.state.letterSpacing), _Label.Label.renderCallByParent(this.props)]
+      children: [axisLine && this.renderAxisLine(), this.renderTicks(finalTicks, fontSize, letterSpacing), _Label.Label.renderCallByParent(this.props)]
     });
   };
   return CartesianAxis;

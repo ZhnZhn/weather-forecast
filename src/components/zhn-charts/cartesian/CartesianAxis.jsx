@@ -31,6 +31,22 @@ const _getClassName = (
   ? obj.className
   : void 0;
 
+const _crFinalTicks = (
+  props
+) => {
+  const {
+    ticks,
+    ticksGenerator,
+    ...noTicksProps
+  } = props;
+
+  return _isFn(ticksGenerator)
+    ? ticks && ticks.length > 0
+       ? ticksGenerator(props)
+       : ticksGenerator(noTicksProps)
+    : ticks;
+};
+
 export class CartesianAxis extends Component {
   state = { fontSize: '', letterSpacing: '' }
 
@@ -285,33 +301,33 @@ export class CartesianAxis extends Component {
       axisLine,
       width,
       height,
-      ticksGenerator,
       className,
       hide
     } = this.props;
     if (hide) {
       return null;
     }
-    const {
-      ticks,
-      ...noTicksProps
-    } = this.props;
-    let finalTicks = ticks;
-    if (_isFn(ticksGenerator)) {
-      finalTicks = ticks && ticks.length > 0
-         ? ticksGenerator(this.props)
-         : ticksGenerator(noTicksProps);
-    }
-    if (width <= 0 || height <= 0 || !finalTicks || !finalTicks.length) {
+
+    const finalTicks = _crFinalTicks(this.props);
+    if (width <= 0
+      || height <= 0
+      || !finalTicks
+      || !finalTicks.length
+    ) {
       return null;
     }
+
+    const {
+      fontSize,
+      letterSpacing
+    } = this.state;
     return (
       <Layer
          className={classNames(CL_AXIS, className)}
          ref={this._refLayerReference}
       >
          {axisLine && this.renderAxisLine()}
-         {this.renderTicks(finalTicks, this.state.fontSize, this.state.letterSpacing)}
+         {this.renderTicks(finalTicks, fontSize, letterSpacing)}
          {Label.renderCallByParent(this.props)}
       </Layer>
     );
