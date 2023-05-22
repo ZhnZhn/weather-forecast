@@ -1,10 +1,21 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isNeedClip = exports.fCreateElement = exports.dataPointFormatter = exports.crClipPathProps = void 0;
+exports.isNeedClip = exports.fCreateElement = exports.dataPointFormatter = exports.crClipPathProps = exports.DF_AXIS_PROPS = void 0;
 var _uiApi = require("../../uiApi");
 var _ChartUtils = require("../util/ChartUtils");
 var _FnUtils = require("../util/FnUtils");
+var DF_AXIS_PROPS = {
+  allowDataOverflow: false,
+  allowDecimals: true,
+  allowDuplicatedCategory: true,
+  hide: false,
+  mirror: false,
+  tickCount: 5,
+  scale: 'auto',
+  reversed: false
+};
+exports.DF_AXIS_PROPS = DF_AXIS_PROPS;
 var isNeedClip = function isNeedClip(_ref) {
   var xAxis = _ref.xAxis,
     yAxis = _ref.yAxis;

@@ -6,6 +6,17 @@ import {
 import { getValueByDataKey } from '../util/ChartUtils';
 import { _isFn } from '../util/FnUtils';
 
+export const DF_AXIS_PROPS = {
+  allowDataOverflow: false,
+  allowDecimals: true,
+  allowDuplicatedCategory: true,
+  hide: false,
+  mirror: false,
+  tickCount: 5,
+  scale: 'auto',
+  reversed: false
+};
+
 export const isNeedClip = ({
  xAxis,
  yAxis
