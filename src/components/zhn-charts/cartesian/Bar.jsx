@@ -30,6 +30,8 @@ import useAnimationHandle from './useAnimationHandle';
 import usePrevCurData from './usePrevCurData';
 import useClipPathId from './useClipPathId';
 
+import ClipPathRect  from './ClipPathRect';
+
 const CL_BAR = "recharts-bar"
 , CL_BAR_RECTANGLES = `${CL_BAR}-rectangles`;
 
@@ -38,10 +40,6 @@ export const Bar = memo((props) => {
     hide,
     data,
     className,
-    left,
-    top,
-    width,
-    height,
     isAnimationActive,
     background,
     id,
@@ -73,13 +71,10 @@ export const Bar = memo((props) => {
   return (
     <Layer className={layerClass}>
        {needClip
-         ? (
-            <defs>
-               <clipPath id={`clipPath-${clipPathId}`}>
-                  <rect x={left} y={top} width={width} height={height}/>
-               </clipPath>
-            </defs>
-          )
+         ? <ClipPathRect
+             id={clipPathId}
+             props={props}
+           />
         : null
       }
       <Layer

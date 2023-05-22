@@ -29,6 +29,8 @@ import useAnimationHandle from './useAnimationHandle';
 import usePrevCurData from './usePrevCurData';
 import useClipPathId from './useClipPathId';
 
+import ClipPathRect  from './ClipPathRect';
+
 const CL_LINE = "recharts-line";
 
 const DF_TOTAL_LENGTH = 0;
@@ -52,10 +54,6 @@ export const Line = memo((props) => {
     dot,
     points,
     className,
-    top,
-    left,
-    width,
-    height,
     isAnimationActive,
     id,
     animationId
@@ -102,11 +100,13 @@ export const Line = memo((props) => {
 
   return (
     <Layer className={layerClass}>
-      {needClip ? (<defs>
-          <clipPath id={`clipPath-${clipPathId}`}>
-            <rect x={left} y={top} width={width} height={height}/>
-          </clipPath>
-        </defs>) : null}
+      {needClip
+        ? <ClipPathRect
+             id={clipPathId}
+             props={props}
+           />
+        : null
+      }
       {!hasSinglePoint && renderCurve(
           needClip,
           clipPathId,
@@ -159,6 +159,7 @@ Line.defaultProps = {
   hide: false,
   label: false
 };
+
 
 /**
  * Compose the data of each group

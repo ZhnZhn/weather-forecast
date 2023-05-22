@@ -19,6 +19,7 @@ var _cartesianFn = require("./cartesianFn");
 var _useAnimationHandle2 = _interopRequireDefault(require("./useAnimationHandle"));
 var _usePrevCurData2 = _interopRequireDefault(require("./usePrevCurData"));
 var _useClipPathId = _interopRequireDefault(require("./useClipPathId"));
+var _ClipPathRect = _interopRequireDefault(require("./ClipPathRect"));
 var _jsxRuntime = require("react/jsx-runtime");
 var CL_BAR = "recharts-bar",
   CL_BAR_RECTANGLES = CL_BAR + "-rectangles";
@@ -26,10 +27,6 @@ var Bar = (0, _uiApi.memo)(function (props) {
   var hide = props.hide,
     data = props.data,
     className = props.className,
-    left = props.left,
-    top = props.top,
-    width = props.width,
-    height = props.height,
     isAnimationActive = props.isAnimationActive,
     background = props.background,
     id = props.id,
@@ -48,16 +45,9 @@ var Bar = (0, _uiApi.memo)(function (props) {
     needClip = (0, _cartesianFn.isNeedClip)(props);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     className: layerClass,
-    children: [needClip ? /*#__PURE__*/(0, _jsxRuntime.jsx)("defs", {
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("clipPath", {
-        id: "clipPath-" + clipPathId,
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("rect", {
-          x: left,
-          y: top,
-          width: width,
-          height: height
-        })
-      })
+    children: [needClip ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPathRect["default"], {
+      id: clipPathId,
+      props: props
     }) : null, /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
       className: CL_BAR_RECTANGLES,
       clipPath: needClip ? "url(#clipPath-" + clipPathId + ")" : null,

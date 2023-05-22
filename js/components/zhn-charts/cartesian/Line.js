@@ -16,6 +16,7 @@ var _cartesianFn = require("./cartesianFn");
 var _useAnimationHandle2 = _interopRequireDefault(require("./useAnimationHandle"));
 var _usePrevCurData2 = _interopRequireDefault(require("./usePrevCurData"));
 var _useClipPathId = _interopRequireDefault(require("./useClipPathId"));
+var _ClipPathRect = _interopRequireDefault(require("./ClipPathRect"));
 var _jsxRuntime = require("react/jsx-runtime");
 var CL_LINE = "recharts-line";
 var DF_TOTAL_LENGTH = 0;
@@ -31,10 +32,6 @@ var Line = (0, _uiApi.memo)(function (props) {
     dot = props.dot,
     points = props.points,
     className = props.className,
-    top = props.top,
-    left = props.left,
-    width = props.width,
-    height = props.height,
     isAnimationActive = props.isAnimationActive,
     id = props.id,
     animationId = props.animationId,
@@ -68,16 +65,9 @@ var Line = (0, _uiApi.memo)(function (props) {
     needClip = (0, _cartesianFn.isNeedClip)(props);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     className: layerClass,
-    children: [needClip ? /*#__PURE__*/(0, _jsxRuntime.jsx)("defs", {
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("clipPath", {
-        id: "clipPath-" + clipPathId,
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("rect", {
-          x: left,
-          y: top,
-          width: width,
-          height: height
-        })
-      })
+    children: [needClip ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPathRect["default"], {
+      id: clipPathId,
+      props: props
     }) : null, !hasSinglePoint && (0, _LineRenderFn.renderCurve)(needClip, clipPathId, prevPoints, totalLength, props, _refPath, handleAnimationStart, handleAnimationEnd), (0, _LineRenderFn.renderErrorBar)(needClip, clipPathId, isAnimationFinished, props), (hasSinglePoint || dot) && (0, _LineRenderFn.renderDots)(needClip, clipPathId, isAnimationFinished, props), (!isAnimationActive || isAnimationFinished) && _LabelList.LabelList.renderCallByParent(props, points)]
   });
 });
