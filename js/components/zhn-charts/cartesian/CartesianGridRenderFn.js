@@ -2,9 +2,10 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.renderVerticalStripes = exports.renderVertical = exports.renderHorizontalStripes = exports.renderHorizontal = exports.renderBackground = exports.CL_CARTESIAN_GRID = void 0;
+exports.renderVerticalStripes = exports.renderVertical = exports.renderHorizontalStripes = exports.renderHorizontal = exports.renderBackground = exports.crGridPoints = exports.CL_CARTESIAN_GRID = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+var _FnUtils = require("../util/FnUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _cartesianFn = require("./cartesianFn");
 var _react = require("react");
@@ -34,11 +35,37 @@ var _crLineElement = function _crLineElement(_ref) {
   }));
 };
 var _renderLineItem = (0, _cartesianFn.fCreateElement)(_crLineElement);
+var _isPoints = function _isPoints(points) {
+  return points && points.length;
+};
+var _crPoints = function _crPoints(points, pointsGenerator, generatorOptions) {
+  return !_isPoints(points) && (0, _FnUtils._isFn)(pointsGenerator) ? pointsGenerator(generatorOptions) : points;
+};
+var crGridPoints = function crGridPoints(props) {
+  var horizontalCoordinatesGenerator = props.horizontalCoordinatesGenerator,
+    verticalCoordinatesGenerator = props.verticalCoordinatesGenerator,
+    xAxis = props.xAxis,
+    yAxis = props.yAxis,
+    offset = props.offset,
+    chartWidth = props.chartWidth,
+    chartHeight = props.chartHeight,
+    _generatorOptions = {
+      width: chartWidth,
+      height: chartHeight,
+      offset: offset
+    };
+  return [_crPoints(props.horizontalPoints, horizontalCoordinatesGenerator, (0, _extends2["default"])({}, _generatorOptions, {
+    yAxis: yAxis
+  })), _crPoints(props.verticalPoints, verticalCoordinatesGenerator, (0, _extends2["default"])({}, _generatorOptions, {
+    xAxis: xAxis
+  }))];
+};
+exports.crGridPoints = crGridPoints;
 var renderHorizontal = function renderHorizontal(horizontalPoints, props) {
   var x = props.x,
     width = props.width,
     horizontal = props.horizontal;
-  if (!horizontalPoints || !horizontalPoints.length) {
+  if (!_isPoints(horizontalPoints)) {
     return null;
   }
   var items = horizontalPoints.map(function (entry, i) {
@@ -61,7 +88,7 @@ var renderVertical = function renderVertical(verticalPoints, props) {
   var y = props.y,
     height = props.height,
     vertical = props.vertical;
-  if (!verticalPoints || !verticalPoints.length) {
+  if (!_isPoints(verticalPoints)) {
     return null;
   }
   var items = verticalPoints.map(function (entry, i) {
@@ -82,7 +109,7 @@ var renderVertical = function renderVertical(verticalPoints, props) {
 exports.renderVertical = renderVertical;
 var renderVerticalStripes = function renderVerticalStripes(verticalPoints, props) {
   var verticalFill = props.verticalFill;
-  if (!verticalFill || !verticalFill.length) {
+  if (!_isPoints(verticalFill)) {
     return null;
   }
   var fillOpacity = props.fillOpacity,
@@ -124,7 +151,7 @@ var renderVerticalStripes = function renderVerticalStripes(verticalPoints, props
 exports.renderVerticalStripes = renderVerticalStripes;
 var renderHorizontalStripes = function renderHorizontalStripes(horizontalPoints, props) {
   var horizontalFill = props.horizontalFill;
-  if (!horizontalFill || !horizontalFill.length) {
+  if (!_isPoints(horizontalFill)) {
     return null;
   }
   var fillOpacity = props.fillOpacity,

@@ -1,10 +1,10 @@
 import { memo } from '../../uiApi';
 
-import { _isFn } from '../util/FnUtils';
 import { isNumber } from '../util/DataUtils';
 
 import {
   CL_CARTESIAN_GRID,
+  crGridPoints,
   renderHorizontal,
   renderVertical,
   renderVerticalStripes,
@@ -21,14 +21,7 @@ export const CartesianGrid = memo((
     width,
     height,
     horizontal,
-    vertical,
-    horizontalCoordinatesGenerator,
-    verticalCoordinatesGenerator,
-    xAxis,
-    yAxis,
-    offset,
-    chartWidth,
-    chartHeight
+    vertical
   } = props;
 
   if (!isNumber(width)
@@ -43,33 +36,10 @@ export const CartesianGrid = memo((
     return null;
   }
 
-  let {
+  const [
     horizontalPoints,
     verticalPoints
-  } = props;
-  // No horizontal points are specified
-  if ((!horizontalPoints || !horizontalPoints.length)
-     && _isFn(horizontalCoordinatesGenerator)
-  ) {
-    horizontalPoints = horizontalCoordinatesGenerator({
-      yAxis,
-      width: chartWidth,
-      height: chartHeight,
-      offset
-    });
-  }
-
-  // No vertical points are specified
-  if ((!verticalPoints || !verticalPoints.length)
-     && _isFn(verticalCoordinatesGenerator)
-  ) {
-    verticalPoints = verticalCoordinatesGenerator({
-      xAxis,
-      width: chartWidth,
-      height: chartHeight,
-      offset
-    });
-  }
+  ] = crGridPoints(props);
 
   return (
     <g className={CL_CARTESIAN_GRID}>

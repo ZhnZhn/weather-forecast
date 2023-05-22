@@ -1,3 +1,4 @@
+import { _isFn } from '../util/FnUtils';
 import { filterProps } from '../util/ReactUtils';
 import { fCreateElement } from './cartesianFn';
 
@@ -26,6 +27,49 @@ const _crLineElement = ({
 
 const _renderLineItem = fCreateElement(_crLineElement);
 
+const _isPoints = (
+  points
+) => points && points.length;
+const _crPoints = (
+  points,
+  pointsGenerator,
+  generatorOptions
+) => !_isPoints(points) && _isFn(pointsGenerator)
+  ? pointsGenerator(generatorOptions)
+  : points;
+
+export const crGridPoints = (
+  props
+) => {
+  const {
+    horizontalCoordinatesGenerator,
+    verticalCoordinatesGenerator,
+    xAxis,
+    yAxis,
+    offset,
+    chartWidth,
+    chartHeight
+  } = props
+  , _generatorOptions = {
+     width: chartWidth,
+     height: chartHeight,
+     offset
+  };
+
+  return [
+    _crPoints(
+        props.horizontalPoints,
+        horizontalCoordinatesGenerator,
+        {..._generatorOptions, yAxis}
+    ),
+    _crPoints(
+        props.verticalPoints,
+        verticalCoordinatesGenerator,
+        {..._generatorOptions, xAxis}
+    )
+  ];
+}
+
 export const renderHorizontal = (
   horizontalPoints,
   props
@@ -35,7 +79,7 @@ export const renderHorizontal = (
     width,
     horizontal
   } = props;
-  if (!horizontalPoints || !horizontalPoints.length) {
+  if (!_isPoints(horizontalPoints)) {
     return null;
   }
 
@@ -66,7 +110,7 @@ export const renderVertical = (
     height,
     vertical
   } = props;
-  if (!verticalPoints || !verticalPoints.length) {
+  if (!_isPoints(verticalPoints)) {
     return null;
   }
 
@@ -93,7 +137,7 @@ export const renderVerticalStripes = (
   props
 ) => {
   const { verticalFill } = props;
-  if (!verticalFill || !verticalFill.length) {
+  if (!_isPoints(verticalFill)) {
     return null;
   }
 
@@ -140,7 +184,7 @@ export const renderHorizontalStripes = (
   props
 ) => {
   const { horizontalFill } = props;
-  if (!horizontalFill || !horizontalFill.length) {
+  if (!_isPoints(horizontalFill)) {
     return null;
   }
 
@@ -185,7 +229,9 @@ export const renderHorizontalStripes = (
   );
 }
 
-export const renderBackground = (props) => {
+export const renderBackground = (
+  props
+) => {
   const { fill } = props;
   if (!fill || fill === 'none') {
     return null;

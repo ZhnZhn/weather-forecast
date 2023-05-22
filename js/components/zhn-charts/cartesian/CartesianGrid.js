@@ -3,7 +3,6 @@
 exports.__esModule = true;
 exports.CartesianGrid = void 0;
 var _uiApi = require("../../uiApi");
-var _FnUtils = require("../util/FnUtils");
 var _DataUtils = require("../util/DataUtils");
 var _CartesianGridRenderFn = require("./CartesianGridRenderFn");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -13,38 +12,13 @@ var CartesianGrid = (0, _uiApi.memo)(function (props) {
     width = props.width,
     height = props.height,
     horizontal = props.horizontal,
-    vertical = props.vertical,
-    horizontalCoordinatesGenerator = props.horizontalCoordinatesGenerator,
-    verticalCoordinatesGenerator = props.verticalCoordinatesGenerator,
-    xAxis = props.xAxis,
-    yAxis = props.yAxis,
-    offset = props.offset,
-    chartWidth = props.chartWidth,
-    chartHeight = props.chartHeight;
+    vertical = props.vertical;
   if (!(0, _DataUtils.isNumber)(width) || width <= 0 || !(0, _DataUtils.isNumber)(height) || height <= 0 || !(0, _DataUtils.isNumber)(x) || x !== +x || !(0, _DataUtils.isNumber)(y) || y !== +y) {
     return null;
   }
-  var horizontalPoints = props.horizontalPoints,
-    verticalPoints = props.verticalPoints;
-  // No horizontal points are specified
-  if ((!horizontalPoints || !horizontalPoints.length) && (0, _FnUtils._isFn)(horizontalCoordinatesGenerator)) {
-    horizontalPoints = horizontalCoordinatesGenerator({
-      yAxis: yAxis,
-      width: chartWidth,
-      height: chartHeight,
-      offset: offset
-    });
-  }
-
-  // No vertical points are specified
-  if ((!verticalPoints || !verticalPoints.length) && (0, _FnUtils._isFn)(verticalCoordinatesGenerator)) {
-    verticalPoints = verticalCoordinatesGenerator({
-      xAxis: xAxis,
-      width: chartWidth,
-      height: chartHeight,
-      offset: offset
-    });
-  }
+  var _crGridPoints = (0, _CartesianGridRenderFn.crGridPoints)(props),
+    horizontalPoints = _crGridPoints[0],
+    verticalPoints = _crGridPoints[1];
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("g", {
     className: _CartesianGridRenderFn.CL_CARTESIAN_GRID,
     children: [(0, _CartesianGridRenderFn.renderBackground)(props), horizontal && (0, _CartesianGridRenderFn.renderHorizontal)(horizontalPoints, props), vertical && (0, _CartesianGridRenderFn.renderVertical)(verticalPoints, props), horizontal && (0, _CartesianGridRenderFn.renderHorizontalStripes)(horizontalPoints, props), vertical && (0, _CartesianGridRenderFn.renderVerticalStripes)(verticalPoints, props)]
