@@ -1,19 +1,20 @@
-
-//import PropTypes from 'prop-types';
-import useTheme from '../hooks/useTheme'
+import useTheme from '../hooks/useTheme';
 
 import ProgressLoading from './ProgressLoading';
 import HamburgerButton from '../zhn-atoms/HamburgerButton';
 import ButtonCircle from '../zhn-atoms/ButtonCircle';
-import ProviderLink from '../elements/ProviderLink'
-import GitHubLink from './GitHubLink'
+import ProviderLink from '../elements/ProviderLink';
+import GitHubLink from './GitHubLink';
 import styleConfig from './Header.Style';
 
 import handlers from '../../flux/handlers';
 
-const { toggleLayout, showSettings } = handlers;
+const {
+  toggleLayout,
+  showSettings
+} = handlers;
 
-const TITLE = "Weather v0.2.0";
+const TITLE = "Weather v0.3.0";
 
 const CL_TITLE = 'header__title'
 , CL_LINK_PREF = 'header__link-pref'
@@ -28,7 +29,9 @@ const CL_TITLE = 'header__title'
   marginLeft: '1rem'
 };
 
-const Header = ({ style }) => {
+const Header = ({
+  style
+}) => {
   const TS = useTheme(styleConfig);
 
   return (

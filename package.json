@@ -1,6 +1,6 @@
 {
   "name": "weather-forecast",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Web app Weather Forecast",
   "main": "index.js",
   "scripts": {
