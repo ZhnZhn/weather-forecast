@@ -7,9 +7,6 @@ var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
 var _uiApi = require("../../uiApi");
 var _Tooltip = require("../component/Tooltip");
 var _Curve = require("../shape/Curve");
-var _Cross = require("../shape/Cross");
-var _Sector = require("../shape/Sector");
-var _Rectangle = require("../shape/Rectangle");
 var _FnUtils = require("../util/FnUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
@@ -204,6 +201,13 @@ var renderGraphicChild = function renderGraphicChild(_ref7) {
   }
   return isRange ? [graphicalItem, null, null] : [graphicalItem, null];
 };
+
+//[restProps, cursorComp]
+var _crCursorComp = function _crCursorComp(chartInst) {
+  return [{
+    points: chartInst.getCursorPoints()
+  }, _Curve.Curve];
+};
 var renderCursor = function renderCursor(_ref8) {
   var chartInst = _ref8.chartInst,
     element = _ref8.element;
@@ -215,52 +219,26 @@ var renderCursor = function renderCursor(_ref8) {
     activePayload = state.activePayload,
     offset = state.offset,
     activeTooltipIndex = state.activeTooltipIndex,
-    tooltipEventType = chartInst.getTooltipEventType();
-  if (!element || !element.props.cursor || !isTooltipActive || !activeCoordinate || _chartName !== 'ScatterChart' && tooltipEventType !== 'axis') {
+    tooltipEventType = chartInst.getTooltipEventType(),
+    _elementPropsCursor = ((element || {}).props || {}).cursor;
+  if (!_elementPropsCursor || !isTooltipActive || !activeCoordinate || _chartName !== 'ScatterChart' && tooltipEventType !== 'axis') {
     return null;
   }
-  var layout = props.layout;
-  var restProps,
-    cursorComp = _Curve.Curve;
-  if (_chartName === 'ScatterChart') {
-    restProps = activeCoordinate;
-    cursorComp = _Cross.Cross;
-  } else if (_chartName === 'BarChart') {
-    restProps = chartInst.getCursorRectangle();
-    cursorComp = _Rectangle.Rectangle;
-  } else if (layout === 'radial') {
-    var _chartInst$getCursorP = chartInst.getCursorPoints(),
-      cx = _chartInst$getCursorP.cx,
-      cy = _chartInst$getCursorP.cy,
-      radius = _chartInst$getCursorP.radius,
-      startAngle = _chartInst$getCursorP.startAngle,
-      endAngle = _chartInst$getCursorP.endAngle;
-    restProps = {
-      cx: cx,
-      cy: cy,
-      startAngle: startAngle,
-      endAngle: endAngle,
-      innerRadius: radius,
-      outerRadius: radius
-    };
-    cursorComp = _Sector.Sector;
-  } else {
-    restProps = {
-      points: chartInst.getCursorPoints()
-    };
-    cursorComp = _Curve.Curve;
-  }
-  var key = element.key || '_recharts-cursor',
+  var layout = props.layout,
+    _crCursorComp2 = _crCursorComp(chartInst, _chartName, activeCoordinate, layout),
+    restProps = _crCursorComp2[0],
+    cursorComp = _crCursorComp2[1],
+    key = element.key || '_recharts-cursor',
     cursorProps = (0, _extends2["default"])({
       stroke: '#ccc',
       pointerEvents: 'none'
-    }, offset, restProps, (0, _ReactUtils.filterProps)(element.props.cursor), {
+    }, offset, restProps, (0, _ReactUtils.filterProps)(_elementPropsCursor), {
       key: key,
       className: CL_TOOLTIP_CURSOR,
       payload: activePayload,
       payloadIndex: activeTooltipIndex
     });
-  return (0, _uiApi.isValidElement)(element.props.cursor) ? (0, _uiApi.cloneElement)(element.props.cursor, cursorProps) : (0, _uiApi.createElement)(cursorComp, cursorProps);
+  return (0, _uiApi.isValidElement)(_elementPropsCursor) ? (0, _uiApi.cloneElement)(_elementPropsCursor, cursorProps) : (0, _uiApi.createElement)(cursorComp, cursorProps);
 };
 var renderMap = {
   CartesianGrid: {

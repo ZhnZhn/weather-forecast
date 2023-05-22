@@ -6,9 +6,6 @@ import {
 
 import { Tooltip } from '../component/Tooltip';
 import { Curve } from '../shape/Curve';
-import { Cross } from '../shape/Cross';
-import { Sector } from '../shape/Sector';
-import { Rectangle } from '../shape/Rectangle';
 
 import {
   _isNil,
@@ -322,6 +319,15 @@ const renderGraphicChild = ({
     : [graphicalItem, null];
 }
 
+//[restProps, cursorComp]
+const _crCursorComp = (
+  chartInst  
+) => [
+  { points: chartInst.getCursorPoints() },
+  Curve
+];
+
+
 const renderCursor = ({
   chartInst,
   element
@@ -339,60 +345,42 @@ const renderCursor = ({
     activeTooltipIndex
   } = state
   , tooltipEventType = chartInst.getTooltipEventType()
+  , _elementPropsCursor = ((element || {})
+      .props || {})
+      .cursor;
 
-  if (!element
-    || !element.props.cursor
+  if (!_elementPropsCursor
     || !isTooltipActive
     || !activeCoordinate
     || (_chartName !== 'ScatterChart' && tooltipEventType !== 'axis')) {
     return null;
   }
 
-  const { layout } = props;
-  let restProps, cursorComp = Curve;
-  if (_chartName === 'ScatterChart') {
-    restProps = activeCoordinate;
-    cursorComp = Cross;
-  } else if (_chartName === 'BarChart') {
-    restProps = chartInst.getCursorRectangle();
-    cursorComp = Rectangle;
-  } else if (layout === 'radial') {
-    const {
-      cx,
-      cy,
-      radius,
-      startAngle,
-      endAngle
-    } = chartInst.getCursorPoints();
-    restProps = {
-      cx,
-      cy,
-      startAngle,
-      endAngle,
-      innerRadius: radius,
-      outerRadius: radius,
-    };
-    cursorComp = Sector;
-  } else {
-    restProps = { points: chartInst.getCursorPoints() };
-    cursorComp = Curve;
-  }
-
-  const key = element.key || '_recharts-cursor'
+  const { layout } = props
+  , [
+    restProps,
+    cursorComp
+  ] = _crCursorComp(
+    chartInst,
+    _chartName,
+    activeCoordinate,
+    layout
+  )
+  , key = element.key || '_recharts-cursor'
   , cursorProps = {
       stroke: '#ccc',
       pointerEvents: 'none',
       ...offset,
       ...restProps,
-      ...filterProps(element.props.cursor),
+      ...filterProps(_elementPropsCursor),
       key,
       className: CL_TOOLTIP_CURSOR,
       payload: activePayload,
       payloadIndex: activeTooltipIndex
   };
 
-  return isValidElement(element.props.cursor)
-    ? cloneElement(element.props.cursor, cursorProps)
+  return isValidElement(_elementPropsCursor)
+    ? cloneElement(_elementPropsCursor, cursorProps)
     : createElement(cursorComp, cursorProps);
 };
 
