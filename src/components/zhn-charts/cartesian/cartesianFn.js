@@ -4,6 +4,7 @@ import {
 } from '../../uiApi';
 
 import { getValueByDataKey } from '../util/ChartUtils';
+import { ifOverflowMatches } from '../util/IfOverflowMatches';
 import { _isFn } from '../util/FnUtils';
 
 export const DF_AXIS_PROPS = {
@@ -22,6 +23,12 @@ export const isNeedClip = ({
  yAxis
 }) => (xAxis && xAxis.allowDataOverflow)
   || (yAxis && yAxis.allowDataOverflow);
+
+export const crClipPathIdIf = (
+  props
+) => ifOverflowMatches(props, 'hidden')
+  ? `url(#${props.clipPathId})`
+  : void 0
 
 export const fCreateElement = (
   crElement

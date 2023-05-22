@@ -6,7 +6,10 @@ import { ifOverflowMatches } from '../util/IfOverflowMatches';
 import { isNumOrStr } from '../util/DataUtils';
 import { createLabeledScales, rectWithCoords } from '../util/CartesianUtils';
 import { filterProps } from '../util/ReactUtils';
-import { fCreateElement } from './cartesianFn';
+import {
+  crClipPathIdIf,
+  fCreateElement
+} from './cartesianFn';
 
 const CL_REFERENCE_LINE = 'recharts-reference-line'
 , CL_REFERENCE_LINE_LINE = `${CL_REFERENCE_LINE}-line`
@@ -90,8 +93,7 @@ export const ReferenceLine = (props) => {
     xAxis,
     yAxis,
     shape,
-    className,
-    clipPathId
+    className
   } = props
   , scales = createLabeledScales({
      x: xAxis.scale,
@@ -115,9 +117,7 @@ export const ReferenceLine = (props) => {
     { x: x1, y: y1 },
     { x: x2, y: y2 }
   ] = endPoints
-  , clipPath = ifOverflowMatches(props, 'hidden')
-     ? `url(#${clipPathId})`
-     : void 0
+  , clipPath = crClipPathIdIf(props)  
   , lineProps = {
      clipPath,
      ...filterProps(props, true),

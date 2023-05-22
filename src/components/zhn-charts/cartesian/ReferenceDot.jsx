@@ -7,12 +7,14 @@ import { isNumOrStr } from '../util/DataUtils';
 import { ifOverflowMatches } from '../util/IfOverflowMatches';
 import { createLabeledScales } from '../util/CartesianUtils';
 import { filterProps } from '../util/ReactUtils';
-import { fCreateElement } from './cartesianFn';
+import {
+  crClipPathIdIf,
+  fCreateElement
+} from './cartesianFn';
 
 const CL_REFERENCE_DOT = 'recharts-reference-dot'
 , CL_REFERENCE_DOT_DOT = `${CL_REFERENCE_DOT}-dot`
-, DISCARD = 'discard'
-, HIDDEN = 'hidden';
+, DISCARD = 'discard';
 
 const getCoordinate = (
   props
@@ -35,7 +37,6 @@ export const ReferenceDot = (
       x,
       y,
       r,
-      clipPathId
     } = props
     , isX = isNumOrStr(x)
     , isY = isNumOrStr(y);
@@ -49,11 +50,15 @@ export const ReferenceDot = (
       return null;
     }
 
-    const { x: cx, y: cy } = coordinate
-    , { shape, className } = props
-    , clipPath = ifOverflowMatches(props, HIDDEN)
-       ? `url(#${clipPathId})`
-       : void 0
+    const {
+      x: cx,
+      y: cy
+    } = coordinate
+    , {
+      shape,
+      className
+    } = props
+    , clipPath = crClipPathIdIf(props)
     , dotProps = {
         clipPath,
         ...filterProps(props, true),

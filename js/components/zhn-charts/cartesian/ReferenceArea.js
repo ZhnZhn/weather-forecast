@@ -55,12 +55,11 @@ var ReferenceArea = function ReferenceArea(props) {
     y1 = props.y1,
     y2 = props.y2,
     className = props.className,
-    clipPathId = props.clipPathId,
+    shape = props.shape,
     hasX1 = (0, _DataUtils.isNumOrStr)(x1),
     hasX2 = (0, _DataUtils.isNumOrStr)(x2),
     hasY1 = (0, _DataUtils.isNumOrStr)(y1),
-    hasY2 = (0, _DataUtils.isNumOrStr)(y2),
-    shape = props.shape;
+    hasY2 = (0, _DataUtils.isNumOrStr)(y2);
   if (!hasX1 && !hasX2 && !hasY1 && !hasY2 && !shape) {
     return null;
   }
@@ -68,7 +67,7 @@ var ReferenceArea = function ReferenceArea(props) {
   if (!rect && !shape) {
     return null;
   }
-  var clipPath = (0, _IfOverflowMatches.ifOverflowMatches)(props, 'hidden') ? "url(#" + clipPathId + ")" : void 0;
+  var clipPath = (0, _cartesianFn.crClipPathIdIf)(props);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     className: (0, _classnames["default"])(CL_REFERENCE_AREA, className),
     children: [ReferenceArea.renderRect(shape, (0, _extends2["default"])({

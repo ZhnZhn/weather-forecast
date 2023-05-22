@@ -16,8 +16,7 @@ var _cartesianFn = require("./cartesianFn");
 var _jsxRuntime = require("react/jsx-runtime");
 var CL_REFERENCE_DOT = 'recharts-reference-dot',
   CL_REFERENCE_DOT_DOT = CL_REFERENCE_DOT + "-dot",
-  DISCARD = 'discard',
-  HIDDEN = 'hidden';
+  DISCARD = 'discard';
 var getCoordinate = function getCoordinate(props) {
   var x = props.x,
     y = props.y,
@@ -39,7 +38,6 @@ var ReferenceDot = function ReferenceDot(props) {
   var x = props.x,
     y = props.y,
     r = props.r,
-    clipPathId = props.clipPathId,
     isX = (0, _DataUtils.isNumOrStr)(x),
     isY = (0, _DataUtils.isNumOrStr)(y);
   if (!isX || !isY) {
@@ -53,7 +51,7 @@ var ReferenceDot = function ReferenceDot(props) {
     cy = coordinate.y,
     shape = props.shape,
     className = props.className,
-    clipPath = (0, _IfOverflowMatches.ifOverflowMatches)(props, HIDDEN) ? "url(#" + clipPathId + ")" : void 0,
+    clipPath = (0, _cartesianFn.crClipPathIdIf)(props),
     dotProps = (0, _extends2["default"])({
       clipPath: clipPath
     }, (0, _ReactUtils.filterProps)(props, true), {

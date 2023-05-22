@@ -7,7 +7,10 @@ import { ifOverflowMatches } from '../util/IfOverflowMatches';
 import { isNumOrStr } from '../util/DataUtils';
 import { Rectangle } from '../shape/Rectangle';
 import { filterProps } from '../util/ReactUtils';
-import { fCreateElement } from './cartesianFn';
+import {
+  crClipPathIdIf,
+  fCreateElement
+} from './cartesianFn';
 
 const CL_REFERENCE_AREA = 'recharts-reference-area'
 , CL_REFERENCE_AREA_RECT = `${CL_REFERENCE_AREA}-rect`
@@ -52,12 +55,18 @@ const getRect = (
 export const ReferenceArea = (
   props
 ) => {
-  const { x1, x2, y1, y2, className, clipPathId } = props
+  const {
+    x1,
+    x2,
+    y1,
+    y2,
+    className,
+    shape
+  } = props
   , hasX1 = isNumOrStr(x1)
   , hasX2 = isNumOrStr(x2)
   , hasY1 = isNumOrStr(y1)
-  , hasY2 = isNumOrStr(y2)
-  , { shape } = props;
+  , hasY2 = isNumOrStr(y2);
 
   if (!hasX1 && !hasX2 && !hasY1 && !hasY2 && !shape) {
     return null;
@@ -67,9 +76,7 @@ export const ReferenceArea = (
   if (!rect && !shape) {
     return null;
   }
-  const clipPath = ifOverflowMatches(props, 'hidden')
-    ? `url(#${clipPathId})`
-    : void 0;
+  const clipPath = crClipPathIdIf(props);
   return (
     <Layer className={classNames(CL_REFERENCE_AREA, className)}>
       {ReferenceArea.renderRect(shape, { clipPath, ...filterProps(props, true), ...rect })}

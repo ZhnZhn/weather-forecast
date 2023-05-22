@@ -88,7 +88,6 @@ var ReferenceLine = function ReferenceLine(props) {
     yAxis = props.yAxis,
     shape = props.shape,
     className = props.className,
-    clipPathId = props.clipPathId,
     scales = (0, _CartesianUtils.createLabeledScales)({
       x: xAxis.scale,
       y: yAxis.scale
@@ -106,7 +105,7 @@ var ReferenceLine = function ReferenceLine(props) {
     _endPoints$2 = endPoints[1],
     x2 = _endPoints$2.x,
     y2 = _endPoints$2.y,
-    clipPath = (0, _IfOverflowMatches.ifOverflowMatches)(props, 'hidden') ? "url(#" + clipPathId + ")" : void 0,
+    clipPath = (0, _cartesianFn.crClipPathIdIf)(props),
     lineProps = (0, _extends2["default"])({
       clipPath: clipPath
     }, (0, _ReactUtils.filterProps)(props, true), {

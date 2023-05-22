@@ -1,9 +1,10 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isNeedClip = exports.fCreateElement = exports.dataPointFormatter = exports.crClipPathProps = exports.DF_AXIS_PROPS = void 0;
+exports.isNeedClip = exports.fCreateElement = exports.dataPointFormatter = exports.crClipPathProps = exports.crClipPathIdIf = exports.DF_AXIS_PROPS = void 0;
 var _uiApi = require("../../uiApi");
 var _ChartUtils = require("../util/ChartUtils");
+var _IfOverflowMatches = require("../util/IfOverflowMatches");
 var _FnUtils = require("../util/FnUtils");
 var DF_AXIS_PROPS = {
   allowDataOverflow: false,
@@ -22,6 +23,10 @@ var isNeedClip = function isNeedClip(_ref) {
   return xAxis && xAxis.allowDataOverflow || yAxis && yAxis.allowDataOverflow;
 };
 exports.isNeedClip = isNeedClip;
+var crClipPathIdIf = function crClipPathIdIf(props) {
+  return (0, _IfOverflowMatches.ifOverflowMatches)(props, 'hidden') ? "url(#" + props.clipPathId + ")" : void 0;
+};
+exports.crClipPathIdIf = crClipPathIdIf;
 var fCreateElement = function fCreateElement(crElement) {
   return function (option, props) {
     return (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneElement)(option, props) : (0, _FnUtils._isFn)(option) ? option(props) : crElement(props, option);
