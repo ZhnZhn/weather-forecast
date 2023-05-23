@@ -2,7 +2,6 @@ import { findChildByType } from '../util/ReactUtils';
 import { appendOffsetOfLegend } from '../util/ChartUtils';
 import { _getByPropName } from '../util/FnUtils';
 
-import { Brush } from '../cartesian/Brush';
 import { Legend } from '../component/Legend';
 
 const _getObjectKeys = Object.keys;
@@ -28,7 +27,6 @@ export const calculateOffset = ({
       children
     } = props
     , margin = props.margin || {}
-    , brushItem = findChildByType(children, Brush)
     , legendItem = findChildByType(children, Legend);
 
     const offsetH = _getObjectKeys(yAxisMap)
@@ -63,9 +61,7 @@ export const calculateOffset = ({
 
     let offset = { ...offsetV, ...offsetH };
     const brushBottom = offset.bottom;
-    if (brushItem) {
-      offset.bottom += brushItem.props.height || Brush.defaultProps.height;
-    }
+
     if (legendItem && prevLegendBBox) {
       offset = appendOffsetOfLegend(offset, graphicalItems, props, prevLegendBBox);
     }

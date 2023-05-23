@@ -7,7 +7,6 @@ var _extends4 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
 var _ReactUtils = require("../util/ReactUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _FnUtils = require("../util/FnUtils");
-var _Brush = require("../cartesian/Brush");
 var _Legend = require("../component/Legend");
 var _getObjectKeys = Object.keys;
 
@@ -31,7 +30,6 @@ var calculateOffset = function calculateOffset(_ref, prevLegendBBox) {
     height = props.height,
     children = props.children,
     margin = props.margin || {},
-    brushItem = (0, _ReactUtils.findChildByType)(children, _Brush.Brush),
     legendItem = (0, _ReactUtils.findChildByType)(children, _Legend.Legend);
   var offsetH = _getObjectKeys(yAxisMap).reduce(function (result, id) {
     var _extends2;
@@ -53,9 +51,6 @@ var calculateOffset = function calculateOffset(_ref, prevLegendBBox) {
   });
   var offset = (0, _extends4["default"])({}, offsetV, offsetH);
   var brushBottom = offset.bottom;
-  if (brushItem) {
-    offset.bottom += brushItem.props.height || _Brush.Brush.defaultProps.height;
-  }
   if (legendItem && prevLegendBBox) {
     offset = (0, _ChartUtils.appendOffsetOfLegend)(offset, graphicalItems, props, prevLegendBBox);
   }

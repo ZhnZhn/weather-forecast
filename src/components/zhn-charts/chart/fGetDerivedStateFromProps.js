@@ -1,41 +1,35 @@
-import {
-  _isNil
-} from '../util/FnUtils';
+import { _isNil } from '../util/FnUtils';
+import { isChildrenEqual } from '../util/ReactUtils';
+import { shallowEqual } from '../util/ShallowEqual';
+import { getTooltipData } from './generateCategoricalChartFn';
 
-import {
-  isChildrenEqual,
-  findChildByType
-} from '../util/ReactUtils';
-
-import {
-  shallowEqual
-} from '../util/ShallowEqual';
-
-import { Brush } from '../cartesian/Brush';
-
-import {
-  getTooltipData
-} from './generateCategoricalChartFn';
+//[startIndex, endIndex]
+const _crDataStartEndIndex = (
+  props
+) => [
+  0,
+  (props.data && props.data.length - 1) || 0
+];
 
 const _createDefaultState = (
   props
 ) => {
   const {
-    children,
     defaultShowTooltip
   } = props
-  , brushItem = findChildByType(children, Brush)
-  , startIndex = (brushItem && brushItem.props && brushItem.props.startIndex) || 0
-  , endIndex = brushItem?.props?.endIndex !== void 0
-      ? brushItem?.props?.endIndex
-      : (props.data && props.data.length - 1) || 0;
+  , [
+    startIndex,
+    endIndex
+  ] = _crDataStartEndIndex(props);
+
   return {
     chartX: 0,
     chartY: 0,
     dataStartIndex: startIndex,
     dataEndIndex: endIndex,
     activeTooltipIndex: -1,
-    isTooltipActive: !_isNil(defaultShowTooltip) ? defaultShowTooltip : false,
+    isTooltipActive: !_isNil(defaultShowTooltip)
+      ? defaultShowTooltip : false
   };
 };
 

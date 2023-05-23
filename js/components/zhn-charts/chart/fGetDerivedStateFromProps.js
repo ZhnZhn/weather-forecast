@@ -7,15 +7,16 @@ var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
 var _FnUtils = require("../util/FnUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _ShallowEqual = require("../util/ShallowEqual");
-var _Brush = require("../cartesian/Brush");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
+//[startIndex, endIndex]
+var _crDataStartEndIndex = function _crDataStartEndIndex(props) {
+  return [0, props.data && props.data.length - 1 || 0];
+};
 var _createDefaultState = function _createDefaultState(props) {
-  var _brushItem$props, _brushItem$props2;
-  var children = props.children,
-    defaultShowTooltip = props.defaultShowTooltip,
-    brushItem = (0, _ReactUtils.findChildByType)(children, _Brush.Brush),
-    startIndex = brushItem && brushItem.props && brushItem.props.startIndex || 0,
-    endIndex = (brushItem == null ? void 0 : (_brushItem$props = brushItem.props) == null ? void 0 : _brushItem$props.endIndex) !== void 0 ? brushItem == null ? void 0 : (_brushItem$props2 = brushItem.props) == null ? void 0 : _brushItem$props2.endIndex : props.data && props.data.length - 1 || 0;
+  var defaultShowTooltip = props.defaultShowTooltip,
+    _crDataStartEndIndex2 = _crDataStartEndIndex(props),
+    startIndex = _crDataStartEndIndex2[0],
+    endIndex = _crDataStartEndIndex2[1];
   return {
     chartX: 0,
     chartY: 0,
