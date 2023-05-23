@@ -14,7 +14,7 @@ import { getTicks } from '../cartesian/getTicks';
 import { CartesianAxis } from '../cartesian/CartesianAxis';
 import { Surface } from '../container/Surface';
 import { Tooltip } from '../component/Tooltip';
-import { isInRectangle } from '../shape/Rectangle';
+import { isInRectangle } from '../shape/RectangleFn';
 
 import {
   validateWidthHeight,
@@ -47,8 +47,7 @@ import {
 import {
   originCoordinate,
   isLayoutHorizontal,
-  isLayoutVertical,
-  //isLayoutCentric
+  isLayoutVertical
 } from './chartFn';
 import { AccessibilityManager } from './AccessibilityManager';
 import { getTooltipContent } from './getTooltipContent';
@@ -676,7 +675,7 @@ export const generateCategoricalChart = ({
                     if (activeBarItem) {
                       return { graphicalItem, payload: activeBarItem };
                     }
-                  } 
+                  }
                 }
               }
               return null;

@@ -14,7 +14,7 @@ var _getTicks = require("../cartesian/getTicks");
 var _CartesianAxis = require("../cartesian/CartesianAxis");
 var _Surface = require("../container/Surface");
 var _Tooltip = require("../component/Tooltip");
-var _Rectangle = require("../shape/Rectangle");
+var _RectangleFn = require("../shape/RectangleFn");
 var _ReactUtils = require("../util/ReactUtils");
 var _DOMUtils = require("../util/DOMUtils");
 var _DataUtils = require("../util/DataUtils");
@@ -596,7 +596,7 @@ var generateCategoricalChart = function generateCategoricalChart(_ref) {
             itemDisplayName = (0, _ReactUtils.getDisplayName)(item.type);
           if (itemDisplayName === 'Bar') {
             var activeBarItem = (props.data || []).find(function (entry) {
-              return (0, _Rectangle.isInRectangle)(chartXY, entry);
+              return (0, _RectangleFn.isInRectangle)(chartXY, entry);
             });
             if (activeBarItem) {
               return {
