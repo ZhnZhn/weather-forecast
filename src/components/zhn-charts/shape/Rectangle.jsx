@@ -1,9 +1,16 @@
-import { PureComponent } from '../../uiApi';
+import {
+  memo,
+  useRef,
+  useState,
+  useEffect,
+  getRefValue
+} from '../../uiApi';
 
 import classNames from 'classnames';
 
 import { Animate } from '../../zhn-animate';
 import { filterProps } from '../util/ReactUtils';
+import { _isFn } from '../util/FnUtils';
 
 const CL_RESTANGLE = 'recharts-rectangle';
 
@@ -92,101 +99,93 @@ export const isInRectangle = (
   return false;
 };
 
-export class Rectangle extends PureComponent {
-  constructor() {
-    super(...arguments);
-    this.state = {
-      totalLength: -1
-    };
-  }
+export const Rectangle = memo((props) => {
+  const _refNode = useRef()
+  , [
+    totalLength,
+    setTotalLength
+  ] = useState(-1);
 
-  /* eslint-disable  react/no-did-mount-set-state */
-  componentDidMount() {
-    if (this.node && this.node.getTotalLength) {
+  useEffect(() => {
+    const _el = getRefValue(_refNode);
+    if (_el && _isFn(_el.getTotalLength)) {
       try {
-        const totalLength = this.node.getTotalLength();
+        const totalLength = _el.getTotalLength();
         if (totalLength) {
-          this.setState({ totalLength });
+          setTotalLength(totalLength)
         }
       }
       catch (err) {
         // calculate total length error
       }
     }
+  }, [])
+
+  const {
+    x,
+    y,
+    width,
+    height,
+    radius,
+    className,
+
+    animationEasing,
+    animationDuration,
+    animationBegin,
+    isAnimationActive,
+    isUpdateAnimationActive
+  } = props;
+
+  if (x !== +x || y !== +y || width !== +width || height !== +height || width === 0 || height === 0) {
+    return null;
   }
 
-  _refNode = node => {
-    this.node = node;
-  }
-
-  render() {
-    const {
-      x,
-      y,
-      width,
-      height,
-      radius,
-      className
-    } = this.props
-    , {
-      totalLength
-    } = this.state
-    , {
-      animationEasing,
-      animationDuration,
-      animationBegin,
-      isAnimationActive,
-      isUpdateAnimationActive
-    } = this.props;
-
-    if (x !== +x || y !== +y || width !== +width || height !== +height || width === 0 || height === 0) {
-      return null;
-    }
-
-    const layerClass = classNames(CL_RESTANGLE, className);
-    if (!isUpdateAnimationActive) {
-      return (
-        <path
-          {...filterProps(this.props, true)}
-          className={layerClass}
-          d={getRectanglePath(x, y, width, height, radius)}
-        />
-      );
-    }
+  const layerClass = classNames(CL_RESTANGLE, className);
+  if (!isUpdateAnimationActive) {
     return (
-      <Animate
-        canBegin={totalLength > 0}
-        from={{ width, height, x, y }}
-        to={{ width, height, x, y }} duration={animationDuration} animationEasing={animationEasing}
-        isActive={isUpdateAnimationActive}
-      >
-       {({
-           width: currWidth,
-           height: currHeight,
-           x: currX,
-           y: currY
-         }) => (
-           <Animate
-             canBegin={totalLength > 0}
-             from={`0px ${totalLength === -1 ? 1 : totalLength}px`}
-             to={`${totalLength}px 0px`}
-             attributeName="strokeDasharray"
-             begin={animationBegin}
-             duration={animationDuration}
-             isActive={isAnimationActive}
-             easing={animationEasing}
-            >
-              <path
-                 {...filterProps(this.props, true)}
-                 className={layerClass}
-                 d={getRectanglePath(currX, currY, currWidth, currHeight, radius)}
-                 ref={this._refNode}
-              />
-            </Animate>
-        )}
-     </Animate>
+      <path
+        {...filterProps(props, true)}
+        className={layerClass}
+        d={getRectanglePath(x, y, width, height, radius)}
+      />
+    );
+  }
+  return (
+    <Animate
+      isActive={isUpdateAnimationActive}
+      canBegin={totalLength > 0}
+      from={{ width, height, x, y }}
+      to={{ width, height, x, y }}
+      duration={animationDuration}
+      animationEasing={animationEasing}
+    >
+     {({
+         width: currWidth,
+         height: currHeight,
+         x: currX,
+         y: currY
+       }) => (
+         <Animate
+           isActive={isAnimationActive}
+           canBegin={totalLength > 0}
+           from={`0px ${totalLength === -1 ? 1 : totalLength}px`}
+           to={`${totalLength}px 0px`}
+           attributeName="strokeDasharray"
+           begin={animationBegin}
+           duration={animationDuration}
+           easing={animationEasing}
+          >
+            <path
+               {...filterProps(props, true)}
+               className={layerClass}
+               d={getRectanglePath(currX, currY, currWidth, currHeight, radius)}
+               ref={_refNode}
+            />
+          </Animate>
+      )}
+   </Animate>
   );
-}}
+})
 
 Rectangle.defaultProps = {
   x: 0,
