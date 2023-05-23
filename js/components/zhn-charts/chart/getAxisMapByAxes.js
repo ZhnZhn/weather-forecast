@@ -9,12 +9,13 @@ var _DataUtils = require("../util/DataUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _DetectReferenceElementsDomain = require("../util/DetectReferenceElementsDomain");
 var _chartFn = require("./chartFn");
-var _isValueCategory = function _isValueCategory(value) {
-  return value === 'category';
+var _fIsValueEqual = function _fIsValueEqual(str) {
+  return function (value) {
+    return value === str;
+  };
 };
-var _isValueNumber = function _isValueNumber(value) {
-  return value === 'number';
-};
+var _isValueCategory = _fIsValueEqual('category');
+var _isValueNumber = _fIsValueEqual('number');
 
 /**
  * Takes a domain and user props to determine whether he provided the domain via props or if we need to calculate it.
@@ -25,8 +26,8 @@ var _isValueNumber = function _isValueNumber(value) {
  */
 var isDomainSpecifiedByUser = function isDomainSpecifiedByUser(domain, allowDataOverflow, axisType) {
   if (_isValueNumber(axisType) && allowDataOverflow === true && (0, _FnUtils._isArr)(domain)) {
-    var domainStart = domain == null ? void 0 : domain[0],
-      domainEnd = domain == null ? void 0 : domain[1];
+    var domainStart = domain[0],
+      domainEnd = domain[1];
     /*
      * The `isNumber` check is needed because the user could also provide strings like "dataMin" via the domain props.
      * In such case, we have to compute the domain from the data.

@@ -28,8 +28,9 @@ import {
   getDefaultDomainByAxisType
 } from './chartFn';
 
-const _isValueCategory = value => value === 'category';
-const _isValueNumber = value => value === 'number';
+const _fIsValueEqual = (str) => (value) => value === str;
+const _isValueCategory = _fIsValueEqual('category');
+const _isValueNumber = _fIsValueEqual('number');
 
 /**
  * Takes a domain and user props to determine whether he provided the domain via props or if we need to calculate it.
@@ -47,8 +48,10 @@ const isDomainSpecifiedByUser = (
       && allowDataOverflow === true
       && _isArr(domain)
   ) {
-    const domainStart = domain?.[0]
-    , domainEnd = domain?.[1];
+    const [
+      domainStart,
+      domainEnd
+    ] = domain;
     /*
      * The `isNumber` check is needed because the user could also provide strings like "dataMin" via the domain props.
      * In such case, we have to compute the domain from the data.
