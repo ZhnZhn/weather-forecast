@@ -37,10 +37,6 @@ import {
   getCoordinatesOfGrid
 } from '../util/ChartUtils';
 import {
-  inRangeOfSector,
-  polarToCartesian
-} from '../util/PolarUtils';
-import {
   eventCenter,
   SYNC_EVENT
 } from '../util/Events';
@@ -52,7 +48,7 @@ import {
   originCoordinate,
   isLayoutHorizontal,
   isLayoutVertical,
-  isLayoutCentric
+  //isLayoutCentric
 } from './chartFn';
 import { AccessibilityManager } from './AccessibilityManager';
 import { getTooltipContent } from './getTooltipContent';
@@ -85,15 +81,6 @@ const _inRange = (
     return isInRange
       ? { x, y }
       : null;
-  }
-
-  const {
-    angleAxisMap,
-    radiusAxisMap
-  } = state;
-  if (angleAxisMap && radiusAxisMap) {
-      const angleAxis = getAnyElementOfObject(angleAxisMap);
-      return inRangeOfSector({ x, y }, angleAxis);
   }
   return null;
 }
@@ -500,28 +487,6 @@ export const generateCategoricalChart = ({
                     y2 = y1;
                     x1 = offset.left;
                     x2 = offset.left + offset.width;
-                } else if (!_isNil(activeCoordinate.cx) || !_isNil(activeCoordinate.cy)) {
-                    if (isLayoutCentric(layout)) {
-                        const { cx, cy, innerRadius, outerRadius, angle } = activeCoordinate;
-                        const innerPoint = polarToCartesian(cx, cy, innerRadius, angle);
-                        const outerPoint = polarToCartesian(cx, cy, outerRadius, angle);
-                        x1 = innerPoint.x;
-                        y1 = innerPoint.y;
-                        x2 = outerPoint.x;
-                        y2 = outerPoint.y;
-                    } else {
-                        const { cx, cy, radius, startAngle, endAngle } = activeCoordinate;
-                        const startPoint = polarToCartesian(cx, cy, radius, startAngle);
-                        const endPoint = polarToCartesian(cx, cy, radius, endAngle);
-                        return {
-                            points: [startPoint, endPoint],
-                            cx,
-                            cy,
-                            radius,
-                            startAngle,
-                            endAngle,
-                        };
-                    }
                 }
                 return [
                     { x: x1, y: y1 },
@@ -711,16 +676,7 @@ export const generateCategoricalChart = ({
                     if (activeBarItem) {
                       return { graphicalItem, payload: activeBarItem };
                     }
-                  } else if (itemDisplayName === 'RadialBar') {
-                    const activeBarItem = (props.data || [])
-                      .find(entry => inRangeOfSector(chartXY, entry));
-                    if (activeBarItem) {
-                      return {
-                        graphicalItem,
-                        payload: activeBarItem
-                      };
-                    }
-                  }
+                  } 
                 }
               }
               return null;

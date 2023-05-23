@@ -1,5 +1,3 @@
-import classNames from 'classnames';
-
 import {
   _isFn,
   _isNil,
@@ -9,13 +7,8 @@ import {
 import {
   isNumber,
   isPercent,
-  getPercentValue,
-  uniqueId,
-  mathSign
+  getPercentValue
 } from '../util/DataUtils';
-import { polarToCartesian } from '../util/PolarUtils';
-
-const CL_RADIAL_BAR_LABEL = 'recharts-radial-bar-label';
 
 export const getLabel = (
   props
@@ -30,137 +23,6 @@ export const getLabel = (
   return _isFn(formatter)
     ? formatter(label)
     : label;
-};
-
-export const getDeltaAngle = (
-  startAngle,
-  endAngle
-) => {
-  const sign = mathSign(endAngle - startAngle)
-  , deltaAngle = Math.min(Math.abs(endAngle - startAngle), 360);
-  return sign * deltaAngle;
-};
-
-export const renderRadialLabel = (
-  labelProps,
-  label,
-  attrs
-) => {
-  const {
-    position,
-    viewBox,
-    offset,
-    className
-  } = labelProps
-  , {
-    cx,
-    cy,
-    innerRadius,
-    outerRadius,
-    startAngle,
-    endAngle,
-    clockWise
-  } = viewBox
-  , radius = (innerRadius + outerRadius) / 2
-  , deltaAngle = getDeltaAngle(startAngle, endAngle)
-  , sign = deltaAngle >= 0 ? 1 : -1;
-
-  let labelAngle, direction;
-
-  if (position === 'insideStart') {
-    labelAngle = startAngle + sign * offset;
-    direction = clockWise;
-  } else if (position === 'insideEnd') {
-    labelAngle = endAngle - sign * offset;
-    direction = !clockWise;
-  } else if (position === 'end') {
-    labelAngle = endAngle + sign * offset;
-    direction = clockWise;
-  }
-  direction = deltaAngle <= 0 ? direction : !direction;
-
-  const startPoint = polarToCartesian(cx, cy, radius, labelAngle)
-  , endPoint = polarToCartesian(cx, cy, radius, labelAngle + (direction ? 1 : -1) * 359)
-  , path = `M${startPoint.x},${startPoint.y}
-     A${radius},${radius},0,1,${direction ? 0 : 1},
-     ${endPoint.x},${endPoint.y}`;
-
-  const id = _isNil(labelProps.id)
-    ? uniqueId('recharts-radial-line-')
-    : labelProps.id;
-
-  return (
-    <text
-      {...attrs}
-      dominantBaseline="central"
-      className={classNames(CL_RADIAL_BAR_LABEL, className)}
-    >
-      <defs>
-        <path id={id} d={path}/>
-      </defs>
-      <textPath xlinkHref={`#${id}`}>{label}</textPath>
-    </text>
-  );
-};
-
-export const getAttrsOfPolarLabel = (
-  props
-) => {
-  const {
-    viewBox,
-    offset,
-    position
-  } = props
-  , {
-    cx,
-    cy,
-    innerRadius,
-    outerRadius,
-    startAngle,
-    endAngle
-  } = viewBox
-  , midAngle = (startAngle + endAngle) / 2;
-  if (position === 'outside') {
-    const { x, y } = polarToCartesian(cx, cy, outerRadius + offset, midAngle);
-    return {
-      x,
-      y,
-      textAnchor: x >= cx ? 'start' : 'end',
-      verticalAnchor: 'middle'
-    };
-  }
-  if (position === 'center') {
-    return {
-      x: cx,
-      y: cy,
-      textAnchor: 'middle',
-      verticalAnchor: 'middle'
-    };
-  }
-  if (position === 'centerTop') {
-    return {
-      x: cx,
-      y: cy,
-      textAnchor: 'middle',
-      verticalAnchor: 'start'
-    };
-  }
-  if (position === 'centerBottom') {
-    return {
-      x: cx,
-      y: cy,
-      textAnchor: 'middle',
-      verticalAnchor: 'end'
-    };
-  }
-  const r = (innerRadius + outerRadius) / 2
-  , { x, y } = polarToCartesian(cx, cy, r, midAngle);
-  return {
-    x,
-    y,
-    textAnchor: 'middle',
-    verticalAnchor: 'middle'
-  };
 };
 
 export const getAttrsOfCartesianLabel = (
@@ -351,7 +213,3 @@ export const getAttrsOfCartesianLabel = (
     ...sizeAttrs
   };
 };
-
-export const isPolar = (
-  viewBox
-) => 'cx' in viewBox && isNumber(viewBox.cx);

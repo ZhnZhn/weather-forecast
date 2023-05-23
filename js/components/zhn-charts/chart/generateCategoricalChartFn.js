@@ -1,13 +1,10 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.tooltipTicksGenerator = exports.hasGraphicalBarItem = exports.getTooltipData = exports.getAxisNameByLayout = exports.deferClear = exports.defer = void 0;
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _FnUtils = require("../util/FnUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
-var _PolarUtils = require("../util/PolarUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _chartFn = require("./chartFn");
 var _getTooltipContent = require("./getTooltipContent");
@@ -25,32 +22,15 @@ var getActiveCoordinate = function getActiveCoordinate(layout, tooltipTicks, act
   if (!entry) {
     return _chartFn.originCoordinate;
   }
-  if ((0, _chartFn.isLayoutHorizontal)(layout)) {
-    return {
-      x: entry.coordinate,
-      y: rangeObj.y
-    };
+  return (0, _chartFn.isLayoutHorizontal)(layout) ? {
+    x: entry.coordinate,
+    y: rangeObj.y
   }
-  if ((0, _chartFn.isLayoutVertical)(layout)) {
-    return {
-      x: rangeObj.x,
-      y: entry.coordinate
-    };
-  }
-  if ((0, _chartFn.isLayoutCentric)(layout)) {
-    var _angle = entry.coordinate,
-      _radius = rangeObj.radius;
-    return (0, _extends2["default"])({}, rangeObj, (0, _PolarUtils.polarToCartesian)(rangeObj.cx, rangeObj.cy, _radius, _angle), {
-      angle: _angle,
-      radius: _radius
-    });
-  }
-  var radius = entry.coordinate,
-    angle = rangeObj.angle;
-  return (0, _extends2["default"])({}, rangeObj, (0, _PolarUtils.polarToCartesian)(rangeObj.cx, rangeObj.cy, radius, angle), {
-    angle: angle,
-    radius: radius
-  });
+  //vertical layout case
+  : {
+    x: rangeObj.x,
+    y: entry.coordinate
+  };
 };
 
 /**

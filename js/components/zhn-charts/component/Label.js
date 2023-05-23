@@ -16,7 +16,6 @@ var _react = require("react");
 var CL_LABEL = 'recharts-label';
 var Label = function Label(props) {
   var viewBox = props.viewBox,
-    position = props.position,
     value = props.value,
     children = props.children,
     content = props.content,
@@ -38,12 +37,8 @@ var Label = function Label(props) {
   } else {
     label = (0, _LabelFn.getLabel)(props);
   }
-  var isPolarLabel = (0, _LabelFn.isPolar)(viewBox),
-    attrs = (0, _ReactUtils.filterProps)(props, true);
-  if (isPolarLabel && (position === 'insideStart' || position === 'insideEnd' || position === 'end')) {
-    return (0, _LabelFn.renderRadialLabel)(props, label, attrs);
-  }
-  var positionAttrs = isPolarLabel ? (0, _LabelFn.getAttrsOfPolarLabel)(props) : (0, _LabelFn.getAttrsOfCartesianLabel)(props);
+  var attrs = (0, _ReactUtils.filterProps)(props, true),
+    positionAttrs = (0, _LabelFn.getAttrsOfCartesianLabel)(props);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, (0, _extends2["default"])({
     className: (0, _classnames["default"])(CL_LABEL, className)
   }, attrs, positionAttrs, {

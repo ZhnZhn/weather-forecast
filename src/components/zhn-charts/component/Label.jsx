@@ -23,11 +23,8 @@ import {
 } from '../util/DataUtils';
 
 import {
-  isPolar,
-  getAttrsOfPolarLabel,
   getAttrsOfCartesianLabel,
-  getLabel,
-  renderRadialLabel
+  getLabel
 } from './LabelFn';
 
 const CL_LABEL = 'recharts-label';
@@ -37,7 +34,6 @@ export const Label = (
 ) => {
   const {
     viewBox,
-    position,
     value,
     children,
     content,
@@ -60,14 +56,8 @@ export const Label = (
   } else {
     label = getLabel(props);
   }
-  const isPolarLabel = isPolar(viewBox)
-  , attrs = filterProps(props, true);
-  if (isPolarLabel && (position === 'insideStart' || position === 'insideEnd' || position === 'end')) {
-    return renderRadialLabel(props, label, attrs);
-  }
-  const positionAttrs = isPolarLabel
-    ? getAttrsOfPolarLabel(props)
-    : getAttrsOfCartesianLabel(props);
+  const attrs = filterProps(props, true)
+  , positionAttrs = getAttrsOfCartesianLabel(props);
   return (
     <Text
       className={classNames(CL_LABEL, className)}

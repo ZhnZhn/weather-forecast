@@ -19,7 +19,6 @@ var _ReactUtils = require("../util/ReactUtils");
 var _DOMUtils = require("../util/DOMUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ChartUtils = require("../util/ChartUtils");
-var _PolarUtils = require("../util/PolarUtils");
 var _Events = require("../util/Events");
 var _types = require("../util/types");
 var _chartFn = require("./chartFn");
@@ -44,15 +43,6 @@ var _inRange = function _inRange(x, y, props, state) {
       x: x,
       y: y
     } : null;
-  }
-  var angleAxisMap = state.angleAxisMap,
-    radiusAxisMap = state.radiusAxisMap;
-  if (angleAxisMap && radiusAxisMap) {
-    var angleAxis = (0, _DataUtils.getAnyElementOfObject)(angleAxisMap);
-    return (0, _PolarUtils.inRangeOfSector)({
-      x: x,
-      y: y
-    }, angleAxis);
   }
   return null;
 };
@@ -436,36 +426,6 @@ var generateCategoricalChart = function generateCategoricalChart(_ref) {
         y2 = y1;
         x1 = offset.left;
         x2 = offset.left + offset.width;
-      } else if (!(0, _FnUtils._isNil)(activeCoordinate.cx) || !(0, _FnUtils._isNil)(activeCoordinate.cy)) {
-        if ((0, _chartFn.isLayoutCentric)(layout)) {
-          var cx = activeCoordinate.cx,
-            cy = activeCoordinate.cy,
-            innerRadius = activeCoordinate.innerRadius,
-            outerRadius = activeCoordinate.outerRadius,
-            angle = activeCoordinate.angle;
-          var innerPoint = (0, _PolarUtils.polarToCartesian)(cx, cy, innerRadius, angle);
-          var outerPoint = (0, _PolarUtils.polarToCartesian)(cx, cy, outerRadius, angle);
-          x1 = innerPoint.x;
-          y1 = innerPoint.y;
-          x2 = outerPoint.x;
-          y2 = outerPoint.y;
-        } else {
-          var _cx = activeCoordinate.cx,
-            _cy = activeCoordinate.cy,
-            radius = activeCoordinate.radius,
-            startAngle = activeCoordinate.startAngle,
-            endAngle = activeCoordinate.endAngle;
-          var startPoint = (0, _PolarUtils.polarToCartesian)(_cx, _cy, radius, startAngle);
-          var endPoint = (0, _PolarUtils.polarToCartesian)(_cx, _cy, radius, endAngle);
-          return {
-            points: [startPoint, endPoint],
-            cx: _cx,
-            cy: _cy,
-            radius: radius,
-            startAngle: startAngle,
-            endAngle: endAngle
-          };
-        }
       }
       return [{
         x: x1,
@@ -642,16 +602,6 @@ var generateCategoricalChart = function generateCategoricalChart(_ref) {
               return {
                 graphicalItem: graphicalItem,
                 payload: activeBarItem
-              };
-            }
-          } else if (itemDisplayName === 'RadialBar') {
-            var _activeBarItem = (props.data || []).find(function (entry) {
-              return (0, _PolarUtils.inRangeOfSector)(chartXY, entry);
-            });
-            if (_activeBarItem) {
-              return {
-                graphicalItem: graphicalItem,
-                payload: _activeBarItem
               };
             }
           }

@@ -2,14 +2,10 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.renderRadialLabel = exports.isPolar = exports.getLabel = exports.getDeltaAngle = exports.getAttrsOfPolarLabel = exports.getAttrsOfCartesianLabel = void 0;
+exports.getLabel = exports.getAttrsOfCartesianLabel = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _classnames = _interopRequireDefault(require("classnames"));
 var _FnUtils = require("../util/FnUtils");
 var _DataUtils = require("../util/DataUtils");
-var _PolarUtils = require("../util/PolarUtils");
-var _jsxRuntime = require("react/jsx-runtime");
-var CL_RADIAL_BAR_LABEL = 'recharts-radial-bar-label';
 var getLabel = function getLabel(props) {
   var value = props.value,
     formatter = props.formatter,
@@ -17,116 +13,6 @@ var getLabel = function getLabel(props) {
   return (0, _FnUtils._isFn)(formatter) ? formatter(label) : label;
 };
 exports.getLabel = getLabel;
-var getDeltaAngle = function getDeltaAngle(startAngle, endAngle) {
-  var sign = (0, _DataUtils.mathSign)(endAngle - startAngle),
-    deltaAngle = Math.min(Math.abs(endAngle - startAngle), 360);
-  return sign * deltaAngle;
-};
-exports.getDeltaAngle = getDeltaAngle;
-var renderRadialLabel = function renderRadialLabel(labelProps, label, attrs) {
-  var position = labelProps.position,
-    viewBox = labelProps.viewBox,
-    offset = labelProps.offset,
-    className = labelProps.className,
-    cx = viewBox.cx,
-    cy = viewBox.cy,
-    innerRadius = viewBox.innerRadius,
-    outerRadius = viewBox.outerRadius,
-    startAngle = viewBox.startAngle,
-    endAngle = viewBox.endAngle,
-    clockWise = viewBox.clockWise,
-    radius = (innerRadius + outerRadius) / 2,
-    deltaAngle = getDeltaAngle(startAngle, endAngle),
-    sign = deltaAngle >= 0 ? 1 : -1;
-  var labelAngle, direction;
-  if (position === 'insideStart') {
-    labelAngle = startAngle + sign * offset;
-    direction = clockWise;
-  } else if (position === 'insideEnd') {
-    labelAngle = endAngle - sign * offset;
-    direction = !clockWise;
-  } else if (position === 'end') {
-    labelAngle = endAngle + sign * offset;
-    direction = clockWise;
-  }
-  direction = deltaAngle <= 0 ? direction : !direction;
-  var startPoint = (0, _PolarUtils.polarToCartesian)(cx, cy, radius, labelAngle),
-    endPoint = (0, _PolarUtils.polarToCartesian)(cx, cy, radius, labelAngle + (direction ? 1 : -1) * 359),
-    path = "M" + startPoint.x + "," + startPoint.y + "\n     A" + radius + "," + radius + ",0,1," + (direction ? 0 : 1) + ",\n     " + endPoint.x + "," + endPoint.y;
-  var id = (0, _FnUtils._isNil)(labelProps.id) ? (0, _DataUtils.uniqueId)('recharts-radial-line-') : labelProps.id;
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("text", (0, _extends2["default"])({}, attrs, {
-    dominantBaseline: "central",
-    className: (0, _classnames["default"])(CL_RADIAL_BAR_LABEL, className),
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("defs", {
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
-        id: id,
-        d: path
-      })
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("textPath", {
-      xlinkHref: "#" + id,
-      children: label
-    })]
-  }));
-};
-exports.renderRadialLabel = renderRadialLabel;
-var getAttrsOfPolarLabel = function getAttrsOfPolarLabel(props) {
-  var viewBox = props.viewBox,
-    offset = props.offset,
-    position = props.position,
-    cx = viewBox.cx,
-    cy = viewBox.cy,
-    innerRadius = viewBox.innerRadius,
-    outerRadius = viewBox.outerRadius,
-    startAngle = viewBox.startAngle,
-    endAngle = viewBox.endAngle,
-    midAngle = (startAngle + endAngle) / 2;
-  if (position === 'outside') {
-    var _polarToCartesian = (0, _PolarUtils.polarToCartesian)(cx, cy, outerRadius + offset, midAngle),
-      _x = _polarToCartesian.x,
-      _y = _polarToCartesian.y;
-    return {
-      x: _x,
-      y: _y,
-      textAnchor: _x >= cx ? 'start' : 'end',
-      verticalAnchor: 'middle'
-    };
-  }
-  if (position === 'center') {
-    return {
-      x: cx,
-      y: cy,
-      textAnchor: 'middle',
-      verticalAnchor: 'middle'
-    };
-  }
-  if (position === 'centerTop') {
-    return {
-      x: cx,
-      y: cy,
-      textAnchor: 'middle',
-      verticalAnchor: 'start'
-    };
-  }
-  if (position === 'centerBottom') {
-    return {
-      x: cx,
-      y: cy,
-      textAnchor: 'middle',
-      verticalAnchor: 'end'
-    };
-  }
-  var r = (innerRadius + outerRadius) / 2,
-    _polarToCartesian2 = (0, _PolarUtils.polarToCartesian)(cx, cy, r, midAngle),
-    x = _polarToCartesian2.x,
-    y = _polarToCartesian2.y;
-  return {
-    x: x,
-    y: y,
-    textAnchor: 'middle',
-    verticalAnchor: 'middle'
-  };
-};
-exports.getAttrsOfPolarLabel = getAttrsOfPolarLabel;
 var getAttrsOfCartesianLabel = function getAttrsOfCartesianLabel(props) {
   var viewBox = props.viewBox,
     parentViewBox = props.parentViewBox,
@@ -276,8 +162,4 @@ var getAttrsOfCartesianLabel = function getAttrsOfCartesianLabel(props) {
   }, sizeAttrs);
 };
 exports.getAttrsOfCartesianLabel = getAttrsOfCartesianLabel;
-var isPolar = function isPolar(viewBox) {
-  return 'cx' in viewBox && (0, _DataUtils.isNumber)(viewBox.cx);
-};
-exports.isPolar = isPolar;
 //# sourceMappingURL=LabelFn.js.map

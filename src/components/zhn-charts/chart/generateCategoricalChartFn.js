@@ -13,10 +13,6 @@ import {
 } from '../util/DataUtils';
 
 import {
-  polarToCartesian
-} from '../util/PolarUtils';
-
-import {
   getDisplayName
 } from '../util/ReactUtils';
 
@@ -27,7 +23,9 @@ import {
   isLayoutCentric
 } from './chartFn';
 
-import { getTooltipContent } from './getTooltipContent';
+import {
+  getTooltipContent
+} from './getTooltipContent';
 
 export const defer = _isFn(requestAnimationFrame)
   ? requestAnimationFrame
@@ -65,44 +63,16 @@ const getActiveCoordinate = (
     return originCoordinate;
   }
 
-  if (isLayoutHorizontal(layout)) {
-    return {
-      x: entry.coordinate,
-      y: rangeObj.y
-    };
-  }
-
-  if (isLayoutVertical(layout)) {
-    return {
-      x: rangeObj.x,
-      y: entry.coordinate
-    };
-  }
-
-  if (isLayoutCentric(layout)) {
-    const angle = entry.coordinate
-    , { radius } = rangeObj;
-    return {
-      ...rangeObj,
-      ...polarToCartesian(rangeObj.cx, rangeObj.cy, radius, angle),
-      angle,
-      radius
-    };
-  }
-
-  const radius = entry.coordinate
-  , { angle } = rangeObj;
-  return {
-    ...rangeObj,
-    ...polarToCartesian(
-      rangeObj.cx,
-      rangeObj.cy,
-      radius,
-      angle
-    ),
-    angle,
-    radius,
-  };
+  return isLayoutHorizontal(layout)
+    ? {
+       x: entry.coordinate,
+       y: rangeObj.y
+      }
+    //vertical layout case
+    : {
+       x: rangeObj.x,
+       y: entry.coordinate
+     };
 };
 
 /**
