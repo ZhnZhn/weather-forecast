@@ -13,7 +13,7 @@ exports.defer = defer;
 var deferClear = (0, _FnUtils._isFn)(cancelAnimationFrame) ? cancelAnimationFrame : (0, _FnUtils._isFn)(window.clearImmediate) ? window.clearImmediate : clearTimeout;
 exports.deferClear = deferClear;
 var calculateTooltipPos = function calculateTooltipPos(rangeObj, layout) {
-  return (0, _chartFn.isLayoutHorizontal)(layout) ? rangeObj.x : (0, _chartFn.isLayoutVertical)(layout) ? rangeObj.y : (0, _chartFn.isLayoutCentric)(layout) ? rangeObj.angle : rangeObj.radius;
+  return (0, _ChartUtils.isLayoutHorizontal)(layout) ? rangeObj.x : (0, _ChartUtils.isLayoutVertical)(layout) ? rangeObj.y : (0, _ChartUtils.isLayoutCentric)(layout) ? rangeObj.angle : rangeObj.radius;
 };
 var getActiveCoordinate = function getActiveCoordinate(layout, tooltipTicks, activeIndex, rangeObj) {
   var entry = tooltipTicks.find(function (tick) {
@@ -22,7 +22,7 @@ var getActiveCoordinate = function getActiveCoordinate(layout, tooltipTicks, act
   if (!entry) {
     return _chartFn.originCoordinate;
   }
-  return (0, _chartFn.isLayoutHorizontal)(layout) ? {
+  return (0, _ChartUtils.isLayoutHorizontal)(layout) ? {
     x: entry.coordinate,
     y: rangeObj.y
   }
@@ -87,13 +87,13 @@ var hasGraphicalBarItem = function hasGraphicalBarItem(graphicalItems) {
 };
 exports.hasGraphicalBarItem = hasGraphicalBarItem;
 var getAxisNameByLayout = function getAxisNameByLayout(layout) {
-  return (0, _chartFn.isLayoutHorizontal)(layout) ? {
+  return (0, _ChartUtils.isLayoutHorizontal)(layout) ? {
     numericAxisName: 'yAxis',
     cateAxisName: 'xAxis'
-  } : (0, _chartFn.isLayoutVertical)(layout) ? {
+  } : (0, _ChartUtils.isLayoutVertical)(layout) ? {
     numericAxisName: 'xAxis',
     cateAxisName: 'yAxis'
-  } : (0, _chartFn.isLayoutCentric)(layout) ? {
+  } : (0, _ChartUtils.isLayoutCentric)(layout) ? {
     numericAxisName: 'radiusAxis',
     cateAxisName: 'angleAxis'
   } : {

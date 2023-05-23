@@ -3,6 +3,9 @@ import {
 } from '../util/FnUtils';
 
 import {
+  isLayoutHorizontal,
+  isLayoutVertical,
+  isLayoutCentric,
   calculateActiveTickIndex,
   getTicksOfAxis,
   getBandSizeOfAxis
@@ -17,10 +20,7 @@ import {
 } from '../util/ReactUtils';
 
 import {
-  originCoordinate,
-  isLayoutHorizontal,
-  isLayoutVertical,
-  isLayoutCentric
+  originCoordinate
 } from './chartFn';
 
 import {

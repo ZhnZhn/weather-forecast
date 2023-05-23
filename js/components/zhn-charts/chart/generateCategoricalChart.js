@@ -36,7 +36,7 @@ var _jsxRuntime = require("react/jsx-runtime");
 var _excluded = ["className", "width", "height", "style", "compact", "title", "desc"];
 var _inRange = function _inRange(x, y, props, state) {
   var layout = props.layout;
-  if ((0, _chartFn.isLayoutHorizontal)(layout) || (0, _chartFn.isLayoutVertical)(layout)) {
+  if ((0, _ChartUtils.isLayoutHorizontal)(layout) || (0, _ChartUtils.isLayoutVertical)(layout)) {
     var offset = state.offset,
       isInRange = x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height;
     return isInRange ? {
@@ -400,7 +400,7 @@ var generateCategoricalChart = function generateCategoricalChart(_ref) {
         offset = _this$state3.offset,
         tooltipAxisBandSize = _this$state3.tooltipAxisBandSize,
         halfSize = tooltipAxisBandSize / 2,
-        _isLayoutHorizontal = (0, _chartFn.isLayoutHorizontal)(layout);
+        _isLayoutHorizontal = (0, _ChartUtils.isLayoutHorizontal)(layout);
       return {
         stroke: 'none',
         fill: '#ccc',
@@ -416,12 +416,12 @@ var generateCategoricalChart = function generateCategoricalChart(_ref) {
         activeCoordinate = _this$state4.activeCoordinate,
         offset = _this$state4.offset;
       var x1, y1, x2, y2;
-      if ((0, _chartFn.isLayoutHorizontal)(layout)) {
+      if ((0, _ChartUtils.isLayoutHorizontal)(layout)) {
         x1 = activeCoordinate.x;
         x2 = x1;
         y1 = offset.top;
         y2 = offset.top + offset.height;
-      } else if ((0, _chartFn.isLayoutVertical)(layout)) {
+      } else if ((0, _ChartUtils.isLayoutVertical)(layout)) {
         y1 = activeCoordinate.y;
         y2 = y1;
         x1 = offset.left;
@@ -522,8 +522,8 @@ var generateCategoricalChart = function generateCategoricalChart(_ref) {
         var activeLabel = tooltipTicks[activeTooltipIndex] && tooltipTicks[activeTooltipIndex].value;
         var activePayload = (0, _getTooltipContent.getTooltipContent)(this.state, this.props.data, activeTooltipIndex);
         var activeCoordinate = tooltipTicks[activeTooltipIndex] ? {
-          x: (0, _chartFn.isLayoutHorizontal)(layout) ? tooltipTicks[activeTooltipIndex].coordinate : validateChartX,
-          y: (0, _chartFn.isLayoutHorizontal)(layout) ? validateChartY : tooltipTicks[activeTooltipIndex].coordinate
+          x: (0, _ChartUtils.isLayoutHorizontal)(layout) ? tooltipTicks[activeTooltipIndex].coordinate : validateChartX,
+          y: (0, _ChartUtils.isLayoutHorizontal)(layout) ? validateChartY : tooltipTicks[activeTooltipIndex].coordinate
         } : _chartFn.originCoordinate;
         this.setState((0, _extends4["default"])({}, data, {
           activeLabel: activeLabel,

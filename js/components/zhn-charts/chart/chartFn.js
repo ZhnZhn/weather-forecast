@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.originCoordinate = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.getDisplayedData = exports.getDefaultDomainByAxisType = exports.crAxisComponent = void 0;
+exports.originCoordinate = exports.getDisplayedData = exports.getDefaultDomainByAxisType = exports.crAxisComponent = void 0;
 var _DataUtils = require("../util/DataUtils");
 var originCoordinate = {
   x: 0,
@@ -15,18 +15,6 @@ var crAxisComponent = function crAxisComponent(axisType, AxisComp) {
   };
 };
 exports.crAxisComponent = crAxisComponent;
-var isLayoutHorizontal = function isLayoutHorizontal(layout) {
-  return layout === 'horizontal';
-};
-exports.isLayoutHorizontal = isLayoutHorizontal;
-var isLayoutVertical = function isLayoutVertical(layout) {
-  return layout === 'vertical';
-};
-exports.isLayoutVertical = isLayoutVertical;
-var isLayoutCentric = function isLayoutCentric(layout) {
-  return layout === 'centric';
-};
-exports.isLayoutCentric = isLayoutCentric;
 var getDisplayedData = function getDisplayedData(data, _ref, item) {
   var graphicalItems = _ref.graphicalItems,
     dataStartIndex = _ref.dataStartIndex,

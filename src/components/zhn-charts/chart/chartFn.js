@@ -10,17 +10,6 @@ export const crAxisComponent = (
   AxisComp
 });
 
-export const isLayoutHorizontal = (
-  layout
-) => layout === 'horizontal'
-export const isLayoutVertical = (
-  layout
-) => layout === 'vertical'
-export const isLayoutCentric = (
-  layout
-) => layout === 'centric'
-
-
 export const getDisplayedData = (
   data, {
   graphicalItems,

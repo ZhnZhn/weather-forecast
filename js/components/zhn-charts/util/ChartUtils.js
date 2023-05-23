@@ -4,9 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarSizeList = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.combineEventHandlers = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
-exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = exports.getDomainOfErrorBars = void 0;
-exports.getValueByDataKey = getValueByDataKey;
-exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseErrorBarsOfAxis = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isCategoricalAxis = void 0;
+exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseErrorBarsOfAxis = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = exports.getDomainOfErrorBars = void 0;
 var _extends7 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var d3Scales = _interopRequireWildcard(require("d3-scale"));
 var _d3Shape = require("d3-shape");
@@ -22,19 +20,21 @@ var _getObjectKeys = Object.keys;
 var _getAxisDomain = function _getAxisDomain(axis) {
   return (((axis || {}).type || {}).defaultProps || {}).domain;
 };
-function getValueByDataKey(obj, dataKey, defaultValue) {
-  if ((0, _FnUtils._isNil)(obj) || (0, _FnUtils._isNil)(dataKey)) {
-    return defaultValue;
-  }
-  if ((0, _DataUtils.isNumOrStr)(dataKey)) {
-    return (0, _FnUtils._getByPropName)(obj, dataKey, defaultValue);
-  }
-  if ((0, _FnUtils._isFn)(dataKey)) {
-    return dataKey(obj);
-  }
-  return defaultValue;
-}
-
+var isLayoutHorizontal = function isLayoutHorizontal(layout) {
+  return layout === 'horizontal';
+};
+exports.isLayoutHorizontal = isLayoutHorizontal;
+var isLayoutVertical = function isLayoutVertical(layout) {
+  return layout === 'vertical';
+};
+exports.isLayoutVertical = isLayoutVertical;
+var isLayoutCentric = function isLayoutCentric(layout) {
+  return layout === 'centric';
+};
+exports.isLayoutCentric = isLayoutCentric;
+var getValueByDataKey = function getValueByDataKey(obj, dataKey, defaultValue) {
+  return (0, _FnUtils._isNil)(obj) || (0, _FnUtils._isNil)(dataKey) ? defaultValue : (0, _DataUtils.isNumOrStr)(dataKey) ? (0, _FnUtils._getByPropName)(obj, dataKey, defaultValue) : (0, _FnUtils._isFn)(dataKey) ? dataKey(obj) : defaultValue;
+};
 /**
  * Get domain of data by key
  * @param  {Array}   data      The data displayed in the chart
@@ -43,6 +43,7 @@ function getValueByDataKey(obj, dataKey, defaultValue) {
  * @param  {Boolean} filterNil Whether or not filter nil values
  * @return {Array} Domain of data
  */
+exports.getValueByDataKey = getValueByDataKey;
 function getDomainOfDataByKey(data, key, type, filterNil) {
   //const flattenData = _flatMap(data, entry => getValueByDataKey(entry, key));
   var flattenData = data.flatMap(function (entry) {
@@ -347,11 +348,11 @@ var appendOffsetOfLegend = function appendOffsetOfLegend(offset, items, props, l
       align = legendProps.align,
       verticalAlign = legendProps.verticalAlign,
       layout = legendProps.layout;
-    if ((layout === 'vertical' || layout === 'horizontal' && verticalAlign === 'middle') && (0, _DataUtils.isNumber)(offset[align])) {
+    if ((isLayoutVertical(layout) || isLayoutHorizontal(layout) && verticalAlign === 'middle') && (0, _DataUtils.isNumber)(offset[align])) {
       var _extends2;
       newOffset = (0, _extends7["default"])({}, offset, (_extends2 = {}, _extends2[align] = newOffset[align] + (box.width || 0), _extends2));
     }
-    if ((layout === 'horizontal' || layout === 'vertical' && align === 'center') && (0, _DataUtils.isNumber)(offset[verticalAlign])) {
+    if ((isLayoutHorizontal(layout) || isLayoutVertical(layout) && align === 'center') && (0, _DataUtils.isNumber)(offset[verticalAlign])) {
       var _extends3;
       newOffset = (0, _extends7["default"])({}, offset, (_extends3 = {}, _extends3[verticalAlign] = newOffset[verticalAlign] + (box.height || 0), _extends3));
     }
@@ -363,10 +364,10 @@ var isErrorBarRelevantForAxis = function isErrorBarRelevantForAxis(layout, axisT
   if ((0, _FnUtils._isNil)(axisType)) {
     return true;
   }
-  if (layout === 'horizontal') {
+  if (isLayoutHorizontal(layout)) {
     return axisType === 'yAxis';
   }
-  if (layout === 'vertical') {
+  if (isLayoutVertical(layout)) {
     return axisType === 'xAxis';
   }
   if (direction === 'x') {
@@ -450,7 +451,7 @@ var getDomainOfItemsWithSameAxis = function getDomainOfItemsWithSameAxis(data, i
 };
 exports.getDomainOfItemsWithSameAxis = getDomainOfItemsWithSameAxis;
 var isCategoricalAxis = function isCategoricalAxis(layout, axisType) {
-  return layout === 'horizontal' && axisType === 'xAxis' || layout === 'vertical' && axisType === 'yAxis' || layout === 'centric' && axisType === 'angleAxis' || layout === 'radial' && axisType === 'radiusAxis';
+  return isLayoutHorizontal(layout) && axisType === 'xAxis' || isLayoutVertical(layout) && axisType === 'yAxis' || isLayoutCentric(layout) && axisType === 'angleAxis' || layout === 'radial' && axisType === 'radiusAxis';
 };
 
 /**

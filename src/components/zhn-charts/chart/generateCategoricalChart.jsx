@@ -33,6 +33,8 @@ import {
   getAnyElementOfObject,
 } from '../util/DataUtils';
 import {
+  isLayoutHorizontal,
+  isLayoutVertical,
   getTicksOfAxis,
   getCoordinatesOfGrid
 } from '../util/ChartUtils';
@@ -44,11 +46,7 @@ import {
   adaptEventHandlers
 } from '../util/types';
 
-import {
-  originCoordinate,
-  isLayoutHorizontal,
-  isLayoutVertical
-} from './chartFn';
+import { originCoordinate } from './chartFn';
 import { AccessibilityManager } from './AccessibilityManager';
 import { getTooltipContent } from './getTooltipContent';
 import {

@@ -53,24 +53,27 @@ const _getAxisDomain = (
   .defaultProps || {})
   .domain;
 
+export const isLayoutHorizontal = (
+  layout
+) => layout === 'horizontal'
+export const isLayoutVertical = (
+  layout
+) => layout === 'vertical'
+export const isLayoutCentric = (
+  layout
+) => layout === 'centric'
 
-export function getValueByDataKey(
+export const getValueByDataKey = (
   obj,
   dataKey,
   defaultValue
-) {
-  if (_isNil(obj) || _isNil(dataKey)) {
-    return defaultValue;
-  }
-  if (isNumOrStr(dataKey)) {
-    return _getByPropName(obj, dataKey, defaultValue);
-  }
-  if (_isFn(dataKey)) {
-    return dataKey(obj);
-  }
-  return defaultValue;
-}
-
+) => _isNil(obj) || _isNil(dataKey)
+  ? defaultValue
+  : isNumOrStr(dataKey)
+      ? _getByPropName(obj, dataKey, defaultValue)
+      : _isFn(dataKey)
+          ? dataKey(obj)
+          : defaultValue;
 /**
  * Get domain of data by key
  * @param  {Array}   data      The data displayed in the chart
@@ -400,13 +403,17 @@ export const appendOffsetOfLegend = (
   if (legendProps) {
     const box = legendBox || {}
     , { align, verticalAlign, layout } = legendProps;
-    if ((layout === 'vertical' || (layout === 'horizontal' && verticalAlign === 'middle')) && isNumber(offset[align])) {
+    if ((isLayoutVertical(layout) || (isLayoutHorizontal(layout) && verticalAlign === 'middle'))
+      && isNumber(offset[align])
+    ) {
       newOffset = {
         ...offset,
         [align]: newOffset[align] + (box.width || 0)
       };
     }
-    if ((layout === 'horizontal' || (layout === 'vertical' && align === 'center')) && isNumber(offset[verticalAlign])) {
+    if ((isLayoutHorizontal(layout) || (isLayoutVertical(layout) && align === 'center'))
+       && isNumber(offset[verticalAlign])
+     ) {
       newOffset = {
         ...offset,
         [verticalAlign]: newOffset[verticalAlign] + (box.height || 0)
@@ -424,10 +431,10 @@ const isErrorBarRelevantForAxis = (
   if (_isNil(axisType)) {
     return true;
   }
-  if (layout === 'horizontal') {
+  if (isLayoutHorizontal(layout)) {
     return axisType === 'yAxis';
   }
-  if (layout === 'vertical') {
+  if (isLayoutVertical(layout)) {
     return axisType === 'xAxis';
   }
   if (direction === 'x') {
@@ -532,9 +539,9 @@ export const getDomainOfItemsWithSameAxis = (
 export const isCategoricalAxis = (
   layout,
   axisType
-) => (layout === 'horizontal' && axisType === 'xAxis')
-  || (layout === 'vertical' && axisType === 'yAxis')
-  || (layout === 'centric' && axisType === 'angleAxis')
+) => (isLayoutHorizontal(layout) && axisType === 'xAxis')
+  || (isLayoutVertical(layout) && axisType === 'yAxis')
+  || (isLayoutCentric(layout) && axisType === 'angleAxis')
   || (layout === 'radial' && axisType === 'radiusAxis');
 
 /**
