@@ -1,0 +1,33 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/hotkeys/useHotKeys.js"
+ ],
+ "file": "../../../src/components/hotkeys/useHotKeys.js",
+ "names": [
+  "_uiApi",
+  "require",
+  "_hmHotkeys",
+  "_onKeyDown",
+  "evt",
+  "altKey",
+  "ctrlKey",
+  "metaKey",
+  "key",
+  "_onKeyDownHotKey",
+  "hmHotKeys",
+  "toUpperCase",
+  "stopImmediatePropagation",
+  "useHotKeys",
+  "useEffect",
+  "HAS_HOT_KEYS",
+  "document",
+  "addEventListener",
+  "HOT_KEY_EVENT",
+  "clearHotKeys",
+  "removeEventListener",
+  "_default",
+  "exports"
+ ],
+ "mappings": ";;;;AAAA,IAAAA,MAAA,GAAAC,OAAA;AACA,IAAAC,UAAA,GAAAD,OAAA;AAOA,IAAME,UAAU,GAAG,SAAbA,UAAUA,CAAIC,GAAG,EAAK;EAC1B,IAAI,CAAEA,GAAG,CAACC,MAAM,IAAID,GAAG,CAACE,OAAO,IAAKF,GAAG,CAACG,OAAO,KACzCH,GAAG,CAACI,GAAG,EACX;IACA,IAAMC,gBAAgB,GAAGC,oBAAS,CAACN,GAAG,CAACI,GAAG,CAACG,WAAW,CAAC,CAAC,CAAC;IACzD,IAAI,OAAOF,gBAAgB,KAAK,UAAU,EAAE;MAC1CL,GAAG,CAACQ,wBAAwB,CAAC,CAAC;MAC9BH,gBAAgB,CAAC,CAAC;IACpB;EACF;AACF,CAAC;AAED,IAAMI,UAAU,GAAG,SAAbA,UAAUA,CAAA,EAAS;EACvB,IAAAC,gBAAS,EAAC;IAAA,OAAMC,uBAAY,IAEtBC,QAAQ,CAACC,gBAAgB,CAACC,wBAAa,EAAEf,UAAU,EAAE,KAAK,CAAC,EAC3D,YAAM;MACJ,IAAAgB,uBAAY,EAAC,CAAC;MACdH,QAAQ,CAACI,mBAAmB,CAACF,wBAAa,EAAEf,UAAU,EAAE,KAAK,CAAC;IAChE,CAAC,IAEF,KAAK,CAAC;EAAA,GACT,EAAE,CAAC;AACP,CAAC;AAAA,IAAAkB,QAAA,GAEcR,UAAU;AAAAS,OAAA,cAAAD,QAAA"
+}

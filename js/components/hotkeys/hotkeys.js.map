@@ -1,0 +1,14 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/hotkeys/hotkeys.js"
+ ],
+ "file": "../../../src/components/hotkeys/hotkeys.js",
+ "names": [
+  "HK_MENU",
+  "exports",
+  "HK_FORECAST",
+  "HK_SETTINGS"
+ ],
+ "mappings": ";;;;AAAO,IAAMA,OAAO,GAAG,GAAG;AAAAC,OAAA,CAAAD,OAAA,GAAAA,OAAA;AACnB,IAAME,WAAW,GAAG,GAAG;AAAAD,OAAA,CAAAC,WAAA,GAAAA,WAAA;AACvB,IAAMC,WAAW,GAAG,GAAG;AAAAF,OAAA,CAAAE,WAAA,GAAAA,WAAA"
+}

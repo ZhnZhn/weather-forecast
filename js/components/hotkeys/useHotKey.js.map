@@ -1,0 +1,22 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/hotkeys/useHotKey.js"
+ ],
+ "file": "../../../src/components/hotkeys/useHotKey.js",
+ "names": [
+  "_uiApi",
+  "require",
+  "_hmHotkeys",
+  "useHotKey",
+  "hotKey",
+  "onKeyDown",
+  "useEffect",
+  "HAS_HOT_KEYS",
+  "addHotKey",
+  "removeHotKey",
+  "_default",
+  "exports"
+ ],
+ "mappings": ";;;;AAAA,IAAAA,MAAA,GAAAC,OAAA;AAEA,IAAAC,UAAA,GAAAD,OAAA;AAMA,IAAME,SAAS,GAAG,SAAZA,SAASA,CACbC,MAAM,EACNC,SAAS,EACN;EACH;EACA,IAAAC,gBAAS,EAAC;IAAA,OAAMC,uBAAY,IAAIH,MAAM,IAEhC,IAAAI,oBAAS,EAACJ,MAAM,EAAEC,SAAS,CAAC,EAC5B;MAAA,OAAM,IAAAI,uBAAY,EAACL,MAAM,EAAEC,SAAS,CAAC;IAAA,KAEvC,KAAK,CAAC;EAAA,GACR,EAAE,CAAC;EACL;EACA;AACF,CAAC;AAAA,IAAAK,QAAA,GAEcP,SAAS;AAAAQ,OAAA,cAAAD,QAAA"
+}
