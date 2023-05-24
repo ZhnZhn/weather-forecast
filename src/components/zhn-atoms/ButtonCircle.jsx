@@ -1,8 +1,5 @@
-import useLayoutButton from './useLayoutButton';
-
-const _assign = Object.assign
-, CL_BT_CIRCLE = "bt-circle not-selected"
-, S_ROOT = {
+const CL_BT_CIRCLE = "bt-circle not-selected"
+, S_BT = {
   display: 'inline-block',
   color: '#80c040',
   width: 22,
@@ -12,34 +9,29 @@ const _assign = Object.assign
   verticalAlign: 'middle',
   fontWeight: 'bold'
 }
-, S_NOT_ACTIVE = { color: '#5b5b5b' };
+, S_NOT_ACTIVE = {
+  color: '#5b5b5b'
+};
 
 const ButtonCircle = ({
+  isActive,
   style,
   caption,
   title,
-  storeKey,
   onClick
 }) => {
-  const [
-    isActive,
-    _hClick
-  ] = useLayoutButton(
-    storeKey,
-    onClick
-  )
-  , _style = _assign(
-    {...S_ROOT, ...style},
-    isActive && S_NOT_ACTIVE
-  );
-
+  const _style = {
+    ...S_BT,
+    ...style,
+    ...(isActive && S_NOT_ACTIVE)
+  };
   return (
     <button
        type="button"
        className={CL_BT_CIRCLE}
        style={_style}
        title={title}
-       onClick={_hClick}
+       onClick={onClick}
     >
        {caption}
     </button>
