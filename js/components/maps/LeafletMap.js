@@ -7,13 +7,12 @@ var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
 var _uiApi = require("../uiApi");
 var _fnLeaflet = require("./fnLeaflet");
 var _throttleFn = _interopRequireDefault(require("../../utils/throttleFn"));
-var _handlers = _interopRequireDefault(require("../../flux/handlers"));
+var _handlers = require("../../flux/handlers");
 var _selectors = require("../../flux/selectors");
 var _ErrMsg = _interopRequireDefault(require("../zhn-atoms/ErrMsg"));
 var _jsxRuntime = require("react/jsx-runtime");
 //import PropTypes from 'prop-types';
 
-var requestPlace = _handlers["default"].requestPlace;
 var PERIOD_MS = 5000;
 var S_DIV = {
     width: '100%',
@@ -47,7 +46,7 @@ var LeafletMap = function LeafletMap(_ref) {
     if (_map) {
       _refMap.current = _map;
       _refMap.current.on('dblclick', (0, _throttleFn["default"])(function (e) {
-        return requestPlace(e.latlng);
+        return (0, _handlers.requestPlace)(e.latlng);
       }, PERIOD_MS));
     } else {
       setMapStatus(MAP_STATUS_FAILED);

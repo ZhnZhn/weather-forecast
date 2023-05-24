@@ -6,11 +6,10 @@ exports["default"] = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _uiApi = require("../uiApi");
 var _useXYMovable = _interopRequireDefault(require("../hooks/useXYMovable"));
-var _handlers = _interopRequireDefault(require("../../flux/handlers"));
+var _handlers = require("../../flux/handlers");
 var _SvgClose = _interopRequireDefault(require("../zhn-atoms/SvgClose"));
 var _jsxRuntime = require("react/jsx-runtime");
-var toggleLayout = _handlers["default"].toggleLayout,
-  CL_SHOW_POPUP = 'show-popup',
+var CL_SHOW_POPUP = 'show-popup',
   S_BLOCK = {
     display: 'block'
   },
@@ -31,7 +30,7 @@ var DragablePopup = function DragablePopup(_ref) {
       return [function (state) {
         return state.layout[storeKey];
       }, function () {
-        return toggleLayout(storeKey);
+        return (0, _handlers.toggleLayout)(storeKey);
       }];
     }, [storeKey]),
     _selectIsShow = _useMemo[0],

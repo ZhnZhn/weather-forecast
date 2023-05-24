@@ -12,12 +12,10 @@ import {
 } from './fnLeaflet';
 import throttleFn from '../../utils/throttleFn';
 
-import handlers  from '../../flux/handlers';
+import { requestPlace }  from '../../flux/handlers';
 import { sPlace } from '../../flux/selectors';
 
 import ErrMsg from '../zhn-atoms/ErrMsg';
-
-const { requestPlace } = handlers;
 
 const PERIOD_MS = 5000;
 

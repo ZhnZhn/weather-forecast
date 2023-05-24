@@ -14,12 +14,11 @@ import ProviderLink from '../elements/ProviderLink';
 import GitHubLink from './GitHubLink';
 import styleConfig from './Header.Style';
 
-import handlers from '../../flux/handlers';
-
-const {
+import {
   toggleLayout,
   showSettings
-} = handlers;
+} from '../../flux/handlers';
+
 
 const TITLE = "Weather v0.3.0";
 

@@ -1,4 +1,8 @@
-import handlers from '../../flux/handlers';
+import {
+  requestHourly,
+  requestUvi,
+  requestAirForecast
+} from '../../flux/handlers';
 
 import TabPane from '../zhn-atoms/TabPane';
 import Tab from '../zhn-atoms/Tab';
@@ -7,12 +11,6 @@ import ChartForecast from './ChartForecast';
 import ChartHourly from './ChartHourly';
 import ChartUvi from './ChartUvi';
 import ChartAirForecast from './ChartAirForecast';
-
-const {
-  requestHourly,
-  requestUvi,
-  requestAirForecast
-} = handlers;
 
 const S_TABS = { textAlign: 'left' };
 

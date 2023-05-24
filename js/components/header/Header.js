@@ -14,10 +14,8 @@ var _ButtonCircle = _interopRequireDefault(require("../zhn-atoms/ButtonCircle"))
 var _ProviderLink = _interopRequireDefault(require("../elements/ProviderLink"));
 var _GitHubLink = _interopRequireDefault(require("./GitHubLink"));
 var _Header = _interopRequireDefault(require("./Header.Style"));
-var _handlers = _interopRequireDefault(require("../../flux/handlers"));
+var _handlers = require("../../flux/handlers");
 var _jsxRuntime = require("react/jsx-runtime");
-var toggleLayout = _handlers["default"].toggleLayout,
-  showSettings = _handlers["default"].showSettings;
 var TITLE = "Weather v0.3.0";
 var CL_TITLE = 'header__title',
   CL_LINK_PREF = 'header__link-pref',
@@ -33,10 +31,10 @@ var CL_TITLE = 'header__title',
 var Header = function Header(_ref) {
   var style = _ref.style;
   var TS = (0, _useTheme["default"])(_Header["default"]),
-    _useLayoutButton = (0, _useLayoutButton3["default"])("isPopupForecast", toggleLayout),
+    _useLayoutButton = (0, _useLayoutButton3["default"])("isPopupForecast", _handlers.toggleLayout),
     isActiveForecats = _useLayoutButton[0],
     hForecast = _useLayoutButton[1],
-    _useLayoutButton2 = (0, _useLayoutButton3["default"])("isSettings", showSettings),
+    _useLayoutButton2 = (0, _useLayoutButton3["default"])("isSettings", _handlers.showSettings),
     isActiveSettings = _useLayoutButton2[0],
     hSettings = _useLayoutButton2[1];
   (0, _useHotKey["default"])(_hotkeys.HK_FORECAST, hForecast);
@@ -46,7 +44,7 @@ var Header = function Header(_ref) {
     style: (0, _extends2["default"])({}, style, TS.HEADER),
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ProgressLoading["default"], {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_HamburgerButton["default"], {
       storeKey: "isPushMenu",
-      onClick: toggleLayout
+      onClick: _handlers.toggleLayout
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
       className: CL_TITLE,
       children: TITLE

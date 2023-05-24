@@ -3,7 +3,7 @@ import store from './store';
 import throttleFn from '../utils/throttleFn';
 
 import { forecastRequested } from './forecast/actions';
-import { toggleLayout } from './layout/actions';
+import { toggleLayout as _toggleLayoutByStoreKey } from './layout/actions';
 import { showModal } from './modal/actions';
 
 import { hourlyRequested } from './hourly/actions';
@@ -26,24 +26,22 @@ window.weather = {
   }
 }
 
-const handlers = {
-  //Header
-  toggleLayout: storeKey => {
-    dispatch(toggleLayout(storeKey))
-  },
-  showSettings: storeKey => {
-    dispatch(toggleLayout(storeKey))
-    dispatch(showModal('SETTINGS'))
-  },
+//Header
+export const toggleLayout = storeKey => {
+  dispatch(_toggleLayoutByStoreKey(storeKey))
+}
+export const showSettings = storeKey => {
+  dispatch(_toggleLayoutByStoreKey(storeKey))
+  dispatch(showModal('SETTINGS'))
+}
 
-  //LeftPushMenu
-  requestHourly: () => dispatch(hourlyRequested()),
-  requestUvi: () => dispatch(uvRequested()),
-  requestAirForecast: () => dispatch(airForecastReq()),
+//LeftPushMenu
+export const requestHourly = () => dispatch(hourlyRequested())
+export const requestUvi = () => dispatch(uvRequested())
+export const requestAirForecast = () => dispatch(airForecastReq())
 
-  //LeafletMap
-  requestPlace: ({lat, lng}) => dispatch(placeRequested({ lat, lot:lng }))
-
-};
-
-export default handlers
+//LeafletMap
+export const requestPlace = ({
+  lat,
+  lng
+}) => dispatch(placeRequested({ lat, lot:lng }))

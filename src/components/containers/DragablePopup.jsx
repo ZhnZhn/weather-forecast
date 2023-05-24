@@ -5,11 +5,10 @@ import {
 } from '../uiApi';
 
 import useXYMovable from '../hooks/useXYMovable';
-import handlers from '../../flux/handlers';
+import { toggleLayout } from '../../flux/handlers';
 import SvgClose from '../zhn-atoms/SvgClose';
 
-const { toggleLayout } = handlers
-, CL_SHOW_POPUP = 'show-popup'
+const CL_SHOW_POPUP = 'show-popup'
 , S_BLOCK = { display: 'block' }
 , S_NONE = { display: 'none' }
 , S_SVG_CLOSE = {
