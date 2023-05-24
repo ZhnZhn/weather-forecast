@@ -1,0 +1,22 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/hooks/useLayoutButton.js"
+ ],
+ "file": "../../../src/components/hooks/useLayoutButton.js",
+ "names": [
+  "_uiApi",
+  "require",
+  "useLayoutButton",
+  "storeKey",
+  "onClick",
+  "_layoutSelector",
+  "useCallback",
+  "state",
+  "layout",
+  "useSelector",
+  "_default",
+  "exports"
+ ],
+ "mappings": ";;;;AAAA,IAAAA,MAAA,GAAAC,OAAA;AAKA,IAAMC,eAAe,GAAG,SAAlBA,eAAeA,CACnBC,QAAQ,EACRC,OAAO,EACJ;EACH,IAAMC,eAAe,GAAG,IAAAC,kBAAW,EACjC,UAAAC,KAAK;IAAA,OAAIA,KAAK,CAACC,MAAM,CAACL,QAAQ,CAAC;EAAA,GAC/B,CAACA,QAAQ,CACX,CAAC;EACD,OAAO,CACL,IAAAM,kBAAW,EAACJ,eAAe,CAAC,EAC5B,IAAAC,kBAAW,EAAC,YAAM;IACfF,OAAO,CAACD,QAAQ,CAAC;EACpB,CAAC,EAAE,CAACA,QAAQ,EAAEC,OAAO,CAAC,CAAC,CACxB;AACH,CAAC;AAAA,IAAAM,QAAA,GAEcR,eAAe;AAAAS,OAAA,cAAAD,QAAA"
+}

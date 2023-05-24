@@ -1,5 +1,12 @@
 import useTheme from '../hooks/useTheme';
 
+import useLayoutButton from '../hooks/useLayoutButton';
+import useHotKey from '../hotkeys/useHotKey';
+import {
+  HK_FORECAST,
+  HK_SETTINGS
+} from '../hotkeys/hotkeys';
+
 import ProgressLoading from './ProgressLoading';
 import HamburgerButton from '../zhn-atoms/HamburgerButton';
 import ButtonCircle from '../zhn-atoms/ButtonCircle';
@@ -32,7 +39,24 @@ const CL_TITLE = 'header__title'
 const Header = ({
   style
 }) => {
-  const TS = useTheme(styleConfig);
+  const TS = useTheme(styleConfig)
+  , [
+    isActiveForecats,
+    hForecast
+  ] = useLayoutButton(
+    "isPopupForecast",
+    toggleLayout
+  )
+  , [
+    isActiveSettings,
+    hSettings
+  ] = useLayoutButton(
+    "isSettings",
+    showSettings
+  );
+
+  useHotKey(HK_FORECAST, hForecast)
+  useHotKey(HK_SETTINGS, hSettings)
 
   return (
     <header
@@ -48,18 +72,18 @@ const Header = ({
         {TITLE}
       </span>
       <ButtonCircle
+         isActive={isActiveForecats}
          style={S_BT_CIRCLE}
          caption="F"
          title="Toggle Forecast Popup"
-         storeKey="isPopupForecast"
-         onClick={toggleLayout}
+         onClick={hForecast}
        />
        <ButtonCircle
+         isActive={isActiveSettings}
          style={S_BT_CIRCLE}
          caption="S"
          title="Open Settings Dialog"
-         storeKey="isSettings"
-         onClick={showSettings}
+         onClick={hSettings}
        />
        <ProviderLink
          className={CL_LINK}

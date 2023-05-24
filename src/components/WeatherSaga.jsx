@@ -7,6 +7,9 @@ import {
 
 import ThemeContext from './hoc/ThemeContext';
 import theme from './styles/theme';
+
+import useHotKeys from './hotkeys/useHotKeys';
+
 import ModalDialogContainer from './containers/ModalDialogContainer';
 import Header from './header/Header';
 import LeftPushMenu from './left-push-menu/LeftPushMenu';
@@ -71,6 +74,7 @@ const WeatherSaga = () => {
     }
   }, [isPushMenu])
 
+  useHotKeys()
 
   return (
     <ThemeContext.Provider value={theme} >

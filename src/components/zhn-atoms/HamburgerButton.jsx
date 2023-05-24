@@ -1,4 +1,8 @@
-import useLayoutButton from './useLayoutButton';
+import useLayoutButton from '../hooks/useLayoutButton';
+
+import { HK_MENU } from '../hotkeys/hotkeys';
+import useHotKey from '../hotkeys/useHotKey';
+
 import crCn from '../zhn-utils/crCn';
 
 const CL_BT_HAMBURGER = "bt-hamburger"
@@ -28,6 +32,8 @@ const HamburgerButton = ({
     CL_BT_HAMBURGER,
     [isOpen, CL_OPENED]
   );
+
+  useHotKey(HK_MENU, _hClick)
 
   return (
     <button

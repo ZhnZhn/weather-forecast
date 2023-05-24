@@ -5,6 +5,9 @@ exports.__esModule = true;
 exports["default"] = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _useTheme = _interopRequireDefault(require("../hooks/useTheme"));
+var _useLayoutButton3 = _interopRequireDefault(require("../hooks/useLayoutButton"));
+var _useHotKey = _interopRequireDefault(require("../hotkeys/useHotKey"));
+var _hotkeys = require("../hotkeys/hotkeys");
 var _ProgressLoading = _interopRequireDefault(require("./ProgressLoading"));
 var _HamburgerButton = _interopRequireDefault(require("../zhn-atoms/HamburgerButton"));
 var _ButtonCircle = _interopRequireDefault(require("../zhn-atoms/ButtonCircle"));
@@ -29,7 +32,15 @@ var CL_TITLE = 'header__title',
   };
 var Header = function Header(_ref) {
   var style = _ref.style;
-  var TS = (0, _useTheme["default"])(_Header["default"]);
+  var TS = (0, _useTheme["default"])(_Header["default"]),
+    _useLayoutButton = (0, _useLayoutButton3["default"])("isPopupForecast", toggleLayout),
+    isActiveForecats = _useLayoutButton[0],
+    hForecast = _useLayoutButton[1],
+    _useLayoutButton2 = (0, _useLayoutButton3["default"])("isSettings", showSettings),
+    isActiveSettings = _useLayoutButton2[0],
+    hSettings = _useLayoutButton2[1];
+  (0, _useHotKey["default"])(_hotkeys.HK_FORECAST, hForecast);
+  (0, _useHotKey["default"])(_hotkeys.HK_SETTINGS, hSettings);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("header", {
     role: "banner",
     style: (0, _extends2["default"])({}, style, TS.HEADER),
@@ -40,17 +51,17 @@ var Header = function Header(_ref) {
       className: CL_TITLE,
       children: TITLE
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ButtonCircle["default"], {
+      isActive: isActiveForecats,
       style: S_BT_CIRCLE,
       caption: "F",
       title: "Toggle Forecast Popup",
-      storeKey: "isPopupForecast",
-      onClick: toggleLayout
+      onClick: hForecast
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ButtonCircle["default"], {
+      isActive: isActiveSettings,
       style: S_BT_CIRCLE,
       caption: "S",
       title: "Open Settings Dialog",
-      storeKey: "isSettings",
-      onClick: showSettings
+      onClick: hSettings
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ProviderLink["default"], {
       className: CL_LINK,
       prefixCL: CL_LINK_PREF
