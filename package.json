@@ -65,9 +65,11 @@
   },
   "jest": {    
     "roots": [
+      "<rootDir>/js/components/zhn-charts/scale",      
       "<rootDir>/js/components/zhn-charts/scale/util"      
     ],
     "transformIgnorePatterns": [
+      "<rootDir>/js/components/zhn-charts/scale",       
       "<rootDir>/js/components/zhn-charts/scale/util"
     ]
   }
