@@ -10,11 +10,15 @@ var _decimal = _interopRequireDefault(require("decimal.js-light"));
  * [0.01, 0.1), -1
  * [0.001, 0.01), -2
  *
- * @param  {Number} value ??
+ * @param  {Number} value
  * @return {Integer}
  */
+var _mathAbs = Math.abs,
+  _mathLog = Math.log,
+  _mathFloor = Math.floor,
+  LOG_10 = _mathLog(10);
 var getDigitCount = function getDigitCount(value) {
-  return value === 0 ? 1 : Math.floor(new _decimal["default"](value).abs().log(10).toNumber()) + 1;
+  return value === 0 ? 1 : _mathFloor(_mathLog(_mathAbs(value)) / LOG_10) + 1;
 };
 
 /**
