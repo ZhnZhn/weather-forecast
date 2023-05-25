@@ -6,6 +6,11 @@ exports.getTickValuesFixedDomain = exports.getNiceTickValues = void 0;
 var _decimal = _interopRequireDefault(require("decimal.js-light"));
 var _utils = require("./util/utils");
 var _arithmetic = require("./util/arithmetic");
+var _mathCeil = Math.ceil,
+  _mathAbs = Math.abs,
+  _mathFloor = Math.floor,
+  _mathMax = Math.max,
+  _isFinite = Number.isFinite;
 var _getValidInterval = function _getValidInterval(_ref) {
   var min = _ref[0],
     max = _ref[1];
@@ -34,9 +39,9 @@ function getFormatStep(roughStep, allowDecimals, correctionFactor) {
     // When an integer and a float multiplied, the accuracy of result may be wrong
     ,
     stepRatioScale = digitCount !== 1 ? 0.05 : 0.1,
-    amendStepRatio = new _decimal["default"](Math.ceil(stepRatio.div(stepRatioScale).toNumber())).add(correctionFactor).mul(stepRatioScale);
+    amendStepRatio = new _decimal["default"](_mathCeil(stepRatio.div(stepRatioScale).toNumber())).add(correctionFactor).mul(stepRatioScale);
   var formatStep = amendStepRatio.mul(digitCountValue);
-  return allowDecimals ? formatStep : new _decimal["default"](Math.ceil(formatStep));
+  return allowDecimals ? formatStep : new _decimal["default"](_mathCeil(formatStep));
 }
 
 /**
@@ -52,21 +57,21 @@ function getTickOfSingleValue(value, tickCount, allowDecimals) {
   // calculate the middle value of ticks
   var middle = new _decimal["default"](value);
   if (!middle.isint() && allowDecimals) {
-    var absVal = Math.abs(value);
+    var absVal = _mathAbs(value);
     if (absVal < 1) {
       // The step should be a float number when the difference is smaller than 1
       step = new _decimal["default"](10).pow((0, _arithmetic.getDigitCount)(value) - 1);
-      middle = new _decimal["default"](Math.floor(middle.div(step).toNumber())).mul(step);
+      middle = new _decimal["default"](_mathFloor(middle.div(step).toNumber())).mul(step);
     } else if (absVal > 1) {
       // Return the maximum integer which is smaller than 'value' when 'value' is greater than 1
-      middle = new _decimal["default"](Math.floor(value));
+      middle = new _decimal["default"](_mathFloor(value));
     }
   } else if (value === 0) {
-    middle = new _decimal["default"](Math.floor((tickCount - 1) / 2));
+    middle = new _decimal["default"](_mathFloor((tickCount - 1) / 2));
   } else if (!allowDecimals) {
-    middle = new _decimal["default"](Math.floor(value));
+    middle = new _decimal["default"](_mathFloor(value));
   }
-  var middleIndex = Math.floor((tickCount - 1) / 2);
+  var middleIndex = _mathFloor((tickCount - 1) / 2);
   var fn = (0, _utils.compose)((0, _utils.map)(function (n) {
     return middle.add(new _decimal["default"](n - middleIndex).mul(step)).toNumber();
   }), _utils.range);
@@ -83,17 +88,20 @@ function getTickOfSingleValue(value, tickCount, allowDecimals) {
  * @param  {Number}  correctionFactor A correction factor
  * @return {Object}  The step, minimum value of ticks, maximum value of ticks
  */
+var _crStepConfig = function _crStepConfig(step, tickMin, tickMax) {
+  return {
+    step: step,
+    tickMin: tickMin,
+    tickMax: tickMax
+  };
+};
 function calculateStep(min, max, tickCount, allowDecimals, correctionFactor) {
   if (correctionFactor === void 0) {
     correctionFactor = 0;
   }
   // dirty hack (for recharts' test)
-  if (!Number.isFinite((max - min) / (tickCount - 1))) {
-    return {
-      step: new _decimal["default"](0),
-      tickMin: new _decimal["default"](0),
-      tickMax: new _decimal["default"](0)
-    };
+  if (!_isFinite((max - min) / (tickCount - 1))) {
+    return _crStepConfig(new _decimal["default"](0), new _decimal["default"](0), new _decimal["default"](0));
   }
 
   // The step which is easy to understand between two ticks
@@ -111,8 +119,8 @@ function calculateStep(min, max, tickCount, allowDecimals, correctionFactor) {
     // minus modulo value
     middle = middle.sub(new _decimal["default"](middle).mod(step));
   }
-  var belowCount = Math.ceil(middle.sub(min).div(step).toNumber());
-  var upCount = Math.ceil(new _decimal["default"](max).sub(middle).div(step).toNumber());
+  var belowCount = _mathCeil(middle.sub(min).div(step).toNumber());
+  var upCount = _mathCeil(new _decimal["default"](max).sub(middle).div(step).toNumber());
   var scaleCount = belowCount + upCount + 1;
   if (scaleCount > tickCount) {
     // When more ticks need to cover the interval, step should be bigger.
@@ -123,11 +131,7 @@ function calculateStep(min, max, tickCount, allowDecimals, correctionFactor) {
     upCount = max > 0 ? upCount + (tickCount - scaleCount) : upCount;
     belowCount = max > 0 ? belowCount : belowCount + (tickCount - scaleCount);
   }
-  return {
-    step: step,
-    tickMin: middle.sub(new _decimal["default"](belowCount).mul(step)),
-    tickMax: middle.add(new _decimal["default"](upCount).mul(step))
-  };
+  return _crStepConfig(step, middle.sub(new _decimal["default"](belowCount).mul(step)), middle.add(new _decimal["default"](upCount).mul(step)));
 }
 /**
  * Calculate the ticks of an interval, the count of ticks will be guraranteed
@@ -147,7 +151,7 @@ function getNiceTickValuesFn(_ref2, tickCount, allowDecimals) {
     allowDecimals = true;
   }
   // More than two ticks should be return
-  var count = Math.max(tickCount, 2),
+  var count = _mathMax(tickCount, 2),
     _getValidInterval2 = _getValidInterval([min, max]),
     cormin = _getValidInterval2[0],
     cormax = _getValidInterval2[1];
@@ -197,7 +201,7 @@ function getTickValuesFixedDomainFn(_ref3, tickCount, allowDecimals) {
   if (cormin === cormax) {
     return [cormin];
   }
-  var count = Math.max(tickCount, 2),
+  var count = _mathMax(tickCount, 2),
     step = getFormatStep(new _decimal["default"](cormax).sub(cormin).div(count - 1), allowDecimals, 0),
     values = [].concat((0, _arithmetic.rangeStep)(new _decimal["default"](cormin), new _decimal["default"](cormax).sub(new _decimal["default"](0.99).mul(step)), step), [cormax]);
   return min > max ? (0, _utils.reverse)(values) : values;
