@@ -9,6 +9,7 @@ import {
 } from './util/utils';
 import {
   getDigitCount,
+  getByPow10,
   rangeStep
 } from './util/arithmetic';
 
@@ -45,7 +46,8 @@ function getFormatStep(
   const digitCount = getDigitCount(roughStep.toNumber())
   // The ratio between the rough step and the smallest number which has a bigger
   // order of magnitudes than the rough step
-  , digitCountValue = new Decimal(10).pow(digitCount)
+  //, digitCountValue = new Decimal(10).pow(digitCount)
+  , digitCountValue = getByPow10(digitCount)
   , stepRatio = roughStep.div(digitCountValue)
   // When an integer and a float multiplied, the accuracy of result may be wrong
   , stepRatioScale = digitCount !== 1
@@ -85,7 +87,8 @@ function getTickOfSingleValue(
 
     if (absVal < 1) {
       // The step should be a float number when the difference is smaller than 1
-      step = new Decimal(10).pow(getDigitCount(value) - 1);
+      //step = new Decimal(10).pow(getDigitCount(value) - 1);
+      step = getByPow10(getDigitCount(value) - 1)
 
       middle = new Decimal(_mathFloor(middle.div(step).toNumber())).mul(step);
     } else if (absVal > 1) {

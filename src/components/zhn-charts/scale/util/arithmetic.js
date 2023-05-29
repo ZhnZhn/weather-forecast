@@ -12,6 +12,7 @@ import Decimal from 'decimal.js-light';
 const _mathAbs = Math.abs
 , _mathLog = Math.log
 , _mathFloor = Math.floor
+, _mathPow = Math.pow
 , LOG_10 = _mathLog(10);
 export const getDigitCount = (
   value
@@ -46,4 +47,25 @@ export const rangeStep = (
   }
 
   return result;
+}
+
+
+//new Decimal(10).pow(digitCount)
+/**
+ *
+ * @param  {number} n
+ * @return {number}
+ */
+export const getByPow10 = (
+  n
+) => {
+  if (n >= 0) return _mathPow(10, n);
+
+  const _absN = _mathAbs(n);
+  let str = '0.';
+  for(let i=1; i<_absN; i++) {
+    str = str + '0'
+  }
+  str = str + '1'
+  return Decimal(str).toNumber();
 }

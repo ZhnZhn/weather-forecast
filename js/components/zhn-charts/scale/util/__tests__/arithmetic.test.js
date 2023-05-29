@@ -28,4 +28,14 @@ describe('rangeStep', function () {
     expect(fn(1, 2, 0.1)).toEqual([1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9]);
   });
 });
+describe('getByPow10', function () {
+  var fn = _arithmetic.getByPow10;
+  test('should return number 10 pow by', function () {
+    expect(fn(0)).toBe(1);
+    expect(fn(1)).toBe(10);
+    expect(fn(-1)).toBe(0.1);
+    expect(fn(-4)).toBe(0.0001);
+    expect(fn(-5)).toBe(0.00001);
+  });
+});
 //# sourceMappingURL=arithmetic.test.js.map

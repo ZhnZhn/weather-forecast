@@ -33,8 +33,9 @@ function getFormatStep(roughStep, allowDecimals, correctionFactor) {
   var digitCount = (0, _arithmetic.getDigitCount)(roughStep.toNumber())
     // The ratio between the rough step and the smallest number which has a bigger
     // order of magnitudes than the rough step
+    //, digitCountValue = new Decimal(10).pow(digitCount)
     ,
-    digitCountValue = new _decimal["default"](10).pow(digitCount),
+    digitCountValue = (0, _arithmetic.getByPow10)(digitCount),
     stepRatio = roughStep.div(digitCountValue)
     // When an integer and a float multiplied, the accuracy of result may be wrong
     ,
@@ -60,7 +61,8 @@ function getTickOfSingleValue(value, tickCount, allowDecimals) {
     var absVal = _mathAbs(value);
     if (absVal < 1) {
       // The step should be a float number when the difference is smaller than 1
-      step = new _decimal["default"](10).pow((0, _arithmetic.getDigitCount)(value) - 1);
+      //step = new Decimal(10).pow(getDigitCount(value) - 1);
+      step = (0, _arithmetic.getByPow10)((0, _arithmetic.getDigitCount)(value) - 1);
       middle = new _decimal["default"](_mathFloor(middle.div(step).toNumber())).mul(step);
     } else if (absVal > 1) {
       // Return the maximum integer which is smaller than 'value' when 'value' is greater than 1
