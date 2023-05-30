@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.rangeStep = exports.getDigitCount = exports.getByPow10 = void 0;
-var _decimal = _interopRequireDefault(require("decimal.js-light"));
+var _decimalLight = _interopRequireDefault(require("../../../../math/decimal-light/decimalLight"));
 /**
  *
  * [0.1, 1), 0
@@ -32,7 +32,7 @@ var getDigitCount = function getDigitCount(value) {
 exports.getDigitCount = getDigitCount;
 var rangeStep = function rangeStep(start, end, step) {
   var result = [];
-  var num = new _decimal["default"](start),
+  var num = new _decimalLight["default"](start),
     i = 0;
   // magic number to prevent infinite loop
   while (num.lt(end) && i < 100000) {
@@ -58,7 +58,7 @@ var getByPow10 = function getByPow10(n) {
     str = str + '0';
   }
   str = str + '1';
-  return (0, _decimal["default"])(str).toNumber();
+  return (0, _decimalLight["default"])(str).toNumber();
 };
 exports.getByPow10 = getByPow10;
 //# sourceMappingURL=arithmetic.js.map

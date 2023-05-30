@@ -1,4 +1,5 @@
-import Decimal from 'decimal.js-light';
+//import Decimal from 'decimal.js-light';
+import Decimal from '../../../math/decimal-light/decimalLight';
 
 import {
   compose,

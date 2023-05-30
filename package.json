@@ -27,7 +27,6 @@
     "classnames": "^2.2.5",
     "d3-scale": "^4.0.2",
     "d3-shape": "^3.2.0",
-    "decimal.js-light": "^2.5.1",
     "dompurify": "^2.4.5",
     "eventemitter3": "^4.0.7",
     "leaflet": "^1.7.1",
@@ -63,13 +62,15 @@
     "webpack-cli": "^5.1.1",
     "webpack-dev-server": "^4.15.0"
   },
-  "jest": {    
+  "jest": {
     "roots": [
-      "<rootDir>/js/components/zhn-charts/scale",      
-      "<rootDir>/js/components/zhn-charts/scale/util"      
+      "<rootDir>/js/math/decimal-light",
+      "<rootDir>/js/components/zhn-charts/scale",
+      "<rootDir>/js/components/zhn-charts/scale/util"
     ],
     "transformIgnorePatterns": [
-      "<rootDir>/js/components/zhn-charts/scale",       
+      "<rootDir>/js/math/decimal-light",
+      "<rootDir>/js/components/zhn-charts/scale",
       "<rootDir>/js/components/zhn-charts/scale/util"
     ]
   }
