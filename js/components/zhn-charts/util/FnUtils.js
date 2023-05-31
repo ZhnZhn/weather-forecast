@@ -21,7 +21,7 @@ var _isStr = function _isStr(v) {
 };
 exports._isStr = _isStr;
 var _isNumber = function _isNumber(v) {
-  return typeof v === 'number';
+  return typeof v === 'number' && v - v === 0;
 };
 exports._isNumber = _isNumber;
 var _isNil = function _isNil(v) {

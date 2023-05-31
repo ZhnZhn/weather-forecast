@@ -5,7 +5,7 @@ export const _isArr = Array.isArray
 export const _isFn = v => typeof v === 'function'
 export const _isBool = v => typeof v === 'boolean'
 export const _isStr = v => typeof v === 'string'
-export const _isNumber = v => typeof v === 'number'
+export const _isNumber = v => typeof v === 'number' && v-v === 0
 
 export const _isNil = v => v == null
 export const _isNaN = Number.isNaN
