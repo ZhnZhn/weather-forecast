@@ -1,4 +1,8 @@
-import * as d3Scales from 'd3-scale';
+import {
+  scaleBand,
+  scalePoint,
+  scaleLinear
+} from 'd3-scale';
 
 import {
   stack as shapeStack,
@@ -13,10 +17,10 @@ import {
   _isNil,
   _isFn,
   _isArr,
-  _isStr,
+  //_isStr,
   _isNaN,
   _getByPropName,
-  _upperFirst,
+  //_upperFirst,
   _min,
   _max,
   _isEqual
@@ -674,6 +678,19 @@ export const combineEventHandlers = (
   return null;
 };
 
+const _crScaleBand = () => ({
+  scale: scaleBand(),
+  realScaleType: 'band'
+});
+const _crScaleLinear = () => ({
+  scale: scaleLinear(),
+  realScaleType: 'linear'
+});
+const _crScalePoint = () => ({
+  scale: scalePoint(),
+  realScaleType: 'point'
+});
+
 /**
  * Parse the scale function of axis
  * @param  {Object}   axis          The option of axis
@@ -694,16 +711,10 @@ export const parseScale = (
   } = axis;
   if (scale === 'auto') {
     if (layout === 'radial' && axisType === 'radiusAxis') {
-      return {
-        scale: d3Scales.scaleBand(),
-        realScaleType: 'band'
-      };
+      return _crScaleBand()
     }
     if (layout === 'radial' && axisType === 'angleAxis') {
-      return {
-        scale: d3Scales.scaleLinear(),
-        realScaleType: 'linear'
-      };
+      return _crScaleLinear();
     }
     if (type === 'category'
        && chartType
@@ -711,19 +722,14 @@ export const parseScale = (
        || chartType.indexOf('AreaChart') >= 0
        || (chartType.indexOf('ComposedChart') >= 0 && !hasBar))
     ) {
-      return { scale: d3Scales.scalePoint(), realScaleType: 'point' };
+      return _crScalePoint();
     }
     if (type === 'category') {
-      return {
-        scale: d3Scales.scaleBand(),
-        realScaleType: 'band'
-      };
+      return _crScaleBand()
     }
-    return {
-      scale: d3Scales.scaleLinear(),
-      realScaleType: 'linear'
-    };
+    return _crScaleLinear();
   }
+  /*
   if (_isStr(scale)) {
     const name = `scale${_upperFirst(scale)}`;
     return {
@@ -731,9 +737,10 @@ export const parseScale = (
       realScaleType: d3Scales[name] ? name : 'point',
     };
   }
+  */
   return _isFn(scale)
     ? { scale }
-    : { scale: d3Scales.scalePoint(), realScaleType: 'point' };
+    : _crScalePoint();
 };
 
 const EPS = 1e-4;

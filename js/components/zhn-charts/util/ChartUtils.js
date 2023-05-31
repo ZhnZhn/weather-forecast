@@ -6,7 +6,7 @@ exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCate
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
 exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseErrorBarsOfAxis = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = exports.getDomainOfErrorBars = void 0;
 var _extends7 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var d3Scales = _interopRequireWildcard(require("d3-scale"));
+var _d3Scale = require("d3-scale");
 var _d3Shape = require("d3-shape");
 var _FnUtils = require("./FnUtils");
 var _scale = require("../scale");
@@ -14,8 +14,6 @@ var _ErrorBar = require("../cartesian/ErrorBar");
 var _Legend = require("../component/Legend");
 var _DataUtils = require("./DataUtils");
 var _ReactUtils = require("./ReactUtils");
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 var _getObjectKeys = Object.keys;
 var _getAxisDomain = function _getAxisDomain(axis) {
   return (((axis || {}).type || {}).defaultProps || {}).domain;
@@ -575,6 +573,25 @@ var combineEventHandlers = function combineEventHandlers(defaultHandler, parentH
   }
   return null;
 };
+exports.combineEventHandlers = combineEventHandlers;
+var _crScaleBand = function _crScaleBand() {
+  return {
+    scale: (0, _d3Scale.scaleBand)(),
+    realScaleType: 'band'
+  };
+};
+var _crScaleLinear = function _crScaleLinear() {
+  return {
+    scale: (0, _d3Scale.scaleLinear)(),
+    realScaleType: 'linear'
+  };
+};
+var _crScalePoint = function _crScalePoint() {
+  return {
+    scale: (0, _d3Scale.scalePoint)(),
+    realScaleType: 'point'
+  };
+};
 
 /**
  * Parse the scale function of axis
@@ -583,7 +600,6 @@ var combineEventHandlers = function combineEventHandlers(defaultHandler, parentH
  * @param  {Boolean}  hasBar        if it has a bar
  * @return {Function}               The scale function
  */
-exports.combineEventHandlers = combineEventHandlers;
 var parseScale = function parseScale(axis, chartType, hasBar) {
   var scale = axis.scale,
     type = axis.type,
@@ -591,47 +607,31 @@ var parseScale = function parseScale(axis, chartType, hasBar) {
     axisType = axis.axisType;
   if (scale === 'auto') {
     if (layout === 'radial' && axisType === 'radiusAxis') {
-      return {
-        scale: d3Scales.scaleBand(),
-        realScaleType: 'band'
-      };
+      return _crScaleBand();
     }
     if (layout === 'radial' && axisType === 'angleAxis') {
-      return {
-        scale: d3Scales.scaleLinear(),
-        realScaleType: 'linear'
-      };
+      return _crScaleLinear();
     }
     if (type === 'category' && chartType && (chartType.indexOf('LineChart') >= 0 || chartType.indexOf('AreaChart') >= 0 || chartType.indexOf('ComposedChart') >= 0 && !hasBar)) {
-      return {
-        scale: d3Scales.scalePoint(),
-        realScaleType: 'point'
-      };
+      return _crScalePoint();
     }
     if (type === 'category') {
-      return {
-        scale: d3Scales.scaleBand(),
-        realScaleType: 'band'
-      };
+      return _crScaleBand();
     }
-    return {
-      scale: d3Scales.scaleLinear(),
-      realScaleType: 'linear'
-    };
+    return _crScaleLinear();
   }
-  if ((0, _FnUtils._isStr)(scale)) {
-    var name = "scale" + (0, _FnUtils._upperFirst)(scale);
+  /*
+  if (_isStr(scale)) {
+    const name = `scale${_upperFirst(scale)}`;
     return {
       scale: (d3Scales[name] || d3Scales.scalePoint)(),
-      realScaleType: d3Scales[name] ? name : 'point'
+      realScaleType: d3Scales[name] ? name : 'point',
     };
   }
+  */
   return (0, _FnUtils._isFn)(scale) ? {
     scale: scale
-  } : {
-    scale: d3Scales.scalePoint(),
-    realScaleType: 'point'
-  };
+  } : _crScalePoint();
 };
 exports.parseScale = parseScale;
 var EPS = 1e-4;
