@@ -3,6 +3,11 @@
   opacity : 0.2;
 }
 
+
+.recharts-cartesian-axis-tick-value {
+  font-weight: 600;
+}
+
 .legend-cell {
   border-radius: 2px;
   cursor: pointer;
