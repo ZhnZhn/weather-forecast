@@ -6,7 +6,7 @@ exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCate
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
 exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseErrorBarsOfAxis = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = exports.getDomainOfErrorBars = void 0;
 var _extends7 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _d3Scale = require("d3-scale");
+var _d3Scale = require("../d3Scale");
 var _d3Shape = require("d3-shape");
 var _FnUtils = require("./FnUtils");
 var _scale = require("../scale");

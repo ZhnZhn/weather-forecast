@@ -1,0 +1,176 @@
+"use strict";
+
+exports.__esModule = true;
+exports.bisect = void 0;
+exports.range = range;
+exports.tickIncrement = tickIncrement;
+exports.tickStep = tickStep;
+exports.ticks = ticks;
+function ascending(a, b) {
+  return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+}
+
+/*
+function descending(a, b) {
+  return a == null || b == null
+    ? NaN
+    : b < a
+      ? -1
+      : b > a
+        ? 1
+        : b >= a
+          ? 0
+          : NaN;
+}
+*/
+
+function zero() {
+  return 0;
+}
+function bisector(f) {
+  var compare1, compare2, delta;
+
+  // If an accessor is specified, promote it to a comparator. In this case we
+  // can test whether the search value is (self-) comparable. We canÔÇÖt do this
+  // for a comparator (except for specific, known comparators) because we canÔÇÖt
+  // tell if the comparator is symmetric, and an asymmetric comparator canÔÇÖt be
+  // used to test whether a single value is comparable.
+  if (f.length !== 2) {
+    compare1 = ascending;
+    compare2 = function compare2(d, x) {
+      return ascending(f(d), x);
+    };
+    delta = function delta(d, x) {
+      return f(d) - x;
+    };
+  } else {
+    //compare1 = f === ascending || f === descending ? f : zero;
+    compare1 = f === ascending ? f : zero;
+    compare2 = f;
+    delta = f;
+  }
+  function left(a, x, lo, hi) {
+    if (lo === void 0) {
+      lo = 0;
+    }
+    if (hi === void 0) {
+      hi = a.length;
+    }
+    if (lo < hi) {
+      if (compare1(x, x) !== 0) return hi;
+      do {
+        var mid = lo + hi >>> 1;
+        if (compare2(a[mid], x) < 0) lo = mid + 1;else hi = mid;
+      } while (lo < hi);
+    }
+    return lo;
+  }
+  function right(a, x, lo, hi) {
+    if (lo === void 0) {
+      lo = 0;
+    }
+    if (hi === void 0) {
+      hi = a.length;
+    }
+    if (lo < hi) {
+      if (compare1(x, x) !== 0) return hi;
+      do {
+        var mid = lo + hi >>> 1;
+        if (compare2(a[mid], x) <= 0) lo = mid + 1;else hi = mid;
+      } while (lo < hi);
+    }
+    return lo;
+  }
+  function center(a, x, lo, hi) {
+    if (lo === void 0) {
+      lo = 0;
+    }
+    if (hi === void 0) {
+      hi = a.length;
+    }
+    var i = left(a, x, lo, hi - 1);
+    return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
+  }
+  return {
+    left: left,
+    center: center,
+    right: right
+  };
+}
+var ascendingBisect = bisector(ascending);
+var bisect = ascendingBisect.right;
+exports.bisect = bisect;
+function range(start, stop, step) {
+  start = +start;
+  stop = +stop;
+  step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
+  var i = -1,
+    n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
+    range = new Array(n);
+  while (++i < n) {
+    range[i] = start + i * step;
+  }
+  return range;
+}
+var e10 = Math.sqrt(50),
+  e5 = Math.sqrt(10),
+  e2 = Math.sqrt(2);
+function tickSpec(start, stop, count) {
+  var step = (stop - start) / Math.max(0, count),
+    power = Math.floor(Math.log10(step)),
+    error = step / Math.pow(10, power),
+    factor = error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1;
+  var i1, i2, inc;
+  if (power < 0) {
+    inc = Math.pow(10, -power) / factor;
+    i1 = Math.round(start * inc);
+    i2 = Math.round(stop * inc);
+    if (i1 / inc < start) ++i1;
+    if (i2 / inc > stop) --i2;
+    inc = -inc;
+  } else {
+    inc = Math.pow(10, power) * factor;
+    i1 = Math.round(start / inc);
+    i2 = Math.round(stop / inc);
+    if (i1 * inc < start) ++i1;
+    if (i2 * inc > stop) --i2;
+  }
+  if (i2 < i1 && 0.5 <= count && count < 2) return tickSpec(start, stop, count * 2);
+  return [i1, i2, inc];
+}
+function ticks(start, stop, count) {
+  stop = +stop;
+  start = +start;
+  count = +count;
+  if (!(count > 0)) return [];
+  if (start === stop) return [start];
+  var reverse = stop < start,
+    _ref = reverse ? tickSpec(stop, start, count) : tickSpec(start, stop, count),
+    i1 = _ref[0],
+    i2 = _ref[1],
+    inc = _ref[2];
+  if (!(i2 >= i1)) return [];
+  var n = i2 - i1 + 1,
+    ticks = new Array(n);
+  if (reverse) {
+    if (inc < 0) for (var i = 0; i < n; ++i) ticks[i] = (i2 - i) / -inc;else for (var _i = 0; _i < n; ++_i) ticks[_i] = (i2 - _i) * inc;
+  } else {
+    if (inc < 0) for (var _i2 = 0; _i2 < n; ++_i2) ticks[_i2] = (i1 + _i2) / -inc;else for (var _i3 = 0; _i3 < n; ++_i3) ticks[_i3] = (i1 + _i3) * inc;
+  }
+  return ticks;
+}
+function tickIncrement(start, stop, count) {
+  stop = +stop;
+  start = +start;
+  count = +count;
+  return tickSpec(start, stop, count)[2];
+}
+function tickStep(start, stop, count) {
+  stop = +stop;
+  start = +start;
+  count = +count;
+  var reverse = stop < start,
+    inc = reverse ? tickIncrement(stop, start, count) : tickIncrement(start, stop, count);
+  return (reverse ? -1 : 1) * (inc < 0 ? 1 / -inc : inc);
+}
+//# sourceMappingURL=d3Array.js.map

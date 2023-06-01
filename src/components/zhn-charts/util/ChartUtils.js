@@ -2,7 +2,7 @@ import {
   scaleBand,
   scalePoint,
   scaleLinear
-} from 'd3-scale';
+} from '../d3Scale';
 
 import {
   stack as shapeStack,
