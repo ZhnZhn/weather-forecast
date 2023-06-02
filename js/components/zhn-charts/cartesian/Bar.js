@@ -5,7 +5,7 @@ exports.__esModule = true;
 exports.Bar = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _uiApi = require("../../uiApi");
-var _classnames = _interopRequireDefault(require("classnames"));
+var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _FnUtils = require("../util/FnUtils");
 var _Layer = require("../container/Layer");
 var _Cell = require("../component/Cell");
@@ -20,9 +20,8 @@ var _useAnimationHandle2 = _interopRequireDefault(require("./useAnimationHandle"
 var _usePrevCurData2 = _interopRequireDefault(require("./usePrevCurData"));
 var _useClipPathId = _interopRequireDefault(require("./useClipPathId"));
 var _ClipPathRect = _interopRequireDefault(require("./ClipPathRect"));
+var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-var CL_BAR = "recharts-bar",
-  CL_BAR_RECTANGLES = CL_BAR + "-rectangles";
 var Bar = (0, _uiApi.memo)(function (props) {
   var hide = props.hide,
     data = props.data,
@@ -37,11 +36,11 @@ var Bar = (0, _uiApi.memo)(function (props) {
     handleAnimationEnd = _useAnimationHandle[2],
     _usePrevCurData = (0, _usePrevCurData2["default"])(data, animationId),
     prevData = _usePrevCurData[0],
-    clipPathId = (0, _useClipPathId["default"])(CL_BAR, id);
+    clipPathId = (0, _useClipPathId["default"])(_CL.CL_BAR, id);
   if (hide || !data || !data.length) {
     return null;
   }
-  var layerClass = (0, _classnames["default"])(CL_BAR, className),
+  var layerClass = (0, _crCn["default"])(_CL.CL_BAR, className),
     needClip = (0, _cartesianFn.isNeedClip)(props);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     className: layerClass,
@@ -49,7 +48,7 @@ var Bar = (0, _uiApi.memo)(function (props) {
       id: clipPathId,
       props: props
     }) : null, /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
-      className: CL_BAR_RECTANGLES,
+      className: _CL.CL_BAR_RECTANGLES,
       clipPath: needClip ? "url(#clipPath-" + clipPathId + ")" : null,
       children: [background ? (0, _BarRenderFn.renderBackground)(props) : null, (0, _BarRenderFn.renderRectangles)(props, prevData, handleAnimationStart, handleAnimationEnd)]
     }), (0, _BarRenderFn.renderErrorBar)(needClip, clipPathId, isAnimationFinished, props), (!isAnimationActive || isAnimationFinished) && _LabelList.LabelList.renderCallByParent(props, data)]

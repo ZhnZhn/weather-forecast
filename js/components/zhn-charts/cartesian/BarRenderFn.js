@@ -14,11 +14,10 @@ var _Rectangle = require("../shape/Rectangle");
 var _Layer = require("../container/Layer");
 var _ErrorBar = require("./ErrorBar");
 var _cartesianFn = require("./cartesianFn");
+var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 var _react = require("react");
 var _excluded = ["value", "background"];
-var CL_BAR_RECTANGLES = "recharts-bar-rectangle",
-  CL_BAR_BACKGROUND_RECTANGLES = "recharts-bar-background-rectangle";
 var _crElementRectangle = function _crElementRectangle(props) {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Rectangle.Rectangle, (0, _extends2["default"])({}, props));
 };
@@ -31,7 +30,7 @@ var _renderRectanglesStatically = function _renderRectanglesStatically(data, pro
       index: i
     });
     return /*#__PURE__*/(0, _react.createElement)(_Layer.Layer, (0, _extends2["default"])({
-      className: CL_BAR_RECTANGLES
+      className: _CL.CL_BAR_RECTANGLE
     }, (0, _types.adaptEventsOfChild)(props, entry, i), {
       key: "rectangle-" + i,
       role: "img"
@@ -56,7 +55,7 @@ var renderBackground = function renderBackground(props) {
     }, background, backgroundProps, (0, _types.adaptEventsOfChild)(props, entry, i), {
       index: i,
       key: "background-bar-" + i,
-      className: CL_BAR_BACKGROUND_RECTANGLES
+      className: _CL.CL_BAR_BACKGROUND_RECTANGLE
     });
     return _renderRectangle(props.background, _props);
   });

@@ -1,5 +1,5 @@
 import { memo } from '../../uiApi';
-import classNames from 'classnames';
+import crCn from '../../zhn-utils/crCn';
 
 import { _isArr } from '../util/FnUtils';
 
@@ -31,9 +31,10 @@ import usePrevCurData from './usePrevCurData';
 import useClipPathId from './useClipPathId';
 
 import ClipPathRect  from './ClipPathRect';
-
-const CL_BAR = "recharts-bar"
-, CL_BAR_RECTANGLES = `${CL_BAR}-rectangles`;
+import {
+  CL_BAR,
+  CL_BAR_RECTANGLES
+} from '../CL';
 
 export const Bar = memo((props) => {
   const {
@@ -65,7 +66,7 @@ export const Bar = memo((props) => {
     return null;
   }
 
-  const layerClass = classNames(CL_BAR, className)
+  const layerClass = crCn(CL_BAR, className)
   , needClip = isNeedClip(props);
 
   return (

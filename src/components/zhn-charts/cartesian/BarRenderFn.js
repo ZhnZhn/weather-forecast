@@ -20,8 +20,10 @@ import {
   crClipPathProps
 } from './cartesianFn';
 
-const CL_BAR_RECTANGLES = "recharts-bar-rectangle"
-, CL_BAR_BACKGROUND_RECTANGLES = "recharts-bar-background-rectangle"
+import {
+  CL_BAR_RECTANGLE,
+  CL_BAR_BACKGROUND_RECTANGLE
+} from '../CL';
 
 const _crElementRectangle = (
   props
@@ -44,7 +46,7 @@ const _renderRectanglesStatically = (
     };
     return (
       <Layer
-        className={CL_BAR_RECTANGLES}
+        className={CL_BAR_RECTANGLE}
         {...adaptEventsOfChild(props, entry, i)}
         key={`rectangle-${i}`}
         role="img"
@@ -80,7 +82,7 @@ export const renderBackground = (
       ...adaptEventsOfChild(props, entry, i),
       index: i,
       key: `background-bar-${i}`,
-      className: CL_BAR_BACKGROUND_RECTANGLES
+      className: CL_BAR_BACKGROUND_RECTANGLE
     };
     return _renderRectangle(props.background, _props);
   });
