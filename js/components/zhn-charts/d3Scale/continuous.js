@@ -3,7 +3,7 @@
 exports.__esModule = true;
 exports.continuous = continuous;
 exports.copy = copy;
-var _d3Interpolate = require("d3-interpolate");
+var _d3Interpolate = require("../d3Interpolate");
 var _d3Array = require("./d3Array");
 function constant(x) {
   return function () {
@@ -76,7 +76,7 @@ function polymap(domain, range, interpolate) {
 function transformer() {
   var domain = unit,
     range = unit,
-    interpolate = _d3Interpolate.interpolate,
+    interpolate = _d3Interpolate.interpolateValue,
     transform,
     untransform,
     unknown,

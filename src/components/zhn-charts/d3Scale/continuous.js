@@ -1,8 +1,8 @@
 import {
-  interpolate as interpolateValue,
+  interpolateValue,
   interpolateNumber,
   interpolateRound
-} from "d3-interpolate";
+} from '../d3Interpolate';
 
 import { bisect } from './d3Array';
 
