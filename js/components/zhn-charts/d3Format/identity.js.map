@@ -1,0 +1,12 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../../src/components/zhn-charts/d3Format/identity.js"
+ ],
+ "file": "../../../../src/components/zhn-charts/d3Format/identity.js",
+ "names": [
+  "_default",
+  "x"
+ ],
+ "mappings": ";;;;AAAe,SAAAA,SAASC,CAAC,EAAE;EACzB,OAAOA,CAAC;AACV"
+}

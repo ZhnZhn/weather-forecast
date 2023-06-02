@@ -5,7 +5,7 @@ import {
   precisionFixed,
   precisionPrefix,
   precisionRound
-} from 'd3-format';
+} from '../d3Format';
 import { tickStep } from './d3Array';
 
 export default function tickFormat(start, stop, count, specifier) {
