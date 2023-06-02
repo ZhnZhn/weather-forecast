@@ -5,7 +5,7 @@ exports.__esModule = true;
 exports.Line = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _uiApi = require("../../uiApi");
-var _classnames = _interopRequireDefault(require("classnames"));
+var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _FnUtils = require("../util/FnUtils");
 var _Layer = require("../container/Layer");
 var _LabelList = require("../component/LabelList");
@@ -17,8 +17,8 @@ var _useAnimationHandle2 = _interopRequireDefault(require("./useAnimationHandle"
 var _usePrevCurData2 = _interopRequireDefault(require("./usePrevCurData"));
 var _useClipPathId = _interopRequireDefault(require("./useClipPathId"));
 var _ClipPathRect = _interopRequireDefault(require("./ClipPathRect"));
+var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-var CL_LINE = "recharts-line";
 var DF_TOTAL_LENGTH = 0;
 var _getTotalLength = function _getTotalLength(curveDom) {
   try {
@@ -42,7 +42,7 @@ var Line = (0, _uiApi.memo)(function (props) {
     handleAnimationEnd = _useAnimationHandle[2],
     _usePrevCurData = (0, _usePrevCurData2["default"])(points, animationId),
     prevPoints = _usePrevCurData[0],
-    clipPathId = (0, _useClipPathId["default"])(CL_LINE, id),
+    clipPathId = (0, _useClipPathId["default"])(_CL.CL_LINE, id),
     _useState = (0, _uiApi.useState)(0),
     totalLength = _useState[0],
     setTotalLength = _useState[1];
@@ -61,7 +61,7 @@ var Line = (0, _uiApi.memo)(function (props) {
     return null;
   }
   var hasSinglePoint = points.length === 1,
-    layerClass = (0, _classnames["default"])(CL_LINE, className),
+    layerClass = (0, _crCn["default"])(_CL.CL_LINE, className),
     needClip = (0, _cartesianFn.isNeedClip)(props);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     className: layerClass,

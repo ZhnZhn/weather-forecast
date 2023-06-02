@@ -4,7 +4,7 @@ import {
   useState,
   useEffect
 } from '../../uiApi';
-import classNames from 'classnames';
+import crCn from '../../zhn-utils/crCn';
 
 import { _isNil } from '../util/FnUtils';
 
@@ -30,8 +30,7 @@ import usePrevCurData from './usePrevCurData';
 import useClipPathId from './useClipPathId';
 
 import ClipPathRect  from './ClipPathRect';
-
-const CL_LINE = "recharts-line";
+import { CL_LINE } from '../CL';
 
 const DF_TOTAL_LENGTH = 0;
 const _getTotalLength = (
@@ -95,7 +94,7 @@ export const Line = memo((props) => {
   }
 
   const hasSinglePoint = points.length === 1
-  , layerClass = classNames(CL_LINE, className)
+  , layerClass = crCn(CL_LINE, className)
   , needClip = isNeedClip(props);
 
   return (

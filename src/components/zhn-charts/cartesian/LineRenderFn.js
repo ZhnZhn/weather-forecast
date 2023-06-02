@@ -1,5 +1,5 @@
 import { cloneElement } from '../../uiApi';
-import classNames from 'classnames';
+import crCn from '../../zhn-utils/crCn';
 import { Animate } from '../../zhn-animate';
 
 import {
@@ -19,19 +19,19 @@ import {
   dataPointFormatter,
   crClipPathProps
 } from './cartesianFn';
-
-const _CHART_LINE = 'recharts-line'
-, CL_LINE_DOT = `${_CHART_LINE}-dot`
-, CL_LINE_DOTS = `${CL_LINE_DOT}s`
-, CL_LINE_CURVE = `${_CHART_LINE}-curve`;
+import {
+  CL_LINE_DOT,
+  CL_LINE_DOTS,
+  CL_LINE_CURVE
+} from '../CL';
 
 const _crDotItem = (
   props,
   option
 ) => {
- const className = classNames(
+ const className = crCn(
    CL_LINE_DOT,
-   option ? option.className : ''
+   option && option.className
  );
  return (
    <Dot
