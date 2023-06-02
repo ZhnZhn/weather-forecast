@@ -2,22 +2,16 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.renderVerticalStripes = exports.renderVertical = exports.renderHorizontalStripes = exports.renderHorizontal = exports.renderBackground = exports.crGridPoints = exports.CL_CARTESIAN_GRID = void 0;
+exports.renderVerticalStripes = exports.renderVertical = exports.renderHorizontalStripes = exports.renderHorizontal = exports.renderBackground = exports.crGridPoints = void 0;
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _FnUtils = require("../util/FnUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _cartesianFn = require("./cartesianFn");
+var _CL = require("../CL");
 var _react = require("react");
 var _jsxRuntime = require("react/jsx-runtime");
 var _excluded = ["x1", "y1", "x2", "y2", "key"];
-var CL_CARTESIAN_GRID = "recharts-cartesian-grid";
-exports.CL_CARTESIAN_GRID = CL_CARTESIAN_GRID;
-var CL_GRID_HORIZONTAL = CL_CARTESIAN_GRID + "-horizontal",
-  CL_GRID_VERTICAL = CL_CARTESIAN_GRID + "-vertical",
-  CL_BG = CL_CARTESIAN_GRID + "-bg",
-  CL_STRIPES_HORIZONTAL = CL_CARTESIAN_GRID + "stripes-horizontal",
-  CL_STRIPES_VERTICAL = CL_CARTESIAN_GRID + "stripes-vertical";
 var _crLineElement = function _crLineElement(_ref) {
   var x1 = _ref.x1,
     y1 = _ref.y1,
@@ -79,7 +73,7 @@ var renderHorizontal = function renderHorizontal(horizontalPoints, props) {
     }));
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
-    className: CL_GRID_HORIZONTAL,
+    className: _CL.CL_GRID_HORIZONTAL,
     children: items
   });
 };
@@ -102,7 +96,7 @@ var renderVertical = function renderVertical(verticalPoints, props) {
     }));
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
-    className: CL_GRID_VERTICAL,
+    className: _CL.CL_GRID_VERTICAL,
     children: items
   });
 };
@@ -140,11 +134,11 @@ var renderVerticalStripes = function renderVerticalStripes(verticalPoints, props
       stroke: "none",
       fill: verticalFill[colorIndex],
       fillOpacity: fillOpacity,
-      className: CL_BG
+      className: _CL.CL_BG
     }, "react-" + i);
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
-    className: CL_STRIPES_VERTICAL,
+    className: _CL.CL_STRIPES_VERTICAL,
     children: items
   });
 };
@@ -182,11 +176,11 @@ var renderHorizontalStripes = function renderHorizontalStripes(horizontalPoints,
       stroke: "none",
       fill: horizontalFill[colorIndex],
       fillOpacity: fillOpacity,
-      className: CL_BG
+      className: _CL.CL_BG
     }, "react-" + i);
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
-    className: CL_STRIPES_HORIZONTAL,
+    className: _CL.CL_STRIPES_HORIZONTAL,
     children: items
   });
 };
@@ -209,7 +203,7 @@ var renderBackground = function renderBackground(props) {
     stroke: "none",
     fill: fill,
     fillOpacity: fillOpacity,
-    className: CL_BG
+    className: _CL.CL_BG
   });
 };
 exports.renderBackground = renderBackground;

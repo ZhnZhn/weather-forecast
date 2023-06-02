@@ -2,12 +2,13 @@ import { _isFn } from '../util/FnUtils';
 import { filterProps } from '../util/ReactUtils';
 import { fCreateElement } from './cartesianFn';
 
-export const CL_CARTESIAN_GRID = "recharts-cartesian-grid"
-const CL_GRID_HORIZONTAL = `${CL_CARTESIAN_GRID}-horizontal`
-, CL_GRID_VERTICAL = `${CL_CARTESIAN_GRID}-vertical`
-, CL_BG = `${CL_CARTESIAN_GRID}-bg`
-, CL_STRIPES_HORIZONTAL = `${CL_CARTESIAN_GRID}stripes-horizontal`
-, CL_STRIPES_VERTICAL = `${CL_CARTESIAN_GRID}stripes-vertical`;
+import {
+  CL_GRID_HORIZONTAL,
+  CL_GRID_VERTICAL,
+  CL_BG,
+  CL_STRIPES_HORIZONTAL,
+  CL_STRIPES_VERTICAL
+} from '../CL';
 
 const _crLineElement = ({
   x1,

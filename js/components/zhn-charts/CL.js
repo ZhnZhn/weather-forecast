@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.CL_LINE_DOTS = exports.CL_LINE_DOT = exports.CL_LINE_CURVE = exports.CL_LINE = exports.CL_LABEL = exports.CL_BAR_RECTANGLES = exports.CL_BAR_RECTANGLE = exports.CL_BAR_BACKGROUND_RECTANGLE = exports.CL_BAR = exports.CL_AXIS_TICK_VALUE = exports.CL_AXIS_TICK_LINE = exports.CL_AXIS_TICKS = exports.CL_AXIS_TICK = exports.CL_AXIS_LINE = exports.CL_AXIS = void 0;
+exports.CL_STRIPES_VERTICAL = exports.CL_STRIPES_HORIZONTAL = exports.CL_LINE_DOTS = exports.CL_LINE_DOT = exports.CL_LINE_CURVE = exports.CL_LINE = exports.CL_LABEL = exports.CL_GRID_VERTICAL = exports.CL_GRID_HORIZONTAL = exports.CL_CARTESIAN_GRID = exports.CL_BG = exports.CL_BAR_RECTANGLES = exports.CL_BAR_RECTANGLE = exports.CL_BAR_BACKGROUND_RECTANGLE = exports.CL_BAR = exports.CL_AXIS_TICK_VALUE = exports.CL_AXIS_TICK_LINE = exports.CL_AXIS_TICKS = exports.CL_AXIS_TICK = exports.CL_AXIS_LINE = exports.CL_AXIS = void 0;
 var _CHART_PREFIX = "recharts";
 var CL_BAR = _CHART_PREFIX + "-bar";
 exports.CL_BAR = CL_BAR;
@@ -33,4 +33,16 @@ var CL_AXIS_TICK_VALUE = CL_AXIS_TICK + "-value";
 exports.CL_AXIS_TICK_VALUE = CL_AXIS_TICK_VALUE;
 var CL_LABEL = "recharts-label";
 exports.CL_LABEL = CL_LABEL;
+var CL_CARTESIAN_GRID = "recharts-cartesian-grid";
+exports.CL_CARTESIAN_GRID = CL_CARTESIAN_GRID;
+var CL_GRID_HORIZONTAL = CL_CARTESIAN_GRID + "-horizontal";
+exports.CL_GRID_HORIZONTAL = CL_GRID_HORIZONTAL;
+var CL_GRID_VERTICAL = CL_CARTESIAN_GRID + "-vertical";
+exports.CL_GRID_VERTICAL = CL_GRID_VERTICAL;
+var CL_BG = CL_CARTESIAN_GRID + "-bg";
+exports.CL_BG = CL_BG;
+var CL_STRIPES_HORIZONTAL = CL_CARTESIAN_GRID + "stripes-horizontal";
+exports.CL_STRIPES_HORIZONTAL = CL_STRIPES_HORIZONTAL;
+var CL_STRIPES_VERTICAL = CL_CARTESIAN_GRID + "stripes-vertical";
+exports.CL_STRIPES_VERTICAL = CL_STRIPES_VERTICAL;
 //# sourceMappingURL=CL.js.map

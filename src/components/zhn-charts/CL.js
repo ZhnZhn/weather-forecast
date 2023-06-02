@@ -18,3 +18,10 @@ export const CL_AXIS_TICK_LINE = `${CL_AXIS_TICK}-line`
 export const CL_AXIS_TICK_VALUE = `${CL_AXIS_TICK}-value`;
 
 export const CL_LABEL = "recharts-label"
+
+export const CL_CARTESIAN_GRID = "recharts-cartesian-grid"
+export const CL_GRID_HORIZONTAL = `${CL_CARTESIAN_GRID}-horizontal`
+export const CL_GRID_VERTICAL = `${CL_CARTESIAN_GRID}-vertical`
+export const CL_BG = `${CL_CARTESIAN_GRID}-bg`
+export const CL_STRIPES_HORIZONTAL = `${CL_CARTESIAN_GRID}stripes-horizontal`
+export const CL_STRIPES_VERTICAL = `${CL_CARTESIAN_GRID}stripes-vertical`;

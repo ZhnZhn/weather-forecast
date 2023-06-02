@@ -3,7 +3,6 @@ import { memo } from '../../uiApi';
 import { isNumber } from '../util/DataUtils';
 
 import {
-  CL_CARTESIAN_GRID,
   crGridPoints,
   renderHorizontal,
   renderVertical,
@@ -11,6 +10,10 @@ import {
   renderHorizontalStripes,
   renderBackground
 } from './CartesianGridRenderFn';
+
+import {
+  CL_CARTESIAN_GRID,
+} from '../CL';
 
 export const CartesianGrid = memo((
   props
