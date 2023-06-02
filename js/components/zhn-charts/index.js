@@ -1,7 +1,9 @@
 "use strict";
 
 exports.__esModule = true;
-exports.YAxis = exports.XAxis = exports.Tooltip = exports.Surface = exports.ResponsiveContainer = exports.LineChart = exports.Line = exports.Legend = exports.ComposedChart = exports.CartesianGrid = exports.Bar = void 0;
+exports.YAxis = exports.XAxis = exports.Tooltip = exports.Surface = exports.ResponsiveContainer = exports.LineChart = exports.Line = exports.Legend = exports.ComposedChart = exports.CartesianGrid = exports.CartesianAxis = exports.Bar = void 0;
+var _CartesianAxis = require("./cartesian/CartesianAxis");
+exports.CartesianAxis = _CartesianAxis.CartesianAxis;
 var _CartesianGrid = require("./cartesian/CartesianGrid");
 exports.CartesianGrid = _CartesianGrid.CartesianGrid;
 var _Bar = require("./cartesian/Bar");

@@ -1,6 +1,5 @@
 import { Component } from '../../uiApi';
-
-import classNames from 'classnames';
+import crCn from '../../zhn-utils/crCn';
 
 import { _isFn } from '../util/FnUtils';
 import { shallowEqual } from '../util/ShallowEqual';
@@ -18,12 +17,14 @@ import {
   getTickAnchors
 } from './CartesianAxisFn';
 
-const CL_AXIS = "recharts-cartesian-axis"
-, CL_AXIS_LINE = `${CL_AXIS}-line`
-, CL_AXIS_TICK = `${CL_AXIS}-tick`
-, CL_AXIS_TICKS = `${CL_AXIS_TICK}s`
-, CL_AXIS_TICK_LINE = `${CL_AXIS_TICK}-line`
-, CL_AXIS_TICK_VALUE = `${CL_AXIS_TICK}-value`;
+import {
+  CL_AXIS,
+  CL_AXIS_LINE,
+  CL_AXIS_TICK,
+  CL_AXIS_TICKS,
+  CL_AXIS_TICK_LINE,
+  CL_AXIS_TICK_VALUE
+} from '../CL';
 
 const _crTextElement = (
   props,
@@ -186,7 +187,7 @@ export class CartesianAxis extends Component {
     return (
       <line
         {...props}
-        className={classNames(CL_AXIS_LINE, _axisLineClassName)}
+        className={crCn(CL_AXIS_LINE, _axisLineClassName)}
       />
     );
   }
@@ -251,7 +252,7 @@ export class CartesianAxis extends Component {
                <line
                   {...tickLineProps}
                   {...lineCoord}
-                  className={classNames(CL_AXIS_TICK_LINE, _tickLineClassName)}
+                  className={crCn(CL_AXIS_TICK_LINE, _tickLineClassName)}
                />
              )}
             {tick && _renderTickItem(tick, tickProps, `${_isFn(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)}
@@ -296,7 +297,7 @@ export class CartesianAxis extends Component {
     } = this.state;
     return (
       <Layer
-         className={classNames(CL_AXIS, className)}
+         className={crCn(CL_AXIS, className)}
          ref={this._refLayerReference}
       >
          {axisLine && this.renderAxisLine()}

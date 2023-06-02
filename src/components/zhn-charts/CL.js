@@ -9,3 +9,12 @@ export const CL_LINE = `${_CHART_PREFIX}-line`
 export const CL_LINE_DOT = `${CL_LINE}-dot`
 export const CL_LINE_DOTS = `${CL_LINE_DOT}s`
 export const CL_LINE_CURVE = `${CL_LINE}-curve`;
+
+export const CL_AXIS = "recharts-cartesian-axis"
+export const CL_AXIS_LINE = `${CL_AXIS}-line`
+export const CL_AXIS_TICK = `${CL_AXIS}-tick`
+export const CL_AXIS_TICKS = `${CL_AXIS_TICK}s`
+export const CL_AXIS_TICK_LINE = `${CL_AXIS_TICK}-line`
+export const CL_AXIS_TICK_VALUE = `${CL_AXIS_TICK}-value`;
+
+export const CL_LABEL = "recharts-label"

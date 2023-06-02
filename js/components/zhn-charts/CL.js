@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.CL_LINE_DOTS = exports.CL_LINE_DOT = exports.CL_LINE_CURVE = exports.CL_LINE = exports.CL_BAR_RECTANGLES = exports.CL_BAR_RECTANGLE = exports.CL_BAR_BACKGROUND_RECTANGLE = exports.CL_BAR = void 0;
+exports.CL_LINE_DOTS = exports.CL_LINE_DOT = exports.CL_LINE_CURVE = exports.CL_LINE = exports.CL_LABEL = exports.CL_BAR_RECTANGLES = exports.CL_BAR_RECTANGLE = exports.CL_BAR_BACKGROUND_RECTANGLE = exports.CL_BAR = exports.CL_AXIS_TICK_VALUE = exports.CL_AXIS_TICK_LINE = exports.CL_AXIS_TICKS = exports.CL_AXIS_TICK = exports.CL_AXIS_LINE = exports.CL_AXIS = void 0;
 var _CHART_PREFIX = "recharts";
 var CL_BAR = _CHART_PREFIX + "-bar";
 exports.CL_BAR = CL_BAR;
@@ -19,4 +19,18 @@ var CL_LINE_DOTS = CL_LINE_DOT + "s";
 exports.CL_LINE_DOTS = CL_LINE_DOTS;
 var CL_LINE_CURVE = CL_LINE + "-curve";
 exports.CL_LINE_CURVE = CL_LINE_CURVE;
+var CL_AXIS = "recharts-cartesian-axis";
+exports.CL_AXIS = CL_AXIS;
+var CL_AXIS_LINE = CL_AXIS + "-line";
+exports.CL_AXIS_LINE = CL_AXIS_LINE;
+var CL_AXIS_TICK = CL_AXIS + "-tick";
+exports.CL_AXIS_TICK = CL_AXIS_TICK;
+var CL_AXIS_TICKS = CL_AXIS_TICK + "s";
+exports.CL_AXIS_TICKS = CL_AXIS_TICKS;
+var CL_AXIS_TICK_LINE = CL_AXIS_TICK + "-line";
+exports.CL_AXIS_TICK_LINE = CL_AXIS_TICK_LINE;
+var CL_AXIS_TICK_VALUE = CL_AXIS_TICK + "-value";
+exports.CL_AXIS_TICK_VALUE = CL_AXIS_TICK_VALUE;
+var CL_LABEL = "recharts-label";
+exports.CL_LABEL = CL_LABEL;
 //# sourceMappingURL=CL.js.map

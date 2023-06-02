@@ -1,3 +1,4 @@
+export { CartesianAxis } from "./cartesian/CartesianAxis";
 export { CartesianGrid } from "./cartesian/CartesianGrid";
 export { Bar } from "./cartesian/Bar";
 export { Line } from "./cartesian/Line";

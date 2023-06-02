@@ -7,7 +7,7 @@ var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inh
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _uiApi = require("../../uiApi");
-var _classnames = _interopRequireDefault(require("classnames"));
+var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _FnUtils = require("../util/FnUtils");
 var _ShallowEqual = require("../util/ShallowEqual");
 var _DataUtils = require("../util/DataUtils");
@@ -19,19 +19,14 @@ var _Label = require("../component/Label");
 var _getTicks = require("./getTicks");
 var _cartesianFn = require("./cartesianFn");
 var _CartesianAxisFn = require("./CartesianAxisFn");
+var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 var _excluded = ["ticks", "ticksGenerator"],
   _excluded2 = ["viewBox"],
   _excluded3 = ["viewBox"];
-var CL_AXIS = "recharts-cartesian-axis",
-  CL_AXIS_LINE = CL_AXIS + "-line",
-  CL_AXIS_TICK = CL_AXIS + "-tick",
-  CL_AXIS_TICKS = CL_AXIS_TICK + "s",
-  CL_AXIS_TICK_LINE = CL_AXIS_TICK + "-line",
-  CL_AXIS_TICK_VALUE = CL_AXIS_TICK + "-value";
 var _crTextElement = function _crTextElement(props, option, value) {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, (0, _extends2["default"])({}, props, {
-    className: CL_AXIS_TICK_VALUE,
+    className: _CL.CL_AXIS_TICK_VALUE,
     children: value
   }));
 };
@@ -78,7 +73,7 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
     if (!htmlLayer) {
       return;
     }
-    var tick = htmlLayer.getElementsByClassName(CL_AXIS_TICK_VALUE)[0];
+    var tick = htmlLayer.getElementsByClassName(_CL.CL_AXIS_TICK_VALUE)[0];
     if (tick) {
       var _tickComputedStyle = window.getComputedStyle(tick);
       this.setState({
@@ -182,7 +177,7 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
     }
     var _axisLineClassName = _getClassName(axisLine);
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("line", (0, _extends2["default"])({}, props, {
-      className: (0, _classnames["default"])(CL_AXIS_LINE, _axisLineClassName)
+      className: (0, _crCn["default"])(_CL.CL_AXIS_LINE, _axisLineClassName)
     }));
   }
 
@@ -232,15 +227,15 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
           });
         var _tickLineClassName = _getClassName(tickLine);
         return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, (0, _extends2["default"])({
-          className: CL_AXIS_TICK
+          className: _CL.CL_AXIS_TICK
         }, (0, _types.adaptEventsOfChild)(_this2.props, entry, i), {
           children: [tickLine && /*#__PURE__*/(0, _jsxRuntime.jsx)("line", (0, _extends2["default"])({}, tickLineProps, lineCoord, {
-            className: (0, _classnames["default"])(CL_AXIS_TICK_LINE, _tickLineClassName)
+            className: (0, _crCn["default"])(_CL.CL_AXIS_TICK_LINE, _tickLineClassName)
           })), tick && _renderTickItem(tick, tickProps, "" + ((0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value) + (unit || ''))]
         }), "tick-" + i);
       });
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
-      className: CL_AXIS_TICKS,
+      className: _CL.CL_AXIS_TICKS,
       children: items
     });
   };
@@ -262,7 +257,7 @@ var CartesianAxis = /*#__PURE__*/function (_Component) {
       fontSize = _this$state.fontSize,
       letterSpacing = _this$state.letterSpacing;
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
-      className: (0, _classnames["default"])(CL_AXIS, className),
+      className: (0, _crCn["default"])(_CL.CL_AXIS, className),
       ref: this._refLayerReference,
       children: [axisLine && this.renderAxisLine(), this.renderTicks(finalTicks, fontSize, letterSpacing), _Label.Label.renderCallByParent(this.props)]
     });
