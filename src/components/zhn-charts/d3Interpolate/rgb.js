@@ -1,4 +1,4 @@
-import {rgb as colorRgb} from "d3-color";
+import {rgb as colorRgb} from "../d3Color";
 import basis from "./basis.js";
 import basisClosed from "./basisClosed.js";
 import nogamma, {gamma} from "./color.js";

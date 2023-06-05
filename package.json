@@ -69,6 +69,7 @@
     "roots": [
       "<rootDir>/js/math/decimal-light",
       "<rootDir>/js/components/zhn-charts/cartesian",
+      "<rootDir>/js/components/zhn-charts/d3Color",
       "<rootDir>/js/components/zhn-charts/d3Format",
       "<rootDir>/js/components/zhn-charts/d3Scale",
       "<rootDir>/js/components/zhn-charts/scale",
@@ -77,6 +78,7 @@
     "transformIgnorePatterns": [
       "<rootDir>/js/math/decimal-light",
       "<rootDir>/js/components/zhn-charts/cartesian",
+      "<rootDir>/js/components/zhn-charts/d3Color",
       "<rootDir>/js/components/zhn-charts/d3Format",
       "<rootDir>/js/components/zhn-charts/d3Scale",
       "<rootDir>/js/components/zhn-charts/scale",

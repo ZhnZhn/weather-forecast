@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.rgbBasisClosed = exports.rgbBasis = exports["default"] = void 0;
-var _d3Color = require("d3-color");
+var _d3Color = require("../d3Color");
 var _basis = _interopRequireDefault(require("./basis.js"));
 var _basisClosed = _interopRequireDefault(require("./basisClosed.js"));
 var _color = _interopRequireWildcard(require("./color.js"));

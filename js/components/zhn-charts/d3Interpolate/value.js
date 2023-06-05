@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports["default"] = _default;
-var _d3Color = require("d3-color");
+var _d3Color = require("../d3Color");
 var _rgb = _interopRequireDefault(require("./rgb.js"));
 var _array = require("./array.js");
 var _date = _interopRequireDefault(require("./date.js"));

@@ -1,4 +1,4 @@
-import {color} from "d3-color";
+import { color } from "../d3Color";
 import rgb from "./rgb.js";
 import {genericArray} from "./array.js";
 import date from "./date.js";
