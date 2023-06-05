@@ -1,5 +1,5 @@
-import _debounce from 'lodash/debounce';
-import _throttle from 'lodash/throttle';
+import _debounce from '../../utils/debounceFn';
+import _throttle from '../../utils/throttleFn';
 
 export const patchResizeCallback = (
   resizeCallback,

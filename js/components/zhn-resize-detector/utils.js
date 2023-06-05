@@ -3,10 +3,10 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.patchResizeCallback = exports.isSSR = exports.isFunction = exports.isDOMElement = void 0;
-var _debounce2 = _interopRequireDefault(require("lodash/debounce"));
-var _throttle2 = _interopRequireDefault(require("lodash/throttle"));
+var _debounceFn = _interopRequireDefault(require("../../utils/debounceFn"));
+var _throttleFn = _interopRequireDefault(require("../../utils/throttleFn"));
 var patchResizeCallback = function patchResizeCallback(resizeCallback, refreshMode, refreshRate, refreshOptions) {
-  return refreshMode === 'debounce' ? (0, _debounce2["default"])(resizeCallback, refreshRate, refreshOptions) : refreshMode === 'throttle' ? (0, _throttle2["default"])(resizeCallback, refreshRate, refreshOptions) : resizeCallback;
+  return refreshMode === 'debounce' ? (0, _debounceFn["default"])(resizeCallback, refreshRate, refreshOptions) : refreshMode === 'throttle' ? (0, _throttleFn["default"])(resizeCallback, refreshRate, refreshOptions) : resizeCallback;
 };
 exports.patchResizeCallback = patchResizeCallback;
 var isFunction = function isFunction(fn) {
