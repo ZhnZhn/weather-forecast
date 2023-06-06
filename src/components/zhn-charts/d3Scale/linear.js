@@ -1,22 +1,25 @@
 import { ticks, tickIncrement } from './d3Array';
-import { continuous, copy } from './continuous.js';
-import { initRange } from './init.js';
-import tickFormat from './tickFormat.js';
+import { continuous, copy } from './continuous';
+import { initRange } from './init';
+import tickFormat from './tickFormat';
+
+const mathFloor = Math.floor
+, mathCeil = Math.ceil;
 
 function linearish(scale) {
   let domain = scale.domain;
 
-  scale.ticks = function(count) {
+  scale.ticks = (count) => {
     let d = domain();
     return ticks(d[0], d[d.length - 1], count == null ? 10 : count);
   };
 
-  scale.tickFormat = function(count, specifier) {
+  scale.tickFormat = (count, specifier) => {
     let d = domain();
     return tickFormat(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
   };
 
-  scale.nice = function(count) {
+  scale.nice = (count) => {
     if (count == null) count = 10;
 
     let d = domain()
@@ -44,11 +47,11 @@ function linearish(scale) {
         d[i1] = stop
         return domain(d);
       } else if (step > 0) {
-        start = Math.floor(start / step) * step;
-        stop = Math.ceil(stop / step) * step;
+        start = mathFloor(start / step) * step;
+        stop = mathCeil(stop / step) * step;
       } else if (step < 0) {
-        start = Math.ceil(start * step) / step;
-        stop = Math.floor(stop * step) / step;
+        start = mathCeil(start * step) / step;
+        stop = mathFloor(stop * step) / step;
       } else {
         break;
       }
@@ -61,14 +64,11 @@ function linearish(scale) {
   return scale;
 }
 
-export function scaleLinear() {
+export function scaleLinear(...args) {
   let scale = continuous();
 
-  scale.copy = function() {
-    return copy(scale, scaleLinear());
-  };
-
-  initRange.apply(scale, arguments);
+  scale.copy = () => copy(scale, scaleLinear());
+  initRange.apply(scale, args);
 
   return linearish(scale);
 }

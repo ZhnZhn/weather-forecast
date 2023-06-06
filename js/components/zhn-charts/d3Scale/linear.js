@@ -4,9 +4,11 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.scaleLinear = scaleLinear;
 var _d3Array = require("./d3Array");
-var _continuous = require("./continuous.js");
-var _init = require("./init.js");
-var _tickFormat = _interopRequireDefault(require("./tickFormat.js"));
+var _continuous = require("./continuous");
+var _init = require("./init");
+var _tickFormat = _interopRequireDefault(require("./tickFormat"));
+var mathFloor = Math.floor,
+  mathCeil = Math.ceil;
 function linearish(scale) {
   var domain = scale.domain;
   scale.ticks = function (count) {
@@ -42,11 +44,11 @@ function linearish(scale) {
         d[i1] = stop;
         return domain(d);
       } else if (step > 0) {
-        start = Math.floor(start / step) * step;
-        stop = Math.ceil(stop / step) * step;
+        start = mathFloor(start / step) * step;
+        stop = mathCeil(stop / step) * step;
       } else if (step < 0) {
-        start = Math.ceil(start * step) / step;
-        stop = Math.floor(stop * step) / step;
+        start = mathCeil(start * step) / step;
+        stop = mathFloor(stop * step) / step;
       } else {
         break;
       }
@@ -61,7 +63,10 @@ function scaleLinear() {
   scale.copy = function () {
     return (0, _continuous.copy)(scale, scaleLinear());
   };
-  _init.initRange.apply(scale, arguments);
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+  _init.initRange.apply(scale, args);
   return linearish(scale);
 }
 //# sourceMappingURL=linear.js.map
