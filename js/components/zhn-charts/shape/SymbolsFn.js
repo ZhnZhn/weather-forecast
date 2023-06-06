@@ -2,7 +2,7 @@
 
 exports.__esModule = true;
 exports.registerSymbol = exports.getSymbolPath = void 0;
-var _d3Shape = require("d3-shape");
+var _d3Shape = require("../d3Shape");
 var _FnUtils = require("../util/FnUtils");
 var MATH_PI = Math.PI
   // (Math.PI/180)*18
@@ -45,7 +45,7 @@ var getSymbolPath = function getSymbolPath(_ref) {
   var size = _ref.size,
     sizeType = _ref.sizeType,
     type = _ref.type;
-  return (0, _d3Shape.symbol)().type(_getSymbolFactory(type)).size(_calculateAreaSize(size, sizeType, type))();
+  return (0, _d3Shape.shapeSymbol)().type(_getSymbolFactory(type)).size(_calculateAreaSize(size, sizeType, type))();
 };
 exports.getSymbolPath = getSymbolPath;
 //# sourceMappingURL=SymbolsFn.js.map

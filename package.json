@@ -25,7 +25,6 @@
   "dependencies": {
     "@babel/runtime": "^7.22.3",
     "classnames": "^2.2.5",
-    "d3-shape": "^3.2.0",
     "dompurify": "^2.4.5",
     "eventemitter3": "^4.0.7",
     "leaflet": "^1.7.1",
@@ -72,6 +71,7 @@
       "<rootDir>/js/components/zhn-charts/d3Color",
       "<rootDir>/js/components/zhn-charts/d3Format",
       "<rootDir>/js/components/zhn-charts/d3Scale",
+      "<rootDir>/js/components/zhn-charts/d3Shape",
       "<rootDir>/js/components/zhn-charts/scale",
       "<rootDir>/js/components/zhn-charts/scale/util"
     ],
@@ -81,6 +81,7 @@
       "<rootDir>/js/components/zhn-charts/d3Color",
       "<rootDir>/js/components/zhn-charts/d3Format",
       "<rootDir>/js/components/zhn-charts/d3Scale",
+      "<rootDir>/js/components/zhn-charts/d3Shape",
       "<rootDir>/js/components/zhn-charts/scale",
       "<rootDir>/js/components/zhn-charts/scale/util"
     ]

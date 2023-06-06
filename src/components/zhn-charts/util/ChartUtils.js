@@ -11,7 +11,7 @@ import {
   stackOffsetSilhouette,
   stackOffsetWiggle,
   stackOrderNone
-} from 'd3-shape';
+} from '../d3Shape';
 
 import {
   _isNil,

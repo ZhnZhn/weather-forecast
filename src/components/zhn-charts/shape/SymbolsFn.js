@@ -1,5 +1,5 @@
 import {
-  symbol as shapeSymbol,
+  shapeSymbol,
   symbolCircle,
   symbolCross,
   symbolDiamond,
@@ -7,7 +7,7 @@ import {
   symbolStar,
   symbolTriangle,
   symbolWye
-} from 'd3-shape';
+} from '../d3Shape';
 
 import { _upperFirst } from '../util/FnUtils';
 

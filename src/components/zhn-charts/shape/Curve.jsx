@@ -11,8 +11,8 @@ import {
   curveNatural,
   curveStep,
   curveStepAfter,
-  curveStepBefore,
-} from 'd3-shape';
+  curveStepBefore
+} from '../d3Shape';
 
 import classNames from 'classnames';
 
