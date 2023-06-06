@@ -2,38 +2,39 @@
 
 exports.__esModule = true;
 exports.continuous = continuous;
-exports.copy = copy;
+exports.copy = void 0;
 var _d3Interpolate = require("../d3Interpolate");
 var _d3Array = require("./d3Array");
-function constant(x) {
-  return function () {
-    return x;
-  };
-}
-function number(x) {
-  return +x;
-}
+var _helperFns = require("./helperFns");
+var arrayFrom = Array.from,
+  mathMin = Math.min,
+  mathMax = Math.max;
 var unit = [0, 1];
-function identity(x) {
-  return x;
-}
-function normalize(a, b) {
-  b -= a = +a;
-  return b ? function (x) {
-    return (x - a) / b;
-  } : constant(isNaN(b) ? NaN : 0.5);
-}
-function clamper(a, b) {
-  var t;
-  if (a > b) {
-    t = a;
-    a = b;
-    b = t;
-  }
-  return function (x) {
-    return Math.max(a, Math.min(b, x));
+var constant = function constant(x) {
+    return function () {
+      return x;
+    };
+  },
+  number = function number(x) {
+    return +x;
+  },
+  identity = function identity(x) {
+    return x;
+  },
+  normalize = function normalize(a, b) {
+    b -= a = +a;
+    return b ? function (x) {
+      return (x - a) / b;
+    } : constant(isNaN(b) ? NaN : 0.5);
+  },
+  clamper = function clamper(a, b) {
+    var _ref = a > b ? [b, a] : [a, b],
+      _a = _ref[0],
+      _b = _ref[1];
+    return function (x) {
+      return mathMax(_a, mathMin(_b, x));
+    };
   };
-}
 
 // normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
 // interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
@@ -54,7 +55,7 @@ function bimap(domain, range, interpolate) {
   };
 }
 function polymap(domain, range, interpolate) {
-  var j = Math.min(domain.length, range.length) - 1,
+  var j = mathMin(domain.length, range.length) - 1,
     d = new Array(j),
     r = new Array(j),
     i = -1;
@@ -85,7 +86,7 @@ function transformer() {
     output,
     input;
   function rescale() {
-    var n = Math.min(domain.length, range.length);
+    var n = mathMin(domain.length, range.length);
     if (clamp !== identity) clamp = clamper(domain[0], domain[n - 1]);
     piecewise = n > 2 ? polymap : bimap;
     output = input = null;
@@ -98,22 +99,24 @@ function transformer() {
     return clamp(untransform((input || (input = piecewise(range, domain.map(transform), _d3Interpolate.interpolateNumber)))(y)));
   };
   scale.domain = function (_) {
-    return arguments.length ? (domain = Array.from(_, number), rescale()) : domain.slice();
+    return (0, _helperFns.isUndef)(_) ? domain.slice() : (domain = arrayFrom(_, number), rescale());
   };
   scale.range = function (_) {
-    return arguments.length ? (range = Array.from(_), rescale()) : range.slice();
+    return (0, _helperFns.isUndef)(_) ? range.slice() : (range = arrayFrom(_), rescale());
   };
   scale.rangeRound = function (_) {
-    return range = Array.from(_), interpolate = _d3Interpolate.interpolateRound, rescale();
+    range = arrayFrom(_);
+    interpolate = _d3Interpolate.interpolateRound;
+    return rescale();
   };
   scale.clamp = function (_) {
-    return arguments.length ? (clamp = _ ? true : identity, rescale()) : clamp !== identity;
+    return (0, _helperFns.isUndef)(_) ? clamp !== identity : (clamp = _ ? true : identity, rescale());
   };
   scale.interpolate = function (_) {
-    return arguments.length ? (interpolate = _, rescale()) : interpolate;
+    return (0, _helperFns.isUndef)(_) ? interpolate : (interpolate = _, rescale());
   };
-  scale.unknown = function (_) {
-    return arguments.length ? (unknown = _, scale) : unknown;
+  scale.unknown = function () {
+    return arguments.length ? (unknown = arguments.length <= 0 ? undefined : arguments[0], scale) : unknown;
   };
   return function (t, u) {
     transform = t;
@@ -121,9 +124,10 @@ function transformer() {
     return rescale();
   };
 }
-function copy(source, target) {
+var copy = function copy(source, target) {
   return target.domain(source.domain()).range(source.range()).interpolate(source.interpolate()).clamp(source.clamp()).unknown(source.unknown());
-}
+};
+exports.copy = copy;
 function continuous() {
   return transformer()(identity, identity);
 }

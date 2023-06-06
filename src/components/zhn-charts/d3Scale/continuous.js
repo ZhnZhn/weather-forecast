@@ -5,46 +5,43 @@ import {
 } from '../d3Interpolate';
 
 import { bisect } from './d3Array';
+import { isUndef } from './helperFns';
 
-function constant(x) {
-  return function() {
-    return x;
-  };
-}
-
-function number(x) {
-  return +x;
-}
+const arrayFrom = Array.from
+, mathMin = Math.min
+, mathMax = Math.max;
 
 let unit = [0, 1];
 
-function identity(x) {
-  return x;
-}
-
-function normalize(a, b) {
+const constant = x => () => x
+, number = x => +x
+, identity = x => x
+, normalize = (
+  a,
+  b
+) => {
   b -= (a = +a)
   return b
-    ? function(x) { return (x - a) / b; }
+    ? x => (x - a) / b
     : constant(isNaN(b) ? NaN : 0.5);
 }
-
-function clamper(a, b) {
-  let t;
-  if (a > b) {
-    t = a
-    a = b
-    b = t
-  }
-  return function(x) {
-    return Math.max(a, Math.min(b, x));
-  };
-}
+, clamper = (
+  a,
+  b
+) => {
+  const [
+    _a, _b
+  ] = a > b
+    ? [b, a]
+    : [a, b];
+  return x => mathMax(_a, mathMin(_b, x));
+};
 
 // normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
 // interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
 function bimap(domain, range, interpolate) {
-  var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
+  let [d0, d1] = domain
+  , [r0, r1] = range;
   if (d1 < d0) {
     d0 = normalize(d1, d0)
     r0 = interpolate(r1, r0)
@@ -52,13 +49,11 @@ function bimap(domain, range, interpolate) {
     d0 = normalize(d0, d1)
     r0 = interpolate(r0, r1)
   }
-  return function(x) {
-    return r0(d0(x));
-  };
+  return x => r0(d0(x));
 }
 
 function polymap(domain, range, interpolate) {
-  let j = Math.min(domain.length, range.length) - 1
+  let j = mathMin(domain.length, range.length) - 1
   , d = new Array(j)
   , r = new Array(j)
   , i = -1;
@@ -75,7 +70,7 @@ function polymap(domain, range, interpolate) {
   }
 
   return function(x) {
-    var i = bisect(domain, x, 1, j) - 1;
+    let i = bisect(domain, x, 1, j) - 1;
     return r[i](d[i](x));
   };
 }
@@ -93,9 +88,11 @@ function transformer() {
   , input;
 
   function rescale() {
-    var n = Math.min(domain.length, range.length);
+    let n = mathMin(domain.length, range.length);
     if (clamp !== identity) clamp = clamper(domain[0], domain[n - 1]);
-    piecewise = n > 2 ? polymap : bimap;
+    piecewise = n > 2
+      ? polymap
+      : bimap;
     output = input = null;
     return scale;
   }
@@ -106,43 +103,35 @@ function transformer() {
       : (output || (output = piecewise(domain.map(transform), range, interpolate)))(transform(clamp(x)));
   }
 
-  scale.invert = function(y) {
-    return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber)))(y)));
-  };
+  scale.invert = y => clamp(
+    untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber)))(y))
+  );
 
-  scale.domain = function(_) {
-    return arguments.length
-      ? (domain = Array.from(_, number), rescale())
-      : domain.slice();
-  };
+  scale.domain = _ => isUndef(_)
+   ? domain.slice()
+   : (domain = arrayFrom(_, number), rescale());
 
-  scale.range = function(_) {
-    return arguments.length
-      ? (range = Array.from(_), rescale())
-      : range.slice();
-  };
+  scale.range = _ => isUndef(_)
+   ? range.slice()
+   : (range = arrayFrom(_), rescale());
 
-  scale.rangeRound = function(_) {
-    return range = Array.from(_), interpolate = interpolateRound, rescale();
-  };
+  scale.rangeRound = _ => {
+    range = arrayFrom(_);
+    interpolate = interpolateRound;
+    return rescale();
+  }
 
-  scale.clamp = function(_) {
-    return arguments.length
-      ? (clamp = _ ? true : identity, rescale())
-      : clamp !== identity;
-  };
+  scale.clamp = _ => isUndef(_)
+   ? clamp !== identity
+   : (clamp = _ ? true : identity, rescale());
 
-  scale.interpolate = function(_) {
-    return arguments.length
-      ? (interpolate = _, rescale())
-      : interpolate;
-  };
+  scale.interpolate = _ => isUndef(_)
+   ? interpolate
+   : (interpolate = _, rescale());
 
-  scale.unknown = function(_) {
-    return arguments.length
-      ? (unknown = _, scale)
-      : unknown;
-  };
+  scale.unknown = (..._args) => _args.length
+   ? (unknown = _args[0], scale)
+   : unknown;
 
   return function(t, u) {
     transform = t
@@ -151,14 +140,15 @@ function transformer() {
   };
 }
 
-export function copy(source, target) {
-  return target
-    .domain(source.domain())
-    .range(source.range())
-    .interpolate(source.interpolate())
-    .clamp(source.clamp())
-    .unknown(source.unknown());
-}
+export const copy = (
+  source,
+  target
+) => target
+  .domain(source.domain())
+  .range(source.range())
+  .interpolate(source.interpolate())
+  .clamp(source.clamp())
+  .unknown(source.unknown());
 
 export function continuous() {
   return transformer()(identity, identity);
