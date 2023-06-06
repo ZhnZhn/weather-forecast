@@ -6,9 +6,9 @@ exports.range = range;
 exports.tickIncrement = tickIncrement;
 exports.tickStep = tickStep;
 exports.ticks = ticks;
-function ascending(a, b) {
+var ascending = function ascending(a, b) {
   return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-}
+};
 
 /*
 function descending(a, b) {
@@ -24,114 +24,121 @@ function descending(a, b) {
 }
 */
 
-function zero() {
-  return 0;
-}
-function bisector(f) {
-  var compare1, compare2, delta;
+var zero = function zero() {
+    return 0;
+  },
+  bisector = function bisector(f) {
+    var compare1, compare2, delta;
 
-  // If an accessor is specified, promote it to a comparator. In this case we
-  // can test whether the search value is (self-) comparable. We canÔÇÖt do this
-  // for a comparator (except for specific, known comparators) because we canÔÇÖt
-  // tell if the comparator is symmetric, and an asymmetric comparator canÔÇÖt be
-  // used to test whether a single value is comparable.
-  if (f.length !== 2) {
-    compare1 = ascending;
-    compare2 = function compare2(d, x) {
-      return ascending(f(d), x);
+    // If an accessor is specified, promote it to a comparator. In this case we
+    // can test whether the search value is (self-) comparable. We canÔÇÖt do this
+    // for a comparator (except for specific, known comparators) because we canÔÇÖt
+    // tell if the comparator is symmetric, and an asymmetric comparator canÔÇÖt be
+    // used to test whether a single value is comparable.
+    if (f.length !== 2) {
+      compare1 = ascending;
+      compare2 = function compare2(d, x) {
+        return ascending(f(d), x);
+      };
+      delta = function delta(d, x) {
+        return f(d) - x;
+      };
+    } else {
+      //compare1 = f === ascending || f === descending ? f : zero;
+      compare1 = f === ascending ? f : zero;
+      compare2 = f;
+      delta = f;
+    }
+    var left = function left(a, x, lo, hi) {
+      if (lo === void 0) {
+        lo = 0;
+      }
+      if (hi === void 0) {
+        hi = a.length;
+      }
+      if (lo < hi) {
+        if (compare1(x, x) !== 0) return hi;
+        do {
+          var mid = lo + hi >>> 1;
+          if (compare2(a[mid], x) < 0) lo = mid + 1;else hi = mid;
+        } while (lo < hi);
+      }
+      return lo;
     };
-    delta = function delta(d, x) {
-      return f(d) - x;
+    var right = function right(a, x, lo, hi) {
+      if (lo === void 0) {
+        lo = 0;
+      }
+      if (hi === void 0) {
+        hi = a.length;
+      }
+      if (lo < hi) {
+        if (compare1(x, x) !== 0) return hi;
+        do {
+          var mid = lo + hi >>> 1;
+          if (compare2(a[mid], x) <= 0) lo = mid + 1;else hi = mid;
+        } while (lo < hi);
+      }
+      return lo;
     };
-  } else {
-    //compare1 = f === ascending || f === descending ? f : zero;
-    compare1 = f === ascending ? f : zero;
-    compare2 = f;
-    delta = f;
-  }
-  function left(a, x, lo, hi) {
-    if (lo === void 0) {
-      lo = 0;
-    }
-    if (hi === void 0) {
-      hi = a.length;
-    }
-    if (lo < hi) {
-      if (compare1(x, x) !== 0) return hi;
-      do {
-        var mid = lo + hi >>> 1;
-        if (compare2(a[mid], x) < 0) lo = mid + 1;else hi = mid;
-      } while (lo < hi);
-    }
-    return lo;
-  }
-  function right(a, x, lo, hi) {
-    if (lo === void 0) {
-      lo = 0;
-    }
-    if (hi === void 0) {
-      hi = a.length;
-    }
-    if (lo < hi) {
-      if (compare1(x, x) !== 0) return hi;
-      do {
-        var mid = lo + hi >>> 1;
-        if (compare2(a[mid], x) <= 0) lo = mid + 1;else hi = mid;
-      } while (lo < hi);
-    }
-    return lo;
-  }
-  function center(a, x, lo, hi) {
-    if (lo === void 0) {
-      lo = 0;
-    }
-    if (hi === void 0) {
-      hi = a.length;
-    }
-    var i = left(a, x, lo, hi - 1);
-    return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
-  }
-  return {
-    left: left,
-    center: center,
-    right: right
+    var center = function center(a, x, lo, hi) {
+      if (lo === void 0) {
+        lo = 0;
+      }
+      if (hi === void 0) {
+        hi = a.length;
+      }
+      var i = left(a, x, lo, hi - 1);
+      return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
+    };
+    return {
+      left: left,
+      center: center,
+      right: right
+    };
   };
-}
 var ascendingBisect = bisector(ascending);
 var bisect = ascendingBisect.right;
 exports.bisect = bisect;
-function range(start, stop, step) {
-  start = +start;
-  stop = +stop;
-  step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
-  var i = -1,
-    n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
+var mathMax = Math.max,
+  mathCeil = Math.ceil,
+  mathSqrt = Math.sqrt,
+  mathFloor = Math.floor,
+  mathPow = Math.pow,
+  mathLog10 = Math.log10,
+  mathRound = Math.round;
+function range() {
+  var start = +(arguments.length <= 0 ? undefined : arguments[0]),
+    stop = +(arguments.length <= 1 ? undefined : arguments[1]),
+    step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +(arguments.length <= 2 ? undefined : arguments[2]),
+    i = -1,
+    n = mathMax(0, mathCeil((stop - start) / step)) | 0,
     range = new Array(n);
   while (++i < n) {
     range[i] = start + i * step;
   }
   return range;
 }
-var e10 = Math.sqrt(50),
-  e5 = Math.sqrt(10),
-  e2 = Math.sqrt(2);
+var e10 = mathSqrt(50),
+  e5 = mathSqrt(10),
+  e2 = mathSqrt(2);
 function tickSpec(start, stop, count) {
-  var step = (stop - start) / Math.max(0, count),
-    power = Math.floor(Math.log10(step)),
-    error = step / Math.pow(10, power),
+  var step = (stop - start) / mathMax(0, count),
+    power = mathFloor(mathLog10(step)),
+    error = step / mathPow(10, power),
     factor = error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1;
   var i1, i2, inc;
   if (power < 0) {
-    inc = Math.pow(10, -power) / factor;
-    i1 = Math.round(start * inc);
-    i2 = Math.round(stop * inc);
+    inc = mathPow(10, -power) / factor;
+    i1 = mathRound(start * inc);
+    i2 = mathRound(stop * inc);
     if (i1 / inc < start) ++i1;
     if (i2 / inc > stop) --i2;
     inc = -inc;
   } else {
-    inc = Math.pow(10, power) * factor;
-    i1 = Math.round(start / inc);
-    i2 = Math.round(stop / inc);
+    inc = mathPow(10, power) * factor;
+    i1 = mathRound(start / inc);
+    i2 = mathRound(stop / inc);
     if (i1 * inc < start) ++i1;
     if (i2 * inc > stop) --i2;
   }
