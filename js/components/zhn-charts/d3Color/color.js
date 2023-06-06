@@ -8,7 +8,7 @@ exports.hsl = hsl;
 exports.hslConvert = hslConvert;
 exports.rgb = rgb;
 exports.rgbConvert = rgbConvert;
-var _define = _interopRequireWildcard(require("./define.js"));
+var _define = _interopRequireWildcard(require("./define"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 //export function Color() {}
@@ -177,6 +177,22 @@ var named = {
   yellow: 0xffff00,
   yellowgreen: 0x9acd32
 };
+var mathMin = Math.min,
+  mathMax = Math.max,
+  mathPow = Math.pow,
+  mathRound = Math.round,
+  clamph = function clamph(value) {
+    value = (value || 0) % 360;
+    return value < 0 ? value + 360 : value;
+  },
+  clampt = function clampt(value) {
+    return mathMax(0, mathMin(1, value || 0));
+  }
+  // From FvD 13.37, CSS Color Module Level 3
+  ,
+  hsl2rgb = function hsl2rgb(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
+  };
 (0, _define["default"])(Color, color, {
   copy: function copy(channels) {
     return Object.assign(new this.constructor(), this, channels);
@@ -234,8 +250,15 @@ function rgbConvert(o) {
   o = o.rgb();
   return new Rgb(o.r, o.g, o.b, o.opacity);
 }
-function rgb(r, g, b, opacity) {
-  return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+function rgb() {
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+  var r = args[0],
+    g = args[1],
+    b = args[2],
+    opacity = args[3];
+  return args.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
 }
 function Rgb(r, g, b, opacity) {
   this.r = +r;
@@ -245,11 +268,11 @@ function Rgb(r, g, b, opacity) {
 }
 (0, _define["default"])(Rgb, rgb, (0, _define.extend)(Color, {
   brighter: function brighter(k) {
-    k = k == null ? _brighter : Math.pow(_brighter, k);
+    k = k == null ? _brighter : mathPow(_brighter, k);
     return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
   },
   darker: function darker(k) {
-    k = k == null ? _darker : Math.pow(_darker, k);
+    k = k == null ? _darker : mathPow(_darker, k);
     return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
   },
   rgb: function rgb() {
@@ -279,10 +302,10 @@ function rgb_formatRgb() {
   return "" + (a === 1 ? "rgb(" : "rgba(") + clampi(this.r) + ", " + clampi(this.g) + ", " + clampi(this.b) + (a === 1 ? ")" : ", " + a + ")");
 }
 function clampa(opacity) {
-  return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+  return isNaN(opacity) ? 1 : mathMax(0, mathMin(1, opacity));
 }
 function clampi(value) {
-  return Math.max(0, Math.min(255, Math.round(value) || 0));
+  return mathMax(0, mathMin(255, mathRound(value) || 0));
 }
 function hex(value) {
   value = clampi(value);
@@ -301,8 +324,8 @@ function hslConvert(o) {
   var r = o.r / 255,
     g = o.g / 255,
     b = o.b / 255,
-    min = Math.min(r, g, b),
-    max = Math.max(r, g, b),
+    min = mathMin(r, g, b),
+    max = mathMax(r, g, b),
     h = NaN,
     s = max - min,
     l = (max + min) / 2;
@@ -315,8 +338,15 @@ function hslConvert(o) {
   }
   return new Hsl(h, s, l, o.opacity);
 }
-function hsl(h, s, l, opacity) {
-  return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+function hsl() {
+  for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    args[_key2] = arguments[_key2];
+  }
+  var h = args[0],
+    s = args[1],
+    l = args[2],
+    opacity = args[3];
+  return args.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
 }
 function Hsl(h, s, l, opacity) {
   this.h = +h;
@@ -326,11 +356,11 @@ function Hsl(h, s, l, opacity) {
 }
 (0, _define["default"])(Hsl, hsl, (0, _define.extend)(Color, {
   brighter: function brighter(k) {
-    k = k == null ? _brighter : Math.pow(_brighter, k);
+    k = k == null ? _brighter : mathPow(_brighter, k);
     return new Hsl(this.h, this.s, this.l * k, this.opacity);
   },
   darker: function darker(k) {
-    k = k == null ? _darker : Math.pow(_darker, k);
+    k = k == null ? _darker : mathPow(_darker, k);
     return new Hsl(this.h, this.s, this.l * k, this.opacity);
   },
   rgb: function rgb() {
@@ -352,16 +382,4 @@ function Hsl(h, s, l, opacity) {
     return "" + (a === 1 ? "hsl(" : "hsla(") + clamph(this.h) + ", " + clampt(this.s) * 100 + "%, " + clampt(this.l) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
   }
 }));
-function clamph(value) {
-  value = (value || 0) % 360;
-  return value < 0 ? value + 360 : value;
-}
-function clampt(value) {
-  return Math.max(0, Math.min(1, value || 0));
-}
-
-// From FvD 13.37, CSS Color Module Level 3
-function hsl2rgb(h, m1, m2) {
-  return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
-}
 //# sourceMappingURL=color.js.map

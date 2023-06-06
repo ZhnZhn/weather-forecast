@@ -1,4 +1,4 @@
-import define, { extend } from "./define.js";
+import define, { extend } from "./define";
 
 //export function Color() {}
 function Color() {}
@@ -168,6 +168,27 @@ const named = {
   yellowgreen: 0x9acd32
 };
 
+const mathMin = Math.min
+, mathMax = Math.max
+, mathPow = Math.pow
+, mathRound = Math.round
+, clamph = value => {
+  value = (value || 0) % 360;
+  return value < 0
+    ? value + 360
+    : value;
+}
+, clampt = value => mathMax(0, mathMin(1, value || 0))
+// From FvD 13.37, CSS Color Module Level 3
+, hsl2rgb = (
+  h,
+  m1,
+  m2
+) => (h < 60 ? m1 + (m2 - m1) * h / 60
+  : h < 180 ? m2
+  : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+  : m1) * 255;
+
 define(Color, color, {
   copy(channels) {
     return Object.assign(new this.constructor, this, channels);
@@ -234,8 +255,13 @@ export function rgbConvert(o) {
   return new Rgb(o.r, o.g, o.b, o.opacity);
 }
 
-export function rgb(r, g, b, opacity) {
-  return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+export function rgb(...args) {
+  const [
+    r, g, b, opacity
+  ] = args;
+  return args.length === 1
+    ? rgbConvert(r)
+    : new Rgb(r, g, b, opacity == null ? 1 : opacity);
 }
 
 export function Rgb(r, g, b, opacity) {
@@ -247,12 +273,26 @@ export function Rgb(r, g, b, opacity) {
 
 define(Rgb, rgb, extend(Color, {
   brighter(k) {
-    k = k == null ? brighter : Math.pow(brighter, k);
-    return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+    k = k == null
+      ? brighter
+      : mathPow(brighter, k);
+    return new Rgb(
+      this.r * k,
+      this.g * k,
+      this.b * k,
+      this.opacity
+    );
   },
   darker(k) {
-    k = k == null ? darker : Math.pow(darker, k);
-    return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+    k = k == null
+      ? darker
+      : mathPow(darker, k);
+    return new Rgb(
+      this.r * k,
+      this.g * k,
+      this.b * k,
+      this.opacity
+    );
   },
   rgb() {
     return this;
@@ -287,11 +327,13 @@ function rgb_formatRgb() {
 }
 
 function clampa(opacity) {
-  return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+  return isNaN(opacity)
+    ? 1
+    : mathMax(0, mathMin(1, opacity));
 }
 
 function clampi(value) {
-  return Math.max(0, Math.min(255, Math.round(value) || 0));
+  return mathMax(0, mathMin(255, mathRound(value) || 0));
 }
 
 function hex(value) {
@@ -316,8 +358,8 @@ export function hslConvert(o) {
   let r = o.r / 255
   , g = o.g / 255
   , b = o.b / 255
-  , min = Math.min(r, g, b)
-  , max = Math.max(r, g, b)
+  , min = mathMin(r, g, b)
+  , max = mathMax(r, g, b)
   , h = NaN
   , s = max - min
   , l = (max + min) / 2;
@@ -333,8 +375,13 @@ export function hslConvert(o) {
   return new Hsl(h, s, l, o.opacity);
 }
 
-export function hsl(h, s, l, opacity) {
-  return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+export function hsl(...args) {
+  const [
+    h, s, l, opacity
+  ] = args;
+  return args.length === 1
+    ? hslConvert(h)
+    : new Hsl(h, s, l, opacity == null ? 1 : opacity);
 }
 
 
@@ -347,12 +394,26 @@ function Hsl(h, s, l, opacity) {
 
 define(Hsl, hsl, extend(Color, {
   brighter(k) {
-    k = k == null ? brighter : Math.pow(brighter, k);
-    return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    k = k == null
+      ? brighter
+      : mathPow(brighter, k);
+    return new Hsl(
+      this.h,
+      this.s,
+      this.l * k,
+      this.opacity
+    );
   },
   darker(k) {
-    k = k == null ? darker : Math.pow(darker, k);
-    return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    k = k == null
+      ? darker
+      : mathPow(darker, k);
+    return new Hsl(
+      this.h,
+      this.s,
+      this.l * k,
+      this.opacity
+    );
   },
   rgb() {
     let h = this.h % 360 + (this.h < 0) * 360
@@ -380,21 +441,3 @@ define(Hsl, hsl, extend(Color, {
     return `${a === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
   }
 }));
-
-
-function clamph(value) {
-  value = (value || 0) % 360;
-  return value < 0 ? value + 360 : value;
-}
-
-function clampt(value) {
-  return Math.max(0, Math.min(1, value || 0));
-}
-
-// From FvD 13.37, CSS Color Module Level 3
-function hsl2rgb(h, m1, m2) {
-  return (h < 60 ? m1 + (m2 - m1) * h / 60
-    : h < 180 ? m2
-    : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
-    : m1) * 255;
-}
