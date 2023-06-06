@@ -1,8 +1,14 @@
 import { range as sequence } from './d3Array';
-import { initRange } from './init.js';
-import ordinal from './ordinal.js';
+import { initRange } from './init';
+import ordinal from './ordinal';
+import { isUndef } from './helperFns';
 
-export function scaleBand() {
+const mathFloor = Math.floor
+, mathRound = Math.round
+, mathMin = Math.min
+, mathMax = Math.max;
+
+export function scaleBand(...args) {
   let scale = ordinal().unknown(undefined)
   , domain = scale.domain
   , ordinalRange = scale.range
@@ -22,13 +28,13 @@ export function scaleBand() {
     , reverse = r1 < r0
     , start = reverse ? r1 : r0
     , stop = reverse ? r0 : r1;
-    step = (stop - start) / Math.max(1, n - paddingInner + paddingOuter * 2);
-    if (round) step = Math.floor(step);
+    step = (stop - start) / mathMax(1, n - paddingInner + paddingOuter * 2);
+    if (round) step = mathFloor(step);
     start += (stop - start - step * (n - paddingInner)) * align;
     bandwidth = step * (1 - paddingInner);
     if (round) {
-      start = Math.round(start)
-      bandwidth = Math.round(bandwidth)
+      start = mathRound(start)
+      bandwidth = mathRound(bandwidth)
     }
     let values = sequence(n).map(i => start + step * i);
     return ordinalRange(
@@ -36,69 +42,52 @@ export function scaleBand() {
     );
   }
 
-  scale.domain = function(_) {
-    return arguments.length
-      ? (domain(_), rescale())
-      : domain();
+  scale.domain = _ => isUndef(_)
+   ? domain()
+   : (domain(_), rescale());
+
+  scale.range = _ => isUndef(_)
+   ? [r0, r1]
+   : ([r0, r1] = _, r0 = +r0, r1 = +r1, rescale());
+
+  scale.rangeRound = (_) => {
+    [r0, r1] = _;
+    r0 = +r0;
+    r1 = +r1;
+    round = true;
+    return rescale();
   };
 
-  scale.range = function(_) {
-    return arguments.length
-      ? ([r0, r1] = _, r0 = +r0, r1 = +r1, rescale())
-      : [r0, r1];
-  };
+  scale.bandwidth = () => bandwidth;
+  scale.step = () => step;
 
-  scale.rangeRound = function(_) {
-    return [r0, r1] = _, r0 = +r0, r1 = +r1, round = true, rescale();
-  };
+  scale.round = _ => isUndef(_)
+   ? round
+   : (round = !!_, rescale());
 
-  scale.bandwidth = function() {
-    return bandwidth;
-  };
+  scale.padding = _ => isUndef(_)
+   ? paddingInner
+   : (paddingInner = mathMin(1, paddingOuter = +_), rescale());
 
-  scale.step = function() {
-    return step;
-  };
+  scale.paddingInner = _ => isUndef(_)
+   ? paddingInner
+   : (paddingInner = mathMin(1, _), rescale());
 
-  scale.round = function(_) {
-    return arguments.length
-      ? (round = !!_, rescale())
-      : round;
-  };
+  scale.paddingOuter = _ => isUndef(_)
+   ? paddingOuter
+   : (paddingOuter = +_, rescale())
 
-  scale.padding = function(_) {
-    return arguments.length
-      ? (paddingInner = Math.min(1, paddingOuter = +_), rescale())
-      : paddingInner;
-  };
+  scale.align = _ => isUndef(_)
+   ? align
+   : (align = mathMax(0, mathMin(1, _)), rescale());
 
-  scale.paddingInner = function(_) {
-    return arguments.length
-      ? (paddingInner = Math.min(1, _), rescale())
-      : paddingInner;
-  };
+  scale.copy = () => scaleBand(domain(), [r0, r1])
+    .round(round)
+    .paddingInner(paddingInner)
+    .paddingOuter(paddingOuter)
+    .align(align);
 
-  scale.paddingOuter = function(_) {
-    return arguments.length
-      ? (paddingOuter = +_, rescale())
-      : paddingOuter;
-  };
-
-  scale.align = function(_) {
-    return arguments.length
-      ? (align = Math.max(0, Math.min(1, _)), rescale())
-      : align;
-  };
-
-  scale.copy = function() {
-    return scaleBand(domain(), [r0, r1])
-      .round(round)
-      .paddingInner(paddingInner)
-      .paddingOuter(paddingOuter)
-      .align(align);
-  };
-
-  return initRange.apply(rescale(), arguments);
+  return initRange.apply(rescale(), args);
 }
 
 function pointish(scale) {
@@ -115,6 +104,6 @@ function pointish(scale) {
   return scale;
 }
 
-export function scalePoint() {
-  return pointish(scaleBand.apply(null, arguments).paddingInner(1));
+export function scalePoint(...args) {
+  return pointish(scaleBand.apply(null, args).paddingInner(1));
 }
