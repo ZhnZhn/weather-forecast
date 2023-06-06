@@ -1,9 +1,11 @@
 import { InternMap } from './InternMap';
-import { initRange } from './init.js';
+import { initRange } from './init';
+import { isUndef } from './helperFns';
 
-const implicit = Symbol("implicit");
+const arrayFrom = Array.from
+, implicit = Symbol("implicit");
 
-export default function ordinal() {
+export default function ordinal(...args) {
   let index = new InternMap()
   , domain = []
   , range = []
@@ -11,7 +13,7 @@ export default function ordinal() {
 
   function scale(d) {
     let i = index.get(d);
-    if (i === undefined) {
+    if (isUndef(i)) {
       if (unknown !== implicit) return unknown;
       index.set(d, i = domain.push(d) - 1);
     }
@@ -19,7 +21,7 @@ export default function ordinal() {
   }
 
   scale.domain = function(_) {
-    if (!arguments.length) return domain.slice();
+    if (isUndef(_)) return domain.slice();
     domain = [];
     index = new InternMap();
     for (const value of _) {
@@ -29,23 +31,18 @@ export default function ordinal() {
     return scale;
   };
 
-  scale.range = function(_) {
-    return arguments.length
-      ? (range = Array.from(_), scale)
-      : range.slice();
-  };
+  scale.range = _ => isUndef(_)
+   ? range.slice()
+   : (range = arrayFrom(_), scale);
 
-  scale.unknown = function(_) {
-    return arguments.length
-      ? (unknown = _, scale)
-      : unknown;
-  };
+  scale.unknown = (..._args) => _args.length
+   ? (unknown = args[0], scale)
+   : unknown;
 
-  scale.copy = function() {
-    return ordinal(domain, range).unknown(unknown);
-  };
+  scale.copy = () => ordinal(domain, range)
+    .unknown(unknown);
 
-  initRange.apply(scale, arguments);
+  initRange.apply(scale, args);
 
   return scale;
 }
