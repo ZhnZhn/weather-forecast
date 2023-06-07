@@ -73,7 +73,8 @@
       "<rootDir>/js/components/zhn-charts/d3Scale",
       "<rootDir>/js/components/zhn-charts/d3Shape",
       "<rootDir>/js/components/zhn-charts/scale",
-      "<rootDir>/js/components/zhn-charts/scale/util"
+      "<rootDir>/js/components/zhn-charts/scale/util",
+      "<rootDir>/js/components/zhn-charts/util"
     ],
     "transformIgnorePatterns": [
       "<rootDir>/js/math/decimal-light",
@@ -83,7 +84,8 @@
       "<rootDir>/js/components/zhn-charts/d3Scale",
       "<rootDir>/js/components/zhn-charts/d3Shape",
       "<rootDir>/js/components/zhn-charts/scale",
-      "<rootDir>/js/components/zhn-charts/scale/util"
+      "<rootDir>/js/components/zhn-charts/scale/util",
+      "<rootDir>/js/components/zhn-charts/util"
     ]
   }
 }

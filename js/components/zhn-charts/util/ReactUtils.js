@@ -80,15 +80,10 @@ var toArray = function toArray(children) {
  */
 exports.toArray = toArray;
 function findAllByType(children, type) {
-  var result = [];
-  var types = [];
-  if ((0, _FnUtils._isArr)(type)) {
-    types = type.map(function (t) {
+  var result = [],
+    types = (0, _FnUtils._isArr)(type) ? type.map(function (t) {
       return getDisplayName(t);
-    });
-  } else {
-    types = [getDisplayName(type)];
-  }
+    }) : [getDisplayName(type)];
   toArray(children).forEach(function (child) {
     var childType = _getElementType(child);
     if (types.indexOf(childType) !== -1) {
@@ -122,9 +117,36 @@ var validateWidthHeight = function validateWidthHeight(el) {
   return !(0, _DataUtils.isNumber)(width) || width <= 0 || !(0, _DataUtils.isNumber)(height) || height <= 0 ? false : true;
 };
 exports.validateWidthHeight = validateWidthHeight;
-var SVG_TAGS = ['a', 'altGlyph', 'altGlyphDef', 'altGlyphItem', 'animate', 'animateColor', 'animateMotion', 'animateTransform', 'circle', 'clipPath', 'color-profile', 'cursor', 'defs', 'desc', 'ellipse', 'feBlend', 'feColormatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDistantLight', 'feFlood', 'feFuncA', 'feFuncB', 'feFuncG', 'feFuncR', 'feGaussianBlur', 'feImage', 'feMerge', 'feMergeNode', 'feMorphology', 'feOffset', 'fePointLight', 'feSpecularLighting', 'feSpotLight', 'feTile', 'feTurbulence', 'filter', 'font', 'font-face', 'font-face-format', 'font-face-name', 'font-face-url', 'foreignObject', 'g', 'glyph', 'glyphRef', 'hkern', 'image', 'line', 'lineGradient', 'marker', 'mask', 'metadata', 'missing-glyph', 'mpath', 'path', 'pattern', 'polygon', 'polyline', 'radialGradient', 'rect', 'script', 'set', 'stop', 'style', 'svg', 'switch', 'symbol', 'text', 'textPath', 'title', 'tref', 'tspan', 'use', 'view', 'vkern'];
+var SVG_TAGS = ['a', 'altGlyph', 'altGlyphDef', 'altGlyphItem', 'animate', 'animateColor', 'animateMotion', 'animateTransform', 'circle', 'clipPath', 'color-profile', 'cursor', 'defs', 'desc', 'ellipse',
+/*
+'feBlend',
+'feColormatrix',
+'feComponentTransfer',
+'feComposite',
+'feConvolveMatrix',
+'feDiffuseLighting',
+'feDisplacementMap',
+'feDistantLight',
+'feFlood',
+'feFuncA',
+'feFuncB',
+'feFuncG',
+'feFuncR',
+'feGaussianBlur',
+'feImage',
+'feMerge',
+'feMergeNode',
+'feMorphology',
+'feOffset',
+'fePointLight',
+'feSpecularLighting',
+'feSpotLight',
+'feTile',
+'feTurbulence',
+*/
+'filter', 'font', 'font-face', 'font-face-format', 'font-face-name', 'font-face-url', 'foreignObject', 'g', 'glyph', 'glyphRef', 'hkern', 'image', 'line', 'lineGradient', 'marker', 'mask', 'metadata', 'missing-glyph', 'mpath', 'path', 'pattern', 'polygon', 'polyline', 'radialGradient', 'rect', 'script', 'set', 'stop', 'style', 'svg', 'switch', 'symbol', 'text', 'textPath', 'title', 'tref', 'tspan', 'use', 'view', 'vkern'];
 var isSvgElement = function isSvgElement(child) {
-  return child && child.type && (0, _FnUtils._isStr)(child.type) && SVG_TAGS.indexOf(child.type) >= 0;
+  return child && (0, _FnUtils._isStr)(child.type) && SVG_TAGS.indexOf(child.type) >= 0;
 };
 
 /**
@@ -143,21 +165,18 @@ var isValidSpreadableProp = function isValidSpreadableProp(property, key, includ
    * @todo Add an internal cjs version of https://github.com/wooorm/svg-element-attributes for full coverage.
    */
   var matchingElementTypeKeys = (_FilteredElementKeyMa = _types.FilteredElementKeyMap == null ? void 0 : _types.FilteredElementKeyMap[svgElementType]) != null ? _FilteredElementKeyMa : [];
-  return !(0, _FnUtils._isFn)(property) && (svgElementType && matchingElementTypeKeys.includes(key) || _types.SVGElementPropKeys.includes(key)) || includeEvents && _types.EventKeys.includes(key);
+  return !!(!(0, _FnUtils._isFn)(property) && (svgElementType && matchingElementTypeKeys.includes(key) || _types.SVGElementPropKeys.includes(key)) || includeEvents && _types.EventKeys.includes(key));
 };
 exports.isValidSpreadableProp = isValidSpreadableProp;
 var filterProps = function filterProps(props, includeEvents, svgElementType) {
   if (!props || (0, _FnUtils._isFn)(props) || (0, _FnUtils._isBool)(props)) {
     return null;
   }
-  var inputProps = props;
-  if ((0, _uiApi.isValidElement)(props)) {
-    inputProps = props.props;
-  }
+  var inputProps = (0, _uiApi.isValidElement)(props) ? props.props : props;
   if (!(0, _FnUtils._isObject)(inputProps)) {
     return null;
   }
-  var out = {};
+  var filteredProps = {};
   /**
    * Props are blindly spread onto SVG elements. This loop filters out properties that we don't want to spread.
    * Items filtered out are as follows:
@@ -166,12 +185,28 @@ var filterProps = function filterProps(props, includeEvents, svgElementType) {
    *   - any prop that is not in SVGElementPropKeys (or in EventKeys if includeEvents is true)
    */
   _getObjectKeys(inputProps).forEach(function (key) {
-    var _inputProps;
-    if (isValidSpreadableProp((_inputProps = inputProps) == null ? void 0 : _inputProps[key], key, includeEvents, svgElementType)) {
-      out[key] = inputProps[key];
+    if (isValidSpreadableProp(inputProps[key], key, includeEvents, svgElementType)) {
+      filteredProps[key] = inputProps[key];
     }
   });
-  return out;
+  return filteredProps;
+};
+exports.filterProps = filterProps;
+var isSingleChildEqual = function isSingleChildEqual(nextChild, prevChild) {
+  if (!(0, _FnUtils._isNil)(nextChild) && !(0, _FnUtils._isNil)(prevChild)) {
+    var _ref = nextChild.props || {},
+      nextChildren = _ref.children,
+      nextProps = (0, _objectWithoutPropertiesLoose2["default"])(_ref, _excluded),
+      _ref2 = prevChild.props || {},
+      prevChildren = _ref2.children,
+      prevProps = (0, _objectWithoutPropertiesLoose2["default"])(_ref2, _excluded2);
+    return nextChildren && prevChildren ? (0, _ShallowEqual.shallowEqual)(nextProps, prevProps) && isChildrenEqual(nextChildren, prevChildren) : !nextChildren && !prevChildren ? (0, _ShallowEqual.shallowEqual)(nextProps, prevProps) : false;
+  }
+  return (0, _FnUtils._isNil)(nextChild) && (0, _FnUtils._isNil)(prevChild);
+};
+exports.isSingleChildEqual = isSingleChildEqual;
+var _getElementFromChildren = function _getElementFromChildren(children) {
+  return (0, _FnUtils._isArr)(children) ? children[0] : children;
 };
 
 /**
@@ -180,7 +215,6 @@ var filterProps = function filterProps(props, includeEvents, svgElementType) {
  * @param  {Object} prevChildren The prev children
  * @return {Boolean}             equal or not
  */
-exports.filterProps = filterProps;
 var isChildrenEqual = function isChildrenEqual(nextChildren, prevChildren) {
   if (nextChildren === prevChildren) {
     return true;
@@ -193,15 +227,13 @@ var isChildrenEqual = function isChildrenEqual(nextChildren, prevChildren) {
     return true;
   }
   if (count === 1) {
-    return isSingleChildEqual((0, _FnUtils._isArr)(nextChildren) ? nextChildren[0] : nextChildren, (0, _FnUtils._isArr)(prevChildren) ? prevChildren[0] : prevChildren);
+    return isSingleChildEqual(_getElementFromChildren(nextChildren), _getElementFromChildren(prevChildren));
   }
   for (var i = 0; i < count; i++) {
     var nextChild = nextChildren[i],
       prevChild = prevChildren[i];
-    if ((0, _FnUtils._isArr)(nextChild) || (0, _FnUtils._isArr)(prevChild)) {
-      if (!isChildrenEqual(nextChild, prevChild)) {
-        return false;
-      }
+    if (((0, _FnUtils._isArr)(nextChild) || (0, _FnUtils._isArr)(prevChild)) && !isChildrenEqual(nextChild, prevChild)) {
+      return false;
     } else if (!isSingleChildEqual(nextChild, prevChild)) {
       return false;
     }
@@ -209,28 +241,6 @@ var isChildrenEqual = function isChildrenEqual(nextChildren, prevChildren) {
   return true;
 };
 exports.isChildrenEqual = isChildrenEqual;
-var isSingleChildEqual = function isSingleChildEqual(nextChild, prevChild) {
-  if ((0, _FnUtils._isNil)(nextChild) && (0, _FnUtils._isNil)(prevChild)) {
-    return true;
-  }
-  if (!(0, _FnUtils._isNil)(nextChild) && !(0, _FnUtils._isNil)(prevChild)) {
-    var _ref = nextChild.props || {},
-      nextChildren = _ref.children,
-      nextProps = (0, _objectWithoutPropertiesLoose2["default"])(_ref, _excluded),
-      _ref2 = prevChild.props || {},
-      prevChildren = _ref2.children,
-      prevProps = (0, _objectWithoutPropertiesLoose2["default"])(_ref2, _excluded2);
-    if (nextChildren && prevChildren) {
-      return (0, _ShallowEqual.shallowEqual)(nextProps, prevProps) && isChildrenEqual(nextChildren, prevChildren);
-    }
-    if (!nextChildren && !prevChildren) {
-      return (0, _ShallowEqual.shallowEqual)(nextProps, prevProps);
-    }
-    return false;
-  }
-  return false;
-};
-exports.isSingleChildEqual = isSingleChildEqual;
 var renderByMap = function renderByMap(chartInst, renderMap) {
   var props = chartInst.props,
     children = props.children,
@@ -261,7 +271,7 @@ var renderByMap = function renderByMap(chartInst, renderMap) {
 exports.renderByMap = renderByMap;
 var getReactEventByType = function getReactEventByType(e) {
   var type = e && e.type;
-  return type && REACT_BROWSER_EVENT_MAP[type] ? REACT_BROWSER_EVENT_MAP[type] : null;
+  return (0, _FnUtils._isStr)(type) && REACT_BROWSER_EVENT_MAP[type] || null;
 };
 exports.getReactEventByType = getReactEventByType;
 var parseChildIndex = function parseChildIndex(child, children) {

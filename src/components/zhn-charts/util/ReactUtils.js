@@ -102,13 +102,11 @@ export const toArray = (
  * `type` must be a React.ComponentType
  */
 export function findAllByType(children, type) {
-  const result = [];
-  let types = [];
-  if (_isArr(type)) {
-    types = type.map(t => getDisplayName(t));
-  } else {
-    types = [getDisplayName(type)];
-  }
+  const result = []
+  , types = _isArr(type)
+     ? type.map(t => getDisplayName(t))
+     : [getDisplayName(type)];
+
   toArray(children).forEach(child => {
     const childType = _getElementType(child);
     if (types.indexOf(childType) !== -1) {
@@ -165,6 +163,7 @@ const SVG_TAGS = [
   'defs',
   'desc',
   'ellipse',
+  /*
   'feBlend',
   'feColormatrix',
   'feComponentTransfer',
@@ -189,6 +188,7 @@ const SVG_TAGS = [
   'feSpotLight',
   'feTile',
   'feTurbulence',
+  */
   'filter',
   'font',
   'font-face',
@@ -234,7 +234,7 @@ const SVG_TAGS = [
 const isSvgElement = (
   child
 ) => child
-  && child.type && _isStr(child.type)
+  && _isStr(child.type)
   && SVG_TAGS.indexOf(child.type) >= 0;
 
 /**
@@ -257,8 +257,7 @@ export const isValidSpreadableProp = (
    * @todo Add an internal cjs version of https://github.com/wooorm/svg-element-attributes for full coverage.
    */
   const matchingElementTypeKeys = FilteredElementKeyMap?.[svgElementType] ?? [];
-  return ((!_isFn(property)
-    && ((svgElementType && matchingElementTypeKeys.includes(key)) || SVGElementPropKeys.includes(key)))
+  return !!(( !_isFn(property) && ((svgElementType && matchingElementTypeKeys.includes(key)) || SVGElementPropKeys.includes(key)) )
     || (includeEvents && EventKeys.includes(key)));
 };
 
@@ -270,14 +269,13 @@ export const filterProps = (
   if (!props || _isFn(props) || _isBool(props)) {
     return null;
   }
-  let inputProps = props;
-  if (isValidElement(props)) {
-    inputProps = props.props;
-  }
+  const inputProps = isValidElement(props)
+    ? props.props
+    : props;
   if (!_isObject(inputProps)) {
     return null;
   }
-  const out = {};
+  const filteredProps = {};
   /**
    * Props are blindly spread onto SVG elements. This loop filters out properties that we don't want to spread.
    * Items filtered out are as follows:
@@ -286,12 +284,42 @@ export const filterProps = (
    *   - any prop that is not in SVGElementPropKeys (or in EventKeys if includeEvents is true)
    */
   _getObjectKeys(inputProps).forEach(key => {
-    if (isValidSpreadableProp(inputProps?.[key], key, includeEvents, svgElementType)) {
-      out[key] = inputProps[key];
+    if (isValidSpreadableProp(inputProps[key], key, includeEvents, svgElementType)) {
+      filteredProps[key] = inputProps[key];
     }
   });
-  return out;
+  return filteredProps;
 };
+
+
+export const isSingleChildEqual = (
+  nextChild,
+  prevChild
+) => {
+  if (!_isNil(nextChild) && !_isNil(prevChild)) {
+    const {
+      children: nextChildren,
+      ...nextProps
+    } = nextChild.props || {}
+    , {
+      children: prevChildren,
+      ...prevProps
+    } = prevChild.props || {};
+    return nextChildren && prevChildren
+      ? shallowEqual(nextProps, prevProps) && isChildrenEqual(nextChildren, prevChildren)
+      : !nextChildren && !prevChildren
+          ? shallowEqual(nextProps, prevProps)
+          : false;
+  }
+
+  return _isNil(nextChild) && _isNil(prevChild);
+}
+
+const _getElementFromChildren = (
+  children
+) => _isArr(children)
+  ? children[0]
+  : children;
 
 /**
  * Wether props of children changed
@@ -314,47 +342,25 @@ export const isChildrenEqual = (
     return true;
   }
   if (count === 1) {
-    return isSingleChildEqual(_isArr(nextChildren) ? nextChildren[0] : nextChildren, _isArr(prevChildren) ? prevChildren[0] : prevChildren);
+    return isSingleChildEqual(
+      _getElementFromChildren(nextChildren),
+      _getElementFromChildren(prevChildren)
+    );
   }
+
   for (let i = 0; i < count; i++) {
     const nextChild = nextChildren[i]
     , prevChild = prevChildren[i];
-    if (_isArr(nextChild) || _isArr(prevChild)) {
-      if (!isChildrenEqual(nextChild, prevChild)) {
-        return false;
-      }
+    if ((_isArr(nextChild) || _isArr(prevChild))
+       && !isChildrenEqual(nextChild, prevChild)
+    ) {
+      return false;
     } else if (!isSingleChildEqual(nextChild, prevChild)) {
       return false;
     }
   }
-  return true;
-};
 
-export const isSingleChildEqual = (
-  nextChild,
-  prevChild
-) => {
-  if (_isNil(nextChild) && _isNil(prevChild)) {
-    return true;
-  }
-  if (!_isNil(nextChild) && !_isNil(prevChild)) {
-    const {
-      children: nextChildren,
-      ...nextProps
-    } = nextChild.props || {}
-    , {
-      children: prevChildren,
-      ...prevProps
-    } = prevChild.props || {};
-    if (nextChildren && prevChildren) {
-      return shallowEqual(nextProps, prevProps) && isChildrenEqual(nextChildren, prevChildren);
-    }
-    if (!nextChildren && !prevChildren) {
-      return shallowEqual(nextProps, prevProps);
-    }
-    return false;
-  }
-  return false;
+  return true;
 };
 
 export const renderByMap = (
@@ -391,9 +397,8 @@ export const renderByMap = (
 
 export const getReactEventByType = (e) => {
   const type = e && e.type;
-  return type && REACT_BROWSER_EVENT_MAP[type]
-    ? REACT_BROWSER_EVENT_MAP[type]
-    : null;
+  return (_isStr(type) && REACT_BROWSER_EVENT_MAP[type])
+    || null;
 };
 
 export const parseChildIndex = (
