@@ -11,6 +11,8 @@ module.exports = {
      lib: [
             "react", "react-dom",
             "redux", "react-redux", "redux-saga",            
+            "classnames",
+            "eventemitter3",
             "dompurify"
           ]
   },
