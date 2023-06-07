@@ -39,7 +39,7 @@ const _renderRectanglesStatically = (
   const { shape } = props
   , baseProps = filterProps(props);
   return (data && data.map((entry, i) => {
-    const props = {
+    const rectangleProps = {
       ...baseProps,
       ...entry,
       index: i
@@ -47,11 +47,11 @@ const _renderRectanglesStatically = (
     return (
       <Layer
         className={CL_BAR_RECTANGLE}
-        {...adaptEventsOfChild(props, entry, i)}
+        {...adaptEventsOfChild(rectangleProps, entry, i)}
         key={`rectangle-${i}`}
         role="img"
       >
-        {_renderRectangle(shape, props)}
+        {_renderRectangle(shape, rectangleProps)}
       </Layer>
     );
   }));
@@ -139,6 +139,36 @@ export const renderErrorBar = (
 
 const ANIMATE_RECT_FROM = { t: 0 };
 const ANIMATE_RECT_TO = { t: 1 };
+const _crStepData = (
+  data,
+  prevData,
+  layout,
+  t
+) => data.map((entry, index) => {
+   const prev = prevData && prevData[index];
+   if (prev) {
+     return {
+       ...entry,
+       x: interpolateNumber(prev.x, entry.x)(t),
+       y: interpolateNumber(prev.y, entry.y)(t),
+       width: interpolateNumber(prev.width, entry.width)(t),
+       height: interpolateNumber(prev.height, entry.height)(t)
+     };
+   }
+   if (layout === 'horizontal') {
+     const h = interpolateNumber(0, entry.height)(t);
+     return {
+       ...entry,
+       y: entry.y + entry.height - h,
+       height: h
+     };
+   }
+   return {
+     ...entry,
+     width: interpolateNumber(0, entry.width)(t)
+   };
+});
+
 const _renderRectanglesWithAnimation = (
   props,
   prevData,
@@ -166,41 +196,14 @@ const _renderRectanglesWithAnimation = (
          onAnimationEnd={handleAnimationEnd}
          onAnimationStart={handleAnimationStart}
       >
-       {({ t }) => {
-         const stepData = data.map((entry, index) => {
-            const prev = prevData && prevData[index];
-            if (prev) {
-              const interpolatorX = interpolateNumber(prev.x, entry.x)
-              , interpolatorY = interpolateNumber(prev.y, entry.y)
-              , interpolatorWidth = interpolateNumber(prev.width, entry.width)
-              , interpolatorHeight = interpolateNumber(prev.height, entry.height);
-              return {
-                ...entry,
-                x: interpolatorX(t),
-                y: interpolatorY(t),
-                width: interpolatorWidth(t),
-                height: interpolatorHeight(t)
-              };
-            }
-            if (layout === 'horizontal') {
-              const interpolatorHeight = interpolateNumber(0, entry.height)
-              , h = interpolatorHeight(t);
-              return {
-                ...entry,
-                y: entry.y + entry.height - h,
-                height: h,
-              };
-            }
-            const interpolator = interpolateNumber(0, entry.width)
-            , w = interpolator(t);
-            return { ...entry, width: w };
-         });
-         return (
-           <Layer>
-             {_renderRectanglesStatically(stepData, props)}
-           </Layer>
-         );
-        }}
+       {({ t }) => (
+          <Layer>
+           {_renderRectanglesStatically(
+              _crStepData(data, prevData, layout, t),
+              props
+            )}
+          </Layer>
+        )}
      </Animate>
    );
 }

@@ -26,15 +26,15 @@ var _renderRectanglesStatically = function _renderRectanglesStatically(data, pro
   var shape = props.shape,
     baseProps = (0, _ReactUtils.filterProps)(props);
   return data && data.map(function (entry, i) {
-    var props = (0, _extends2["default"])({}, baseProps, entry, {
+    var rectangleProps = (0, _extends2["default"])({}, baseProps, entry, {
       index: i
     });
     return /*#__PURE__*/(0, _react.createElement)(_Layer.Layer, (0, _extends2["default"])({
       className: _CL.CL_BAR_RECTANGLE
-    }, (0, _types.adaptEventsOfChild)(props, entry, i), {
+    }, (0, _types.adaptEventsOfChild)(rectangleProps, entry, i), {
       key: "rectangle-" + i,
       role: "img"
-    }), _renderRectangle(shape, props));
+    }), _renderRectangle(shape, rectangleProps));
   });
 };
 var renderBackground = function renderBackground(props) {
@@ -97,6 +97,29 @@ var ANIMATE_RECT_FROM = {
 var ANIMATE_RECT_TO = {
   t: 1
 };
+var _crStepData = function _crStepData(data, prevData, layout, t) {
+  return data.map(function (entry, index) {
+    var prev = prevData && prevData[index];
+    if (prev) {
+      return (0, _extends2["default"])({}, entry, {
+        x: (0, _DataUtils.interpolateNumber)(prev.x, entry.x)(t),
+        y: (0, _DataUtils.interpolateNumber)(prev.y, entry.y)(t),
+        width: (0, _DataUtils.interpolateNumber)(prev.width, entry.width)(t),
+        height: (0, _DataUtils.interpolateNumber)(prev.height, entry.height)(t)
+      });
+    }
+    if (layout === 'horizontal') {
+      var h = (0, _DataUtils.interpolateNumber)(0, entry.height)(t);
+      return (0, _extends2["default"])({}, entry, {
+        y: entry.y + entry.height - h,
+        height: h
+      });
+    }
+    return (0, _extends2["default"])({}, entry, {
+      width: (0, _DataUtils.interpolateNumber)(0, entry.width)(t)
+    });
+  });
+};
 var _renderRectanglesWithAnimation = function _renderRectanglesWithAnimation(props, prevData, handleAnimationStart, handleAnimationEnd) {
   var data = props.data,
     layout = props.layout,
@@ -116,36 +139,8 @@ var _renderRectanglesWithAnimation = function _renderRectanglesWithAnimation(pro
     onAnimationStart: handleAnimationStart,
     children: function children(_ref) {
       var t = _ref.t;
-      var stepData = data.map(function (entry, index) {
-        var prev = prevData && prevData[index];
-        if (prev) {
-          var interpolatorX = (0, _DataUtils.interpolateNumber)(prev.x, entry.x),
-            interpolatorY = (0, _DataUtils.interpolateNumber)(prev.y, entry.y),
-            interpolatorWidth = (0, _DataUtils.interpolateNumber)(prev.width, entry.width),
-            interpolatorHeight = (0, _DataUtils.interpolateNumber)(prev.height, entry.height);
-          return (0, _extends2["default"])({}, entry, {
-            x: interpolatorX(t),
-            y: interpolatorY(t),
-            width: interpolatorWidth(t),
-            height: interpolatorHeight(t)
-          });
-        }
-        if (layout === 'horizontal') {
-          var _interpolatorHeight = (0, _DataUtils.interpolateNumber)(0, entry.height),
-            h = _interpolatorHeight(t);
-          return (0, _extends2["default"])({}, entry, {
-            y: entry.y + entry.height - h,
-            height: h
-          });
-        }
-        var interpolator = (0, _DataUtils.interpolateNumber)(0, entry.width),
-          w = interpolator(t);
-        return (0, _extends2["default"])({}, entry, {
-          width: w
-        });
-      });
       return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
-        children: _renderRectanglesStatically(stepData, props)
+        children: _renderRectanglesStatically(_crStepData(data, prevData, layout, t), props)
       });
     }
   }, "bar-" + animationId);
