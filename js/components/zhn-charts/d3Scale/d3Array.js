@@ -1,14 +1,11 @@
 "use strict";
 
 exports.__esModule = true;
-exports.bisect = void 0;
-exports.range = range;
+exports.range = exports.bisect = void 0;
 exports.tickIncrement = tickIncrement;
 exports.tickStep = tickStep;
 exports.ticks = ticks;
-var ascending = function ascending(a, b) {
-  return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-};
+const ascending = (a, b) => a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
 
 /*
 function descending(a, b) {
@@ -24,11 +21,9 @@ function descending(a, b) {
 }
 */
 
-var zero = function zero() {
-    return 0;
-  },
-  bisector = function bisector(f) {
-    var compare1, compare2, delta;
+const zero = () => 0,
+  bisector = f => {
+    let compare1, compare2, delta;
 
     // If an accessor is specified, promote it to a comparator. In this case we
     // can test whether the search value is (self-) comparable. We canÔÇÖt do this
@@ -37,19 +32,15 @@ var zero = function zero() {
     // used to test whether a single value is comparable.
     if (f.length !== 2) {
       compare1 = ascending;
-      compare2 = function compare2(d, x) {
-        return ascending(f(d), x);
-      };
-      delta = function delta(d, x) {
-        return f(d) - x;
-      };
+      compare2 = (d, x) => ascending(f(d), x);
+      delta = (d, x) => f(d) - x;
     } else {
       //compare1 = f === ascending || f === descending ? f : zero;
       compare1 = f === ascending ? f : zero;
       compare2 = f;
       delta = f;
     }
-    var left = function left(a, x, lo, hi) {
+    const left = function (a, x, lo, hi) {
       if (lo === void 0) {
         lo = 0;
       }
@@ -59,13 +50,13 @@ var zero = function zero() {
       if (lo < hi) {
         if (compare1(x, x) !== 0) return hi;
         do {
-          var mid = lo + hi >>> 1;
+          const mid = lo + hi >>> 1;
           if (compare2(a[mid], x) < 0) lo = mid + 1;else hi = mid;
         } while (lo < hi);
       }
       return lo;
     };
-    var right = function right(a, x, lo, hi) {
+    const right = function (a, x, lo, hi) {
       if (lo === void 0) {
         lo = 0;
       }
@@ -75,42 +66,43 @@ var zero = function zero() {
       if (lo < hi) {
         if (compare1(x, x) !== 0) return hi;
         do {
-          var mid = lo + hi >>> 1;
+          const mid = lo + hi >>> 1;
           if (compare2(a[mid], x) <= 0) lo = mid + 1;else hi = mid;
         } while (lo < hi);
       }
       return lo;
     };
-    var center = function center(a, x, lo, hi) {
+    const center = function (a, x, lo, hi) {
       if (lo === void 0) {
         lo = 0;
       }
       if (hi === void 0) {
         hi = a.length;
       }
-      var i = left(a, x, lo, hi - 1);
+      const i = left(a, x, lo, hi - 1);
       return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
     };
     return {
-      left: left,
-      center: center,
-      right: right
+      left,
+      center,
+      right
     };
   };
-var ascendingBisect = bisector(ascending);
-var bisect = ascendingBisect.right;
+const ascendingBisect = bisector(ascending);
+const bisect = ascendingBisect.right;
 exports.bisect = bisect;
-var mathMax = Math.max,
+const mathMax = Math.max,
   mathCeil = Math.ceil,
   mathSqrt = Math.sqrt,
   mathFloor = Math.floor,
   mathPow = Math.pow,
   mathLog10 = Math.log10,
   mathRound = Math.round;
-function range() {
-  var start = +(arguments.length <= 0 ? undefined : arguments[0]),
+const range = function () {
+  let start = +(arguments.length <= 0 ? undefined : arguments[0]),
     stop = +(arguments.length <= 1 ? undefined : arguments[1]),
-    step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +(arguments.length <= 2 ? undefined : arguments[2]),
+    argsLength = arguments.length,
+    step = argsLength < 2 ? (stop = start, start = 0, 1) : argsLength < 3 ? 1 : +(arguments.length <= 2 ? undefined : arguments[2]),
     i = -1,
     n = mathMax(0, mathCeil((stop - start) / step)) | 0,
     range = new Array(n);
@@ -118,16 +110,17 @@ function range() {
     range[i] = start + i * step;
   }
   return range;
-}
-var e10 = mathSqrt(50),
+};
+exports.range = range;
+const e10 = mathSqrt(50),
   e5 = mathSqrt(10),
   e2 = mathSqrt(2);
 function tickSpec(start, stop, count) {
-  var step = (stop - start) / mathMax(0, count),
+  const step = (stop - start) / mathMax(0, count),
     power = mathFloor(mathLog10(step)),
     error = step / mathPow(10, power),
     factor = error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1;
-  var i1, i2, inc;
+  let i1, i2, inc;
   if (power < 0) {
     inc = mathPow(10, -power) / factor;
     i1 = mathRound(start * inc);
@@ -151,18 +144,15 @@ function ticks(start, stop, count) {
   count = +count;
   if (!(count > 0)) return [];
   if (start === stop) return [start];
-  var reverse = stop < start,
-    _ref = reverse ? tickSpec(stop, start, count) : tickSpec(start, stop, count),
-    i1 = _ref[0],
-    i2 = _ref[1],
-    inc = _ref[2];
+  const reverse = stop < start,
+    [i1, i2, inc] = reverse ? tickSpec(stop, start, count) : tickSpec(start, stop, count);
   if (!(i2 >= i1)) return [];
-  var n = i2 - i1 + 1,
+  const n = i2 - i1 + 1,
     ticks = new Array(n);
   if (reverse) {
-    if (inc < 0) for (var i = 0; i < n; ++i) ticks[i] = (i2 - i) / -inc;else for (var _i = 0; _i < n; ++_i) ticks[_i] = (i2 - _i) * inc;
+    if (inc < 0) for (let i = 0; i < n; ++i) ticks[i] = (i2 - i) / -inc;else for (let i = 0; i < n; ++i) ticks[i] = (i2 - i) * inc;
   } else {
-    if (inc < 0) for (var _i2 = 0; _i2 < n; ++_i2) ticks[_i2] = (i1 + _i2) / -inc;else for (var _i3 = 0; _i3 < n; ++_i3) ticks[_i3] = (i1 + _i3) * inc;
+    if (inc < 0) for (let i = 0; i < n; ++i) ticks[i] = (i1 + i) / -inc;else for (let i = 0; i < n; ++i) ticks[i] = (i1 + i) * inc;
   }
   return ticks;
 }
@@ -176,7 +166,7 @@ function tickStep(start, stop, count) {
   stop = +stop;
   start = +start;
   count = +count;
-  var reverse = stop < start,
+  const reverse = stop < start,
     inc = reverse ? tickIncrement(stop, start, count) : tickIncrement(start, stop, count);
   return (reverse ? -1 : 1) * (inc < 0 ? 1 / -inc : inc);
 }

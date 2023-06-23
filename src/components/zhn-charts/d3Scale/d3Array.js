@@ -94,12 +94,13 @@ const mathMax = Math.max
 , mathLog10 = Math.log10
 , mathRound = Math.round;
 
-export function range(...args) {
+export const range = (...args) => {
   let start = +args[0]
   , stop = +args[1]
-  , step = (n = args.length) < 2
+  , argsLength = args.length
+  , step = argsLength  < 2
     ? (stop = start, start = 0, 1)
-    : n < 3
+    : argsLength < 3
        ? 1
        : +args[2]
   , i = -1
