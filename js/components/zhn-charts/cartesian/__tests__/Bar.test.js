@@ -4,13 +4,19 @@ var _react = require("@testing-library/react");
 var _index = require("../../index");
 var _CL = require("../../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-var i = 0;
-var _crUniqueKey = function _crUniqueKey() {
+let i = 0;
+const _crUniqueKey = () => {
   i += 1;
   return "key" + i;
 };
-describe('<Bar />', function () {
-  var data = [{
+const _getElementByClassName = function (container, className) {
+  if (className === void 0) {
+    className = _CL.CL_BAR_RECTANGLE;
+  }
+  return container.querySelectorAll("." + className);
+};
+describe('<Bar />', () => {
+  const data = [{
     x: 10,
     y: 50,
     width: 20,
@@ -32,8 +38,10 @@ describe('<Bar />', function () {
     value: 100,
     label: 'test'
   }];
-  it("Render " + data.length + " rectangles in a simple Bar", function () {
-    var wrapper = (0, _react.render)( /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Surface, {
+  it("Render " + data.length + " rectangles in a simple Bar", () => {
+    const {
+      container
+    } = (0, _react.render)( /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Surface, {
       width: 500,
       height: 500,
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
@@ -43,10 +51,12 @@ describe('<Bar />', function () {
         dataKey: "value"
       })
     }));
-    expect(wrapper.getAllByRole('img')).toHaveLength(data.length);
+    expect(_getElementByClassName(container)).toHaveLength(data.length);
   });
-  it("Render " + data.length + " rectangles in a vertical Bar", function () {
-    var wrapper = (0, _react.render)( /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Surface, {
+  it("Render " + data.length + " rectangles in a vertical Bar", () => {
+    const {
+      container
+    } = (0, _react.render)( /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Surface, {
       width: 500,
       height: 500,
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
@@ -56,10 +66,12 @@ describe('<Bar />', function () {
         dataKey: "value"
       })
     }));
-    expect(wrapper.getAllByRole('img')).toHaveLength(data.length);
+    expect(_getElementByClassName(container)).toHaveLength(data.length);
   });
-  it("Don't render any rectangle when data is empty", function () {
-    var wrapper = (0, _react.render)( /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Surface, {
+  it("Don't render any rectangle when data is empty", () => {
+    const {
+      container
+    } = (0, _react.render)( /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Surface, {
       width: 500,
       height: 500,
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
@@ -67,11 +79,11 @@ describe('<Bar />', function () {
         dataKey: "value"
       })
     }));
-    expect(wrapper.queryAllByRole('img')).toHaveLength(0);
+    expect(_getElementByClassName(container)).toHaveLength(0);
   });
 });
-describe('<Bar /> With background', function () {
-  var composedDataWithBackground = [{
+describe('<Bar /> With background', () => {
+  const composedDataWithBackground = [{
     x: 10,
     y: 50,
     width: 20,
@@ -98,29 +110,30 @@ describe('<Bar /> With background', function () {
       height: 50
     }
   }];
-  it('Will create a background Rectangle with the passed in props', function () {
-    var _render = (0, _react.render)( /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Surface, {
-        width: 500,
-        height: 500,
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
-          background: {
-            fill: '#000'
-          },
-          data: composedDataWithBackground,
-          dataKey: "value"
-        })
-      })),
-      container = _render.container;
-    expect(container.querySelectorAll("." + _CL.CL_BAR_BACKGROUND_RECTANGLE)).toHaveLength(composedDataWithBackground.length);
+  it('Will create a background Rectangle with the passed in props', () => {
+    const {
+      container
+    } = (0, _react.render)( /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Surface, {
+      width: 500,
+      height: 500,
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
+        background: {
+          fill: '#000'
+        },
+        data: composedDataWithBackground,
+        dataKey: "value"
+      })
+    }));
+    expect(_getElementByClassName(container, _CL.CL_BAR_BACKGROUND_RECTANGLE)).toHaveLength(composedDataWithBackground.length);
   });
-  it('Will accept a function for the background prop', function () {
-    var CL_TEST_CUSTOM_BACKGROUND = 'test-custom-background',
-      backgroundComponent = function backgroundComponent() {
-        return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-          className: CL_TEST_CUSTOM_BACKGROUND
-        }, _crUniqueKey());
-      },
-      _render2 = (0, _react.render)( /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Surface, {
+  it('Will accept a function for the background prop', () => {
+    const CL_TEST_CUSTOM_BACKGROUND = 'test-custom-background',
+      backgroundComponent = () => /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: CL_TEST_CUSTOM_BACKGROUND
+      }, _crUniqueKey()),
+      {
+        container
+      } = (0, _react.render)( /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Surface, {
         width: 500,
         height: 500,
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
@@ -128,9 +141,8 @@ describe('<Bar /> With background', function () {
           data: composedDataWithBackground,
           dataKey: "value"
         })
-      })),
-      container = _render2.container;
-    expect(container.querySelectorAll("." + CL_TEST_CUSTOM_BACKGROUND)).toHaveLength(composedDataWithBackground.length);
+      }));
+    expect(_getElementByClassName(container, CL_TEST_CUSTOM_BACKGROUND)).toHaveLength(composedDataWithBackground.length);
   });
 });
 //# sourceMappingURL=Bar.test.js.map

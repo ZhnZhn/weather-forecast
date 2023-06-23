@@ -1,12 +1,19 @@
 import { render } from '@testing-library/react';
 import { Bar, Surface } from '../../index';
-import { CL_BAR_BACKGROUND_RECTANGLE } from '../../CL';
+import {
+  CL_BAR_RECTANGLE,
+  CL_BAR_BACKGROUND_RECTANGLE
+} from '../../CL';
 
 let i = 0;
 const _crUniqueKey = () => {
   i +=1
   return `key${i}`;
 }
+const _getElementByClassName = (
+  container,
+  className=CL_BAR_RECTANGLE
+) => container.querySelectorAll(`.${className}`)
 
 describe('<Bar />', () => {
   const data = [
@@ -16,7 +23,7 @@ describe('<Bar />', () => {
   ];
 
   it(`Render ${data.length} rectangles in a simple Bar`, () => {
-    const wrapper = render(
+    const { container } = render(
       <Surface width={500} height={500}>
         <Bar
           isAnimationActive={false}
@@ -27,11 +34,11 @@ describe('<Bar />', () => {
       </Surface>
     );
 
-    expect(wrapper.getAllByRole('img')).toHaveLength(data.length);
+    expect(_getElementByClassName(container)).toHaveLength(data.length);
   });
 
   it(`Render ${data.length} rectangles in a vertical Bar`, () => {
-    const wrapper = render(
+    const { container } = render(
       <Surface width={500} height={500}>
         <Bar
           isAnimationActive={false}
@@ -42,17 +49,17 @@ describe('<Bar />', () => {
       </Surface>
     );
 
-    expect(wrapper.getAllByRole('img')).toHaveLength(data.length);
+    expect(_getElementByClassName(container)).toHaveLength(data.length);
   });
 
   it("Don't render any rectangle when data is empty", () => {
-    const wrapper = render(
+    const { container } = render(
       <Surface width={500} height={500}>
         <Bar data={[]} dataKey="value" />
       </Surface>
     );
 
-    expect(wrapper.queryAllByRole('img')).toHaveLength(0);
+    expect(_getElementByClassName(container)).toHaveLength(0);
   });
 });
 
@@ -89,7 +96,7 @@ describe('<Bar /> With background', () => {
       </Surface>
     );
 
-    expect(container.querySelectorAll(`.${CL_BAR_BACKGROUND_RECTANGLE}`))
+    expect(_getElementByClassName(container, CL_BAR_BACKGROUND_RECTANGLE))
       .toHaveLength(composedDataWithBackground.length);
   });
 
@@ -111,7 +118,7 @@ describe('<Bar /> With background', () => {
         </Surface>
     );
 
-    expect(container.querySelectorAll(`.${CL_TEST_CUSTOM_BACKGROUND}`))
+    expect(_getElementByClassName(container, CL_TEST_CUSTOM_BACKGROUND))
       .toHaveLength(composedDataWithBackground.length);
   });
 });
