@@ -620,12 +620,16 @@ export const generateCategoricalChart = ({
               const {
                 width,
                 height
-              } = this.props;
+              } = this.props
+              , {
+                axisType,
+                className
+              } = axisOptions;
               return (
                 <CartesianAxis
                    {...axisOptions}
                    key={element.key || `${displayName}-${index}`}
-                   className={`recharts-${axisOptions.axisType} ${axisOptions.axisType}`}
+                   className={classNames(`recharts-${axisType} ${axisType}`, className)}
                    viewBox={{ x: 0, y: 0, width, height }}
                    ticksGenerator={this.axesTicksGenerator}
                 />
