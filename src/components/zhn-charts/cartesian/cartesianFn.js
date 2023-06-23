@@ -5,7 +5,10 @@ import {
 
 import { getValueByDataKey } from '../util/ChartUtils';
 import { ifOverflowMatches } from '../util/IfOverflowMatches';
-import { _isFn } from '../util/FnUtils';
+import {
+  _isArr,
+  _isFn
+} from '../util/FnUtils';
 
 export const DF_AXIS_PROPS = {
   allowDataOverflow: false,
@@ -46,10 +49,12 @@ export const dataPointFormatter = (
   dataPoint,
   dataKey
 ) => ({
-  x: dataPoint.x,
-  y: dataPoint.y,
-  value: dataPoint.value,
-  errorVal: getValueByDataKey(dataPoint, dataKey)
+   x: dataPoint.x,
+   y: dataPoint.y,
+   value: _isArr(dataPoint.value)
+    ? dataPoint.value[1]
+    : dataPoint.value,
+   errorVal: getValueByDataKey(dataPoint, dataKey)
 })
 
 export const crClipPathProps = (
