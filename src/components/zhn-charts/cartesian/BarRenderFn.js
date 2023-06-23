@@ -48,8 +48,7 @@ const _renderRectanglesStatically = (
       <Layer
         className={CL_BAR_RECTANGLE}
         {...adaptEventsOfChild(rectangleProps, entry, i)}
-        key={`rectangle-${i}`}
-        role="img"
+        key={`rectangle-${i}`}      
       >
         {_renderRectangle(shape, rectangleProps)}
       </Layer>
