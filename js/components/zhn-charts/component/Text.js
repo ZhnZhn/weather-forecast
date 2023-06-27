@@ -3,25 +3,24 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Text = void 0;
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _uiApi = require("../../uiApi");
-var _classnames = _interopRequireDefault(require("classnames"));
+var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _FnUtils = require("../util/FnUtils");
 var _DataUtils = require("../util/DataUtils");
 var _Global = require("../util/Global");
 var _ReactUtils = require("../util/ReactUtils");
 var _DOMUtils = require("../util/DOMUtils");
+var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-var _excluded = ["dx", "dy", "textAnchor", "verticalAnchor", "scaleToFit", "angle", "lineHeight", "className", "breakAll"];
-var CL_TEXT = "recharts-text";
-var BREAKING_SPACES = /[ \f\n\r\t\v\u2028\u2029]+/;
-var calculateWordWidths = function calculateWordWidths(_ref) {
-  var children = _ref.children,
-    breakAll = _ref.breakAll,
-    style = _ref.style;
+const BREAKING_SPACES = /[ \f\n\r\t\v\u2028\u2029]+/;
+const calculateWordWidths = _ref => {
+  let {
+    children,
+    breakAll,
+    style
+  } = _ref;
   try {
-    var words = [];
+    let words = [];
     if (!(0, _FnUtils._isNil)(children)) {
       if (breakAll) {
         words = children.toString().split('');
@@ -29,84 +28,79 @@ var calculateWordWidths = function calculateWordWidths(_ref) {
         words = children.toString().split(BREAKING_SPACES);
       }
     }
-    var wordsWithComputedWidth = words.map(function (word) {
-        return {
-          word: word,
-          width: (0, _DOMUtils.getStringSize)(word, style).width
-        };
-      }),
-      spaceWidth = breakAll ? 0 : (0, _DOMUtils.getStringSize)("\xA0", style).width;
+    const wordsWithComputedWidth = words.map(word => ({
+        word,
+        width: (0, _DOMUtils.getStringSize)(word, style).width
+      })),
+      spaceWidth = breakAll ? 0 : (0, _DOMUtils.getStringSize)('\u00A0', style).width;
     return {
-      wordsWithComputedWidth: wordsWithComputedWidth,
-      spaceWidth: spaceWidth
+      wordsWithComputedWidth,
+      spaceWidth
     };
   } catch (e) {
     return null;
   }
 };
-var calculateWordsByLines = function calculateWordsByLines(_ref2, initialWordsWithComputedWith, spaceWidth, lineWidth, scaleToFit) {
-  var maxLines = _ref2.maxLines,
-    children = _ref2.children,
-    style = _ref2.style,
-    breakAll = _ref2.breakAll;
-  var shouldLimitLines = (0, _DataUtils.isNumber)(maxLines),
+const calculateWordsByLines = (_ref2, initialWordsWithComputedWith, spaceWidth, lineWidth, scaleToFit) => {
+  let {
+    maxLines,
+    children,
+    style,
+    breakAll
+  } = _ref2;
+  const shouldLimitLines = (0, _DataUtils.isNumber)(maxLines),
     text = children,
-    calculate = function calculate(words) {
+    calculate = function (words) {
       if (words === void 0) {
         words = [];
       }
-      return words.reduce(function (result, _ref3) {
-        var word = _ref3.word,
-          width = _ref3.width;
-        var currentLine = result[result.length - 1];
+      return words.reduce((result, _ref3) => {
+        let {
+          word,
+          width
+        } = _ref3;
+        const currentLine = result[result.length - 1];
         if (currentLine && (lineWidth == null || scaleToFit || currentLine.width + width + spaceWidth < Number(lineWidth))) {
           // Word can be added to an existing line
           currentLine.words.push(word);
           currentLine.width += width + spaceWidth;
         } else {
           // Add first word to line or word is too long to scaleToFit on existing line
-          var newLine = {
+          const newLine = {
             words: [word],
-            width: width
+            width
           };
           result.push(newLine);
         }
         return result;
       }, []);
     };
-  var originalResult = calculate(initialWordsWithComputedWith),
-    findLongestLine = function findLongestLine(words) {
-      return words.reduce(function (a, b) {
-        return a.width > b.width ? a : b;
-      });
-    };
+  const originalResult = calculate(initialWordsWithComputedWith),
+    findLongestLine = words => words.reduce((a, b) => a.width > b.width ? a : b);
   if (!shouldLimitLines) {
     return originalResult;
   }
-  var suffix = '.',
-    checkOverflow = function checkOverflow(index) {
-      var tempText = text.slice(0, index),
+  const suffix = '.',
+    checkOverflow = index => {
+      const tempText = text.slice(0, index),
         words = calculateWordWidths({
-          breakAll: breakAll,
-          style: style,
+          breakAll,
+          style,
           children: tempText + suffix
         }).wordsWithComputedWidth,
         result = calculate(words),
         doesOverflow = result.length > maxLines || findLongestLine(result).width > Number(lineWidth);
       return [doesOverflow, result];
     };
-  var start = 0;
-  var end = text.length - 1;
-  var iterations = 0;
-  var trimmedResult;
+  let start = 0,
+    end = text.length - 1,
+    iterations = 0,
+    trimmedResult;
   while (start <= end && iterations <= text.length - 1) {
-    var middle = Math.floor((start + end) / 2),
+    const middle = Math.floor((start + end) / 2),
       prev = middle - 1,
-      _checkOverflow = checkOverflow(prev),
-      doesPrevOverflow = _checkOverflow[0],
-      result = _checkOverflow[1],
-      _checkOverflow2 = checkOverflow(middle),
-      doesMiddleOverflow = _checkOverflow2[0];
+      [doesPrevOverflow, result] = checkOverflow(prev),
+      [doesMiddleOverflow] = checkOverflow(middle);
     if (!doesPrevOverflow && !doesMiddleOverflow) {
       start = middle + 1;
     }
@@ -123,46 +117,50 @@ var calculateWordsByLines = function calculateWordsByLines(_ref2, initialWordsWi
   // where to trim.  This should not happen :tm:
   return trimmedResult || originalResult;
 };
-var getWordsWithoutCalculate = function getWordsWithoutCalculate(children) {
-  var words = !(0, _FnUtils._isNil)(children) ? children.toString().split(BREAKING_SPACES) : [];
+const getWordsWithoutCalculate = children => {
+  const words = !(0, _FnUtils._isNil)(children) ? children.toString().split(BREAKING_SPACES) : [];
   return [{
-    words: words
+    words
   }];
 };
-var getWordsByLines = function getWordsByLines(_ref4) {
-  var width = _ref4.width,
-    scaleToFit = _ref4.scaleToFit,
-    children = _ref4.children,
-    style = _ref4.style,
-    breakAll = _ref4.breakAll,
-    maxLines = _ref4.maxLines;
+const getWordsByLines = _ref4 => {
+  let {
+    width,
+    scaleToFit,
+    children,
+    style,
+    breakAll,
+    maxLines
+  } = _ref4;
   // Only perform calculations if using features that require them (multiline, scaleToFit)
   if ((width || scaleToFit) && !_Global.Global.isSsr) {
-    var wordsWithComputedWidth, spaceWidth;
-    var wordWidths = calculateWordWidths({
-      breakAll: breakAll,
-      children: children,
-      style: style
+    let wordsWithComputedWidth, spaceWidth;
+    const wordWidths = calculateWordWidths({
+      breakAll,
+      children,
+      style
     });
     if (wordWidths) {
-      var wcw = wordWidths.wordsWithComputedWidth,
-        sw = wordWidths.spaceWidth;
+      const {
+        wordsWithComputedWidth: wcw,
+        spaceWidth: sw
+      } = wordWidths;
       wordsWithComputedWidth = wcw;
       spaceWidth = sw;
     } else {
       return getWordsWithoutCalculate(children);
     }
     return calculateWordsByLines({
-      breakAll: breakAll,
-      children: children,
-      maxLines: maxLines,
-      style: style
+      breakAll,
+      children,
+      maxLines,
+      style
     }, wordsWithComputedWidth, spaceWidth, width, scaleToFit);
   }
   return getWordsWithoutCalculate(children);
 };
-var _crStartDy = function _crStartDy(verticalAnchor) {
-  var startDy;
+const _crStartDy = verticalAnchor => {
+  let startDy;
   switch (verticalAnchor) {
     case 'start':
       startDy = '0.71em';
@@ -179,7 +177,7 @@ var _crStartDy = function _crStartDy(verticalAnchor) {
   }
   return startDy;
 };
-var textDefaultProps = {
+const textDefaultProps = {
   x: 0,
   y: 0,
   lineHeight: '1em',
@@ -189,8 +187,8 @@ var textDefaultProps = {
   verticalAnchor: 'end',
   fill: '#808080'
 };
-var Text = function Text(props) {
-  var wordsByLines = (0, _uiApi.useMemo)(function () {
+const Text = props => {
+  const wordsByLines = (0, _uiApi.useMemo)(() => {
       return getWordsByLines({
         breakAll: props.breakAll,
         children: props.children,
@@ -200,26 +198,31 @@ var Text = function Text(props) {
         width: props.width
       });
     }, [props.breakAll, props.children, props.maxLines, props.scaleToFit, props.style, props.width]),
-    dx = props.dx,
-    dy = props.dy,
-    textAnchor = props.textAnchor,
-    verticalAnchor = props.verticalAnchor,
-    scaleToFit = props.scaleToFit,
-    angle = props.angle,
-    lineHeight = props.lineHeight,
-    className = props.className,
-    breakAll = props.breakAll,
-    textProps = (0, _objectWithoutPropertiesLoose2["default"])(props, _excluded);
+    {
+      dx,
+      dy,
+      textAnchor,
+      verticalAnchor,
+      scaleToFit,
+      angle,
+      lineHeight,
+      //capHeight,
+      className,
+      breakAll,
+      ...textProps
+    } = props;
   if (!(0, _DataUtils.isNumOrStr)(textProps.x) || !(0, _DataUtils.isNumOrStr)(textProps.y)) {
     return null;
   }
-  var x = textProps.x + ((0, _DataUtils.isNumber)(dx) ? dx : 0),
+  const x = textProps.x + ((0, _DataUtils.isNumber)(dx) ? dx : 0),
     y = textProps.y + ((0, _DataUtils.isNumber)(dy) ? dy : 0),
     transforms = [];
-  var startDy = _crStartDy(verticalAnchor);
+  let startDy = _crStartDy(verticalAnchor);
   if (scaleToFit) {
-    var lineWidth = wordsByLines[0].width,
-      width = props.width;
+    const lineWidth = wordsByLines[0].width,
+      {
+        width
+      } = props;
     transforms.push("scale(" + ((0, _DataUtils.isNumber)(width) ? width / lineWidth : 1) / lineWidth + ")");
   }
   if (angle) {
@@ -228,20 +231,19 @@ var Text = function Text(props) {
   if (transforms.length) {
     textProps.transform = transforms.join(' ');
   }
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("text", (0, _extends2["default"])({}, (0, _ReactUtils.filterProps)(textProps, true), {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("text", {
+    ...(0, _ReactUtils.filterProps)(textProps, true),
     x: x,
     y: y,
-    className: (0, _classnames["default"])(CL_TEXT, className),
+    className: (0, _crCn.default)(_CL.CL_TEXT, className),
     textAnchor: textAnchor,
     fill: textProps.fill.includes('url') ? textDefaultProps.fill : textProps.fill,
-    children: wordsByLines.map(function (line, index) {
-      return /*#__PURE__*/(0, _jsxRuntime.jsx)("tspan", {
-        x: x,
-        dy: index === 0 ? startDy : lineHeight,
-        children: line.words.join(breakAll ? '' : ' ')
-      }, index);
-    })
-  }));
+    children: wordsByLines.map((line, index) => /*#__PURE__*/(0, _jsxRuntime.jsx)("tspan", {
+      x: x,
+      dy: index === 0 ? startDy : lineHeight,
+      children: line.words.join(breakAll ? '' : ' ')
+    }, index))
+  });
 };
 exports.Text = Text;
 Text.defaultProps = textDefaultProps;

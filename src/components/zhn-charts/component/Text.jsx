@@ -1,5 +1,5 @@
 import { useMemo } from '../../uiApi';
-import classNames from 'classnames';
+import crCn from '../../zhn-utils/crCn';
 
 import { _isNil } from '../util/FnUtils';
 
@@ -8,7 +8,8 @@ import { Global } from '../util/Global';
 import { filterProps } from '../util/ReactUtils';
 import { getStringSize } from '../util/DOMUtils';
 
-const CL_TEXT = "recharts-text"
+import { CL_TEXT } from '../CL';
+
 const BREAKING_SPACES = /[ \f\n\r\t\v\u2028\u2029]+/;
 const calculateWordWidths = ({
   children,
@@ -85,10 +86,10 @@ const calculateWordsByLines = ({
         || findLongestLine(result).width > Number(lineWidth);
       return [doesOverflow, result];
   };
-  let start = 0;
-  let end = text.length - 1;
-  let iterations = 0;
-  let trimmedResult;
+  let start = 0
+  , end = text.length - 1
+  , iterations = 0
+  , trimmedResult;
   while (start <= end && iterations <= text.length - 1) {
     const middle = Math.floor((start + end) / 2)
     , prev = middle - 1
@@ -131,7 +132,10 @@ const getWordsByLines = ({
     let wordsWithComputedWidth, spaceWidth;
     const wordWidths = calculateWordWidths({ breakAll, children, style });
     if (wordWidths) {
-      const { wordsWithComputedWidth: wcw, spaceWidth: sw } = wordWidths;
+      const {
+        wordsWithComputedWidth: wcw,
+        spaceWidth: sw
+      } = wordWidths;
       wordsWithComputedWidth = wcw;
       spaceWidth = sw;
     } else {
@@ -229,7 +233,7 @@ export const Text = (props) => {
     <text
       {...filterProps(textProps, true)}
       x={x} y={y}
-      className={classNames(CL_TEXT, className)}
+      className={crCn(CL_TEXT, className)}
       textAnchor={textAnchor}
       fill={textProps.fill.includes('url') ? textDefaultProps.fill : textProps.fill}
     >

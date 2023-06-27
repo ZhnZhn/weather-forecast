@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.CL_SYMBOLS = exports.CL_STRIPES_VERTICAL = exports.CL_STRIPES_HORIZONTAL = exports.CL_RESTANGLE = exports.CL_RECHARTS_SURFACE = exports.CL_RECHARTS_LAYER = exports.CL_LINE_DOTS = exports.CL_LINE_DOT = exports.CL_LINE_CURVE = exports.CL_LINE = exports.CL_LABEL = exports.CL_GRID_VERTICAL = exports.CL_GRID_HORIZONTAL = exports.CL_DOT = exports.CL_CURVE = exports.CL_CARTESIAN_GRID = exports.CL_BG = exports.CL_BAR_RECTANGLES = exports.CL_BAR_RECTANGLE = exports.CL_BAR_BACKGROUND_RECTANGLE = exports.CL_BAR = exports.CL_AXIS_TICK_VALUE = exports.CL_AXIS_TICK_LINE = exports.CL_AXIS_TICKS = exports.CL_AXIS_TICK = exports.CL_AXIS_LINE = exports.CL_AXIS = void 0;
+exports.CL_TEXT = exports.CL_SYMBOLS = exports.CL_STRIPES_VERTICAL = exports.CL_STRIPES_HORIZONTAL = exports.CL_RESTANGLE = exports.CL_RECHARTS_SURFACE = exports.CL_RECHARTS_LAYER = exports.CL_LINE_DOTS = exports.CL_LINE_DOT = exports.CL_LINE_CURVE = exports.CL_LINE = exports.CL_LABEL = exports.CL_GRID_VERTICAL = exports.CL_GRID_HORIZONTAL = exports.CL_DOT = exports.CL_CURVE = exports.CL_CARTESIAN_GRID = exports.CL_BG = exports.CL_BAR_RECTANGLES = exports.CL_BAR_RECTANGLE = exports.CL_BAR_BACKGROUND_RECTANGLE = exports.CL_BAR = exports.CL_AXIS_TICK_VALUE = exports.CL_AXIS_TICK_LINE = exports.CL_AXIS_TICKS = exports.CL_AXIS_TICK = exports.CL_AXIS_LINE = exports.CL_AXIS = void 0;
 const _CHART_PREFIX = 'recharts';
 const _CHART_CARTESIAN = _CHART_PREFIX + "-cartesian";
 const CL_BAR = _CHART_PREFIX + "-bar";
@@ -47,6 +47,8 @@ const CL_STRIPES_HORIZONTAL = _CHART_CARTESIAN_GRID_STRIPES + "-horizontal";
 exports.CL_STRIPES_HORIZONTAL = CL_STRIPES_HORIZONTAL;
 const CL_STRIPES_VERTICAL = _CHART_CARTESIAN_GRID_STRIPES + "-vertical";
 exports.CL_STRIPES_VERTICAL = CL_STRIPES_VERTICAL;
+const CL_TEXT = _CHART_PREFIX + "-text";
+exports.CL_TEXT = CL_TEXT;
 const CL_RECHARTS_LAYER = _CHART_PREFIX + "-layer";
 exports.CL_RECHARTS_LAYER = CL_RECHARTS_LAYER;
 const CL_RECHARTS_SURFACE = _CHART_PREFIX + "-surface";
