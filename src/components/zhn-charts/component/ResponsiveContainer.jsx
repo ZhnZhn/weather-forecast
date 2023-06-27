@@ -6,15 +6,15 @@ import {
   useCallback,
   useMemo,
   useEffect,
-  useImperativeHandle
+  useImperativeHandle,
+  getRefValue
 } from '../../uiApi';
 
-import classNames from 'classnames';
-
+import crCn from '../../zhn-utils/crCn';
 import ReactResizeDetector from '../../zhn-resize-detector/ResizeDetector';
-import { isPercent } from '../util/DataUtils';
 
-const CL_RESPONSIVE_CONTAINER = "recharts-responsive-container";
+import { isPercent } from '../util/DataUtils';
+import { CL_RESPONSIVE_CONTAINER } from '../CL';
 
 export const ResponsiveContainer = forwardRef(({
   aspect,
@@ -49,10 +49,13 @@ export const ResponsiveContainer = forwardRef(({
   );
 
   const getContainerSize = useCallback(
-    () => containerRef.current ? {
-      containerWidth: containerRef.current.clientWidth,
-      containerHeight: containerRef.current.clientHeight,
-    } : null, []
+    () => {
+      const _containerEl = getRefValue(containerRef);
+      return _containerEl ? {
+        containerWidth: _containerEl.clientWidth,
+        containerHeight: _containerEl.clientHeight
+      } : null;
+    }, []
   );
 
   const updateDimensionsImmediate = useCallback(() => {
@@ -135,7 +138,7 @@ export const ResponsiveContainer = forwardRef(({
     >
       <div
         {...(id != null ? { id: `${id}` } : {})}
-        className={classNames(CL_RESPONSIVE_CONTAINER, className)}
+        className={crCn(CL_RESPONSIVE_CONTAINER, className)}
         style={style}
         ref={containerRef}
       >

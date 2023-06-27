@@ -3,71 +3,75 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.ResponsiveContainer = void 0;
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _uiApi = require("../../uiApi");
-var _classnames = _interopRequireDefault(require("classnames"));
+var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _ResizeDetector = _interopRequireDefault(require("../../zhn-resize-detector/ResizeDetector"));
 var _DataUtils = require("../util/DataUtils");
+var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-var CL_RESPONSIVE_CONTAINER = "recharts-responsive-container";
-var ResponsiveContainer = (0, _uiApi.forwardRef)(function (_ref, ref) {
-  var aspect = _ref.aspect,
-    _ref$width = _ref.width,
-    width = _ref$width === void 0 ? '100%' : _ref$width,
-    _ref$height = _ref.height,
-    height = _ref$height === void 0 ? '100%' : _ref$height,
-    _ref$minWidth = _ref.minWidth,
-    minWidth = _ref$minWidth === void 0 ? 0 : _ref$minWidth,
-    minHeight = _ref.minHeight,
-    maxHeight = _ref.maxHeight,
-    children = _ref.children,
-    _ref$debounce = _ref.debounce,
-    debounce = _ref$debounce === void 0 ? 0 : _ref$debounce,
-    id = _ref.id,
-    className = _ref.className,
-    onResize = _ref.onResize;
-  var _useState = (0, _uiApi.useState)({
+const ResponsiveContainer = (0, _uiApi.forwardRef)((_ref, ref) => {
+  let {
+    aspect,
+    width = '100%',
+    height = '100%',
+    /*
+     * default min-width to 0 if not specified - 'auto' causes issues with flexbox
+     * https://github.com/recharts/recharts/issues/172
+     */
+    minWidth = 0,
+    minHeight,
+    maxHeight,
+    children,
+    debounce = 0,
+    id,
+    className,
+    onResize
+  } = _ref;
+  const [sizes, setSizes] = (0, _uiApi.useState)({
       containerWidth: -1,
       containerHeight: -1
     }),
-    sizes = _useState[0],
-    setSizes = _useState[1],
     containerRef = (0, _uiApi.useRef)(null);
-  (0, _uiApi.useImperativeHandle)(ref, function () {
-    return containerRef;
-  }, [containerRef]);
-  var getContainerSize = (0, _uiApi.useCallback)(function () {
-    return containerRef.current ? {
-      containerWidth: containerRef.current.clientWidth,
-      containerHeight: containerRef.current.clientHeight
+  (0, _uiApi.useImperativeHandle)(ref, () => containerRef, [containerRef]);
+  const getContainerSize = (0, _uiApi.useCallback)(() => {
+    const _containerEl = (0, _uiApi.getRefValue)(containerRef);
+    return _containerEl ? {
+      containerWidth: _containerEl.clientWidth,
+      containerHeight: _containerEl.clientHeight
     } : null;
   }, []);
-  var updateDimensionsImmediate = (0, _uiApi.useCallback)(function () {
-    var newSize = getContainerSize();
+  const updateDimensionsImmediate = (0, _uiApi.useCallback)(() => {
+    const newSize = getContainerSize();
     if (newSize) {
-      var containerWidth = newSize.containerWidth,
-        containerHeight = newSize.containerHeight;
+      const {
+        containerWidth,
+        containerHeight
+      } = newSize;
       if (onResize) {
         onResize(containerWidth, containerHeight);
       }
-      setSizes(function (currentSizes) {
-        var oldWidth = currentSizes.containerWidth,
-          oldHeight = currentSizes.containerHeight;
+      setSizes(currentSizes => {
+        const {
+          containerWidth: oldWidth,
+          containerHeight: oldHeight
+        } = currentSizes;
         return containerWidth !== oldWidth || containerHeight !== oldHeight ? {
-          containerWidth: containerWidth,
-          containerHeight: containerHeight
+          containerWidth,
+          containerHeight
         } : currentSizes;
       });
     }
   }, [getContainerSize, onResize]);
-  var chartContent = (0, _uiApi.useMemo)(function () {
-    var containerWidth = sizes.containerWidth,
-      containerHeight = sizes.containerHeight;
+  const chartContent = (0, _uiApi.useMemo)(() => {
+    const {
+      containerWidth,
+      containerHeight
+    } = sizes;
     if (containerWidth < 0 || containerHeight < 0) {
       return null;
     }
-    var calculatedWidth = (0, _DataUtils.isPercent)(width) ? containerWidth : width;
-    var calculatedHeight = (0, _DataUtils.isPercent)(height) ? containerHeight : height;
+    let calculatedWidth = (0, _DataUtils.isPercent)(width) ? containerWidth : width;
+    let calculatedHeight = (0, _DataUtils.isPercent)(height) ? containerHeight : height;
     if (aspect && aspect > 0) {
       // Preserve the desired aspect ratio
       if (calculatedWidth) {
@@ -87,32 +91,33 @@ var ResponsiveContainer = (0, _uiApi.forwardRef)(function (_ref, ref) {
       height: calculatedHeight
     });
   }, [aspect, children, height, maxHeight, sizes, width]);
-  (0, _uiApi.useEffect)(function () {
-    var size = getContainerSize();
+  (0, _uiApi.useEffect)(() => {
+    const size = getContainerSize();
     if (size) {
       setSizes(size);
     }
   }, [getContainerSize]);
-  var style = {
-    width: width,
-    height: height,
-    minWidth: minWidth,
-    minHeight: minHeight,
-    maxHeight: maxHeight
+  const style = {
+    width,
+    height,
+    minWidth,
+    minHeight,
+    maxHeight
   };
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ResizeDetector["default"], {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ResizeDetector.default, {
     onResize: updateDimensionsImmediate,
     targetRef: containerRef,
     refreshMode: debounce > 0 ? 'debounce' : void 0,
     refreshRate: debounce,
-    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", (0, _extends2["default"])({}, id != null ? {
-      id: "" + id
-    } : {}, {
-      className: (0, _classnames["default"])(CL_RESPONSIVE_CONTAINER, className),
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      ...(id != null ? {
+        id: "" + id
+      } : {}),
+      className: (0, _crCn.default)(_CL.CL_RESPONSIVE_CONTAINER, className),
       style: style,
       ref: containerRef,
       children: chartContent
-    }))
+    })
   });
 });
 exports.ResponsiveContainer = ResponsiveContainer;
