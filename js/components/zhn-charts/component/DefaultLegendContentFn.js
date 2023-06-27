@@ -2,22 +2,19 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.renderItems = exports.CL_DF_LEGEND = void 0;
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+exports.renderItems = void 0;
 var _uiApi = require("../../uiApi");
-var _classnames = _interopRequireDefault(require("classnames"));
+var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _Surface = require("../container/Surface");
 var _Symbols = require("../shape/Symbols");
 var _types = require("../util/types");
+var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-var CL_DF_LEGEND = "recharts-default-legend";
-exports.CL_DF_LEGEND = CL_DF_LEGEND;
-var CL_LEGEND_ICON = "recharts-legend-icon",
-  CL_LEGEND_ITEM = "recharts-legend-item",
-  CL_LEGEND_ITEM_TEXT = CL_LEGEND_ITEM + "-text";
-var SIZE = 32;
-var _renderIcon = function _renderIcon(data, props) {
-  var inactiveColor = props.inactiveColor,
+const SIZE = 32;
+const _renderIcon = (data, props) => {
+  const {
+      inactiveColor
+    } = props,
     halfSize = SIZE / 2,
     sixthSize = SIZE / 6,
     thirdSize = SIZE / 3,
@@ -32,7 +29,7 @@ var _renderIcon = function _renderIcon(data, props) {
       y1: halfSize,
       x2: SIZE,
       y2: halfSize,
-      className: CL_LEGEND_ICON
+      className: _CL.CL_LEGEND_ICON
     });
   }
   if (data.type === 'line') {
@@ -41,7 +38,7 @@ var _renderIcon = function _renderIcon(data, props) {
       fill: "none",
       stroke: color,
       d: "M0," + halfSize + "h" + thirdSize + "\n        A" + sixthSize + "," + sixthSize + ",0,1,1," + 2 * thirdSize + "," + halfSize + "\n        H" + SIZE + "M" + 2 * thirdSize + "," + halfSize + "\n        A" + sixthSize + "," + sixthSize + ",0,1,1," + thirdSize + "," + halfSize,
-      className: CL_LEGEND_ICON
+      className: _CL.CL_LEGEND_ICON
     });
   }
   if (data.type === 'rect') {
@@ -49,11 +46,13 @@ var _renderIcon = function _renderIcon(data, props) {
       stroke: "none",
       fill: color,
       d: "M0," + SIZE / 8 + "h" + SIZE + "v" + SIZE * 3 / 4 + "h" + -SIZE + "z",
-      className: CL_LEGEND_ICON
+      className: _CL.CL_LEGEND_ICON
     });
   }
   if ((0, _uiApi.isValidElement)(data.legendIcon)) {
-    var iconProps = (0, _extends2["default"])({}, data);
+    const iconProps = {
+      ...data
+    };
     delete iconProps.legendIcon;
     return (0, _uiApi.cloneElement)(data.legendIcon, iconProps);
   }
@@ -66,12 +65,14 @@ var _renderIcon = function _renderIcon(data, props) {
     type: data.type
   });
 };
-var renderItems = function renderItems(props) {
-  var payload = props.payload,
-    iconSize = props.iconSize,
-    layout = props.layout,
-    formatter = props.formatter,
-    inactiveColor = props.inactiveColor,
+const renderItems = props => {
+  const {
+      payload,
+      iconSize,
+      layout,
+      formatter,
+      inactiveColor
+    } = props,
     viewBox = {
       x: 0,
       y: 0,
@@ -87,18 +88,17 @@ var renderItems = function renderItems(props) {
       verticalAlign: 'middle',
       marginRight: 4
     };
-  return payload.map(function (entry, i) {
-    var _classNames;
-    var finalFormatter = entry.formatter || formatter,
-      className = (0, _classnames["default"])((_classNames = {}, _classNames[CL_LEGEND_ITEM] = true, _classNames["legend-item-" + i] = true, _classNames.inactive = entry.inactive, _classNames));
+  return payload.map((entry, i) => {
+    const finalFormatter = entry.formatter || formatter,
+      className = (0, _crCn.default)(_CL.CL_LEGEND_ITEM + " legend-item-" + i, entry.inactive && 'inactive');
     if (entry.type === 'none') {
       return null;
     }
-    var color = entry.inactive ? inactiveColor : entry.color;
-    return /*#__PURE__*/(0, _jsxRuntime.jsxs)("li", (0, _extends2["default"])({
+    const color = entry.inactive ? inactiveColor : entry.color;
+    return /*#__PURE__*/(0, _jsxRuntime.jsxs)("li", {
       className: className,
-      style: itemStyle
-    }, (0, _types.adaptEventsOfChild)(props, entry, i), {
+      style: itemStyle,
+      ...(0, _types.adaptEventsOfChild)(props, entry, i),
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Surface.Surface, {
         width: iconSize,
         height: iconSize,
@@ -106,13 +106,13 @@ var renderItems = function renderItems(props) {
         style: svgStyle,
         children: _renderIcon(entry)
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-        className: CL_LEGEND_ITEM_TEXT,
+        className: _CL.CL_LEGEND_ITEM_TEXT,
         style: {
-          color: color
+          color
         },
         children: finalFormatter ? finalFormatter(entry.value, entry, i) : entry.value
       })]
-    }), "legend-item-" + i);
+    }, "legend-item-" + i);
   });
 };
 exports.renderItems = renderItems;

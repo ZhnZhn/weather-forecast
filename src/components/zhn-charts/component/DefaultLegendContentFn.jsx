@@ -3,18 +3,19 @@ import {
   cloneElement
 } from '../../uiApi';
 
-import classNames from 'classnames';
+import crCn from '../../zhn-utils/crCn';
 
 import { Surface } from '../container/Surface';
 import { Symbols } from '../shape/Symbols';
 
 import { adaptEventsOfChild } from '../util/types';
 
-export const CL_DF_LEGEND = "recharts-default-legend"
+import {
+  CL_LEGEND_ICON,
+  CL_LEGEND_ITEM,
+  CL_LEGEND_ITEM_TEXT
+} from '../CL';
 
-const CL_LEGEND_ICON = "recharts-legend-icon"
-, CL_LEGEND_ITEM = "recharts-legend-item"
-, CL_LEGEND_ITEM_TEXT = `${CL_LEGEND_ITEM}-text`
 const SIZE = 32;
 
 const _renderIcon = (
@@ -113,11 +114,10 @@ export const renderItems = (
   };
   return payload.map((entry, i) => {
     const finalFormatter = entry.formatter || formatter
-    , className = classNames({
-      [CL_LEGEND_ITEM]: true,
-      [`legend-item-${i}`]: true,
-      inactive: entry.inactive,
-    });
+    , className = crCn(
+      `${CL_LEGEND_ITEM} legend-item-${i}`,
+      entry.inactive && 'inactive'
+    );
     if (entry.type === 'none') {
       return null;
     }

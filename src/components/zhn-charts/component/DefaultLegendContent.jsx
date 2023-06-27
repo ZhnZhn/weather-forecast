@@ -1,9 +1,7 @@
 import { memo } from '../../uiApi';
 
-import {
-  CL_DF_LEGEND,
-  renderItems
-} from './DefaultLegendContentFn';
+import { renderItems } from './DefaultLegendContentFn';
+import { CL_DF_LEGEND } from '../CL';
 
 export const DefaultLegendContent = memo((
   props
