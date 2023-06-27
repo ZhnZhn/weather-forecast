@@ -28,3 +28,4 @@ export const CL_STRIPES_VERTICAL = `${CL_CARTESIAN_GRID}stripes-vertical`;
 
 export const CL_CURVE = `${_CHART_PREFIX}-curve`
 export const CL_DOT = `${_CHART_PREFIX}-dot`
+export const CL_RESTANGLE = `${_CHART_PREFIX}-rectangle`

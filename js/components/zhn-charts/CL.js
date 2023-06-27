@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.CL_STRIPES_VERTICAL = exports.CL_STRIPES_HORIZONTAL = exports.CL_LINE_DOTS = exports.CL_LINE_DOT = exports.CL_LINE_CURVE = exports.CL_LINE = exports.CL_LABEL = exports.CL_GRID_VERTICAL = exports.CL_GRID_HORIZONTAL = exports.CL_DOT = exports.CL_CURVE = exports.CL_CARTESIAN_GRID = exports.CL_BG = exports.CL_BAR_RECTANGLES = exports.CL_BAR_RECTANGLE = exports.CL_BAR_BACKGROUND_RECTANGLE = exports.CL_BAR = exports.CL_AXIS_TICK_VALUE = exports.CL_AXIS_TICK_LINE = exports.CL_AXIS_TICKS = exports.CL_AXIS_TICK = exports.CL_AXIS_LINE = exports.CL_AXIS = void 0;
+exports.CL_STRIPES_VERTICAL = exports.CL_STRIPES_HORIZONTAL = exports.CL_RESTANGLE = exports.CL_LINE_DOTS = exports.CL_LINE_DOT = exports.CL_LINE_CURVE = exports.CL_LINE = exports.CL_LABEL = exports.CL_GRID_VERTICAL = exports.CL_GRID_HORIZONTAL = exports.CL_DOT = exports.CL_CURVE = exports.CL_CARTESIAN_GRID = exports.CL_BG = exports.CL_BAR_RECTANGLES = exports.CL_BAR_RECTANGLE = exports.CL_BAR_BACKGROUND_RECTANGLE = exports.CL_BAR = exports.CL_AXIS_TICK_VALUE = exports.CL_AXIS_TICK_LINE = exports.CL_AXIS_TICKS = exports.CL_AXIS_TICK = exports.CL_AXIS_LINE = exports.CL_AXIS = void 0;
 const _CHART_PREFIX = "recharts";
 const CL_BAR = _CHART_PREFIX + "-bar";
 exports.CL_BAR = CL_BAR;
@@ -49,4 +49,6 @@ const CL_CURVE = _CHART_PREFIX + "-curve";
 exports.CL_CURVE = CL_CURVE;
 const CL_DOT = _CHART_PREFIX + "-dot";
 exports.CL_DOT = CL_DOT;
+const CL_RESTANGLE = _CHART_PREFIX + "-rectangle";
+exports.CL_RESTANGLE = CL_RESTANGLE;
 //# sourceMappingURL=CL.js.map
