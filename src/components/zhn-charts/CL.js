@@ -25,3 +25,5 @@ export const CL_GRID_VERTICAL = `${CL_CARTESIAN_GRID}-vertical`
 export const CL_BG = `${CL_CARTESIAN_GRID}-bg`
 export const CL_STRIPES_HORIZONTAL = `${CL_CARTESIAN_GRID}stripes-horizontal`
 export const CL_STRIPES_VERTICAL = `${CL_CARTESIAN_GRID}stripes-vertical`;
+
+export const CL_CURVE = `${_CHART_PREFIX}-curve`
