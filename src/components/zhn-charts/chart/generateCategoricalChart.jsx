@@ -1,6 +1,6 @@
 import { Component } from '../../uiApi';
 
-import classNames from 'classnames';
+import crCn from '../../zhn-utils/crCn';
 
 import {
   _throttle,
@@ -64,6 +64,11 @@ import { renderMap } from './renderFn';
 import { renderLegend } from './renderLegend';
 import { renderTooltip } from './renderTooltip';
 import { renderClipPath } from './renderClipPath';
+
+import {
+  CL_WRAPPER,
+  crAxisCl
+} from '../CL';
 
 const _inRange = (
   x,
@@ -629,7 +634,7 @@ export const generateCategoricalChart = ({
                 <CartesianAxis
                    {...axisOptions}
                    key={element.key || `${displayName}-${index}`}
-                   className={classNames(`recharts-${axisType} ${axisType}`, className)}
+                   className={crCn(crAxisCl(axisType), className)}
                    viewBox={{ x: 0, y: 0, width, height }}
                    ticksGenerator={this.axesTicksGenerator}
                 />
@@ -729,7 +734,7 @@ export const generateCategoricalChart = ({
               const events = this.parseEventsOfWrapper();
               return (
                 <div
-                   className={classNames('recharts-wrapper', className)}
+                   className={crCn(CL_WRAPPER, className)}
                    style={{ position: 'relative', cursor: 'default', width, height, ...style }}
                    {...events}
                    ref={node => { this.container = node;}}

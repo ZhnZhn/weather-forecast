@@ -4,7 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.generateCategoricalChart = void 0;
 var _uiApi = require("../../uiApi");
-var _classnames = _interopRequireDefault(require("classnames"));
+var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _FnUtils = require("../util/FnUtils");
 var _getTicks = require("../cartesian/getTicks");
 var _CartesianAxis = require("../cartesian/CartesianAxis");
@@ -27,6 +27,7 @@ var _renderFn = require("./renderFn");
 var _renderLegend = require("./renderLegend");
 var _renderTooltip = require("./renderTooltip");
 var _renderClipPath = require("./renderClipPath");
+var _CL = require("../CL");
 var _react = require("react");
 var _jsxRuntime = require("react/jsx-runtime");
 const _inRange = (x, y, props, state) => {
@@ -605,7 +606,7 @@ const generateCategoricalChart = _ref => {
       return /*#__PURE__*/(0, _react.createElement)(_CartesianAxis.CartesianAxis, {
         ...axisOptions,
         key: element.key || displayName + "-" + index,
-        className: (0, _classnames.default)("recharts-" + axisType + " " + axisType, className),
+        className: (0, _crCn.default)((0, _CL.crAxisCl)(axisType), className),
         viewBox: {
           x: 0,
           y: 0,
@@ -720,7 +721,7 @@ const generateCategoricalChart = _ref => {
 
       const events = this.parseEventsOfWrapper();
       return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        className: (0, _classnames.default)('recharts-wrapper', className),
+        className: (0, _crCn.default)(_CL.CL_WRAPPER, className),
         style: {
           position: 'relative',
           cursor: 'default',

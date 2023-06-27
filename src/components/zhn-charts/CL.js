@@ -1,6 +1,11 @@
 const CHART_PREFIX = 'recharts';
 const CHART_CARTESIAN = `${CHART_PREFIX}-cartesian`;
 
+export const CL_WRAPPER = `${CHART_PREFIX}-wrapper`
+export const crAxisCl = (
+  axisType
+) => `${CHART_PREFIX}-${axisType} ${axisType}`
+
 export const CL_BAR = `${CHART_PREFIX}-bar`
 export const CL_BAR_RECTANGLE = `${CL_BAR}-rectangle`
 export const CL_BAR_RECTANGLES = `${CL_BAR_RECTANGLE}s`;
