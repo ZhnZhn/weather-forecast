@@ -28,7 +28,8 @@ const _CHART_CARTESIAN_GRID_STRIPES = `${CL_CARTESIAN_GRID}stripes`
 export const CL_STRIPES_HORIZONTAL = `${_CHART_CARTESIAN_GRID_STRIPES}-horizontal`
 export const CL_STRIPES_VERTICAL = `${_CHART_CARTESIAN_GRID_STRIPES}-vertical`;
 
-export const CL_RECHARTS_LAYER = `${_CHART_PREFIX}-layer`;
+export const CL_RECHARTS_LAYER = `${_CHART_PREFIX}-layer`
+export const CL_RECHARTS_SURFACE = `${_CHART_PREFIX}-surface`
 
 export const CL_CURVE = `${_CHART_PREFIX}-curve`
 export const CL_DOT = `${_CHART_PREFIX}-dot`

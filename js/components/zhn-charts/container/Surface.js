@@ -3,33 +3,38 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Surface = void 0;
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
-var _classnames = _interopRequireDefault(require("classnames"));
+var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _ReactUtils = require("../util/ReactUtils");
+var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-var _excluded = ["children", "width", "height", "viewBox", "className", "style"];
-var CL_RECHARTS_SURFACE = 'recharts-surface';
-var _crViewBox = function _crViewBox(svgView) {
-  return svgView.x + " " + svgView.y + " " + svgView.width + " " + svgView.height;
+const _crViewBox = _ref => {
+  let {
+    x,
+    y,
+    width,
+    height
+  } = _ref;
+  return x + " " + y + " " + width + " " + height;
 };
-var Surface = function Surface(props) {
-  var children = props.children,
-    width = props.width,
-    height = props.height,
-    viewBox = props.viewBox,
-    className = props.className,
-    style = props.style,
-    restProps = (0, _objectWithoutPropertiesLoose2["default"])(props, _excluded),
+const Surface = props => {
+  const {
+      children,
+      width,
+      height,
+      viewBox,
+      className,
+      style,
+      ...restProps
+    } = props,
     svgView = viewBox || {
-      width: width,
-      height: height,
       x: 0,
-      y: 0
-    },
-    layerClass = (0, _classnames["default"])(CL_RECHARTS_SURFACE, className);
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("svg", (0, _extends2["default"])({}, (0, _ReactUtils.filterProps)(restProps, true, 'svg'), {
-    className: layerClass,
+      y: 0,
+      width,
+      height
+    };
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("svg", {
+    ...(0, _ReactUtils.filterProps)(restProps, true, 'svg'),
+    className: (0, _crCn.default)(_CL.CL_RECHARTS_SURFACE, className),
     width: width,
     height: height,
     style: style,
@@ -39,7 +44,7 @@ var Surface = function Surface(props) {
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("desc", {
       children: props.desc
     }), children]
-  }));
+  });
 };
 exports.Surface = Surface;
 //# sourceMappingURL=Surface.js.map

@@ -1,12 +1,14 @@
-import classNames from 'classnames';
-
+import crCn from '../../zhn-utils/crCn';
 import { filterProps } from '../util/ReactUtils';
 
-const CL_RECHARTS_SURFACE = 'recharts-surface';
+import { CL_RECHARTS_SURFACE } from '../CL';
 
-const _crViewBox = (
-  svgView
-) => `${svgView.x} ${svgView.y} ${svgView.width} ${svgView.height}`;
+const _crViewBox = ({
+  x,
+  y,
+  width,
+  height
+}) => `${x} ${y} ${width} ${height}`;
 
 export const Surface = (
   props
@@ -20,12 +22,12 @@ export const Surface = (
     style,
     ...restProps
   } = props
-  , svgView = viewBox || { width, height, x: 0, y: 0 }
-  , layerClass = classNames(CL_RECHARTS_SURFACE, className);
+  , svgView = viewBox
+     || { x: 0, y: 0, width, height };  
   return (
     <svg
       {...filterProps(restProps, true, 'svg')}
-      className={layerClass}
+      className={crCn(CL_RECHARTS_SURFACE, className)}
       width={width}
       height={height}
       style={style}
