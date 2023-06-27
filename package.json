@@ -24,7 +24,6 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@babel/runtime": "^7.22.5",
-    "classnames": "^2.2.5",
     "dompurify": "^2.4.5",
     "eventemitter3": "^4.0.7",
     "leaflet": "^1.7.1",

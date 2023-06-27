@@ -10,8 +10,7 @@ module.exports = {
   entry: {
      lib: [
             "react", "react-dom",
-            "redux", "react-redux", "redux-saga",            
-            "classnames",
+            "redux", "react-redux", "redux-saga",                        
             "eventemitter3",
             "dompurify"
           ]
