@@ -9,7 +9,7 @@ import {
   registerSymbol
 } from './SymbolsFn';
 
-const CL_SYMBOLS = 'recharts-symbols';
+import { CL_SYMBOLS } from '../CL';
 
 export const Symbols = memo((
   props
