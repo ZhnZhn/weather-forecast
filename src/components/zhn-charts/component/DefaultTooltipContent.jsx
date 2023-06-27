@@ -3,7 +3,7 @@ import {
   isValidElement
 } from '../../uiApi';
 
-import classNames from 'classnames';
+import crCn from '../../zhn-utils/crCn';
 
 import {
   _isArr,
@@ -12,14 +12,16 @@ import {
 
 import { isNumOrStr } from '../util/DataUtils';
 
-const CL_TOOLTIP_ITEM = "recharts-tooltip-item"
-, CL_TOOLTIP_ITEM_NAME = `${CL_TOOLTIP_ITEM}-name`
-, CL_TOOLTIP_ITEM_SEPARATOR = `${CL_TOOLTIP_ITEM}-separator`
-, CL_TOOLTIP_ITEM_VALUE = `${CL_TOOLTIP_ITEM}-value`
-, CL_TOOLTIP_ITEM_UNIT = `${CL_TOOLTIP_ITEM}-unit`
-, CL_TOOLTIP_ITEM_LIST = `${CL_TOOLTIP_ITEM}-list`
-, CL_DEFAULT_TOOLTIP = "recharts-default-tooltip"
-, CL_TOOLTIP_LABEL = "recharts-tooltip-label";
+import {
+  CL_TOOLTIP_ITEM,
+  CL_TOOLTIP_ITEM_NAME,
+  CL_TOOLTIP_ITEM_SEPARATOR,
+  CL_TOOLTIP_ITEM_VALUE,
+  CL_TOOLTIP_ITEM_UNIT,
+  CL_TOOLTIP_ITEM_LIST,
+  CL_DEFAULT_TOOLTIP,
+  CL_TOOLTIP_LABEL
+} from '../CL';
 
 const _defaultFormatter = (
   value
@@ -134,8 +136,8 @@ export const DefaultTooltipContent = memo((props) => {
   }
   , hasLabel = !_isNil(label);
   let finalLabel = hasLabel ? label : '';
-  const wrapperCN = classNames(CL_DEFAULT_TOOLTIP, wrapperClassName)
-  , labelCN = classNames(CL_TOOLTIP_LABEL, labelClassName);
+  const wrapperCN = crCn(CL_DEFAULT_TOOLTIP, wrapperClassName)
+  , labelCN = crCn(CL_TOOLTIP_LABEL, labelClassName);
 
   if (hasLabel
     && labelFormatter

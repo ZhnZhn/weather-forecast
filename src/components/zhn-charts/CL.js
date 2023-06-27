@@ -26,6 +26,16 @@ const _CHART_CARTESIAN_GRID_STRIPES = `${CL_CARTESIAN_GRID}stripes`
 export const CL_STRIPES_HORIZONTAL = `${_CHART_CARTESIAN_GRID_STRIPES}-horizontal`
 export const CL_STRIPES_VERTICAL = `${_CHART_CARTESIAN_GRID_STRIPES}-vertical`;
 
+const _CHART_TOOLTIP = `${_CHART_PREFIX}-tooltip`;
+export const CL_TOOLTIP_ITEM = `${_CHART_TOOLTIP}-item`
+export const CL_TOOLTIP_ITEM_NAME = `${CL_TOOLTIP_ITEM}-name`
+export const CL_TOOLTIP_ITEM_SEPARATOR = `${CL_TOOLTIP_ITEM}-separator`
+export const CL_TOOLTIP_ITEM_VALUE = `${CL_TOOLTIP_ITEM}-value`
+export const CL_TOOLTIP_ITEM_UNIT = `${CL_TOOLTIP_ITEM}-unit`
+export const CL_TOOLTIP_ITEM_LIST = `${CL_TOOLTIP_ITEM}-list`
+export const CL_DEFAULT_TOOLTIP = `${_CHART_PREFIX}-default-tooltip`
+export const CL_TOOLTIP_LABEL = `${_CHART_TOOLTIP}-label`
+
 export const CL_LABEL = `${_CHART_PREFIX}-label`
 export const CL_RESPONSIVE_CONTAINER = `${_CHART_PREFIX}-responsive-container`
 export const CL_TEXT = `${_CHART_PREFIX}-text`
