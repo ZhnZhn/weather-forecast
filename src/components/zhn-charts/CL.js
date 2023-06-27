@@ -18,8 +18,6 @@ export const CL_AXIS_TICKS = `${CL_AXIS_TICK}s`
 export const CL_AXIS_TICK_LINE = `${CL_AXIS_TICK}-line`
 export const CL_AXIS_TICK_VALUE = `${CL_AXIS_TICK}-value`;
 
-export const CL_LABEL = `${_CHART_PREFIX}-label`
-
 export const CL_CARTESIAN_GRID = `${_CHART_CARTESIAN}-grid`
 export const CL_GRID_HORIZONTAL = `${CL_CARTESIAN_GRID}-horizontal`
 export const CL_GRID_VERTICAL = `${CL_CARTESIAN_GRID}-vertical`
@@ -28,6 +26,7 @@ const _CHART_CARTESIAN_GRID_STRIPES = `${CL_CARTESIAN_GRID}stripes`
 export const CL_STRIPES_HORIZONTAL = `${_CHART_CARTESIAN_GRID_STRIPES}-horizontal`
 export const CL_STRIPES_VERTICAL = `${_CHART_CARTESIAN_GRID_STRIPES}-vertical`;
 
+export const CL_LABEL = `${_CHART_PREFIX}-label`
 export const CL_RESPONSIVE_CONTAINER = `${_CHART_PREFIX}-responsive-container`
 export const CL_TEXT = `${_CHART_PREFIX}-text`
 

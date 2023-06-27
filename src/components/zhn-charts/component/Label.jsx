@@ -4,7 +4,7 @@ import {
   createElement
 } from '../../uiApi';
 
-import classNames from 'classnames';
+import crCn from '../../zhn-utils/crCn';
 
 import {
   _isFn,
@@ -27,7 +27,7 @@ import {
   getLabel
 } from './LabelFn';
 
-const CL_LABEL = 'recharts-label';
+import { CL_LABEL } from '../CL';
 
 export const Label = (
   props
@@ -47,6 +47,7 @@ export const Label = (
   if (isValidElement(content)) {
     return cloneElement(content, props);
   }
+
   let label;
   if (_isFn(content)) {
     label = createElement(content, props);
@@ -56,13 +57,14 @@ export const Label = (
   } else {
     label = getLabel(props);
   }
-  const attrs = filterProps(props, true)
-  , positionAttrs = getAttrsOfCartesianLabel(props);
+  
   return (
     <Text
-      className={classNames(CL_LABEL, className)}
-      {...attrs}
-      {...positionAttrs}
+      className={crCn(CL_LABEL, className)}
+      // attrs
+      {...filterProps(props, true)}
+      // positionAttrs
+      {...getAttrsOfCartesianLabel(props)}
       breakAll={textBreakAll}
     >
       {label}
