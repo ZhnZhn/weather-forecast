@@ -8,7 +8,7 @@ import {
   useEffect
 } from '../../uiApi';
 
-import classNames from 'classnames';
+import crCn from '../../zhn-utils/crCn';
 import { translateStyle } from '../../zhn-animate';
 
 import {
@@ -23,7 +23,9 @@ import {
   getUniqPayload
 } from './componentFn';
 
-const CLS_PREFIX = 'recharts-tooltip-wrapper';
+import { CL_TOOLTIP_WRAPPER } from '../CL';
+
+//const CLS_PREFIX = 'recharts-tooltip-wrapper';
 const EPS = 1;
 const _defaultUniqBy = (
   entry
@@ -233,17 +235,27 @@ export const Tooltip = (props) => {
       ...outerStyle,
     };
   }
-  const cls = classNames(CLS_PREFIX, {
-    [`${CLS_PREFIX}-right`]: isNumber(translateX) && coordinate && isNumber(coordinate.x) && translateX >= coordinate.x,
-    [`${CLS_PREFIX}-left`]: isNumber(translateX) && coordinate && isNumber(coordinate.x) && translateX < coordinate.x,
-    [`${CLS_PREFIX}-bottom`]: isNumber(translateY) && coordinate && isNumber(coordinate.y) && translateY >= coordinate.y,
-    [`${CLS_PREFIX}-top`]: isNumber(translateY) && coordinate && isNumber(coordinate.y) && translateY < coordinate.y,
-  });
+  const _isTranslateCoordinateX = isNumber(translateX)
+    && coordinate
+    && isNumber(coordinate.x)
+  , _isTranslateCoordinateY = isNumber(translateY)
+    && coordinate
+    && isNumber(coordinate.y)
+  , _clX = _isTranslateCoordinateX ? crCn(
+    translateX >= coordinate.x && `${CL_TOOLTIP_WRAPPER}-right`,
+    translateX < coordinate.x && `${CL_TOOLTIP_WRAPPER}-left`
+  ) : ''
+  , _clY = _isTranslateCoordinateY ? crCn(
+    translateY >= coordinate.y && `${CL_TOOLTIP_WRAPPER}-bottom`,
+    translateY < coordinate.y && `${CL_TOOLTIP_WRAPPER}-top`
+  ) : ''
+  , _className = crCn(CL_TOOLTIP_WRAPPER, crCn(_clX, _clY));
+
   return (
     <div
       tabIndex={-1}
       role="dialog"
-      className={cls}
+      className={_className}
       style={outerStyle}
       ref={wrapperNode}
     >

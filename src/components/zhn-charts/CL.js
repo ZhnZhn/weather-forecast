@@ -47,6 +47,7 @@ export const CL_TOOLTIP_ITEM_UNIT = `${CL_TOOLTIP_ITEM}-unit`
 export const CL_TOOLTIP_ITEM_LIST = `${CL_TOOLTIP_ITEM}-list`
 export const CL_DEFAULT_TOOLTIP = `${CHART_PREFIX}-default-tooltip`
 export const CL_TOOLTIP_LABEL = `${CHART_TOOLTIP}-label`
+export const CL_TOOLTIP_WRAPPER = `${CHART_PREFIX}-tooltip-wrapper`;
 
 export const CL_LABEL = `${CHART_PREFIX}-label`
 export const CL_RESPONSIVE_CONTAINER = `${CHART_PREFIX}-responsive-container`

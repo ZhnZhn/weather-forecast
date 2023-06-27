@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.crAxisCl = exports.CL_WRAPPER = exports.CL_TOOLTIP_LABEL = exports.CL_TOOLTIP_ITEM_VALUE = exports.CL_TOOLTIP_ITEM_UNIT = exports.CL_TOOLTIP_ITEM_SEPARATOR = exports.CL_TOOLTIP_ITEM_NAME = exports.CL_TOOLTIP_ITEM_LIST = exports.CL_TOOLTIP_ITEM = exports.CL_TEXT = exports.CL_SYMBOLS = exports.CL_STRIPES_VERTICAL = exports.CL_STRIPES_HORIZONTAL = exports.CL_RESTANGLE = exports.CL_RESPONSIVE_CONTAINER = exports.CL_RECHARTS_SURFACE = exports.CL_RECHARTS_LAYER = exports.CL_LINE_DOTS = exports.CL_LINE_DOT = exports.CL_LINE_CURVE = exports.CL_LINE = exports.CL_LEGEND_ITEM_TEXT = exports.CL_LEGEND_ITEM = exports.CL_LEGEND_ICON = exports.CL_LABEL = exports.CL_GRID_VERTICAL = exports.CL_GRID_HORIZONTAL = exports.CL_DOT = exports.CL_DF_LEGEND = exports.CL_DEFAULT_TOOLTIP = exports.CL_CURVE = exports.CL_CARTESIAN_GRID = exports.CL_BG = exports.CL_BAR_RECTANGLES = exports.CL_BAR_RECTANGLE = exports.CL_BAR_BACKGROUND_RECTANGLE = exports.CL_BAR = exports.CL_AXIS_TICK_VALUE = exports.CL_AXIS_TICK_LINE = exports.CL_AXIS_TICKS = exports.CL_AXIS_TICK = exports.CL_AXIS_LINE = exports.CL_AXIS = void 0;
+exports.crAxisCl = exports.CL_WRAPPER = exports.CL_TOOLTIP_WRAPPER = exports.CL_TOOLTIP_LABEL = exports.CL_TOOLTIP_ITEM_VALUE = exports.CL_TOOLTIP_ITEM_UNIT = exports.CL_TOOLTIP_ITEM_SEPARATOR = exports.CL_TOOLTIP_ITEM_NAME = exports.CL_TOOLTIP_ITEM_LIST = exports.CL_TOOLTIP_ITEM = exports.CL_TEXT = exports.CL_SYMBOLS = exports.CL_STRIPES_VERTICAL = exports.CL_STRIPES_HORIZONTAL = exports.CL_RESTANGLE = exports.CL_RESPONSIVE_CONTAINER = exports.CL_RECHARTS_SURFACE = exports.CL_RECHARTS_LAYER = exports.CL_LINE_DOTS = exports.CL_LINE_DOT = exports.CL_LINE_CURVE = exports.CL_LINE = exports.CL_LEGEND_ITEM_TEXT = exports.CL_LEGEND_ITEM = exports.CL_LEGEND_ICON = exports.CL_LABEL = exports.CL_GRID_VERTICAL = exports.CL_GRID_HORIZONTAL = exports.CL_DOT = exports.CL_DF_LEGEND = exports.CL_DEFAULT_TOOLTIP = exports.CL_CURVE = exports.CL_CARTESIAN_GRID = exports.CL_BG = exports.CL_BAR_RECTANGLES = exports.CL_BAR_RECTANGLE = exports.CL_BAR_BACKGROUND_RECTANGLE = exports.CL_BAR = exports.CL_AXIS_TICK_VALUE = exports.CL_AXIS_TICK_LINE = exports.CL_AXIS_TICKS = exports.CL_AXIS_TICK = exports.CL_AXIS_LINE = exports.CL_AXIS = void 0;
 const CHART_PREFIX = 'recharts';
 const CHART_CARTESIAN = CHART_PREFIX + "-cartesian";
 const CL_WRAPPER = CHART_PREFIX + "-wrapper";
@@ -76,6 +76,8 @@ const CL_DEFAULT_TOOLTIP = CHART_PREFIX + "-default-tooltip";
 exports.CL_DEFAULT_TOOLTIP = CL_DEFAULT_TOOLTIP;
 const CL_TOOLTIP_LABEL = CHART_TOOLTIP + "-label";
 exports.CL_TOOLTIP_LABEL = CL_TOOLTIP_LABEL;
+const CL_TOOLTIP_WRAPPER = CHART_PREFIX + "-tooltip-wrapper";
+exports.CL_TOOLTIP_WRAPPER = CL_TOOLTIP_WRAPPER;
 const CL_LABEL = CHART_PREFIX + "-label";
 exports.CL_LABEL = CL_LABEL;
 const CL_RESPONSIVE_CONTAINER = CHART_PREFIX + "-responsive-container";
