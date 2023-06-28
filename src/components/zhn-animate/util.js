@@ -1,8 +1,8 @@
 export { shallowEqual } from '../../utils/shallowEqual';
 
 /* eslint no-console: 0 */
-const PREFIX_LIST = ['Webkit', 'Moz', 'O', 'ms'];
-const IN_LINE_PREFIX_LIST = ['-webkit-', '-moz-', '-o-', '-ms-'];
+const PREFIX_LIST = ['Webkit'];
+const IN_LINE_PREFIX_LIST = ['-webkit-'];
 const IN_COMPATIBLE_PROPERTY = ['transform', 'transformOrigin', 'transition'];
 
 const _getObjectKeys = Object.keys;
@@ -16,7 +16,9 @@ const _generatePrefixStyle = (
   value
 ) => {
   if (IN_COMPATIBLE_PROPERTY.indexOf(name) === -1) {
-    return { [name]: value };
+    return {
+      [name]: value
+    };
   }
 
   const isTransition = name === 'transition'
@@ -36,12 +38,16 @@ const _generatePrefixStyle = (
 };
 
 /*
- * @description: convert camel case to dash case
- * string => string
+ * @description: add compatible prefix to style
+ * object => object
  */
-const _getDashCase = (
-  name
-) => name.replace(/([A-Z])/g, v => `-${v.toLowerCase()}`);
+export const translateStyle = (
+  style
+) => _getObjectKeys(style)
+  .reduce((res, key) => ({
+    ...res,
+    ..._generatePrefixStyle(key, res[key])
+  }), style);
 
 export const identity = param => param
 
@@ -64,20 +70,16 @@ export const mapObject = (
 ) => _getObjectKeys(obj)
   .reduce((res, key) => ({
     ...res,
-    [key]: fn(key, obj[key]),
+    [key]: fn(key, obj[key])
   }), {})
 
 /*
- * @description: add compatible prefix to style
- * object => object
+ * @description: convert camel case to dash case
+ * string => string
  */
-export const translateStyle = (
-  style
-) => _getObjectKeys(style)
-  .reduce((res, key) => ({
-    ...res,
-    ..._generatePrefixStyle(key, res[key]),
-  }), style);
+const _getDashCase = (
+  name
+) => name.replace(/([A-Z])/g, v => `-${v.toLowerCase()}`);
 
 export const getTransitionVal = (
   props,
