@@ -99,31 +99,23 @@ export class Animate extends PureComponent {
       children
     } = this.props;
 
-    this.handleStyleChange = this.handleStyleChange.bind(this);
-    this.changeStyle = this.changeStyle.bind(this);
-
     if (!isActive) {
       // if children is a function and animation is not active, set style to 'to'
       this.state = _isFn(children)
         ? { style: to }
         : { style: {} };
-      return;
-    }
-
-    if (steps && steps.length) {
+    } else if (steps && steps.length) {
       this.state = {
         style: steps[0].style
       };
     } else if (from) {
-      if (_isFn(children)) {
-        this.state = { style: from };
-        return;
-      }
-      this.state = {
-        style: attributeName
-         ? { [attributeName]: from }
-         : from
-      };
+      this.state = _isFn(children)
+        ? { style: from }
+        : {
+            style: attributeName
+             ? { [attributeName]: from }
+             : from
+          };
     } else {
       this.state = { style: {} };
     }
@@ -180,20 +172,18 @@ export class Animate extends PureComponent {
       return;
     }
 
-    const isTriggered = !prevProps.canBegin
-      || !prevProps.isActive;
-
     if (this.manager) {
       this.manager.stop();
     }
-
     if (this.stopJSAnimation) {
       this.stopJSAnimation();
     }
 
-    const from = isTriggered || shouldReAnimate
-      ? this.props.from
-      : prevProps.to;
+    const isTriggered = !prevProps.canBegin
+      || !prevProps.isActive
+    , from = isTriggered || shouldReAnimate
+       ? this.props.from
+       : prevProps.to;
 
     if (this.state && this.state.style) {
       const newState = {
@@ -382,11 +372,11 @@ export class Animate extends PureComponent {
     ]);
   }
 
-  handleStyleChange(style) {
+  handleStyleChange = (style) => {
     this.changeStyle(style);
   }
 
-  changeStyle(style) {
+  changeStyle = (style) => {
     if (this.mounted) {
       this.setState({ style });
     }
