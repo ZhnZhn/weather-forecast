@@ -72,6 +72,7 @@ export const S_HOURLY_CHART = {
 export const S_XAXIS = {
   tickSize: 16,
   tick: {
+    style: { fontWeight: 100 },
     stroke: C.DAY.color,
     fill: C.DAY.color
   }
