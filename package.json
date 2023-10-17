@@ -23,7 +23,7 @@
   "author": "Yevhenii Molodyi",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "@babel/runtime": "^7.23.1",
+    "@babel/runtime": "^7.23.2",
     "dompurify": "^3.0.6",
     "eventemitter3": "^4.0.7",
     "leaflet": "^1.7.1",
@@ -35,10 +35,10 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",
-    "@babel/core": "^7.23.0",
+    "@babel/core": "^7.23.2",
     "@babel/eslint-parser": "^7.22.15",
-    "@babel/plugin-transform-runtime": "^7.22.15",
-    "@babel/preset-env": "^7.22.20",
+    "@babel/plugin-transform-runtime": "^7.23.2",
+    "@babel/preset-env": "^7.23.2",
     "@babel/preset-react": "^7.22.15",
     "@testing-library/react": "^14.0.0",
     "babel-jest": "^29.7.0",
@@ -55,7 +55,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "sass": "^1.66.1",
     "terser-webpack-plugin": "^5.3.9",
-    "webpack": "^5.88.2",
+    "webpack": "^5.89.0",
     "webpack-bundle-analyzer": "^4.9.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
