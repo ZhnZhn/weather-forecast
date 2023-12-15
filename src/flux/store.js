@@ -1,14 +1,16 @@
-//import 'babel-polyfill';
-//import 'regenerator-runtime/runtime'
-import { createStore, applyMiddleware, compose } from 'redux'
-import createSagaMiddleware from 'redux-saga'
+import {
+  legacy_createStore as createStore,
+  applyMiddleware,
+  compose
+} from 'redux';
+import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from './rootReducer';
-import rootSaga from './rootSaga'
+import rootSaga from './rootSaga';
 
 const sagaMiddleware = createSagaMiddleware(rootSaga);
 
-const _configStore = function() {
+const _configStore = () => {
   const _middlewares = [ sagaMiddleware ];
   let _composeEnhancer = compose;
   /*eslint-disable no-undef*/
