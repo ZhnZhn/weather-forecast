@@ -24,7 +24,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@babel/runtime": "^7.24.1",
-    "dompurify": "^3.0.10",
+    "dompurify": "^3.0.11",
     "eventemitter3": "^4.0.7",
     "leaflet": "^1.7.1",
     "react": "^18.2.0",
@@ -35,10 +35,10 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.24.1",
-    "@babel/core": "^7.24.1",
+    "@babel/core": "^7.24.3",
     "@babel/eslint-parser": "^7.24.1",
-    "@babel/plugin-transform-runtime": "^7.24.1",
-    "@babel/preset-env": "^7.24.1",
+    "@babel/plugin-transform-runtime": "^7.24.3",
+    "@babel/preset-env": "^7.24.3",
     "@babel/preset-react": "^7.24.1",
     "@testing-library/react": "^14.2.2",
     "babel-jest": "^29.7.0",
@@ -55,10 +55,10 @@
     "jest-environment-jsdom": "^29.7.0",
     "sass": "^1.72.0",
     "terser-webpack-plugin": "^5.3.10",
-    "webpack": "^5.90.3",
+    "webpack": "^5.91.0",
     "webpack-bundle-analyzer": "^4.10.1",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^4.15.2"
   },
   "jest": {
     "testEnvironment": "jsdom",
