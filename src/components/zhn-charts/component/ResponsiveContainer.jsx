@@ -1,12 +1,10 @@
 import {
-  forwardRef,
   cloneElement,
   useRef,
   useState,
   useCallback,
   useMemo,
   useEffect,
-  useImperativeHandle,
   getRefValue
 } from '../../uiApi';
 
@@ -16,7 +14,7 @@ import ReactResizeDetector from '../../zhn-resize-detector/ResizeDetector';
 import { isPercent } from '../util/DataUtils';
 import { CL_RESPONSIVE_CONTAINER } from '../CL';
 
-export const ResponsiveContainer = forwardRef(({
+export const ResponsiveContainer = ({
   aspect,
   width = '100%',
   height = '100%',
@@ -32,7 +30,7 @@ export const ResponsiveContainer = forwardRef(({
   id,
   className,
   onResize
-}, ref) => {
+}) => {
   const [
     sizes,
     setSizes
@@ -41,12 +39,6 @@ export const ResponsiveContainer = forwardRef(({
     containerHeight: -1
   })
   , containerRef = useRef(null);
-
-  useImperativeHandle(
-    ref,
-    () => containerRef,
-    [containerRef]
-  );
 
   const getContainerSize = useCallback(
     () => {
@@ -146,4 +138,4 @@ export const ResponsiveContainer = forwardRef(({
       </div>
    </ReactResizeDetector>
   );
-});
+};

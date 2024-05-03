@@ -1,4 +1,7 @@
-import { forwardRef, useState, useImperativeHandle } from '../uiApi';
+import { 
+  useState,
+  useImperativeHandle
+} from '../uiApi';
 import dt from '../../utils/dt';
 
 import SvgClose from '../zhn-atoms/SvgClose'
@@ -48,11 +51,20 @@ const TitleValue = ({
   </>
 );
 
-const DayDetailPopup = forwardRef(({ onClose }, ref) => {
-  const [state, setState] = useState({})
-  , {isOpen, item} = state;
+const DayDetailPopup = ({
+  refEl,
+  onClose
+}) => {
+  const [
+    state,
+    setState
+  ] = useState({})
+  , {
+    isOpen,
+    item
+  } = state;
 
-  useImperativeHandle(ref, () => ({
+  useImperativeHandle(refEl, () => ({
     setItem: item => setState(() => ({
        item, isOpen: true
     })),
@@ -148,6 +160,6 @@ const DayDetailPopup = forwardRef(({ onClose }, ref) => {
       </div>
     </div>
   );
-});
+};
 
 export default DayDetailPopup

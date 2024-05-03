@@ -2,15 +2,14 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports["default"] = void 0;
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _useRefInit = _interopRequireDefault(require("../hooks/useRefInit"));
-var _useProperty3 = _interopRequireDefault(require("../hooks/useProperty"));
+var _useProperty = _interopRequireDefault(require("../hooks/useProperty"));
 var _useRerender = _interopRequireDefault(require("../hooks/useRerender"));
 var _has = require("../has");
 var _jsxRuntime = require("react/jsx-runtime");
-var CL_SELECT = 'm-select',
+const CL_SELECT = 'm-select',
   CL_LABEL = CL_SELECT + "__label",
   M_TEXTFIELD = 'm-textfield',
   CL_DIV = M_TEXTFIELD + "-input__div",
@@ -31,66 +30,52 @@ var CL_SELECT = 'm-select',
   S_LINE_AFTER_ENTER = {
     borderBottom: '2px solid #80c040'
   };
-var _crId = function _crId(name) {
-  return name + '_' + Math.random().toString(36).substr(2, 6);
-};
-var _isValue = function _isValue(input) {
-  return input ? !!input.value : false;
-};
-var FN_NOOP = function FN_NOOP() {};
-var FN_TRUE = function FN_TRUE() {
-  return true;
-};
-var PasswordField = (0, _uiApi.forwardRef)(function (_ref, ref) {
-  var style = _ref.style,
-    caption = _ref.caption,
-    _ref$name = _ref.name,
-    name = _ref$name === void 0 ? 'pwd' : _ref$name,
-    _ref$maxLength = _ref.maxLength,
-    maxLength = _ref$maxLength === void 0 ? "32" : _ref$maxLength,
-    _ref$errorMsg = _ref.errorMsg,
-    errorMsg = _ref$errorMsg === void 0 ? '' : _ref$errorMsg,
-    _ref$onTest = _ref.onTest,
-    onTest = _ref$onTest === void 0 ? FN_TRUE : _ref$onTest,
-    _ref$onEnter = _ref.onEnter,
-    onEnter = _ref$onEnter === void 0 ? FN_NOOP : _ref$onEnter;
-  var _id = (0, _useRefInit["default"])(function () {
-      return _crId(name);
-    }),
+const _crId = name => name + '_' + Math.random().toString(36).substr(2, 6);
+const _isValue = input => input ? !!input.value : false;
+const FN_NOOP = () => {};
+const FN_TRUE = () => true;
+const PasswordField = _ref => {
+  let {
+    refEl,
+    style,
+    caption,
+    name = 'pwd',
+    maxLength = "32",
+    errorMsg = '',
+    onTest = FN_TRUE,
+    onEnter = FN_NOOP
+  } = _ref;
+  const _id = (0, _useRefInit.default)(() => _crId(name)),
     _refInput = (0, _uiApi.useRef)(),
-    _useProperty = (0, _useProperty3["default"])(false),
-    _setWasEnter = _useProperty[0],
-    getWasEnter = _useProperty[1],
-    _useProperty2 = (0, _useProperty3["default"])(false),
-    setIsFocus = _useProperty2[0],
-    getIsFocus = _useProperty2[1],
-    _useState = (0, _uiApi.useState)({
+    [setWasEnter, getWasEnter] = (0, _useProperty.default)(false),
+    [setIsFocus, getIsFocus] = (0, _useProperty.default)(false),
+    [state, setState] = (0, _uiApi.useState)({
       value: ''
     }),
-    state = _useState[0],
-    setState = _useState[1],
-    value = state.value,
-    rerender = (0, _useRerender["default"])(),
-    _hFocusInput = function _hFocusInput() {
+    {
+      value
+    } = state,
+    rerender = (0, _useRerender.default)(),
+    _hFocusInput = () => {
       setIsFocus(true);
       rerender();
     },
-    _hBlurInput = function _hBlurInput() {
+    _hBlurInput = () => {
       setIsFocus(false);
       rerender();
     },
-    _hInputChange = function _hInputChange(event) {
+    _hInputChange = event => {
       setState({
         value: event.target.value.trim()
       });
     },
-    _hClear = function _hClear(event) {
+    _hClear = event => {
       (0, _uiApi.stopDefaultFor)(event);
       setState({
         value: ''
       });
     },
-    _hKeyDown = function _hKeyDown(event) {
+    _hKeyDown = event => {
       if (event.keyCode === 46) {
         setState({
           value: ''
@@ -98,45 +83,41 @@ var PasswordField = (0, _uiApi.forwardRef)(function (_ref, ref) {
       } else if (event.keyCode === 13) {
         (0, _uiApi.stopDefaultFor)(event);
         onEnter(event.target.value);
-        _setWasEnter(true);
+        setWasEnter(true);
         rerender();
       }
     };
-  (0, _uiApi.useEffect)(function () {
-    var _clearId = setTimeout(function () {
-      var _input = _refInput.current;
+  (0, _uiApi.useEffect)(() => {
+    const _clearId = setTimeout(() => {
+      const _input = _refInput.current;
       if (_input && _input.hasAttribute('value')) {
         _input.removeAttribute('value');
       }
     });
-    return function () {
-      return clearTimeout(_clearId);
-    };
+    return () => clearTimeout(_clearId);
   });
-  (0, _uiApi.useEffect)(function () {
+  (0, _uiApi.useEffect)(() => {
     if (getWasEnter()) {
-      _setWasEnter(false);
+      setWasEnter(false);
     }
   });
-  (0, _uiApi.useImperativeHandle)(ref, function () {
-    return {
-      setWasEnter: function setWasEnter() {
-        _setWasEnter(true);
-        rerender();
-      },
-      getValue: function getValue() {
-        var _input = _refInput.current;
-        return _input && _input.value;
-      },
-      clear: function clear() {
-        _setWasEnter(true);
-        setState({
-          value: ''
-        });
-      }
-    };
-  });
-  var _labelStyle = _isValue(_refInput.current) || getIsFocus() ? void 0 : S_LABEL_TO_INPUT,
+  (0, _uiApi.useImperativeHandle)(refEl, () => ({
+    setWasEnter: () => {
+      setWasEnter(true);
+      rerender();
+    },
+    getValue: () => {
+      const _input = _refInput.current;
+      return _input && _input.value;
+    },
+    clear: () => {
+      setWasEnter(true);
+      setState({
+        value: ''
+      });
+    }
+  }));
+  const _labelStyle = _isValue(_refInput.current) || getIsFocus() ? void 0 : S_LABEL_TO_INPUT,
     _isPassTest = onTest(value),
     _labelErrStyle = _isPassTest ? void 0 : S_LABEL_ON_ERROR,
     _lineStyle = _isPassTest ? getWasEnter() ? S_LINE_AFTER_ENTER : void 0 : S_LINE_ERROR;
@@ -145,7 +126,10 @@ var PasswordField = (0, _uiApi.forwardRef)(function (_ref, ref) {
     style: style,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
       className: CL_LABEL,
-      style: (0, _extends2["default"])({}, _labelStyle, _labelErrStyle),
+      style: {
+        ..._labelStyle,
+        ..._labelErrStyle
+      },
       htmlFor: _id,
       children: caption
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
@@ -181,7 +165,6 @@ var PasswordField = (0, _uiApi.forwardRef)(function (_ref, ref) {
       })]
     })]
   });
-});
-var _default = PasswordField;
-exports["default"] = _default;
+};
+var _default = exports.default = PasswordField;
 //# sourceMappingURL=PasswordField.js.map

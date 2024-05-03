@@ -1,10 +1,8 @@
 //import PropTypes from "prop-types";
 import {
   cloneElement,
-  forwardRef,
   useState,
-  useCallback,
-  useImperativeHandle
+  useCallback
 } from '../uiApi';
 
 const S_TABS = {
@@ -70,11 +68,11 @@ const _renderTabs = (
 
 
 
-const TabPane = forwardRef(({
+const TabPane = ({
   width,
   height,
   children
-}, ref) => {
+}) => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0)
   , _hClickTab = useCallback((index, tabEl) => {
     setSelectedTabIndex(index)
@@ -84,10 +82,6 @@ const TabPane = forwardRef(({
       onClick()
     }
   }, []);
-
-  useImperativeHandle(ref, () => ({
-    getSelectedTabIndex: () => selectedTabIndex
-  }), [selectedTabIndex])
 
   return (
     <div style={{ width, height }}>
@@ -99,7 +93,7 @@ const TabPane = forwardRef(({
       </div>
     </div>
   );
-})
+}
 
 /*
 TabPane.propTypes = {

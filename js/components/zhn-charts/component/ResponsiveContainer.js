@@ -9,7 +9,7 @@ var _ResizeDetector = _interopRequireDefault(require("../../zhn-resize-detector/
 var _DataUtils = require("../util/DataUtils");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-const ResponsiveContainer = (0, _uiApi.forwardRef)((_ref, ref) => {
+const ResponsiveContainer = _ref => {
   let {
     aspect,
     width = '100%',
@@ -32,7 +32,6 @@ const ResponsiveContainer = (0, _uiApi.forwardRef)((_ref, ref) => {
       containerHeight: -1
     }),
     containerRef = (0, _uiApi.useRef)(null);
-  (0, _uiApi.useImperativeHandle)(ref, () => containerRef, [containerRef]);
   const getContainerSize = (0, _uiApi.useCallback)(() => {
     const _containerEl = (0, _uiApi.getRefValue)(containerRef);
     return _containerEl ? {
@@ -119,6 +118,6 @@ const ResponsiveContainer = (0, _uiApi.forwardRef)((_ref, ref) => {
       children: chartContent
     })
   });
-});
+};
 exports.ResponsiveContainer = ResponsiveContainer;
 //# sourceMappingURL=ResponsiveContainer.js.map

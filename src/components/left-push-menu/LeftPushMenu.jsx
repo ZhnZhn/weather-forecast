@@ -36,7 +36,7 @@ const LeftPushMenu = ({
           onClickItem={_hClickItem}
        />
        <DayDetailPopup
-          ref={_refDetail}
+          refEl={_refDetail}
           onClose={_hCloseDetail}
         />
         {cloneElement(CompOrBtOrErrEl, { isAir })}

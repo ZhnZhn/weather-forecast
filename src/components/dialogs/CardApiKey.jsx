@@ -26,7 +26,7 @@ const CardApiKey = ({
   return (
     <div style={style}>
       <PasswordField
-        ref={_refInput}
+        refEl={_refInput}
         style={S_SECRET}
         caption="OpenWeatherMap API Key (32)"
         name="openweathermap"
