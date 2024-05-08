@@ -298,7 +298,7 @@ export class CartesianAxis extends Component {
     return (
       <Layer
          className={crCn(CL_AXIS, className)}
-         ref={this._refLayerReference}
+         refEl={this._refLayerReference}
       >
          {axisLine && this.renderAxisLine()}
          {this.renderTicks(finalTicks, fontSize, letterSpacing)}
