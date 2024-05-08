@@ -71,25 +71,26 @@ const getPath = _ref => {
   lineFunction.defined(defined).curve(curveFactory);
   return lineFunction(formatPoints);
 };
+const DF_PROPS = {
+  type: 'linear',
+  points: [],
+  connectNulls: false
+};
 const Curve = props => {
-  const {
-    className,
-    points,
-    path,
-    pathRef
-  } = props;
+  const _props = (0, _ReactUtils.crProps)(DF_PROPS, props),
+    {
+      className,
+      points,
+      path,
+      pathRef
+    } = _props;
   return (!points || !points.length) && !path ? null : /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
-    ...(0, _ReactUtils.filterProps)(props),
-    ...(0, _types.adaptEventHandlers)(props),
+    ...(0, _ReactUtils.filterProps)(_props),
+    ...(0, _types.adaptEventHandlers)(_props),
     className: (0, _crCn.default)(_CL.CL_CURVE, className),
     d: points && points.length ? getPath(props) : path,
     ref: pathRef
   });
 };
 exports.Curve = Curve;
-Curve.defaultProps = {
-  type: 'linear',
-  points: [],
-  connectNulls: false
-};
 //# sourceMappingURL=Curve.js.map

@@ -23,7 +23,10 @@ import {
 } from '../util/FnUtils';
 
 import { adaptEventHandlers } from '../util/types';
-import { filterProps } from '../util/ReactUtils';
+import {
+  crProps,
+  filterProps
+} from '../util/ReactUtils';
 import { isNumber } from '../util/DataUtils';
 
 import { CL_CURVE } from '../CL';
@@ -129,20 +132,27 @@ const getPath = ({
     return lineFunction(formatPoints);
 };
 
+const DF_PROPS = {
+  type: 'linear',
+  points: [],
+  connectNulls: false
+};
+
 export const Curve = props => {
-  const {
+  const _props = crProps(DF_PROPS, props)
+  , {
     className,
     points,
     path,
     pathRef
-  } = props;
+  } = _props;
 
   return (!points || !points.length) && !path
     ? null
     : (
        <path
-         {...filterProps(props)}
-         {...adaptEventHandlers(props)}
+         {...filterProps(_props)}
+         {...adaptEventHandlers(_props)}
          className={crCn(CL_CURVE, className)}
          d={points && points.length
              ? getPath(props)
@@ -151,10 +161,4 @@ export const Curve = props => {
          ref={pathRef}
        />
      );
-};
-
-Curve.defaultProps = {
-  type: 'linear',
-  points: [],
-  connectNulls: false
-};
+}

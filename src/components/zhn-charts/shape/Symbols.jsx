@@ -2,7 +2,10 @@ import { memo } from '../../uiApi';
 import crCn from '../../zhn-utils/crCn';
 
 import { _isNumber } from '../util/FnUtils';
-import { filterProps } from '../util/ReactUtils';
+import {
+  crProps,
+  filterProps
+} from '../util/ReactUtils';
 
 import {
   getSymbolPath,
@@ -11,29 +14,30 @@ import {
 
 import { CL_SYMBOLS } from '../CL';
 
-export const Symbols = memo((
-  props
-) => {
-  const {
-    className,
-    cx,
-    cy,
-    size
-  } = props;
-  return _isNumber(cx) && _isNumber(cy) && _isNumber(size)
-    ? (<path
-          {...filterProps(props, true)}
-          className={crCn(CL_SYMBOLS, className)}
-          transform={`translate(${cx}, ${cy})`}
-          d={getSymbolPath(props)}
-      />)
-    : null;
-})
-
-Symbols.defaultProps = {
+const DF_PROPS = {
   type: 'circle',
   size: 64,
   sizeType: 'area'
 };
+
+export const Symbols = memo((
+  props
+) => {
+  const _props = crProps(DF_PROPS, props)
+  , {
+    className,
+    cx,
+    cy,
+    size
+  } = _props;
+  return _isNumber(cx) && _isNumber(cy) && _isNumber(size)
+    ? (<path
+          {...filterProps(_props, true)}
+          className={crCn(CL_SYMBOLS, className)}
+          transform={`translate(${cx}, ${cy})`}
+          d={getSymbolPath(_props)}
+      />)
+    : null;
+})
 
 Symbols.registerSymbol = registerSymbol

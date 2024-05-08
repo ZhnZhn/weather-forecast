@@ -9,12 +9,31 @@ import {
 import crCn from '../../zhn-utils/crCn';
 import { Animate } from '../../zhn-animate';
 
-import { filterProps } from '../util/ReactUtils';
+import {
+  crProps,
+  filterProps
+} from '../util/ReactUtils';
 import { _isFn } from '../util/FnUtils';
 
 import { CL_RESTANGLE } from '../CL';
 
 import { getRectanglePath } from './RectangleFn';
+
+const DF_PROPS = {
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0,
+  // The radius of border
+  // The radius of four corners when radius is a number
+  // The radius of left-top, right-top, right-bottom, left-bottom when radius is an array
+  radius: 0,
+  isAnimationActive: false,
+  isUpdateAnimationActive: false,
+  animationBegin: 0,
+  animationDuration: 1500,
+  animationEasing: 'ease'
+}
 
 export const Rectangle = memo((props) => {
   const _refNode = useRef()
@@ -38,7 +57,8 @@ export const Rectangle = memo((props) => {
     }
   }, [])
 
-  const {
+  const _props = crProps(DF_PROPS, props)
+  , {
     x,
     y,
     width,
@@ -51,7 +71,7 @@ export const Rectangle = memo((props) => {
     animationBegin,
     isAnimationActive,
     isUpdateAnimationActive
-  } = props;
+  } = _props;
 
   if (x !== +x || y !== +y || width !== +width || height !== +height || width === 0 || height === 0) {
     return null;
@@ -85,7 +105,7 @@ export const Rectangle = memo((props) => {
              easing={animationEasing}
             >
               <path
-                 {...filterProps(props, true)}
+                 {...filterProps(_props, true)}
                  className={layerClass}
                  d={getRectanglePath(currX, currY, currWidth, currHeight, radius)}
                  ref={_refNode}
@@ -96,25 +116,9 @@ export const Rectangle = memo((props) => {
     )
   : (
       <path
-        {...filterProps(props, true)}
+        {...filterProps(_props, true)}
         className={layerClass}
         d={getRectanglePath(x, y, width, height, radius)}
       />
     );
 })
-
-Rectangle.defaultProps = {
-  x: 0,
-  y: 0,
-  width: 0,
-  height: 0,
-  // The radius of border
-  // The radius of four corners when radius is a number
-  // The radius of left-top, right-top, right-bottom, left-bottom when radius is an array
-  radius: 0,
-  isAnimationActive: false,
-  isUpdateAnimationActive: false,
-  animationBegin: 0,
-  animationDuration: 1500,
-  animationEasing: 'ease'
-};
