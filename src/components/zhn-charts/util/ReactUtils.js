@@ -405,3 +405,11 @@ export const parseChildIndex = (
   child,
   children
 ) => toArray(children).indexOf(child);
+
+export const crProps = (
+  dfProps,
+  props
+) => ({
+  ...dfProps,
+  ...props
+})
