@@ -21,6 +21,11 @@ export const DF_AXIS_PROPS = {
   reversed: false
 };
 
+export const isHideOrNoData = (
+  { hide },
+  data
+) => hide || !data || !data.length
+
 export const isNeedClip = ({
  xAxis,
  yAxis

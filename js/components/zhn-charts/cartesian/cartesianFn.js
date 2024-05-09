@@ -1,12 +1,12 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isNeedClip = exports.fCreateElement = exports.dataPointFormatter = exports.crClipPathProps = exports.crClipPathIdIf = exports.DF_AXIS_PROPS = void 0;
+exports.isNeedClip = exports.isHideOrNoData = exports.fCreateElement = exports.dataPointFormatter = exports.crClipPathProps = exports.crClipPathIdIf = exports.DF_AXIS_PROPS = void 0;
 var _uiApi = require("../../uiApi");
 var _ChartUtils = require("../util/ChartUtils");
 var _IfOverflowMatches = require("../util/IfOverflowMatches");
 var _FnUtils = require("../util/FnUtils");
-const DF_AXIS_PROPS = {
+const DF_AXIS_PROPS = exports.DF_AXIS_PROPS = {
   allowDataOverflow: false,
   allowDecimals: true,
   allowDuplicatedCategory: true,
@@ -16,12 +16,18 @@ const DF_AXIS_PROPS = {
   scale: 'auto',
   reversed: false
 };
-exports.DF_AXIS_PROPS = DF_AXIS_PROPS;
-const isNeedClip = _ref => {
+const isHideOrNoData = (_ref, data) => {
+  let {
+    hide
+  } = _ref;
+  return hide || !data || !data.length;
+};
+exports.isHideOrNoData = isHideOrNoData;
+const isNeedClip = _ref2 => {
   let {
     xAxis,
     yAxis
-  } = _ref;
+  } = _ref2;
   return xAxis && xAxis.allowDataOverflow || yAxis && yAxis.allowDataOverflow;
 };
 exports.isNeedClip = isNeedClip;
