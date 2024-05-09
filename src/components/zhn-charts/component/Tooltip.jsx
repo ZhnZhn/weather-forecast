@@ -15,13 +15,12 @@ import {
   _isFn,
   _isNil
 } from  '../util/FnUtils';
-
-import { DefaultTooltipContent } from './DefaultTooltipContent';
 import { Global } from '../util/Global';
 import { isNumber } from '../util/DataUtils';
-import {
-  getUniqPayload
-} from './componentFn';
+import { crProps } from '../util/ReactUtils';
+
+import { DefaultTooltipContent } from './DefaultTooltipContent';
+import { getUniqPayload } from './componentFn';
 
 import { CL_TOOLTIP_WRAPPER } from '../CL';
 
@@ -34,17 +33,13 @@ const _defaultUniqBy = (
 const _renderContent = (
   content,
   props
-) => {
-  if (isValidElement(content)) {
-    return cloneElement(content, props);
-  }
-  if (_isFn(content)) {
-    return createElement(content, props);
-  }
-  return <DefaultTooltipContent {...props}/>;
-}
+) => isValidElement(content)
+  ? cloneElement(content, props)
+  : _isFn(content)
+      ? createElement(content, props)
+      : <DefaultTooltipContent {...props}/>
 
-const tooltipDefaultProps = {
+const DF_PROPS = {
   active: false,
   allowEscapeViewBox: { x: false, y: false },
   reverseDirection: { x: false, y: false },
@@ -67,6 +62,28 @@ const tooltipDefaultProps = {
   useTranslate3d: false
 };
 
+const _crClassName = (
+  coordinate,
+  translateX,
+  translateY
+) => {
+  const _isTranslateCoordinateX = isNumber(translateX)
+    && coordinate
+    && isNumber(coordinate.x)
+  , _isTranslateCoordinateY = isNumber(translateY)
+    && coordinate
+    && isNumber(coordinate.y)
+  , _clX = _isTranslateCoordinateX ? crCn(
+    translateX >= coordinate.x && `${CL_TOOLTIP_WRAPPER}-right`,
+    translateX < coordinate.x && `${CL_TOOLTIP_WRAPPER}-left`
+  ) : ''
+  , _clY = _isTranslateCoordinateY ? crCn(
+    translateY >= coordinate.y && `${CL_TOOLTIP_WRAPPER}-bottom`,
+    translateY < coordinate.y && `${CL_TOOLTIP_WRAPPER}-top`
+  ) : ''
+  return crCn(CL_TOOLTIP_WRAPPER, crCn(_clX, _clY));
+}
+
 export const Tooltip = (props) => {
   const [
     boxWidth,
@@ -85,14 +102,15 @@ export const Tooltip = (props) => {
     setDismissedAtCoordinate
   ] = useState({ x: 0, y: 0 })
   , wrapperNode = useRef()
+  , _props = crProps(DF_PROPS, props)
   , {
     allowEscapeViewBox,
     reverseDirection,
-    coordinate,
+    coordinate = DF_PROPS.coordinate,
     offset,
     position,
     viewBox
-  } = props
+  } = _props     
   , handleKeyDown = useCallback((event) => {
       if (event.key === 'Escape') {
         setDismissed(true);
@@ -181,7 +199,7 @@ export const Tooltip = (props) => {
     isAnimationActive,
     animationDuration,
     animationEasing
-  } = props
+  } = _props
   , finalPayload = getUniqPayload(
       payloadUniqBy,
       filterNull && payload && payload.length
@@ -190,7 +208,7 @@ export const Tooltip = (props) => {
       _defaultUniqBy
   )
   , hasPayload = finalPayload && finalPayload.length
-  , { content } = props;
+  , { content } = _props;
   let outerStyle = {
     pointerEvents: 'none',
     visibility: !dismissed && active && hasPayload ? 'visible' : 'hidden',
@@ -235,21 +253,11 @@ export const Tooltip = (props) => {
       ...outerStyle,
     };
   }
-  const _isTranslateCoordinateX = isNumber(translateX)
-    && coordinate
-    && isNumber(coordinate.x)
-  , _isTranslateCoordinateY = isNumber(translateY)
-    && coordinate
-    && isNumber(coordinate.y)
-  , _clX = _isTranslateCoordinateX ? crCn(
-    translateX >= coordinate.x && `${CL_TOOLTIP_WRAPPER}-right`,
-    translateX < coordinate.x && `${CL_TOOLTIP_WRAPPER}-left`
-  ) : ''
-  , _clY = _isTranslateCoordinateY ? crCn(
-    translateY >= coordinate.y && `${CL_TOOLTIP_WRAPPER}-bottom`,
-    translateY < coordinate.y && `${CL_TOOLTIP_WRAPPER}-top`
-  ) : ''
-  , _className = crCn(CL_TOOLTIP_WRAPPER, crCn(_clX, _clY));
+  const _className = _crClassName(
+    coordinate,
+    translateX,
+    translateY
+  );
 
   return (
     <div
@@ -260,7 +268,7 @@ export const Tooltip = (props) => {
       ref={wrapperNode}
     >
       {_renderContent(content, {
-          ...props,
+          ..._props,
           payload: finalPayload
       })}
     </div>
@@ -274,4 +282,4 @@ Tooltip.displayName = 'Tooltip';
  * children.props when there are no props set by the consumer
  * doesn't work if using default parameters
  */
-Tooltip.defaultProps = tooltipDefaultProps;
+//Tooltip.defaultProps = DF_PROPS;

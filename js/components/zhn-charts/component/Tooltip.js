@@ -7,27 +7,20 @@ var _uiApi = require("../../uiApi");
 var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _zhnAnimate = require("../../zhn-animate");
 var _FnUtils = require("../util/FnUtils");
-var _DefaultTooltipContent = require("./DefaultTooltipContent");
 var _Global = require("../util/Global");
 var _DataUtils = require("../util/DataUtils");
+var _ReactUtils = require("../util/ReactUtils");
+var _DefaultTooltipContent = require("./DefaultTooltipContent");
 var _componentFn = require("./componentFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 //const CLS_PREFIX = 'recharts-tooltip-wrapper';
 const EPS = 1;
 const _defaultUniqBy = entry => entry.dataKey;
-const _renderContent = (content, props) => {
-  if ((0, _uiApi.isValidElement)(content)) {
-    return (0, _uiApi.cloneElement)(content, props);
-  }
-  if ((0, _FnUtils._isFn)(content)) {
-    return (0, _uiApi.createElement)(content, props);
-  }
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_DefaultTooltipContent.DefaultTooltipContent, {
-    ...props
-  });
-};
-const tooltipDefaultProps = {
+const _renderContent = (content, props) => (0, _uiApi.isValidElement)(content) ? (0, _uiApi.cloneElement)(content, props) : (0, _FnUtils._isFn)(content) ? (0, _uiApi.createElement)(content, props) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_DefaultTooltipContent.DefaultTooltipContent, {
+  ...props
+});
+const DF_PROPS = {
   active: false,
   allowEscapeViewBox: {
     x: false,
@@ -63,6 +56,13 @@ const tooltipDefaultProps = {
   filterNull: true,
   useTranslate3d: false
 };
+const _crClassName = (coordinate, translateX, translateY) => {
+  const _isTranslateCoordinateX = (0, _DataUtils.isNumber)(translateX) && coordinate && (0, _DataUtils.isNumber)(coordinate.x),
+    _isTranslateCoordinateY = (0, _DataUtils.isNumber)(translateY) && coordinate && (0, _DataUtils.isNumber)(coordinate.y),
+    _clX = _isTranslateCoordinateX ? (0, _crCn.default)(translateX >= coordinate.x && _CL.CL_TOOLTIP_WRAPPER + "-right", translateX < coordinate.x && _CL.CL_TOOLTIP_WRAPPER + "-left") : '',
+    _clY = _isTranslateCoordinateY ? (0, _crCn.default)(translateY >= coordinate.y && _CL.CL_TOOLTIP_WRAPPER + "-bottom", translateY < coordinate.y && _CL.CL_TOOLTIP_WRAPPER + "-top") : '';
+  return (0, _crCn.default)(_CL.CL_TOOLTIP_WRAPPER, (0, _crCn.default)(_clX, _clY));
+};
 const Tooltip = props => {
   const [boxWidth, setBoxWidth] = (0, _uiApi.useState)(-1),
     [boxHeight, setBoxHeight] = (0, _uiApi.useState)(-1),
@@ -72,14 +72,15 @@ const Tooltip = props => {
       y: 0
     }),
     wrapperNode = (0, _uiApi.useRef)(),
+    _props = (0, _ReactUtils.crProps)(DF_PROPS, props),
     {
       allowEscapeViewBox,
       reverseDirection,
-      coordinate,
+      coordinate = DF_PROPS.coordinate,
       offset,
       position,
       viewBox
-    } = props,
+    } = _props,
     handleKeyDown = (0, _uiApi.useCallback)(event => {
       if (event.key === 'Escape') {
         setDismissed(true);
@@ -149,12 +150,12 @@ const Tooltip = props => {
       isAnimationActive,
       animationDuration,
       animationEasing
-    } = props,
+    } = _props,
     finalPayload = (0, _componentFn.getUniqPayload)(payloadUniqBy, filterNull && payload && payload.length ? payload.filter(entry => !(0, _FnUtils._isNil)(entry.value)) : payload, _defaultUniqBy),
     hasPayload = finalPayload && finalPayload.length,
     {
       content
-    } = props;
+    } = _props;
   let outerStyle = {
       pointerEvents: 'none',
       visibility: !dismissed && active && hasPayload ? 'visible' : 'hidden',
@@ -196,11 +197,7 @@ const Tooltip = props => {
       ...outerStyle
     };
   }
-  const _isTranslateCoordinateX = (0, _DataUtils.isNumber)(translateX) && coordinate && (0, _DataUtils.isNumber)(coordinate.x),
-    _isTranslateCoordinateY = (0, _DataUtils.isNumber)(translateY) && coordinate && (0, _DataUtils.isNumber)(coordinate.y),
-    _clX = _isTranslateCoordinateX ? (0, _crCn.default)(translateX >= coordinate.x && _CL.CL_TOOLTIP_WRAPPER + "-right", translateX < coordinate.x && _CL.CL_TOOLTIP_WRAPPER + "-left") : '',
-    _clY = _isTranslateCoordinateY ? (0, _crCn.default)(translateY >= coordinate.y && _CL.CL_TOOLTIP_WRAPPER + "-bottom", translateY < coordinate.y && _CL.CL_TOOLTIP_WRAPPER + "-top") : '',
-    _className = (0, _crCn.default)(_CL.CL_TOOLTIP_WRAPPER, (0, _crCn.default)(_clX, _clY));
+  const _className = _crClassName(coordinate, translateX, translateY);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     tabIndex: -1,
     role: "dialog",
@@ -208,7 +205,7 @@ const Tooltip = props => {
     style: outerStyle,
     ref: wrapperNode,
     children: _renderContent(content, {
-      ...props,
+      ..._props,
       payload: finalPayload
     })
   });
@@ -222,5 +219,5 @@ Tooltip.displayName = 'Tooltip';
  * children.props when there are no props set by the consumer
  * doesn't work if using default parameters
  */
-Tooltip.defaultProps = tooltipDefaultProps;
+//Tooltip.defaultProps = DF_PROPS;
 //# sourceMappingURL=Tooltip.js.map
