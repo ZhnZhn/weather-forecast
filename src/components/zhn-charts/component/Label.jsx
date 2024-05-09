@@ -14,6 +14,7 @@ import {
 
 import { Text } from './Text';
 import {
+  crProps,
   findAllByType,
   filterProps
 } from '../util/ReactUtils';
@@ -29,42 +30,48 @@ import {
 
 import { CL_LABEL } from '../CL';
 
+const DF_PROPS = {
+  offset: 5,
+  className: ''
+}
+
 export const Label = (
   props
 ) => {
-  const {
+  const _props = crProps(DF_PROPS, props)
+  , {
     viewBox,
     value,
     children,
     content,
-    className = '',
+    className,
     textBreakAll
-  } = props;
+  } = _props;
   if (!viewBox || (_isNil(value) && _isNil(children) && !isValidElement(content) && !_isFn(content))) {
     return null;
   }
 
   if (isValidElement(content)) {
-    return cloneElement(content, props);
+    return cloneElement(content, _props);
   }
 
   let label;
   if (_isFn(content)) {
-    label = createElement(content, props);
+    label = createElement(content, _props);
     if (isValidElement(label)) {
       return label;
     }
   } else {
-    label = getLabel(props);
+    label = getLabel(_props);
   }
-  
+
   return (
     <Text
       className={crCn(CL_LABEL, className)}
       // attrs
-      {...filterProps(props, true)}
+      {...filterProps(_props, true)}
       // positionAttrs
-      {...getAttrsOfCartesianLabel(props)}
+      {...getAttrsOfCartesianLabel(_props)}
       breakAll={textBreakAll}
     >
       {label}
@@ -180,8 +187,5 @@ const renderCallByParent = (
 };
 
 Label.displayName = 'Label';
-Label.defaultProps = {
-  offset: 5
-};
 Label.parseViewBox = parseViewBox;
 Label.renderCallByParent = renderCallByParent;

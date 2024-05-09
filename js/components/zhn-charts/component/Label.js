@@ -13,36 +13,41 @@ var _LabelFn = require("./LabelFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 var _react = require("react");
+const DF_PROPS = {
+  offset: 5,
+  className: ''
+};
 const Label = props => {
-  const {
-    viewBox,
-    value,
-    children,
-    content,
-    className = '',
-    textBreakAll
-  } = props;
+  const _props = (0, _ReactUtils.crProps)(DF_PROPS, props),
+    {
+      viewBox,
+      value,
+      children,
+      content,
+      className,
+      textBreakAll
+    } = _props;
   if (!viewBox || (0, _FnUtils._isNil)(value) && (0, _FnUtils._isNil)(children) && !(0, _uiApi.isValidElement)(content) && !(0, _FnUtils._isFn)(content)) {
     return null;
   }
   if ((0, _uiApi.isValidElement)(content)) {
-    return (0, _uiApi.cloneElement)(content, props);
+    return (0, _uiApi.cloneElement)(content, _props);
   }
   let label;
   if ((0, _FnUtils._isFn)(content)) {
-    label = (0, _uiApi.createElement)(content, props);
+    label = (0, _uiApi.createElement)(content, _props);
     if ((0, _uiApi.isValidElement)(label)) {
       return label;
     }
   } else {
-    label = (0, _LabelFn.getLabel)(props);
+    label = (0, _LabelFn.getLabel)(_props);
   }
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, {
     className: (0, _crCn.default)(_CL.CL_LABEL, className)
     // attrs
     ,
-    ...(0, _ReactUtils.filterProps)(props, true),
-    ...(0, _LabelFn.getAttrsOfCartesianLabel)(props),
+    ...(0, _ReactUtils.filterProps)(_props, true),
+    ...(0, _LabelFn.getAttrsOfCartesianLabel)(_props),
     breakAll: textBreakAll,
     children: label
   });
@@ -179,9 +184,6 @@ const renderCallByParent = function (parentProps, viewBox, checkPropsLabel) {
   return [implicitLabel, ...explicitChildren];
 };
 Label.displayName = 'Label';
-Label.defaultProps = {
-  offset: 5
-};
 Label.parseViewBox = parseViewBox;
 Label.renderCallByParent = renderCallByParent;
 //# sourceMappingURL=Label.js.map
