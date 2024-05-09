@@ -31,6 +31,7 @@ import {
 import { calculateOffset } from './calculateOffset';
 import { getAxisMap } from './getAxisMap';
 
+const DF_AXIS_ID = 0;
 const _getObjectKeys = Object.keys;
 
 const fGetFormatItems = (
@@ -70,10 +71,9 @@ const fGetFormatItems = (
     } = item.props
     , numericAxisId = item.props[`${numericAxisName}Id`]
     , cateAxisId = item.props[`${cateAxisName}Id`];
-
     const axisObj = axisComponents.reduce((result, entry) => {
       const axisMap = currentState[`${entry.axisType}Map`]
-      , id = item.props[`${entry.axisType}Id`]
+      , id = item.props[`${entry.axisType}Id`] || DF_AXIS_ID
       , axis = axisMap && axisMap[id];
       return {
         ...result,
