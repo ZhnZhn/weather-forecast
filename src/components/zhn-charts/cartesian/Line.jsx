@@ -7,6 +7,7 @@ import {
 import crCn from '../../zhn-utils/crCn';
 
 import { _isNil } from '../util/FnUtils';
+import { crProps } from '../util/ReactUtils';
 
 import { Layer } from '../container/Layer';
 import { LabelList } from '../component/LabelList';
@@ -23,7 +24,10 @@ import {
   renderCurve
 } from './LineRenderFn';
 
-import { isNeedClip } from './cartesianFn';
+import {
+  isHideOrNoData,
+  isNeedClip
+} from './cartesianFn';
 
 import useAnimationHandle from './useAnimationHandle';
 import usePrevCurData from './usePrevCurData';
@@ -47,22 +51,42 @@ const _getTotalLength = (
   }
 };
 
+const DF_PROPS = {
+  xAxisId: 0,
+  yAxisId: 0,
+  connectNulls: false,
+  activeDot: true,
+  dot: true,
+  legendType: 'line',
+  stroke: '#3182bd',
+  strokeWidth: 1,
+  fill: '#fff',
+  points: [],
+  isAnimationActive: !Global.isSsr,
+  animateNewValues: true,
+  animationBegin: 0,
+  animationDuration: 1500,
+  animationEasing: 'ease',
+  hide: false,
+  label: false
+}
+
 export const Line = memo((props) => {
-  const {
-    hide,
+  const _props = crProps(DF_PROPS, props)
+  , {
     dot,
     points,
     className,
     isAnimationActive,
     id,
     animationId
-  } = props
+  } = _props
   , _refPath = useRef()
   , [
     isAnimationFinished,
     handleAnimationStart,
     handleAnimationEnd
-  ] = useAnimationHandle(props)
+  ] = useAnimationHandle(_props)
   , [
     prevPoints
   ] = usePrevCurData(
@@ -89,20 +113,20 @@ export const Line = memo((props) => {
   /*eslint-enable react-hooks/exhaustive-deps */
 
 
-  if (hide || !points || !points.length) {
+  if (isHideOrNoData(_props, points)) {
     return null;
   }
 
   const hasSinglePoint = points.length === 1
   , layerClass = crCn(CL_LINE, className)
-  , needClip = isNeedClip(props);
+  , needClip = isNeedClip(_props);
 
   return (
     <Layer className={layerClass}>
       {needClip
         ? <ClipPathRect
              id={clipPathId}
-             props={props}
+             props={_props}
            />
         : null
       }
@@ -111,7 +135,7 @@ export const Line = memo((props) => {
           clipPathId,
           prevPoints,
           totalLength,
-          props,
+          _props,
           _refPath,
           handleAnimationStart,
           handleAnimationEnd
@@ -120,18 +144,18 @@ export const Line = memo((props) => {
          needClip,
          clipPathId,
          isAnimationFinished,
-         props
+         _props
       )}
       {(hasSinglePoint || dot)
          && renderDots(
               needClip,
               clipPathId,
               isAnimationFinished,
-              props
+              _props
       )}
       {(!isAnimationActive || isAnimationFinished)
          && LabelList.renderCallByParent(
-              props,
+              _props,
               points
       )}
   </Layer>
@@ -139,26 +163,6 @@ export const Line = memo((props) => {
 })
 
 Line.displayName = 'Line';
-Line.defaultProps = {
-  xAxisId: 0,
-  yAxisId: 0,
-  connectNulls: false,
-  activeDot: true,
-  dot: true,
-  legendType: 'line',
-  stroke: '#3182bd',
-  strokeWidth: 1,
-  fill: '#fff',
-  points: [],
-  isAnimationActive: !Global.isSsr,
-  animateNewValues: true,
-  animationBegin: 0,
-  animationDuration: 1500,
-  animationEasing: 'ease',
-  hide: false,
-  label: false
-};
-
 
 /**
  * Compose the data of each group
