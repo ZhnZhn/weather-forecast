@@ -1,6 +1,10 @@
 import { memo } from '../../uiApi';
 
-import { isNumber } from '../util/DataUtils';
+import {
+  isNumber,
+  isPositiveNumber
+} from '../util/DataUtils';
+import { crProps } from '../util/ReactUtils';
 
 import {
   crGridPoints,
@@ -11,53 +15,9 @@ import {
   renderBackground
 } from './CartesianGridRenderFn';
 
-import {
-  CL_CARTESIAN_GRID,
-} from '../CL';
+import { CL_CARTESIAN_GRID } from '../CL';
 
-export const CartesianGrid = memo((
-  props
-) => {
-  const {
-    x,
-    y,
-    width,
-    height,
-    horizontal,
-    vertical
-  } = props;
-
-  if (!isNumber(width)
-    || width <= 0
-    || !isNumber(height)
-    || height <= 0
-    || !isNumber(x)
-    || x !== +x
-    || !isNumber(y)
-    || y !== +y
-  ) {
-    return null;
-  }
-
-  const [
-    horizontalPoints,
-    verticalPoints
-  ] = crGridPoints(props);
-
-  return (
-    <g className={CL_CARTESIAN_GRID}>
-      {renderBackground(props)}
-      {horizontal && renderHorizontal(horizontalPoints, props)}
-      {vertical && renderVertical(verticalPoints, props)}
-
-      {horizontal && renderHorizontalStripes(horizontalPoints, props)}
-      {vertical && renderVerticalStripes(verticalPoints, props)}
-   </g>
-  );
-})
-
-CartesianGrid.displayName = 'CartesianGrid';
-CartesianGrid.defaultProps = {
+const DF_PROPS = {
   horizontal: true,
   vertical: true,
   // The ordinates of horizontal grid lines
@@ -70,3 +30,43 @@ CartesianGrid.defaultProps = {
   verticalFill: [],
   horizontalFill: []
 };
+
+export const CartesianGrid = memo((
+  props
+) => {
+  const _props = crProps(DF_PROPS, props)
+  , {
+    x,
+    y,
+    width,
+    height,
+    horizontal,
+    vertical
+  } = _props;
+
+  if (!(isPositiveNumber(width)
+    && isPositiveNumber(height)
+    && isNumber(x)
+    && isNumber(y)
+  )) {
+    return null;
+  }
+
+  const [
+    horizontalPoints,
+    verticalPoints
+  ] = crGridPoints(_props);
+
+  return (
+    <g className={CL_CARTESIAN_GRID}>
+      {renderBackground(_props)}
+      {horizontal && renderHorizontal(horizontalPoints, _props)}
+      {vertical && renderVertical(verticalPoints, _props)}
+
+      {horizontal && renderHorizontalStripes(horizontalPoints, _props)}
+      {vertical && renderVerticalStripes(verticalPoints, _props)}
+   </g>
+  );
+})
+
+CartesianGrid.displayName = 'CartesianGrid';
