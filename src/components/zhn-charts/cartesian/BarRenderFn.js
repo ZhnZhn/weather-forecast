@@ -1,24 +1,13 @@
-import { cloneElement } from '../../uiApi';
 import { Animate } from '../../zhn-animate';
 
-import {
-  filterProps,
-  findAllByType
-} from '../util/ReactUtils';
-import {
-  interpolateNumber
-} from '../util/DataUtils';
+import { filterProps } from '../util/ReactUtils';
+import { interpolateNumber } from '../util/DataUtils';
 import { adaptEventsOfChild } from '../util/types';
 
 import { Rectangle } from '../shape/Rectangle';
 import { Layer } from '../container/Layer';
-import { ErrorBar } from './ErrorBar';
 
-import {
-  fCreateElement,
-  dataPointFormatter,
-  crClipPathProps
-} from './cartesianFn';
+import { fCreateElement } from './cartesianFn';
 
 import {
   CL_BAR_RECTANGLE,
@@ -85,55 +74,6 @@ export const renderBackground = (
     };
     return _renderRectangle(props.background, _props);
   });
-}
-
-export const renderErrorBar = (
-  needClip,
-  clipPathId,
-  isAnimationFinished,
-  props
-) => {
-  if (props.isAnimationActive && !isAnimationFinished) {
-    return null;
-  }
-
-  const {
-    data,
-    xAxis,
-    yAxis,
-    layout,
-    children
-  } = props
-  , errorBarItems = findAllByType(
-     children,
-     ErrorBar
-  );
-
-  if (!errorBarItems) {
-    return null;
-  }
-
-  const offset = layout === 'vertical'
-    ? data[0].height / 2
-    : data[0].width / 2
-  , errorBarProps = crClipPathProps(
-     needClip,
-     clipPathId
-  );
-
-  return (
-    <Layer {...errorBarProps}>
-       {errorBarItems.map((item, i) => cloneElement(item, {
-          key: `error-bar-${i}`,
-          data,
-          xAxis,
-          yAxis,
-          layout,
-          offset,
-          dataPointFormatter
-       }))}
-    </Layer>
-  );
 }
 
 const ANIMATE_RECT_FROM = { t: 0 };

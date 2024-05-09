@@ -83,7 +83,7 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
     children: [needClip ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPathRect.default, {
       id: clipPathId,
       props: _props
-    }) : null, !hasSinglePoint && (0, _LineRenderFn.renderCurve)(needClip, clipPathId, prevPoints, totalLength, _props, _refPath, handleAnimationStart, handleAnimationEnd), (0, _LineRenderFn.renderErrorBar)(needClip, clipPathId, isAnimationFinished, _props), (hasSinglePoint || dot) && (0, _LineRenderFn.renderDots)(needClip, clipPathId, isAnimationFinished, _props), (!isAnimationActive || isAnimationFinished) && _LabelList.LabelList.renderCallByParent(_props, points)]
+    }) : null, !hasSinglePoint && (0, _LineRenderFn.renderCurve)(needClip, clipPathId, prevPoints, totalLength, _props, _refPath, handleAnimationStart, handleAnimationEnd), (hasSinglePoint || dot) && (0, _LineRenderFn.renderDots)(needClip, clipPathId, isAnimationFinished, _props), (!isAnimationActive || isAnimationFinished) && _LabelList.LabelList.renderCallByParent(_props, points)]
   });
 });
 Line.displayName = 'Line';

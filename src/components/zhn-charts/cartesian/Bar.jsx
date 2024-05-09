@@ -3,10 +3,6 @@ import crCn from '../../zhn-utils/crCn';
 
 import { _isArr } from '../util/FnUtils';
 
-import { Layer } from '../container/Layer';
-import { Cell } from '../component/Cell';
-import { LabelList } from '../component/LabelList';
-
 import { Global } from '../util/Global';
 import { mathSign } from '../util/DataUtils';
 import {
@@ -21,9 +17,13 @@ import {
   findPositionOfBar,
   getTooltipItem
 } from '../util/ChartUtils';
+
+import { Layer } from '../container/Layer';
+import { Cell } from '../component/Cell';
+import { LabelList } from '../component/LabelList';
+
 import {
   renderBackground,
-  renderErrorBar,
   renderRectangles
 } from './BarRenderFn';
 
@@ -116,13 +116,7 @@ export const Bar = memo((props) => {
            handleAnimationStart,
            handleAnimationEnd
         )}
-      </Layer>
-      {renderErrorBar(
-         needClip,
-         clipPathId,
-         isAnimationFinished,
-         _props
-       )}
+      </Layer>      
       {(!isAnimationActive || isAnimationFinished)
          && LabelList.renderCallByParent(_props, data)
       }

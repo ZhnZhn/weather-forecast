@@ -1,22 +1,15 @@
-import { cloneElement } from '../../uiApi';
 import crCn from '../../zhn-utils/crCn';
 import { Animate } from '../../zhn-animate';
 
-import {
-  findAllByType,
-  filterProps
-} from '../util/ReactUtils';
-
+import { filterProps } from '../util/ReactUtils';
 import { interpolateNumber } from '../util/DataUtils';
 
 import { Curve } from '../shape/Curve';
 import { Dot } from '../shape/Dot';
 import { Layer } from '../container/Layer';
-import { ErrorBar } from './ErrorBar';
 
 import {
   fCreateElement,
-  dataPointFormatter,
   crClipPathProps
 } from './cartesianFn';
 import {
@@ -89,51 +82,6 @@ export const renderDots = (
        role="img"
     >
      {dots}
-    </Layer>
-  );
-}
-
-export const renderErrorBar = (
-  needClip,
-  clipPathId,
-  isAnimationFinished,
-  props
-) => {
-  if (props.isAnimationActive && !isAnimationFinished) {
-    return null;
-  }
-
-  const {
-    points,
-    xAxis,
-    yAxis,
-    layout,
-    children
-  } = props
-  , errorBarItems = findAllByType(
-     children,
-     ErrorBar
-  );
-
-  if (!errorBarItems) {
-    return null;
-  }
-
-  const errorBarProps = crClipPathProps(
-    needClip,
-    clipPathId
-  );
-
-  return (
-    <Layer {...errorBarProps}>
-      {errorBarItems.map((item, i) => cloneElement(item, {
-         key: `bar-${i}`,
-         data: points,
-         xAxis,
-         yAxis,
-         layout,
-         dataPointFormatter
-      }))}
     </Layer>
   );
 }

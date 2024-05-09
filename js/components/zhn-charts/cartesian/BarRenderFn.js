@@ -1,15 +1,13 @@
 "use strict";
 
 exports.__esModule = true;
-exports.renderRectangles = exports.renderErrorBar = exports.renderBackground = void 0;
-var _uiApi = require("../../uiApi");
+exports.renderRectangles = exports.renderBackground = void 0;
 var _zhnAnimate = require("../../zhn-animate");
 var _ReactUtils = require("../util/ReactUtils");
 var _DataUtils = require("../util/DataUtils");
 var _types = require("../util/types");
 var _Rectangle = require("../shape/Rectangle");
 var _Layer = require("../container/Layer");
-var _ErrorBar = require("./ErrorBar");
 var _cartesianFn = require("./cartesianFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -67,37 +65,6 @@ const renderBackground = props => {
   });
 };
 exports.renderBackground = renderBackground;
-const renderErrorBar = (needClip, clipPathId, isAnimationFinished, props) => {
-  if (props.isAnimationActive && !isAnimationFinished) {
-    return null;
-  }
-  const {
-      data,
-      xAxis,
-      yAxis,
-      layout,
-      children
-    } = props,
-    errorBarItems = (0, _ReactUtils.findAllByType)(children, _ErrorBar.ErrorBar);
-  if (!errorBarItems) {
-    return null;
-  }
-  const offset = layout === 'vertical' ? data[0].height / 2 : data[0].width / 2,
-    errorBarProps = (0, _cartesianFn.crClipPathProps)(needClip, clipPathId);
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
-    ...errorBarProps,
-    children: errorBarItems.map((item, i) => (0, _uiApi.cloneElement)(item, {
-      key: "error-bar-" + i,
-      data,
-      xAxis,
-      yAxis,
-      layout,
-      offset,
-      dataPointFormatter: _cartesianFn.dataPointFormatter
-    }))
-  });
-};
-exports.renderErrorBar = renderErrorBar;
 const ANIMATE_RECT_FROM = {
   t: 0
 };

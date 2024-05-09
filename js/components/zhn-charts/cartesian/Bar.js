@@ -6,13 +6,13 @@ exports.Bar = void 0;
 var _uiApi = require("../../uiApi");
 var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _FnUtils = require("../util/FnUtils");
-var _Layer = require("../container/Layer");
-var _Cell = require("../component/Cell");
-var _LabelList = require("../component/LabelList");
 var _Global = require("../util/Global");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _ChartUtils = require("../util/ChartUtils");
+var _Layer = require("../container/Layer");
+var _Cell = require("../component/Cell");
+var _LabelList = require("../component/LabelList");
 var _BarRenderFn = require("./BarRenderFn");
 var _cartesianFn = require("./cartesianFn");
 var _useAnimationHandle = _interopRequireDefault(require("./useAnimationHandle"));
@@ -62,7 +62,7 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
       className: _CL.CL_BAR_RECTANGLES,
       clipPath: needClip ? "url(#clipPath-" + clipPathId + ")" : null,
       children: [background ? (0, _BarRenderFn.renderBackground)(_props) : null, (0, _BarRenderFn.renderRectangles)(_props, prevData, handleAnimationStart, handleAnimationEnd)]
-    }), (0, _BarRenderFn.renderErrorBar)(needClip, clipPathId, isAnimationFinished, _props), (!isAnimationActive || isAnimationFinished) && _LabelList.LabelList.renderCallByParent(_props, data)]
+    }), (!isAnimationActive || isAnimationFinished) && _LabelList.LabelList.renderCallByParent(_props, data)]
   });
 });
 Bar.displayName = 'Bar';

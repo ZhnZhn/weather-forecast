@@ -20,7 +20,6 @@ import {
 
 import {
   renderDots,
-  renderErrorBar,
   renderCurve
 } from './LineRenderFn';
 
@@ -139,13 +138,7 @@ export const Line = memo((props) => {
           _refPath,
           handleAnimationStart,
           handleAnimationEnd
-        )}
-      {renderErrorBar(
-         needClip,
-         clipPathId,
-         isAnimationFinished,
-         _props
-      )}
+        )}      
       {(hasSinglePoint || dot)
          && renderDots(
               needClip,
