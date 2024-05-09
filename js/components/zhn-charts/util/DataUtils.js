@@ -1,28 +1,22 @@
 "use strict";
 
 exports.__esModule = true;
-exports.uniqueId = exports.mathSign = exports.isPercent = exports.isNumber = exports.isNumOrStr = exports.interpolateNumber = exports.hasDuplicate = exports.getPercentValue = exports.getAnyElementOfObject = exports.findEntryInArray = void 0;
+exports.uniqueId = exports.mathSign = exports.isPositiveNumber = exports.isPercent = exports.isNumber = exports.isNumOrStr = exports.interpolateNumber = exports.hasDuplicate = exports.getPercentValue = exports.getAnyElementOfObject = exports.findEntryInArray = void 0;
 var _FnUtils = require("./FnUtils");
-var _getObjectKeys = Object.keys;
-var mathSign = function mathSign(value) {
-  return value === 0 ? 0 : value > 0 ? 1 : -1;
-};
+const _getObjectKeys = Object.keys;
+const mathSign = value => value === 0 ? 0 : value > 0 ? 1 : -1;
 exports.mathSign = mathSign;
-var isPercent = function isPercent(value) {
-  return (0, _FnUtils._isStr)(value) && value.indexOf('%') === value.length - 1;
-};
+const isPercent = value => (0, _FnUtils._isStr)(value) && value.indexOf('%') === value.length - 1;
 exports.isPercent = isPercent;
-var isNumber = function isNumber(value) {
-  return (0, _FnUtils._isNumber)(value) && !(0, _FnUtils._isNaN)(value);
-};
+const isNumber = value => (0, _FnUtils._isNumber)(value) && !(0, _FnUtils._isNaN)(value);
 exports.isNumber = isNumber;
-var isNumOrStr = function isNumOrStr(value) {
-  return isNumber(value) || (0, _FnUtils._isStr)(value);
-};
+const isPositiveNumber = value => isNumber(value) && value >= 0;
+exports.isPositiveNumber = isPositiveNumber;
+const isNumOrStr = value => isNumber(value) || (0, _FnUtils._isStr)(value);
 exports.isNumOrStr = isNumOrStr;
-var idCounter = 0;
-var uniqueId = function uniqueId(prefix) {
-  var id = ++idCounter;
+let idCounter = 0;
+const uniqueId = prefix => {
+  const id = ++idCounter;
   return "" + (prefix || '') + id;
 };
 
@@ -35,7 +29,7 @@ var uniqueId = function uniqueId(prefix) {
  * @return {number} value
  */
 exports.uniqueId = uniqueId;
-var getPercentValue = function getPercentValue(percent, totalValue, defaultValue, validate) {
+const getPercentValue = function (percent, totalValue, defaultValue, validate) {
   if (defaultValue === void 0) {
     defaultValue = 0;
   }
@@ -45,9 +39,9 @@ var getPercentValue = function getPercentValue(percent, totalValue, defaultValue
   if (!isNumber(percent) && !(0, _FnUtils._isStr)(percent)) {
     return defaultValue;
   }
-  var value;
+  let value;
   if (isPercent(percent)) {
-    var index = percent.indexOf('%');
+    const index = percent.indexOf('%');
     value = totalValue * parseFloat(percent.slice(0, index)) / 100;
   } else {
     value = +percent;
@@ -61,24 +55,24 @@ var getPercentValue = function getPercentValue(percent, totalValue, defaultValue
   return value;
 };
 exports.getPercentValue = getPercentValue;
-var getAnyElementOfObject = function getAnyElementOfObject(obj) {
+const getAnyElementOfObject = obj => {
   if (!obj) {
     return null;
   }
-  var keys = _getObjectKeys(obj);
+  const keys = _getObjectKeys(obj);
   if (keys && keys.length) {
     return obj[keys[0]];
   }
   return null;
 };
 exports.getAnyElementOfObject = getAnyElementOfObject;
-var hasDuplicate = function hasDuplicate(ary) {
+const hasDuplicate = ary => {
   if (!(0, _FnUtils._isArr)(ary)) {
     return false;
   }
-  var len = ary.length,
+  const len = ary.length,
     cache = {};
-  for (var i = 0; i < len; i++) {
+  for (let i = 0; i < len; i++) {
     if (!cache[ary[i]]) {
       cache[ary[i]] = true;
     } else {
@@ -88,21 +82,13 @@ var hasDuplicate = function hasDuplicate(ary) {
   return false;
 };
 exports.hasDuplicate = hasDuplicate;
-var interpolateNumber = function interpolateNumber(numberA, numberB) {
-  return isNumber(numberA) && isNumber(numberB) ? function (t) {
-    return numberA + t * (numberB - numberA);
-  } : function () {
-    return numberB;
-  };
-};
+const interpolateNumber = (numberA, numberB) => isNumber(numberA) && isNumber(numberB) ? t => numberA + t * (numberB - numberA) : () => numberB;
 exports.interpolateNumber = interpolateNumber;
-var findEntryInArray = function findEntryInArray(arr, specifiedKey, specifiedValue) {
+const findEntryInArray = (arr, specifiedKey, specifiedValue) => {
   if (!(0, _FnUtils._isArr)(arr) || !arr.length) {
     return null;
   }
-  return arr.find(function (entry) {
-    return entry && ((0, _FnUtils._isFn)(specifiedKey) ? specifiedKey(entry) : (0, _FnUtils._getByPropName)(entry, specifiedKey)) === specifiedValue;
-  });
+  return arr.find(entry => entry && ((0, _FnUtils._isFn)(specifiedKey) ? specifiedKey(entry) : (0, _FnUtils._getByPropName)(entry, specifiedKey)) === specifiedValue);
 };
 exports.findEntryInArray = findEntryInArray;
 //# sourceMappingURL=DataUtils.js.map

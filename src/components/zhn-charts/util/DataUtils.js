@@ -27,6 +27,10 @@ export const isNumber = (
   value
 ) => _isNumber(value) && !_isNaN(value);
 
+export const isPositiveNumber = (
+  value
+) => isNumber(value) && value >= 0
+
 export const isNumOrStr = (
   value
 ) => isNumber(value) || _isStr(value);
