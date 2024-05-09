@@ -177,7 +177,7 @@ const _crStartDy = verticalAnchor => {
   }
   return startDy;
 };
-const textDefaultProps = {
+const DF_PROPS = {
   x: 0,
   y: 0,
   lineHeight: '1em',
@@ -188,16 +188,17 @@ const textDefaultProps = {
   fill: '#808080'
 };
 const Text = props => {
+  const _props = (0, _ReactUtils.crProps)(DF_PROPS, props);
   const wordsByLines = (0, _uiApi.useMemo)(() => {
       return getWordsByLines({
-        breakAll: props.breakAll,
-        children: props.children,
-        maxLines: props.maxLines,
-        scaleToFit: props.scaleToFit,
-        style: props.style,
-        width: props.width
+        breakAll: _props.breakAll,
+        children: _props.children,
+        maxLines: _props.maxLines,
+        scaleToFit: _props.scaleToFit,
+        style: _props.style,
+        width: _props.width
       });
-    }, [props.breakAll, props.children, props.maxLines, props.scaleToFit, props.style, props.width]),
+    }, [_props.breakAll, _props.children, _props.maxLines, _props.scaleToFit, _props.style, _props.width]),
     {
       dx,
       dy,
@@ -210,7 +211,7 @@ const Text = props => {
       className,
       breakAll,
       ...textProps
-    } = props;
+    } = _props;
   if (!(0, _DataUtils.isNumOrStr)(textProps.x) || !(0, _DataUtils.isNumOrStr)(textProps.y)) {
     return null;
   }
@@ -222,7 +223,7 @@ const Text = props => {
     const lineWidth = wordsByLines[0].width,
       {
         width
-      } = props;
+      } = _props;
     transforms.push("scale(" + ((0, _DataUtils.isNumber)(width) ? width / lineWidth : 1) / lineWidth + ")");
   }
   if (angle) {
@@ -237,7 +238,7 @@ const Text = props => {
     y: y,
     className: (0, _crCn.default)(_CL.CL_TEXT, className),
     textAnchor: textAnchor,
-    fill: textProps.fill.includes('url') ? textDefaultProps.fill : textProps.fill,
+    fill: textProps.fill.includes('url') ? DF_PROPS.fill : textProps.fill,
     children: wordsByLines.map((line, index) => /*#__PURE__*/(0, _jsxRuntime.jsx)("tspan", {
       x: x,
       dy: index === 0 ? startDy : lineHeight,
@@ -246,5 +247,4 @@ const Text = props => {
   });
 };
 exports.Text = Text;
-Text.defaultProps = textDefaultProps;
 //# sourceMappingURL=Text.js.map

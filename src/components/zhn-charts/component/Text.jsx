@@ -3,9 +3,15 @@ import crCn from '../../zhn-utils/crCn';
 
 import { _isNil } from '../util/FnUtils';
 
-import { isNumber, isNumOrStr } from '../util/DataUtils';
+import {
+  isNumber,
+  isNumOrStr
+} from '../util/DataUtils';
 import { Global } from '../util/Global';
-import { filterProps } from '../util/ReactUtils';
+import {
+  crProps,
+  filterProps
+} from '../util/ReactUtils';
 import { getStringSize } from '../util/DOMUtils';
 
 import { CL_TEXT } from '../CL';
@@ -168,7 +174,7 @@ switch (verticalAnchor) {
   return startDy;
 };
 
-const textDefaultProps = {
+const DF_PROPS = {
   x: 0,
   y: 0,
   lineHeight: '1em',
@@ -180,22 +186,23 @@ const textDefaultProps = {
 };
 
 export const Text = (props) => {
+  const _props = crProps(DF_PROPS, props)
   const wordsByLines = useMemo(() => {
     return getWordsByLines({
-      breakAll: props.breakAll,
-      children: props.children,
-      maxLines: props.maxLines,
-      scaleToFit: props.scaleToFit,
-      style: props.style,
-      width: props.width
+      breakAll: _props.breakAll,
+      children: _props.children,
+      maxLines: _props.maxLines,
+      scaleToFit: _props.scaleToFit,
+      style: _props.style,
+      width: _props.width
     });
   }, [
-    props.breakAll,
-    props.children,
-    props.maxLines,
-    props.scaleToFit,
-    props.style,
-    props.width
+    _props.breakAll,
+    _props.children,
+    _props.maxLines,
+    _props.scaleToFit,
+    _props.style,
+    _props.width
   ])
   , {
     dx,
@@ -209,7 +216,7 @@ export const Text = (props) => {
     className,
     breakAll,
     ...textProps
-  } = props;
+  } = _props;
 
   if (!isNumOrStr(textProps.x) || !isNumOrStr(textProps.y)) {
     return null;
@@ -220,7 +227,7 @@ export const Text = (props) => {
   let startDy = _crStartDy(verticalAnchor);
   if (scaleToFit) {
     const lineWidth = wordsByLines[0].width
-    , { width } = props;
+    , { width } = _props;
     transforms.push(`scale(${(isNumber(width) ? width / lineWidth : 1) / lineWidth})`);
   }
   if (angle) {
@@ -235,7 +242,10 @@ export const Text = (props) => {
       x={x} y={y}
       className={crCn(CL_TEXT, className)}
       textAnchor={textAnchor}
-      fill={textProps.fill.includes('url') ? textDefaultProps.fill : textProps.fill}
+      fill={textProps.fill.includes('url')
+        ? DF_PROPS.fill
+        : textProps.fill
+      }
     >
       {wordsByLines.map((line, index) => (
          <tspan x={x} dy={index === 0 ? startDy : lineHeight} key={index}>
@@ -245,5 +255,3 @@ export const Text = (props) => {
     </text>
   );
 };
-
-Text.defaultProps = textDefaultProps;
