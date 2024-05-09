@@ -1,15 +1,19 @@
 "use strict";
 
 exports.__esModule = true;
-exports["default"] = void 0;
+exports.default = void 0;
 var _jsxRuntime = require("react/jsx-runtime");
-var ClipPathRect = function ClipPathRect(_ref) {
-  var id = _ref.id,
-    props = _ref.props;
-  var left = props.left,
-    top = props.top,
-    width = props.width,
-    height = props.height;
+const ClipPathRect = _ref => {
+  let {
+    id,
+    props
+  } = _ref;
+  const {
+    left,
+    top,
+    width,
+    height
+  } = props;
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("defs", {
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("clipPath", {
       id: "clipPath-" + id,
@@ -22,6 +26,5 @@ var ClipPathRect = function ClipPathRect(_ref) {
     })
   });
 };
-var _default = ClipPathRect;
-exports["default"] = _default;
+var _default = exports.default = ClipPathRect;
 //# sourceMappingURL=ClipPathRect.js.map

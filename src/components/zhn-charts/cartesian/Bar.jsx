@@ -9,7 +9,10 @@ import { LabelList } from '../component/LabelList';
 
 import { Global } from '../util/Global';
 import { mathSign } from '../util/DataUtils';
-import { findAllByType } from '../util/ReactUtils';
+import {
+  crProps,
+  findAllByType
+} from '../util/ReactUtils';
 import {
   getCateCoordinateOfBar,
   getValueByDataKey,
@@ -24,7 +27,10 @@ import {
   renderRectangles
 } from './BarRenderFn';
 
-import { isNeedClip } from './cartesianFn';
+import {
+  isHideOrNoData,
+  isNeedClip
+} from './cartesianFn';
 
 import useAnimationHandle from './useAnimationHandle';
 import usePrevCurData from './usePrevCurData';
@@ -36,21 +42,36 @@ import {
   CL_BAR_RECTANGLES
 } from '../CL';
 
+const DF_PROPS = {
+  xAxisId: 0,
+  yAxisId: 0,
+  legendType: 'rect',
+  minPointSize: 0,
+  hide: false,
+  // data of bar
+  data: [],
+  layout: 'vertical',
+  isAnimationActive: !Global.isSsr,
+  animationBegin: 0,
+  animationDuration: 400,
+  animationEasing: 'ease'
+};
+
 export const Bar = memo((props) => {
-  const {
-    hide,
+  const _props = crProps(DF_PROPS, props)
+  , {
     data,
     className,
     isAnimationActive,
     background,
     id,
     animationId
-  } = props
+  } = _props
   , [
     isAnimationFinished,
     handleAnimationStart,
     handleAnimationEnd
-  ] = useAnimationHandle(props)
+  ] = useAnimationHandle(_props)
   , [
     prevData
   ] = usePrevCurData(
@@ -62,19 +83,19 @@ export const Bar = memo((props) => {
      id
   );
 
-  if (hide || !data || !data.length) {
+  if (isHideOrNoData(_props, data)) {
     return null;
   }
 
   const layerClass = crCn(CL_BAR, className)
-  , needClip = isNeedClip(props);
+  , needClip = isNeedClip(_props);
 
   return (
     <Layer className={layerClass}>
        {needClip
          ? <ClipPathRect
              id={clipPathId}
-             props={props}
+             props={_props}
            />
         : null
       }
@@ -86,11 +107,11 @@ export const Bar = memo((props) => {
         }
       >
         {background
-          ? renderBackground(props)
+          ? renderBackground(_props)
           : null
         }
         {renderRectangles(
-           props,
+           _props,
            prevData,
            handleAnimationStart,
            handleAnimationEnd
@@ -100,30 +121,16 @@ export const Bar = memo((props) => {
          needClip,
          clipPathId,
          isAnimationFinished,
-         props
+         _props
        )}
       {(!isAnimationActive || isAnimationFinished)
-         && LabelList.renderCallByParent(props, data)
+         && LabelList.renderCallByParent(_props, data)
       }
   </Layer>
  );
 })
 
 Bar.displayName = 'Bar';
-Bar.defaultProps = {
-    xAxisId: 0,
-    yAxisId: 0,
-    legendType: 'rect',
-    minPointSize: 0,
-    hide: false,
-    // data of bar
-    data: [],
-    layout: 'vertical',
-    isAnimationActive: !Global.isSsr,
-    animationBegin: 0,
-    animationDuration: 400,
-    animationEasing: 'ease'
-};
 
 /**
  * Compose the data of each group
