@@ -39,7 +39,7 @@ const REACT_BROWSER_EVENT_MAP = {
  * @param  {Object} Comp Specified Component
  * @return {String}      Display name of Component
  */
-const getDisplayName = Comp => typeof Comp === 'string' ? Comp : !Comp ? '' : Comp.displayName || Comp.name || 'Component';
+const getDisplayName = Comp => typeof Comp === 'string' ? Comp : Comp ? Comp.displayName || Comp.name || 'Component' : '';
 
 // `toArray` gets called multiple times during the render
 // so we can memoize last invocation (since reference to `children` is the same)

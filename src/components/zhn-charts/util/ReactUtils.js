@@ -68,9 +68,9 @@ export const getDisplayName = (
   Comp
 ) => typeof Comp === 'string'
   ? Comp
-  : !Comp
-      ? ''
-      : Comp.displayName || Comp.name || 'Component'
+  : Comp
+      ? Comp.displayName || Comp.name || 'Component'
+      : ''
 
 // `toArray` gets called multiple times during the render
 // so we can memoize last invocation (since reference to `children` is the same)
