@@ -1,38 +1,25 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarSizeList = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.combineEventHandlers = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
-exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseErrorBarsOfAxis = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = exports.getDomainOfErrorBars = void 0;
-var _extends7 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = void 0;
 var _d3Scale = require("../d3Scale");
 var _d3Shape = require("../d3Shape");
 var _FnUtils = require("./FnUtils");
 var _scale = require("../scale");
-var _ErrorBar = require("../cartesian/ErrorBar");
 var _Legend = require("../component/Legend");
 var _DataUtils = require("./DataUtils");
 var _ReactUtils = require("./ReactUtils");
-var _getObjectKeys = Object.keys;
-var _getAxisDomain = function _getAxisDomain(axis) {
-  return (((axis || {}).type || {}).defaultProps || {}).domain;
-};
-var isLayoutHorizontal = function isLayoutHorizontal(layout) {
-  return layout === 'horizontal';
-};
+const _getObjectKeys = Object.keys;
+const _getAxisDomain = axis => (((axis || {}).type || {}).defaultProps || {}).domain;
+const isLayoutHorizontal = layout => layout === 'horizontal';
 exports.isLayoutHorizontal = isLayoutHorizontal;
-var isLayoutVertical = function isLayoutVertical(layout) {
-  return layout === 'vertical';
-};
+const isLayoutVertical = layout => layout === 'vertical';
 exports.isLayoutVertical = isLayoutVertical;
-var isLayoutCentric = function isLayoutCentric(layout) {
-  return layout === 'centric';
-};
+const isLayoutCentric = layout => layout === 'centric';
 exports.isLayoutCentric = isLayoutCentric;
-var getValueByDataKey = function getValueByDataKey(obj, dataKey, defaultValue) {
-  return (0, _FnUtils._isNil)(obj) || (0, _FnUtils._isNil)(dataKey) ? defaultValue : (0, _DataUtils.isNumOrStr)(dataKey) ? (0, _FnUtils._getByPropName)(obj, dataKey, defaultValue) : (0, _FnUtils._isFn)(dataKey) ? dataKey(obj) : defaultValue;
-};
+const getValueByDataKey = (obj, dataKey, defaultValue) => (0, _FnUtils._isNil)(obj) || (0, _FnUtils._isNil)(dataKey) ? defaultValue : (0, _DataUtils.isNumOrStr)(dataKey) ? (0, _FnUtils._getByPropName)(obj, dataKey, defaultValue) : (0, _FnUtils._isFn)(dataKey) ? dataKey(obj) : defaultValue;
 /**
  * Get domain of data by key
  * @param  {Array}   data      The data displayed in the chart
@@ -44,73 +31,73 @@ var getValueByDataKey = function getValueByDataKey(obj, dataKey, defaultValue) {
 exports.getValueByDataKey = getValueByDataKey;
 function getDomainOfDataByKey(data, key, type, filterNil) {
   //const flattenData = _flatMap(data, entry => getValueByDataKey(entry, key));
-  var flattenData = data.flatMap(function (entry) {
-    return getValueByDataKey(entry, key);
-  });
+  const flattenData = data.flatMap(entry => getValueByDataKey(entry, key));
   if (type === 'number') {
-    var domain = flattenData.filter(function (entry) {
-      return (0, _DataUtils.isNumber)(entry) || parseFloat(entry);
-    });
+    const domain = flattenData.filter(entry => (0, _DataUtils.isNumber)(entry) || parseFloat(entry));
     return domain.length ? [(0, _FnUtils._min)(domain), (0, _FnUtils._max)(domain)] : [Infinity, -Infinity];
   }
-  var validateData = filterNil ? flattenData.filter(function (entry) {
-    return !(0, _FnUtils._isNil)(entry);
-  }) : flattenData;
-  return validateData.map(function (entry) {
-    return (0, _DataUtils.isNumOrStr)(entry) || entry instanceof Date ? entry : '';
-  });
+  const validateData = filterNil ? flattenData.filter(entry => !(0, _FnUtils._isNil)(entry)) : flattenData;
+  return validateData.map(entry => (0, _DataUtils.isNumOrStr)(entry) || entry instanceof Date ? entry : '');
 }
-var calculateActiveTickIndex = function calculateActiveTickIndex(coordinate, ticks, unsortedTicks, axis) {
+const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axis) {
   var _ticks$length, _ticks;
   if (ticks === void 0) {
     ticks = [];
   }
-  var index = -1;
-  var len = (_ticks$length = (_ticks = ticks) == null ? void 0 : _ticks.length) != null ? _ticks$length : 0;
+  let index = -1;
+  const len = (_ticks$length = (_ticks = ticks) == null ? void 0 : _ticks.length) != null ? _ticks$length : 0;
   // if there are 1 or less ticks ticks then the active tick is at index 0
   if (len <= 1) {
     return 0;
   }
   if (axis && axis.axisType === 'angleAxis' && Math.abs(Math.abs(axis.range[1] - axis.range[0]) - 360) <= 1e-6) {
-    var range = axis.range;
+    const {
+      range
+    } = axis;
     // ticks are distributed in a circle
-    for (var i = 0; i < len; i++) {
-      var before = i > 0 ? unsortedTicks[i - 1].coordinate : unsortedTicks[len - 1].coordinate,
+    for (let i = 0; i < len; i++) {
+      const before = i > 0 ? unsortedTicks[i - 1].coordinate : unsortedTicks[len - 1].coordinate,
         cur = unsortedTicks[i].coordinate,
         after = i >= len - 1 ? unsortedTicks[0].coordinate : unsortedTicks[i + 1].coordinate;
-      var sameDirectionCoord = void 0;
+      let sameDirectionCoord;
       if ((0, _DataUtils.mathSign)(cur - before) !== (0, _DataUtils.mathSign)(after - cur)) {
-        var diffInterval = [];
+        const diffInterval = [];
         if ((0, _DataUtils.mathSign)(after - cur) === (0, _DataUtils.mathSign)(range[1] - range[0])) {
           sameDirectionCoord = after;
-          var curInRange = cur + range[1] - range[0];
+          const curInRange = cur + range[1] - range[0];
           diffInterval[0] = Math.min(curInRange, (curInRange + before) / 2);
           diffInterval[1] = Math.max(curInRange, (curInRange + before) / 2);
         } else {
           sameDirectionCoord = before;
-          var afterInRange = after + range[1] - range[0];
+          const afterInRange = after + range[1] - range[0];
           diffInterval[0] = Math.min(cur, (afterInRange + cur) / 2);
           diffInterval[1] = Math.max(cur, (afterInRange + cur) / 2);
         }
-        var sameInterval = [Math.min(cur, (sameDirectionCoord + cur) / 2), Math.max(cur, (sameDirectionCoord + cur) / 2)];
+        const sameInterval = [Math.min(cur, (sameDirectionCoord + cur) / 2), Math.max(cur, (sameDirectionCoord + cur) / 2)];
         if (coordinate > sameInterval[0] && coordinate <= sameInterval[1] || coordinate >= diffInterval[0] && coordinate <= diffInterval[1]) {
-          index = unsortedTicks[i].index;
+          ({
+            index
+          } = unsortedTicks[i]);
           break;
         }
       } else {
-        var min = Math.min(before, after),
+        const min = Math.min(before, after),
           max = Math.max(before, after);
         if (coordinate > (min + cur) / 2 && coordinate <= (max + cur) / 2) {
-          index = unsortedTicks[i].index;
+          ({
+            index
+          } = unsortedTicks[i]);
           break;
         }
       }
     }
   } else {
     // ticks are distributed in a single direction
-    for (var _i = 0; _i < len; _i++) {
-      if (_i === 0 && coordinate <= (ticks[_i].coordinate + ticks[_i + 1].coordinate) / 2 || _i > 0 && _i < len - 1 && coordinate > (ticks[_i].coordinate + ticks[_i - 1].coordinate) / 2 && coordinate <= (ticks[_i].coordinate + ticks[_i + 1].coordinate) / 2 || _i === len - 1 && coordinate > (ticks[_i].coordinate + ticks[_i - 1].coordinate) / 2) {
-        index = ticks[_i].index;
+    for (let i = 0; i < len; i++) {
+      if (i === 0 && coordinate <= (ticks[i].coordinate + ticks[i + 1].coordinate) / 2 || i > 0 && i < len - 1 && coordinate > (ticks[i].coordinate + ticks[i - 1].coordinate) / 2 && coordinate <= (ticks[i].coordinate + ticks[i + 1].coordinate) / 2 || i === len - 1 && coordinate > (ticks[i].coordinate + ticks[i - 1].coordinate) / 2) {
+        ({
+          index
+        } = ticks[i]);
         break;
       }
     }
@@ -124,12 +111,17 @@ var calculateActiveTickIndex = function calculateActiveTickIndex(coordinate, tic
  * @return {String}            Color
  */
 exports.calculateActiveTickIndex = calculateActiveTickIndex;
-var getMainColorOfGraphicItem = function getMainColorOfGraphicItem(item) {
-  var displayName = item.type.displayName,
-    _item$props = item.props,
-    stroke = _item$props.stroke,
-    fill = _item$props.fill;
-  var result;
+const getMainColorOfGraphicItem = item => {
+  const {
+      type: {
+        displayName
+      }
+    } = item,
+    {
+      stroke,
+      fill
+    } = item.props;
+  let result;
   switch (displayName) {
     case 'Line':
       result = stroke;
@@ -145,43 +137,48 @@ var getMainColorOfGraphicItem = function getMainColorOfGraphicItem(item) {
   return result;
 };
 exports.getMainColorOfGraphicItem = getMainColorOfGraphicItem;
-var getLegendProps = function getLegendProps(_ref) {
-  var children = _ref.children,
-    formattedGraphicalItems = _ref.formattedGraphicalItems,
-    legendWidth = _ref.legendWidth,
-    legendContent = _ref.legendContent;
-  var legendItem = (0, _ReactUtils.findChildByType)(children, _Legend.Legend);
+const getLegendProps = _ref => {
+  let {
+    children,
+    formattedGraphicalItems,
+    legendWidth,
+    legendContent
+  } = _ref;
+  const legendItem = (0, _ReactUtils.findChildByType)(children, _Legend.Legend);
   if (!legendItem) {
     return null;
   }
-  var legendData;
+  let legendData;
   if (legendItem.props && legendItem.props.payload) {
     legendData = legendItem.props && legendItem.props.payload;
   } else if (legendContent === 'children') {
-    legendData = (formattedGraphicalItems || []).reduce(function (result, _ref2) {
-      var item = _ref2.item,
-        props = _ref2.props;
-      var data = props.sectors || props.data || [];
-      return result.concat(data.map(function (entry) {
-        return {
-          type: legendItem.props.iconType || item.props.legendType,
-          value: entry.name,
-          color: entry.fill,
-          payload: entry
-        };
-      }));
+    legendData = (formattedGraphicalItems || []).reduce((result, _ref2) => {
+      let {
+        item,
+        props
+      } = _ref2;
+      const data = props.sectors || props.data || [];
+      return result.concat(data.map(entry => ({
+        type: legendItem.props.iconType || item.props.legendType,
+        value: entry.name,
+        color: entry.fill,
+        payload: entry
+      })));
     }, []);
   } else {
-    legendData = (formattedGraphicalItems || []).map(function (_ref3) {
-      var item = _ref3.item;
-      var _item$props2 = item.props,
-        dataKey = _item$props2.dataKey,
-        name = _item$props2.name,
-        legendType = _item$props2.legendType,
-        hide = _item$props2.hide;
+    legendData = (formattedGraphicalItems || []).map(_ref3 => {
+      let {
+        item
+      } = _ref3;
+      const {
+        dataKey,
+        name,
+        legendType,
+        hide
+      } = item.props;
       return {
         inactive: hide,
-        dataKey: dataKey,
+        dataKey,
         type: legendItem.props.iconType || legendType || 'square',
         color: getMainColorOfGraphicItem(item),
         value: name || dataKey,
@@ -189,10 +186,12 @@ var getLegendProps = function getLegendProps(_ref) {
       };
     });
   }
-  return (0, _extends7["default"])({}, legendItem.props, _Legend.Legend.getWithHeight(legendItem, legendWidth), {
+  return {
+    ...legendItem.props,
+    ..._Legend.Legend.getWithHeight(legendItem, legendWidth),
     payload: legendData,
     item: legendItem
-  });
+  };
 };
 
 /**
@@ -201,27 +200,29 @@ var getLegendProps = function getLegendProps(_ref) {
  * @return {Object} The size of all groups
  */
 exports.getLegendProps = getLegendProps;
-var getBarSizeList = function getBarSizeList(_ref4) {
-  var globalSize = _ref4.barSize,
-    _ref4$stackGroups = _ref4.stackGroups,
-    stackGroups = _ref4$stackGroups === void 0 ? {} : _ref4$stackGroups;
+const getBarSizeList = _ref4 => {
+  let {
+    barSize: globalSize,
+    stackGroups = {}
+  } = _ref4;
   if (!stackGroups) {
     return {};
   }
-  var result = {},
+  const result = {},
     numericAxisIds = _getObjectKeys(stackGroups);
-  for (var i = 0, len = numericAxisIds.length; i < len; i++) {
-    var sgs = stackGroups[numericAxisIds[i]].stackGroups,
+  for (let i = 0, len = numericAxisIds.length; i < len; i++) {
+    const sgs = stackGroups[numericAxisIds[i]].stackGroups,
       stackIds = _getObjectKeys(sgs);
-    for (var j = 0, sLen = stackIds.length; j < sLen; j++) {
-      var _sgs$stackIds$j = sgs[stackIds[j]],
-        items = _sgs$stackIds$j.items,
-        cateAxisId = _sgs$stackIds$j.cateAxisId,
-        barItems = items.filter(function (item) {
-          return (0, _ReactUtils.getDisplayName)(item.type).indexOf('Bar') >= 0;
-        });
+    for (let j = 0, sLen = stackIds.length; j < sLen; j++) {
+      const {
+          items,
+          cateAxisId
+        } = sgs[stackIds[j]],
+        barItems = items.filter(item => (0, _ReactUtils.getDisplayName)(item.type).indexOf('Bar') >= 0);
       if (barItems && barItems.length) {
-        var selfSize = barItems[0].props.barSize,
+        const {
+            barSize: selfSize
+          } = barItems[0].props,
           cateId = barItems[0].props[cateAxisId];
         if (!result[cateId]) {
           result[cateId] = [];
@@ -245,26 +246,25 @@ var getBarSizeList = function getBarSizeList(_ref4) {
  * @return {Number} The size of each bar and the gap between two bars
  */
 exports.getBarSizeList = getBarSizeList;
-var getBarPosition = function getBarPosition(_ref5) {
-  var barGap = _ref5.barGap,
-    barCategoryGap = _ref5.barCategoryGap,
-    bandSize = _ref5.bandSize,
-    _ref5$sizeList = _ref5.sizeList,
-    sizeList = _ref5$sizeList === void 0 ? [] : _ref5$sizeList,
-    maxBarSize = _ref5.maxBarSize;
-  var len = sizeList.length;
+const getBarPosition = _ref5 => {
+  let {
+    barGap,
+    barCategoryGap,
+    bandSize,
+    sizeList = [],
+    maxBarSize
+  } = _ref5;
+  const len = sizeList.length;
   if (len < 1) {
     return null;
   }
-  var realBarGap = (0, _DataUtils.getPercentValue)(barGap, bandSize, 0, true);
-  var result;
+  let realBarGap = (0, _DataUtils.getPercentValue)(barGap, bandSize, 0, true);
+  let result;
   // whether or not is barSize setted by user
   if (sizeList[0].barSize === +sizeList[0].barSize) {
-    var useFull = false;
-    var fullBarSize = bandSize / len;
-    var sum = sizeList.reduce(function (res, entry) {
-      return res + entry.barSize || 0;
-    }, 0);
+    let useFull = false;
+    let fullBarSize = bandSize / len;
+    let sum = sizeList.reduce((res, entry) => res + entry.barSize || 0, 0);
     sum += (len - 1) * realBarGap;
     if (sum >= bandSize) {
       sum -= (len - 1) * realBarGap;
@@ -275,24 +275,24 @@ var getBarPosition = function getBarPosition(_ref5) {
       fullBarSize *= 0.9;
       sum = len * fullBarSize;
     }
-    var offset = (bandSize - sum) / 2 >> 0;
-    var prev = {
+    const offset = (bandSize - sum) / 2 >> 0;
+    let prev = {
       offset: offset - realBarGap,
       size: 0
     };
-    result = sizeList.reduce(function (res, entry) {
-      var newRes = [].concat(res, [{
+    result = sizeList.reduce((res, entry) => {
+      const newRes = [...res, {
         item: entry.item,
         position: {
           offset: prev.offset + prev.size + realBarGap,
           size: useFull ? fullBarSize : entry.barSize
         }
-      }]);
+      }];
       prev = newRes[newRes.length - 1].position;
       if (entry.stackList && entry.stackList.length) {
-        entry.stackList.forEach(function (item) {
+        entry.stackList.forEach(item => {
           newRes.push({
-            item: item,
+            item,
             position: prev
           });
         });
@@ -300,27 +300,27 @@ var getBarPosition = function getBarPosition(_ref5) {
       return newRes;
     }, []);
   } else {
-    var _offset = (0, _DataUtils.getPercentValue)(barCategoryGap, bandSize, 0, true);
-    if (bandSize - 2 * _offset - (len - 1) * realBarGap <= 0) {
+    const offset = (0, _DataUtils.getPercentValue)(barCategoryGap, bandSize, 0, true);
+    if (bandSize - 2 * offset - (len - 1) * realBarGap <= 0) {
       realBarGap = 0;
     }
-    var originalSize = (bandSize - 2 * _offset - (len - 1) * realBarGap) / len;
+    let originalSize = (bandSize - 2 * offset - (len - 1) * realBarGap) / len;
     if (originalSize > 1) {
       originalSize >>= 0;
     }
-    var size = maxBarSize === +maxBarSize ? Math.min(originalSize, maxBarSize) : originalSize;
-    result = sizeList.reduce(function (res, entry, i) {
-      var newRes = [].concat(res, [{
+    const size = maxBarSize === +maxBarSize ? Math.min(originalSize, maxBarSize) : originalSize;
+    result = sizeList.reduce((res, entry, i) => {
+      const newRes = [...res, {
         item: entry.item,
         position: {
-          offset: _offset + (originalSize + realBarGap) * i + (originalSize - size) / 2,
-          size: size
+          offset: offset + (originalSize + realBarGap) * i + (originalSize - size) / 2,
+          size
         }
-      }]);
+      }];
       if (entry.stackList && entry.stackList.length) {
-        entry.stackList.forEach(function (item) {
+        entry.stackList.forEach(item => {
           newRes.push({
-            item: item,
+            item,
             position: newRes[newRes.length - 1].position
           });
         });
@@ -331,84 +331,39 @@ var getBarPosition = function getBarPosition(_ref5) {
   return result;
 };
 exports.getBarPosition = getBarPosition;
-var appendOffsetOfLegend = function appendOffsetOfLegend(offset, items, props, legendBox) {
-  var children = props.children,
-    width = props.width,
-    margin = props.margin,
+const appendOffsetOfLegend = (offset, items, props, legendBox) => {
+  const {
+      children,
+      width,
+      margin
+    } = props,
     legendWidth = width - (margin.left || 0) - (margin.right || 0),
     legendProps = getLegendProps({
-      children: children,
-      legendWidth: legendWidth
+      children,
+      legendWidth
     });
-  var newOffset = offset;
+  let newOffset = offset;
   if (legendProps) {
-    var box = legendBox || {},
-      align = legendProps.align,
-      verticalAlign = legendProps.verticalAlign,
-      layout = legendProps.layout;
+    const box = legendBox || {},
+      {
+        align,
+        verticalAlign,
+        layout
+      } = legendProps;
     if ((isLayoutVertical(layout) || isLayoutHorizontal(layout) && verticalAlign === 'middle') && (0, _DataUtils.isNumber)(offset[align])) {
-      var _extends2;
-      newOffset = (0, _extends7["default"])({}, offset, (_extends2 = {}, _extends2[align] = newOffset[align] + (box.width || 0), _extends2));
+      newOffset = {
+        ...offset,
+        [align]: newOffset[align] + (box.width || 0)
+      };
     }
     if ((isLayoutHorizontal(layout) || isLayoutVertical(layout) && align === 'center') && (0, _DataUtils.isNumber)(offset[verticalAlign])) {
-      var _extends3;
-      newOffset = (0, _extends7["default"])({}, offset, (_extends3 = {}, _extends3[verticalAlign] = newOffset[verticalAlign] + (box.height || 0), _extends3));
+      newOffset = {
+        ...offset,
+        [verticalAlign]: newOffset[verticalAlign] + (box.height || 0)
+      };
     }
   }
   return newOffset;
-};
-exports.appendOffsetOfLegend = appendOffsetOfLegend;
-var isErrorBarRelevantForAxis = function isErrorBarRelevantForAxis(layout, axisType, direction) {
-  if ((0, _FnUtils._isNil)(axisType)) {
-    return true;
-  }
-  if (isLayoutHorizontal(layout)) {
-    return axisType === 'yAxis';
-  }
-  if (isLayoutVertical(layout)) {
-    return axisType === 'xAxis';
-  }
-  if (direction === 'x') {
-    return axisType === 'xAxis';
-  }
-  if (direction === 'y') {
-    return axisType === 'yAxis';
-  }
-  return true;
-};
-var getDomainOfErrorBars = function getDomainOfErrorBars(data, item, dataKey, layout, axisType) {
-  var children = item.props.children,
-    errorBars = (0, _ReactUtils.findAllByType)(children, _ErrorBar.ErrorBar).filter(function (errorBarChild) {
-      return isErrorBarRelevantForAxis(layout, axisType, errorBarChild.props.direction);
-    });
-  if (errorBars && errorBars.length) {
-    var keys = errorBars.map(function (errorBarChild) {
-      return errorBarChild.props.dataKey;
-    });
-    return data.reduce(function (result, entry) {
-      var entryValue = getValueByDataKey(entry, dataKey, 0),
-        mainValue = (0, _FnUtils._isArr)(entryValue) ? [(0, _FnUtils._min)(entryValue), (0, _FnUtils._max)(entryValue)] : [entryValue, entryValue],
-        errorDomain = keys.reduce(function (prevErrorArr, k) {
-          var errorValue = getValueByDataKey(entry, k, 0),
-            lowerValue = mainValue[0] - Math.abs((0, _FnUtils._isArr)(errorValue) ? errorValue[0] : errorValue),
-            upperValue = mainValue[1] + Math.abs((0, _FnUtils._isArr)(errorValue) ? errorValue[1] : errorValue);
-          return [Math.min(lowerValue, prevErrorArr[0]), Math.max(upperValue, prevErrorArr[1])];
-        }, [Infinity, -Infinity]);
-      return [Math.min(errorDomain[0], result[0]), Math.max(errorDomain[1], result[1])];
-    }, [Infinity, -Infinity]);
-  }
-  return null;
-};
-exports.getDomainOfErrorBars = getDomainOfErrorBars;
-var parseErrorBarsOfAxis = function parseErrorBarsOfAxis(data, items, dataKey, axisType, layout) {
-  var domains = items.map(function (item) {
-    return getDomainOfErrorBars(data, item, dataKey, layout, axisType);
-  }).filter(function (entry) {
-    return !(0, _FnUtils._isNil)(entry);
-  });
-  return domains && domains.length ? domains.reduce(function (result, entry) {
-    return [Math.min(result[0], entry[0]), Math.max(result[1], entry[1])];
-  }, [Infinity, -Infinity]) : null;
 };
 
 /**
@@ -420,25 +375,22 @@ var parseErrorBarsOfAxis = function parseErrorBarsOfAxis(data, items, dataKey, a
  * @param  {Boolean} filterNil Whether or not filter nil values
  * @return {Array}        Domain
  */
-exports.parseErrorBarsOfAxis = parseErrorBarsOfAxis;
-var getDomainOfItemsWithSameAxis = function getDomainOfItemsWithSameAxis(data, items, type, layout, filterNil) {
-  var domains = items.map(function (item) {
-    var dataKey = item.props.dataKey;
-    if (type === 'number' && dataKey) {
-      return getDomainOfErrorBars(data, item, dataKey, layout) || getDomainOfDataByKey(data, dataKey, type, filterNil);
-    }
+exports.appendOffsetOfLegend = appendOffsetOfLegend;
+const getDomainOfItemsWithSameAxis = (data, items, type, layout, filterNil) => {
+  const domains = items.map(item => {
+    const {
+      dataKey
+    } = item.props;
     return getDomainOfDataByKey(data, dataKey, type, filterNil);
   });
   if (type === 'number') {
     // Calculate the domain of number axis
-    return domains.reduce(function (result, entry) {
-      return [Math.min(result[0], entry[0]), Math.max(result[1], entry[1])];
-    }, [Infinity, -Infinity]);
+    return domains.reduce((result, entry) => [Math.min(result[0], entry[0]), Math.max(result[1], entry[1])], [Infinity, -Infinity]);
   }
-  var tag = {};
+  const tag = {};
   // Get the union set of category axis
-  return domains.reduce(function (result, entry) {
-    for (var i = 0, len = entry.length; i < len; i++) {
+  return domains.reduce((result, entry) => {
+    for (let i = 0, len = entry.length; i < len; i++) {
       if (!tag[entry[i]]) {
         tag[entry[i]] = true;
         result.push(entry[i]);
@@ -448,9 +400,7 @@ var getDomainOfItemsWithSameAxis = function getDomainOfItemsWithSameAxis(data, i
   }, []);
 };
 exports.getDomainOfItemsWithSameAxis = getDomainOfItemsWithSameAxis;
-var isCategoricalAxis = function isCategoricalAxis(layout, axisType) {
-  return isLayoutHorizontal(layout) && axisType === 'xAxis' || isLayoutVertical(layout) && axisType === 'yAxis' || isLayoutCentric(layout) && axisType === 'angleAxis' || layout === 'radial' && axisType === 'radiusAxis';
-};
+const isCategoricalAxis = (layout, axisType) => isLayoutHorizontal(layout) && axisType === 'xAxis' || isLayoutVertical(layout) && axisType === 'yAxis' || isLayoutCentric(layout) && axisType === 'angleAxis' || layout === 'radial' && axisType === 'radiusAxis';
 
 /**
  * Calculate the Coordinates of grid
@@ -460,9 +410,9 @@ var isCategoricalAxis = function isCategoricalAxis(layout, axisType) {
  * @return {Array}       Coordinates
  */
 exports.isCategoricalAxis = isCategoricalAxis;
-var getCoordinatesOfGrid = function getCoordinatesOfGrid(ticks, min, max) {
-  var hasMin, hasMax;
-  var values = ticks.map(function (entry) {
+const getCoordinatesOfGrid = (ticks, min, max) => {
+  let hasMin, hasMax;
+  const values = ticks.map(entry => {
     if (entry.coordinate === min) {
       hasMin = true;
     }
@@ -488,62 +438,58 @@ var getCoordinatesOfGrid = function getCoordinatesOfGrid(ticks, min, max) {
  * @return {Array}  Ticks
  */
 exports.getCoordinatesOfGrid = getCoordinatesOfGrid;
-var getTicksOfAxis = function getTicksOfAxis(axis, isGrid, isAll) {
+const getTicksOfAxis = (axis, isGrid, isAll) => {
   if (!axis) {
     return null;
   }
-  var scale = axis.scale,
-    duplicateDomain = axis.duplicateDomain,
-    type = axis.type,
-    range = axis.range,
+  const {
+      scale
+    } = axis,
+    {
+      duplicateDomain,
+      type,
+      range
+    } = axis,
     offsetForBand = axis.realScaleType === 'scaleBand' ? scale.bandwidth() / 2 : 2;
-  var offset = (isGrid || isAll) && type === 'category' && scale.bandwidth ? scale.bandwidth() / offsetForBand : 0;
+  let offset = (isGrid || isAll) && type === 'category' && scale.bandwidth ? scale.bandwidth() / offsetForBand : 0;
   offset = axis.axisType === 'angleAxis' && (range == null ? void 0 : range.length) >= 2 ? (0, _DataUtils.mathSign)(range[0] - range[1]) * 2 * offset : offset;
   // The ticks set by user should only affect the ticks adjacent to axis line
   if (isGrid && (axis.ticks || axis.niceTicks)) {
-    var result = (axis.ticks || axis.niceTicks).map(function (entry) {
-      var scaleContent = duplicateDomain ? duplicateDomain.indexOf(entry) : entry;
+    const result = (axis.ticks || axis.niceTicks).map(entry => {
+      const scaleContent = duplicateDomain ? duplicateDomain.indexOf(entry) : entry;
       return {
         // If the scaleContent is not a number, the coordinate will be NaN.
         // That could be the case for example with a PointScale and a string as domain.
         coordinate: scale(scaleContent) + offset,
         value: entry,
-        offset: offset
+        offset
       };
     });
-    return result.filter(function (row) {
-      return !(0, _FnUtils._isNaN)(row.coordinate);
-    });
+    return result.filter(row => !(0, _FnUtils._isNaN)(row.coordinate));
   }
   // When axis is a categorial axis, but the type of axis is number or the scale of axis is not "auto"
   if (axis.isCategorical && axis.categoricalDomain) {
-    return axis.categoricalDomain.map(function (entry, index) {
-      return {
-        coordinate: scale(entry) + offset,
-        value: entry,
-        index: index,
-        offset: offset
-      };
-    });
+    return axis.categoricalDomain.map((entry, index) => ({
+      coordinate: scale(entry) + offset,
+      value: entry,
+      index,
+      offset
+    }));
   }
   if (scale.ticks && !isAll) {
-    return scale.ticks(axis.tickCount).map(function (entry) {
-      return {
-        coordinate: scale(entry) + offset,
-        value: entry,
-        offset: offset
-      };
-    });
+    return scale.ticks(axis.tickCount).map(entry => ({
+      coordinate: scale(entry) + offset,
+      value: entry,
+      offset
+    }));
   }
   // When axis has duplicated text, serial numbers are used to generate scale
-  return scale.domain().map(function (entry, index) {
-    return {
-      coordinate: scale(entry) + offset,
-      value: duplicateDomain ? duplicateDomain[entry] : entry,
-      index: index,
-      offset: offset
-    };
-  });
+  return scale.domain().map((entry, index) => ({
+    coordinate: scale(entry) + offset,
+    value: duplicateDomain ? duplicateDomain[entry] : entry,
+    index,
+    offset
+  }));
 };
 
 /**
@@ -554,15 +500,15 @@ var getTicksOfAxis = function getTicksOfAxis(axis, isGrid, isAll) {
  * @return {Function}                The combined handler
  */
 exports.getTicksOfAxis = getTicksOfAxis;
-var combineEventHandlers = function combineEventHandlers(defaultHandler, parentHandler, childHandler) {
-  var customizedHandler;
+const combineEventHandlers = (defaultHandler, parentHandler, childHandler) => {
+  let customizedHandler;
   if ((0, _FnUtils._isFn)(childHandler)) {
     customizedHandler = childHandler;
   } else if ((0, _FnUtils._isFn)(parentHandler)) {
     customizedHandler = parentHandler;
   }
   if ((0, _FnUtils._isFn)(defaultHandler) || customizedHandler) {
-    return function (arg1, arg2, arg3, arg4) {
+    return (arg1, arg2, arg3, arg4) => {
       if ((0, _FnUtils._isFn)(defaultHandler)) {
         defaultHandler(arg1, arg2, arg3, arg4);
       }
@@ -574,24 +520,18 @@ var combineEventHandlers = function combineEventHandlers(defaultHandler, parentH
   return null;
 };
 exports.combineEventHandlers = combineEventHandlers;
-var _crScaleBand = function _crScaleBand() {
-  return {
-    scale: (0, _d3Scale.scaleBand)(),
-    realScaleType: 'band'
-  };
-};
-var _crScaleLinear = function _crScaleLinear() {
-  return {
-    scale: (0, _d3Scale.scaleLinear)(),
-    realScaleType: 'linear'
-  };
-};
-var _crScalePoint = function _crScalePoint() {
-  return {
-    scale: (0, _d3Scale.scalePoint)(),
-    realScaleType: 'point'
-  };
-};
+const _crScaleBand = () => ({
+  scale: (0, _d3Scale.scaleBand)(),
+  realScaleType: 'band'
+});
+const _crScaleLinear = () => ({
+  scale: (0, _d3Scale.scaleLinear)(),
+  realScaleType: 'linear'
+});
+const _crScalePoint = () => ({
+  scale: (0, _d3Scale.scalePoint)(),
+  realScaleType: 'point'
+});
 
 /**
  * Parse the scale function of axis
@@ -600,11 +540,13 @@ var _crScalePoint = function _crScalePoint() {
  * @param  {Boolean}  hasBar        if it has a bar
  * @return {Function}               The scale function
  */
-var parseScale = function parseScale(axis, chartType, hasBar) {
-  var scale = axis.scale,
-    type = axis.type,
-    layout = axis.layout,
-    axisType = axis.axisType;
+const parseScale = (axis, chartType, hasBar) => {
+  const {
+    scale,
+    type,
+    layout,
+    axisType
+  } = axis;
   if (scale === 'auto') {
     if (layout === 'radial' && axisType === 'radiusAxis') {
       return _crScaleBand();
@@ -630,17 +572,17 @@ var parseScale = function parseScale(axis, chartType, hasBar) {
   }
   */
   return (0, _FnUtils._isFn)(scale) ? {
-    scale: scale
+    scale
   } : _crScalePoint();
 };
 exports.parseScale = parseScale;
-var EPS = 1e-4;
-var checkDomainOfScale = function checkDomainOfScale(scale) {
-  var domain = scale.domain();
+const EPS = 1e-4;
+const checkDomainOfScale = scale => {
+  const domain = scale.domain();
   if (!domain || domain.length <= 2) {
     return;
   }
-  var len = domain.length,
+  const len = domain.length,
     range = scale.range(),
     min = Math.min(range[0], range[1]) - EPS,
     max = Math.max(range[0], range[1]) + EPS,
@@ -651,11 +593,11 @@ var checkDomainOfScale = function checkDomainOfScale(scale) {
   }
 };
 exports.checkDomainOfScale = checkDomainOfScale;
-var findPositionOfBar = function findPositionOfBar(barPosition, child) {
+const findPositionOfBar = (barPosition, child) => {
   if (!barPosition) {
     return null;
   }
-  for (var i = 0, len = barPosition.length; i < len; i++) {
+  for (let i = 0, len = barPosition.length; i < len; i++) {
     if (barPosition[i].item === child) {
       return barPosition[i].position;
     }
@@ -663,11 +605,11 @@ var findPositionOfBar = function findPositionOfBar(barPosition, child) {
   return null;
 };
 exports.findPositionOfBar = findPositionOfBar;
-var truncateByDomain = function truncateByDomain(value, domain) {
+const truncateByDomain = (value, domain) => {
   if (!domain || domain.length !== 2 || !(0, _DataUtils.isNumber)(domain[0]) || !(0, _DataUtils.isNumber)(domain[1])) {
     return value;
   }
-  var min = Math.min(domain[0], domain[1]),
+  const min = Math.min(domain[0], domain[1]),
     max = Math.max(domain[0], domain[1]),
     result = [value[0], value[1]];
   if (!(0, _DataUtils.isNumber)(value[0]) || value[0] < min) {
@@ -685,16 +627,16 @@ var truncateByDomain = function truncateByDomain(value, domain) {
   return result;
 };
 exports.truncateByDomain = truncateByDomain;
-var offsetSign = function offsetSign(series) {
-  var n = series.length;
+const offsetSign = series => {
+  const n = series.length;
   if (n <= 0) {
     return;
   }
-  for (var j = 0, m = series[0].length; j < m; ++j) {
-    var positive = 0;
-    var negative = 0;
-    for (var i = 0; i < n; ++i) {
-      var value = (0, _FnUtils._isNaN)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
+  for (let j = 0, m = series[0].length; j < m; ++j) {
+    let positive = 0;
+    let negative = 0;
+    for (let i = 0; i < n; ++i) {
+      const value = (0, _FnUtils._isNaN)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
       if (value >= 0) {
         series[i][j][0] = positive;
         series[i][j][1] = positive + value;
@@ -708,15 +650,15 @@ var offsetSign = function offsetSign(series) {
   }
 };
 exports.offsetSign = offsetSign;
-var offsetPositive = function offsetPositive(series) {
-  var n = series.length;
+const offsetPositive = series => {
+  const n = series.length;
   if (n <= 0) {
     return;
   }
-  for (var j = 0, m = series[0].length; j < m; ++j) {
-    var positive = 0;
-    for (var i = 0; i < n; ++i) {
-      var value = (0, _FnUtils._isNaN)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
+  for (let j = 0, m = series[0].length; j < m; ++j) {
+    let positive = 0;
+    for (let i = 0; i < n; ++i) {
+      const value = (0, _FnUtils._isNaN)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
       if (value >= 0) {
         series[i][j][0] = positive;
         series[i][j][1] = positive + value;
@@ -729,7 +671,7 @@ var offsetPositive = function offsetPositive(series) {
   }
 };
 exports.offsetPositive = offsetPositive;
-var STACK_OFFSET_MAP = {
+const STACK_OFFSET_MAP = {
   sign: offsetSign,
   expand: _d3Shape.stackOffsetExpand,
   none: _d3Shape.stackOffsetNone,
@@ -737,39 +679,35 @@ var STACK_OFFSET_MAP = {
   wiggle: _d3Shape.stackOffsetWiggle,
   positive: offsetPositive
 };
-var getStackedData = function getStackedData(data, stackItems, offsetType) {
-  var dataKeys = stackItems.map(function (item) {
-      return item.props.dataKey;
-    }),
-    stack = (0, _d3Shape.stack)().keys(dataKeys).value(function (d, key) {
-      return +getValueByDataKey(d, key, 0);
-    }).order(_d3Shape.stackOrderNone).offset(STACK_OFFSET_MAP[offsetType]);
+const getStackedData = (data, stackItems, offsetType) => {
+  const dataKeys = stackItems.map(item => item.props.dataKey),
+    stack = (0, _d3Shape.stack)().keys(dataKeys).value((d, key) => +getValueByDataKey(d, key, 0)).order(_d3Shape.stackOrderNone).offset(STACK_OFFSET_MAP[offsetType]);
   return stack(data);
 };
 exports.getStackedData = getStackedData;
-var getStackGroupsByAxisId = function getStackGroupsByAxisId(data, _items, numericAxisId, cateAxisId, offsetType, reverseStackOrder) {
+const getStackGroupsByAxisId = (data, _items, numericAxisId, cateAxisId, offsetType, reverseStackOrder) => {
   if (!data) {
     return null;
   }
   // reversing items to affect render order (for layering)
-  var items = reverseStackOrder ? _items.reverse() : _items,
-    stackGroups = items.reduce(function (result, item) {
-      var _extends4;
-      var _item$props3 = item.props,
-        stackId = _item$props3.stackId,
-        hide = _item$props3.hide;
+  const items = reverseStackOrder ? _items.reverse() : _items,
+    stackGroups = items.reduce((result, item) => {
+      const {
+        stackId,
+        hide
+      } = item.props;
       if (hide) {
         return result;
       }
-      var axisId = item.props[numericAxisId];
-      var parentGroup = result[axisId] || {
+      const axisId = item.props[numericAxisId];
+      const parentGroup = result[axisId] || {
         hasStack: false,
         stackGroups: {}
       };
       if ((0, _DataUtils.isNumOrStr)(stackId)) {
-        var childGroup = parentGroup.stackGroups[stackId] || {
-          numericAxisId: numericAxisId,
-          cateAxisId: cateAxisId,
+        const childGroup = parentGroup.stackGroups[stackId] || {
+          numericAxisId,
+          cateAxisId,
           items: []
         };
         childGroup.items.push(item);
@@ -777,29 +715,36 @@ var getStackGroupsByAxisId = function getStackGroupsByAxisId(data, _items, numer
         parentGroup.stackGroups[stackId] = childGroup;
       } else {
         parentGroup.stackGroups[(0, _DataUtils.uniqueId)('_stackId_')] = {
-          numericAxisId: numericAxisId,
-          cateAxisId: cateAxisId,
+          numericAxisId,
+          cateAxisId,
           items: [item]
         };
       }
-      return (0, _extends7["default"])({}, result, (_extends4 = {}, _extends4[axisId] = parentGroup, _extends4));
+      return {
+        ...result,
+        [axisId]: parentGroup
+      };
     }, {});
-  return _getObjectKeys(stackGroups).reduce(function (result, axisId) {
-    var _extends6;
-    var group = stackGroups[axisId];
+  return _getObjectKeys(stackGroups).reduce((result, axisId) => {
+    const group = stackGroups[axisId];
     if (group.hasStack) {
-      group.stackGroups = _getObjectKeys(group.stackGroups).reduce(function (res, stackId) {
-        var _extends5;
-        var g = group.stackGroups[stackId];
-        return (0, _extends7["default"])({}, res, (_extends5 = {}, _extends5[stackId] = {
-          numericAxisId: numericAxisId,
-          cateAxisId: cateAxisId,
-          items: g.items,
-          stackedData: getStackedData(data, g.items, offsetType)
-        }, _extends5));
+      group.stackGroups = _getObjectKeys(group.stackGroups).reduce((res, stackId) => {
+        const g = group.stackGroups[stackId];
+        return {
+          ...res,
+          [stackId]: {
+            numericAxisId,
+            cateAxisId,
+            items: g.items,
+            stackedData: getStackedData(data, g.items, offsetType)
+          }
+        };
       }, {});
     }
-    return (0, _extends7["default"])({}, result, (_extends6 = {}, _extends6[axisId] = group, _extends6));
+    return {
+      ...result,
+      [axisId]: group
+    };
   }, {});
 };
 
@@ -810,78 +755,86 @@ var getStackGroupsByAxisId = function getStackGroupsByAxisId(data, _items, numer
  * @return {Object}      null
  */
 exports.getStackGroupsByAxisId = getStackGroupsByAxisId;
-var getTicksOfScale = function getTicksOfScale(scale, opts) {
-  var realScaleType = opts.realScaleType,
-    type = opts.type,
-    tickCount = opts.tickCount,
-    originalDomain = opts.originalDomain,
-    allowDecimals = opts.allowDecimals,
+const getTicksOfScale = (scale, opts) => {
+  const {
+      realScaleType,
+      type,
+      tickCount,
+      originalDomain,
+      allowDecimals
+    } = opts,
     scaleType = realScaleType || opts.scale;
   if (scaleType !== 'auto' && scaleType !== 'linear') {
     return null;
   }
   if (tickCount && type === 'number' && originalDomain && (originalDomain[0] === 'auto' || originalDomain[1] === 'auto')) {
     // Calculate the ticks by the number of grid when the axis is a number axis
-    var domain = scale.domain();
+    const domain = scale.domain();
     if (!domain.length) {
       return null;
     }
-    var tickValues = (0, _scale.getNiceTickValues)(domain, tickCount, allowDecimals);
+    const tickValues = (0, _scale.getNiceTickValues)(domain, tickCount, allowDecimals);
     scale.domain([(0, _FnUtils._min)(tickValues), (0, _FnUtils._max)(tickValues)]);
     return {
       niceTicks: tickValues
     };
   }
   if (tickCount && type === 'number') {
-    var _domain = scale.domain(),
-      _tickValues = (0, _scale.getTickValuesFixedDomain)(_domain, tickCount, allowDecimals);
+    const domain = scale.domain(),
+      tickValues = (0, _scale.getTickValuesFixedDomain)(domain, tickCount, allowDecimals);
     return {
-      niceTicks: _tickValues
+      niceTicks: tickValues
     };
   }
   return null;
 };
 exports.getTicksOfScale = getTicksOfScale;
-var getCateCoordinateOfLine = function getCateCoordinateOfLine(_ref6) {
-  var axis = _ref6.axis,
-    ticks = _ref6.ticks,
-    bandSize = _ref6.bandSize,
-    entry = _ref6.entry,
-    index = _ref6.index,
-    dataKey = _ref6.dataKey;
+const getCateCoordinateOfLine = _ref6 => {
+  let {
+    axis,
+    ticks,
+    bandSize,
+    entry,
+    index,
+    dataKey
+  } = _ref6;
   if (axis.type === 'category') {
     // find coordinate of category axis by the value of category
     if (!axis.allowDuplicatedCategory && axis.dataKey && !(0, _FnUtils._isNil)(entry[axis.dataKey])) {
-      var matchedTick = (0, _DataUtils.findEntryInArray)(ticks, 'value', entry[axis.dataKey]);
+      const matchedTick = (0, _DataUtils.findEntryInArray)(ticks, 'value', entry[axis.dataKey]);
       if (matchedTick) {
         return matchedTick.coordinate + bandSize / 2;
       }
     }
     return ticks[index] ? ticks[index].coordinate + bandSize / 2 : null;
   }
-  var value = getValueByDataKey(entry, !(0, _FnUtils._isNil)(dataKey) ? dataKey : axis.dataKey);
+  const value = getValueByDataKey(entry, !(0, _FnUtils._isNil)(dataKey) ? dataKey : axis.dataKey);
   return !(0, _FnUtils._isNil)(value) ? axis.scale(value) : null;
 };
 exports.getCateCoordinateOfLine = getCateCoordinateOfLine;
-var getCateCoordinateOfBar = function getCateCoordinateOfBar(_ref7) {
-  var axis = _ref7.axis,
-    ticks = _ref7.ticks,
-    offset = _ref7.offset,
-    bandSize = _ref7.bandSize,
-    entry = _ref7.entry,
-    index = _ref7.index;
+const getCateCoordinateOfBar = _ref7 => {
+  let {
+    axis,
+    ticks,
+    offset,
+    bandSize,
+    entry,
+    index
+  } = _ref7;
   if (axis.type === 'category') {
     return ticks[index] ? ticks[index].coordinate + offset : null;
   }
-  var value = getValueByDataKey(entry, axis.dataKey, axis.domain[index]);
+  const value = getValueByDataKey(entry, axis.dataKey, axis.domain[index]);
   return !(0, _FnUtils._isNil)(value) ? axis.scale(value) - bandSize / 2 + offset : null;
 };
 exports.getCateCoordinateOfBar = getCateCoordinateOfBar;
-var getBaseValueOfBar = function getBaseValueOfBar(_ref8) {
-  var numericAxis = _ref8.numericAxis;
-  var domain = numericAxis.scale.domain();
+const getBaseValueOfBar = _ref8 => {
+  let {
+    numericAxis
+  } = _ref8;
+  const domain = numericAxis.scale.domain();
   if (numericAxis.type === 'number') {
-    var min = Math.min(domain[0], domain[1]),
+    const min = Math.min(domain[0], domain[1]),
       max = Math.max(domain[0], domain[1]);
     if (min <= 0 && max >= 0) {
       return 0;
@@ -894,13 +847,15 @@ var getBaseValueOfBar = function getBaseValueOfBar(_ref8) {
   return domain[0];
 };
 exports.getBaseValueOfBar = getBaseValueOfBar;
-var getStackedDataOfItem = function getStackedDataOfItem(item, stackGroups) {
-  var stackId = item.props.stackId;
+const getStackedDataOfItem = (item, stackGroups) => {
+  const {
+    stackId
+  } = item.props;
   if ((0, _DataUtils.isNumOrStr)(stackId)) {
-    var group = stackGroups[stackId];
+    const group = stackGroups[stackId];
     if (group && group.items.length) {
-      var itemIndex = -1;
-      for (var i = 0, len = group.items.length; i < len; i++) {
+      let itemIndex = -1;
+      for (let i = 0, len = group.items.length; i < len; i++) {
         if (group.items[i] === item) {
           itemIndex = i;
           break;
@@ -912,41 +867,33 @@ var getStackedDataOfItem = function getStackedDataOfItem(item, stackGroups) {
   return null;
 };
 exports.getStackedDataOfItem = getStackedDataOfItem;
-var getDomainOfSingle = function getDomainOfSingle(data) {
-  return data.reduce(function (result, entry) {
-    return [(0, _FnUtils._min)(entry.concat([result[0]]).filter(_DataUtils.isNumber)), (0, _FnUtils._max)(entry.concat([result[1]]).filter(_DataUtils.isNumber))];
-  }, [Infinity, -Infinity]);
-};
-var getDomainOfStackGroups = function getDomainOfStackGroups(stackGroups, startIndex, endIndex) {
-  return _getObjectKeys(stackGroups).reduce(function (result, stackId) {
-    var group = stackGroups[stackId],
-      stackedData = group.stackedData,
-      domain = stackedData.reduce(function (res, entry) {
-        var s = getDomainOfSingle(entry.slice(startIndex, endIndex + 1));
-        return [Math.min(res[0], s[0]), Math.max(res[1], s[1])];
-      }, [Infinity, -Infinity]);
-    return [Math.min(domain[0], result[0]), Math.max(domain[1], result[1])];
-  }, [Infinity, -Infinity]).map(function (result) {
-    return result === Infinity || result === -Infinity ? 0 : result;
-  });
-};
+const getDomainOfSingle = data => data.reduce((result, entry) => [(0, _FnUtils._min)(entry.concat([result[0]]).filter(_DataUtils.isNumber)), (0, _FnUtils._max)(entry.concat([result[1]]).filter(_DataUtils.isNumber))], [Infinity, -Infinity]);
+const getDomainOfStackGroups = (stackGroups, startIndex, endIndex) => _getObjectKeys(stackGroups).reduce((result, stackId) => {
+  const group = stackGroups[stackId],
+    {
+      stackedData
+    } = group,
+    domain = stackedData.reduce((res, entry) => {
+      const s = getDomainOfSingle(entry.slice(startIndex, endIndex + 1));
+      return [Math.min(res[0], s[0]), Math.max(res[1], s[1])];
+    }, [Infinity, -Infinity]);
+  return [Math.min(domain[0], result[0]), Math.max(domain[1], result[1])];
+}, [Infinity, -Infinity]).map(result => result === Infinity || result === -Infinity ? 0 : result);
 exports.getDomainOfStackGroups = getDomainOfStackGroups;
-var MIN_VALUE_REG = /^dataMin[\s]*-[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
-exports.MIN_VALUE_REG = MIN_VALUE_REG;
-var MAX_VALUE_REG = /^dataMax[\s]*\+[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
-exports.MAX_VALUE_REG = MAX_VALUE_REG;
-var parseSpecifiedDomain = function parseSpecifiedDomain(specifiedDomain, dataDomain, allowDataOverflow) {
+const MIN_VALUE_REG = exports.MIN_VALUE_REG = /^dataMin[\s]*-[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
+const MAX_VALUE_REG = exports.MAX_VALUE_REG = /^dataMax[\s]*\+[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
+const parseSpecifiedDomain = (specifiedDomain, dataDomain, allowDataOverflow) => {
   if ((0, _FnUtils._isFn)(specifiedDomain)) {
     return specifiedDomain(dataDomain, allowDataOverflow);
   }
   if (!(0, _FnUtils._isArr)(specifiedDomain)) {
     return dataDomain;
   }
-  var domain = [];
+  const domain = [];
   if ((0, _DataUtils.isNumber)(specifiedDomain[0])) {
     domain[0] = allowDataOverflow ? specifiedDomain[0] : Math.min(specifiedDomain[0], dataDomain[0]);
   } else if (MIN_VALUE_REG.test(specifiedDomain[0])) {
-    var value = +MIN_VALUE_REG.exec(specifiedDomain[0])[1];
+    const value = +MIN_VALUE_REG.exec(specifiedDomain[0])[1];
     domain[0] = dataDomain[0] - value;
   } else if ((0, _FnUtils._isFn)(specifiedDomain[0])) {
     domain[0] = specifiedDomain[0](dataDomain[0]);
@@ -956,8 +903,8 @@ var parseSpecifiedDomain = function parseSpecifiedDomain(specifiedDomain, dataDo
   if ((0, _DataUtils.isNumber)(specifiedDomain[1])) {
     domain[1] = allowDataOverflow ? specifiedDomain[1] : Math.max(specifiedDomain[1], dataDomain[1]);
   } else if (MAX_VALUE_REG.test(specifiedDomain[1])) {
-    var _value = +MAX_VALUE_REG.exec(specifiedDomain[1])[1];
-    domain[1] = dataDomain[1] + _value;
+    const value = +MAX_VALUE_REG.exec(specifiedDomain[1])[1];
+    domain[1] = dataDomain[1] + value;
   } else if ((0, _FnUtils._isFn)(specifiedDomain[1])) {
     domain[1] = specifiedDomain[1](dataDomain[1]);
   } else {
@@ -974,21 +921,19 @@ var parseSpecifiedDomain = function parseSpecifiedDomain(specifiedDomain, dataDo
  * @return {Number} Size
  */
 exports.parseSpecifiedDomain = parseSpecifiedDomain;
-var getBandSizeOfAxis = function getBandSizeOfAxis(axis, ticks, isBar) {
+const getBandSizeOfAxis = (axis, ticks, isBar) => {
   if (axis && axis.scale && axis.scale.bandwidth) {
-    var bandWidth = axis.scale.bandwidth();
+    const bandWidth = axis.scale.bandwidth();
     if (!isBar || bandWidth > 0) {
       return bandWidth;
     }
   }
   if (axis && ticks && ticks.length >= 2) {
     //const orderedTicks = _sortBy(ticks, o => o.coordinate);
-    var orderedTicks = ticks.sort(function (o) {
-      return o.coordinate;
-    });
-    var bandSize = Infinity;
-    for (var i = 1, len = orderedTicks.length; i < len; i++) {
-      var cur = orderedTicks[i],
+    const orderedTicks = ticks.sort(o => o.coordinate);
+    let bandSize = Infinity;
+    for (let i = 1, len = orderedTicks.length; i < len; i++) {
+      const cur = orderedTicks[i],
         prev = orderedTicks[i - 1];
       bandSize = Math.min((cur.coordinate || 0) - (prev.coordinate || 0), bandSize);
     }
@@ -1005,29 +950,29 @@ var getBandSizeOfAxis = function getBandSizeOfAxis(axis, ticks, isBar) {
  * @returns {Array}        domains
  */
 exports.getBandSizeOfAxis = getBandSizeOfAxis;
-var parseDomainOfCategoryAxis = function parseDomainOfCategoryAxis(specifiedDomain, calculatedDomain, axisChild) {
-  return !specifiedDomain || !specifiedDomain.length ? calculatedDomain : (0, _FnUtils._isEqual)(specifiedDomain, _getAxisDomain(axisChild)) ? calculatedDomain : specifiedDomain;
-};
+const parseDomainOfCategoryAxis = (specifiedDomain, calculatedDomain, axisChild) => !specifiedDomain || !specifiedDomain.length ? calculatedDomain : (0, _FnUtils._isEqual)(specifiedDomain, _getAxisDomain(axisChild)) ? calculatedDomain : specifiedDomain;
 exports.parseDomainOfCategoryAxis = parseDomainOfCategoryAxis;
-var getTooltipItem = function getTooltipItem(graphicalItem, payload) {
-  var _graphicalItem$props = graphicalItem.props,
-    dataKey = _graphicalItem$props.dataKey,
-    name = _graphicalItem$props.name,
-    unit = _graphicalItem$props.unit,
-    formatter = _graphicalItem$props.formatter,
-    tooltipType = _graphicalItem$props.tooltipType,
-    chartType = _graphicalItem$props.chartType;
-  return (0, _extends7["default"])({}, (0, _ReactUtils.filterProps)(graphicalItem), {
-    dataKey: dataKey,
-    unit: unit,
-    formatter: formatter,
+const getTooltipItem = (graphicalItem, payload) => {
+  const {
+    dataKey,
+    name,
+    unit,
+    formatter,
+    tooltipType,
+    chartType
+  } = graphicalItem.props;
+  return {
+    ...(0, _ReactUtils.filterProps)(graphicalItem),
+    dataKey,
+    unit,
+    formatter,
     name: name || dataKey,
     color: getMainColorOfGraphicItem(graphicalItem),
     value: getValueByDataKey(payload, dataKey),
     type: tooltipType,
-    payload: payload,
-    chartType: chartType
-  });
+    payload,
+    chartType
+  };
 };
 exports.getTooltipItem = getTooltipItem;
 //# sourceMappingURL=ChartUtils.js.map

@@ -17,10 +17,8 @@ import {
   _isNil,
   _isFn,
   _isArr,
-  //_isStr,
   _isNaN,
   _getByPropName,
-  //_upperFirst,
   _min,
   _max,
   _isEqual
@@ -31,7 +29,6 @@ import {
   getTickValuesFixedDomain
 } from '../scale';
 
-import { ErrorBar } from '../cartesian/ErrorBar';
 import { Legend } from '../component/Legend';
 import {
   findEntryInArray,
@@ -43,7 +40,6 @@ import {
 } from './DataUtils';
 import {
   filterProps,
-  findAllByType,
   findChildByType,
   getDisplayName
 } from './ReactUtils';
@@ -427,79 +423,6 @@ export const appendOffsetOfLegend = (
   return newOffset;
 };
 
-const isErrorBarRelevantForAxis = (
-  layout,
-  axisType,
-  direction
-) => {
-  if (_isNil(axisType)) {
-    return true;
-  }
-  if (isLayoutHorizontal(layout)) {
-    return axisType === 'yAxis';
-  }
-  if (isLayoutVertical(layout)) {
-    return axisType === 'xAxis';
-  }
-  if (direction === 'x') {
-    return axisType === 'xAxis';
-  }
-  if (direction === 'y') {
-    return axisType === 'yAxis';
-  }
-  return true;
-};
-
-export const getDomainOfErrorBars = (
-  data,
-  item,
-  dataKey,
-  layout,
-  axisType
-) => {
-  const { children } = item.props
-  , errorBars = findAllByType(children, ErrorBar)
-     .filter(errorBarChild => isErrorBarRelevantForAxis(layout, axisType, errorBarChild.props.direction));
-  if (errorBars && errorBars.length) {
-    const keys = errorBars.map((errorBarChild) => errorBarChild.props.dataKey);
-    return data.reduce((result, entry) => {
-      const entryValue = getValueByDataKey(entry, dataKey, 0)
-      , mainValue = _isArr(entryValue)
-         ? [_min(entryValue), _max(entryValue)]
-         : [entryValue, entryValue]
-      , errorDomain = keys.reduce((prevErrorArr, k) => {
-          const errorValue = getValueByDataKey(entry, k, 0)
-          , lowerValue = mainValue[0] - Math.abs(_isArr(errorValue) ? errorValue[0] : errorValue)
-          , upperValue = mainValue[1] + Math.abs(_isArr(errorValue) ? errorValue[1] : errorValue);
-          return [
-            Math.min(lowerValue, prevErrorArr[0]),
-            Math.max(upperValue, prevErrorArr[1])
-          ];
-      }, [Infinity, -Infinity]);
-      return [
-        Math.min(errorDomain[0], result[0]),
-        Math.max(errorDomain[1], result[1])
-      ];
-    }, [Infinity, -Infinity]);
-  }
-  return null;
-};
-
-export const parseErrorBarsOfAxis = (
-  data,
-  items,
-  dataKey,
-  axisType,
-  layout
-) => {
-  const domains = items
-    .map(item => getDomainOfErrorBars(data, item, dataKey, layout, axisType))
-    .filter(entry => !_isNil(entry));
-  return domains && domains.length
-    ? domains.reduce((result, entry) => [Math.min(result[0], entry[0]), Math.max(result[1], entry[1])], [Infinity, -Infinity])
-    : null;
-};
-
 /**
  * Get domain of data by the configuration of item element
  * @param  {Array}   data      The data displayed in the chart
@@ -518,9 +441,6 @@ export const getDomainOfItemsWithSameAxis = (
 ) => {
   const domains = items.map(item => {
     const { dataKey } = item.props;
-    if (type === 'number' && dataKey) {
-      return getDomainOfErrorBars(data, item, dataKey, layout) || getDomainOfDataByKey(data, dataKey, type, filterNil);
-    }
     return getDomainOfDataByKey(data, dataKey, type, filterNil);
   });
   if (type === 'number') {

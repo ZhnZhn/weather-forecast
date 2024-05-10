@@ -13,8 +13,7 @@ import {
   isCategoricalAxis,
   getDomainOfItemsWithSameAxis,
   getDomainOfStackGroups,
-  getDomainOfDataByKey,
-  parseErrorBarsOfAxis,
+  getDomainOfDataByKey,  
   parseSpecifiedDomain,
   parseDomainOfCategoryAxis
 } from '../util/ChartUtils';
@@ -178,17 +177,6 @@ export const getAxisMapByAxes = (
                   }
               } else if (_isValueNumber(type)) {
                   // the field type is numerical
-                  const errorBarsDomain = parseErrorBarsOfAxis(
-                    displayedData,
-                    graphicalItems
-                      .filter(item => item.props[axisIdKey] === axisId && (includeHidden || !item.props.hide)),
-                    dataKey,
-                    axisType,
-                    layout
-                  );
-                  if (errorBarsDomain) {
-                    domain = errorBarsDomain;
-                  }
               }
               if (isCategorical && (_isValueNumber(type) || scale !== 'auto')) {
                   categoricalDomain = getDomainOfDataByKey(displayedData, dataKey, 'category');
