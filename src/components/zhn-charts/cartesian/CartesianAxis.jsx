@@ -1,68 +1,27 @@
 import { Component } from '../../uiApi';
-import crCn from '../../zhn-utils/crCn';
 
-import { _isFn } from '../util/FnUtils';
+import crCn from '../../zhn-utils/crCn';
 import { shallowEqual } from '../util/ShallowEqual';
-//import { isNumber } from '../util/DataUtils';
-import { adaptEventsOfChild, } from '../util/types';
-import { filterProps } from '../util/ReactUtils';
 
 import { Layer } from '../container/Layer';
-import { Text } from '../component/Text';
 import { Label } from '../component/Label';
 
-import { getTicks } from './getTicks';
-import { fCreateElement } from './cartesianFn';
 import {
-  getTickAnchors,
-  getTickLineCoord
-} from './CartesianAxisFn';
+  crFinalTicks,
+  renderAxisLine,
+  renderTicks
+} from './CartesianAxisRenderFn';
 
 import {
   CL_AXIS,
-  CL_AXIS_LINE,
-  CL_AXIS_TICK,
-  CL_AXIS_TICKS,
-  CL_AXIS_TICK_LINE,
   CL_AXIS_TICK_VALUE
 } from '../CL';
 
-const _crTextElement = (
-  props,
-  option,
-  value
-) => (
-  <Text {...props} className={CL_AXIS_TICK_VALUE}>
-    {value}
-  </Text>
-);
-
-const _getClassName = (
-  obj
-) => obj
-  ? obj.className
-  : void 0;
-
-const _crFinalTicks = (
-  props
-) => {
-  const {
-    ticks,
-    ticksGenerator,
-    ...noTicksProps
-  } = props;
-
-  return _isFn(ticksGenerator)
-    ? ticks && ticks.length > 0
-       ? ticksGenerator(props)
-       : ticksGenerator(noTicksProps)
-    : ticks;
-};
-
-const _renderTickItem = fCreateElement(_crTextElement);
-
 export class CartesianAxis extends Component {
-  state = { fontSize: '', letterSpacing: '' }
+  state = {
+    fontSize: '',
+    letterSpacing: ''
+  }
 
   shouldComponentUpdate({ viewBox, ...restProps }, nextState) {
     // props.viewBox is sometimes generated every time -
@@ -91,201 +50,27 @@ export class CartesianAxis extends Component {
     }
   }
 
-  /**
-   * Calculate the coordinates of endpoints in ticks
-   * @param  {Object} data The data of a simple tick
-   * @return {Object} (x1, y1): The coordinate of endpoint close to tick text
-   *  (x2, y2): The coordinate of endpoint close to axis
-   */
-   /*
-  getTickLineCoord(data) {
-    const {
-      x,
-      y,
-      width,
-      height,
-      orientation,
-      tickSize,
-      mirror,
-      tickMargin
-    } = this.props
-    , sign = mirror ? -1 : 1
-    , finalTickSize = data.tickSize || tickSize
-    , tickCoord = isNumber(data.tickCoord)
-       ? data.tickCoord
-       : data.coordinate;
-    let x1, x2, y1, y2, tx, ty;
-    switch (orientation) {
-      case 'top':
-        x1 = x2 = data.coordinate;
-        y2 = y + +!mirror * height;
-        y1 = y2 - sign * finalTickSize;
-        ty = y1 - sign * tickMargin;
-        tx = tickCoord;
-        break;
-      case 'left':
-        y1 = y2 = data.coordinate;
-        x2 = x + +!mirror * width;
-        x1 = x2 - sign * finalTickSize;
-        tx = x1 - sign * tickMargin;
-        ty = tickCoord;
-        break;
-      case 'right':
-        y1 = y2 = data.coordinate;
-        x2 = x + +mirror * width;
-        x1 = x2 + sign * finalTickSize;
-        tx = x1 + sign * tickMargin;
-        ty = tickCoord;
-        break;
-      default:
-        x1 = x2 = data.coordinate;
-        y2 = y + +mirror * height;
-        y1 = y2 + sign * finalTickSize;
-        ty = y1 + sign * tickMargin;
-        tx = tickCoord;
-        break;
-    }
-    return {
-      line: { x1, y1, x2, y2 },
-      tick: { x: tx, y: ty }
-    };
-  }
-  */
-
-  renderAxisLine() {
-    const {
-      x,
-      y,
-      width,
-      height,
-      orientation,
-      mirror,
-      axisLine
-    } = this.props;
-    let props = {
-      ...filterProps(this.props),
-      ...filterProps(axisLine),
-      fill: 'none'
-    };
-    if (orientation === 'top' || orientation === 'bottom') {
-      const needHeight = +((orientation === 'top' && !mirror) || (orientation === 'bottom' && mirror));
-      props = {
-        ...props,
-        x1: x,
-        y1: y + needHeight * height,
-        x2: x + width,
-        y2: y + needHeight * height
-      };
-    } else {
-       const needWidth = +((orientation === 'left' && !mirror) || (orientation === 'right' && mirror));
-       props = {
-         ...props,
-         x1: x + needWidth * width,
-         y1: y,
-         x2: x + needWidth * width,
-         y2: y + height
-       };
-    }
-    const _axisLineClassName = _getClassName(axisLine);
-    return (
-      <line
-        {...props}
-        className={crCn(CL_AXIS_LINE, _axisLineClassName)}
-      />
-    );
-  }
-
-  /**
-   * render the ticks
-   * @param {Array} ticks The ticks to actually render (overrides what was passed in props)
-   * @param {string} fontSize Fontsize to consider for tick spacing
-   * @param {string} letterSpacing Letterspacing to consider for tick spacing
-   * @return {ReactComponent} renderedTicks
-   */
-  renderTicks(ticks, fontSize, letterSpacing) {
-    const {
-      tickLine,
-      stroke,
-      tick,
-      tickFormatter,
-      unit,
-      orientation,
-      mirror
-    } = this.props
-    , finalTicks = getTicks(
-       { ...this.props, ticks },
-       fontSize,
-       letterSpacing
-     )
-    , [
-      textAnchor,
-      verticalAnchor
-    ] = getTickAnchors(orientation, mirror)
-
-    , axisProps = filterProps(this.props)
-    , customTickProps = filterProps(tick)
-    , tickLineProps = {
-        ...axisProps,
-        fill: 'none',
-        ...filterProps(tickLine),
-    }
-    , items = finalTicks.map((entry, i) => {
-        const {
-          line: lineCoord,
-          tick: tickCoord
-        } = getTickLineCoord(this.props, entry)
-        , tickProps = {
-            textAnchor,
-            verticalAnchor,
-            ...axisProps,
-            stroke: 'none',
-            fill: stroke,
-            ...customTickProps,
-            ...tickCoord,
-            index: i,
-            payload: entry,
-            visibleTicksCount: finalTicks.length,
-            tickFormatter
-        };
-        const _tickLineClassName = _getClassName(tickLine);
-        return (
-          <Layer className={CL_AXIS_TICK} key={`tick-${i}`}
-            {...adaptEventsOfChild(this.props, entry, i)}>
-            {tickLine && (
-               <line
-                  {...tickLineProps}
-                  {...lineCoord}
-                  className={crCn(CL_AXIS_TICK_LINE, _tickLineClassName)}
-               />
-             )}
-            {tick && _renderTickItem(tick, tickProps, `${_isFn(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)}
-          </Layer>
-        );
-    });
-    return (
-      <g className={CL_AXIS_TICKS}>
-        {items}
-      </g>
-    );
-  }
-
-  _refLayerReference = ref => {
-    this.layerReference = ref;
+  _refLayerReference = layerEl => {
+    this.layerReference = layerEl;
   }
 
   render() {
     const {
+      props,
+      state
+    } = this
+    , {
       axisLine,
       width,
       height,
       className,
       hide
-    } = this.props;
+    } = props;
     if (hide) {
       return null;
     }
 
-    const finalTicks = _crFinalTicks(this.props);
+    const finalTicks = crFinalTicks(props);
     if (width <= 0
       || height <= 0
       || !finalTicks
@@ -297,15 +82,16 @@ export class CartesianAxis extends Component {
     const {
       fontSize,
       letterSpacing
-    } = this.state;
+    } = state;
+
     return (
       <Layer
-         className={crCn(CL_AXIS, className)}
          refEl={this._refLayerReference}
+         className={crCn(CL_AXIS, className)}
       >
-         {axisLine && this.renderAxisLine()}
-         {this.renderTicks(finalTicks, fontSize, letterSpacing)}
-         {Label.renderCallByParent(this.props)}
+         {axisLine && renderAxisLine(props)}
+         {renderTicks(props, finalTicks, fontSize, letterSpacing)}
+         {Label.renderCallByParent(props)}
       </Layer>
     );
   }
