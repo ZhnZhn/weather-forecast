@@ -15,11 +15,8 @@ var _ReactUtils = require("../util/ReactUtils");
 var _DOMUtils = require("../util/DOMUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ChartUtils = require("../util/ChartUtils");
-var _Events = require("../util/Events");
 var _types = require("../util/types");
-var _chartFn = require("./chartFn");
 var _AccessibilityManager = require("./AccessibilityManager");
-var _getTooltipContent = require("./getTooltipContent");
 var _fUpdateStateOfAxisOffsetAndStackGroups = require("./fUpdateStateOfAxisOffsetAndStackGroups");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _fGetDerivedStateFromProps = require("./fGetDerivedStateFromProps");
@@ -47,7 +44,7 @@ const _inRange = (x, y, props, state) => {
   return null;
 };
 const generateCategoricalChart = _ref => {
-  var _class;
+  var _CategoricalChartWrapper;
   let {
     chartName,
     GraphicalChild,
@@ -59,17 +56,11 @@ const generateCategoricalChart = _ref => {
     defaultProps
   } = _ref;
   const updateStateOfAxisMapsOffsetAndStackGroups = (0, _fUpdateStateOfAxisOffsetAndStackGroups.fUpdateStateOfAxisMapsOffsetAndStackGroups)(chartName, GraphicalChild, axisComponents, formatAxisMap);
-  return _class = class CategoricalChartWrapper extends _uiApi.Component {
+  return _CategoricalChartWrapper = class CategoricalChartWrapper extends _uiApi.Component {
     constructor(props) {
       super(props);
       this._chartName = chartName;
       this.accessibilityManager = new _AccessibilityManager.AccessibilityManager();
-      this.clearDeferId = () => {
-        if (!(0, _FnUtils._isNil)(this.deferId) && _generateCategoricalChartFn.deferClear) {
-          (0, _generateCategoricalChartFn.deferClear)(this.deferId);
-        }
-        this.deferId = null;
-      };
       this.axesTicksGenerator = axis => (0, _ChartUtils.getTicksOfAxis)(axis, true);
       this.verticalCoordinatesGenerator = _ref2 => {
         let {
@@ -130,15 +121,6 @@ const generateCategoricalChart = _ref => {
           });
         }
       };
-      this.handleReceiveSyncEvent = (cId, chartId, data) => {
-        const {
-          syncId
-        } = this.props;
-        if (syncId === cId && chartId !== this.uniqueChartId) {
-          this.clearDeferId();
-          this.deferId = _generateCategoricalChartFn.defer && (0, _generateCategoricalChartFn.defer)(this.applySyncEvent.bind(this, data));
-        }
-      };
       this.handleBrushChange = _ref4 => {
         let {
           startIndex,
@@ -159,10 +141,6 @@ const generateCategoricalChart = _ref => {
               updateId
             }, this.state)
           }));
-          this.triggerSyncEvent({
-            dataStartIndex: startIndex,
-            dataEndIndex: endIndex
-          });
         }
       };
       this.handleMouseEnter = e => {
@@ -176,7 +154,6 @@ const generateCategoricalChart = _ref => {
             isTooltipActive: true
           };
           this.setState(nextState);
-          this.triggerSyncEvent(nextState);
           if ((0, _FnUtils._isFn)(onMouseEnter)) {
             onMouseEnter(nextState, e);
           }
@@ -194,7 +171,6 @@ const generateCategoricalChart = _ref => {
             isTooltipActive: false
           };
         this.setState(nextState);
-        this.triggerSyncEvent(nextState);
         if ((0, _FnUtils._isFn)(onMouseMove)) {
           onMouseMove(nextState, e);
         }
@@ -229,7 +205,6 @@ const generateCategoricalChart = _ref => {
             isTooltipActive: false
           };
         this.setState(nextState);
-        this.triggerSyncEvent(nextState);
         if ((0, _FnUtils._isFn)(onMouseLeave)) {
           onMouseLeave(nextState, e);
         }
@@ -255,7 +230,6 @@ const generateCategoricalChart = _ref => {
             isTooltipActive: true
           };
           this.setState(nextState);
-          this.triggerSyncEvent(nextState);
           if ((0, _FnUtils._isFn)(onClick)) {
             onClick(nextState, e);
           }
@@ -306,9 +280,6 @@ const generateCategoricalChart = _ref => {
     }
     componentDidMount() {
       var _this$props$margin$le, _this$props$margin$to;
-      if (!(0, _FnUtils._isNil)(this.props.syncId)) {
-        this.addListener();
-      }
       this.accessibilityManager.setDetails({
         container: this.container,
         offset: {
@@ -347,20 +318,9 @@ const generateCategoricalChart = _ref => {
       return null;
     }
     componentDidUpdate(prevProps) {
-      // add syncId
-      if ((0, _FnUtils._isNil)(prevProps.syncId) && !(0, _FnUtils._isNil)(this.props.syncId)) {
-        this.addListener();
-      }
-      // remove syncId
-      if (!(0, _FnUtils._isNil)(prevProps.syncId) && (0, _FnUtils._isNil)(this.props.syncId)) {
-        this.removeListener();
-      }
+      //required for getShapshotBeforeUpdate
     }
     componentWillUnmount() {
-      this.clearDeferId();
-      if (!(0, _FnUtils._isNil)(this.props.syncId)) {
-        this.removeListener();
-      }
       this.cancelThrottledTriggerAfterMouseMove();
     }
     cancelThrottledTriggerAfterMouseMove() {
@@ -487,104 +447,6 @@ const generateCategoricalChart = _ref => {
         ...tooltipEvents
       };
     }
-    addListener() {
-      _Events.eventCenter.on(_Events.SYNC_EVENT, this.handleReceiveSyncEvent);
-      if (_Events.eventCenter.setMaxListeners && _Events.eventCenter._maxListeners) {
-        _Events.eventCenter.setMaxListeners(_Events.eventCenter._maxListeners + 1);
-      }
-    }
-    removeListener() {
-      _Events.eventCenter.removeListener(_Events.SYNC_EVENT, this.handleReceiveSyncEvent);
-      if (_Events.eventCenter.setMaxListeners && _Events.eventCenter._maxListeners) {
-        _Events.eventCenter.setMaxListeners(_Events.eventCenter._maxListeners - 1);
-      }
-    }
-    triggerSyncEvent(data) {
-      const {
-        syncId
-      } = this.props;
-      if (!(0, _FnUtils._isNil)(syncId)) {
-        _Events.eventCenter.emit(_Events.SYNC_EVENT, syncId, this.uniqueChartId, data);
-      }
-    }
-    applySyncEvent(data) {
-      const {
-        layout,
-        syncMethod
-      } = this.props;
-      const {
-        updateId
-      } = this.state;
-      const {
-        dataStartIndex,
-        dataEndIndex
-      } = data;
-      if (!(0, _FnUtils._isNil)(data.dataStartIndex) || !(0, _FnUtils._isNil)(data.dataEndIndex)) {
-        this.setState({
-          dataStartIndex,
-          dataEndIndex,
-          ...updateStateOfAxisMapsOffsetAndStackGroups({
-            props: this.props,
-            dataStartIndex,
-            dataEndIndex,
-            updateId
-          }, this.state)
-        });
-      } else if (!(0, _FnUtils._isNil)(data.activeTooltipIndex)) {
-        const {
-          chartX,
-          chartY
-        } = data;
-        let {
-          activeTooltipIndex
-        } = data;
-        const {
-          offset,
-          tooltipTicks
-        } = this.state;
-        if (!offset) {
-          return;
-        }
-        if (typeof syncMethod === 'function') {
-          // Call a callback function. If there is an application specific algorithm
-          activeTooltipIndex = syncMethod(tooltipTicks, data);
-        } else if (syncMethod === 'value') {
-          // Set activeTooltipIndex to the index with the same value as data.activeLabel
-          // For loop instead of findIndex because the latter is very slow in some browsers
-          activeTooltipIndex = -1; // in case we cannot find the element
-          for (let i = 0; i < tooltipTicks.length; i++) {
-            if (tooltipTicks[i].value === data.activeLabel) {
-              activeTooltipIndex = i;
-              break;
-            }
-          }
-        }
-        const viewBox = {
-          ...offset,
-          x: offset.left,
-          y: offset.top
-        };
-        // When a categorical chart is combined with another chart, the value of chartX
-        // and chartY may beyond the boundaries.
-        const validateChartX = Math.min(chartX, viewBox.x + viewBox.width);
-        const validateChartY = Math.min(chartY, viewBox.y + viewBox.height);
-        const activeLabel = tooltipTicks[activeTooltipIndex] && tooltipTicks[activeTooltipIndex].value;
-        const activePayload = (0, _getTooltipContent.getTooltipContent)(this.state, this.props.data, activeTooltipIndex);
-        const activeCoordinate = tooltipTicks[activeTooltipIndex] ? {
-          x: (0, _ChartUtils.isLayoutHorizontal)(layout) ? tooltipTicks[activeTooltipIndex].coordinate : validateChartX,
-          y: (0, _ChartUtils.isLayoutHorizontal)(layout) ? validateChartY : tooltipTicks[activeTooltipIndex].coordinate
-        } : _chartFn.originCoordinate;
-        this.setState({
-          ...data,
-          activeLabel,
-          activeCoordinate,
-          activePayload,
-          activeTooltipIndex
-        });
-      } else {
-        this.setState(data);
-      }
-    }
 
     /**
      * Draw axis
@@ -641,12 +503,12 @@ const generateCategoricalChart = _ref => {
       }, {}) : null;
     }
     getXScaleByAxisId(axisId) {
-      var _this$state$xAxisMap, _this$state$xAxisMap$;
-      return (_this$state$xAxisMap = this.state.xAxisMap) == null ? void 0 : (_this$state$xAxisMap$ = _this$state$xAxisMap[axisId]) == null ? void 0 : _this$state$xAxisMap$.scale;
+      var _this$state$xAxisMap;
+      return (_this$state$xAxisMap = this.state.xAxisMap) == null || (_this$state$xAxisMap = _this$state$xAxisMap[axisId]) == null ? void 0 : _this$state$xAxisMap.scale;
     }
     getYScaleByAxisId(axisId) {
-      var _this$state$yAxisMap, _this$state$yAxisMap$;
-      return (_this$state$yAxisMap = this.state.yAxisMap) == null ? void 0 : (_this$state$yAxisMap$ = _this$state$yAxisMap[axisId]) == null ? void 0 : _this$state$yAxisMap$.scale;
+      var _this$state$yAxisMap;
+      return (_this$state$yAxisMap = this.state.yAxisMap) == null || (_this$state$yAxisMap = _this$state$yAxisMap[axisId]) == null ? void 0 : _this$state$yAxisMap.scale;
     }
     getItemByXY(chartXY) {
       const {
@@ -711,14 +573,12 @@ const generateCategoricalChart = _ref => {
           // 'onKeyDown' is not currently a supported prop that can be passed through
           // if it's added, this should be added: this.props.onKeyDown(e);
         };
-
         attrs.onFocus = () => {
           this.accessibilityManager.focus();
           // 'onFocus' is not currently a supported prop that can be passed through
           // if it's added, the focus event should be forwarded to the prop
         };
       }
-
       const events = this.parseEventsOfWrapper();
       return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
         className: (0, _crCn.default)(_CL.CL_WRAPPER, className),
@@ -744,7 +604,7 @@ const generateCategoricalChart = _ref => {
         }), (0, _renderLegend.renderLegend)(this, legendContent), (0, _renderTooltip.renderTooltip)(this)]
       });
     }
-  }, _class.displayName = chartName, _class.defaultProps = {
+  }, _CategoricalChartWrapper.displayName = chartName, _CategoricalChartWrapper.defaultProps = {
     layout: 'horizontal',
     stackOffset: 'none',
     barCategoryGap: '10%',
@@ -758,7 +618,7 @@ const generateCategoricalChart = _ref => {
     reverseStackOrder: false,
     syncMethod: 'index',
     ...defaultProps
-  }, _class.getDerivedStateFromProps = (0, _fGetDerivedStateFromProps.fGetDerivedStateFromProps)(updateStateOfAxisMapsOffsetAndStackGroups), _class;
+  }, _CategoricalChartWrapper.getDerivedStateFromProps = (0, _fGetDerivedStateFromProps.fGetDerivedStateFromProps)(updateStateOfAxisMapsOffsetAndStackGroups), _CategoricalChartWrapper;
 };
 exports.generateCategoricalChart = generateCategoricalChart;
 //# sourceMappingURL=generateCategoricalChart.js.map

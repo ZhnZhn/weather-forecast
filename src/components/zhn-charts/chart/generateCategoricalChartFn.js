@@ -1,8 +1,4 @@
 import {
-  _isFn
-} from '../util/FnUtils';
-
-import {
   isLayoutHorizontal,
   isLayoutVertical,
   isLayoutCentric,
@@ -26,18 +22,6 @@ import {
 import {
   getTooltipContent
 } from './getTooltipContent';
-
-export const defer = _isFn(requestAnimationFrame)
-  ? requestAnimationFrame
-  : _isFn(window.setImmediate)
-      ? window.setImmediate
-      : setTimeout;
-
-export const deferClear = _isFn(cancelAnimationFrame)
-  ? cancelAnimationFrame
-  : _isFn(window.clearImmediate)
-      ? window.clearImmediate
-      : clearTimeout;
 
 const calculateTooltipPos = (
   rangeObj,
