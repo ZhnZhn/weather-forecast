@@ -122,13 +122,11 @@ export const Line = memo((props) => {
 
   return (
     <Layer className={layerClass}>
-      {needClip
-        ? <ClipPathRect
-             id={clipPathId}
-             props={_props}
-           />
-        : null
-      }
+      <ClipPathRect
+         is={needClip}
+         id={clipPathId}
+         props={_props}
+      />        
       {!hasSinglePoint && renderCurve(
           needClip,
           clipPathId,
@@ -138,7 +136,7 @@ export const Line = memo((props) => {
           _refPath,
           handleAnimationStart,
           handleAnimationEnd
-        )}      
+        )}
       {(hasSinglePoint || dot)
          && renderDots(
               needClip,

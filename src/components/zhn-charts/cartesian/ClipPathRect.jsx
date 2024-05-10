@@ -1,4 +1,5 @@
 const ClipPathRect = ({
+  is,
   id,
   props
 }) => {
@@ -8,7 +9,7 @@ const ClipPathRect = ({
     width,
     height
   } = props;
-  return (
+  return is ? (
     <defs>
       <clipPath id={`clipPath-${id}`}>
         <rect
@@ -17,7 +18,7 @@ const ClipPathRect = ({
         />
       </clipPath>
     </defs>
-  );
+  ) : null;
 }
 
 export default ClipPathRect

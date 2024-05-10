@@ -55,10 +55,11 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
     needClip = (0, _cartesianFn.isNeedClip)(_props);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     className: layerClass,
-    children: [needClip ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPathRect.default, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPathRect.default, {
+      is: needClip,
       id: clipPathId,
       props: _props
-    }) : null, /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
+    }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
       className: _CL.CL_BAR_RECTANGLES,
       clipPath: needClip ? "url(#clipPath-" + clipPathId + ")" : null,
       children: [(0, _BarRenderFn.renderBackground)(_props), (0, _BarRenderFn.renderRectangles)(_props, prevData, handleAnimationStart, handleAnimationEnd)]

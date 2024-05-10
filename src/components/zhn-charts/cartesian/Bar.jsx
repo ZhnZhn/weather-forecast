@@ -92,13 +92,11 @@ export const Bar = memo((props) => {
 
   return (
     <Layer className={layerClass}>
-       {needClip
-         ? <ClipPathRect
-             id={clipPathId}
-             props={_props}
-           />
-        : null
-      }
+      <ClipPathRect
+         is={needClip}
+         id={clipPathId}
+         props={_props}
+      />
       <Layer
         className={CL_BAR_RECTANGLES}
         clipPath={needClip
