@@ -152,7 +152,7 @@ const isValidSpreadableProp = (property, key, includeEvents, svgElementType) => 
    * @todo Add an internal cjs version of https://github.com/wooorm/svg-element-attributes for full coverage.
    */
   const matchingElementTypeKeys = (_FilteredElementKeyMa = _types.FilteredElementKeyMap == null ? void 0 : _types.FilteredElementKeyMap[svgElementType]) != null ? _FilteredElementKeyMa : [];
-  return !!(!(0, _FnUtils._isFn)(property) && (svgElementType && matchingElementTypeKeys.includes(key) || _types.SVGElementPropKeys.includes(key)) || includeEvents && _types.EventKeys.includes(key));
+  return !!(!(0, _FnUtils._isFn)(property) && (svgElementType && matchingElementTypeKeys.includes(key) || _types.SVGElementPropKeys.includes(key)) || includeEvents && (0, _types.isLikelyOnEventProperty)(key));
 };
 exports.isValidSpreadableProp = isValidSpreadableProp;
 const filterProps = (props, includeEvents, svgElementType) => {

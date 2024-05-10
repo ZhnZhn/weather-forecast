@@ -17,7 +17,7 @@ import { shallowEqual } from './ShallowEqual';
 import {
   FilteredElementKeyMap,
   SVGElementPropKeys,
-  EventKeys
+  isLikelyOnEventProperty
 } from './types';
 
 const _getObjectKeys = Object.keys;
@@ -258,7 +258,7 @@ export const isValidSpreadableProp = (
    */
   const matchingElementTypeKeys = FilteredElementKeyMap?.[svgElementType] ?? [];
   return !!(( !_isFn(property) && ((svgElementType && matchingElementTypeKeys.includes(key)) || SVGElementPropKeys.includes(key)) )
-    || (includeEvents && EventKeys.includes(key)));
+    || (includeEvents && isLikelyOnEventProperty(key)));
 };
 
 export const filterProps = (
