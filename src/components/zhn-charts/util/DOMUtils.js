@@ -1,4 +1,4 @@
-import { Global } from './Global';
+import { IS_SSR } from './Global';
 
 const _getObjectKeys = Object.keys;
 
@@ -64,7 +64,7 @@ export const getStyleString = (
   .reduce((result, s) => `${result}${camelToMiddleLine(s)}:${autoCompleteStyle(s, style[s])};`, '');
 
 export const getStringSize = (text, style = {}) => {
-  if (text === undefined || text === null || Global.isSsr) {
+  if (text === undefined || text === null || IS_SSR) {
     return { width: 0, height: 0 };
   }
   const str = `${text}`

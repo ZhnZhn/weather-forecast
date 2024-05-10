@@ -12,7 +12,7 @@ import { crProps } from '../util/ReactUtils';
 import { Layer } from '../container/Layer';
 import { LabelList } from '../component/LabelList';
 
-import { Global } from '../util/Global';
+import { IS_SSR } from '../util/Global';
 import {
   getCateCoordinateOfLine,
   getValueByDataKey
@@ -61,7 +61,7 @@ const DF_PROPS = {
   strokeWidth: 1,
   fill: '#fff',
   points: [],
-  isAnimationActive: !Global.isSsr,
+  isAnimationActive: !IS_SSR,
   animateNewValues: true,
   animationBegin: 0,
   animationDuration: 1500,
@@ -126,7 +126,7 @@ export const Line = memo((props) => {
          is={needClip}
          id={clipPathId}
          props={_props}
-      />        
+      />
       {!hasSinglePoint && renderCurve(
           needClip,
           clipPathId,

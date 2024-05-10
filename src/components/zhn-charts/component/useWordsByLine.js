@@ -2,7 +2,7 @@ import { useMemo } from '../../uiApi';
 
 import { _isNil } from '../util/FnUtils';
 import { isNumber } from '../util/DataUtils';
-import { Global } from '../util/Global';
+import { IS_SSR } from '../util/Global';
 import { getStringSize } from '../util/DOMUtils';
 
 const BREAKING_SPACES = /[ \f\n\r\t\v\u2028\u2029]+/;
@@ -122,7 +122,7 @@ const getWordsByLines = ({
   maxLines
 }) => {
   // Only perform calculations if using features that require them (multiline, scaleToFit)
-  if ((width || scaleToFit) && !Global.isSsr) {
+  if ((width || scaleToFit) && !IS_SSR) {
     let wordsWithComputedWidth, spaceWidth;
     const wordWidths = calculateWordWidths({
       breakAll,

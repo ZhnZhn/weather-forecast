@@ -2,7 +2,7 @@ import { _isFn } from '../util/FnUtils';
 
 import { mathSign, isNumber } from '../util/DataUtils';
 import { getStringSize } from '../util/DOMUtils';
-import { Global } from '../util/Global';
+import { IS_SSR } from '../util/Global';
 import { getEveryNthWithCondition } from '../util/getEveryNthWithCondition';
 /**
  * Given an array of ticks, find N, the lowest possible number for which every
@@ -240,7 +240,7 @@ export function getTicks(
     return [];
   }
 
-  if (isNumber(interval) || Global.isSsr) {
+  if (isNumber(interval) || IS_SSR) {
     return getNumberIntervalTicks(
       ticks,
       typeof interval === 'number' && isNumber(interval) ? interval : 0

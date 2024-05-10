@@ -3,7 +3,7 @@ import crCn from '../../zhn-utils/crCn';
 
 import { _isArr } from '../util/FnUtils';
 
-import { Global } from '../util/Global';
+import { IS_SSR } from '../util/Global';
 import { mathSign } from '../util/DataUtils';
 import {
   crProps,
@@ -51,7 +51,7 @@ const DF_PROPS = {
   // data of bar
   data: [],
   layout: 'vertical',
-  isAnimationActive: !Global.isSsr,
+  isAnimationActive: !IS_SSR,
   animationBegin: 0,
   animationDuration: 400,
   animationEasing: 'ease'

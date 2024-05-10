@@ -121,7 +121,7 @@ const getWordsByLines = _ref4 => {
     maxLines
   } = _ref4;
   // Only perform calculations if using features that require them (multiline, scaleToFit)
-  if ((width || scaleToFit) && !_Global.Global.isSsr) {
+  if ((width || scaleToFit) && !_Global.IS_SSR) {
     let wordsWithComputedWidth, spaceWidth;
     const wordWidths = calculateWordWidths({
       breakAll,

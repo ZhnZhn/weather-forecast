@@ -15,7 +15,7 @@ import {
   _isFn,
   _isNil
 } from  '../util/FnUtils';
-import { Global } from '../util/Global';
+import { IS_SSR } from '../util/Global';
 import { isNumber } from '../util/DataUtils';
 import { crProps } from '../util/ReactUtils';
 
@@ -55,7 +55,7 @@ const DF_PROPS = {
   labelStyle: {},
   cursor: true,
   trigger: 'hover',
-  isAnimationActive: !Global.isSsr,
+  isAnimationActive: !IS_SSR,
   animationEasing: 'ease',
   animationDuration: 400,
   filterNull: true,
@@ -110,7 +110,7 @@ export const Tooltip = (props) => {
     offset,
     position,
     viewBox
-  } = _props     
+  } = _props
   , handleKeyDown = useCallback((event) => {
       if (event.key === 'Escape') {
         setDismissed(true);

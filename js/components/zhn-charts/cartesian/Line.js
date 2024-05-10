@@ -38,7 +38,7 @@ const DF_PROPS = {
   strokeWidth: 1,
   fill: '#fff',
   points: [],
-  isAnimationActive: !_Global.Global.isSsr,
+  isAnimationActive: !_Global.IS_SSR,
   animateNewValues: true,
   animationBegin: 0,
   animationDuration: 1500,

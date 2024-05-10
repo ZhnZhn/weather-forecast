@@ -50,7 +50,7 @@ const DF_PROPS = {
   labelStyle: {},
   cursor: true,
   trigger: 'hover',
-  isAnimationActive: !_Global.Global.isSsr,
+  isAnimationActive: !_Global.IS_SSR,
   animationEasing: 'ease',
   animationDuration: 400,
   filterNull: true,

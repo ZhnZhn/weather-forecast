@@ -30,7 +30,7 @@ const DF_PROPS = {
   // data of bar
   data: [],
   layout: 'vertical',
-  isAnimationActive: !_Global.Global.isSsr,
+  isAnimationActive: !_Global.IS_SSR,
   animationBegin: 0,
   animationDuration: 400,
   animationEasing: 'ease'
