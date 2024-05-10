@@ -48,8 +48,12 @@ const _renderRectanglesStatically = (
 export const renderBackground = (
   props
 ) => {
+  const propsBackground = props.background;
+  if (!propsBackground) {
+    return null;
+  }
   const { data } = props
-  , backgroundProps = filterProps(props.background);
+  , backgroundProps = filterProps(propsBackground);
   return data.map((entry, i) => {
     /*eslint-disable no-unused-vars*/
     const {

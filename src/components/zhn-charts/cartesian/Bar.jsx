@@ -63,7 +63,7 @@ export const Bar = memo((props) => {
     data,
     className,
     isAnimationActive,
-    background,
+    //background,
     id,
     animationId
   } = _props
@@ -106,17 +106,14 @@ export const Bar = memo((props) => {
           : null
         }
       >
-        {background
-          ? renderBackground(_props)
-          : null
-        }
+        {renderBackground(_props)}
         {renderRectangles(
            _props,
            prevData,
            handleAnimationStart,
            handleAnimationEnd
         )}
-      </Layer>      
+      </Layer>
       {(!isAnimationActive || isAnimationFinished)
          && LabelList.renderCallByParent(_props, data)
       }
