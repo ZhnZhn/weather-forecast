@@ -7,7 +7,6 @@ var _uiApi = require("../../uiApi");
 var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _FnUtils = require("../util/FnUtils");
 var _ShallowEqual = require("../util/ShallowEqual");
-var _DataUtils = require("../util/DataUtils");
 var _types = require("../util/types");
 var _ReactUtils = require("../util/ReactUtils");
 var _Layer = require("../container/Layer");
@@ -18,6 +17,8 @@ var _cartesianFn = require("./cartesianFn");
 var _CartesianAxisFn = require("./CartesianAxisFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
+//import { isNumber } from '../util/DataUtils';
+
 const _crTextElement = (props, option, value) => /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, {
   ...props,
   className: _CL.CL_AXIS_TICK_VALUE,
@@ -78,64 +79,61 @@ class CartesianAxis extends _uiApi.Component {
    * @return {Object} (x1, y1): The coordinate of endpoint close to tick text
    *  (x2, y2): The coordinate of endpoint close to axis
    */
+  /*
   getTickLineCoord(data) {
-    const {
-        x,
-        y,
-        width,
-        height,
-        orientation,
-        tickSize,
-        mirror,
-        tickMargin
-      } = this.props,
-      sign = mirror ? -1 : 1,
-      finalTickSize = data.tickSize || tickSize,
-      tickCoord = (0, _DataUtils.isNumber)(data.tickCoord) ? data.tickCoord : data.coordinate;
-    let x1, x2, y1, y2, tx, ty;
-    switch (orientation) {
-      case 'top':
-        x1 = x2 = data.coordinate;
-        y2 = y + +!mirror * height;
-        y1 = y2 - sign * finalTickSize;
-        ty = y1 - sign * tickMargin;
-        tx = tickCoord;
-        break;
-      case 'left':
-        y1 = y2 = data.coordinate;
-        x2 = x + +!mirror * width;
-        x1 = x2 - sign * finalTickSize;
-        tx = x1 - sign * tickMargin;
-        ty = tickCoord;
-        break;
-      case 'right':
-        y1 = y2 = data.coordinate;
-        x2 = x + +mirror * width;
-        x1 = x2 + sign * finalTickSize;
-        tx = x1 + sign * tickMargin;
-        ty = tickCoord;
-        break;
-      default:
-        x1 = x2 = data.coordinate;
-        y2 = y + +mirror * height;
-        y1 = y2 + sign * finalTickSize;
-        ty = y1 + sign * tickMargin;
-        tx = tickCoord;
-        break;
-    }
-    return {
-      line: {
-        x1,
-        y1,
-        x2,
-        y2
-      },
-      tick: {
-        x: tx,
-        y: ty
-      }
-    };
+   const {
+     x,
+     y,
+     width,
+     height,
+     orientation,
+     tickSize,
+     mirror,
+     tickMargin
+   } = this.props
+   , sign = mirror ? -1 : 1
+   , finalTickSize = data.tickSize || tickSize
+   , tickCoord = isNumber(data.tickCoord)
+      ? data.tickCoord
+      : data.coordinate;
+   let x1, x2, y1, y2, tx, ty;
+   switch (orientation) {
+     case 'top':
+       x1 = x2 = data.coordinate;
+       y2 = y + +!mirror * height;
+       y1 = y2 - sign * finalTickSize;
+       ty = y1 - sign * tickMargin;
+       tx = tickCoord;
+       break;
+     case 'left':
+       y1 = y2 = data.coordinate;
+       x2 = x + +!mirror * width;
+       x1 = x2 - sign * finalTickSize;
+       tx = x1 - sign * tickMargin;
+       ty = tickCoord;
+       break;
+     case 'right':
+       y1 = y2 = data.coordinate;
+       x2 = x + +mirror * width;
+       x1 = x2 + sign * finalTickSize;
+       tx = x1 + sign * tickMargin;
+       ty = tickCoord;
+       break;
+     default:
+       x1 = x2 = data.coordinate;
+       y2 = y + +mirror * height;
+       y1 = y2 + sign * finalTickSize;
+       ty = y1 + sign * tickMargin;
+       tx = tickCoord;
+       break;
+   }
+   return {
+     line: { x1, y1, x2, y2 },
+     tick: { x: tx, y: ty }
+   };
   }
+  */
+
   renderAxisLine() {
     const {
       x,
@@ -210,7 +208,7 @@ class CartesianAxis extends _uiApi.Component {
         const {
             line: lineCoord,
             tick: tickCoord
-          } = this.getTickLineCoord(entry),
+          } = (0, _CartesianAxisFn.getTickLineCoord)(this.props, entry),
           tickProps = {
             textAnchor,
             verticalAnchor,

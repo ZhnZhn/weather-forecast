@@ -3,7 +3,7 @@ import crCn from '../../zhn-utils/crCn';
 
 import { _isFn } from '../util/FnUtils';
 import { shallowEqual } from '../util/ShallowEqual';
-import { isNumber } from '../util/DataUtils';
+//import { isNumber } from '../util/DataUtils';
 import { adaptEventsOfChild, } from '../util/types';
 import { filterProps } from '../util/ReactUtils';
 
@@ -14,7 +14,8 @@ import { Label } from '../component/Label';
 import { getTicks } from './getTicks';
 import { fCreateElement } from './cartesianFn';
 import {
-  getTickAnchors
+  getTickAnchors,
+  getTickLineCoord
 } from './CartesianAxisFn';
 
 import {
@@ -96,6 +97,7 @@ export class CartesianAxis extends Component {
    * @return {Object} (x1, y1): The coordinate of endpoint close to tick text
    *  (x2, y2): The coordinate of endpoint close to axis
    */
+   /*
   getTickLineCoord(data) {
     const {
       x,
@@ -148,6 +150,7 @@ export class CartesianAxis extends Component {
       tick: { x: tx, y: ty }
     };
   }
+  */
 
   renderAxisLine() {
     const {
@@ -230,7 +233,7 @@ export class CartesianAxis extends Component {
         const {
           line: lineCoord,
           tick: tickCoord
-        } = this.getTickLineCoord(entry)
+        } = getTickLineCoord(this.props, entry)
         , tickProps = {
             textAnchor,
             verticalAnchor,
