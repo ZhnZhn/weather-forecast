@@ -139,7 +139,7 @@ export const renderAxisLine = (props) => {
   if (orientation === 'top' || orientation === 'bottom') {
     const needHeight = +((orientation === 'top' && !mirror) || (orientation === 'bottom' && mirror));
     _props = {
-      ...props,
+      ..._props,
       x1: x,
       y1: y + needHeight * height,
       x2: x + width,
@@ -148,7 +148,7 @@ export const renderAxisLine = (props) => {
   } else {
      const needWidth = +((orientation === 'left' && !mirror) || (orientation === 'right' && mirror));
      _props = {
-       ...props,
+       ..._props,
        x1: x + needWidth * width,
        y1: y,
        x2: x + needWidth * width,
