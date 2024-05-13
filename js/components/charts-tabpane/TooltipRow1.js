@@ -1,20 +1,19 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.default = void 0;
-var _Label = _interopRequireDefault(require("./Label.Style"));
+var _Label = require("./Label.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 const TooltipRow1 = _ref => {
   let {
     t,
     v,
-    style = _Label.default.SERIA
+    style = _Label.S_SERIA
   } = _ref;
   return v == null ? null : /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    style: _Label.default.ROW,
+    style: _Label.S_TOOLTIP_ROW,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-      style: _Label.default.CAPTION,
+      style: _Label.S_CAPTION,
       children: t + ":"
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
       style: style,

@@ -2,7 +2,7 @@ import LegendCell from './LegendCell';
 import SvgCircle from './SvgCircle';
 import SvgRect from './SvgRect';
 
-import S from './Label.Style';
+import { S_CIRCLE_SERIA } from './Label.Style';
 
 const LS_ITEM = {
   display: 'inline-block',
@@ -11,7 +11,7 @@ const LS_ITEM = {
 };
 
 const LegendCellSvg = ({
-  svgStyle=S.CIRCLE_SERIA,
+  svgStyle=S_CIRCLE_SERIA,
   svgType,
   ...restProps
 }) => {

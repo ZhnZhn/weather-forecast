@@ -1,12 +1,16 @@
-import STYLE from './Label.Style';
+import {
+  S_SERIA,
+  S_TOOLTIP_ROW,
+  S_CAPTION
+} from './Label.Style';
 
 const TooltipRow1 = ({
   t,
   v,
-  style=STYLE.SERIA
+  style=S_SERIA
 }) => v == null ? null : (
- <div style={STYLE.ROW}>
-   <span style={STYLE.CAPTION}>{`${t}:`}</span>
+ <div style={S_TOOLTIP_ROW}>
+   <span style={S_CAPTION}>{`${t}:`}</span>
    <span style={style}>{v}</span>
  </div>
 );

@@ -1,5 +1,14 @@
 import LegendRowSvg from './LegendRowSvg';
-import S from './Label.Style';
+import {
+  S_PRESSURE,
+  S_CIRCLE_PRESSURE,
+  S_RAIN,
+  S_RECT_RAIN,
+  S_SNOW,
+  S_RECT_SNOW,
+  S_SPEED,
+  S_CIRCLE_SPEED
+} from './Label.Style';
 
 const LS_ROOT = { marginTop: '1rem' }
 , CONFIGS_ROW_1 = [
@@ -8,23 +17,23 @@ const LS_ROOT = { marginTop: '1rem' }
     title: 'T'
   },{
     id: 'pressure',
-    titleStyle: S.PRESSURE,
-    svgStyle: S.CIRCLE_PRESSURE
+    titleStyle: S_PRESSURE,
+    svgStyle: S_CIRCLE_PRESSURE
   },{
     id: 'rain',
-    titleStyle: S.RAIN,
+    titleStyle: S_RAIN,
     svgType: 'rect',
-    svgStyle: S.RECT_RAIN
+    svgStyle: S_RECT_RAIN
   },{
     id: 'snow',
-    titleStyle: S.SNOW,
+    titleStyle: S_SNOW,
     svgType: 'rect',
-    svgStyle: S.RECT_SNOW
+    svgStyle: S_RECT_SNOW
   },{
     id: 'speed',
     title: 'Wind',
-    titleStyle: S.SPEED,
-    svgStyle: S.CIRCLE_SPEED
+    titleStyle: S_SPEED,
+    svgStyle: S_CIRCLE_SPEED
   }
 ];
 

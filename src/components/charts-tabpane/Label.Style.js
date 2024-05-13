@@ -1,12 +1,19 @@
-
-import {COLOR as C, POPUP as P} from '../styles/theme';
+import {
+  COLOR as C,
+  POPUP as P
+} from '../styles/theme';
 import SC from './SeriesColor';
 
-const _crCircleStyle = (stroke='green', fill) => ({
+const _crCircleStyle = (
+  stroke='green',
+  fill
+) => ({
   stroke,
   fill: fill || stroke
 });
-const _crSpanStyle = (color='green') => ({
+const _crSpanStyle = (
+  color='green'
+) => ({
   color,
   fontWeight: 'bold'
 });
@@ -17,68 +24,62 @@ const CAPTION_STYLE = {
   fontWeight: 'bold',
 };
 
-const STYLE = {
-  ROOT_DIV : {
-    ...P.CHART,
-    padding: 8
-  },
-  LABEL : {
-    ...CAPTION_STYLE,
-    width: 50
-  },
-  CAPTION: {
-    ...CAPTION_STYLE,
-    paddingRight: 4
-  },
-  ROW: {
-    paddingTop: 8
-  },
+export const S_TOOLTIP = {
+  ...P.CHART,
+  padding: 8
+}
+export const S_TOOLTIP_ROW = {
+  paddingTop: 8
+}
+export const S_LABEL = {
+  ...CAPTION_STYLE,
+  width: 50
+}
+export const S_CAPTION = {
+  ...CAPTION_STYLE,
+  paddingRight: 4
+}
 
-  DAY : _crSpanStyle(C.DAY.color),
+export const S_DAY = _crSpanStyle(C.DAY.color)
+export const S_CIRCLE_SPEED = _crCircleStyle(SC.SPEED, "none")
+export const S_SPEED = _crSpanStyle(SC.SPEED)
 
-  CIRCLE_SPEED : _crCircleStyle(SC.SPEED, "none"),
-  SPEED : _crSpanStyle(SC.SPEED),
-
-  CIRCLE_HUMIDITY : _crCircleStyle(SC.SPEED),
-  HUMIDITY : _crSpanStyle(SC.SPEED),
+export const S_CIRCLE_HUMIDITY = _crCircleStyle(SC.SPEED)
+export const S_HUMIDITY = _crSpanStyle(SC.SPEED)
 
   //CIRCLE_RAIN : _crCircleStyle(SC.RAIN),
-  RECT_RAIN : { stroke : SC.RAIN},
-  RAIN : _crSpanStyle(SC.RAIN),
+export const S_RECT_RAIN = { stroke : SC.RAIN}
+export const S_RAIN = _crSpanStyle(SC.RAIN)
 
-  RECT_SNOW : { stroke : SC.SNOW},
-  SNOW: _crSpanStyle(SC.SNOW),
+export const S_RECT_SNOW = { stroke : SC.SNOW}
+export const S_SNOW = _crSpanStyle(SC.SNOW)
 
+export const S_CIRCLE_TEMP_MAX = _crCircleStyle(SC.TEMP_MAX, 'none')
+export const S_TEMP_MAX = _crSpanStyle(SC.TEMP_MAX)
 
-  CIRCLE_TEMP_MAX : _crCircleStyle(SC.TEMP_MAX, 'none'),
-  TEMP_MAX : _crSpanStyle(SC.TEMP_MAX),
+export const S_CIRCLE_TEMP_MIN = _crCircleStyle(SC.TEMP_MIN, 'none')
+export const S_TEMP_MIN = _crSpanStyle(SC.TEMP_MIN)
 
-  CIRCLE_TEMP_MIN : _crCircleStyle(SC.TEMP_MIN, 'none'),
-  TEMP_MIN : _crSpanStyle(SC.TEMP_MIN),
+export const S_CIRCLE_TEMP_MORN = _crCircleStyle(C.TEMP_DAY.color, 'none')
 
-  CIRCLE_TEMP_MORN : _crCircleStyle(C.TEMP_DAY.color, 'none'),
+export const S_CIRCLE_TEMP_DAY = _crCircleStyle(C.TEMP_DAY.color)
+export const S_TEMP_DAY = _crSpanStyle(C.TEMP_DAY.color)
 
-  CIRCLE_TEMP_DAY : _crCircleStyle(C.TEMP_DAY.color),
-  TEMP_DAY : _crSpanStyle(C.TEMP_DAY.color),
+export const S_CIRCLE_TEMP_EVE = _crCircleStyle(C.TEMP_NIGHT.color, 'none')
 
-  CIRCLE_TEMP_EVE : _crCircleStyle(C.TEMP_NIGHT.color, 'none'),
+export const S_CIRCLE_TEMP_NIGHT = _crCircleStyle(C.TEMP_NIGHT.color)
+export const S_TEMP_NIGHT = _crSpanStyle(C.TEMP_NIGHT.color)
 
-  CIRCLE_TEMP_NIGHT : _crCircleStyle(C.TEMP_NIGHT.color),
-  TEMP_NIGHT : _crSpanStyle(C.TEMP_NIGHT.color),
+export const S_CIRCLE_PRESSURE = _crCircleStyle(SC.PRESSURE)
+export const S_PRESSURE = _crSpanStyle(SC.PRESSURE)
 
-  CIRCLE_PRESSURE : _crCircleStyle(SC.PRESSURE),
-  PRESSURE: _crSpanStyle(SC.PRESSURE),
+export const S_SERIA = _crSpanStyle(SC.SERIA)
+export const S_CIRCLE_SERIA = _crCircleStyle(SC.SERIA)
 
-  SERIA : _crSpanStyle(SC.SERIA),
-  CIRCLE_SERIA : _crCircleStyle(SC.SERIA),
-
-  POINTER : {
-    lineHeight : 2,
-    cursor : 'pointer'
-  },
-  FILTERED : {
-    color : SC.FILTERED
-  }
-};
-
-export default STYLE
+export const S_POINTER = {
+  lineHeight : 2,
+  cursor : 'pointer'
+}
+export const S_FILTERED = {
+  color : SC.FILTERED
+}

@@ -1,13 +1,19 @@
 import LegendCellSvg from './LegendCellSvg';
-import S from './Label.Style';
+import {
+  S_SERIA,
+  S_FILTERED
+} from './Label.Style';
 
-const _crLabelStyle = (is, style=S.SERIA) => is
-  ? {...style, ...S.FILTERED}
+const _crLabelStyle = (
+  is,
+  style=S_SERIA
+) => is
+  ? {...style, ...S_FILTERED}
   : style;
 
 const _crTitle = id => id.length < 4
   ? id.toUpperCase()
-  : id[0].toUpperCase() + id.substring(1);
+  : id[0].toUpperCase() + id.slice(1);
 
 const DF_NOT_IS = Object.create(null);
 

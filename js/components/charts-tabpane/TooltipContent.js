@@ -1,28 +1,23 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 exports.__esModule = true;
-exports["default"] = void 0;
-
-var _Label = _interopRequireDefault(require("./Label.Style"));
-
+exports.default = void 0;
+var _Label = require("./Label.Style");
 var _jsxRuntime = require("react/jsx-runtime");
-
-var TooltipContent = function TooltipContent(_ref) {
-  var caption = _ref.caption,
-      children = _ref.children;
+const TooltipContent = _ref => {
+  let {
+    caption,
+    children
+  } = _ref;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    style: _Label["default"].ROOT_DIV,
+    style: _Label.S_TOOLTIP,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-        style: _Label["default"].DAY,
+        style: _Label.S_DAY,
         children: caption
       })
     }), children]
   });
 };
-
-var _default = TooltipContent;
-exports["default"] = _default;
+var _default = exports.default = TooltipContent;
 //# sourceMappingURL=TooltipContent.js.map

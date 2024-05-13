@@ -6,7 +6,7 @@ exports.default = void 0;
 var _fTooltip = _interopRequireDefault(require("./fTooltip"));
 var _TooltipContent = _interopRequireDefault(require("./TooltipContent"));
 var _TooltipRow = _interopRequireDefault(require("./TooltipRow1"));
-var _Label = _interopRequireDefault(require("./Label.Style"));
+var _Label = require("./Label.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 const TooltipHourly = (0, _fTooltip.default)(payload => /*#__PURE__*/(0, _jsxRuntime.jsxs)(_TooltipContent.default, {
   caption: payload.dt_text,
@@ -16,19 +16,19 @@ const TooltipHourly = (0, _fTooltip.default)(payload => /*#__PURE__*/(0, _jsxRun
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TooltipRow.default, {
     t: "Pressure",
     v: payload.pressure,
-    style: _Label.default.PRESSURE
+    style: _Label.S_PRESSURE
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TooltipRow.default, {
     t: "Speed",
     v: payload.speed,
-    style: _Label.default.SPEED
+    style: _Label.S_SPEED
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TooltipRow.default, {
     t: "Rain",
     v: payload.rain,
-    s: _Label.default.RAIN
+    s: _Label.S_RAIN
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TooltipRow.default, {
     t: "Snow",
     v: payload.snow,
-    s: _Label.default.RAIN
+    s: _Label.S_RAIN
   })]
 }));
 var _default = exports.default = TooltipHourly;

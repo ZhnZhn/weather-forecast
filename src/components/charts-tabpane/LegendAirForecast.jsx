@@ -1,12 +1,17 @@
 import LegendRowSvg from './LegendRowSvg';
-import S from './Label.Style';
+import {
+  S_SPEED,
+  S_CIRCLE_SPEED,
+  S_PRESSURE,
+  S_CIRCLE_PRESSURE
+} from './Label.Style';
 
 const S_MT_1REM = { marginTop: '1rem' }
 , CONFIGS_ROW_1 = [
   {
     id: 'aqi',
-    titleStyle: S.SPEED,
-    svgStyle: S.CIRCLE_SPEED
+    titleStyle: S_SPEED,
+    svgStyle: S_CIRCLE_SPEED
   },{
     id: 'no2'
   },{
@@ -22,8 +27,8 @@ const S_MT_1REM = { marginTop: '1rem' }
 , CONFIGS_ROW_2 = [
   {
     id: 'co',
-    titleStyle: S.PRESSURE,
-    svgStyle: S.CIRCLE_PRESSURE
+    titleStyle: S_PRESSURE,
+    svgStyle: S_CIRCLE_PRESSURE
   },{
     id: 'no'
   },{

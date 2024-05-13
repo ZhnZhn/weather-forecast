@@ -1,13 +1,16 @@
 import fTooltip from './fTooltip';
 import TooltipContent from './TooltipContent';
 import TooltipRow2 from './TooltipRow2';
-import STYLE from './Label.Style';
+import {
+  S_SPEED,
+  S_PRESSURE
+} from './Label.Style';
 
 const TooltipAirForecast = fTooltip(payload => (
   <TooltipContent caption={payload.dt_text}>
     <TooltipRow2
-      t1="AQI" v1={payload.aqi} style1={STYLE.SPEED}
-      t2="CO" v2={payload.co} style2={STYLE.PRESSURE}
+      t1="AQI" v1={payload.aqi} style1={S_SPEED}
+      t2="CO" v2={payload.co} style2={S_PRESSURE}
     />
     <TooltipRow2
       t1="NO2" v1={payload.no2}

@@ -6,17 +6,17 @@ exports.default = void 0;
 var _fTooltip = _interopRequireDefault(require("./fTooltip"));
 var _TooltipContent = _interopRequireDefault(require("./TooltipContent"));
 var _TooltipRow = _interopRequireDefault(require("./TooltipRow2"));
-var _Label = _interopRequireDefault(require("./Label.Style"));
+var _Label = require("./Label.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 const TooltipAirForecast = (0, _fTooltip.default)(payload => /*#__PURE__*/(0, _jsxRuntime.jsxs)(_TooltipContent.default, {
   caption: payload.dt_text,
   children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_TooltipRow.default, {
     t1: "AQI",
     v1: payload.aqi,
-    style1: _Label.default.SPEED,
+    style1: _Label.S_SPEED,
     t2: "CO",
     v2: payload.co,
-    style2: _Label.default.PRESSURE
+    style2: _Label.S_PRESSURE
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TooltipRow.default, {
     t1: "NO2",
     v1: payload.no2,

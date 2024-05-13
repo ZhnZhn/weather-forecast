@@ -1,12 +1,15 @@
-import STYLE from './Label.Style';
+import {
+  S_TOOLTIP,
+  S_DAY
+} from './Label.Style';
 
 const TooltipContent = ({
   caption,
   children
 }) => (
- <div style={STYLE.ROOT_DIV} >
+ <div style={S_TOOLTIP} >
     <div>
-     <span style={STYLE.DAY}>{caption}</span>
+     <span style={S_DAY}>{caption}</span>
     </div>
     {children}
  </div>

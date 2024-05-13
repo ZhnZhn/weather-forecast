@@ -1,20 +1,19 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.default = void 0;
-var _Label = _interopRequireDefault(require("./Label.Style"));
+var _Label = require("./Label.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 const _crValue = v => v == null ? '' : v;
 const TitleValue = _ref => {
   let {
     t,
     v,
-    style = _Label.default.SERIA
+    style = _Label.S_SERIA
   } = _ref;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-      style: _Label.default.LABEL,
+      style: _Label.S_LABEL,
       children: t + ":"
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
       style: style,
@@ -32,7 +31,7 @@ const TooltipRow2 = _ref2 => {
     style2
   } = _ref2;
   return v1 == null && v2 == null ? null : /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    style: _Label.default.ROW,
+    style: _Label.S_TOOLTIP_ROW,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
       t: t1,
       v: v1,
