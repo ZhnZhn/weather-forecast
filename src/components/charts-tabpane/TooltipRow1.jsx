@@ -4,16 +4,11 @@ const TooltipRow1 = ({
   t,
   v,
   style=STYLE.SERIA
-}) => {
-  if (v == null) {
-    return null;
-  }
-  return (
-   <div style={STYLE.ROW}>
-     <span style={STYLE.CAPTION}>{`${t}:`}</span>
-     <span style={style}>{v}</span>
-   </div>
-  );
-};
+}) => v == null ? null : (
+ <div style={STYLE.ROW}>
+   <span style={STYLE.CAPTION}>{`${t}:`}</span>
+   <span style={style}>{v}</span>
+ </div>
+);
 
 export default TooltipRow1
