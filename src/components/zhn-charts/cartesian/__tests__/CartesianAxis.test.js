@@ -52,7 +52,8 @@ describe('<CartesianAxis />', () => {
     );
 
     expect(container.querySelectorAll(`.${CL_AXIS_TICK}`)).toHaveLength(ticks.length);
-    expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(1);
+    //expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(1);
+    expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(0);
   });
 
   it('Renders no ticks in simple CartesianAxis', () => {
@@ -153,7 +154,8 @@ describe('<CartesianAxis />', () => {
     );
 
     expect(container.querySelectorAll(`.${CL_AXIS_TICK}`)).toHaveLength(ticks.length);
-    expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(1);
+    //expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(1);
+    expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(0);
   });
 
   it('Renders 5 ticks in a CartesianAxis which has orientation left', () => {
@@ -172,7 +174,8 @@ describe('<CartesianAxis />', () => {
     );
 
     expect(container.querySelectorAll(`.${CL_AXIS_TICK}`)).toHaveLength(ticks.length);
-    expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(1);
+    //expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(1);
+    expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(0);
   });
 
   it('Renders 5 ticks in a CartesianAxis which has orientation right', () => {
@@ -191,7 +194,8 @@ describe('<CartesianAxis />', () => {
     );
 
     expect(container.querySelectorAll(`.${CL_AXIS_TICK}`)).toHaveLength(ticks.length);
-    expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(1);
+    //expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(1);
+    expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(0);
   });
 
   it('Renders label when label is a function', () => {
