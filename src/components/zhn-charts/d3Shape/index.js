@@ -9,19 +9,6 @@ export {monotoneX as curveMonotoneX, monotoneY as curveMonotoneY} from "./curve/
 export {default as curveNatural} from "./curve/natural.js";
 export {default as curveStep, stepAfter as curveStepAfter, stepBefore as curveStepBefore} from "./curve/step.js";
 
-export {
-  shapeSymbol
-} from './symbol';
-export {
-  symbolCircle,
-  symbolCross,
-  symbolDiamond,
-  symbolSquare,
-  symbolStar,
-  symbolTriangle,
-  symbolWye
-} from './symbolShapes';
-
 export {default as stack} from "./stack";
 export {default as stackOffsetExpand} from "./offset/expand";
 export {default as stackOffsetNone} from "./offset/none";

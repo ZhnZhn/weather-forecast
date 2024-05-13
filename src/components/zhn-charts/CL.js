@@ -59,4 +59,3 @@ export const CL_RECHARTS_SURFACE = `${CHART_PREFIX}-surface`
 export const CL_CURVE = `${CHART_PREFIX}-curve`
 export const CL_DOT = `${CHART_PREFIX}-dot`
 export const CL_RESTANGLE = `${CHART_PREFIX}-rectangle`
-export const CL_SYMBOLS = `${CHART_PREFIX}-symbols`

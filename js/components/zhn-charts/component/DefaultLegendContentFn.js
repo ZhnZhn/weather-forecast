@@ -5,9 +5,8 @@ exports.__esModule = true;
 exports.renderItems = void 0;
 var _uiApi = require("../../uiApi");
 var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
-var _Surface = require("../container/Surface");
-var _Symbols = require("../shape/Symbols");
 var _types = require("../util/types");
+var _Surface = require("../container/Surface");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 const SIZE = 32;
@@ -56,14 +55,7 @@ const _renderIcon = (data, props) => {
     delete iconProps.legendIcon;
     return (0, _uiApi.cloneElement)(data.legendIcon, iconProps);
   }
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Symbols.Symbols, {
-    fill: color,
-    cx: halfSize,
-    cy: halfSize,
-    size: SIZE,
-    sizeType: "diameter",
-    type: data.type
-  });
+  return null;
 };
 const renderItems = props => {
   const {

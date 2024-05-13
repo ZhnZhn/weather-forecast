@@ -5,10 +5,8 @@ import {
 
 import crCn from '../../zhn-utils/crCn';
 
-import { Surface } from '../container/Surface';
-import { Symbols } from '../shape/Symbols';
-
 import { adaptEventsOfChild } from '../util/types';
+import { Surface } from '../container/Surface';
 
 import {
   CL_LEGEND_ICON,
@@ -73,16 +71,7 @@ const _renderIcon = (
     delete iconProps.legendIcon;
     return cloneElement(data.legendIcon, iconProps);
   }
-  return (
-    <Symbols
-      fill={color}
-      cx={halfSize}
-      cy={halfSize}
-      size={SIZE}
-      sizeType="diameter"
-      type={data.type}
-    />
-  );
+  return null;
 }
 
 export const renderItems = (
