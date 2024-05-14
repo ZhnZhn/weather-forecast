@@ -372,13 +372,13 @@ export const adaptEventsOfChild = (
   data,
   index
 ) => {
-  if (!_isObject(props) || typeof props !== 'object') {
+  if (!_isObject(props)) {
     return null;
   }
   let out = null;
   _getObjectKeys(props).forEach((key) => {
     const item = props[key];
-    if (isLikelyOnEventProperty(key) && typeof item === 'function') {
+    if (isLikelyOnEventProperty(key) && _isFn(item)) {
       if (!out) {
         out = {};
       }

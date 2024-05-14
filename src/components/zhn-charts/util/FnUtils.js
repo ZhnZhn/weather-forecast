@@ -12,11 +12,7 @@ export const _isNaN = Number.isNaN
 
 export const _isObject = (
   value
-) => {
-  const type = typeof value;
-  return value != null
-    && (type === 'object' || type === 'function');
-}
+) => value != null && typeof value === "object"
 
 export const _upperFirst = (
   str
@@ -61,51 +57,16 @@ export const _range = (
   return result;
 }
 
-const _isSymbol = v => typeof v === 'symbol';
-const _findExtremum = (
-  arr,
-  iteratee,
-  comparator
-) => {
-  let index = -1
-  , length = arr.length
-  , computed
-  , result;
-
-  while (++index < length) {
-    let value = arr[index]
-    , current = iteratee(value);
-    if (current != null && (computed === void 0
-      ? (current === current && !_isSymbol(current))
-      : comparator(current, computed)
-    )) {
-      computed = current
-      result = value
-    }
-  }
-  return result;
-}
-
-const _identity = (v) => v;
-const _baseLt = (
-  valueA,
-  valueB
-) => valueA < valueB;
-const _baseGt = (
-  valueA,
-  valueB
-) => valueA > valueB;
-
 export const _min = (
   arr
 ) => arr && arr.length
-  ? _findExtremum(arr, _identity, _baseLt)
+  ? Math.min(...arr)
   : void 0;
 
 export const _max = (
   arr
-) => arr && arr.length
-  ? _findExtremum(arr, _identity, _baseGt)
+) => arr && arr.length  
+  ? Math.max(...arr)
   : void 0;
 
 export const _uniqBy = (

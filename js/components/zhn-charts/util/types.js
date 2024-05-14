@@ -50,13 +50,13 @@ const getEventHandlerOfChild = (originalHandler, data, index) => e => {
   return null;
 };
 const adaptEventsOfChild = (props, data, index) => {
-  if (!(0, _FnUtils._isObject)(props) || typeof props !== 'object') {
+  if (!(0, _FnUtils._isObject)(props)) {
     return null;
   }
   let out = null;
   _getObjectKeys(props).forEach(key => {
     const item = props[key];
-    if (isLikelyOnEventProperty(key) && typeof item === 'function') {
+    if (isLikelyOnEventProperty(key) && (0, _FnUtils._isFn)(item)) {
       if (!out) {
         out = {};
       }
