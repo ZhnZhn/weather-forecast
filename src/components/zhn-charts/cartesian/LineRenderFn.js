@@ -19,20 +19,18 @@ import {
 } from '../CL';
 
 const _crDotItem = (
-  props,
+  { key, ...restProps },
   option
-) => {
- const className = crCn(
-   CL_LINE_DOT,
-   option && option.className
- );
- return (
-   <Dot
-     {...props}
-     className={className}
-   />
- );
-};
+) => (
+  <Dot
+    key={key}
+    {...restProps}
+    className={crCn(
+      CL_LINE_DOT,
+      option && option.className
+    )}
+  />
+);
 
 const _renderDotItem = fCreateElement(_crDotItem);
 
@@ -192,13 +190,13 @@ const renderCurveWithAnimation = (
   } = props;
   return (
     <Animate
+       key={`line-${animationId}`}
+       isActive={isAnimationActive}
        begin={animationBegin}
        duration={animationDuration}
-       isActive={isAnimationActive}
        easing={animationEasing}
        from={ANIMATE_CURVE_FROM}
        to={ANIMATE_CURVE_TO}
-       key={`line-${animationId}`}
        onAnimationEnd={handleAnimationEnd}
        onAnimationStart={handleAnimationStart}
     >

@@ -13,12 +13,15 @@ var _Layer = require("../container/Layer");
 var _cartesianFn = require("./cartesianFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-const _crDotItem = (props, option) => {
-  const className = (0, _crCn.default)(_CL.CL_LINE_DOT, option && option.className);
+const _crDotItem = (_ref, option) => {
+  let {
+    key,
+    ...restProps
+  } = _ref;
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Dot.Dot, {
-    ...props,
-    className: className
-  });
+    ...restProps,
+    className: (0, _crCn.default)(_CL.CL_LINE_DOT, option && option.className)
+  }, key);
 };
 const _renderDotItem = (0, _cartesianFn.fCreateElement)(_crDotItem);
 const renderDots = (needClip, clipPathId, isAnimationFinished, props) => {
@@ -126,18 +129,18 @@ const renderCurveWithAnimation = (needClip, clipPathId, prevPoints, totalLength,
     height
   } = props;
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_zhnAnimate.Animate, {
+    isActive: isAnimationActive,
     begin: animationBegin,
     duration: animationDuration,
-    isActive: isAnimationActive,
     easing: animationEasing,
     from: ANIMATE_CURVE_FROM,
     to: ANIMATE_CURVE_TO,
     onAnimationEnd: handleAnimationEnd,
     onAnimationStart: handleAnimationStart,
-    children: _ref => {
+    children: _ref2 => {
       let {
         t
-      } = _ref;
+      } = _ref2;
       if (prevPoints) {
         const prevPointsDiffFactor = prevPoints.length / points.length,
           stepData = points.map((entry, index) => {
