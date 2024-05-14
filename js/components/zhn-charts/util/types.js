@@ -45,25 +45,19 @@ const adaptEventHandlers = (props, newHandler) => {
   return out;
 };
 exports.adaptEventHandlers = adaptEventHandlers;
-const getEventHandlerOfChild = (originalHandler, data, index) => e => {
-  originalHandler(data, index, e);
+const getEventHandlerOfChild = (originalHandler, data, index) => evt => {
+  originalHandler(data, index, evt);
   return null;
 };
-const adaptEventsOfChild = (props, data, index) => {
-  if (!(0, _FnUtils._isObject)(props)) {
-    return null;
-  }
-  let out = null;
-  _getObjectKeys(props).forEach(key => {
-    const item = props[key];
-    if (isLikelyOnEventProperty(key) && (0, _FnUtils._isFn)(item)) {
-      if (!out) {
-        out = {};
-      }
-      out[key] = getEventHandlerOfChild(item, data, index);
+const adaptEventsOfChild = (props, data, index) => (0, _FnUtils._isObject)(props) ? _getObjectKeys(props).reduce((eventProps, propName) => {
+  const originalHandler = props[propName];
+  if (isLikelyOnEventProperty(propName) && (0, _FnUtils._isFn)(originalHandler)) {
+    if (!eventProps) {
+      eventProps = {};
     }
-  });
-  return out;
-};
+    eventProps[propName] = getEventHandlerOfChild(originalHandler, data, index);
+  }
+  return eventProps;
+}, null) : null;
 exports.adaptEventsOfChild = adaptEventsOfChild;
 //# sourceMappingURL=types.js.map

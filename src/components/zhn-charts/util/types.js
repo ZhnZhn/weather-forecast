@@ -362,8 +362,8 @@ const getEventHandlerOfChild = (
   originalHandler,
   data,
   index
-) => (e) => {
-  originalHandler(data, index, e);
+) => (evt) => {
+  originalHandler(data, index, evt);
   return null;
 };
 
@@ -371,19 +371,18 @@ export const adaptEventsOfChild = (
   props,
   data,
   index
-) => {
-  if (!_isObject(props)) {
-    return null;
-  }
-  let out = null;
-  _getObjectKeys(props).forEach((key) => {
-    const item = props[key];
-    if (isLikelyOnEventProperty(key) && _isFn(item)) {
-      if (!out) {
-        out = {};
-      }
-      out[key] = getEventHandlerOfChild(item, data, index);
-    }
-  });
-  return out;
-};
+) => _isObject(props) ? _getObjectKeys(props)
+  .reduce((eventProps, propName) => {
+     const originalHandler = props[propName];
+     if (isLikelyOnEventProperty(propName) && _isFn(originalHandler)) {
+       if (!eventProps) {
+         eventProps = {};
+       }
+       eventProps[propName] = getEventHandlerOfChild(
+         originalHandler,
+         data,
+         index
+       );
+     }
+     return eventProps;
+  }, null) : null;
