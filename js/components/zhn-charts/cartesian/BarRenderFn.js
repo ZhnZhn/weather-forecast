@@ -12,11 +12,17 @@ var _cartesianFn = require("./cartesianFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 var _react = require("react");
-const _crElementRectangle = props => /*#__PURE__*/(0, _jsxRuntime.jsx)(_Rectangle.Rectangle, {
-  ...props
-});
+const _crElementRectangle = _ref => {
+  let {
+    key,
+    ...restProps
+  } = _ref;
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Rectangle.Rectangle, {
+    ...restProps
+  }, key);
+};
 const _renderRectangle = (0, _cartesianFn.fCreateElement)(_crElementRectangle);
-const _renderRectanglesStatically = (data, props) => {
+const _renderRectanglesStatically = (props, data) => {
   const {
       shape
     } = props,
@@ -28,9 +34,9 @@ const _renderRectanglesStatically = (data, props) => {
       index: i
     };
     return /*#__PURE__*/(0, _react.createElement)(_Layer.Layer, {
-      className: _CL.CL_BAR_RECTANGLE,
       ...(0, _types.adaptEventsOfChild)(rectangleProps, entry, i),
-      key: "rectangle-" + i
+      key: "rectangle-" + i,
+      className: _CL.CL_BAR_RECTANGLE
     }, _renderRectangle(shape, rectangleProps));
   });
 };
@@ -110,20 +116,20 @@ const _renderRectanglesWithAnimation = (props, prevData, handleAnimationStart, h
     animationId
   } = props;
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_zhnAnimate.Animate, {
+    isActive: isAnimationActive,
     begin: animationBegin,
     duration: animationDuration,
-    isActive: isAnimationActive,
     easing: animationEasing,
     from: ANIMATE_RECT_FROM,
     to: ANIMATE_RECT_TO,
     onAnimationEnd: handleAnimationEnd,
     onAnimationStart: handleAnimationStart,
-    children: _ref => {
+    children: _ref2 => {
       let {
         t
-      } = _ref;
+      } = _ref2;
       return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
-        children: _renderRectanglesStatically(_crStepData(data, prevData, layout, t), props)
+        children: _renderRectanglesStatically(props, _crStepData(data, prevData, layout, t))
       });
     }
   }, "bar-" + animationId);
@@ -135,7 +141,7 @@ const renderRectangles = (props, prevData, handleAnimationStart, handleAnimation
   } = props;
   return isAnimationActive && data && data.length
   //&& (!prevData || !_isEqual(prevData, data))
-  && (!prevData || prevData !== data) ? _renderRectanglesWithAnimation(props, prevData, handleAnimationStart, handleAnimationEnd) : _renderRectanglesStatically(data, props);
+  && (!prevData || prevData !== data) ? _renderRectanglesWithAnimation(props, prevData, handleAnimationStart, handleAnimationEnd) : _renderRectanglesStatically(props, data);
 };
 exports.renderRectangles = renderRectangles;
 //# sourceMappingURL=BarRenderFn.js.map

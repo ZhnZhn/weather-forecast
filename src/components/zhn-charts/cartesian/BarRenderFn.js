@@ -14,16 +14,20 @@ import {
   CL_BAR_BACKGROUND_RECTANGLE
 } from '../CL';
 
-const _crElementRectangle = (
-  props
-) => (
-  <Rectangle {...props} />
+const _crElementRectangle = ({
+  key,
+  ...restProps
+}) => (
+  <Rectangle
+     key={key}
+     {...restProps}
+   />
 );
 const _renderRectangle = fCreateElement(_crElementRectangle);
 
 const _renderRectanglesStatically = (
-  data,
-  props
+  props,
+  data
 ) => {
   const { shape } = props
   , baseProps = filterProps(props);
@@ -35,9 +39,9 @@ const _renderRectanglesStatically = (
     };
     return (
       <Layer
-        className={CL_BAR_RECTANGLE}
         {...adaptEventsOfChild(rectangleProps, entry, i)}
         key={`rectangle-${i}`}
+        className={CL_BAR_RECTANGLE}
       >
         {_renderRectangle(shape, rectangleProps)}
       </Layer>
@@ -129,21 +133,21 @@ const _renderRectanglesWithAnimation = (
     } = props;
     return (
       <Animate
+         key={`bar-${animationId}`}
+         isActive={isAnimationActive}
          begin={animationBegin}
          duration={animationDuration}
-         isActive={isAnimationActive}
          easing={animationEasing}
          from={ANIMATE_RECT_FROM}
          to={ANIMATE_RECT_TO}
-         key={`bar-${animationId}`}
          onAnimationEnd={handleAnimationEnd}
          onAnimationStart={handleAnimationStart}
       >
        {({ t }) => (
           <Layer>
            {_renderRectanglesStatically(
-              _crStepData(data, prevData, layout, t),
-              props
+              props,
+              _crStepData(data, prevData, layout, t)
             )}
           </Layer>
         )}
@@ -167,5 +171,5 @@ export const renderRectangles = (
    //&& (!prevData || !_isEqual(prevData, data))
    && (!prevData || prevData !== data)
     ? _renderRectanglesWithAnimation(props, prevData, handleAnimationStart, handleAnimationEnd)
-    : _renderRectanglesStatically(data, props);
+    : _renderRectanglesStatically(props, data);
 }
