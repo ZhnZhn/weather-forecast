@@ -346,16 +346,15 @@ export const adaptEventHandlers = (
   if (isValidElement(props)) {
     inputProps = props.props;
   }
-  if (!_isObject(inputProps)) {
-    return null;
-  }
-  const out = {};
-  _getObjectKeys(inputProps).forEach(key => {
-    if (isLikelyOnEventProperty(key)) {
-      out[key] = newHandler || ((e) => inputProps[key](inputProps, e));
-    }
-  });
-  return out;
+
+  return _isObject(inputProps) ? _getObjectKeys(inputProps)
+    .reduce((eventProps, propName) => {
+      if (isLikelyOnEventProperty(propName)) {
+        eventProps[propName] = newHandler
+          || ((evt) => inputProps[propName](inputProps, evt));
+      }
+      return eventProps;
+    }, {}) : null;
 };
 
 const getEventHandlerOfChild = (

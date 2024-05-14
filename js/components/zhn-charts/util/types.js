@@ -33,16 +33,12 @@ const adaptEventHandlers = (props, newHandler) => {
   if ((0, _uiApi.isValidElement)(props)) {
     inputProps = props.props;
   }
-  if (!(0, _FnUtils._isObject)(inputProps)) {
-    return null;
-  }
-  const out = {};
-  _getObjectKeys(inputProps).forEach(key => {
-    if (isLikelyOnEventProperty(key)) {
-      out[key] = newHandler || (e => inputProps[key](inputProps, e));
+  return (0, _FnUtils._isObject)(inputProps) ? _getObjectKeys(inputProps).reduce((eventProps, propName) => {
+    if (isLikelyOnEventProperty(propName)) {
+      eventProps[propName] = newHandler || (evt => inputProps[propName](inputProps, evt));
     }
-  });
-  return out;
+    return eventProps;
+  }, {}) : null;
 };
 exports.adaptEventHandlers = adaptEventHandlers;
 const getEventHandlerOfChild = (originalHandler, data, index) => evt => {
