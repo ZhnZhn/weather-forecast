@@ -1,11 +1,11 @@
 export {
   useSelector,
   useStore
-} from 'react-redux';
+} from "react-redux";
 
 export {
   findDOMNode
-} from 'react-dom';
+} from "react-dom";
 
 export {
   isValidElement,
@@ -14,7 +14,6 @@ export {
   Children,
   createContext,
   createRef,
-  createElement,
   cloneElement,
   memo,
   useRef,
@@ -25,7 +24,12 @@ export {
   useEffect,
   useContext,
   useImperativeHandle
-} from 'react';
+} from "react";
+
+export const createElement = (
+  Comp,
+  {key, ...restProps}
+) => (<Comp key={key} {...restProps} />)
 
 export const getRefValue = ref => (ref || {}).current
 

@@ -1,6 +1,5 @@
 //import PropTypes from 'prop-types';
 import {
-  createElement,
   memo,
   useRef,
   useState,
@@ -21,14 +20,17 @@ const DialogStack = ({
   dialogs,
   onClose
 }) => dialogs.map(dialog => {
-  const { type, comp } = dialog;
-  return createElement(comp, {
-    key: type,
-    isShow: shows[type],
-    data: data[type],
-    store: store,
-    onClose: onClose.bind(null, type)
-  });
+  const {
+    type,
+    comp:Comp
+  } = dialog;
+  return (<Comp
+    key={type}
+    isShow={shows[type]}
+    data={data[type]}
+    store={store}
+    onClose={onClose.bind(null, type)}
+  />);
 });
 
 const ModalDialogContainer = memo(({

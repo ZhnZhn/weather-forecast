@@ -15,7 +15,7 @@ var _jsxRuntime = require("react/jsx-runtime");
 var _react = require("react");
 const DF_PROPS = {
   offset: 5,
-  className: ''
+  className: ""
 };
 const Label = props => {
   const _props = (0, _ReactUtils.crProps)(DF_PROPS, props),
@@ -23,19 +23,19 @@ const Label = props => {
       viewBox,
       value,
       children,
-      content,
+      content: ContentElementOrComp,
       className,
       textBreakAll
     } = _props;
   if (!viewBox || (0, _FnUtils._isNil)(value) && (0, _FnUtils._isNil)(children) && !(0, _uiApi.isValidElement)(content) && !(0, _FnUtils._isFn)(content)) {
     return null;
   }
-  if ((0, _uiApi.isValidElement)(content)) {
-    return (0, _uiApi.cloneElement)(content, _props);
+  if ((0, _uiApi.isValidElement)(ContentElementOrComp)) {
+    return (0, _uiApi.cloneElement)(ContentElementOrComp, _props);
   }
   let label;
-  if ((0, _FnUtils._isFn)(content)) {
-    label = (0, _uiApi.createElement)(content, _props);
+  if ((0, _FnUtils._isFn)(ContentElementOrComp)) {
+    label = (0, _uiApi.createElement)(ContentElementOrComp, props);
     if ((0, _uiApi.isValidElement)(label)) {
       return label;
     }
@@ -175,7 +175,7 @@ const renderCallByParent = function (parentProps, viewBox, checkPropsLabel) {
     explicitChildren = (0, _ReactUtils.findAllByType)(children, Label).map((child, index) => (0, _uiApi.cloneElement)(child, {
       viewBox: viewBox || parentViewBox,
       // eslint-disable-next-line react/no-array-index-key
-      key: "label-" + index
+      key: `label-${index}`
     }));
   if (!checkPropsLabel) {
     return explicitChildren;
@@ -183,7 +183,7 @@ const renderCallByParent = function (parentProps, viewBox, checkPropsLabel) {
   const implicitLabel = parseLabel(parentProps.label, viewBox || parentViewBox);
   return [implicitLabel, ...explicitChildren];
 };
-Label.displayName = 'Label';
+Label.displayName = "Label";
 Label.parseViewBox = parseViewBox;
 Label.renderCallByParent = renderCallByParent;
 //# sourceMappingURL=Label.js.map

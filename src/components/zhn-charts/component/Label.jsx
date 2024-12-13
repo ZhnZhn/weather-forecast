@@ -2,38 +2,38 @@ import {
   isValidElement,
   cloneElement,
   createElement
-} from '../../uiApi';
+} from "../../uiApi";
 
-import crCn from '../../zhn-utils/crCn';
+import crCn from "../../zhn-utils/crCn";
 
 import {
   _isFn,
   _isNil,
   _isObject
-} from '../util/FnUtils';
+} from "../util/FnUtils";
 
-import { Text } from './Text';
+import { Text } from "./Text";
 import {
   crProps,
   findAllByType,
   filterProps
-} from '../util/ReactUtils';
+} from "../util/ReactUtils";
 import {
   isNumOrStr,
   isNumber
-} from '../util/DataUtils';
+} from "../util/DataUtils";
 
 import {
   getAttrsOfCartesianLabel,
   getLabel
-} from './LabelFn';
+} from "./LabelFn";
 
-import { CL_LABEL } from '../CL';
+import { CL_LABEL } from "../CL";
 
 const DF_PROPS = {
   offset: 5,
-  className: ''
-}
+  className: ""
+};
 
 export const Label = (
   props
@@ -43,7 +43,7 @@ export const Label = (
     viewBox,
     value,
     children,
-    content,
+    content:ContentElementOrComp,
     className,
     textBreakAll
   } = _props;
@@ -51,13 +51,13 @@ export const Label = (
     return null;
   }
 
-  if (isValidElement(content)) {
-    return cloneElement(content, _props);
+  if (isValidElement(ContentElementOrComp)) {
+    return cloneElement(ContentElementOrComp, _props);
   }
 
   let label;
-  if (_isFn(content)) {
-    label = createElement(content, _props);
+  if (_isFn(ContentElementOrComp)) {
+    label = createElement(ContentElementOrComp, props);
     if (isValidElement(label)) {
       return label;
     }
@@ -186,6 +186,6 @@ const renderCallByParent = (
   ];
 };
 
-Label.displayName = 'Label';
+Label.displayName = "Label";
 Label.parseViewBox = parseViewBox;
 Label.renderCallByParent = renderCallByParent;

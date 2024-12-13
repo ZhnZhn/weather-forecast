@@ -6,23 +6,23 @@ import {
   useState,
   useCallback,
   useEffect
-} from '../../uiApi';
+} from "../../uiApi";
 
-import crCn from '../../zhn-utils/crCn';
-import { translateStyle } from '../../zhn-animate';
+import crCn from "../../zhn-utils/crCn";
+import { translateStyle } from "../../zhn-animate";
 
 import {
   _isFn,
   _isNil
-} from  '../util/FnUtils';
-import { IS_SSR } from '../util/Global';
-import { isNumber } from '../util/DataUtils';
-import { crProps } from '../util/ReactUtils';
+} from "../util/FnUtils";
+import { IS_SSR } from "../util/Global";
+import { isNumber } from "../util/DataUtils";
+import { crProps } from "../util/ReactUtils";
 
-import { DefaultTooltipContent } from './DefaultTooltipContent';
-import { getUniqPayload } from './componentFn';
+import { DefaultTooltipContent } from "./DefaultTooltipContent";
+import { getUniqPayload } from "./componentFn";
 
-import { CL_TOOLTIP_WRAPPER } from '../CL';
+import { CL_TOOLTIP_WRAPPER } from "../CL";
 
 //const CLS_PREFIX = 'recharts-tooltip-wrapper';
 const EPS = 1;
@@ -31,13 +31,13 @@ const _defaultUniqBy = (
 ) => entry.dataKey;
 
 const _renderContent = (
-  content,
+  ContentElementOrComp,
   props
-) => isValidElement(content)
-  ? cloneElement(content, props)
-  : _isFn(content)
-      ? createElement(content, props)
-      : <DefaultTooltipContent {...props}/>
+) => isValidElement(ContentElementOrComp)
+  ? cloneElement(ContentElementOrComp, props)
+  : _isFn(ContentElementOrComp)
+      ? createElement(ContentElementOrComp, props)
+      : createElement(DefaultTooltipContent, props);
 
 const DF_PROPS = {
   active: false,
@@ -54,9 +54,9 @@ const DF_PROPS = {
   itemStyle: {},
   labelStyle: {},
   cursor: true,
-  trigger: 'hover',
+  trigger: "hover",
   isAnimationActive: !IS_SSR,
-  animationEasing: 'ease',
+  animationEasing: "ease",
   animationDuration: 400,
   filterNull: true,
   useTranslate3d: false
@@ -112,7 +112,7 @@ export const Tooltip = (props) => {
     viewBox
   } = _props
   , handleKeyDown = useCallback((event) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         setDismissed(true);
         setDismissedAtCoordinate(prev => ({
           ...prev,
@@ -125,12 +125,12 @@ export const Tooltip = (props) => {
   useEffect(() => {
     const updateBBox = () => {
       if (dismissed) {
-        document.removeEventListener('keydown', handleKeyDown);
+        document.removeEventListener("keydown", handleKeyDown);
         if (coordinate.x !== dismissedAtCoordinate.x || coordinate.y !== dismissedAtCoordinate.y) {
           setDismissed(false);
         }
       } else {
-        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener("keydown", handleKeyDown);
       }
 
       if (wrapperNode.current && wrapperNode.current.getBoundingClientRect) {
@@ -147,7 +147,7 @@ export const Tooltip = (props) => {
 
     updateBBox();
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [
     boxHeight,
@@ -210,9 +210,9 @@ export const Tooltip = (props) => {
   , hasPayload = finalPayload && finalPayload.length
   , { content } = _props;
   let outerStyle = {
-    pointerEvents: 'none',
-    visibility: !dismissed && active && hasPayload ? 'visible' : 'hidden',
-    position: 'absolute',
+    pointerEvents: "none",
+    visibility: !dismissed && active && hasPayload ? "visible" : "hidden",
+    position: "absolute",
     top: 0,
     left: 0,
     ...wrapperStyle
@@ -225,17 +225,17 @@ export const Tooltip = (props) => {
     translateY = position.y;
   } else if (boxWidth > 0 && boxHeight > 0 && coordinate) {
     translateX = getTranslate({
-      key: 'x',
+      key: "x",
       tooltipDimension: boxWidth,
       viewBoxDimension: viewBox.width,
     });
     translateY = getTranslate({
-      key: 'y',
+      key: "y",
       tooltipDimension: boxHeight,
       viewBoxDimension: viewBox.height,
     });
   } else {
-    outerStyle.visibility = 'hidden';
+    outerStyle.visibility = "hidden";
   }
   outerStyle = {
     ...translateStyle({
@@ -276,7 +276,7 @@ export const Tooltip = (props) => {
 };
 
 // needs to be set so that renderByOrder can find the correct handler function
-Tooltip.displayName = 'Tooltip';
+Tooltip.displayName = "Tooltip";
 /**
  * needs to be set so that renderByOrder can access an have default values for
  * children.props when there are no props set by the consumer

@@ -1,118 +1,113 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 exports.__esModule = true;
-exports["default"] = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-
+exports.default = void 0;
 var _uiApi = require("../uiApi");
-
 var _Router = _interopRequireDefault(require("../dialogs/Router"));
-
 var _RouterData = _interopRequireDefault(require("../dialogs/RouterData"));
-
 var _WrapperModalDialog = _interopRequireDefault(require("../zhn-atoms/WrapperModalDialog"));
-
 var _jsxRuntime = require("react/jsx-runtime");
-
 //import PropTypes from 'prop-types';
-var DialogStack = function DialogStack(_ref) {
-  var store = _ref.store,
-      shows = _ref.shows,
-      data = _ref.data,
-      dialogs = _ref.dialogs,
-      onClose = _ref.onClose;
-  return dialogs.map(function (dialog) {
-    var type = dialog.type,
-        comp = dialog.comp;
-    return (0, _uiApi.createElement)(comp, {
-      key: type,
+
+const DialogStack = _ref => {
+  let {
+    store,
+    shows,
+    data,
+    dialogs,
+    onClose
+  } = _ref;
+  return dialogs.map(dialog => {
+    const {
+      type,
+      comp: Comp
+    } = dialog;
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)(Comp, {
       isShow: shows[type],
       data: data[type],
       store: store,
       onClose: onClose.bind(null, type)
-    });
+    }, type);
   });
 };
-
-var ModalDialogContainer = (0, _uiApi.memo)(function (_ref2) {
-  var store = _ref2.store;
-
-  var _refModal = (0, _uiApi.useRef)(),
-      _useState = (0, _uiApi.useState)({
-    isShow: false,
-    currentDialog: null,
-    dialogs: [],
-    inits: {},
-    shows: {},
-    data: {}
-  }),
-      state = _useState[0],
-      setState = _useState[1],
-      _hClose = (0, _uiApi.useCallback)(function (type) {
-    setState(function (prevState) {
-      prevState.shows[type] = false;
-      return (0, _extends2["default"])({}, prevState, {
-        isShow: false,
-        currentDialog: null,
-        shows: prevState.shows
+const ModalDialogContainer = (0, _uiApi.memo)(_ref2 => {
+  let {
+    store
+  } = _ref2;
+  const _refModal = (0, _uiApi.useRef)(),
+    [state, setState] = (0, _uiApi.useState)({
+      isShow: false,
+      currentDialog: null,
+      dialogs: [],
+      inits: {},
+      shows: {},
+      data: {}
+    }),
+    _hClose = (0, _uiApi.useCallback)(type => {
+      setState(prevState => {
+        prevState.shows[type] = false;
+        return {
+          ...prevState,
+          isShow: false,
+          currentDialog: null,
+          shows: prevState.shows
+        };
       });
-    });
-  }, []);
+    }, []);
+
   /*eslint-disable react-hooks/exhaustive-deps */
-
-
-  (0, _uiApi.useEffect)(function () {
-    var _onStore = function _onStore() {
-      var _store$getState = store.getState(),
-          modal = _store$getState.modal,
-          _ref3 = modal || {},
-          type = _ref3.id,
-          _modal = (0, _uiApi.getRefValue)(_refModal);
-
+  (0, _uiApi.useEffect)(() => {
+    const _onStore = () => {
+      const {
+          modal
+        } = store.getState(),
+        {
+          id: type
+        } = modal || {},
+        _modal = (0, _uiApi.getRefValue)(_refModal);
       if (type && _modal !== modal) {
         (0, _uiApi.setRefValue)(_refModal, modal);
-        setState(function (prevState) {
-          var inits = prevState.inits,
-              shows = prevState.shows,
-              data = prevState.data,
-              dialogs = prevState.dialogs;
-
+        setState(prevState => {
+          const {
+            inits,
+            shows,
+            data,
+            dialogs
+          } = prevState;
           if (!inits[type]) {
             dialogs.push({
-              type: type,
-              comp: _Router["default"][type]
+              type,
+              comp: _Router.default[type]
             });
             inits[type] = true;
           }
-
           shows[type] = true;
-          data[type] = _RouterData["default"].getData(store, type);
+          data[type] = _RouterData.default.getData(store, type);
           return {
             isShow: true,
             currentDialog: type,
-            shows: shows,
-            data: data,
-            dialogs: dialogs,
-            inits: inits
+            shows,
+            data,
+            dialogs,
+            inits
           };
         });
       }
     };
-
     return store.subscribe(_onStore);
-  }, []); // store
-
+  }, []);
+  // store
   /*eslint-disable react-hooks/exhaustive-deps */
 
-  var isShow = state.isShow,
-      currentDialog = state.currentDialog,
-      shows = state.shows,
-      data = state.data,
-      dialogs = state.dialogs;
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_WrapperModalDialog["default"], {
+  const {
+    isShow,
+    currentDialog,
+    shows,
+    data,
+    dialogs
+  } = state;
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_WrapperModalDialog.default, {
     isShow: isShow,
     onClose: _hClose.bind(null, currentDialog),
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)(DialogStack, {
@@ -124,6 +119,7 @@ var ModalDialogContainer = (0, _uiApi.memo)(function (_ref2) {
     })
   });
 });
+
 /*
 ModalDialogContainer.propTypes = {
   store: PropTypes.shape({
@@ -131,7 +127,5 @@ ModalDialogContainer.propTypes = {
   })
 }
 */
-
-var _default = ModalDialogContainer;
-exports["default"] = _default;
+var _default = exports.default = ModalDialogContainer;
 //# sourceMappingURL=ModalDialogContainer.js.map

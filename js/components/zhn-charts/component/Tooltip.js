@@ -17,9 +17,7 @@ var _jsxRuntime = require("react/jsx-runtime");
 //const CLS_PREFIX = 'recharts-tooltip-wrapper';
 const EPS = 1;
 const _defaultUniqBy = entry => entry.dataKey;
-const _renderContent = (content, props) => (0, _uiApi.isValidElement)(content) ? (0, _uiApi.cloneElement)(content, props) : (0, _FnUtils._isFn)(content) ? (0, _uiApi.createElement)(content, props) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_DefaultTooltipContent.DefaultTooltipContent, {
-  ...props
-});
+const _renderContent = (ContentElementOrComp, props) => (0, _uiApi.isValidElement)(ContentElementOrComp) ? (0, _uiApi.cloneElement)(ContentElementOrComp, props) : (0, _FnUtils._isFn)(ContentElementOrComp) ? (0, _uiApi.createElement)(ContentElementOrComp, props) : (0, _uiApi.createElement)(_DefaultTooltipContent.DefaultTooltipContent, props);
 const DF_PROPS = {
   active: false,
   allowEscapeViewBox: {
@@ -49,9 +47,9 @@ const DF_PROPS = {
   itemStyle: {},
   labelStyle: {},
   cursor: true,
-  trigger: 'hover',
+  trigger: "hover",
   isAnimationActive: !_Global.IS_SSR,
-  animationEasing: 'ease',
+  animationEasing: "ease",
   animationDuration: 400,
   filterNull: true,
   useTranslate3d: false
@@ -59,8 +57,8 @@ const DF_PROPS = {
 const _crClassName = (coordinate, translateX, translateY) => {
   const _isTranslateCoordinateX = (0, _DataUtils.isNumber)(translateX) && coordinate && (0, _DataUtils.isNumber)(coordinate.x),
     _isTranslateCoordinateY = (0, _DataUtils.isNumber)(translateY) && coordinate && (0, _DataUtils.isNumber)(coordinate.y),
-    _clX = _isTranslateCoordinateX ? (0, _crCn.default)(translateX >= coordinate.x && _CL.CL_TOOLTIP_WRAPPER + "-right", translateX < coordinate.x && _CL.CL_TOOLTIP_WRAPPER + "-left") : '',
-    _clY = _isTranslateCoordinateY ? (0, _crCn.default)(translateY >= coordinate.y && _CL.CL_TOOLTIP_WRAPPER + "-bottom", translateY < coordinate.y && _CL.CL_TOOLTIP_WRAPPER + "-top") : '';
+    _clX = _isTranslateCoordinateX ? (0, _crCn.default)(translateX >= coordinate.x && `${_CL.CL_TOOLTIP_WRAPPER}-right`, translateX < coordinate.x && `${_CL.CL_TOOLTIP_WRAPPER}-left`) : '',
+    _clY = _isTranslateCoordinateY ? (0, _crCn.default)(translateY >= coordinate.y && `${_CL.CL_TOOLTIP_WRAPPER}-bottom`, translateY < coordinate.y && `${_CL.CL_TOOLTIP_WRAPPER}-top`) : '';
   return (0, _crCn.default)(_CL.CL_TOOLTIP_WRAPPER, (0, _crCn.default)(_clX, _clY));
 };
 const Tooltip = props => {
@@ -82,7 +80,7 @@ const Tooltip = props => {
       viewBox
     } = _props,
     handleKeyDown = (0, _uiApi.useCallback)(event => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         setDismissed(true);
         setDismissedAtCoordinate(prev => ({
           ...prev,
@@ -94,12 +92,12 @@ const Tooltip = props => {
   (0, _uiApi.useEffect)(() => {
     const updateBBox = () => {
       if (dismissed) {
-        document.removeEventListener('keydown', handleKeyDown);
+        document.removeEventListener("keydown", handleKeyDown);
         if (coordinate.x !== dismissedAtCoordinate.x || coordinate.y !== dismissedAtCoordinate.y) {
           setDismissed(false);
         }
       } else {
-        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener("keydown", handleKeyDown);
       }
       if (wrapperNode.current && wrapperNode.current.getBoundingClientRect) {
         const box = wrapperNode.current.getBoundingClientRect();
@@ -114,7 +112,7 @@ const Tooltip = props => {
     };
     updateBBox();
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [boxHeight, boxWidth, coordinate.x, coordinate.y, dismissed, dismissedAtCoordinate.x, dismissedAtCoordinate.y, handleKeyDown]);
   const getTranslate = _ref => {
@@ -128,10 +126,10 @@ const Tooltip = props => {
     }
     const negative = coordinate[key] - tooltipDimension - offset,
       positive = coordinate[key] + offset;
-    if (allowEscapeViewBox != null && allowEscapeViewBox[key]) {
+    if (allowEscapeViewBox?.[key]) {
       return reverseDirection[key] ? negative : positive;
     }
-    if (reverseDirection != null && reverseDirection[key]) {
+    if (reverseDirection?.[key]) {
       const tooltipBoundary = negative,
         viewBoxBoundary = viewBox[key];
       return tooltipBoundary < viewBoxBoundary ? Math.max(positive, viewBox[key]) : Math.max(negative, viewBox[key]);
@@ -157,9 +155,9 @@ const Tooltip = props => {
       content
     } = _props;
   let outerStyle = {
-      pointerEvents: 'none',
-      visibility: !dismissed && active && hasPayload ? 'visible' : 'hidden',
-      position: 'absolute',
+      pointerEvents: "none",
+      visibility: !dismissed && active && hasPayload ? "visible" : "hidden",
+      position: "absolute",
       top: 0,
       left: 0,
       ...wrapperStyle
@@ -171,28 +169,28 @@ const Tooltip = props => {
     translateY = position.y;
   } else if (boxWidth > 0 && boxHeight > 0 && coordinate) {
     translateX = getTranslate({
-      key: 'x',
+      key: "x",
       tooltipDimension: boxWidth,
       viewBoxDimension: viewBox.width
     });
     translateY = getTranslate({
-      key: 'y',
+      key: "y",
       tooltipDimension: boxHeight,
       viewBoxDimension: viewBox.height
     });
   } else {
-    outerStyle.visibility = 'hidden';
+    outerStyle.visibility = "hidden";
   }
   outerStyle = {
     ...(0, _zhnAnimate.translateStyle)({
-      transform: useTranslate3d ? "translate3d(" + translateX + "px, " + translateY + "px, 0)" : "translate(" + translateX + "px, " + translateY + "px)"
+      transform: useTranslate3d ? `translate3d(${translateX}px, ${translateY}px, 0)` : `translate(${translateX}px, ${translateY}px)`
     }),
     ...outerStyle
   };
   if (isAnimationActive && active) {
     outerStyle = {
       ...(0, _zhnAnimate.translateStyle)({
-        transition: "transform " + animationDuration + "ms " + animationEasing
+        transition: `transform ${animationDuration}ms ${animationEasing}`
       }),
       ...outerStyle
     };
@@ -213,7 +211,7 @@ const Tooltip = props => {
 
 // needs to be set so that renderByOrder can find the correct handler function
 exports.Tooltip = Tooltip;
-Tooltip.displayName = 'Tooltip';
+Tooltip.displayName = "Tooltip";
 /**
  * needs to be set so that renderByOrder can access an have default values for
  * children.props when there are no props set by the consumer

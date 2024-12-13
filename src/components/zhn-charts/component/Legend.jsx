@@ -3,15 +3,13 @@ import {
   cloneElement,
   createElement,
   PureComponent
-} from '../../uiApi';
+} from "../../uiApi";
 
-import { _isFn } from '../util/FnUtils';
+import { _isFn } from "../util/FnUtils";
 
-import { DefaultLegendContent } from './DefaultLegendContent';
-import { isNumber } from '../util/DataUtils';
-import {
-  getUniqPayload
-} from './componentFn';
+import { DefaultLegendContent } from "./DefaultLegendContent";
+import { isNumber } from "../util/DataUtils";
+import { getUniqPayload } from "./componentFn";
 
 const CL_LEGEND_WRAPPER = "recharts-legend-wrapper" ;
 
@@ -20,14 +18,14 @@ const _defaultUniqBy = (
 ) => entry.value;
 
 const _renderContent = (
-  content,
+  ContentElementOrComp,
   props
 ) => {
-  if (isValidElement(content)) {
-    return cloneElement(content, props);
+  if (isValidElement(ContentElementOrComp)) {
+    return cloneElement(ContentElementOrComp, props);
   }
-  if (_isFn(content)) {
-    return createElement(content, props);
+  if (_isFn(ContentElementOrComp)) {
+    return createElement(ContentElementOrComp, props);
   }
   /*eslint-disable no-unused-vars*/
   const {
@@ -52,9 +50,9 @@ export class Legend extends PureComponent {
     const {
       layout
     } = item.props;
-    return layout === 'vertical' && isNumber(item.props.height)
+    return layout === "vertical" && isNumber(item.props.height)
       ? { height: item.props.height }
-      : layout === 'horizontal'
+      : layout === "horizontal"
           ? { width: item.props.width || chartWidth }
           : null;
   }
@@ -96,11 +94,11 @@ export class Legend extends PureComponent {
     if (!style
       || ((style.left === undefined || style.left === null) && (style.right === undefined || style.right === null))
     ) {
-      if (align === 'center' && layout === 'vertical') {
+      if (align === "center" && layout === "vertical") {
         const box = this.getBBoxSnapshot() || { width: 0 };
         hPos = { left: ((chartWidth || 0) - box.width) / 2 };
       } else {
-        hPos = align === 'right'
+        hPos = align === "right"
           ? { right: (margin && margin.right) || 0 }
           : { left: (margin && margin.left) || 0 };
       }
@@ -108,13 +106,13 @@ export class Legend extends PureComponent {
     if (!style
       || ((style.top === undefined || style.top === null) && (style.bottom === undefined || style.bottom === null))
     ) {
-      if (verticalAlign === 'middle') {
+      if (verticalAlign === "middle") {
         const box = this.getBBoxSnapshot() || { height: 0 };
         vPos = {
           top: ((chartHeight || 0) - box.height) / 2
         };
       } else {
-         vPos = verticalAlign === 'bottom'
+         vPos = verticalAlign === "bottom"
            ? { bottom: (margin && margin.bottom) || 0 }
            : { top: (margin && margin.top) || 0 };
       }
@@ -171,9 +169,9 @@ export class Legend extends PureComponent {
       payload
     } = this.props
     , outerStyle = {
-       position: 'absolute',
-       width: width || 'auto',
-       height: height || 'auto',
+       position: "absolute",
+       width: width || "auto",
+       height: height || "auto",
        ...this.getDefaultPosition(wrapperStyle),
        ...wrapperStyle
     };
@@ -193,10 +191,10 @@ export class Legend extends PureComponent {
   }
 }
 
-Legend.displayName = 'Legend';
+Legend.displayName = "Legend";
 Legend.defaultProps = {
     iconSize: 14,
-    layout: 'horizontal',
-    align: 'center',
-    verticalAlign: 'bottom'
+    layout: "horizontal",
+    align: "center",
+    verticalAlign: "bottom"
 };
