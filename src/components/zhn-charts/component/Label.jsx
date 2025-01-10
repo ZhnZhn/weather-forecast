@@ -1,6 +1,6 @@
 import {
   isValidElement,
-  cloneElement,
+  cloneUiElement,
   createElement
 } from "../../uiApi";
 
@@ -47,12 +47,12 @@ export const Label = (
     className,
     textBreakAll
   } = _props;
-  if (!viewBox || (_isNil(value) && _isNil(children) && !isValidElement(content) && !_isFn(content))) {
+  if (!viewBox || (_isNil(value) && _isNil(children) && !isValidElement(ContentElementOrComp) && !_isFn(ContentElementOrComp))) {
     return null;
   }
 
   if (isValidElement(ContentElementOrComp)) {
-    return cloneElement(ContentElementOrComp, _props);
+    return cloneUiElement(ContentElementOrComp, _props);
   }
 
   let label;
@@ -147,7 +147,7 @@ const parseLabel = (
   }
   if (isValidElement(label)) {
     if (label.type === Label) {
-      return cloneElement(label, { key: KEY_LABEL_IMPLICIT, viewBox });
+      return cloneUiElement(label, { viewBox }, KEY_LABEL_IMPLICIT);
     }
     return <Label key={KEY_LABEL_IMPLICIT} content={label} viewBox={viewBox}/>;
   }
@@ -155,7 +155,7 @@ const parseLabel = (
     return <Label key={KEY_LABEL_IMPLICIT} content={label} viewBox={viewBox}/>;
   }
   if (_isObject(label)) {
-    return <Label viewBox={viewBox} {...label} key={KEY_LABEL_IMPLICIT} />;
+    return <Label key={KEY_LABEL_IMPLICIT} viewBox={viewBox} {...label} />;
   }
   return null;
 };
@@ -170,11 +170,12 @@ const renderCallByParent = (
   }
   const { children } = parentProps
   , parentViewBox = parseViewBox(parentProps)
-  , explicitChildren = findAllByType(children, Label).map((child, index) => cloneElement(child, {
-      viewBox: viewBox || parentViewBox,
-      // eslint-disable-next-line react/no-array-index-key
-      key: `label-${index}`,
-  }));
+  , explicitChildren = findAllByType(children, Label)
+      .map((ChildElement, index) => cloneUiElement(
+         ChildElement,
+         {viewBox: viewBox || parentViewBox},
+         `label-${index}`
+      ));
 
   if (!checkPropsLabel) {
     return explicitChildren;

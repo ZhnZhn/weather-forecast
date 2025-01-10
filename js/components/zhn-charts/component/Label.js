@@ -12,7 +12,6 @@ var _DataUtils = require("../util/DataUtils");
 var _LabelFn = require("./LabelFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-var _react = require("react");
 const DF_PROPS = {
   offset: 5,
   className: ""
@@ -27,11 +26,11 @@ const Label = props => {
       className,
       textBreakAll
     } = _props;
-  if (!viewBox || (0, _FnUtils._isNil)(value) && (0, _FnUtils._isNil)(children) && !(0, _uiApi.isValidElement)(content) && !(0, _FnUtils._isFn)(content)) {
+  if (!viewBox || (0, _FnUtils._isNil)(value) && (0, _FnUtils._isNil)(children) && !(0, _uiApi.isValidElement)(ContentElementOrComp) && !(0, _FnUtils._isFn)(ContentElementOrComp)) {
     return null;
   }
   if ((0, _uiApi.isValidElement)(ContentElementOrComp)) {
-    return (0, _uiApi.cloneElement)(ContentElementOrComp, _props);
+    return (0, _uiApi.cloneUiElement)(ContentElementOrComp, _props);
   }
   let label;
   if ((0, _FnUtils._isFn)(ContentElementOrComp)) {
@@ -136,10 +135,9 @@ const parseLabel = (label, viewBox) => {
   }
   if ((0, _uiApi.isValidElement)(label)) {
     if (label.type === Label) {
-      return (0, _uiApi.cloneElement)(label, {
-        key: KEY_LABEL_IMPLICIT,
+      return (0, _uiApi.cloneUiElement)(label, {
         viewBox
-      });
+      }, KEY_LABEL_IMPLICIT);
     }
     return /*#__PURE__*/(0, _jsxRuntime.jsx)(Label, {
       content: label,
@@ -153,11 +151,10 @@ const parseLabel = (label, viewBox) => {
     }, KEY_LABEL_IMPLICIT);
   }
   if ((0, _FnUtils._isObject)(label)) {
-    return /*#__PURE__*/(0, _react.createElement)(Label, {
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)(Label, {
       viewBox: viewBox,
-      ...label,
-      key: KEY_LABEL_IMPLICIT
-    });
+      ...label
+    }, KEY_LABEL_IMPLICIT);
   }
   return null;
 };
@@ -172,11 +169,9 @@ const renderCallByParent = function (parentProps, viewBox, checkPropsLabel) {
       children
     } = parentProps,
     parentViewBox = parseViewBox(parentProps),
-    explicitChildren = (0, _ReactUtils.findAllByType)(children, Label).map((child, index) => (0, _uiApi.cloneElement)(child, {
-      viewBox: viewBox || parentViewBox,
-      // eslint-disable-next-line react/no-array-index-key
-      key: `label-${index}`
-    }));
+    explicitChildren = (0, _ReactUtils.findAllByType)(children, Label).map((ChildElement, index) => (0, _uiApi.cloneUiElement)(ChildElement, {
+      viewBox: viewBox || parentViewBox
+    }, `label-${index}`));
   if (!checkPropsLabel) {
     return explicitChildren;
   }
