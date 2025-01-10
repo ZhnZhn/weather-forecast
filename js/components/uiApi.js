@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useImperativeHandle = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.findDOMNode = exports.createRef = exports.createElement = exports.createContext = exports.cloneElement = exports.PureComponent = exports.Component = exports.Children = void 0;
+exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useImperativeHandle = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.findDOMNode = exports.createRef = exports.createElement = exports.createContext = exports.cloneUiElement = exports.cloneElement = exports.PureComponent = exports.Component = exports.Children = void 0;
 var _jsxRuntime = require("react/jsx-runtime");
 var _reactRedux = require("react-redux");
 exports.useSelector = _reactRedux.useSelector;
@@ -35,6 +35,16 @@ const createElement = (Comp, _ref) => {
   }, key);
 };
 exports.createElement = createElement;
+const cloneUiElement = function (Element, overrideProps, key) {
+  if (key === void 0) {
+    key = Element.key;
+  }
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(Element.type, {
+    ...Element.props,
+    ...overrideProps
+  }, key);
+};
+exports.cloneUiElement = cloneUiElement;
 const getRefValue = ref => (ref || {}).current;
 exports.getRefValue = getRefValue;
 const setRefValue = (ref, value) => {

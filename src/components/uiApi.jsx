@@ -31,6 +31,16 @@ export const createElement = (
   {key, ...restProps}
 ) => (<Comp key={key} {...restProps} />)
 
+export const cloneUiElement = (
+  Element,
+  overrideProps,
+  key=Element.key
+) => (<Element.type
+  key={key}
+  {...Element.props}
+  {...overrideProps}
+/>)
+
 export const getRefValue = ref => (ref || {}).current
 
 export const setRefValue = (
