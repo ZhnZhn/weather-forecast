@@ -85,7 +85,7 @@ const ResponsiveContainer = _ref => {
         calculatedHeight = maxHeight;
       }
     }
-    return (0, _uiApi.cloneElement)(children, {
+    return (0, _uiApi.cloneUiElement)(children, {
       width: calculatedWidth,
       height: calculatedHeight
     });
@@ -110,7 +110,7 @@ const ResponsiveContainer = _ref => {
     refreshRate: debounce,
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       ...(id != null ? {
-        id: "" + id
+        id: `${id}`
       } : {}),
       className: (0, _crCn.default)(_CL.CL_RESPONSIVE_CONTAINER, className),
       style: style,

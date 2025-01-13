@@ -1,5 +1,5 @@
 import {
-  cloneElement,
+  cloneUiElement,
   useRef,
   useState,
   useCallback,
@@ -100,7 +100,7 @@ export const ResponsiveContainer = ({
         calculatedHeight = maxHeight;
       }
     }
-    return cloneElement(children, {
+    return cloneUiElement(children, {
       width: calculatedWidth,
       height: calculatedHeight
     });
