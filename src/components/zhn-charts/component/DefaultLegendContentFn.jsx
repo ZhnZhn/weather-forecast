@@ -1,6 +1,6 @@
 import {
   isValidElement,
-  cloneElement
+  cloneUiElement
 } from '../../uiApi';
 
 import crCn from '../../zhn-utils/crCn';
@@ -69,7 +69,7 @@ const _renderIcon = (
   if (isValidElement(data.legendIcon)) {
     const iconProps = { ...data };
     delete iconProps.legendIcon;
-    return cloneElement(data.legendIcon, iconProps);
+    return cloneUiElement(data.legendIcon, iconProps);
   }
   return null;
 }

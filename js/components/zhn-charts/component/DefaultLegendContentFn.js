@@ -36,7 +36,10 @@ const _renderIcon = (data, props) => {
       strokeWidth: 4,
       fill: "none",
       stroke: color,
-      d: "M0," + halfSize + "h" + thirdSize + "\n        A" + sixthSize + "," + sixthSize + ",0,1,1," + 2 * thirdSize + "," + halfSize + "\n        H" + SIZE + "M" + 2 * thirdSize + "," + halfSize + "\n        A" + sixthSize + "," + sixthSize + ",0,1,1," + thirdSize + "," + halfSize,
+      d: `M0,${halfSize}h${thirdSize}
+        A${sixthSize},${sixthSize},0,1,1,${2 * thirdSize},${halfSize}
+        H${SIZE}M${2 * thirdSize},${halfSize}
+        A${sixthSize},${sixthSize},0,1,1,${thirdSize},${halfSize}`,
       className: _CL.CL_LEGEND_ICON
     });
   }
@@ -44,7 +47,7 @@ const _renderIcon = (data, props) => {
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
       stroke: "none",
       fill: color,
-      d: "M0," + SIZE / 8 + "h" + SIZE + "v" + SIZE * 3 / 4 + "h" + -SIZE + "z",
+      d: `M0,${SIZE / 8}h${SIZE}v${SIZE * 3 / 4}h${-SIZE}z`,
       className: _CL.CL_LEGEND_ICON
     });
   }
@@ -53,7 +56,7 @@ const _renderIcon = (data, props) => {
       ...data
     };
     delete iconProps.legendIcon;
-    return (0, _uiApi.cloneElement)(data.legendIcon, iconProps);
+    return (0, _uiApi.cloneUiElement)(data.legendIcon, iconProps);
   }
   return null;
 };
@@ -82,7 +85,7 @@ const renderItems = props => {
     };
   return payload.map((entry, i) => {
     const finalFormatter = entry.formatter || formatter,
-      className = (0, _crCn.default)(_CL.CL_LEGEND_ITEM + " legend-item-" + i, entry.inactive && 'inactive');
+      className = (0, _crCn.default)(`${_CL.CL_LEGEND_ITEM} legend-item-${i}`, entry.inactive && 'inactive');
     if (entry.type === 'none') {
       return null;
     }
@@ -104,7 +107,7 @@ const renderItems = props => {
         },
         children: finalFormatter ? finalFormatter(entry.value, entry, i) : entry.value
       })]
-    }, "legend-item-" + i);
+    }, `legend-item-${i}`);
   });
 };
 exports.renderItems = renderItems;
