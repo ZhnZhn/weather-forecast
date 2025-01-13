@@ -35,7 +35,7 @@ const LeftPushMenu = _ref => {
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_DayDetailPopup.default, {
       refEl: _refDetail,
       onClose: _hCloseDetail
-    }), (0, _uiApi.cloneElement)(CompOrBtOrErrEl, {
+    }), (0, _uiApi.cloneUiElement)(CompOrBtOrErrEl, {
       isAir
     })]
   });

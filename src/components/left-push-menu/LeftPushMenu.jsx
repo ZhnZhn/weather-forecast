@@ -1,6 +1,6 @@
 import {
   useSelector,
-  cloneElement,
+  cloneUiElement,
   useRef,
   useCallback,
 } from '../uiApi';
@@ -39,7 +39,7 @@ const LeftPushMenu = ({
           refEl={_refDetail}
           onClose={_hCloseDetail}
         />
-        {cloneElement(CompOrBtOrErrEl, { isAir })}
+        {cloneUiElement(CompOrBtOrErrEl, { isAir })}
     </div>
   );
 }
