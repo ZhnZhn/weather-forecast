@@ -1,7 +1,7 @@
 import {
   PureComponent,
-  cloneElement,
-  Children
+  Children,
+  cloneUiElement
 } from '../uiApi';
 
 import createAnimateManager from './AnimateManager';
@@ -27,7 +27,7 @@ const _fCloneContainer = (
     className
   } = container.props;
 
-  return cloneElement(container, {
+  return cloneUiElement(container, {
     ...restProps,
     style: {
       ...style,

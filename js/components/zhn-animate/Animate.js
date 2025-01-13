@@ -16,7 +16,7 @@ const _fCloneContainer = (restProps, stateStyle) => container => {
     style = {},
     className
   } = container.props;
-  return (0, _uiApi.cloneElement)(container, {
+  return (0, _uiApi.cloneUiElement)(container, {
     ...restProps,
     style: {
       ...style,
@@ -27,18 +27,54 @@ const _fCloneContainer = (restProps, stateStyle) => container => {
 };
 const FN_NOOP = () => {};
 class Animate extends _uiApi.PureComponent {
+  static displayName = 'Animate';
+
+  /*
+  static propTypes = {
+    from: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    to: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    attributeName: PropTypes.string,
+    // animation duration
+    duration: PropTypes.number,
+    begin: PropTypes.number,
+    easing: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    steps: PropTypes.arrayOf(PropTypes.shape({
+      duration: PropTypes.number.isRequired,
+      style: PropTypes.object.isRequired,
+      easing: PropTypes.oneOfType([
+        PropTypes.oneOf(['ease', 'ease-in', 'ease-out', 'ease-in-out', 'linear']),
+        PropTypes.func,
+      ]),
+      // transition css properties(dash case), optional
+      properties: PropTypes.arrayOf('string'),
+      onAnimationEnd: PropTypes.func,
+    })),
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    isActive: PropTypes.bool,
+    canBegin: PropTypes.bool,
+    onAnimationEnd: PropTypes.func,
+    // decide if it should reanimate with initial from style when props change
+    shouldReAnimate: PropTypes.bool,
+    onAnimationStart: PropTypes.func,
+    onAnimationReStart: PropTypes.func,
+  };
+  */
+
+  static defaultProps = (() => ({
+    begin: 0,
+    duration: 1000,
+    from: '',
+    to: '',
+    attributeName: '',
+    easing: 'ease',
+    isActive: true,
+    canBegin: true,
+    steps: [],
+    onAnimationEnd: FN_NOOP,
+    onAnimationStart: FN_NOOP
+  }))();
   constructor(props, context) {
     super(props, context);
-    this.handleStyleChange = style => {
-      this.changeStyle(style);
-    };
-    this.changeStyle = style => {
-      if (this.mounted) {
-        this.setState({
-          style
-        });
-      }
-    };
     const {
       isActive,
       attributeName,
@@ -239,6 +275,16 @@ class Animate extends _uiApi.PureComponent {
       transition
     }, duration, onAnimationEnd]);
   }
+  handleStyleChange = style => {
+    this.changeStyle(style);
+  };
+  changeStyle = style => {
+    if (this.mounted) {
+      this.setState({
+        style
+      });
+    }
+  };
   render() {
     /*eslint-disable no-unused-vars*/
     const {
@@ -273,48 +319,4 @@ class Animate extends _uiApi.PureComponent {
   }
 }
 exports.Animate = Animate;
-Animate.displayName = 'Animate';
-/*
-static propTypes = {
-  from: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  to: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  attributeName: PropTypes.string,
-  // animation duration
-  duration: PropTypes.number,
-  begin: PropTypes.number,
-  easing: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-  steps: PropTypes.arrayOf(PropTypes.shape({
-    duration: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
-    easing: PropTypes.oneOfType([
-      PropTypes.oneOf(['ease', 'ease-in', 'ease-out', 'ease-in-out', 'linear']),
-      PropTypes.func,
-    ]),
-    // transition css properties(dash case), optional
-    properties: PropTypes.arrayOf('string'),
-    onAnimationEnd: PropTypes.func,
-  })),
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  isActive: PropTypes.bool,
-  canBegin: PropTypes.bool,
-  onAnimationEnd: PropTypes.func,
-  // decide if it should reanimate with initial from style when props change
-  shouldReAnimate: PropTypes.bool,
-  onAnimationStart: PropTypes.func,
-  onAnimationReStart: PropTypes.func,
-};
-*/
-Animate.defaultProps = {
-  begin: 0,
-  duration: 1000,
-  from: '',
-  to: '',
-  attributeName: '',
-  easing: 'ease',
-  isActive: true,
-  canBegin: true,
-  steps: [],
-  onAnimationEnd: FN_NOOP,
-  onAnimationStart: FN_NOOP
-};
 //# sourceMappingURL=Animate.js.map
