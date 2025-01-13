@@ -1,6 +1,6 @@
 import {
   isValidElement,
-  cloneElement,
+  cloneUiElement,
   createElement,
   PureComponent
 } from "../../uiApi";
@@ -22,7 +22,7 @@ const _renderContent = (
   props
 ) => {
   if (isValidElement(ContentElementOrComp)) {
-    return cloneElement(ContentElementOrComp, props);
+    return cloneUiElement(ContentElementOrComp, props);
   }
   if (_isFn(ContentElementOrComp)) {
     return createElement(ContentElementOrComp, props);

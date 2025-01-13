@@ -12,7 +12,7 @@ const CL_LEGEND_WRAPPER = "recharts-legend-wrapper";
 const _defaultUniqBy = entry => entry.value;
 const _renderContent = (ContentElementOrComp, props) => {
   if ((0, _uiApi.isValidElement)(ContentElementOrComp)) {
-    return (0, _uiApi.cloneElement)(ContentElementOrComp, props);
+    return (0, _uiApi.cloneUiElement)(ContentElementOrComp, props);
   }
   if ((0, _FnUtils._isFn)(ContentElementOrComp)) {
     return (0, _uiApi.createElement)(ContentElementOrComp, props);
