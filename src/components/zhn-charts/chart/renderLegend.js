@@ -1,4 +1,4 @@
-import { cloneElement } from '../../uiApi';
+import { cloneUiElement } from '../../uiApi';
 import { getLegendProps } from '../util/ChartUtils';
 
 export const renderLegend = (
@@ -34,12 +34,11 @@ export const renderLegend = (
     item,
     ...itemProps
   } = _props;
-  return cloneElement(item, {
+  return cloneUiElement(item, {
      ...itemProps,
      chartWidth: width,
      chartHeight: height,
-     margin,
-     ref: chartInst._refLegend,
+     margin,     
      onBBoxUpdate: chartInst.handleLegendBBoxUpdate,
   });
 }
