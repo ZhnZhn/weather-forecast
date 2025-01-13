@@ -1,6 +1,6 @@
 import {
   isValidElement,
-  cloneElement,
+  cloneUiElement,
   createElement
 } from '../../uiApi';
 
@@ -77,8 +77,7 @@ const renderGrid = ({
     , yAxis = yAxisWithFiniteDomain || getAnyElementOfObject(yAxisMap)
     , _props = element.props || {};
 
-    return cloneElement(element, {
-      key: element.key || 'grid',
+    return cloneUiElement(element, {
       x: _getNumberValue(_props.x, offset.left),
       y: _getNumberValue(_props.y, offset.top),
       width: _getNumberValue(_props.width, offset.width),
@@ -90,7 +89,7 @@ const renderGrid = ({
       chartHeight: height,
       verticalCoordinatesGenerator: _props.verticalCoordinatesGenerator || chartInst.verticalCoordinatesGenerator,
       horizontalCoordinatesGenerator: _props.horizontalCoordinatesGenerator || chartInst.horizontalCoordinatesGenerator,
-    });
+    }, element.key || 'grid');
 };
 
 const renderReferenceElement = ({
@@ -116,8 +115,7 @@ const renderReferenceElement = ({
     xAxisId,
     yAxisId
   } = element.props;
-  return cloneElement(element, {
-    key: element.key || `${displayName}-${index}`,
+  return cloneUiElement(element, {
     xAxis: xAxisMap[xAxisId],
     yAxis: yAxisMap[yAxisId],
     viewBox: {
@@ -127,7 +125,7 @@ const renderReferenceElement = ({
       height: offset.height
     },
     clipPathId
-  });
+  }, element.key || `${displayName}-${index}`);
 }
 
 const renderXAxis = ({
@@ -188,8 +186,7 @@ const renderBrush = ({
     props: elementProps
   } = element || {};
   // TODO: update brush when children update
-  return cloneElement(element, {
-    key: element.key || '_recharts-brush',
+  return cloneUiElement(element, {
     onChange: combineEventHandlers(chartInst.handleBrushChange, null, element.props.onChange),
     data,
     x: _getNumberValue(elementProps.x, offset.left),
@@ -201,7 +198,7 @@ const renderBrush = ({
     startIndex: dataStartIndex,
     endIndex: dataEndIndex,
     updateId: `brush-${updateId}`
-  });
+  }, element.key || '_recharts-brush');
 }
 
 const _filterFormatItem = (
@@ -274,7 +271,7 @@ const renderGraphicChild = ({
               onMouseEnter: combineEventHandlers(chartInst.handleItemMouseEnter, null, element.props.onMouseEnter),
             }
           : {}
-  , graphicalItem = cloneElement(
+  , graphicalItem = cloneUiElement(
       element, {
       ...item.props,
       ...itemEvents
@@ -321,7 +318,7 @@ const renderGraphicChild = ({
 
 //[restProps, cursorComp]
 const _crCursorComp = (
-  chartInst  
+  chartInst
 ) => [
   { points: chartInst.getCursorPoints() },
   Curve
@@ -380,7 +377,7 @@ const renderCursor = ({
   };
 
   return isValidElement(_elementPropsCursor)
-    ? cloneElement(_elementPropsCursor, cursorProps)
+    ? cloneUiElement(_elementPropsCursor, cursorProps)
     : createElement(cursorComp, cursorProps);
 };
 
