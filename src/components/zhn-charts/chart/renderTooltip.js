@@ -1,4 +1,4 @@
-import { cloneElement } from '../../uiApi';
+import { cloneUiElement } from '../../uiApi';
 
 import { findChildByType } from '../util/ReactUtils';
 import { Tooltip } from '../component/Tooltip';
@@ -24,7 +24,7 @@ export const renderTooltip = (
     activeLabel,
     offset
   } = state;
-  return cloneElement(tooltipItem, {
+  return cloneUiElement(tooltipItem, {
     viewBox: { ...offset, x: offset.left, y: offset.top },
     active: isTooltipActive,
     label: activeLabel,
