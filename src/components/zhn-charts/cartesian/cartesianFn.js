@@ -1,6 +1,6 @@
 import {
   isValidElement,
-  cloneElement
+  cloneUiElement
 } from '../../uiApi';
 
 import { getValueByDataKey } from '../util/ChartUtils';
@@ -45,7 +45,7 @@ export const fCreateElement = (
   props,
   value
 ) => isValidElement(option)
-  ? cloneElement(option, props)
+  ? cloneUiElement(option, props)
   : _isFn(option)
      ? option(props)
      : crElement(props, option, value)

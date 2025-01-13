@@ -31,9 +31,9 @@ const isNeedClip = _ref2 => {
   return xAxis && xAxis.allowDataOverflow || yAxis && yAxis.allowDataOverflow;
 };
 exports.isNeedClip = isNeedClip;
-const crClipPathIdIf = props => (0, _IfOverflowMatches.ifOverflowMatches)(props, 'hidden') ? "url(#" + props.clipPathId + ")" : void 0;
+const crClipPathIdIf = props => (0, _IfOverflowMatches.ifOverflowMatches)(props, 'hidden') ? `url(#${props.clipPathId})` : void 0;
 exports.crClipPathIdIf = crClipPathIdIf;
-const fCreateElement = crElement => (option, props, value) => (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneElement)(option, props) : (0, _FnUtils._isFn)(option) ? option(props) : crElement(props, option, value);
+const fCreateElement = crElement => (option, props, value) => (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneUiElement)(option, props) : (0, _FnUtils._isFn)(option) ? option(props) : crElement(props, option, value);
 exports.fCreateElement = fCreateElement;
 const dataPointFormatter = (dataPoint, dataKey) => ({
   x: dataPoint.x,
@@ -43,7 +43,7 @@ const dataPointFormatter = (dataPoint, dataKey) => ({
 });
 exports.dataPointFormatter = dataPointFormatter;
 const crClipPathProps = (needClip, clipPathId) => ({
-  clipPath: needClip ? "url(#clipPath-" + clipPathId + ")" : null
+  clipPath: needClip ? `url(#clipPath-${clipPathId})` : null
 });
 exports.crClipPathProps = crClipPathProps;
 //# sourceMappingURL=cartesianFn.js.map
