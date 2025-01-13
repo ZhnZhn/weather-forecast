@@ -17,7 +17,7 @@ var _jsxRuntime = require("react/jsx-runtime");
 //const CLS_PREFIX = 'recharts-tooltip-wrapper';
 const EPS = 1;
 const _defaultUniqBy = entry => entry.dataKey;
-const _renderContent = (ContentElementOrComp, props) => (0, _uiApi.isValidElement)(ContentElementOrComp) ? (0, _uiApi.cloneElement)(ContentElementOrComp, props) : (0, _FnUtils._isFn)(ContentElementOrComp) ? (0, _uiApi.createElement)(ContentElementOrComp, props) : (0, _uiApi.createElement)(_DefaultTooltipContent.DefaultTooltipContent, props);
+const _renderContent = (ContentElementOrComp, props) => (0, _uiApi.isValidElement)(ContentElementOrComp) ? (0, _uiApi.cloneUiElement)(ContentElementOrComp, props) : (0, _FnUtils._isFn)(ContentElementOrComp) ? (0, _uiApi.createElement)(ContentElementOrComp, props) : (0, _uiApi.createElement)(_DefaultTooltipContent.DefaultTooltipContent, props);
 const DF_PROPS = {
   active: false,
   allowEscapeViewBox: {

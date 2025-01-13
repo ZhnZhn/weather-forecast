@@ -1,6 +1,6 @@
 import {
   isValidElement,
-  cloneElement,
+  cloneUiElement,
   createElement,
   useRef,
   useState,
@@ -34,7 +34,7 @@ const _renderContent = (
   ContentElementOrComp,
   props
 ) => isValidElement(ContentElementOrComp)
-  ? cloneElement(ContentElementOrComp, props)
+  ? cloneUiElement(ContentElementOrComp, props)
   : _isFn(ContentElementOrComp)
       ? createElement(ContentElementOrComp, props)
       : createElement(DefaultTooltipContent, props);
