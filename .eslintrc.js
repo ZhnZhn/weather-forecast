@@ -13,7 +13,8 @@ module.exports = {
 
     "extends": [
       "eslint:recommended",
-      "plugin:redux-saga/recommended"
+      "plugin:redux-saga/recommended",
+      "plugin:jsx-a11y/recommended" 
     ],
 
 
