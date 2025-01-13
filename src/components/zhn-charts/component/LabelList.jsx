@@ -1,6 +1,6 @@
 import {
   isValidElement,
-  cloneElement
+  cloneUiElement
 } from '../../uiApi';
 
 import {
@@ -121,10 +121,9 @@ function renderCallByParent(
   , explicitChildren = findAllByType(
       children,
       LabelList
-    ).map((child, index) => cloneElement(child, {
-        data,
-        key: `labelList-${index}`
-    }));
+    ).map((child, index) => cloneUiElement(child, {
+        data
+    }, `labelList-${index}`));
 
   if (!checkPropsLabel) {
     return explicitChildren;
