@@ -1,6 +1,6 @@
 import {
   isValidElement,
-  cloneElement
+  cloneUiElement
 } from '../../uiApi';
 
 import {
@@ -27,7 +27,7 @@ const renderActiveDot = (
   props
 ) => {
   const dot = isValidElement(option)
-    ? cloneElement(option, props)
+    ? cloneUiElement(option, props)
     : _isFn(option)
         ? option(props)
         : <Dot {...props}/>;
