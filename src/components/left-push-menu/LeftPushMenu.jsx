@@ -2,7 +2,8 @@ import {
   useSelector,
   cloneUiElement,
   useRef,
-  useCallback,
+  useMemo,
+  getRefValue
 } from '../uiApi';
 
 import { sSettings } from '../../flux/selectors';
@@ -20,12 +21,17 @@ const LeftPushMenu = ({
 }) => {
   const isAir = useSelector(sSettings.isAir)
   , _refDetail = useRef()
-  , _hClickItem = useCallback((item, event) => {
-    _refDetail.current.setItem(item);
-  }, [])
-  , _hCloseDetail = useCallback(() => {
-    _refDetail.current.close();
-  }, [])
+  , [
+    _hClickItem,
+    _hCloseDetail
+  ] = useMemo(() => [
+    (item, event) => {
+      getRefValue(_refDetail).setItem(item);
+    },
+    () => {
+      getRefValue(_refDetail).close();
+    }
+  ], [])
   , CompOrBtOrErrEl = useLoadComp('CHARTS', COMP_TYPE.CTB)
   , STYLE = theme.createStyle(styleConfig);
 

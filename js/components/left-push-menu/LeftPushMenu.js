@@ -18,12 +18,11 @@ const LeftPushMenu = _ref => {
   } = _ref;
   const isAir = (0, _uiApi.useSelector)(_selectors.sSettings.isAir),
     _refDetail = (0, _uiApi.useRef)(),
-    _hClickItem = (0, _uiApi.useCallback)((item, event) => {
-      _refDetail.current.setItem(item);
-    }, []),
-    _hCloseDetail = (0, _uiApi.useCallback)(() => {
-      _refDetail.current.close();
-    }, []),
+    [_hClickItem, _hCloseDetail] = (0, _uiApi.useMemo)(() => [(item, event) => {
+      (0, _uiApi.getRefValue)(_refDetail).setItem(item);
+    }, () => {
+      (0, _uiApi.getRefValue)(_refDetail).close();
+    }], []),
     CompOrBtOrErrEl = (0, _useLoadComp.default)('CHARTS', _CompType.default.CTB),
     STYLE = theme.createStyle(_LeftPushMenu.default);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
