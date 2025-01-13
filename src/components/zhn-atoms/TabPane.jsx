@@ -1,8 +1,7 @@
-//import PropTypes from "prop-types";
 import {
-  cloneElement,
   useState,
-  useCallback
+  useCallback,
+  cloneUiElement
 } from '../uiApi';
 
 const S_TABS = {
@@ -37,12 +36,11 @@ const _renderTabs = (
   selectedTabIndex,
   hClickTab
 ) => _reduceElements(children, (tabEl, index) =>
-   cloneElement(tabEl, {
-     key: index,
+   cloneUiElement(tabEl, {
      id: index,
      onClick: () => hClickTab(index, tabEl),
      isSelected: index === selectedTabIndex
-   })
+   }, index)
  );
 
  const _renderComponents = (
@@ -59,7 +57,7 @@ const _renderTabs = (
         id={`tabpanel-${index}`}
         aria-labelledby={`tab-${index}`}
      >
-        {cloneElement(tabEl.props.children, {
+        {cloneUiElement(tabEl.props.children, {
            isSelected: _isSelected
         })}
     </div>
@@ -73,7 +71,10 @@ const TabPane = ({
   height,
   children
 }) => {
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0)
+  const [
+    selectedTabIndex,
+    setSelectedTabIndex
+  ] = useState(0)
   , _hClickTab = useCallback((index, tabEl) => {
     setSelectedTabIndex(index)
     const { props } = tabEl || {}
@@ -93,14 +94,6 @@ const TabPane = ({
       </div>
     </div>
   );
-}
-
-/*
-TabPane.propTypes = {
-  width: PropTypes.number,
-  height: PropTypes.number,
-  children: PropTypes.arrayOf(PropTypes.node)
-}
-*/
+};
 
 export default TabPane

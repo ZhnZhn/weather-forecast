@@ -4,8 +4,6 @@ exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _jsxRuntime = require("react/jsx-runtime");
-//import PropTypes from "prop-types";
-
 const S_TABS = {
     marginTop: 5,
     marginRight: 5,
@@ -32,21 +30,20 @@ const _reduceElements = (elements, crElement) => (elements || []).reduce((els, e
   }
   return els;
 }, []);
-const _renderTabs = (children, selectedTabIndex, hClickTab) => _reduceElements(children, (tabEl, index) => (0, _uiApi.cloneElement)(tabEl, {
-  key: index,
+const _renderTabs = (children, selectedTabIndex, hClickTab) => _reduceElements(children, (tabEl, index) => (0, _uiApi.cloneUiElement)(tabEl, {
   id: index,
   onClick: () => hClickTab(index, tabEl),
   isSelected: index === selectedTabIndex
-}));
+}, index));
 const _renderComponents = (children, selectedTabIndex) => _reduceElements(children, (tabEl, index) => {
   const _isSelected = index === selectedTabIndex,
     _divStyle = _isSelected ? S_BLOCK : S_NONE;
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     style: _divStyle,
     role: "tabpanel",
-    id: "tabpanel-" + index,
-    "aria-labelledby": "tab-" + index,
-    children: (0, _uiApi.cloneElement)(tabEl.props.children, {
+    id: `tabpanel-${index}`,
+    "aria-labelledby": `tab-${index}`,
+    children: (0, _uiApi.cloneUiElement)(tabEl.props.children, {
       isSelected: _isSelected
     })
   }, 'a' + index);
@@ -84,13 +81,5 @@ const TabPane = _ref => {
     })]
   });
 };
-
-/*
-TabPane.propTypes = {
-  width: PropTypes.number,
-  height: PropTypes.number,
-  children: PropTypes.arrayOf(PropTypes.node)
-}
-*/
 var _default = exports.default = TabPane;
 //# sourceMappingURL=TabPane.js.map
