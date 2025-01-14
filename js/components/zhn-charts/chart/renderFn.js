@@ -209,10 +209,14 @@ const renderGraphicChild = _ref6 => {
       onMouseLeave: (0, _ChartUtils.combineEventHandlers)(chartInst.handleItemMouseLeave, null, element.props.onMouseLeave),
       onMouseEnter: (0, _ChartUtils.combineEventHandlers)(chartInst.handleItemMouseEnter, null, element.props.onMouseEnter)
     } : {},
+    {
+      key,
+      ...itemProps
+    } = item.props,
     graphicalItem = (0, _uiApi.cloneUiElement)(element, {
-      ...item.props,
+      ...itemProps,
       ...itemEvents
-    });
+    }, key);
   function findWithPayload(entry) {
     return (0, _FnUtils._isFn)(tooltipAxis.dataKey) ? tooltipAxis.dataKey(entry.payload) : null;
   }

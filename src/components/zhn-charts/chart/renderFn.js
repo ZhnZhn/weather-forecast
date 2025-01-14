@@ -271,11 +271,12 @@ const renderGraphicChild = ({
               onMouseEnter: combineEventHandlers(chartInst.handleItemMouseEnter, null, element.props.onMouseEnter),
             }
           : {}
+  , { key, ...itemProps } = item.props
   , graphicalItem = cloneUiElement(
       element, {
-      ...item.props,
+      ...itemProps,
       ...itemEvents
-    });
+    }, key);
 
   function findWithPayload(entry) {
     return _isFn(tooltipAxis.dataKey)
