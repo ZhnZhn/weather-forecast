@@ -37,7 +37,7 @@ const renderDots = (needClip, clipPathId, isAnimationFinished, props) => {
     customDotProps = (0, _ReactUtils.filterProps)(dot, true),
     dots = points.map((entry, i) => {
       const dotProps = {
-        key: "dot-" + i,
+        key: `dot-${i}`,
         r: 3,
         ...lineProps,
         ...customDotProps,
@@ -66,6 +66,7 @@ const renderCurveStatically = (points, needClip, clipPathId, props, pathRef, opt
     layout,
     connectNulls,
     ref,
+    key,
     ...restProps
   } = props;
   //ref
@@ -84,7 +85,7 @@ const renderCurveStatically = (points, needClip, clipPathId, props, pathRef, opt
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Curve.Curve, {
     ...curveProps,
     pathRef: pathRef
-  });
+  }, key);
 };
 const _repeat = (lines, count) => {
   const linesUnit = lines.length % 2 !== 0 ? [...lines, 0] : lines;
@@ -107,7 +108,7 @@ const _getStrokeDasharray = (length, totalLength, lines) => {
     }
   }
   const emptyLines = remainLines.length % 2 === 0 ? [0, restLength] : [restLength];
-  return [..._repeat(lines, count), ...remainLines, ...emptyLines].map(line => line + "px").join(', ');
+  return [..._repeat(lines, count), ...remainLines, ...emptyLines].map(line => `${line}px`).join(', ');
 };
 const ANIMATE_CURVE_FROM = {
   t: 0
@@ -177,16 +178,16 @@ const renderCurveWithAnimation = (needClip, clipPathId, prevPoints, totalLength,
         curLength = interpolator(t);
       let currentStrokeDasharray;
       if (strokeDasharray) {
-        const lines = ("" + strokeDasharray).split(/[,\s]+/gim).map(num => parseFloat(num));
+        const lines = `${strokeDasharray}`.split(/[,\s]+/gim).map(num => parseFloat(num));
         currentStrokeDasharray = _getStrokeDasharray(curLength, totalLength, lines);
       } else {
-        currentStrokeDasharray = curLength + "px " + (totalLength - curLength) + "px";
+        currentStrokeDasharray = `${curLength}px ${totalLength - curLength}px`;
       }
       return renderCurveStatically(points, needClip, clipPathId, props, pathRef, {
         strokeDasharray: currentStrokeDasharray
       });
     }
-  }, "line-" + animationId);
+  }, `line-${animationId}`);
 };
 const renderCurve = (needClip, clipPathId, prevPoints, totalLength, props, refPath, handleAnimationStart, handleAnimationEnd) => {
   const {

@@ -98,6 +98,7 @@ const renderCurveStatically = (
       layout,
       connectNulls,
       ref,
+      key,
       ...restProps
     } = props;
     //ref
@@ -115,6 +116,7 @@ const renderCurveStatically = (
     };
     return (
       <Curve
+        key={key}
         {...curveProps}
         pathRef={pathRef}
       />
