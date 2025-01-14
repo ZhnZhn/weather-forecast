@@ -4,17 +4,12 @@ export {
 } from "react-redux";
 
 export {
-  findDOMNode
-} from "react-dom";
-
-export {
   isValidElement,
   Component,
   PureComponent,
   Children,
   createContext,
   createRef,
-  cloneElement,
   memo,
   useRef,
   useState,
@@ -31,12 +26,16 @@ export const createElement = (
   {key, ...restProps}
 ) => (<Comp key={key} {...restProps} />)
 
+const _isStr = v => typeof v == "string"
+, _isNumber = v => typeof v == "number" && v-v == 0
+, _isElementKey = v => _isStr(v) || _isNumber(v);
+
 export const cloneUiElement = (
   Element,
   overrideProps,
   key=Element.key
 ) => (<Element.type
-  key={key}
+  key={_isElementKey(key) ? key : void 0}
   {...Element.props}
   {...overrideProps}
 />)

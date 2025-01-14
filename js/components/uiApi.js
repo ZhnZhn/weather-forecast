@@ -1,13 +1,11 @@
 "use strict";
 
 exports.__esModule = true;
-exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useImperativeHandle = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.findDOMNode = exports.createRef = exports.createElement = exports.createContext = exports.cloneUiElement = exports.cloneElement = exports.PureComponent = exports.Component = exports.Children = void 0;
+exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useImperativeHandle = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.createRef = exports.createElement = exports.createContext = exports.cloneUiElement = exports.PureComponent = exports.Component = exports.Children = void 0;
 var _jsxRuntime = require("react/jsx-runtime");
 var _reactRedux = require("react-redux");
 exports.useSelector = _reactRedux.useSelector;
 exports.useStore = _reactRedux.useStore;
-var _reactDom = require("react-dom");
-exports.findDOMNode = _reactDom.findDOMNode;
 var _react = require("react");
 exports.isValidElement = _react.isValidElement;
 exports.Component = _react.Component;
@@ -15,7 +13,6 @@ exports.PureComponent = _react.PureComponent;
 exports.Children = _react.Children;
 exports.createContext = _react.createContext;
 exports.createRef = _react.createRef;
-exports.cloneElement = _react.cloneElement;
 exports.memo = _react.memo;
 exports.useRef = _react.useRef;
 exports.useState = _react.useState;
@@ -35,6 +32,9 @@ const createElement = (Comp, _ref) => {
   }, key);
 };
 exports.createElement = createElement;
+const _isStr = v => typeof v == "string",
+  _isNumber = v => typeof v == "number" && v - v == 0,
+  _isElementKey = v => _isStr(v) || _isNumber(v);
 const cloneUiElement = function (Element, overrideProps, key) {
   if (key === void 0) {
     key = Element.key;
@@ -42,7 +42,7 @@ const cloneUiElement = function (Element, overrideProps, key) {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(Element.type, {
     ...Element.props,
     ...overrideProps
-  }, key);
+  }, _isElementKey(key) ? key : void 0);
 };
 exports.cloneUiElement = cloneUiElement;
 const getRefValue = ref => (ref || {}).current;
