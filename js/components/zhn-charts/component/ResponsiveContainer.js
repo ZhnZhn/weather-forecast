@@ -5,13 +5,24 @@ exports.__esModule = true;
 exports.ResponsiveContainer = void 0;
 var _uiApi = require("../../uiApi");
 var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
-var _ResizeDetector = _interopRequireDefault(require("../../zhn-resize-detector/ResizeDetector"));
+var _throttleFn = _interopRequireDefault(require("../../../utils/throttleFn"));
 var _DataUtils = require("../util/DataUtils");
-var _CL = require("../CL");
+var _ReactUtils = require("../util/ReactUtils");
+var _useContainerSizes = require("./useContainerSizes");
 var _jsxRuntime = require("react/jsx-runtime");
+const _isArr = Array.isArray,
+  FN_NOOP = () => {},
+  _getContainerDimension = (value, containerValue) => (0, _DataUtils.isPercent)(value) ? containerValue : value;
 const ResponsiveContainer = _ref => {
   let {
+    id,
+    className,
+    style,
     aspect,
+    initialDimension = {
+      width: -1,
+      height: -1
+    },
     width = '100%',
     height = '100%',
     /*
@@ -23,44 +34,37 @@ const ResponsiveContainer = _ref => {
     maxHeight,
     children,
     debounce = 0,
-    id,
-    className,
-    onResize
+    onResize = FN_NOOP
   } = _ref;
-  const [sizes, setSizes] = (0, _uiApi.useState)({
-      containerWidth: -1,
-      containerHeight: -1
-    }),
-    containerRef = (0, _uiApi.useRef)(null);
-  const getContainerSize = (0, _uiApi.useCallback)(() => {
-    const _containerEl = (0, _uiApi.getRefValue)(containerRef);
-    return _containerEl ? {
-      containerWidth: _containerEl.clientWidth,
-      containerHeight: _containerEl.clientHeight
-    } : null;
-  }, []);
-  const updateDimensionsImmediate = (0, _uiApi.useCallback)(() => {
-    const newSize = getContainerSize();
-    if (newSize) {
+  const _refContainer = (0, _uiApi.useRef)(null),
+    _refOnResize = (0, _uiApi.useRef)(onResize),
+    [sizes, setContainerSize] = (0, _useContainerSizes.useContainerSizes)(initialDimension);
+
+  /*eslint-disable react-hooks/exhaustive-deps */
+  (0, _uiApi.useEffect)(() => {
+    let _onResizeContainer = entries => {
       const {
-        containerWidth,
-        containerHeight
-      } = newSize;
-      if (onResize) {
-        onResize(containerWidth, containerHeight);
-      }
-      setSizes(currentSizes => {
-        const {
-          containerWidth: oldWidth,
-          containerHeight: oldHeight
-        } = currentSizes;
-        return containerWidth !== oldWidth || containerHeight !== oldHeight ? {
-          containerWidth,
-          containerHeight
-        } : currentSizes;
-      });
+        width: containerWidth,
+        height: containerHeight
+      } = entries[0].contentRect;
+      setContainerSize(containerWidth, containerHeight);
+      (0, _uiApi.getRefValue)(_refOnResize)(containerWidth, containerHeight);
+    };
+    if (debounce > 0) {
+      _onResizeContainer = (0, _throttleFn.default)(_onResizeContainer, debounce);
     }
-  }, [getContainerSize, onResize]);
+    const observer = new ResizeObserver(_onResizeContainer),
+      containerNode = (0, _uiApi.getRefValue)(_refContainer),
+      {
+        width: containerWidth,
+        height: containerHeight
+      } = containerNode.getBoundingClientRect();
+    setContainerSize(containerWidth, containerHeight);
+    observer.observe(containerNode);
+    return () => {
+      observer.disconnect();
+    };
+  }, [setContainerSize, debounce]);
   const chartContent = (0, _uiApi.useMemo)(() => {
     const {
       containerWidth,
@@ -69,8 +73,8 @@ const ResponsiveContainer = _ref => {
     if (containerWidth < 0 || containerHeight < 0) {
       return null;
     }
-    let calculatedWidth = (0, _DataUtils.isPercent)(width) ? containerWidth : width;
-    let calculatedHeight = (0, _DataUtils.isPercent)(height) ? containerHeight : height;
+    let calculatedWidth = _getContainerDimension(width, containerWidth),
+      calculatedHeight = _getContainerDimension(height, containerHeight);
     if (aspect && aspect > 0) {
       // Preserve the desired aspect ratio
       if (calculatedWidth) {
@@ -80,43 +84,50 @@ const ResponsiveContainer = _ref => {
         // But we should also take height into consideration
         calculatedWidth = calculatedHeight * aspect;
       }
+
       // if maxHeight is set, overwrite if calculatedHeight is greater than maxHeight
       if (maxHeight && calculatedHeight > maxHeight) {
         calculatedHeight = maxHeight;
       }
     }
-    return (0, _uiApi.cloneUiElement)(children, {
-      width: calculatedWidth,
-      height: calculatedHeight
+    const isCharts = !_isArr(children) && (0, _ReactUtils.getDisplayName)(children.type).endsWith('Chart');
+    return _uiApi.Children.map(children, child => {
+      if ((0, _uiApi.isValidElement)(child)) {
+        return (0, _uiApi.cloneUiElement)(child, {
+          width: calculatedWidth,
+          height: calculatedHeight,
+          // calculate the actual size and override it.
+          ...(isCharts ? {
+            style: {
+              height: '100%',
+              width: '100%',
+              maxHeight: calculatedHeight,
+              maxWidth: calculatedWidth,
+              // keep components style
+              ...child.props.style
+            }
+          } : void 0)
+        });
+      }
+      return child;
     });
-  }, [aspect, children, height, maxHeight, sizes, width]);
-  (0, _uiApi.useEffect)(() => {
-    const size = getContainerSize();
-    if (size) {
-      setSizes(size);
-    }
-  }, [getContainerSize]);
-  const style = {
-    width,
-    height,
-    minWidth,
-    minHeight,
-    maxHeight
-  };
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ResizeDetector.default, {
-    onResize: updateDimensionsImmediate,
-    targetRef: containerRef,
-    refreshMode: debounce > 0 ? 'debounce' : void 0,
-    refreshRate: debounce,
-    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      ...(id != null ? {
-        id: `${id}`
-      } : {}),
-      className: (0, _crCn.default)(_CL.CL_RESPONSIVE_CONTAINER, className),
-      style: style,
-      ref: containerRef,
-      children: chartContent
-    })
+  }, [aspect, children, height, maxHeight, minHeight, minWidth, sizes, width]);
+  // minHeight, minWidth
+  /*eslint-enable react-hooks/exhaustive-deps */
+
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    ref: _refContainer,
+    id: id ? id : void 0,
+    className: (0, _crCn.default)("recharts-responsive-container", className),
+    style: {
+      ...style,
+      width,
+      height,
+      minWidth,
+      minHeight,
+      maxHeight
+    },
+    children: chartContent
   });
 };
 exports.ResponsiveContainer = ResponsiveContainer;

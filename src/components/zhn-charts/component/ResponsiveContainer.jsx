@@ -1,21 +1,40 @@
 import {
+  isValidElement,
+  Children,
   cloneUiElement,
   useRef,
-  useState,
-  useCallback,
   useMemo,
   useEffect,
   getRefValue
 } from '../../uiApi';
 
 import crCn from '../../zhn-utils/crCn';
-import ReactResizeDetector from '../../zhn-resize-detector/ResizeDetector';
+
+import throttle from '../../../utils/throttleFn';
 
 import { isPercent } from '../util/DataUtils';
-import { CL_RESPONSIVE_CONTAINER } from '../CL';
+import { getDisplayName } from '../util/ReactUtils';
+
+import { useContainerSizes } from './useContainerSizes';
+
+const _isArr = Array.isArray
+, FN_NOOP = () => {}
+, _getContainerDimension = (
+  value,
+  containerValue
+) => isPercent(value)
+  ? containerValue
+  : value;
 
 export const ResponsiveContainer = ({
+  id,
+  className,
+  style,
   aspect,
+  initialDimension = {
+    width: -1,
+    height: -1,
+  },
   width = '100%',
   height = '100%',
   /*
@@ -25,67 +44,67 @@ export const ResponsiveContainer = ({
   minWidth = 0,
   minHeight,
   maxHeight,
+
   children,
   debounce = 0,
-  id,
-  className,
-  onResize
+  onResize = FN_NOOP
 }) => {
-  const [
+  const _refContainer = useRef(null)
+  , _refOnResize = useRef(onResize)
+  , [
     sizes,
-    setSizes
-  ] = useState({
-    containerWidth: -1,
-    containerHeight: -1
-  })
-  , containerRef = useRef(null);
+    setContainerSize
+  ] = useContainerSizes(initialDimension)
 
-  const getContainerSize = useCallback(
-    () => {
-      const _containerEl = getRefValue(containerRef);
-      return _containerEl ? {
-        containerWidth: _containerEl.clientWidth,
-        containerHeight: _containerEl.clientHeight
-      } : null;
-    }, []
-  );
-
-  const updateDimensionsImmediate = useCallback(() => {
-    const newSize = getContainerSize();
-    if (newSize) {
+  /*eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    let _onResizeContainer = (entries) => {
       const {
-        containerWidth,
-        containerHeight
-      } = newSize;
+        width: containerWidth,
+        height: containerHeight
+      } = entries[0].contentRect;
+      setContainerSize(containerWidth, containerHeight);
+      getRefValue(_refOnResize)(containerWidth, containerHeight);
+    };
 
-      if (onResize) {
-        onResize(containerWidth, containerHeight);
-      }
-
-      setSizes(currentSizes => {
-        const {
-          containerWidth: oldWidth,
-          containerHeight: oldHeight
-        } = currentSizes;
-        return containerWidth !== oldWidth || containerHeight !== oldHeight
-          ? { containerWidth, containerHeight }
-          : currentSizes;
-      });
+    if (debounce > 0) {
+      _onResizeContainer = throttle(_onResizeContainer, debounce);
     }
-  }, [getContainerSize, onResize]);
+
+    const observer = new ResizeObserver(_onResizeContainer)
+    , containerNode = getRefValue(_refContainer)
+    , {
+      width: containerWidth,
+      height: containerHeight
+    } = containerNode.getBoundingClientRect();
+
+    setContainerSize(containerWidth, containerHeight);
+    observer.observe(containerNode);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [setContainerSize, debounce]);
 
   const chartContent = useMemo(() => {
     const {
       containerWidth,
       containerHeight
     } = sizes;
+
     if (containerWidth < 0 || containerHeight < 0) {
       return null;
     }
-    let calculatedWidth = isPercent(width)
-      ? containerWidth : width;
-    let calculatedHeight = isPercent(height)
-      ? containerHeight : height;
+
+    let calculatedWidth = _getContainerDimension(
+      width,
+      containerWidth
+    )
+    , calculatedHeight = _getContainerDimension(
+      height,
+      containerHeight
+    );
+
     if (aspect && aspect > 0) {
       // Preserve the desired aspect ratio
       if (calculatedWidth) {
@@ -95,47 +114,57 @@ export const ResponsiveContainer = ({
         // But we should also take height into consideration
         calculatedWidth = calculatedHeight * aspect;
       }
+
       // if maxHeight is set, overwrite if calculatedHeight is greater than maxHeight
       if (maxHeight && calculatedHeight > maxHeight) {
         calculatedHeight = maxHeight;
       }
     }
-    return cloneUiElement(children, {
-      width: calculatedWidth,
-      height: calculatedHeight
-    });
-  }, [aspect, children, height, maxHeight, sizes, width]);
 
-  useEffect(() => {
-      const size = getContainerSize();
-      if (size) {
-        setSizes(size);
+    const isCharts = !_isArr(children)
+      && getDisplayName(children.type).endsWith('Chart');
+
+    return Children.map(children, child => {
+      if (isValidElement(child)) {
+        return cloneUiElement(child, {
+          width: calculatedWidth,
+          height: calculatedHeight,
+          // calculate the actual size and override it.
+          ...(isCharts
+            ? {
+                style: {
+                  height: '100%',
+                  width: '100%',
+                  maxHeight: calculatedHeight,
+                  maxWidth: calculatedWidth,
+                  // keep components style
+                  ...child.props.style
+                }
+              }
+            : void 0)
+        });
       }
-  }, [getContainerSize]);
-
-  const style = {
-    width,
-    height,
-    minWidth,
-    minHeight,
-    maxHeight
-  };
+      return child;
+    });
+  }, [aspect, children, height, maxHeight, minHeight, minWidth, sizes, width]);
+  // minHeight, minWidth
+  /*eslint-enable react-hooks/exhaustive-deps */
 
   return (
-    <ReactResizeDetector
-       onResize={updateDimensionsImmediate}
-       targetRef={containerRef}
-       refreshMode={debounce > 0 ? 'debounce' : void 0}
-       refreshRate={debounce}
+    <div
+      ref={_refContainer}
+      id={id ? id : void 0}
+      className={crCn("recharts-responsive-container", className)}
+      style={{
+        ...style,
+        width,
+        height,
+        minWidth,
+        minHeight,
+        maxHeight
+      }}
     >
-      <div
-        {...(id != null ? { id: `${id}` } : {})}
-        className={crCn(CL_RESPONSIVE_CONTAINER, className)}
-        style={style}
-        ref={containerRef}
-      >
-        {chartContent}
-      </div>
-   </ReactResizeDetector>
+      {chartContent}
+    </div>
   );
 };
