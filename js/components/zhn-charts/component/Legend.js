@@ -28,122 +28,102 @@ const _renderContent = (ContentElementOrComp, props) => {
     ...restProps
   });
 };
-const EPS = 1;
-class Legend extends _uiApi.PureComponent {
-  state = (() => ({
-    boxWidth: -1,
-    boxHeight: -1
-  }))();
-  static getWithHeight(item, chartWidth) {
-    const {
-      layout
-    } = item.props;
-    return layout === "vertical" && (0, _DataUtils.isNumber)(item.props.height) ? {
-      height: item.props.height
-    } : layout === "horizontal" ? {
-      width: item.props.width || chartWidth
-    } : null;
+const _getBBoxSnapshot = boundingBox => {
+  const {
+    width,
+    height
+  } = boundingBox;
+  return width >= 0 && height >= 0 ? {
+    width,
+    height
+  } : {
+    width: 0,
+    height: 0
+  };
+};
+const _getDefaultPosition = (style, props, boundingBox) => {
+  const {
+    layout,
+    align,
+    verticalAlign,
+    margin,
+    chartWidth,
+    chartHeight
+  } = props;
+  let hPos, vPos;
+  if (!style || style.left == null && style.right == null) {
+    if (align === "center" && layout === "vertical") {
+      const box = _getBBoxSnapshot(boundingBox);
+      hPos = {
+        left: ((chartWidth || 0) - box.width) / 2
+      };
+    } else {
+      hPos = align === "right" ? {
+        right: margin && margin.right || 0
+      } : {
+        left: margin && margin.left || 0
+      };
+    }
   }
+  if (!style || style.top == null && style.bottom == null) {
+    if (verticalAlign === "middle") {
+      const box = _getBBoxSnapshot(boundingBox);
+      vPos = {
+        top: ((chartHeight || 0) - box.height) / 2
+      };
+    } else {
+      vPos = verticalAlign === "bottom" ? {
+        bottom: margin && margin.bottom || 0
+      } : {
+        top: margin && margin.top || 0
+      };
+    }
+  }
+  return {
+    ...hPos,
+    ...vPos
+  };
+};
+const EPS = 1;
+const _mathAbs = Math.abs;
+class Legend extends _uiApi.PureComponent {
+  _boundingBox = (() => ({
+    width: -1,
+    height: -1
+  }))();
+  _refWrapperNode = (() => (0, _uiApi.createRef)())();
   componentDidMount() {
     this.updateBBox();
   }
   componentDidUpdate() {
     this.updateBBox();
   }
-  getBBox() {
-    return this.wrapperNode && this.wrapperNode.getBoundingClientRect ? this.wrapperNode.getBoundingClientRect() : null;
-  }
-  getBBoxSnapshot() {
-    const {
-      boxWidth,
-      boxHeight
-    } = this.state;
-    return boxWidth >= 0 && boxHeight >= 0 ? {
-      width: boxWidth,
-      height: boxHeight
-    } : null;
-  }
-  getDefaultPosition(style) {
-    const {
-      layout,
-      align,
-      verticalAlign,
-      margin,
-      chartWidth,
-      chartHeight
-    } = this.props;
-    let hPos, vPos;
-    if (!style || (style.left === undefined || style.left === null) && (style.right === undefined || style.right === null)) {
-      if (align === "center" && layout === "vertical") {
-        const box = this.getBBoxSnapshot() || {
-          width: 0
-        };
-        hPos = {
-          left: ((chartWidth || 0) - box.width) / 2
-        };
-      } else {
-        hPos = align === "right" ? {
-          right: margin && margin.right || 0
-        } : {
-          left: margin && margin.left || 0
-        };
-      }
-    }
-    if (!style || (style.top === undefined || style.top === null) && (style.bottom === undefined || style.bottom === null)) {
-      if (verticalAlign === "middle") {
-        const box = this.getBBoxSnapshot() || {
-          height: 0
-        };
-        vPos = {
-          top: ((chartHeight || 0) - box.height) / 2
-        };
-      } else {
-        vPos = verticalAlign === "bottom" ? {
-          bottom: margin && margin.bottom || 0
-        } : {
-          top: margin && margin.top || 0
-        };
-      }
-    }
-    return {
-      ...hPos,
-      ...vPos
-    };
-  }
   updateBBox() {
     const {
-        boxWidth,
-        boxHeight
-      } = this.state,
+        width,
+        height
+      } = this._boundingBox,
       {
         onBBoxUpdate
-      } = this.props;
-    if (this.wrapperNode && this.wrapperNode.getBoundingClientRect) {
-      const box = this.wrapperNode.getBoundingClientRect();
-      if (Math.abs(box.width - boxWidth) > EPS || Math.abs(box.height - boxHeight) > EPS) {
-        this.setState({
-          boxWidth: box.width,
-          boxHeight: box.height
-        }, () => {
-          if (onBBoxUpdate) {
-            onBBoxUpdate(box);
-          }
-        });
-      }
-    } else if (boxWidth !== -1 || boxHeight !== -1) {
-      this.setState({
-        boxWidth: -1,
-        boxHeight: -1
-      }, () => {
+      } = this.props,
+      _wrapperNode = (0, _uiApi.getRefValue)(this._refWrapperNode);
+    if (_wrapperNode && _wrapperNode.getBoundingClientRect) {
+      const box = _wrapperNode.getBoundingClientRect();
+      if (_mathAbs(box.width - width) > EPS || _mathAbs(box.height - height) > EPS) {
+        this._boundingBox.width = box.width;
+        this._boundingBox.height = box.height;
         if (onBBoxUpdate) {
-          onBBoxUpdate(null);
+          onBBoxUpdate(box);
         }
-      });
+      }
+    } else if (width !== -1 || height !== -1) {
+      this._boundingBox.width = -1;
+      this._boundingBox.height = -1;
+      if (onBBoxUpdate) {
+        onBBoxUpdate(null);
+      }
     }
   }
-  _refWrapperNode = node => {
-    this.wrapperNode = node;
-  };
   render() {
     const {
         content,
@@ -157,7 +137,8 @@ class Legend extends _uiApi.PureComponent {
         position: "absolute",
         width: width || "auto",
         height: height || "auto",
-        ...this.getDefaultPosition(wrapperStyle),
+        //..._getDefaultPosition(wrapperStyle, this.props, this.state),
+        ..._getDefaultPosition(wrapperStyle, this.props, this._boundingBox),
         ...wrapperStyle
       };
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
@@ -178,5 +159,16 @@ Legend.defaultProps = {
   layout: "horizontal",
   align: "center",
   verticalAlign: "bottom"
+};
+Legend.getWithHeight = (item, chartWidth) => {
+  const {
+    layout,
+    height
+  } = item.props;
+  return layout === "vertical" && (0, _DataUtils.isNumber)(height) ? {
+    height
+  } : layout === "horizontal" ? {
+    width: item.props.width || chartWidth
+  } : null;
 };
 //# sourceMappingURL=Legend.js.map
