@@ -4,7 +4,8 @@ import {
   isLayoutCentric,
   calculateActiveTickIndex,
   getTicksOfAxis,
-  getBandSizeOfAxis
+  getBandSizeOfAxis,
+  getCoordinatesOfGrid
 } from '../util/ChartUtils';
 
 import {
@@ -15,13 +16,11 @@ import {
   getDisplayName
 } from '../util/ReactUtils';
 
-import {
-  originCoordinate
-} from './chartFn';
+import { getTicks } from '../cartesian/getTicks';
 
-import {
-  getTooltipContent
-} from './getTooltipContent';
+import { originCoordinate } from './chartFn';
+import { getTooltipContent } from './getTooltipContent';
+import { CartesianAxis } from '../cartesian/CartesianAxis';
 
 const calculateTooltipPos = (
   rangeObj,
@@ -148,3 +147,27 @@ export const getAxisNameByLayout = (
       : isLayoutCentric(layout)
           ? { numericAxisName: 'radiusAxis', cateAxisName: 'angleAxis' }
           : { numericAxisName: 'angleAxis', cateAxisName: 'radiusAxis' };
+
+export const verticalCoordinatesGenerator = ({
+  xAxis,
+  width,
+  height,
+  offset
+}) => getCoordinatesOfGrid(getTicks({
+  ...CartesianAxis.defaultProps,
+  ...xAxis,
+  ticks: getTicksOfAxis(xAxis, true),
+  viewBox: { x: 0, y: 0, width, height },
+}), offset.left, offset.left + offset.width)
+
+export const horizontalCoordinatesGenerator = ({
+  yAxis,
+  width,
+  height,
+  offset
+}) => getCoordinatesOfGrid(getTicks({
+  ...CartesianAxis.defaultProps,
+  ...yAxis,
+  ticks: getTicksOfAxis(yAxis, true),
+  viewBox: { x: 0, y: 0, width, height },
+}), offset.top, offset.top + offset.height)

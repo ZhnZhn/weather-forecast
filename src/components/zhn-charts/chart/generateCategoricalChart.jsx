@@ -10,7 +10,6 @@ import {
   _getByPropName
 } from '../util/FnUtils';
 
-import { getTicks } from '../cartesian/getTicks';
 import { CartesianAxis } from '../cartesian/CartesianAxis';
 import { Surface } from '../container/Surface';
 import { Tooltip } from '../component/Tooltip';
@@ -35,21 +34,16 @@ import {
 import {
   isLayoutHorizontal,
   isLayoutVertical,
-  getTicksOfAxis,
-  getCoordinatesOfGrid
+  getTicksOfAxis
 } from '../util/ChartUtils';
 
-import {
-  adaptEventHandlers
-} from '../util/types';
+import { adaptEventHandlers} from '../util/types';
 
 import { AccessibilityManager } from './AccessibilityManager';
 import {
   fUpdateStateOfAxisMapsOffsetAndStackGroups
 } from './fUpdateStateOfAxisOffsetAndStackGroups';
-import {
-  getTooltipData
-} from './generateCategoricalChartFn';
+import { getTooltipData } from './generateCategoricalChartFn';
 
 import { fGetDerivedStateFromProps } from './fGetDerivedStateFromProps';
 import { renderMap } from './renderFn';
@@ -78,6 +72,8 @@ const _inRange = (
   }
   return null;
 }
+
+const _axesTicksGenerator = (axis) => getTicksOfAxis(axis, true)
 
 export const generateCategoricalChart = ({
   chartName,
@@ -131,22 +127,6 @@ export const generateCategoricalChart = ({
 
               this.state = {};
             }
-
-            axesTicksGenerator = (axis) => getTicksOfAxis(axis, true)
-
-            verticalCoordinatesGenerator = ({ xAxis, width, height, offset }) => getCoordinatesOfGrid(getTicks({
-                ...CartesianAxis.defaultProps,
-                ...xAxis,
-                ticks: getTicksOfAxis(xAxis, true),
-                viewBox: { x: 0, y: 0, width, height },
-            }), offset.left, offset.left + offset.width)
-
-            horizontalCoordinatesGenerator = ({ yAxis, width, height, offset }) => getCoordinatesOfGrid(getTicks({
-                ...CartesianAxis.defaultProps,
-                ...yAxis,
-                ticks: getTicksOfAxis(yAxis, true),
-                viewBox: { x: 0, y: 0, width, height },
-            }), offset.top, offset.top + offset.height)
 
             handleLegendBBoxUpdate = (box) => {
               if (box) {
@@ -405,54 +385,6 @@ export const generateCategoricalChart = ({
                 return null;
             }
 
-            getCursorRectangle() {
-              const { layout } = this.props
-              , {
-                activeCoordinate,
-                offset,
-                tooltipAxisBandSize
-              } = this.state
-              , halfSize = tooltipAxisBandSize / 2
-              , _isLayoutHorizontal = isLayoutHorizontal(layout);
-              return {
-                stroke: 'none',
-                fill: '#ccc',
-                x: _isLayoutHorizontal
-                  ? activeCoordinate.x - halfSize
-                  : offset.left + 0.5,
-                y: _isLayoutHorizontal
-                  ? offset.top + 0.5
-                  : activeCoordinate.y - halfSize,
-                width: _isLayoutHorizontal
-                  ? tooltipAxisBandSize
-                  : offset.width - 1,
-                height: _isLayoutHorizontal
-                  ? offset.height - 1
-                  : tooltipAxisBandSize
-              };
-            }
-
-            getCursorPoints() {
-                const { layout } = this.props;
-                const { activeCoordinate, offset } = this.state;
-                let x1, y1, x2, y2;
-                if (isLayoutHorizontal(layout)) {
-                    x1 = activeCoordinate.x;
-                    x2 = x1;
-                    y1 = offset.top;
-                    y2 = offset.top + offset.height;
-                } else if (isLayoutVertical(layout)) {
-                    y1 = activeCoordinate.y;
-                    y2 = y1;
-                    x1 = offset.left;
-                    x2 = offset.left + offset.width;
-                }
-                return [
-                    { x: x1, y: y1 },
-                    { x: x2, y: y2 },
-                ];
-            }
-
             parseEventsOfWrapper() {
               const {
                 children
@@ -479,7 +411,7 @@ export const generateCategoricalChart = ({
                   ...outerEvents,
                   ...tooltipEvents,
               };
-            }            
+            }
 
             /**
              * Draw axis
@@ -504,35 +436,9 @@ export const generateCategoricalChart = ({
                    key={element.key || `${displayName}-${index}`}
                    className={crCn(crAxisCl(axisType), className)}
                    viewBox={{ x: 0, y: 0, width, height }}
-                   ticksGenerator={this.axesTicksGenerator}
+                   ticksGenerator={_axesTicksGenerator}
                 />
               );
-            }
-
-            getXScales() {
-              const { xAxisMap } = this.state;
-              return xAxisMap
-                ? Object.entries(xAxisMap).reduce((res, [axisId, axisProps]) => {
-                    return { ...res, [axisId]: axisProps.scale };
-                  }, {})
-                : null;
-            }
-
-            getYScales() {
-              const { yAxisMap } = this.state;
-              return yAxisMap
-                ? Object.entries(yAxisMap).reduce((res, [axisId, axisProps]) => {
-                    return { ...res, [axisId]: axisProps.scale };
-                  }, {})
-                : null;
-            }
-
-            getXScaleByAxisId(axisId) {
-              return this.state.xAxisMap?.[axisId]?.scale;
-            }
-
-            getYScaleByAxisId(axisId) {
-              return this.state.yAxisMap?.[axisId]?.scale;
             }
 
             getItemByXY(chartXY) {

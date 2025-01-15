@@ -13,6 +13,8 @@ import {
 } from '../util/FnUtils';
 
 import {
+  isLayoutHorizontal,
+  isLayoutVertical,
   combineEventHandlers
 } from '../util/ChartUtils';
 
@@ -29,6 +31,10 @@ import {
 } from '../util/ReactUtils';
 
 import { renderActivePoints } from './renderActivePoints';
+import {
+  verticalCoordinatesGenerator,
+  horizontalCoordinatesGenerator
+} from './generateCategoricalChartFn'
 
 const CL_TOOLTIP_CURSOR = "recharts-tooltip-cursor"
 
@@ -87,8 +93,8 @@ const renderGrid = ({
       offset,
       chartWidth: width,
       chartHeight: height,
-      verticalCoordinatesGenerator: _props.verticalCoordinatesGenerator || chartInst.verticalCoordinatesGenerator,
-      horizontalCoordinatesGenerator: _props.horizontalCoordinatesGenerator || chartInst.horizontalCoordinatesGenerator,
+      verticalCoordinatesGenerator: _props.verticalCoordinatesGenerator || verticalCoordinatesGenerator,
+      horizontalCoordinatesGenerator: _props.horizontalCoordinatesGenerator || horizontalCoordinatesGenerator
     }, element.key || 'grid');
 };
 
@@ -317,14 +323,35 @@ const renderGraphicChild = ({
     : [graphicalItem, null];
 }
 
-//[restProps, cursorComp]
-const _crCursorComp = (
-  chartInst
-) => [
-  { points: chartInst.getCursorPoints() },
-  Curve
-];
+const _getCursorPoints = (
+  props,
+  state
+) => {
+  const {
+    layout
+  } = props
+  , {
+    activeCoordinate,
+    offset
+  } = state;
 
+  let x1, y1, x2, y2;
+  if (isLayoutHorizontal(layout)) {
+    x1 = activeCoordinate.x;
+    x2 = x1;
+    y1 = offset.top;
+    y2 = offset.top + offset.height;
+  } else if (isLayoutVertical(layout)) {
+    y1 = activeCoordinate.y;
+    y2 = y1;
+    x1 = offset.left;
+    x2 = offset.left + offset.width;
+  }
+  return [
+    { x: x1, y: y1 },
+    { x: x2, y: y2 }
+  ];
+};
 
 const renderCursor = ({
   chartInst,
@@ -354,16 +381,11 @@ const renderCursor = ({
     return null;
   }
 
-  const { layout } = props
-  , [
-    restProps,
-    cursorComp
-  ] = _crCursorComp(
-    chartInst,
-    _chartName,
-    activeCoordinate,
-    layout
-  )
+
+  const restProps = {
+    points: _getCursorPoints(props, state)
+  }
+  , cursorComp = Curve
   , key = element.key || '_recharts-cursor'
   , cursorProps = {
       stroke: '#ccc',

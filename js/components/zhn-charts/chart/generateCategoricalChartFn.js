@@ -1,12 +1,14 @@
 "use strict";
 
 exports.__esModule = true;
-exports.tooltipTicksGenerator = exports.hasGraphicalBarItem = exports.getTooltipData = exports.getAxisNameByLayout = void 0;
+exports.verticalCoordinatesGenerator = exports.tooltipTicksGenerator = exports.horizontalCoordinatesGenerator = exports.hasGraphicalBarItem = exports.getTooltipData = exports.getAxisNameByLayout = void 0;
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
+var _getTicks = require("../cartesian/getTicks");
 var _chartFn = require("./chartFn");
 var _getTooltipContent = require("./getTooltipContent");
+var _CartesianAxis = require("../cartesian/CartesianAxis");
 const calculateTooltipPos = (rangeObj, layout) => (0, _ChartUtils.isLayoutHorizontal)(layout) ? rangeObj.x : (0, _ChartUtils.isLayoutVertical)(layout) ? rangeObj.y : (0, _ChartUtils.isLayoutCentric)(layout) ? rangeObj.angle : rangeObj.radius;
 const getActiveCoordinate = (layout, tooltipTicks, activeIndex, rangeObj) => {
   const entry = tooltipTicks.find(tick => tick && tick.index === activeIndex);
@@ -89,4 +91,44 @@ const getAxisNameByLayout = layout => (0, _ChartUtils.isLayoutHorizontal)(layout
   cateAxisName: 'radiusAxis'
 };
 exports.getAxisNameByLayout = getAxisNameByLayout;
+const verticalCoordinatesGenerator = _ref => {
+  let {
+    xAxis,
+    width,
+    height,
+    offset
+  } = _ref;
+  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)({
+    ..._CartesianAxis.CartesianAxis.defaultProps,
+    ...xAxis,
+    ticks: (0, _ChartUtils.getTicksOfAxis)(xAxis, true),
+    viewBox: {
+      x: 0,
+      y: 0,
+      width,
+      height
+    }
+  }), offset.left, offset.left + offset.width);
+};
+exports.verticalCoordinatesGenerator = verticalCoordinatesGenerator;
+const horizontalCoordinatesGenerator = _ref2 => {
+  let {
+    yAxis,
+    width,
+    height,
+    offset
+  } = _ref2;
+  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)({
+    ..._CartesianAxis.CartesianAxis.defaultProps,
+    ...yAxis,
+    ticks: (0, _ChartUtils.getTicksOfAxis)(yAxis, true),
+    viewBox: {
+      x: 0,
+      y: 0,
+      width,
+      height
+    }
+  }), offset.top, offset.top + offset.height);
+};
+exports.horizontalCoordinatesGenerator = horizontalCoordinatesGenerator;
 //# sourceMappingURL=generateCategoricalChartFn.js.map

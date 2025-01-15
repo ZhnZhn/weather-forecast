@@ -6,7 +6,6 @@ exports.generateCategoricalChart = void 0;
 var _uiApi = require("../../uiApi");
 var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _FnUtils = require("../util/FnUtils");
-var _getTicks = require("../cartesian/getTicks");
 var _CartesianAxis = require("../cartesian/CartesianAxis");
 var _Surface = require("../container/Surface");
 var _Tooltip = require("../component/Tooltip");
@@ -43,8 +42,8 @@ const _inRange = (x, y, props, state) => {
   }
   return null;
 };
+const _axesTicksGenerator = axis => (0, _ChartUtils.getTicksOfAxis)(axis, true);
 const generateCategoricalChart = _ref => {
-  var _CategoricalChartWrapper;
   let {
     chartName,
     GraphicalChild,
@@ -56,235 +55,213 @@ const generateCategoricalChart = _ref => {
     defaultProps
   } = _ref;
   const updateStateOfAxisMapsOffsetAndStackGroups = (0, _fUpdateStateOfAxisOffsetAndStackGroups.fUpdateStateOfAxisMapsOffsetAndStackGroups)(chartName, GraphicalChild, axisComponents, formatAxisMap);
-  return _CategoricalChartWrapper = class CategoricalChartWrapper extends _uiApi.Component {
+  return class CategoricalChartWrapper extends _uiApi.Component {
+    static displayName = (() => chartName)();
+    // todo join specific chart propTypes
+    static defaultProps = {
+      layout: 'horizontal',
+      stackOffset: 'none',
+      barCategoryGap: '10%',
+      barGap: 4,
+      margin: {
+        top: 5,
+        right: 5,
+        bottom: 5,
+        left: 5
+      },
+      reverseStackOrder: false,
+      syncMethod: 'index',
+      ...defaultProps
+    };
+    static getDerivedStateFromProps = (() => (0, _fGetDerivedStateFromProps.fGetDerivedStateFromProps)(updateStateOfAxisMapsOffsetAndStackGroups))();
+    _chartName = (() => chartName)();
+    accessibilityManager = (() => new _AccessibilityManager.AccessibilityManager())();
     constructor(props) {
       super(props);
-      this._chartName = chartName;
-      this.accessibilityManager = new _AccessibilityManager.AccessibilityManager();
-      this.axesTicksGenerator = axis => (0, _ChartUtils.getTicksOfAxis)(axis, true);
-      this.verticalCoordinatesGenerator = _ref2 => {
-        let {
-          xAxis,
-          width,
-          height,
-          offset
-        } = _ref2;
-        return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)({
-          ..._CartesianAxis.CartesianAxis.defaultProps,
-          ...xAxis,
-          ticks: (0, _ChartUtils.getTicksOfAxis)(xAxis, true),
-          viewBox: {
-            x: 0,
-            y: 0,
-            width,
-            height
-          }
-        }), offset.left, offset.left + offset.width);
-      };
-      this.horizontalCoordinatesGenerator = _ref3 => {
-        let {
-          yAxis,
-          width,
-          height,
-          offset
-        } = _ref3;
-        return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)({
-          ..._CartesianAxis.CartesianAxis.defaultProps,
-          ...yAxis,
-          ticks: (0, _ChartUtils.getTicksOfAxis)(yAxis, true),
-          viewBox: {
-            x: 0,
-            y: 0,
-            width,
-            height
-          }
-        }), offset.top, offset.top + offset.height);
-      };
-      this.handleLegendBBoxUpdate = box => {
-        if (box) {
-          const {
-            dataStartIndex,
-            dataEndIndex,
-            updateId
-          } = this.state;
-          this.setState({
-            legendBBox: box,
-            ...updateStateOfAxisMapsOffsetAndStackGroups({
-              props: this.props,
-              dataStartIndex,
-              dataEndIndex,
-              updateId
-            }, {
-              ...this.state,
-              legendBBox: box
-            })
-          });
-        }
-      };
-      this.handleBrushChange = _ref4 => {
-        let {
-          startIndex,
-          endIndex
-        } = _ref4;
-        // Only trigger changes if the extents of the brush have actually changed
-        if (startIndex !== this.state.dataStartIndex || endIndex !== this.state.dataEndIndex) {
-          const {
-            updateId
-          } = this.state;
-          this.setState(() => ({
-            dataStartIndex: startIndex,
-            dataEndIndex: endIndex,
-            ...updateStateOfAxisMapsOffsetAndStackGroups({
-              props: this.props,
-              dataStartIndex: startIndex,
-              dataEndIndex: endIndex,
-              updateId
-            }, this.state)
-          }));
-        }
-      };
-      this.handleMouseEnter = e => {
-        const {
-            onMouseEnter
-          } = this.props,
-          mouse = this.getMouseInfo(e);
-        if (mouse) {
-          const nextState = {
-            ...mouse,
-            isTooltipActive: true
-          };
-          this.setState(nextState);
-          if ((0, _FnUtils._isFn)(onMouseEnter)) {
-            onMouseEnter(nextState, e);
-          }
-        }
-      };
-      this.triggeredAfterMouseMove = e => {
-        const {
-            onMouseMove
-          } = this.props,
-          mouse = this.getMouseInfo(e),
-          nextState = mouse ? {
-            ...mouse,
-            isTooltipActive: true
-          } : {
-            isTooltipActive: false
-          };
-        this.setState(nextState);
-        if ((0, _FnUtils._isFn)(onMouseMove)) {
-          onMouseMove(nextState, e);
-        }
-      };
-      this.handleItemMouseEnter = el => {
-        this.setState(() => ({
-          isTooltipActive: true,
-          activeItem: el,
-          activePayload: el.tooltipPayload,
-          activeCoordinate: el.tooltipPosition || {
-            x: el.cx,
-            y: el.cy
-          }
-        }));
-      };
-      this.handleItemMouseLeave = () => {
-        this.setState(() => ({
-          isTooltipActive: false
-        }));
-      };
-      this.handleMouseMove = e => {
-        if (e && (0, _FnUtils._isFn)(e.persist)) {
-          e.persist();
-        }
-        this.triggeredAfterMouseMove(e);
-      };
-      this.handleMouseLeave = e => {
-        const {
-            onMouseLeave
-          } = this.props,
-          nextState = {
-            isTooltipActive: false
-          };
-        this.setState(nextState);
-        if ((0, _FnUtils._isFn)(onMouseLeave)) {
-          onMouseLeave(nextState, e);
-        }
-        this.cancelThrottledTriggerAfterMouseMove();
-      };
-      this.handleOuterEvent = e => {
-        const eventName = (0, _ReactUtils.getReactEventByType)(e),
-          event = (0, _FnUtils._getByPropName)(this.props, "" + eventName);
-        if (eventName && (0, _FnUtils._isFn)(event)) {
-          const mouse = /.*touch.*/i.test(eventName) ? this.getMouseInfo(e.changedTouches[0]) : this.getMouseInfo(e);
-          // handler event case;
-          event(mouse, e);
-        }
-      };
-      this.handleClick = e => {
-        const {
-            onClick
-          } = this.props,
-          mouse = this.getMouseInfo(e);
-        if (mouse) {
-          const nextState = {
-            ...mouse,
-            isTooltipActive: true
-          };
-          this.setState(nextState);
-          if ((0, _FnUtils._isFn)(onClick)) {
-            onClick(nextState, e);
-          }
-        }
-      };
-      this.handleMouseDown = e => {
-        const {
-          onMouseDown
-        } = this.props;
-        if ((0, _FnUtils._isFn)(onMouseDown)) {
-          const nextState = this.getMouseInfo(e);
-          onMouseDown(nextState, e);
-        }
-      };
-      this.handleMouseUp = e => {
-        const {
-          onMouseUp
-        } = this.props;
-        if ((0, _FnUtils._isFn)(onMouseUp)) {
-          const nextState = this.getMouseInfo(e);
-          onMouseUp(nextState, e);
-        }
-      };
-      this.handleTouchMove = e => {
-        if (e.changedTouches != null && e.changedTouches.length > 0) {
-          this.handleMouseMove(e.changedTouches[0]);
-        }
-      };
-      this.handleTouchStart = e => {
-        if (e.changedTouches != null && e.changedTouches.length > 0) {
-          this.handleMouseDown(e.changedTouches[0]);
-        }
-      };
-      this.handleTouchEnd = e => {
-        if (e.changedTouches != null && e.changedTouches.length > 0) {
-          this.handleMouseUp(e.changedTouches[0]);
-        }
-      };
-      this._refLegend = legend => {
-        this.legendInstance = legend;
-      };
       this.uniqueChartId = (0, _FnUtils._isNil)(props.id) ? (0, _DataUtils.uniqueId)('recharts') : props.id;
-      this.clipPathId = this.uniqueChartId + "-clip";
+      this.clipPathId = `${this.uniqueChartId}-clip`;
       if (props.throttleDelay) {
         this.triggeredAfterMouseMove = (0, _FnUtils._throttle)(this.triggeredAfterMouseMove, props.throttleDelay);
       }
       this.state = {};
     }
+    handleLegendBBoxUpdate = box => {
+      if (box) {
+        const {
+          dataStartIndex,
+          dataEndIndex,
+          updateId
+        } = this.state;
+        this.setState({
+          legendBBox: box,
+          ...updateStateOfAxisMapsOffsetAndStackGroups({
+            props: this.props,
+            dataStartIndex,
+            dataEndIndex,
+            updateId
+          }, {
+            ...this.state,
+            legendBBox: box
+          })
+        });
+      }
+    };
+    handleBrushChange = _ref2 => {
+      let {
+        startIndex,
+        endIndex
+      } = _ref2;
+      // Only trigger changes if the extents of the brush have actually changed
+      if (startIndex !== this.state.dataStartIndex || endIndex !== this.state.dataEndIndex) {
+        const {
+          updateId
+        } = this.state;
+        this.setState(() => ({
+          dataStartIndex: startIndex,
+          dataEndIndex: endIndex,
+          ...updateStateOfAxisMapsOffsetAndStackGroups({
+            props: this.props,
+            dataStartIndex: startIndex,
+            dataEndIndex: endIndex,
+            updateId
+          }, this.state)
+        }));
+      }
+    };
+    handleMouseEnter = e => {
+      const {
+          onMouseEnter
+        } = this.props,
+        mouse = this.getMouseInfo(e);
+      if (mouse) {
+        const nextState = {
+          ...mouse,
+          isTooltipActive: true
+        };
+        this.setState(nextState);
+        if ((0, _FnUtils._isFn)(onMouseEnter)) {
+          onMouseEnter(nextState, e);
+        }
+      }
+    };
+    triggeredAfterMouseMove = e => {
+      const {
+          onMouseMove
+        } = this.props,
+        mouse = this.getMouseInfo(e),
+        nextState = mouse ? {
+          ...mouse,
+          isTooltipActive: true
+        } : {
+          isTooltipActive: false
+        };
+      this.setState(nextState);
+      if ((0, _FnUtils._isFn)(onMouseMove)) {
+        onMouseMove(nextState, e);
+      }
+    };
+    handleItemMouseEnter = el => {
+      this.setState(() => ({
+        isTooltipActive: true,
+        activeItem: el,
+        activePayload: el.tooltipPayload,
+        activeCoordinate: el.tooltipPosition || {
+          x: el.cx,
+          y: el.cy
+        }
+      }));
+    };
+    handleItemMouseLeave = () => {
+      this.setState(() => ({
+        isTooltipActive: false
+      }));
+    };
+    handleMouseMove = e => {
+      if (e && (0, _FnUtils._isFn)(e.persist)) {
+        e.persist();
+      }
+      this.triggeredAfterMouseMove(e);
+    };
+    handleMouseLeave = e => {
+      const {
+          onMouseLeave
+        } = this.props,
+        nextState = {
+          isTooltipActive: false
+        };
+      this.setState(nextState);
+      if ((0, _FnUtils._isFn)(onMouseLeave)) {
+        onMouseLeave(nextState, e);
+      }
+      this.cancelThrottledTriggerAfterMouseMove();
+    };
+    handleOuterEvent = e => {
+      const eventName = (0, _ReactUtils.getReactEventByType)(e),
+        event = (0, _FnUtils._getByPropName)(this.props, `${eventName}`);
+      if (eventName && (0, _FnUtils._isFn)(event)) {
+        const mouse = /.*touch.*/i.test(eventName) ? this.getMouseInfo(e.changedTouches[0]) : this.getMouseInfo(e);
+        // handler event case;
+        event(mouse, e);
+      }
+    };
+    handleClick = e => {
+      const {
+          onClick
+        } = this.props,
+        mouse = this.getMouseInfo(e);
+      if (mouse) {
+        const nextState = {
+          ...mouse,
+          isTooltipActive: true
+        };
+        this.setState(nextState);
+        if ((0, _FnUtils._isFn)(onClick)) {
+          onClick(nextState, e);
+        }
+      }
+    };
+    handleMouseDown = e => {
+      const {
+        onMouseDown
+      } = this.props;
+      if ((0, _FnUtils._isFn)(onMouseDown)) {
+        const nextState = this.getMouseInfo(e);
+        onMouseDown(nextState, e);
+      }
+    };
+    handleMouseUp = e => {
+      const {
+        onMouseUp
+      } = this.props;
+      if ((0, _FnUtils._isFn)(onMouseUp)) {
+        const nextState = this.getMouseInfo(e);
+        onMouseUp(nextState, e);
+      }
+    };
+    handleTouchMove = e => {
+      if (e.changedTouches != null && e.changedTouches.length > 0) {
+        this.handleMouseMove(e.changedTouches[0]);
+      }
+    };
+    handleTouchStart = e => {
+      if (e.changedTouches != null && e.changedTouches.length > 0) {
+        this.handleMouseDown(e.changedTouches[0]);
+      }
+    };
+    handleTouchEnd = e => {
+      if (e.changedTouches != null && e.changedTouches.length > 0) {
+        this.handleMouseUp(e.changedTouches[0]);
+      }
+    };
+    _refLegend = legend => {
+      this.legendInstance = legend;
+    };
     componentDidMount() {
-      var _this$props$margin$le, _this$props$margin$to;
       this.accessibilityManager.setDetails({
         container: this.container,
         offset: {
-          left: (_this$props$margin$le = this.props.margin.left) != null ? _this$props$margin$le : 0,
-          top: (_this$props$margin$to = this.props.margin.top) != null ? _this$props$margin$to : 0
+          left: this.props.margin.left ?? 0,
+          top: this.props.margin.top ?? 0
         },
         coordinateList: this.state.tooltipTicks,
         mouseHandlerCallback: this.handleMouseMove,
@@ -306,11 +283,10 @@ const generateCategoricalChart = _ref => {
         });
       }
       if (this.props.margin !== prevProps.margin) {
-        var _this$props$margin$le2, _this$props$margin$to2;
         this.accessibilityManager.setDetails({
           offset: {
-            left: (_this$props$margin$le2 = this.props.margin.left) != null ? _this$props$margin$le2 : 0,
-            top: (_this$props$margin$to2 = this.props.margin.top) != null ? _this$props$margin$to2 : 0
+            left: this.props.margin.left ?? 0,
+            top: this.props.margin.top ?? 0
           }
         });
       }
@@ -377,54 +353,6 @@ const generateCategoricalChart = _ref => {
       }
       return null;
     }
-    getCursorRectangle() {
-      const {
-          layout
-        } = this.props,
-        {
-          activeCoordinate,
-          offset,
-          tooltipAxisBandSize
-        } = this.state,
-        halfSize = tooltipAxisBandSize / 2,
-        _isLayoutHorizontal = (0, _ChartUtils.isLayoutHorizontal)(layout);
-      return {
-        stroke: 'none',
-        fill: '#ccc',
-        x: _isLayoutHorizontal ? activeCoordinate.x - halfSize : offset.left + 0.5,
-        y: _isLayoutHorizontal ? offset.top + 0.5 : activeCoordinate.y - halfSize,
-        width: _isLayoutHorizontal ? tooltipAxisBandSize : offset.width - 1,
-        height: _isLayoutHorizontal ? offset.height - 1 : tooltipAxisBandSize
-      };
-    }
-    getCursorPoints() {
-      const {
-        layout
-      } = this.props;
-      const {
-        activeCoordinate,
-        offset
-      } = this.state;
-      let x1, y1, x2, y2;
-      if ((0, _ChartUtils.isLayoutHorizontal)(layout)) {
-        x1 = activeCoordinate.x;
-        x2 = x1;
-        y1 = offset.top;
-        y2 = offset.top + offset.height;
-      } else if ((0, _ChartUtils.isLayoutVertical)(layout)) {
-        y1 = activeCoordinate.y;
-        y2 = y1;
-        x1 = offset.left;
-        x2 = offset.left + offset.width;
-      }
-      return [{
-        x: x1,
-        y: y1
-      }, {
-        x: x2,
-        y: y2
-      }];
-    }
     parseEventsOfWrapper() {
       const {
           children
@@ -467,7 +395,7 @@ const generateCategoricalChart = _ref => {
         } = axisOptions;
       return /*#__PURE__*/(0, _react.createElement)(_CartesianAxis.CartesianAxis, {
         ...axisOptions,
-        key: element.key || displayName + "-" + index,
+        key: element.key || `${displayName}-${index}`,
         className: (0, _crCn.default)((0, _CL.crAxisCl)(axisType), className),
         viewBox: {
           x: 0,
@@ -475,40 +403,8 @@ const generateCategoricalChart = _ref => {
           width,
           height
         },
-        ticksGenerator: this.axesTicksGenerator
+        ticksGenerator: _axesTicksGenerator
       });
-    }
-    getXScales() {
-      const {
-        xAxisMap
-      } = this.state;
-      return xAxisMap ? Object.entries(xAxisMap).reduce((res, _ref5) => {
-        let [axisId, axisProps] = _ref5;
-        return {
-          ...res,
-          [axisId]: axisProps.scale
-        };
-      }, {}) : null;
-    }
-    getYScales() {
-      const {
-        yAxisMap
-      } = this.state;
-      return yAxisMap ? Object.entries(yAxisMap).reduce((res, _ref6) => {
-        let [axisId, axisProps] = _ref6;
-        return {
-          ...res,
-          [axisId]: axisProps.scale
-        };
-      }, {}) : null;
-    }
-    getXScaleByAxisId(axisId) {
-      var _this$state$xAxisMap;
-      return (_this$state$xAxisMap = this.state.xAxisMap) == null || (_this$state$xAxisMap = _this$state$xAxisMap[axisId]) == null ? void 0 : _this$state$xAxisMap.scale;
-    }
-    getYScaleByAxisId(axisId) {
-      var _this$state$yAxisMap;
-      return (_this$state$yAxisMap = this.state.yAxisMap) == null || (_this$state$yAxisMap = _this$state$yAxisMap[axisId]) == null ? void 0 : _this$state$yAxisMap.scale;
     }
     getItemByXY(chartXY) {
       const {
@@ -563,11 +459,10 @@ const generateCategoricalChart = _ref => {
         });
       }
       if (this.props.accessibilityLayer) {
-        var _, _img;
         // Set tabIndex to 0 by default (can be overwritten)
-        attrs.tabIndex = (_ = 0) != null ? _ : this.props.tabIndex;
+        attrs.tabIndex = 0 ?? this.props.tabIndex;
         // Set role to img by default (can be overwritten)
-        attrs.role = (_img = 'img') != null ? _img : this.props.role;
+        attrs.role = 'img' ?? this.props.role;
         attrs.onKeyDown = e => {
           this.accessibilityManager.keyboardEvent(e);
           // 'onKeyDown' is not currently a supported prop that can be passed through
@@ -604,21 +499,7 @@ const generateCategoricalChart = _ref => {
         }), (0, _renderLegend.renderLegend)(this, legendContent), (0, _renderTooltip.renderTooltip)(this)]
       });
     }
-  }, _CategoricalChartWrapper.displayName = chartName, _CategoricalChartWrapper.defaultProps = {
-    layout: 'horizontal',
-    stackOffset: 'none',
-    barCategoryGap: '10%',
-    barGap: 4,
-    margin: {
-      top: 5,
-      right: 5,
-      bottom: 5,
-      left: 5
-    },
-    reverseStackOrder: false,
-    syncMethod: 'index',
-    ...defaultProps
-  }, _CategoricalChartWrapper.getDerivedStateFromProps = (0, _fGetDerivedStateFromProps.fGetDerivedStateFromProps)(updateStateOfAxisMapsOffsetAndStackGroups), _CategoricalChartWrapper;
+  };
 };
 exports.generateCategoricalChart = generateCategoricalChart;
 //# sourceMappingURL=generateCategoricalChart.js.map
