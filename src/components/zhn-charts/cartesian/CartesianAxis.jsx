@@ -1,7 +1,14 @@
-import { Component } from '../../uiApi';
+import {
+  memo,
+  useState,
+  useRef,
+  useEffect,
+  getRefValue
+} from '../../uiApi';
 
 import crCn from '../../zhn-utils/crCn';
 import { shallowEqual } from '../util/ShallowEqual';
+import { crProps } from '../util/ReactUtils';
 
 import { Layer } from '../container/Layer';
 import { Label } from '../component/Label';
@@ -17,88 +24,7 @@ import {
   CL_AXIS_TICK_VALUE
 } from '../CL';
 
-export class CartesianAxis extends Component {
-  state = {
-    fontSize: '',
-    letterSpacing: ''
-  }
-
-  shouldComponentUpdate({ viewBox, ...restProps }, nextState) {
-    // props.viewBox is sometimes generated every time -
-    // check that specially as object equality is likely to fail
-    const {
-      viewBox: viewBoxOld,
-      ...restPropsOld
-    } = this.props;
-    return !shallowEqual(viewBox, viewBoxOld)
-      || !shallowEqual(restProps, restPropsOld)
-      || !shallowEqual(nextState, this.state);
-  }
-
-  componentDidMount() {
-    const htmlLayer = this.layerReference;
-    if (!htmlLayer) {
-      return;
-    }
-    const tick = htmlLayer.getElementsByClassName(CL_AXIS_TICK_VALUE)[0];
-    if (tick) {
-      const _tickComputedStyle = window.getComputedStyle(tick);
-      this.setState({
-        fontSize: _tickComputedStyle.fontSize,
-        letterSpacing: _tickComputedStyle.letterSpacing,
-      });
-    }
-  }
-
-  _refLayerReference = layerEl => {
-    this.layerReference = layerEl;
-  }
-
-  render() {
-    const {
-      props,
-      state
-    } = this
-    , {
-      axisLine,
-      width,
-      height,
-      className,
-      hide
-    } = props;
-    if (hide) {
-      return null;
-    }
-
-    const finalTicks = crFinalTicks(props);
-    if (width <= 0
-      || height <= 0
-      || !finalTicks
-      || !finalTicks.length
-    ) {
-      return null;
-    }
-
-    const {
-      fontSize,
-      letterSpacing
-    } = state;
-
-    return (
-      <Layer
-         refEl={this._refLayerReference}
-         className={crCn(CL_AXIS, className)}
-      >
-         {axisLine && renderAxisLine(props)}
-         {renderTicks(props, finalTicks, fontSize, letterSpacing)}
-         {Label.renderCallByParent(props)}
-      </Layer>
-    );
-  }
-}
-
-CartesianAxis.displayName = 'CartesianAxis';
-CartesianAxis.defaultProps = {
+const CARTESIAN_AXIS_DF_PROPS = {
   x: 0,
   y: 0,
   width: 0,
@@ -119,3 +45,89 @@ CartesianAxis.defaultProps = {
   tickMargin: 2,
   interval: 'preserveEnd'
 };
+
+const _arePropsEqual = (
+  prevProps,
+  nextProps
+) => {
+  const _prevProps = crProps(CARTESIAN_AXIS_DF_PROPS, prevProps)
+  , _nextProps = crProps(CARTESIAN_AXIS_DF_PROPS, nextProps)
+  , {
+    viewBox,
+    ...restProps
+  } = _nextProps
+  , {
+    viewBox: viewBoxPrev,
+    ...restPropsPrev
+  } = _prevProps;
+  return shallowEqual(viewBox, viewBoxPrev)
+    && shallowEqual(restProps, restPropsPrev);
+};
+
+export const CartesianAxis = memo(props => {
+  const _props = crProps(
+    CARTESIAN_AXIS_DF_PROPS,
+    props
+  )
+  , [
+    state,
+    setState
+  ] = useState({
+    fontSize: '',
+    letterSpacing: ''
+  })
+  , {
+    fontSize,
+    letterSpacing
+  } = state
+  , _refLayer = useRef();
+
+  useEffect(() => {
+    const htmlLayer = getRefValue(_refLayer);
+    if (!htmlLayer) {
+      return;
+    }
+    const tick = htmlLayer.getElementsByClassName(CL_AXIS_TICK_VALUE)[0];
+    if (tick) {
+      const _tickComputedStyle = window.getComputedStyle(tick);
+      setState({
+        fontSize: _tickComputedStyle.fontSize,
+        letterSpacing: _tickComputedStyle.letterSpacing
+      })
+    }
+  }, [])
+
+  const {
+    axisLine,
+    width,
+    height,
+    className,
+    hide
+  } = _props;
+  if (hide) {
+    return null;
+  }
+
+  const finalTicks = crFinalTicks(_props);
+  if (width <= 0
+    || height <= 0
+    || !finalTicks
+    || !finalTicks.length
+  ) {
+    return null;
+  }
+
+  return (
+    <Layer
+       refEl={_refLayer}
+       className={crCn(CL_AXIS, className)}
+    >
+       {axisLine && renderAxisLine(props)}
+       {renderTicks(props, finalTicks, fontSize, letterSpacing)}
+       {Label.renderCallByParent(props)}
+    </Layer>
+  );
+}, _arePropsEqual)
+
+CartesianAxis.displayName = 'CartesianAxis';
+CartesianAxis.defaultProps = CARTESIAN_AXIS_DF_PROPS
