@@ -4,9 +4,10 @@ exports.__esModule = true;
 exports.Legend = void 0;
 var _uiApi = require("../../uiApi");
 var _FnUtils = require("../util/FnUtils");
-var _DefaultLegendContent = require("./DefaultLegendContent");
 var _DataUtils = require("../util/DataUtils");
+var _ReactUtils = require("../util/ReactUtils");
 var _componentFn = require("./componentFn");
+var _DefaultLegendContent = require("./DefaultLegendContent");
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_LEGEND_WRAPPER = "recharts-legend-wrapper";
 const _defaultUniqBy = entry => entry.value;
@@ -86,80 +87,76 @@ const _getDefaultPosition = (style, props, boundingBox) => {
 };
 const EPS = 1;
 const _mathAbs = Math.abs;
-class Legend extends _uiApi.PureComponent {
-  _boundingBox = (() => ({
-    width: -1,
-    height: -1
-  }))();
-  _refWrapperNode = (() => (0, _uiApi.createRef)())();
-  componentDidMount() {
-    this.updateBBox();
-  }
-  componentDidUpdate() {
-    this.updateBBox();
-  }
-  updateBBox() {
-    const {
-        width,
-        height
-      } = this._boundingBox,
-      {
-        onBBoxUpdate
-      } = this.props,
-      _wrapperNode = (0, _uiApi.getRefValue)(this._refWrapperNode);
-    if (_wrapperNode && _wrapperNode.getBoundingClientRect) {
-      const box = _wrapperNode.getBoundingClientRect();
-      if (_mathAbs(box.width - width) > EPS || _mathAbs(box.height - height) > EPS) {
-        this._boundingBox.width = box.width;
-        this._boundingBox.height = box.height;
-        if (onBBoxUpdate) {
-          onBBoxUpdate(box);
-        }
-      }
-    } else if (width !== -1 || height !== -1) {
-      this._boundingBox.width = -1;
-      this._boundingBox.height = -1;
-      if (onBBoxUpdate) {
-        onBBoxUpdate(null);
-      }
-    }
-  }
-  render() {
-    const {
-        content,
-        width,
-        height,
-        wrapperStyle,
-        payloadUniqBy,
-        payload
-      } = this.props,
-      outerStyle = {
-        position: "absolute",
-        width: width || "auto",
-        height: height || "auto",
-        //..._getDefaultPosition(wrapperStyle, this.props, this.state),
-        ..._getDefaultPosition(wrapperStyle, this.props, this._boundingBox),
-        ...wrapperStyle
-      };
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: CL_LEGEND_WRAPPER,
-      style: outerStyle,
-      ref: this._refWrapperNode,
-      children: _renderContent(content, {
-        ...this.props,
-        payload: (0, _componentFn.getUniqPayload)(payloadUniqBy, payload, _defaultUniqBy)
-      })
-    });
-  }
-}
-exports.Legend = Legend;
-Legend.displayName = "Legend";
-Legend.defaultProps = {
+const LEGEND_DF_PROPS = {
   iconSize: 14,
   layout: "horizontal",
   align: "center",
   verticalAlign: "bottom"
 };
+const Legend = exports.Legend = (0, _uiApi.memo)(props => {
+  const _props = (0, _ReactUtils.crProps)(LEGEND_DF_PROPS, props),
+    _refBoundingBox = (0, _uiApi.useRef)({
+      width: -1,
+      height: -1
+    }),
+    _refWrapperNode = (0, _uiApi.useRef)();
+  (0, _uiApi.useEffect)(() => {
+    const {
+        width,
+        height
+      } = (0, _uiApi.getRefValue)(_refBoundingBox),
+      {
+        onBBoxUpdate
+      } = _props,
+      _wrapperNode = (0, _uiApi.getRefValue)(_refWrapperNode);
+    if (_wrapperNode && _wrapperNode.getBoundingClientRect) {
+      const box = _wrapperNode.getBoundingClientRect();
+      if (_mathAbs(box.width - width) > EPS || _mathAbs(box.height - height) > EPS) {
+        (0, _uiApi.setRefValue)(_refBoundingBox, {
+          width: box.width,
+          height: box.height
+        });
+        if (onBBoxUpdate) {
+          onBBoxUpdate(box);
+        }
+      }
+    } else if (width !== -1 || height !== -1) {
+      (0, _uiApi.setRefValue)(_refBoundingBox, {
+        width: -1,
+        height: -1
+      });
+      if (onBBoxUpdate) {
+        onBBoxUpdate(null);
+      }
+    }
+  });
+  const {
+      content,
+      width,
+      height,
+      wrapperStyle,
+      payloadUniqBy,
+      payload
+    } = _props,
+    outerStyle = {
+      position: "absolute",
+      width: width || "auto",
+      height: height || "auto",
+      ..._getDefaultPosition(wrapperStyle, _props, (0, _uiApi.getRefValue)(_refBoundingBox)),
+      ...wrapperStyle
+    };
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    className: CL_LEGEND_WRAPPER,
+    style: outerStyle,
+    ref: _refWrapperNode,
+    children: _renderContent(content, {
+      ..._props,
+      payload: (0, _componentFn.getUniqPayload)(payloadUniqBy, payload, _defaultUniqBy)
+    })
+  });
+});
+Legend.displayName = "Legend";
+Legend.defaultProps = LEGEND_DF_PROPS;
 Legend.getWithHeight = (item, chartWidth) => {
   const {
     layout,
