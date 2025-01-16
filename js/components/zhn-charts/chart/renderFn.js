@@ -1,16 +1,21 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.renderMap = void 0;
 var _uiApi = require("../../uiApi");
+var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _CartesianAxis = require("../cartesian/CartesianAxis");
 var _Tooltip = require("../component/Tooltip");
 var _Curve = require("../shape/Curve");
 var _FnUtils = require("../util/FnUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
+var _CL = require("../CL");
 var _renderActivePoints = require("./renderActivePoints");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
+var _react = require("react");
 const CL_TOOLTIP_CURSOR = "recharts-tooltip-cursor";
 const isFinit = Number.isFinite || isFinite;
 const _getObjectKeys = Object.keys;
@@ -93,6 +98,37 @@ const renderReferenceElement = _ref2 => {
     clipPathId
   }, element.key || `${displayName}-${index}`);
 };
+const _axesTicksGenerator = axis => (0, _ChartUtils.getTicksOfAxis)(axis, true);
+/**
+ * Draw axis
+ * @param {Object} axisOptions The options of axis
+ * @param {Object} element      The axis element
+ * @param {String} displayName  The display name of axis
+ * @param {Number} index        The index of element
+ * @return {ReactElement}       The instance of x-axes
+ */
+const _renderAxis = (axisOptions, element, displayName, index, props) => {
+  const {
+      width,
+      height
+    } = props,
+    {
+      axisType,
+      className
+    } = axisOptions;
+  return /*#__PURE__*/(0, _react.createElement)(_CartesianAxis.CartesianAxis, {
+    ...axisOptions,
+    key: element.key || `${displayName}-${index}`,
+    className: (0, _crCn.default)((0, _CL.crAxisCl)(axisType), className),
+    viewBox: {
+      x: 0,
+      y: 0,
+      width,
+      height
+    },
+    ticksGenerator: _axesTicksGenerator
+  });
+};
 const renderXAxis = _ref3 => {
   let {
     chartInst,
@@ -101,13 +137,10 @@ const renderXAxis = _ref3 => {
     index
   } = _ref3;
   const {
-      state
-    } = chartInst,
-    {
       xAxisMap
-    } = state,
+    } = chartInst.state,
     axisObj = xAxisMap[element.props.xAxisId];
-  return chartInst.renderAxis(axisObj, element, displayName, index);
+  return _renderAxis(axisObj, element, displayName, index, chartInst.props);
 };
 const renderYAxis = _ref4 => {
   let {
@@ -117,13 +150,10 @@ const renderYAxis = _ref4 => {
     index
   } = _ref4;
   const {
-      state
-    } = chartInst,
-    {
       yAxisMap
-    } = state,
+    } = chartInst.state,
     axisObj = yAxisMap[element.props.yAxisId];
-  return chartInst.renderAxis(axisObj, element, displayName, index);
+  return _renderAxis(axisObj, element, displayName, index, chartInst.props);
 };
 const renderBrush = _ref5 => {
   let {

@@ -10,15 +10,12 @@ import {
   _getByPropName
 } from '../util/FnUtils';
 
-import { CartesianAxis } from '../cartesian/CartesianAxis';
 import { Surface } from '../container/Surface';
 import { Tooltip } from '../component/Tooltip';
-import { isInRectangle } from '../shape/RectangleFn';
 
 import {
   validateWidthHeight,
   renderByMap,
-  getDisplayName,
   getReactEventByType,
   findChildByType,
   filterProps
@@ -33,8 +30,7 @@ import {
 } from '../util/DataUtils';
 import {
   isLayoutHorizontal,
-  isLayoutVertical,
-  getTicksOfAxis
+  isLayoutVertical
 } from '../util/ChartUtils';
 
 import { adaptEventHandlers} from '../util/types';
@@ -51,10 +47,7 @@ import { renderLegend } from './renderLegend';
 import { renderTooltip } from './renderTooltip';
 import { renderClipPath } from './renderClipPath';
 
-import {
-  CL_WRAPPER,
-  crAxisCl
-} from '../CL';
+import { CL_WRAPPER } from '../CL';
 
 const _inRange = (
   x,
@@ -71,9 +64,7 @@ const _inRange = (
       : null;
   }
   return null;
-}
-
-const _axesTicksGenerator = (axis) => getTicksOfAxis(axis, true)
+};
 
 export const generateCategoricalChart = ({
   chartName,
@@ -285,6 +276,10 @@ export const generateCategoricalChart = ({
               this.legendInstance = legend;
             }
 
+            _refContainer = (node) => {
+              this.container = node;
+            }
+
             componentDidMount() {
               this.accessibilityManager.setDetails({
                 container: this.container,
@@ -412,56 +407,7 @@ export const generateCategoricalChart = ({
                   ...tooltipEvents,
               };
             }
-
-            /**
-             * Draw axis
-             * @param {Object} axisOptions The options of axis
-             * @param {Object} element      The axis element
-             * @param {String} displayName  The display name of axis
-             * @param {Number} index        The index of element
-             * @return {ReactElement}       The instance of x-axes
-             */
-            renderAxis(axisOptions, element, displayName, index) {
-              const {
-                width,
-                height
-              } = this.props
-              , {
-                axisType,
-                className
-              } = axisOptions;
-              return (
-                <CartesianAxis
-                   {...axisOptions}
-                   key={element.key || `${displayName}-${index}`}
-                   className={crCn(crAxisCl(axisType), className)}
-                   viewBox={{ x: 0, y: 0, width, height }}
-                   ticksGenerator={_axesTicksGenerator}
-                />
-              );
-            }
-
-            getItemByXY(chartXY) {
-              const {
-                formattedGraphicalItems
-              } = this.state;
-              if (formattedGraphicalItems && formattedGraphicalItems.length) {
-                for (let i = 0, len = formattedGraphicalItems.length; i < len; i++) {
-                  const graphicalItem = formattedGraphicalItems[i]
-                  , { props, item } = graphicalItem
-                  , itemDisplayName = getDisplayName(item.type);
-                  if (itemDisplayName === 'Bar') {
-                    const activeBarItem = (props.data || [])
-                     .find(entry => isInRectangle(chartXY, entry));
-                    if (activeBarItem) {
-                      return { graphicalItem, payload: activeBarItem };
-                    }
-                  }
-                }
-              }
-              return null;
-            }
-
+                        
             render() {
               if (!validateWidthHeight(this)) {
                 return null;
@@ -508,11 +454,17 @@ export const generateCategoricalChart = ({
               const events = this.parseEventsOfWrapper();
               return (
                 <div
-                   className={crCn(CL_WRAPPER, className)}
-                   style={{ position: 'relative', cursor: 'default', width, height, ...style }}
-                   {...events}
-                   ref={node => { this.container = node;}}
                    role="region"
+                   ref={this._refContainer}
+                   className={crCn(CL_WRAPPER, className)}
+                   style={{
+                     position: 'relative',
+                     cursor: 'default',
+                     width,
+                     height,
+                     ...style
+                   }}
+                   {...events}
                 >
                   <Surface
                      {...attrs}

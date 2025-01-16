@@ -6,10 +6,8 @@ exports.generateCategoricalChart = void 0;
 var _uiApi = require("../../uiApi");
 var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _FnUtils = require("../util/FnUtils");
-var _CartesianAxis = require("../cartesian/CartesianAxis");
 var _Surface = require("../container/Surface");
 var _Tooltip = require("../component/Tooltip");
-var _RectangleFn = require("../shape/RectangleFn");
 var _ReactUtils = require("../util/ReactUtils");
 var _DOMUtils = require("../util/DOMUtils");
 var _DataUtils = require("../util/DataUtils");
@@ -24,7 +22,6 @@ var _renderLegend = require("./renderLegend");
 var _renderTooltip = require("./renderTooltip");
 var _renderClipPath = require("./renderClipPath");
 var _CL = require("../CL");
-var _react = require("react");
 var _jsxRuntime = require("react/jsx-runtime");
 const _inRange = (x, y, props, state) => {
   const {
@@ -42,7 +39,6 @@ const _inRange = (x, y, props, state) => {
   }
   return null;
 };
-const _axesTicksGenerator = axis => (0, _ChartUtils.getTicksOfAxis)(axis, true);
 const generateCategoricalChart = _ref => {
   let {
     chartName,
@@ -256,6 +252,9 @@ const generateCategoricalChart = _ref => {
     _refLegend = legend => {
       this.legendInstance = legend;
     };
+    _refContainer = node => {
+      this.container = node;
+    };
     componentDidMount() {
       this.accessibilityManager.setDetails({
         container: this.container,
@@ -375,62 +374,6 @@ const generateCategoricalChart = _ref => {
         ...tooltipEvents
       };
     }
-
-    /**
-     * Draw axis
-     * @param {Object} axisOptions The options of axis
-     * @param {Object} element      The axis element
-     * @param {String} displayName  The display name of axis
-     * @param {Number} index        The index of element
-     * @return {ReactElement}       The instance of x-axes
-     */
-    renderAxis(axisOptions, element, displayName, index) {
-      const {
-          width,
-          height
-        } = this.props,
-        {
-          axisType,
-          className
-        } = axisOptions;
-      return /*#__PURE__*/(0, _react.createElement)(_CartesianAxis.CartesianAxis, {
-        ...axisOptions,
-        key: element.key || `${displayName}-${index}`,
-        className: (0, _crCn.default)((0, _CL.crAxisCl)(axisType), className),
-        viewBox: {
-          x: 0,
-          y: 0,
-          width,
-          height
-        },
-        ticksGenerator: _axesTicksGenerator
-      });
-    }
-    getItemByXY(chartXY) {
-      const {
-        formattedGraphicalItems
-      } = this.state;
-      if (formattedGraphicalItems && formattedGraphicalItems.length) {
-        for (let i = 0, len = formattedGraphicalItems.length; i < len; i++) {
-          const graphicalItem = formattedGraphicalItems[i],
-            {
-              props,
-              item
-            } = graphicalItem,
-            itemDisplayName = (0, _ReactUtils.getDisplayName)(item.type);
-          if (itemDisplayName === 'Bar') {
-            const activeBarItem = (props.data || []).find(entry => (0, _RectangleFn.isInRectangle)(chartXY, entry));
-            if (activeBarItem) {
-              return {
-                graphicalItem,
-                payload: activeBarItem
-              };
-            }
-          }
-        }
-      }
-      return null;
-    }
     render() {
       if (!(0, _ReactUtils.validateWidthHeight)(this)) {
         return null;
@@ -476,6 +419,8 @@ const generateCategoricalChart = _ref => {
       }
       const events = this.parseEventsOfWrapper();
       return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        role: "region",
+        ref: this._refContainer,
         className: (0, _crCn.default)(_CL.CL_WRAPPER, className),
         style: {
           position: 'relative',
@@ -485,10 +430,6 @@ const generateCategoricalChart = _ref => {
           ...style
         },
         ...events,
-        ref: node => {
-          this.container = node;
-        },
-        role: "region",
         children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, {
           ...attrs,
           width: width,

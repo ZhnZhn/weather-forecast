@@ -4,6 +4,9 @@ import {
   createElement
 } from '../../uiApi';
 
+import crCn from '../../zhn-utils/crCn';
+
+import { CartesianAxis } from '../cartesian/CartesianAxis';
 import { Tooltip } from '../component/Tooltip';
 import { Curve } from '../shape/Curve';
 
@@ -15,7 +18,8 @@ import {
 import {
   isLayoutHorizontal,
   isLayoutVertical,
-  combineEventHandlers
+  combineEventHandlers,
+  getTicksOfAxis
 } from '../util/ChartUtils';
 
 import {
@@ -30,11 +34,13 @@ import {
   filterProps
 } from '../util/ReactUtils';
 
+import { crAxisCl } from '../CL';
+
 import { renderActivePoints } from './renderActivePoints';
 import {
   verticalCoordinatesGenerator,
   horizontalCoordinatesGenerator
-} from './generateCategoricalChartFn'
+} from './generateCategoricalChartFn';
 
 const CL_TOOLTIP_CURSOR = "recharts-tooltip-cursor"
 
@@ -134,6 +140,41 @@ const renderReferenceElement = ({
   }, element.key || `${displayName}-${index}`);
 }
 
+const _axesTicksGenerator = (axis) => getTicksOfAxis(axis, true)
+/**
+ * Draw axis
+ * @param {Object} axisOptions The options of axis
+ * @param {Object} element      The axis element
+ * @param {String} displayName  The display name of axis
+ * @param {Number} index        The index of element
+ * @return {ReactElement}       The instance of x-axes
+ */
+const _renderAxis = (
+  axisOptions,
+  element,
+  displayName,
+  index,
+  props
+) => {
+  const {
+    width,
+    height
+  } = props
+  , {
+    axisType,
+    className
+  } = axisOptions;
+  return (
+    <CartesianAxis
+       {...axisOptions}
+       key={element.key || `${displayName}-${index}`}
+       className={crCn(crAxisCl(axisType), className)}
+       viewBox={{ x: 0, y: 0, width, height }}
+       ticksGenerator={_axesTicksGenerator}
+    />
+  );
+}
+
 const renderXAxis = ({
   chartInst,
   element,
@@ -141,16 +182,16 @@ const renderXAxis = ({
   index
 }) => {
   const {
-    state
-  } = chartInst
-  , { xAxisMap } = state
+    xAxisMap
+  } = chartInst.state
   , axisObj = xAxisMap[element.props.xAxisId];
-  return chartInst.renderAxis(
-     axisObj,
-     element,
-     displayName,
-     index
-   );
+  return _renderAxis(
+    axisObj,
+    element,
+    displayName,
+    index,
+    chartInst.props
+  );
 };
 
 const renderYAxis = ({
@@ -159,15 +200,17 @@ const renderYAxis = ({
   displayName,
   index
 }) => {
-  const { state } = chartInst
-  , { yAxisMap } = state
+  const {
+    yAxisMap
+  } = chartInst.state
   , axisObj = yAxisMap[element.props.yAxisId];
-  return chartInst.renderAxis(
-     axisObj,
-     element,
-     displayName,
-     index
-   );
+  return _renderAxis(
+    axisObj,
+    element,
+    displayName,
+    index,
+    chartInst.props
+  );
 };
 
 const renderBrush = ({
