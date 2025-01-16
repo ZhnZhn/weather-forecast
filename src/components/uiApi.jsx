@@ -14,10 +14,11 @@ export {
   useRef,
   useState,
   useReducer,
+  useContext,
   useCallback,
   useMemo,
   useEffect,
-  useContext,
+  useLayoutEffect,
   useImperativeHandle
 } from "react";
 
