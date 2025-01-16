@@ -4,7 +4,7 @@ import {
   createElement,
   memo,
   useRef,
-  useEffect,
+  useLayoutEffect,
   getRefValue,
   setRefValue
 } from "../../uiApi";
@@ -116,7 +116,7 @@ export const Legend = memo((props) => {
   })
   , _refWrapperNode = useRef();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const {
       width,
       height

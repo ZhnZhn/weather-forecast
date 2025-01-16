@@ -100,7 +100,7 @@ const Legend = exports.Legend = (0, _uiApi.memo)(props => {
       height: -1
     }),
     _refWrapperNode = (0, _uiApi.useRef)();
-  (0, _uiApi.useEffect)(() => {
+  (0, _uiApi.useLayoutEffect)(() => {
     const {
         width,
         height
