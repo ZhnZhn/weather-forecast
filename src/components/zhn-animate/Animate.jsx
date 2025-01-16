@@ -39,6 +39,38 @@ const _fCloneContainer = (
 
 const FN_NOOP = () => {}
 
+const _crInitialState = props => {
+  const {
+    isActive,
+    attributeName,
+    from,
+    to,
+    steps,
+    children
+  } = props;
+
+  if (!isActive) {
+    // if children is a function and animation is not active, set style to 'to'
+    return _isFn(children)
+      ? { style: to }
+      : { style: {} };
+  } else if (steps && steps.length) {
+    return {
+      style: steps[0].style
+    };
+  } else if (from) {
+    return _isFn(children)
+      ? { style: from }
+      : {
+          style: attributeName
+           ? { [attributeName]: from }
+           : from
+        };
+  } else {
+    return { style: {} };
+  }
+};
+
 export class Animate extends PureComponent {
   static displayName = 'Animate';
 
@@ -89,36 +121,7 @@ export class Animate extends PureComponent {
 
   constructor(props, context) {
     super(props, context);
-
-    const {
-      isActive,
-      attributeName,
-      from,
-      to,
-      steps,
-      children
-    } = this.props;
-
-    if (!isActive) {
-      // if children is a function and animation is not active, set style to 'to'
-      this.state = _isFn(children)
-        ? { style: to }
-        : { style: {} };
-    } else if (steps && steps.length) {
-      this.state = {
-        style: steps[0].style
-      };
-    } else if (from) {
-      this.state = _isFn(children)
-        ? { style: from }
-        : {
-            style: attributeName
-             ? { [attributeName]: from }
-             : from
-          };
-    } else {
-      this.state = { style: {} };
-    }
+    this.state = _crInitialState(props)
   }
 
   componentDidMount() {
@@ -338,8 +341,8 @@ export class Animate extends PureComponent {
       steps,
       children,
     } = props;
-
-    this.unSubscribe = manager.subscribe(this.handleStyleChange);
+    
+    this.unSubscribe = manager.subscribe(this.changeStyle);
 
     if (_isFn(easing)
       || _isFn(children)
@@ -370,10 +373,6 @@ export class Animate extends PureComponent {
       duration,
       onAnimationEnd
     ]);
-  }
-
-  handleStyleChange = (style) => {
-    this.changeStyle(style);
   }
 
   changeStyle = (style) => {
