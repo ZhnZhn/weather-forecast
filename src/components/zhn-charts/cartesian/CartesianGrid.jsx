@@ -11,11 +11,14 @@ import {
   renderHorizontal,
   renderVertical,
   renderVerticalStripes,
-  renderHorizontalStripes,
-  renderBackground
+  renderHorizontalStripes
 } from './CartesianGridRenderFn';
 
-import { CL_CARTESIAN_GRID } from '../CL';
+import CartesianGridBackground from './CartesianGridBackground';
+import {
+  CL_BG,
+  CL_CARTESIAN_GRID
+} from '../CL';
 
 const DF_PROPS = {
   horizontal: true,
@@ -59,7 +62,15 @@ export const CartesianGrid = memo((
 
   return (
     <g className={CL_CARTESIAN_GRID}>
-      {renderBackground(_props)}
+      <CartesianGridBackground
+         className={CL_BG}
+         fill={_props.fill}
+         fillOpacity={_props.fillOpacity}
+         x={_props.x}
+         y={_props.y}
+         width={_props.width}
+         height={_props.height}
+      />
       {horizontal && renderHorizontal(horizontalPoints, _props)}
       {vertical && renderVertical(verticalPoints, _props)}
 

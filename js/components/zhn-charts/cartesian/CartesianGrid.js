@@ -1,11 +1,13 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.CartesianGrid = void 0;
 var _uiApi = require("../../uiApi");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _CartesianGridRenderFn = require("./CartesianGridRenderFn");
+var _CartesianGridBackground = _interopRequireDefault(require("./CartesianGridBackground"));
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 const DF_PROPS = {
@@ -37,7 +39,15 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
   const [horizontalPoints, verticalPoints] = (0, _CartesianGridRenderFn.crGridPoints)(_props);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("g", {
     className: _CL.CL_CARTESIAN_GRID,
-    children: [(0, _CartesianGridRenderFn.renderBackground)(_props), horizontal && (0, _CartesianGridRenderFn.renderHorizontal)(horizontalPoints, _props), vertical && (0, _CartesianGridRenderFn.renderVertical)(verticalPoints, _props), horizontal && (0, _CartesianGridRenderFn.renderHorizontalStripes)(horizontalPoints, _props), vertical && (0, _CartesianGridRenderFn.renderVerticalStripes)(verticalPoints, _props)]
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridBackground.default, {
+      className: _CL.CL_BG,
+      fill: _props.fill,
+      fillOpacity: _props.fillOpacity,
+      x: _props.x,
+      y: _props.y,
+      width: _props.width,
+      height: _props.height
+    }), horizontal && (0, _CartesianGridRenderFn.renderHorizontal)(horizontalPoints, _props), vertical && (0, _CartesianGridRenderFn.renderVertical)(verticalPoints, _props), horizontal && (0, _CartesianGridRenderFn.renderHorizontalStripes)(horizontalPoints, _props), vertical && (0, _CartesianGridRenderFn.renderVerticalStripes)(verticalPoints, _props)]
   });
 });
 CartesianGrid.displayName = 'CartesianGrid';

@@ -229,29 +229,3 @@ export const renderHorizontalStripes = (
    </g>
   );
 }
-
-export const renderBackground = (
-  props
-) => {
-  const { fill } = props;
-  if (!fill || fill === 'none') {
-    return null;
-  }
-
-  const {
-    fillOpacity,
-    x,
-    y,
-    width,
-    height
-  } = props;
-  return (
-    <rect
-       x={x} y={y}
-       width={width} height={height}
-       stroke="none" fill={fill}
-       fillOpacity={fillOpacity}
-       className={CL_BG}
-    />
-  );
-}
