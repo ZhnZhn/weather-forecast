@@ -4,6 +4,7 @@ fill,
 fillOpacity,
 x,
 y,
+ry,
 width,
 height,
 className

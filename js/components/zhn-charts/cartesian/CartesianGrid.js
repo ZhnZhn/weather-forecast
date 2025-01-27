@@ -10,6 +10,7 @@ var _CartesianGridRenderFn = require("./CartesianGridRenderFn");
 var _CartesianGridBackground = _interopRequireDefault(require("./CartesianGridBackground"));
 var _CartesianGridHorizontalLines = _interopRequireDefault(require("./CartesianGridHorizontalLines"));
 var _CartesianGridVerticalLines = _interopRequireDefault(require("./CartesianGridVerticalLines"));
+var _CartesianGridVerticalStripes = _interopRequireDefault(require("./CartesianGridVerticalStripes"));
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 const DF_PROPS = {
@@ -30,10 +31,16 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
     {
       x,
       y,
+      ry,
       width,
       height,
+      fill,
+      fillOpacity,
       horizontal,
-      vertical
+      vertical,
+      horizontalFill,
+      verticalFill,
+      ...restProps
     } = _props;
   if (!((0, _DataUtils.isPositiveNumber)(width) && (0, _DataUtils.isPositiveNumber)(height) && (0, _DataUtils.isNumber)(x) && (0, _DataUtils.isNumber)(y))) {
     return null;
@@ -43,10 +50,11 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
     className: _CL.CL_CARTESIAN_GRID,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridBackground.default, {
       className: _CL.CL_BG,
-      fill: _props.fill,
-      fillOpacity: _props.fillOpacity,
+      fill: fill,
+      fillOpacity: fillOpacity,
       x: x,
       y: y,
+      ry: ry,
       width: width,
       height: height
     }), horizontal && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridHorizontalLines.default, {
@@ -54,14 +62,32 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
       x: x,
       width: width,
       points: horizontalPoints,
-      props: _props
+      props: restProps
     }), vertical && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridVerticalLines.default, {
       className: _CL.CL_GRID_VERTICAL,
       y: y,
       height: height,
       points: verticalPoints,
-      props: _props
-    }), horizontal && (0, _CartesianGridRenderFn.renderHorizontalStripes)(horizontalPoints, _props), vertical && (0, _CartesianGridRenderFn.renderVerticalStripes)(verticalPoints, _props)]
+      props: restProps
+    }), horizontal && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridHorizontalLines.default, {
+      className: _CL.CL_STRIPES_HORIZONTAL,
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      fillOpacity: fillOpacity,
+      horizontalFill: horizontalFill,
+      horizontalPoints: horizontalPoints
+    }), vertical && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridVerticalStripes.default, {
+      className: _CL.CL_STRIPES_VERTICAL,
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      fillOpacity: fillOpacity,
+      verticalFill: verticalFill,
+      verticalPoints: verticalPoints
+    })]
   });
 });
 CartesianGrid.displayName = 'CartesianGrid';

@@ -9,6 +9,7 @@ const NONE = "none"
   fillOpacity,
   x,
   y,
+  ry,
   width,
   height,
   className
