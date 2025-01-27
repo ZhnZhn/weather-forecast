@@ -8,18 +8,19 @@ import { crProps } from '../util/ReactUtils';
 
 import {
   crGridPoints,
-  renderVertical,
   renderVerticalStripes,
   renderHorizontalStripes
 } from './CartesianGridRenderFn';
 
 import CartesianGridBackground from './CartesianGridBackground';
 import CartesianGridHorizontalLines from './CartesianGridHorizontalLines';
+import CartesianGridVerticalLines from './CartesianGridVerticalLines';
 
 import {
   CL_BG,
   CL_CARTESIAN_GRID,
-  CL_GRID_HORIZONTAL
+  CL_GRID_HORIZONTAL,
+  CL_GRID_VERTICAL
 } from '../CL';
 
 const DF_PROPS = {
@@ -68,19 +69,25 @@ export const CartesianGrid = memo((
          className={CL_BG}
          fill={_props.fill}
          fillOpacity={_props.fillOpacity}
-         x={_props.x}
-         y={_props.y}
-         width={_props.width}
-         height={_props.height}
+         x={x}
+         y={y}
+         width={width}
+         height={height}
       />
       {horizontal && <CartesianGridHorizontalLines
         className={CL_GRID_HORIZONTAL}
-        x={_props.x}
-        width={_props.width}
+        x={x}
+        width={width}
         points={horizontalPoints}
         props={_props}
       />}
-      {vertical && renderVertical(verticalPoints, _props)}
+      {vertical && <CartesianGridVerticalLines
+        className={CL_GRID_VERTICAL}
+        y={y}
+        height={height}
+        points={verticalPoints}
+        props={_props}
+      />}
 
       {horizontal && renderHorizontalStripes(horizontalPoints, _props)}
       {vertical && renderVerticalStripes(verticalPoints, _props)}

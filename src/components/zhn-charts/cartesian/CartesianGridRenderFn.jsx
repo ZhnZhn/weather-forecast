@@ -1,31 +1,10 @@
 import { _isFn } from '../util/FnUtils';
-import { filterProps } from '../util/ReactUtils';
-import { fCreateElement } from './cartesianFn';
 
 import {
-  CL_GRID_VERTICAL,
   CL_BG,
   CL_STRIPES_HORIZONTAL,
   CL_STRIPES_VERTICAL
 } from '../CL';
-
-const _crLineElement = ({
-  x1,
-  y1,
-  x2,
-  y2,
-  key,
-  ...restProps
-}) => (
-  <line
-    {...filterProps(restProps)}
-    x1={x1} y1={y1} x2={x2} y2={y2}
-    fill="none"
-    key={key}
-  />
-);
-
-const _renderLineItem = fCreateElement(_crLineElement);
 
 export const isPoints = (
   points
@@ -69,37 +48,6 @@ export const crGridPoints = (
         {..._generatorOptions, xAxis}
     )
   ];
-}
-
-export const renderVertical = (
-  verticalPoints,
-  props
-) => {
-  const {
-    y,
-    height,
-    vertical
-  } = props;
-  if (!isPoints(verticalPoints)) {
-    return null;
-  }
-
-  const items = verticalPoints.map(
-    (entry, i) => _renderLineItem(vertical, {
-      ...props,
-      x1: entry,
-      y1: y,
-      x2: entry,
-      y2: y + height,
-      key: `line-${i}`,
-      index: i
-  }));
-
-  return (
-    <g className={CL_GRID_VERTICAL}>
-      {items}
-    </g>
-  );
 }
 
 export const renderVerticalStripes = (

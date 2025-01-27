@@ -1,33 +1,10 @@
 "use strict";
 
 exports.__esModule = true;
-exports.renderVerticalStripes = exports.renderVertical = exports.renderHorizontalStripes = exports.isPoints = exports.crGridPoints = void 0;
+exports.renderVerticalStripes = exports.renderHorizontalStripes = exports.isPoints = exports.crGridPoints = void 0;
 var _FnUtils = require("../util/FnUtils");
-var _ReactUtils = require("../util/ReactUtils");
-var _cartesianFn = require("./cartesianFn");
 var _CL = require("../CL");
-var _react = require("react");
 var _jsxRuntime = require("react/jsx-runtime");
-const _crLineElement = _ref => {
-  let {
-    x1,
-    y1,
-    x2,
-    y2,
-    key,
-    ...restProps
-  } = _ref;
-  return /*#__PURE__*/(0, _react.createElement)("line", {
-    ...(0, _ReactUtils.filterProps)(restProps),
-    x1: x1,
-    y1: y1,
-    x2: x2,
-    y2: y2,
-    fill: "none",
-    key: key
-  });
-};
-const _renderLineItem = (0, _cartesianFn.fCreateElement)(_crLineElement);
 const isPoints = points => points && points.length;
 exports.isPoints = isPoints;
 const _crPoints = (points, pointsGenerator, generatorOptions) => !isPoints(points) && (0, _FnUtils._isFn)(pointsGenerator) ? pointsGenerator(generatorOptions) : points;
@@ -55,30 +32,6 @@ const crGridPoints = props => {
   })];
 };
 exports.crGridPoints = crGridPoints;
-const renderVertical = (verticalPoints, props) => {
-  const {
-    y,
-    height,
-    vertical
-  } = props;
-  if (!isPoints(verticalPoints)) {
-    return null;
-  }
-  const items = verticalPoints.map((entry, i) => _renderLineItem(vertical, {
-    ...props,
-    x1: entry,
-    y1: y,
-    x2: entry,
-    y2: y + height,
-    key: `line-${i}`,
-    index: i
-  }));
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
-    className: _CL.CL_GRID_VERTICAL,
-    children: items
-  });
-};
-exports.renderVertical = renderVertical;
 const renderVerticalStripes = (verticalPoints, props) => {
   const {
     verticalFill
