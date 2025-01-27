@@ -3,7 +3,6 @@ import { filterProps } from '../util/ReactUtils';
 import { fCreateElement } from './cartesianFn';
 
 import {
-  CL_GRID_HORIZONTAL,
   CL_GRID_VERTICAL,
   CL_BG,
   CL_STRIPES_HORIZONTAL,
@@ -28,14 +27,15 @@ const _crLineElement = ({
 
 const _renderLineItem = fCreateElement(_crLineElement);
 
-const _isPoints = (
+export const isPoints = (
   points
 ) => points && points.length;
+
 const _crPoints = (
   points,
   pointsGenerator,
   generatorOptions
-) => !_isPoints(points) && _isFn(pointsGenerator)
+) => !isPoints(points) && _isFn(pointsGenerator)
   ? pointsGenerator(generatorOptions)
   : points;
 
@@ -71,37 +71,6 @@ export const crGridPoints = (
   ];
 }
 
-export const renderHorizontal = (
-  horizontalPoints,
-  props
-) => {
-  const {
-    x,
-    width,
-    horizontal
-  } = props;
-  if (!_isPoints(horizontalPoints)) {
-    return null;
-  }
-
-  const items = horizontalPoints.map(
-    (entry, i) => _renderLineItem(horizontal, {
-      ...props,
-      x1: x,
-      y1: entry,
-      x2: x + width,
-      y2: entry,
-      key: `line-${i}`,
-      index: i
-  }));
-
-  return (
-    <g className={CL_GRID_HORIZONTAL}>
-      {items}
-    </g>
-  );
-}
-
 export const renderVertical = (
   verticalPoints,
   props
@@ -111,7 +80,7 @@ export const renderVertical = (
     height,
     vertical
   } = props;
-  if (!_isPoints(verticalPoints)) {
+  if (!isPoints(verticalPoints)) {
     return null;
   }
 
@@ -138,7 +107,7 @@ export const renderVerticalStripes = (
   props
 ) => {
   const { verticalFill } = props;
-  if (!_isPoints(verticalFill)) {
+  if (!isPoints(verticalFill)) {
     return null;
   }
 
@@ -185,7 +154,7 @@ export const renderHorizontalStripes = (
   props
 ) => {
   const { horizontalFill } = props;
-  if (!_isPoints(horizontalFill)) {
+  if (!isPoints(horizontalFill)) {
     return null;
   }
 

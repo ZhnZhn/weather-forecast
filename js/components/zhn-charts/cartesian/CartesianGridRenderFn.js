@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.renderVerticalStripes = exports.renderVertical = exports.renderHorizontalStripes = exports.renderHorizontal = exports.crGridPoints = void 0;
+exports.renderVerticalStripes = exports.renderVertical = exports.renderHorizontalStripes = exports.isPoints = exports.crGridPoints = void 0;
 var _FnUtils = require("../util/FnUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _cartesianFn = require("./cartesianFn");
@@ -28,8 +28,9 @@ const _crLineElement = _ref => {
   });
 };
 const _renderLineItem = (0, _cartesianFn.fCreateElement)(_crLineElement);
-const _isPoints = points => points && points.length;
-const _crPoints = (points, pointsGenerator, generatorOptions) => !_isPoints(points) && (0, _FnUtils._isFn)(pointsGenerator) ? pointsGenerator(generatorOptions) : points;
+const isPoints = points => points && points.length;
+exports.isPoints = isPoints;
+const _crPoints = (points, pointsGenerator, generatorOptions) => !isPoints(points) && (0, _FnUtils._isFn)(pointsGenerator) ? pointsGenerator(generatorOptions) : points;
 const crGridPoints = props => {
   const {
       horizontalCoordinatesGenerator,
@@ -54,37 +55,13 @@ const crGridPoints = props => {
   })];
 };
 exports.crGridPoints = crGridPoints;
-const renderHorizontal = (horizontalPoints, props) => {
-  const {
-    x,
-    width,
-    horizontal
-  } = props;
-  if (!_isPoints(horizontalPoints)) {
-    return null;
-  }
-  const items = horizontalPoints.map((entry, i) => _renderLineItem(horizontal, {
-    ...props,
-    x1: x,
-    y1: entry,
-    x2: x + width,
-    y2: entry,
-    key: `line-${i}`,
-    index: i
-  }));
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
-    className: _CL.CL_GRID_HORIZONTAL,
-    children: items
-  });
-};
-exports.renderHorizontal = renderHorizontal;
 const renderVertical = (verticalPoints, props) => {
   const {
     y,
     height,
     vertical
   } = props;
-  if (!_isPoints(verticalPoints)) {
+  if (!isPoints(verticalPoints)) {
     return null;
   }
   const items = verticalPoints.map((entry, i) => _renderLineItem(vertical, {
@@ -106,7 +83,7 @@ const renderVerticalStripes = (verticalPoints, props) => {
   const {
     verticalFill
   } = props;
-  if (!_isPoints(verticalFill)) {
+  if (!isPoints(verticalFill)) {
     return null;
   }
   const {
@@ -148,7 +125,7 @@ const renderHorizontalStripes = (horizontalPoints, props) => {
   const {
     horizontalFill
   } = props;
-  if (!_isPoints(horizontalFill)) {
+  if (!isPoints(horizontalFill)) {
     return null;
   }
   const {
