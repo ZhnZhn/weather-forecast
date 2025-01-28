@@ -118,7 +118,9 @@ export const Line = memo((props) => {
 
   const hasSinglePoint = points.length === 1
   , layerClass = crCn(CL_LINE, className)
-  , needClip = isNeedClip(_props);
+  , needClip = isNeedClip(_props)
+  , _isAnimationNotActiveOrFinished = !isAnimationActive
+    || isAnimationFinished;
 
   return (
     <Layer className={layerClass}>
@@ -138,13 +140,13 @@ export const Line = memo((props) => {
           handleAnimationEnd
         )}
       {(hasSinglePoint || dot)
+         && _isAnimationNotActiveOrFinished
          && renderDots(
               needClip,
               clipPathId,
-              isAnimationFinished,
               _props
       )}
-      {(!isAnimationActive || isAnimationFinished)
+      {_isAnimationNotActiveOrFinished
          && LabelList.renderCallByParent(
               _props,
               points

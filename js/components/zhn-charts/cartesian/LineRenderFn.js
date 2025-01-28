@@ -24,10 +24,7 @@ const _crDotItem = (_ref, option) => {
   }, key);
 };
 const _renderDotItem = (0, _cartesianFn.fCreateElement)(_crDotItem);
-const renderDots = (needClip, clipPathId, isAnimationFinished, props) => {
-  if (props.isAnimationActive && !isAnimationFinished) {
-    return null;
-  }
+const renderDots = (needClip, clipPathId, props) => {
   const {
       dot,
       points,

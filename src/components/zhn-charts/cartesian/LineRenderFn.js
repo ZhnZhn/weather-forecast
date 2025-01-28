@@ -37,13 +37,8 @@ const _renderDotItem = fCreateElement(_crDotItem);
 export const renderDots = (
   needClip,
   clipPathId,
-  isAnimationFinished,
   props
 ) => {
-  if (props.isAnimationActive && !isAnimationFinished) {
-    return null;
-  }
-
   const {
     dot,
     points,
