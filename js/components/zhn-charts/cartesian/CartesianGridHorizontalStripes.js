@@ -16,9 +16,6 @@ const CartesianGridHorizontalStripes = _ref => {
     width,
     height
   } = _ref;
-  if (!(0, _CartesianGridRenderFn.isPoints)(horizontalFill)) {
-    return null;
-  }
   const roundedSortedHorizontalPoints = (0, _CartesianGridRenderFn.crRoundedSortedPoints)(horizontalPoints, y);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
     className: className,

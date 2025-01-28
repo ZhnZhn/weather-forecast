@@ -1,7 +1,4 @@
-import {
-  isPoints,
-  crRoundedSortedPoints
-} from './CartesianGridRenderFn';
+import { crRoundedSortedPoints } from './CartesianGridRenderFn';
 
 import { CL_BG } from '../CL';
 
@@ -15,12 +12,7 @@ const CartesianGridVerticalStripes = ({
   width,
   height
 }) => {
-  if (!isPoints(verticalFill)) {
-    return null;
-  }
-
   const roundedSortedVerticalPoints = crRoundedSortedPoints(verticalPoints, x);
-
   return (
     <g className={className}>
       {roundedSortedVerticalPoints.map((entry, i) => {

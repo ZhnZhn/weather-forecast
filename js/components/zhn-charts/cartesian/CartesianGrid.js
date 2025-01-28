@@ -10,9 +10,11 @@ var _CartesianGridRenderFn = require("./CartesianGridRenderFn");
 var _CartesianGridBackground = _interopRequireDefault(require("./CartesianGridBackground"));
 var _CartesianGridHorizontalLines = _interopRequireDefault(require("./CartesianGridHorizontalLines"));
 var _CartesianGridVerticalLines = _interopRequireDefault(require("./CartesianGridVerticalLines"));
+var _CartesianGridHorizontalStripes = _interopRequireDefault(require("./CartesianGridHorizontalStripes"));
 var _CartesianGridVerticalStripes = _interopRequireDefault(require("./CartesianGridVerticalStripes"));
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
+const _isPoints = (is, points) => is && (0, _CartesianGridRenderFn.isPoints)(points);
 const DF_PROPS = {
   horizontal: true,
   vertical: true,
@@ -57,19 +59,19 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
       ry: ry,
       width: width,
       height: height
-    }), horizontal && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridHorizontalLines.default, {
+    }), _isPoints(horizontal, horizontalPoints) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridHorizontalLines.default, {
       className: _CL.CL_GRID_HORIZONTAL,
       x: x,
       width: width,
       points: horizontalPoints,
       props: restProps
-    }), vertical && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridVerticalLines.default, {
+    }), _isPoints(vertical, verticalPoints) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridVerticalLines.default, {
       className: _CL.CL_GRID_VERTICAL,
       y: y,
       height: height,
       points: verticalPoints,
       props: restProps
-    }), horizontal && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridHorizontalLines.default, {
+    }), _isPoints(horizontal, horizontalFill) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridHorizontalStripes.default, {
       className: _CL.CL_STRIPES_HORIZONTAL,
       x: x,
       y: y,
@@ -78,7 +80,7 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
       fillOpacity: fillOpacity,
       horizontalFill: horizontalFill,
       horizontalPoints: horizontalPoints
-    }), vertical && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridVerticalStripes.default, {
+    }), _isPoints(vertical, verticalFill) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridVerticalStripes.default, {
       className: _CL.CL_STRIPES_VERTICAL,
       x: x,
       y: y,

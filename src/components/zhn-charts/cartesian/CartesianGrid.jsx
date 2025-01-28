@@ -6,11 +6,15 @@ import {
 } from '../util/DataUtils';
 import { crProps } from '../util/ReactUtils';
 
-import { crGridPoints } from './CartesianGridRenderFn';
+import {
+  crGridPoints,
+  isPoints
+} from './CartesianGridRenderFn';
 
 import CartesianGridBackground from './CartesianGridBackground';
 import CartesianGridHorizontalLines from './CartesianGridHorizontalLines';
 import CartesianGridVerticalLines from './CartesianGridVerticalLines';
+import CartesianGridHorizontalStripes from './CartesianGridHorizontalStripes';
 import CartesianGridVerticalStripes from './CartesianGridVerticalStripes';
 
 import {
@@ -21,6 +25,11 @@ import {
   CL_STRIPES_HORIZONTAL,
   CL_STRIPES_VERTICAL
 } from '../CL';
+
+const _isPoints = (
+  is,
+  points
+) => is && isPoints(points);
 
 const DF_PROPS = {
   horizontal: true,
@@ -80,21 +89,21 @@ export const CartesianGrid = memo((
          width={width}
          height={height}
       />
-      {horizontal && <CartesianGridHorizontalLines
+      {_isPoints(horizontal, horizontalPoints) && <CartesianGridHorizontalLines
          className={CL_GRID_HORIZONTAL}
          x={x}
          width={width}
          points={horizontalPoints}
          props={restProps}
       />}
-      {vertical && <CartesianGridVerticalLines
+      {_isPoints(vertical, verticalPoints) && <CartesianGridVerticalLines
          className={CL_GRID_VERTICAL}
          y={y}
          height={height}
          points={verticalPoints}
          props={restProps}
       />}
-      {horizontal && <CartesianGridHorizontalLines
+      {_isPoints(horizontal, horizontalFill) && <CartesianGridHorizontalStripes
          className={CL_STRIPES_HORIZONTAL}
          x={x} y={y}
          width={width} height={height}
@@ -102,7 +111,7 @@ export const CartesianGrid = memo((
          horizontalFill={horizontalFill}
          horizontalPoints={horizontalPoints}
       />}
-      {vertical && <CartesianGridVerticalStripes
+      {_isPoints(vertical, verticalFill) && <CartesianGridVerticalStripes
          className={CL_STRIPES_VERTICAL}
          x={x} y={y}
          width={width} height={height}
