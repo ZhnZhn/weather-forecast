@@ -1,7 +1,7 @@
 const CartesianGridHorizontalLines = ({
   className,
-  x,
-  width,
+  x1,
+  x2,
   points,
   props
 }) => (
@@ -9,9 +9,9 @@ const CartesianGridHorizontalLines = ({
      {points.map((entry, i) => (<line
        key={`line-${i}`}
        {...props}
-       x1={x}
+       x1={x1}
        y1={entry}
-       x2={x + width}
+       x2={x2}
        y2={entry}
      />))}
   </g>
