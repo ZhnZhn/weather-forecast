@@ -1,5 +1,3 @@
-import { filterProps } from '../util/ReactUtils';
-
 const CartesianGridHorizontalLines = ({
   className,
   x,
@@ -10,7 +8,7 @@ const CartesianGridHorizontalLines = ({
   <g className={className}>
      {points.map((entry, i) => (<line
        key={`line-${i}`}
-       {...filterProps(props)}
+       {...props}
        x1={x}
        y1={entry}
        x2={x + width}

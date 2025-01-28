@@ -4,7 +4,10 @@ import {
   isNumber,
   isPositiveNumber
 } from '../util/DataUtils';
-import { crProps } from '../util/ReactUtils';
+import {
+  crProps,
+  filterProps
+} from '../util/ReactUtils';
 
 import {
   crGridPoints,
@@ -75,7 +78,8 @@ export const CartesianGrid = memo((
   const [
     horizontalPoints,
     verticalPoints
-  ] = crGridPoints(_props);
+  ] = crGridPoints(_props)
+  , _lineProps = filterProps(restProps);
 
   return (
     <g className={CL_CARTESIAN_GRID}>
@@ -94,14 +98,14 @@ export const CartesianGrid = memo((
          x={x}
          width={width}
          points={horizontalPoints}
-         props={restProps}
+         props={_lineProps}
       />}
       {_isPoints(vertical, verticalPoints) && <CartesianGridVerticalLines
          className={CL_GRID_VERTICAL}
          y={y}
          height={height}
          points={verticalPoints}
-         props={restProps}
+         props={_lineProps}
       />}
       {_isPoints(horizontal, horizontalFill) && <CartesianGridHorizontalStripes
          className={CL_STRIPES_HORIZONTAL}

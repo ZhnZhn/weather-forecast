@@ -2,7 +2,6 @@
 
 exports.__esModule = true;
 exports.default = void 0;
-var _ReactUtils = require("../util/ReactUtils");
 var _jsxRuntime = require("react/jsx-runtime");
 const CartesianGridVerticalLines = _ref => {
   let {
@@ -15,7 +14,7 @@ const CartesianGridVerticalLines = _ref => {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
     className: className,
     children: points.map((entry, i) => /*#__PURE__*/(0, _jsxRuntime.jsx)("line", {
-      ...(0, _ReactUtils.filterProps)(props),
+      ...props,
       x1: entry,
       y1: y,
       x2: entry,

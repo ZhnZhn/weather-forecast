@@ -47,7 +47,8 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
   if (!((0, _DataUtils.isPositiveNumber)(width) && (0, _DataUtils.isPositiveNumber)(height) && (0, _DataUtils.isNumber)(x) && (0, _DataUtils.isNumber)(y))) {
     return null;
   }
-  const [horizontalPoints, verticalPoints] = (0, _CartesianGridRenderFn.crGridPoints)(_props);
+  const [horizontalPoints, verticalPoints] = (0, _CartesianGridRenderFn.crGridPoints)(_props),
+    _lineProps = (0, _ReactUtils.filterProps)(restProps);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("g", {
     className: _CL.CL_CARTESIAN_GRID,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridBackground.default, {
@@ -64,13 +65,13 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
       x: x,
       width: width,
       points: horizontalPoints,
-      props: restProps
+      props: _lineProps
     }), _isPoints(vertical, verticalPoints) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridVerticalLines.default, {
       className: _CL.CL_GRID_VERTICAL,
       y: y,
       height: height,
       points: verticalPoints,
-      props: restProps
+      props: _lineProps
     }), _isPoints(horizontal, horizontalFill) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridHorizontalStripes.default, {
       className: _CL.CL_STRIPES_HORIZONTAL,
       x: x,
