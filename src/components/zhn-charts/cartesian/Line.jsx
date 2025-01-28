@@ -19,6 +19,10 @@ import {
 } from '../util/ChartUtils';
 
 import {
+  crClipPathProps
+} from './cartesianFn';
+
+import {
   renderDots,
   renderCurve
 } from './LineRenderFn';
@@ -119,6 +123,7 @@ export const Line = memo((props) => {
   const hasSinglePoint = points.length === 1
   , layerClass = crCn(CL_LINE, className)
   , needClip = isNeedClip(_props)
+  , _clipPathProps = crClipPathProps(needClip, clipPathId)
   , _isAnimationNotActiveOrFinished = !isAnimationActive
     || isAnimationFinished;
 
@@ -130,8 +135,7 @@ export const Line = memo((props) => {
          props={_props}
       />
       {!hasSinglePoint && renderCurve(
-          needClip,
-          clipPathId,
+          _clipPathProps,
           prevPoints,
           totalLength,
           _props,
@@ -142,8 +146,7 @@ export const Line = memo((props) => {
       {(hasSinglePoint || dot)
          && _isAnimationNotActiveOrFinished
          && renderDots(
-              needClip,
-              clipPathId,
+              _clipPathProps,
               _props
       )}
       {_isAnimationNotActiveOrFinished

@@ -8,10 +8,7 @@ import { Curve } from '../shape/Curve';
 import { Dot } from '../shape/Dot';
 import { Layer } from '../container/Layer';
 
-import {
-  fCreateElement,
-  crClipPathProps
-} from './cartesianFn';
+import { fCreateElement } from './cartesianFn';
 import {
   CL_LINE_DOT,
   CL_LINE_DOTS,
@@ -35,8 +32,7 @@ const _crDotItem = (
 const _renderDotItem = fCreateElement(_crDotItem);
 
 export const renderDots = (
-  needClip,
-  clipPathId,
+  clipPathProps,
   props
 ) => {
   const {
@@ -47,7 +43,7 @@ export const renderDots = (
   , lineProps = filterProps(props)
   , customDotProps = filterProps(dot, true)
   , dots = points.map((entry, i) => {
-      const dotProps = {
+      const _dotItemProps = {
         key: `dot-${i}`,
         r: 3,
         ...lineProps,
@@ -59,19 +55,14 @@ export const renderDots = (
         index: i,
         payload: entry.payload,
       };
-      return _renderDotItem(dot, dotProps);
+      return _renderDotItem(dot, _dotItemProps);
   });
-
-  const dotsProps = crClipPathProps(
-    needClip,
-    clipPathId
-  );
 
   return (
     <Layer
        className={CL_LINE_DOTS}
        key="dots"
-       {...dotsProps}
+       {...clipPathProps}
        role="img"
     >
      {dots}
@@ -81,8 +72,7 @@ export const renderDots = (
 
 const renderCurveStatically = (
   points,
-  needClip,
-  clipPathId,
+  clipPathProps,
   props,
   pathRef,
   options
@@ -102,7 +92,7 @@ const renderCurveStatically = (
       ...filterProps(restProps, true),
       fill: 'none',
       className: CL_LINE_CURVE,
-      ...crClipPathProps(needClip, clipPathId),
+      ...clipPathProps,
       points,
       ...options,
       type,
@@ -164,8 +154,7 @@ const ANIMATE_CURVE_FROM = {t: 0};
 const ANIMATE_CURVE_TO = {t: 1};
 
 const renderCurveWithAnimation = (
-  needClip,
-  clipPathId,
+  clipPathProps,
   prevPoints,
   totalLength,
   props,
@@ -231,8 +220,7 @@ const renderCurveWithAnimation = (
 
               return renderCurveStatically(
                 stepData,
-                needClip,
-                clipPathId,
+                clipPathProps,
                 props,
                 pathRef
               );
@@ -249,8 +237,7 @@ const renderCurveWithAnimation = (
           }
           return renderCurveStatically(
             points,
-            needClip,
-            clipPathId,
+            clipPathProps,
             props,
             pathRef, {
             strokeDasharray: currentStrokeDasharray
@@ -261,8 +248,7 @@ const renderCurveWithAnimation = (
 }
 
 export const renderCurve = (
-  needClip,
-  clipPathId,
+  clipPathProps,
   prevPoints,
   totalLength,
   props,
@@ -280,8 +266,7 @@ export const renderCurve = (
     //&& ((!prevPoints && totalLength > 0) || !_isEqual(prevPoints, points))
     && ((!prevPoints && totalLength > 0) || prevPoints !== points)
     ? renderCurveWithAnimation(
-        needClip,
-        clipPathId,
+        clipPathProps,
         prevPoints,
         totalLength,
         props,
@@ -291,8 +276,7 @@ export const renderCurve = (
       )
     : renderCurveStatically(
         points,
-        needClip,
-        clipPathId,
+        clipPathProps,
         props,
         refPath
       );

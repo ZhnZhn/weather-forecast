@@ -24,7 +24,7 @@ const _crDotItem = (_ref, option) => {
   }, key);
 };
 const _renderDotItem = (0, _cartesianFn.fCreateElement)(_crDotItem);
-const renderDots = (needClip, clipPathId, props) => {
+const renderDots = (clipPathProps, props) => {
   const {
       dot,
       points,
@@ -33,7 +33,7 @@ const renderDots = (needClip, clipPathId, props) => {
     lineProps = (0, _ReactUtils.filterProps)(props),
     customDotProps = (0, _ReactUtils.filterProps)(dot, true),
     dots = points.map((entry, i) => {
-      const dotProps = {
+      const _dotItemProps = {
         key: `dot-${i}`,
         r: 3,
         ...lineProps,
@@ -45,18 +45,17 @@ const renderDots = (needClip, clipPathId, props) => {
         index: i,
         payload: entry.payload
       };
-      return _renderDotItem(dot, dotProps);
+      return _renderDotItem(dot, _dotItemProps);
     });
-  const dotsProps = (0, _cartesianFn.crClipPathProps)(needClip, clipPathId);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
     className: _CL.CL_LINE_DOTS,
-    ...dotsProps,
+    ...clipPathProps,
     role: "img",
     children: dots
   }, "dots");
 };
 exports.renderDots = renderDots;
-const renderCurveStatically = (points, needClip, clipPathId, props, pathRef, options) => {
+const renderCurveStatically = (points, clipPathProps, props, pathRef, options) => {
   /*eslint-disable no-unused-vars*/
   const {
     type,
@@ -72,7 +71,7 @@ const renderCurveStatically = (points, needClip, clipPathId, props, pathRef, opt
     ...(0, _ReactUtils.filterProps)(restProps, true),
     fill: 'none',
     className: _CL.CL_LINE_CURVE,
-    ...(0, _cartesianFn.crClipPathProps)(needClip, clipPathId),
+    ...clipPathProps,
     points,
     ...options,
     type,
@@ -113,7 +112,7 @@ const ANIMATE_CURVE_FROM = {
 const ANIMATE_CURVE_TO = {
   t: 1
 };
-const renderCurveWithAnimation = (needClip, clipPathId, prevPoints, totalLength, props, pathRef, handleAnimationStart, handleAnimationEnd) => {
+const renderCurveWithAnimation = (clipPathProps, prevPoints, totalLength, props, pathRef, handleAnimationStart, handleAnimationEnd) => {
   const {
     points,
     strokeDasharray,
@@ -169,7 +168,7 @@ const renderCurveWithAnimation = (needClip, clipPathId, prevPoints, totalLength,
               y: entry.y
             };
           });
-        return renderCurveStatically(stepData, needClip, clipPathId, props, pathRef);
+        return renderCurveStatically(stepData, clipPathProps, props, pathRef);
       }
       const interpolator = (0, _DataUtils.interpolateNumber)(0, totalLength),
         curLength = interpolator(t);
@@ -180,20 +179,20 @@ const renderCurveWithAnimation = (needClip, clipPathId, prevPoints, totalLength,
       } else {
         currentStrokeDasharray = `${curLength}px ${totalLength - curLength}px`;
       }
-      return renderCurveStatically(points, needClip, clipPathId, props, pathRef, {
+      return renderCurveStatically(points, clipPathProps, props, pathRef, {
         strokeDasharray: currentStrokeDasharray
       });
     }
   }, `line-${animationId}`);
 };
-const renderCurve = (needClip, clipPathId, prevPoints, totalLength, props, refPath, handleAnimationStart, handleAnimationEnd) => {
+const renderCurve = (clipPathProps, prevPoints, totalLength, props, refPath, handleAnimationStart, handleAnimationEnd) => {
   const {
     points,
     isAnimationActive
   } = props;
   return isAnimationActive && points && points.length
   //&& ((!prevPoints && totalLength > 0) || !_isEqual(prevPoints, points))
-  && (!prevPoints && totalLength > 0 || prevPoints !== points) ? renderCurveWithAnimation(needClip, clipPathId, prevPoints, totalLength, props, refPath, handleAnimationStart, handleAnimationEnd) : renderCurveStatically(points, needClip, clipPathId, props, refPath);
+  && (!prevPoints && totalLength > 0 || prevPoints !== points) ? renderCurveWithAnimation(clipPathProps, prevPoints, totalLength, props, refPath, handleAnimationStart, handleAnimationEnd) : renderCurveStatically(points, clipPathProps, props, refPath);
 };
 exports.renderCurve = renderCurve;
 //# sourceMappingURL=LineRenderFn.js.map
