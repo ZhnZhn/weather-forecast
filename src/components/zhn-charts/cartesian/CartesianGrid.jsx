@@ -11,7 +11,8 @@ import {
 
 import {
   crGridPoints,
-  isPoints
+  isPoints,
+  crRoundedSortedPoints
 } from './CartesianGridRenderFn';
 
 import CartesianGridBackground from './CartesianGridBackground';
@@ -113,7 +114,7 @@ export const CartesianGrid = memo((
          width={width} height={height}
          fillOpacity={fillOpacity}
          horizontalFill={horizontalFill}
-         horizontalPoints={horizontalPoints}
+         points={crRoundedSortedPoints(horizontalPoints, y)}
       />}
       {_isPoints(vertical, verticalFill) && <CartesianGridVerticalStripes
          className={CL_STRIPES_VERTICAL}
@@ -121,7 +122,7 @@ export const CartesianGrid = memo((
          width={width} height={height}
          fillOpacity={fillOpacity}
          verticalFill={verticalFill}
-         verticalPoints={verticalPoints}
+         points={crRoundedSortedPoints(verticalPoints, x)}
       />}
    </g>
   );

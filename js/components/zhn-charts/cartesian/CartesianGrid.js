@@ -80,7 +80,7 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
       height: height,
       fillOpacity: fillOpacity,
       horizontalFill: horizontalFill,
-      horizontalPoints: horizontalPoints
+      points: (0, _CartesianGridRenderFn.crRoundedSortedPoints)(horizontalPoints, y)
     }), _isPoints(vertical, verticalFill) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridVerticalStripes.default, {
       className: _CL.CL_STRIPES_VERTICAL,
       x: x,
@@ -89,7 +89,7 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
       height: height,
       fillOpacity: fillOpacity,
       verticalFill: verticalFill,
-      verticalPoints: verticalPoints
+      points: (0, _CartesianGridRenderFn.crRoundedSortedPoints)(verticalPoints, x)
     })]
   });
 });
