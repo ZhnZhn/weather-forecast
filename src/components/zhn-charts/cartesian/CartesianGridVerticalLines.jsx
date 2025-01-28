@@ -1,7 +1,7 @@
 const CartesianGridVerticalLines = ({
   className,
-  y,
-  height,
+  y1,
+  y2,
   points,
   props
 }) => (
@@ -10,9 +10,9 @@ const CartesianGridVerticalLines = ({
       key={`line-${i}`}
       {...props}
       x1={entry}
-      y1={y}
+      y1={y1}
       x2={entry}
-      y2={y + height}
+      y2={y2}
     />))}
   </g>
 );

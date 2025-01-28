@@ -96,15 +96,15 @@ export const CartesianGrid = memo((
       />
       {_isPoints(horizontal, horizontalPoints) && <CartesianGridHorizontalLines
          className={CL_GRID_HORIZONTAL}
-         x={x}
-         width={width}
+         x1={x}
+         x2={x + width}
          points={horizontalPoints}
          props={_lineProps}
       />}
       {_isPoints(vertical, verticalPoints) && <CartesianGridVerticalLines
          className={CL_GRID_VERTICAL}
-         y={y}
-         height={height}
+         y1={y}
+         y2={y + height}
          points={verticalPoints}
          props={_lineProps}
       />}

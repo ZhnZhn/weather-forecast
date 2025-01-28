@@ -62,14 +62,14 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
       height: height
     }), _isPoints(horizontal, horizontalPoints) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridHorizontalLines.default, {
       className: _CL.CL_GRID_HORIZONTAL,
-      x: x,
-      width: width,
+      x1: x,
+      x2: x + width,
       points: horizontalPoints,
       props: _lineProps
     }), _isPoints(vertical, verticalPoints) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridVerticalLines.default, {
       className: _CL.CL_GRID_VERTICAL,
-      y: y,
-      height: height,
+      y1: y,
+      y2: y + height,
       points: verticalPoints,
       props: _lineProps
     }), _isPoints(horizontal, horizontalFill) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridHorizontalStripes.default, {
