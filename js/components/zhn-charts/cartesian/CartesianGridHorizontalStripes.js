@@ -11,17 +11,15 @@ const CartesianGridHorizontalStripes = _ref => {
     horizontalFill,
     fillOpacity,
     x,
-    y,
     width,
-    height,
+    y0,
     points
   } = _ref;
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
     className: className,
     children: points.map((entry, i) => {
-      const recentStripe = !points[i + 1],
-        lineHeight = recentStripe ? y + height - entry : points[i + 1] - entry;
-      return lineHeight <= 0 ? null : /*#__PURE__*/(0, _jsxRuntime.jsx)("rect", {
+      const lineHeight = (0, _CartesianGridRenderFn.getStripeLineDimension)(y0, entry, i, points);
+      return lineHeight > 0 ? /*#__PURE__*/(0, _jsxRuntime.jsx)("rect", {
         y: entry,
         x: x,
         height: lineHeight,
@@ -30,7 +28,7 @@ const CartesianGridHorizontalStripes = _ref => {
         fill: (0, _CartesianGridRenderFn.getFillByIndex)(horizontalFill, i),
         fillOpacity: fillOpacity,
         className: _CL.CL_BG
-      }, `react-${i}`);
+      }, `react-${i}`) : null;
     })
   });
 };

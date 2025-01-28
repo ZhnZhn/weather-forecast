@@ -62,3 +62,12 @@ export const getFillByIndex = (
   arrFill,
   index
 ) => arrFill[index % arrFill.length]
+
+export const getStripeLineDimension = (
+  p0,
+  entry,
+  i,
+  points
+) => !points[i + 1]
+  ? p0 - entry
+  : points[i + 1] - entry

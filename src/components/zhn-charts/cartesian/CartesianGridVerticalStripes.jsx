@@ -1,24 +1,28 @@
 import { CL_BG } from '../CL';
-import { getFillByIndex } from './CartesianGridRenderFn';
+import {
+  getFillByIndex,
+  getStripeLineDimension
+} from './CartesianGridRenderFn';
 
 const CartesianGridVerticalStripes = ({
   className,
   verticalFill,
   fillOpacity,
-  x,
   y,
-  width,
   height,
+  x0,
   points
 }) => (
   <g className={className}>
     {points.map((entry, i) => {
-      const recentStripe = !points[i + 1]
-      , lineWidth = recentStripe
-         ? x + width - entry
-         : points[i + 1] - entry;
+      const lineWidth = getStripeLineDimension(
+        x0,
+        entry,
+        i,
+        points
+      );
 
-      return lineWidth <= 0 ? null : (
+      return lineWidth > 0 ? (
         <rect
           key={`react-${i}`}
           x={entry} y={y}
@@ -27,7 +31,7 @@ const CartesianGridVerticalStripes = ({
           fill={getFillByIndex(verticalFill, i)}
           fillOpacity={fillOpacity}
           className={CL_BG}
-      />);
+      />) : null;
     })}
   </g>
 );

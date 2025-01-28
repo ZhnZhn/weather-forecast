@@ -80,7 +80,9 @@ export const CartesianGrid = memo((
     horizontalPoints,
     verticalPoints
   ] = crGridPoints(_props)
-  , _lineProps = filterProps(restProps);
+  , _lineProps = filterProps(restProps)
+  , x2 = x + width
+  , y2 = y + height;
 
   return (
     <g className={CL_CARTESIAN_GRID}>
@@ -97,29 +99,27 @@ export const CartesianGrid = memo((
       {_isPoints(horizontal, horizontalPoints) && <CartesianGridHorizontalLines
          className={CL_GRID_HORIZONTAL}
          x1={x}
-         x2={x + width}
+         x2={x2}
          points={horizontalPoints}
          props={_lineProps}
       />}
       {_isPoints(vertical, verticalPoints) && <CartesianGridVerticalLines
          className={CL_GRID_VERTICAL}
          y1={y}
-         y2={y + height}
+         y2={y2}
          points={verticalPoints}
          props={_lineProps}
       />}
       {_isPoints(horizontal, horizontalFill) && <CartesianGridHorizontalStripes
          className={CL_STRIPES_HORIZONTAL}
-         x={x} y={y}
-         width={width} height={height}
+         x={x} width={width} y0={y2}
          fillOpacity={fillOpacity}
          horizontalFill={horizontalFill}
          points={crRoundedSortedPoints(horizontalPoints, y)}
       />}
       {_isPoints(vertical, verticalFill) && <CartesianGridVerticalStripes
          className={CL_STRIPES_VERTICAL}
-         x={x} y={y}
-         width={width} height={height}
+         y={y} height={height} x0={x2}
          fillOpacity={fillOpacity}
          verticalFill={verticalFill}
          points={crRoundedSortedPoints(verticalPoints, x)}
