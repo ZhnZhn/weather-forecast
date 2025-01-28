@@ -1,4 +1,5 @@
 import { CL_BG } from '../CL';
+import { getFillByIndex } from './CartesianGridRenderFn';
 
 const CartesianGridHorizontalStripes = ({
   className,
@@ -23,7 +24,7 @@ const CartesianGridHorizontalStripes = ({
           y={entry} x={x}
           height={lineHeight} width={width}
           stroke="none"
-          fill={horizontalFill[i % horizontalFill.length]}
+          fill={getFillByIndex(horizontalFill, i)}
           fillOpacity={fillOpacity}
           className={CL_BG}
         />);

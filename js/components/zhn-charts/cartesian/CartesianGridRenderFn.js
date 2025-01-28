@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isPoints = exports.crRoundedSortedPoints = exports.crGridPoints = void 0;
+exports.isPoints = exports.getFillByIndex = exports.crRoundedSortedPoints = exports.crGridPoints = void 0;
 var _FnUtils = require("../util/FnUtils");
 const isPoints = points => points && points.length;
 exports.isPoints = isPoints;
@@ -39,4 +39,6 @@ const crRoundedSortedPoints = (points, x) => {
   return roundedSortedPoints;
 };
 exports.crRoundedSortedPoints = crRoundedSortedPoints;
+const getFillByIndex = (arrFill, index) => arrFill[index % arrFill.length];
+exports.getFillByIndex = getFillByIndex;
 //# sourceMappingURL=CartesianGridRenderFn.js.map

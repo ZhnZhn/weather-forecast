@@ -57,3 +57,8 @@ export const crRoundedSortedPoints = (
   }
   return roundedSortedPoints;
 }
+
+export const getFillByIndex = (
+  arrFill,
+  index
+) => arrFill[index % arrFill.length]

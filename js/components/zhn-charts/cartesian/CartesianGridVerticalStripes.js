@@ -3,6 +3,7 @@
 exports.__esModule = true;
 exports.default = void 0;
 var _CL = require("../CL");
+var _CartesianGridRenderFn = require("./CartesianGridRenderFn");
 var _jsxRuntime = require("react/jsx-runtime");
 const CartesianGridVerticalStripes = _ref => {
   let {
@@ -26,7 +27,7 @@ const CartesianGridVerticalStripes = _ref => {
         width: lineWidth,
         height: height,
         stroke: "none",
-        fill: verticalFill[i % verticalFill.length],
+        fill: (0, _CartesianGridRenderFn.getFillByIndex)(verticalFill, i),
         fillOpacity: fillOpacity,
         className: _CL.CL_BG
       }, `react-${i}`);
