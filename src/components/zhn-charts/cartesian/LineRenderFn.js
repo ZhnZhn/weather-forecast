@@ -90,6 +90,37 @@ const _getStrokeDasharray = (
 const ANIMATE_CURVE_FROM = {t: 0};
 const ANIMATE_CURVE_TO = {t: 1};
 
+const _mathFloor = Math.floor;
+const _crStepItem = (
+  entry,  
+  prev,
+  animateNewValues,
+  width,
+  height,
+  t
+) => {
+    const [x, y] = prev
+      ? [
+          getInterpolatedNumber(prev.x, entry.x, t),
+          getInterpolatedNumber(prev.y, entry.y, t)
+        ]
+      // magic number of faking previous x and y location
+      : animateNewValues
+          ? [
+              getInterpolatedNumber(width * 2, entry.x, t),
+              getInterpolatedNumber(height / 2, entry.y, t)
+            ]
+          : [
+              entry.x,
+              entry.y
+            ];
+
+    return {
+      ...entry,
+      x,
+      y
+    };
+};
 
 const renderCurveWithAnimation = (
   clipPathProps,
@@ -127,31 +158,14 @@ const renderCurveWithAnimation = (
       {({ t }) => {
           if (prevPoints) {
               const prevPointsDiffFactor = prevPoints.length / points.length
-              , stepData = points.map((entry, index) => {
-                  const prevPointIndex = Math.floor(index * prevPointsDiffFactor)
-                  , prev = prevPoints[prevPointIndex]
-                  , [x, y] = prev
-                    ? [
-                        getInterpolatedNumber(prev.x, entry.x, t),
-                        getInterpolatedNumber(prev.y, entry.y, t)
-                      ]
-                    // magic number of faking previous x and y location
-                    : animateNewValues
-                        ? [
-                            getInterpolatedNumber(width * 2, entry.x, t),
-                            getInterpolatedNumber(height / 2, entry.y, t)
-                          ]
-                        : [
-                            entry.x,
-                            entry.y
-                          ];
-
-                  return {
-                    ...entry,
-                    x,
-                    y
-                  };
-              });
+              , stepData = points.map((entry, index) => _crStepItem(
+                 entry,
+                 prevPoints[_mathFloor(index * prevPointsDiffFactor)],
+                 animateNewValues,
+                 width,
+                 height,
+                 t
+              ));
 
               return renderCurveStatically(
                 stepData,
