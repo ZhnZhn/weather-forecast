@@ -76,6 +76,8 @@ const _crStepItem = (entry, prev, animateNewValues, width, height, t) => {
     y
   };
 };
+const _crCurrentStrokeDashArray = (curLength, totalLength, strokeDasharray) => strokeDasharray ? _getStrokeDasharray(curLength, totalLength, `${strokeDasharray}`.split(/[,\s]+/gim).map(num => parseFloat(num)) // lines
+) : `${curLength}px ${totalLength - curLength}px`;
 const renderCurveWithAnimation = (clipPathProps, prevPoints, totalLength, props, pathRef, handleAnimationStart, handleAnimationEnd) => {
   const {
     points,
@@ -102,17 +104,11 @@ const renderCurveWithAnimation = (clipPathProps, prevPoints, totalLength, props,
       let {
         t
       } = _ref;
-      if (prevPoints) {
-        const prevPointsDiffFactor = prevPoints.length / points.length,
-          stepData = points.map((entry, index) => _crStepItem(entry, prevPoints[_mathFloor(index * prevPointsDiffFactor)], animateNewValues, width, height, t));
-        return renderCurveStatically(stepData, clipPathProps, props, pathRef);
-      }
-      const curLength = (0, _DataUtils.getInterpolatedNumber)(0, totalLength, t),
-        currentStrokeDasharray = strokeDasharray ? _getStrokeDasharray(curLength, totalLength, `${strokeDasharray}`.split(/[,\s]+/gim).map(num => parseFloat(num)) // lines
-        ) : `${curLength}px ${totalLength - curLength}px`;
-      return renderCurveStatically(points, clipPathProps, props, pathRef, {
-        strokeDasharray: currentStrokeDasharray
-      });
+      let prevPointsDiffFactor;
+      const [_points, options] = prevPoints ? (prevPointsDiffFactor = prevPoints.length / points.length, [points.map((entry, index) => _crStepItem(entry, prevPoints[_mathFloor(index * prevPointsDiffFactor)], animateNewValues, width, height, t))]) : [points, {
+        strokeDasharray: _crCurrentStrokeDashArray((0, _DataUtils.getInterpolatedNumber)(0, totalLength, t), totalLength, strokeDasharray)
+      }];
+      return renderCurveStatically(_points, clipPathProps, props, pathRef, options);
     }
   }, `line-${animationId}`);
 };

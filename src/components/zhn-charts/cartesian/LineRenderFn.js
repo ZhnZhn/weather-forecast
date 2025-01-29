@@ -92,7 +92,7 @@ const ANIMATE_CURVE_TO = {t: 1};
 
 const _mathFloor = Math.floor;
 const _crStepItem = (
-  entry,  
+  entry,
   prev,
   animateNewValues,
   width,
@@ -121,6 +121,19 @@ const _crStepItem = (
       y
     };
 };
+
+const _crCurrentStrokeDashArray = (
+  curLength,
+  totalLength,
+  strokeDasharray
+) => strokeDasharray
+  ? _getStrokeDasharray(
+       curLength,
+       totalLength,
+       `${strokeDasharray}`.split(/[,\s]+/gim).map(num => parseFloat(num)) // lines
+     )
+  :  `${curLength}px ${totalLength - curLength}px`;
+
 
 const renderCurveWithAnimation = (
   clipPathProps,
@@ -156,41 +169,38 @@ const renderCurveWithAnimation = (
        onAnimationStart={handleAnimationStart}
     >
       {({ t }) => {
-          if (prevPoints) {
-              const prevPointsDiffFactor = prevPoints.length / points.length
-              , stepData = points.map((entry, index) => _crStepItem(
+          let prevPointsDiffFactor;
+          const [
+            _points,
+            options
+          ] = prevPoints
+            ? (
+              prevPointsDiffFactor = prevPoints.length / points.length,
+              [points.map((entry, index) => _crStepItem(
                  entry,
                  prevPoints[_mathFloor(index * prevPointsDiffFactor)],
                  animateNewValues,
                  width,
                  height,
                  t
-              ));
-
-              return renderCurveStatically(
-                stepData,
-                clipPathProps,
-                props,
-                pathRef
-              );
-          }
-
-          const curLength = getInterpolatedNumber(0, totalLength, t)
-          , currentStrokeDasharray = strokeDasharray
-            ? _getStrokeDasharray(
-                 curLength,
+              ))]
+            )
+            : [
+               points,
+               {strokeDasharray: _crCurrentStrokeDashArray(
+                 getInterpolatedNumber(0, totalLength, t),
                  totalLength,
-                 `${strokeDasharray}`.split(/[,\s]+/gim).map(num => parseFloat(num)) // lines
-               )
-            :  `${curLength}px ${totalLength - curLength}px`;
+                 strokeDasharray
+               )}
+             ];
 
           return renderCurveStatically(
-            points,
+            _points,
             clipPathProps,
             props,
-            pathRef, {
-            strokeDasharray: currentStrokeDasharray
-          });
+            pathRef,
+            options
+          );
       }}
    </Animate>
   );
