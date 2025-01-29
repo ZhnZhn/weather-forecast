@@ -17,6 +17,7 @@ var _useAnimationHandle = _interopRequireDefault(require("./useAnimationHandle")
 var _usePrevCurData = _interopRequireDefault(require("./usePrevCurData"));
 var _useClipPathId = _interopRequireDefault(require("./useClipPathId"));
 var _ClipPathRect = _interopRequireDefault(require("./ClipPathRect"));
+var _LineDots = require("./LineDots");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 const DF_TOTAL_LENGTH = 0;
@@ -86,7 +87,10 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
       is: needClip,
       id: clipPathId,
       props: _props
-    }), !hasSinglePoint && (0, _LineRenderFn.renderCurve)(_clipPathProps, prevPoints, totalLength, _props, _refPath, handleAnimationStart, handleAnimationEnd), (hasSinglePoint || dot) && _isAnimationNotActiveOrFinished && (0, _LineRenderFn.renderDots)(_clipPathProps, _props), _isAnimationNotActiveOrFinished && _LabelList.LabelList.renderCallByParent(_props, points)]
+    }), !hasSinglePoint && (0, _LineRenderFn.renderCurve)(_clipPathProps, prevPoints, totalLength, _props, _refPath, handleAnimationStart, handleAnimationEnd), (hasSinglePoint || dot) && _isAnimationNotActiveOrFinished && /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineDots.LineDots, {
+      clipPathProps: _clipPathProps,
+      props: _props
+    }), _isAnimationNotActiveOrFinished && _LabelList.LabelList.renderCallByParent(_props, points)]
   });
 });
 Line.displayName = 'Line';

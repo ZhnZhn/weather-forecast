@@ -23,7 +23,6 @@ import {
 } from './cartesianFn';
 
 import {
-  renderDots,
   renderCurve
 } from './LineRenderFn';
 
@@ -37,6 +36,8 @@ import usePrevCurData from './usePrevCurData';
 import useClipPathId from './useClipPathId';
 
 import ClipPathRect  from './ClipPathRect';
+import { LineDots } from './LineDots';
+
 import { CL_LINE } from '../CL';
 
 const DF_TOTAL_LENGTH = 0;
@@ -145,10 +146,11 @@ export const Line = memo((props) => {
         )}
       {(hasSinglePoint || dot)
          && _isAnimationNotActiveOrFinished
-         && renderDots(
-              _clipPathProps,
-              _props
-      )}
+         && (<LineDots
+               clipPathProps={_clipPathProps}
+               props={_props}
+         />)
+      }
       {_isAnimationNotActiveOrFinished
          && LabelList.renderCallByParent(
               _props,
