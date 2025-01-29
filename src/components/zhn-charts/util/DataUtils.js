@@ -120,6 +120,12 @@ export const interpolateNumber = (
   ? (t) => numberA + t * (numberB - numberA)
   : () => numberB;
 
+export const getInterpolatedNumber = (
+  fromNumber,
+  toNumber,
+  t
+) => interpolateNumber(fromNumber, toNumber)(t);
+
 export const findEntryInArray = (
   arr,
   specifiedKey,

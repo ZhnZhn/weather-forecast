@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.uniqueId = exports.mathSign = exports.isPositiveNumber = exports.isPercent = exports.isNumber = exports.isNumOrStr = exports.interpolateNumber = exports.hasDuplicate = exports.getPercentValue = exports.getAnyElementOfObject = exports.findEntryInArray = void 0;
+exports.uniqueId = exports.mathSign = exports.isPositiveNumber = exports.isPercent = exports.isNumber = exports.isNumOrStr = exports.interpolateNumber = exports.hasDuplicate = exports.getPercentValue = exports.getInterpolatedNumber = exports.getAnyElementOfObject = exports.findEntryInArray = void 0;
 var _FnUtils = require("./FnUtils");
 const _getObjectKeys = Object.keys;
 const mathSign = value => value === 0 ? 0 : value > 0 ? 1 : -1;
@@ -17,7 +17,7 @@ exports.isNumOrStr = isNumOrStr;
 let idCounter = 0;
 const uniqueId = prefix => {
   const id = ++idCounter;
-  return "" + (prefix || '') + id;
+  return `${prefix || ''}${id}`;
 };
 
 /**
@@ -84,6 +84,8 @@ const hasDuplicate = ary => {
 exports.hasDuplicate = hasDuplicate;
 const interpolateNumber = (numberA, numberB) => isNumber(numberA) && isNumber(numberB) ? t => numberA + t * (numberB - numberA) : () => numberB;
 exports.interpolateNumber = interpolateNumber;
+const getInterpolatedNumber = (fromNumber, toNumber, t) => interpolateNumber(fromNumber, toNumber)(t);
+exports.getInterpolatedNumber = getInterpolatedNumber;
 const findEntryInArray = (arr, specifiedKey, specifiedValue) => {
   if (!(0, _FnUtils._isArr)(arr) || !arr.length) {
     return null;

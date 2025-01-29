@@ -94,44 +94,22 @@ const renderCurveWithAnimation = (clipPathProps, prevPoints, totalLength, props,
       if (prevPoints) {
         const prevPointsDiffFactor = prevPoints.length / points.length,
           stepData = points.map((entry, index) => {
-            const prevPointIndex = Math.floor(index * prevPointsDiffFactor);
-            if (prevPoints[prevPointIndex]) {
-              const prev = prevPoints[prevPointIndex],
-                interpolatorX = (0, _DataUtils.interpolateNumber)(prev.x, entry.x),
-                interpolatorY = (0, _DataUtils.interpolateNumber)(prev.y, entry.y);
-              return {
-                ...entry,
-                x: interpolatorX(t),
-                y: interpolatorY(t)
-              };
-            }
-            // magic number of faking previous x and y location
-            if (animateNewValues) {
-              const interpolatorX = (0, _DataUtils.interpolateNumber)(width * 2, entry.x),
-                interpolatorY = (0, _DataUtils.interpolateNumber)(height / 2, entry.y);
-              return {
-                ...entry,
-                x: interpolatorX(t),
-                y: interpolatorY(t)
-              };
-            }
+            const prevPointIndex = Math.floor(index * prevPointsDiffFactor),
+              prev = prevPoints[prevPointIndex],
+              [x, y] = prev ? [(0, _DataUtils.getInterpolatedNumber)(prev.x, entry.x, t), (0, _DataUtils.getInterpolatedNumber)(prev.y, entry.y, t)]
+              // magic number of faking previous x and y location
+              : animateNewValues ? [(0, _DataUtils.getInterpolatedNumber)(width * 2, entry.x, t), (0, _DataUtils.getInterpolatedNumber)(height / 2, entry.y, t)] : [entry.x, entry.y];
             return {
               ...entry,
-              x: entry.x,
-              y: entry.y
+              x,
+              y
             };
           });
         return renderCurveStatically(stepData, clipPathProps, props, pathRef);
       }
-      const interpolator = (0, _DataUtils.interpolateNumber)(0, totalLength),
-        curLength = interpolator(t);
-      let currentStrokeDasharray;
-      if (strokeDasharray) {
-        const lines = `${strokeDasharray}`.split(/[,\s]+/gim).map(num => parseFloat(num));
-        currentStrokeDasharray = _getStrokeDasharray(curLength, totalLength, lines);
-      } else {
-        currentStrokeDasharray = `${curLength}px ${totalLength - curLength}px`;
-      }
+      const curLength = (0, _DataUtils.getInterpolatedNumber)(0, totalLength, t),
+        currentStrokeDasharray = strokeDasharray ? _getStrokeDasharray(curLength, totalLength, `${strokeDasharray}`.split(/[,\s]+/gim).map(num => parseFloat(num)) // lines
+        ) : `${curLength}px ${totalLength - curLength}px`;
       return renderCurveStatically(points, clipPathProps, props, pathRef, {
         strokeDasharray: currentStrokeDasharray
       });
