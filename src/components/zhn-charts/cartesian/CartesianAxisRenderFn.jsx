@@ -12,8 +12,6 @@ import { getTicks } from './getTicks';
 import { fCreateElement } from './cartesianFn';
 
 import {
-  //CL_AXIS,
-  CL_AXIS_LINE,
   CL_AXIS_TICK,
   CL_AXIS_TICKS,
   CL_AXIS_TICK_LINE,
@@ -120,49 +118,6 @@ const _getClassName = (
 ) => obj
   ? obj.className
   : void 0;
-
-export const renderAxisLine = (props) => {
-  const {
-    x,
-    y,
-    width,
-    height,
-    orientation,
-    mirror,
-    axisLine
-  } = props;
-  let _props = {
-    ...filterProps(props),
-    ...filterProps(axisLine),
-    fill: 'none'
-  };
-  if (orientation === 'top' || orientation === 'bottom') {
-    const needHeight = +((orientation === 'top' && !mirror) || (orientation === 'bottom' && mirror));
-    _props = {
-      ..._props,
-      x1: x,
-      y1: y + needHeight * height,
-      x2: x + width,
-      y2: y + needHeight * height
-    };
-  } else {
-     const needWidth = +((orientation === 'left' && !mirror) || (orientation === 'right' && mirror));
-     _props = {
-       ..._props,
-       x1: x + needWidth * width,
-       y1: y,
-       x2: x + needWidth * width,
-       y2: y + height
-     };
-  }
-  const _axisLineClassName = _getClassName(axisLine);
-  return (
-    <line
-      {..._props}
-      className={crCn(CL_AXIS_LINE, _axisLineClassName)}
-    />
-  );
-}
 
 const _crTextElement = (
   props,

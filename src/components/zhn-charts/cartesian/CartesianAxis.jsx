@@ -15,13 +15,15 @@ import { Label } from '../component/Label';
 
 import {
   crFinalTicks,
-  renderAxisLine,
   renderTicks
 } from './CartesianAxisRenderFn';
 
+import { CartesianAxisLine } from './CartesianAxisLine';
+
 import {
   CL_AXIS,
-  CL_AXIS_TICK_VALUE
+  CL_AXIS_TICK_VALUE,
+  CL_AXIS_LINE
 } from '../CL';
 
 const CARTESIAN_AXIS_DF_PROPS = {
@@ -122,7 +124,10 @@ export const CartesianAxis = memo(props => {
        refEl={_refLayer}
        className={crCn(CL_AXIS, className)}
     >
-       {axisLine && renderAxisLine(props)}
+       {axisLine && <CartesianAxisLine
+         className={CL_AXIS_LINE}
+         props={props}
+       />}
        {renderTicks(props, finalTicks, fontSize, letterSpacing)}
        {Label.renderCallByParent(props)}
     </Layer>

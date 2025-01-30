@@ -2,7 +2,7 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.renderTicks = exports.renderAxisLine = exports.crFinalTicks = void 0;
+exports.renderTicks = exports.crFinalTicks = void 0;
 var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
 var _types = require("../util/types");
 var _FnUtils = require("../util/FnUtils");
@@ -92,47 +92,6 @@ const getTickLineCoord = (props, data) => {
   };
 };
 const _getClassName = obj => obj ? obj.className : void 0;
-const renderAxisLine = props => {
-  const {
-    x,
-    y,
-    width,
-    height,
-    orientation,
-    mirror,
-    axisLine
-  } = props;
-  let _props = {
-    ...(0, _ReactUtils.filterProps)(props),
-    ...(0, _ReactUtils.filterProps)(axisLine),
-    fill: 'none'
-  };
-  if (orientation === 'top' || orientation === 'bottom') {
-    const needHeight = +(orientation === 'top' && !mirror || orientation === 'bottom' && mirror);
-    _props = {
-      ..._props,
-      x1: x,
-      y1: y + needHeight * height,
-      x2: x + width,
-      y2: y + needHeight * height
-    };
-  } else {
-    const needWidth = +(orientation === 'left' && !mirror || orientation === 'right' && mirror);
-    _props = {
-      ..._props,
-      x1: x + needWidth * width,
-      y1: y,
-      x2: x + needWidth * width,
-      y2: y + height
-    };
-  }
-  const _axisLineClassName = _getClassName(axisLine);
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("line", {
-    ..._props,
-    className: (0, _crCn.default)(_CL.CL_AXIS_LINE, _axisLineClassName)
-  });
-};
-exports.renderAxisLine = renderAxisLine;
 const _crTextElement = (props, option, value) => /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, {
   ...props,
   className: _CL.CL_AXIS_TICK_VALUE,
@@ -195,8 +154,8 @@ const renderTicks = (props, ticks, fontSize, letterSpacing) => {
           ...tickLineProps,
           ...lineCoord,
           className: (0, _crCn.default)(_CL.CL_AXIS_TICK_LINE, _tickLineClassName)
-        }), tick && _renderTickItem(tick, tickProps, "" + ((0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value) + (unit || ''))]
-      }, "tick-" + i);
+        }), tick && _renderTickItem(tick, tickProps, `${(0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)]
+      }, `tick-${i}`);
     });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
     className: _CL.CL_AXIS_TICKS,
