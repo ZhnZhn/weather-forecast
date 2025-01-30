@@ -1,19 +1,11 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.renderTicks = exports.crFinalTicks = void 0;
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
-var _types = require("../util/types");
+exports.getTickLineCoord = exports.getTickAnchors = exports.getClassName = exports.crFinalTicks = void 0;
 var _FnUtils = require("../util/FnUtils");
 var _DataUtils = require("../util/DataUtils");
-var _ReactUtils = require("../util/ReactUtils");
-var _Layer = require("../container/Layer");
-var _Text = require("../component/Text");
-var _getTicks = require("./getTicks");
-var _cartesianFn = require("./cartesianFn");
-var _CL = require("../CL");
-var _jsxRuntime = require("react/jsx-runtime");
+const getClassName = obj => obj ? obj.className : void 0;
+exports.getClassName = getClassName;
 const crFinalTicks = props => {
   const {
     ticks,
@@ -33,6 +25,7 @@ const getTickAnchors = (orientation, mirror) => [orientation === 'left' ? mirror
  * @return {Object} (x1, y1): The coordinate of endpoint close to tick text
  *  (x2, y2): The coordinate of endpoint close to axis
  */
+exports.getTickAnchors = getTickAnchors;
 const getTickLineCoord = (props, data) => {
   const {
       x,
@@ -91,76 +84,5 @@ const getTickLineCoord = (props, data) => {
     }
   };
 };
-const _getClassName = obj => obj ? obj.className : void 0;
-const _crTextElement = (props, option, value) => /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, {
-  ...props,
-  className: _CL.CL_AXIS_TICK_VALUE,
-  children: value
-});
-const _renderTickItem = (0, _cartesianFn.fCreateElement)(_crTextElement);
-
-/**
- * render the ticks
- * @param {Array} ticks The ticks to actually render (overrides what was passed in props)
- * @param {string} fontSize Fontsize to consider for tick spacing
- * @param {string} letterSpacing Letterspacing to consider for tick spacing
- * @return {ReactComponent} renderedTicks
- */
-const renderTicks = (props, ticks, fontSize, letterSpacing) => {
-  const {
-      tickLine,
-      stroke,
-      tick,
-      tickFormatter,
-      unit,
-      orientation,
-      mirror
-    } = props,
-    finalTicks = (0, _getTicks.getTicks)({
-      ...props,
-      ticks
-    }, fontSize, letterSpacing),
-    [textAnchor, verticalAnchor] = getTickAnchors(orientation, mirror),
-    axisProps = (0, _ReactUtils.filterProps)(props),
-    customTickProps = (0, _ReactUtils.filterProps)(tick),
-    tickLineProps = {
-      ...axisProps,
-      fill: 'none',
-      ...(0, _ReactUtils.filterProps)(tickLine)
-    },
-    items = finalTicks.map((entry, i) => {
-      const {
-          line: lineCoord,
-          tick: tickCoord
-        } = getTickLineCoord(props, entry),
-        tickProps = {
-          textAnchor,
-          verticalAnchor,
-          ...axisProps,
-          stroke: 'none',
-          fill: stroke,
-          ...customTickProps,
-          ...tickCoord,
-          index: i,
-          payload: entry,
-          visibleTicksCount: finalTicks.length,
-          tickFormatter
-        };
-      const _tickLineClassName = _getClassName(tickLine);
-      return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
-        className: _CL.CL_AXIS_TICK,
-        ...(0, _types.adaptEventsOfChild)(props, entry, i),
-        children: [tickLine && /*#__PURE__*/(0, _jsxRuntime.jsx)("line", {
-          ...tickLineProps,
-          ...lineCoord,
-          className: (0, _crCn.default)(_CL.CL_AXIS_TICK_LINE, _tickLineClassName)
-        }), tick && _renderTickItem(tick, tickProps, `${(0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)]
-      }, `tick-${i}`);
-    });
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
-    className: _CL.CL_AXIS_TICKS,
-    children: items
-  });
-};
-exports.renderTicks = renderTicks;
+exports.getTickLineCoord = getTickLineCoord;
 //# sourceMappingURL=CartesianAxisRenderFn.js.map

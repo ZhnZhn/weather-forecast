@@ -1,22 +1,11 @@
-import crCn from '../../zhn-utils/crCn';
-
-import { adaptEventsOfChild } from '../util/types';
 import { _isFn } from '../util/FnUtils';
 import { isNumber } from '../util/DataUtils';
-import { filterProps } from '../util/ReactUtils';
 
-import { Layer } from '../container/Layer';
-import { Text } from '../component/Text';
-
-import { getTicks } from './getTicks';
-import { fCreateElement } from './cartesianFn';
-
-import {
-  CL_AXIS_TICK,
-  CL_AXIS_TICKS,
-  CL_AXIS_TICK_LINE,
-  CL_AXIS_TICK_VALUE
-} from '../CL';
+export const getClassName = (
+  obj
+) => obj
+  ? obj.className
+  : void 0
 
 export const crFinalTicks = (
   props
@@ -35,7 +24,7 @@ export const crFinalTicks = (
 }
 
 //[textAnchor, verticalAnchor]
-const getTickAnchors = (
+export const getTickAnchors = (
   orientation,
   mirror
 ) => [
@@ -57,7 +46,7 @@ const getTickAnchors = (
  * @return {Object} (x1, y1): The coordinate of endpoint close to tick text
  *  (x2, y2): The coordinate of endpoint close to axis
  */
-const getTickLineCoord = (
+export const getTickLineCoord = (
   props,
   data
 ) => {
@@ -111,100 +100,4 @@ const getTickLineCoord = (
     line: { x1, y1, x2, y2 },
     tick: { x: tx, y: ty }
   };
-}
-
-const _getClassName = (
-  obj
-) => obj
-  ? obj.className
-  : void 0;
-
-const _crTextElement = (
-  props,
-  option,
-  value
-) => (
-  <Text {...props} className={CL_AXIS_TICK_VALUE}>
-    {value}
-  </Text>
-);
-const _renderTickItem = fCreateElement(_crTextElement);
-
-/**
- * render the ticks
- * @param {Array} ticks The ticks to actually render (overrides what was passed in props)
- * @param {string} fontSize Fontsize to consider for tick spacing
- * @param {string} letterSpacing Letterspacing to consider for tick spacing
- * @return {ReactComponent} renderedTicks
- */
-export const renderTicks = (
-  props,
-  ticks,
-  fontSize,
-  letterSpacing
-) => {
-  const {
-    tickLine,
-    stroke,
-    tick,
-    tickFormatter,
-    unit,
-    orientation,
-    mirror
-  } = props
-  , finalTicks = getTicks(
-     { ...props, ticks },
-     fontSize,
-     letterSpacing
-   )
-  , [
-    textAnchor,
-    verticalAnchor
-  ] = getTickAnchors(orientation, mirror)
-
-  , axisProps = filterProps(props)
-  , customTickProps = filterProps(tick)
-  , tickLineProps = {
-      ...axisProps,
-      fill: 'none',
-      ...filterProps(tickLine),
-  }
-  , items = finalTicks.map((entry, i) => {
-      const {
-        line: lineCoord,
-        tick: tickCoord
-      } = getTickLineCoord(props, entry)
-      , tickProps = {
-          textAnchor,
-          verticalAnchor,
-          ...axisProps,
-          stroke: 'none',
-          fill: stroke,
-          ...customTickProps,
-          ...tickCoord,
-          index: i,
-          payload: entry,
-          visibleTicksCount: finalTicks.length,
-          tickFormatter
-      };
-      const _tickLineClassName = _getClassName(tickLine);
-      return (
-        <Layer className={CL_AXIS_TICK} key={`tick-${i}`}
-          {...adaptEventsOfChild(props, entry, i)}>
-          {tickLine && (
-             <line
-                {...tickLineProps}
-                {...lineCoord}
-                className={crCn(CL_AXIS_TICK_LINE, _tickLineClassName)}
-             />
-           )}
-          {tick && _renderTickItem(tick, tickProps, `${_isFn(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)}
-        </Layer>
-      );
-  });
-  return (
-    <g className={CL_AXIS_TICKS}>
-      {items}
-    </g>
-  );
 }

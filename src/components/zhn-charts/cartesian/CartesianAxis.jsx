@@ -13,12 +13,10 @@ import { crProps } from '../util/ReactUtils';
 import { Layer } from '../container/Layer';
 import { Label } from '../component/Label';
 
-import {
-  crFinalTicks,
-  renderTicks
-} from './CartesianAxisRenderFn';
+import { crFinalTicks } from './CartesianAxisRenderFn';
 
 import { CartesianAxisLine } from './CartesianAxisLine';
+import { CartesianAxisTicks } from './CartesianAxisTicks';
 
 import {
   CL_AXIS,
@@ -125,10 +123,15 @@ export const CartesianAxis = memo(props => {
        className={crCn(CL_AXIS, className)}
     >
        {axisLine && <CartesianAxisLine
-         className={CL_AXIS_LINE}
-         props={props}
+          className={CL_AXIS_LINE}
+          props={props}
        />}
-       {renderTicks(props, finalTicks, fontSize, letterSpacing)}
+       <CartesianAxisTicks
+          props={props}
+          ticks={finalTicks}
+          fontSize={fontSize}
+          letterSpacing={letterSpacing}
+       />
        {Label.renderCallByParent(props)}
     </Layer>
   );
