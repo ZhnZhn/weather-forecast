@@ -19,16 +19,9 @@ import {
 } from '../util/ChartUtils';
 
 import {
-  crClipPathProps
-} from './cartesianFn';
-
-import {
-  renderCurve
-} from './LineRenderFn';
-
-import {
   isHideOrNoData,
-  isNeedClip
+  isNeedClip,
+  crClipPathProps
 } from './cartesianFn';
 
 import useAnimationHandle from './useAnimationHandle';
@@ -37,6 +30,8 @@ import useClipPathId from './useClipPathId';
 
 import ClipPathRect  from './ClipPathRect';
 import { LineDots } from './LineDots';
+import { LineCurveStatically } from './LineCurveStatically';
+import { LineCurveWithAnimation } from './LineCurveWithAnimation';
 
 import { CL_LINE } from '../CL';
 
@@ -126,7 +121,13 @@ export const Line = memo((props) => {
   , needClip = isNeedClip(_props)
   , _clipPathProps = crClipPathProps(needClip, clipPathId)
   , _isAnimationNotActiveOrFinished = !isAnimationActive
-    || isAnimationFinished;
+    || isAnimationFinished
+  , _isLineDots = (hasSinglePoint || dot)
+     && _isAnimationNotActiveOrFinished
+  , _isLineCurveWithAnimaton = !hasSinglePoint
+     && isAnimationActive
+     //&& ((!prevPoints && totalLength > 0) || !_isEqual(prevPoints, points))
+     && ((!prevPoints && totalLength > 0) || prevPoints !== points);
 
   return (
     <Layer className={layerClass}>
@@ -135,24 +136,29 @@ export const Line = memo((props) => {
          id={clipPathId}
          props={_props}
       />
-      {!hasSinglePoint && renderCurve(
-          _clipPathProps,
-          prevPoints,
-          totalLength,
-          _props,
-          _refPath,
-          handleAnimationStart,
-          handleAnimationEnd
-        )}
-      {(hasSinglePoint || dot)
-         && _isAnimationNotActiveOrFinished
-         && (<LineDots
-               clipPathProps={_clipPathProps}
-               props={_props}
-         />)
+      {_isLineCurveWithAnimaton
+         ? (<LineCurveWithAnimation
+              clipPathProps={_clipPathProps}
+              prevPoints={prevPoints}
+              totalLength={totalLength}
+              props={_props}
+              refPath={_refPath}
+              handleAnimationStart={handleAnimationStart}
+              handleAnimationEnd={handleAnimationEnd}
+          />)
+        : (<LineCurveStatically
+              clipPathProps={_clipPathProps}
+              points={points}
+              props={_props}
+              refPath={_refPath}
+          />)
       }
+      {_isLineDots && (<LineDots
+          clipPathProps={_clipPathProps}
+          props={_props}
+      />)}
       {_isAnimationNotActiveOrFinished
-         && LabelList.renderCallByParent(
+        && LabelList.renderCallByParent(
               _props,
               points
       )}

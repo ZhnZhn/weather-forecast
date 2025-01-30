@@ -12,12 +12,13 @@ var _LabelList = require("../component/LabelList");
 var _Global = require("../util/Global");
 var _ChartUtils = require("../util/ChartUtils");
 var _cartesianFn = require("./cartesianFn");
-var _LineRenderFn = require("./LineRenderFn");
 var _useAnimationHandle = _interopRequireDefault(require("./useAnimationHandle"));
 var _usePrevCurData = _interopRequireDefault(require("./usePrevCurData"));
 var _useClipPathId = _interopRequireDefault(require("./useClipPathId"));
 var _ClipPathRect = _interopRequireDefault(require("./ClipPathRect"));
 var _LineDots = require("./LineDots");
+var _LineCurveStatically = require("./LineCurveStatically");
+var _LineCurveWithAnimation = require("./LineCurveWithAnimation");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 const DF_TOTAL_LENGTH = 0;
@@ -80,14 +81,31 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
     layerClass = (0, _crCn.default)(_CL.CL_LINE, className),
     needClip = (0, _cartesianFn.isNeedClip)(_props),
     _clipPathProps = (0, _cartesianFn.crClipPathProps)(needClip, clipPathId),
-    _isAnimationNotActiveOrFinished = !isAnimationActive || isAnimationFinished;
+    _isAnimationNotActiveOrFinished = !isAnimationActive || isAnimationFinished,
+    _isLineDots = (hasSinglePoint || dot) && _isAnimationNotActiveOrFinished,
+    _isLineCurveWithAnimaton = !hasSinglePoint && isAnimationActive
+    //&& ((!prevPoints && totalLength > 0) || !_isEqual(prevPoints, points))
+    && (!prevPoints && totalLength > 0 || prevPoints !== points);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     className: layerClass,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPathRect.default, {
       is: needClip,
       id: clipPathId,
       props: _props
-    }), !hasSinglePoint && (0, _LineRenderFn.renderCurve)(_clipPathProps, prevPoints, totalLength, _props, _refPath, handleAnimationStart, handleAnimationEnd), (hasSinglePoint || dot) && _isAnimationNotActiveOrFinished && /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineDots.LineDots, {
+    }), _isLineCurveWithAnimaton ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineCurveWithAnimation.LineCurveWithAnimation, {
+      clipPathProps: _clipPathProps,
+      prevPoints: prevPoints,
+      totalLength: totalLength,
+      props: _props,
+      refPath: _refPath,
+      handleAnimationStart: handleAnimationStart,
+      handleAnimationEnd: handleAnimationEnd
+    }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineCurveStatically.LineCurveStatically, {
+      clipPathProps: _clipPathProps,
+      points: points,
+      props: _props,
+      refPath: _refPath
+    }), _isLineDots && /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineDots.LineDots, {
       clipPathProps: _clipPathProps,
       props: _props
     }), _isAnimationNotActiveOrFinished && _LabelList.LabelList.renderCallByParent(_props, points)]
