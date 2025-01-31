@@ -53,15 +53,13 @@ const _getAxisDomain = (
   .defaultProps || {})
   .domain;
 
-export const isLayoutHorizontal = (
-  layout
-) => layout === 'horizontal'
-export const isLayoutVertical = (
-  layout
-) => layout === 'vertical'
-export const isLayoutCentric = (
-  layout
-) => layout === 'centric'
+const _fIs = (str) => v => v === str;
+export const isLayoutHorizontal = _fIs("horizontal")
+export const isLayoutVertical = _fIs("vertical")
+export const isLayoutCentric = _fIs("centric")
+
+export const isAxisX = _fIs("xAxis")
+export const isAxisY = _fIs("yAxis")
 
 export const getValueByDataKey = (
   obj,

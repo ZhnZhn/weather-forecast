@@ -3,7 +3,7 @@
 exports.__esModule = true;
 exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarSizeList = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.combineEventHandlers = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
-exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = void 0;
+exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisY = exports.isAxisX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = void 0;
 var _d3Scale = require("../d3Scale");
 var _d3Shape = require("../d3Shape");
 var _FnUtils = require("./FnUtils");
@@ -13,12 +13,12 @@ var _DataUtils = require("./DataUtils");
 var _ReactUtils = require("./ReactUtils");
 const _getObjectKeys = Object.keys;
 const _getAxisDomain = axis => (((axis || {}).type || {}).defaultProps || {}).domain;
-const isLayoutHorizontal = layout => layout === 'horizontal';
-exports.isLayoutHorizontal = isLayoutHorizontal;
-const isLayoutVertical = layout => layout === 'vertical';
-exports.isLayoutVertical = isLayoutVertical;
-const isLayoutCentric = layout => layout === 'centric';
-exports.isLayoutCentric = isLayoutCentric;
+const _fIs = str => v => v === str;
+const isLayoutHorizontal = exports.isLayoutHorizontal = _fIs("horizontal");
+const isLayoutVertical = exports.isLayoutVertical = _fIs("vertical");
+const isLayoutCentric = exports.isLayoutCentric = _fIs("centric");
+const isAxisX = exports.isAxisX = _fIs("xAxis");
+const isAxisY = exports.isAxisY = _fIs("yAxis");
 const getValueByDataKey = (obj, dataKey, defaultValue) => (0, _FnUtils._isNil)(obj) || (0, _FnUtils._isNil)(dataKey) ? defaultValue : (0, _DataUtils.isNumOrStr)(dataKey) ? (0, _FnUtils._getByPropName)(obj, dataKey, defaultValue) : (0, _FnUtils._isFn)(dataKey) ? dataKey(obj) : defaultValue;
 /**
  * Get domain of data by key
@@ -40,12 +40,11 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
   return validateData.map(entry => (0, _DataUtils.isNumOrStr)(entry) || entry instanceof Date ? entry : '');
 }
 const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axis) {
-  var _ticks$length, _ticks;
   if (ticks === void 0) {
     ticks = [];
   }
   let index = -1;
-  const len = (_ticks$length = (_ticks = ticks) == null ? void 0 : _ticks.length) != null ? _ticks$length : 0;
+  const len = ticks?.length ?? 0;
   // if there are 1 or less ticks ticks then the active tick is at index 0
   if (len <= 1) {
     return 0;
@@ -452,7 +451,7 @@ const getTicksOfAxis = (axis, isGrid, isAll) => {
     } = axis,
     offsetForBand = axis.realScaleType === 'scaleBand' ? scale.bandwidth() / 2 : 2;
   let offset = (isGrid || isAll) && type === 'category' && scale.bandwidth ? scale.bandwidth() / offsetForBand : 0;
-  offset = axis.axisType === 'angleAxis' && (range == null ? void 0 : range.length) >= 2 ? (0, _DataUtils.mathSign)(range[0] - range[1]) * 2 * offset : offset;
+  offset = axis.axisType === 'angleAxis' && range?.length >= 2 ? (0, _DataUtils.mathSign)(range[0] - range[1]) * 2 * offset : offset;
   // The ticks set by user should only affect the ticks adjacent to axis line
   if (isGrid && (axis.ticks || axis.niceTicks)) {
     const result = (axis.ticks || axis.niceTicks).map(entry => {
