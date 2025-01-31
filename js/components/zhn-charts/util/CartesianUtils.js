@@ -29,6 +29,22 @@ const _getCalculatedPadding = (axis, offset, props) => {
     return halfBand - gap - (halfBand - gap) / rangeWidth * gap;
   }
 };
+const _getRange = (axisType, offset, padding, calculatedPadding, layout, axis, reversed) => {
+  let range;
+  if (axisType === 'xAxis') {
+    range = [offset.left + (padding.left || 0) + calculatedPadding, offset.left + offset.width - (padding.right || 0) - calculatedPadding];
+  } else if (axisType === 'yAxis') {
+    range = layout === 'horizontal' ? [offset.top + offset.height - (padding.bottom || 0), offset.top + (padding.top || 0)] : [offset.top + (padding.top || 0) + calculatedPadding, offset.top + offset.height - (padding.bottom || 0) - calculatedPadding];
+  } else {
+    ({
+      range
+    } = axis);
+  }
+  if (reversed) {
+    range = [range[1], range[0]];
+  }
+  return range;
+};
 
 /**
  * Calculate the scale function, position, width, height of axes
@@ -68,30 +84,19 @@ const formatAxisMap = (props, axisMap, offset, axisType, chartName) => {
         reversed
       } = axis,
       offsetKey = `${orientation}${mirror ? 'Mirror' : ''}`,
-      calculatedPadding = axis.type === 'number' && (axis.padding === 'gap' || axis.padding === 'no-gap') ? _getCalculatedPadding(axis, offset, props) || 0 : 0;
-    let range, x, y, needSpace;
-    if (axisType === 'xAxis') {
-      range = [offset.left + (padding.left || 0) + calculatedPadding, offset.left + offset.width - (padding.right || 0) - calculatedPadding];
-    } else if (axisType === 'yAxis') {
-      range = layout === 'horizontal' ? [offset.top + offset.height - (padding.bottom || 0), offset.top + (padding.top || 0)] : [offset.top + (padding.top || 0) + calculatedPadding, offset.top + offset.height - (padding.bottom || 0) - calculatedPadding];
-    } else {
-      ({
-        range
-      } = axis);
-    }
-    if (reversed) {
-      range = [range[1], range[0]];
-    }
-    const {
-      scale,
-      realScaleType
-    } = (0, _ChartUtils.parseScale)(axis, chartName, hasBar);
+      calculatedPadding = axis.type === 'number' && (axis.padding === 'gap' || axis.padding === 'no-gap') ? _getCalculatedPadding(axis, offset, props) || 0 : 0,
+      range = _getRange(axisType, offset, padding, calculatedPadding, layout, axis, reversed),
+      {
+        scale,
+        realScaleType
+      } = (0, _ChartUtils.parseScale)(axis, chartName, hasBar);
     scale.domain(domain).range(range);
     (0, _ChartUtils.checkDomainOfScale)(scale);
     const ticks = (0, _ChartUtils.getTicksOfScale)(scale, {
       ...axis,
       realScaleType
     });
+    let x, y, needSpace;
     if (axisType === 'xAxis') {
       needSpace = orientation === 'top' && !mirror || orientation === 'bottom' && mirror;
       x = offset.left;
