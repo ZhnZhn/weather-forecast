@@ -58,8 +58,8 @@ export const isLayoutHorizontal = _fIs("horizontal")
 export const isLayoutVertical = _fIs("vertical")
 export const isLayoutCentric = _fIs("centric")
 
-export const isAxisX = _fIs("xAxis")
-export const isAxisY = _fIs("yAxis")
+export const isAxisTypeX = _fIs("xAxis")
+export const isAxisTypeY = _fIs("yAxis")
 
 export const getValueByDataKey = (
   obj,

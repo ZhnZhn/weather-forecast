@@ -31,9 +31,9 @@ const _getCalculatedPadding = (axis, offset, props) => {
 };
 const _getRange = (axisType, offset, padding, calculatedPadding, layout, axis, reversed) => {
   let range;
-  if (axisType === 'xAxis') {
+  if ((0, _ChartUtils.isAxisTypeX)(axisType)) {
     range = [offset.left + (padding.left || 0) + calculatedPadding, offset.left + offset.width - (padding.right || 0) - calculatedPadding];
-  } else if (axisType === 'yAxis') {
+  } else if ((0, _ChartUtils.isAxisTypeY)(axisType)) {
     range = (0, _ChartUtils.isLayoutHorizontal)(layout) ? [offset.top + offset.height - (padding.bottom || 0), offset.top + (padding.top || 0)] : [offset.top + (padding.top || 0) + calculatedPadding, offset.top + offset.height - (padding.bottom || 0) - calculatedPadding];
   } else {
     ({
@@ -97,11 +97,11 @@ const formatAxisMap = (props, axisMap, offset, axisType, chartName) => {
       realScaleType
     });
     let x, y, needSpace;
-    if (axisType === 'xAxis') {
+    if ((0, _ChartUtils.isAxisTypeX)(axisType)) {
       needSpace = orientation === 'top' && !mirror || orientation === 'bottom' && mirror;
       x = offset.left;
       y = steps[offsetKey] - needSpace * axis.height;
-    } else if (axisType === 'yAxis') {
+    } else if ((0, _ChartUtils.isAxisTypeY)(axisType)) {
       needSpace = orientation === 'left' && !mirror || orientation === 'right' && mirror;
       x = steps[offsetKey] - needSpace * axis.width;
       y = offset.top;
@@ -113,11 +113,11 @@ const formatAxisMap = (props, axisMap, offset, axisType, chartName) => {
       x,
       y,
       scale,
-      width: axisType === 'xAxis' ? offset.width : axis.width,
-      height: axisType === 'yAxis' ? offset.height : axis.height
+      width: (0, _ChartUtils.isAxisTypeX)(axisType) ? offset.width : axis.width,
+      height: (0, _ChartUtils.isAxisTypeY)(axisType) ? offset.height : axis.height
     };
     finalAxis.bandSize = (0, _ChartUtils.getBandSizeOfAxis)(finalAxis, ticks);
-    if (!axis.hide && axisType === 'xAxis') {
+    if (!axis.hide && (0, _ChartUtils.isAxisTypeX)(axisType)) {
       steps[offsetKey] += (needSpace ? -1 : 1) * finalAxis.height;
     } else if (!axis.hide) {
       steps[offsetKey] += (needSpace ? -1 : 1) * finalAxis.width;

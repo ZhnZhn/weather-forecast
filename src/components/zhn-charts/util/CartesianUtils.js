@@ -3,11 +3,15 @@ import {
   parseScale,
   checkDomainOfScale,
   getBandSizeOfAxis,
+  isAxisTypeX,
+  isAxisTypeY,
   isLayoutHorizontal,
-  isLayoutVertical
+  isLayoutVertical,
 } from './ChartUtils';
+
 import { findChildByType } from './ReactUtils';
 import { getPercentValue } from './DataUtils';
+
 import { Bar } from '../cartesian/Bar';
 
 const _getObjectKeys = Object.keys
@@ -59,12 +63,12 @@ const _getRange = (
   reversed
 ) => {
   let range;
-  if (axisType === 'xAxis') {
+  if (isAxisTypeX(axisType)) {
     range = [
       offset.left + (padding.left || 0) + calculatedPadding,
       offset.left + offset.width - (padding.right || 0) - calculatedPadding,
     ];
-  } else if (axisType === 'yAxis') {
+  } else if (isAxisTypeY(axisType)) {
     range = isLayoutHorizontal(layout)
       ? [
           offset.top + offset.height - (padding.bottom || 0),
@@ -152,11 +156,11 @@ export const formatAxisMap = (
       { ...axis, realScaleType }
     );
     let x, y, needSpace;
-    if (axisType === 'xAxis') {
+    if (isAxisTypeX(axisType)) {
       needSpace = (orientation === 'top' && !mirror) || (orientation === 'bottom' && mirror);
       x = offset.left;
       y = steps[offsetKey] - needSpace * axis.height;
-    } else if (axisType === 'yAxis') {
+    } else if (isAxisTypeY(axisType)) {
       needSpace = (orientation === 'left' && !mirror) || (orientation === 'right' && mirror);
       x = steps[offsetKey] - needSpace * axis.width;
       y = offset.top;
@@ -168,11 +172,15 @@ export const formatAxisMap = (
       x,
       y,
       scale,
-      width: axisType === 'xAxis' ? offset.width : axis.width,
-      height: axisType === 'yAxis' ? offset.height : axis.height,
+      width: isAxisTypeX(axisType)
+        ? offset.width
+        : axis.width,
+      height: isAxisTypeY(axisType)
+        ? offset.height
+        : axis.height,
     };
     finalAxis.bandSize = getBandSizeOfAxis(finalAxis, ticks);
-    if (!axis.hide && axisType === 'xAxis') {
+    if (!axis.hide && isAxisTypeX(axisType)) {
       steps[offsetKey] += (needSpace ? -1 : 1) * finalAxis.height;
     } else if (!axis.hide) {
       steps[offsetKey] += (needSpace ? -1 : 1) * finalAxis.width;

@@ -3,7 +3,7 @@
 exports.__esModule = true;
 exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarSizeList = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.combineEventHandlers = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
-exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisY = exports.isAxisX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = void 0;
+exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = void 0;
 var _d3Scale = require("../d3Scale");
 var _d3Shape = require("../d3Shape");
 var _FnUtils = require("./FnUtils");
@@ -17,8 +17,8 @@ const _fIs = str => v => v === str;
 const isLayoutHorizontal = exports.isLayoutHorizontal = _fIs("horizontal");
 const isLayoutVertical = exports.isLayoutVertical = _fIs("vertical");
 const isLayoutCentric = exports.isLayoutCentric = _fIs("centric");
-const isAxisX = exports.isAxisX = _fIs("xAxis");
-const isAxisY = exports.isAxisY = _fIs("yAxis");
+const isAxisTypeX = exports.isAxisTypeX = _fIs("xAxis");
+const isAxisTypeY = exports.isAxisTypeY = _fIs("yAxis");
 const getValueByDataKey = (obj, dataKey, defaultValue) => (0, _FnUtils._isNil)(obj) || (0, _FnUtils._isNil)(dataKey) ? defaultValue : (0, _DataUtils.isNumOrStr)(dataKey) ? (0, _FnUtils._getByPropName)(obj, dataKey, defaultValue) : (0, _FnUtils._isFn)(dataKey) ? dataKey(obj) : defaultValue;
 /**
  * Get domain of data by key
