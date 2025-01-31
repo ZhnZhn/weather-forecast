@@ -8,7 +8,23 @@ import { findChildByType } from './ReactUtils';
 import { getPercentValue } from './DataUtils';
 import { Bar } from '../cartesian/Bar';
 
-const _getObjectKeys = Object.keys;
+const _getObjectKeys = Object.keys
+, _mathMin = Math.min
+, _mathAbs = Math.abs;
+
+const _calcSmallestDistanceBetweenValues = (
+  axis
+) => axis.categoricalDomain
+  .sort()
+  .reduce((smallestDistance, value, index, sortedValues) => {
+    if (index > 0) {
+      smallestDistance = _mathMin(
+        (value || 0) - (sortedValues[index - 1] || 0),
+        smallestDistance
+      );
+    }
+    return smallestDistance;
+  }, Infinity);
 
 /**
  * Calculate the scale function, position, width, height of axes
@@ -56,15 +72,9 @@ export const formatAxisMap = (
     , offsetKey = `${orientation}${mirror ? 'Mirror' : ''}`;
     let calculatedPadding, range, x, y, needSpace;
     if (axis.type === 'number' && (axis.padding === 'gap' || axis.padding === 'no-gap')) {
-      const diff = domain[1] - domain[0];
-      let smallestDistanceBetweenValues = Infinity;
-      const sortedValues = axis.categoricalDomain.sort();
-      sortedValues.forEach((value, index) => {
-        if (index > 0) {
-          smallestDistanceBetweenValues = Math.min((value || 0) - (sortedValues[index - 1] || 0), smallestDistanceBetweenValues);
-        }
-      });
-      const smallestDistanceInPercent = smallestDistanceBetweenValues / diff
+      const diff = domain[1] - domain[0]
+      , smallestDistanceBetweenValues = _calcSmallestDistanceBetweenValues(axis)
+      , smallestDistanceInPercent = smallestDistanceBetweenValues / diff
       , rangeWidth = axis.layout === 'vertical'
          ? offset.height
          : offset.width;
@@ -141,10 +151,10 @@ export const rectWithPoints = (
   { x: x1, y: y1 },
   { x: x2, y: y2 }
 ) => ({
-  x: Math.min(x1, x2),
-  y: Math.min(y1, y2),
-  width: Math.abs(x2 - x1),
-  height: Math.abs(y2 - y1)
+  x: _mathMin(x1, x2),
+  y: _mathMin(y1, y2),
+  width: _mathAbs(x2 - x1),
+  height: _mathAbs(y2 - y1)
 });
 
 /**
