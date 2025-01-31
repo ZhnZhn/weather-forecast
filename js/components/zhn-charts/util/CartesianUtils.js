@@ -19,7 +19,7 @@ const _getCalculatedPadding = (axis, offset, props) => {
   const diff = axis.domain[1] - axis.domain[0],
     smallestDistanceBetweenValues = _calcSmallestDistanceBetweenValues(axis),
     smallestDistanceInPercent = smallestDistanceBetweenValues / diff,
-    rangeWidth = axis.layout === 'vertical' ? offset.height : offset.width;
+    rangeWidth = (0, _ChartUtils.isLayoutVertical)(axis.layout) ? offset.height : offset.width;
   if (axis.padding === 'gap') {
     return smallestDistanceInPercent * rangeWidth / 2;
   }
@@ -34,7 +34,7 @@ const _getRange = (axisType, offset, padding, calculatedPadding, layout, axis, r
   if (axisType === 'xAxis') {
     range = [offset.left + (padding.left || 0) + calculatedPadding, offset.left + offset.width - (padding.right || 0) - calculatedPadding];
   } else if (axisType === 'yAxis') {
-    range = layout === 'horizontal' ? [offset.top + offset.height - (padding.bottom || 0), offset.top + (padding.top || 0)] : [offset.top + (padding.top || 0) + calculatedPadding, offset.top + offset.height - (padding.bottom || 0) - calculatedPadding];
+    range = (0, _ChartUtils.isLayoutHorizontal)(layout) ? [offset.top + offset.height - (padding.bottom || 0), offset.top + (padding.top || 0)] : [offset.top + (padding.top || 0) + calculatedPadding, offset.top + offset.height - (padding.bottom || 0) - calculatedPadding];
   } else {
     ({
       range

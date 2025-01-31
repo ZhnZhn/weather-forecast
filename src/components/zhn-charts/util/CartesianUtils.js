@@ -2,7 +2,9 @@ import {
   getTicksOfScale,
   parseScale,
   checkDomainOfScale,
-  getBandSizeOfAxis
+  getBandSizeOfAxis,
+  isLayoutHorizontal,
+  isLayoutVertical
 } from './ChartUtils';
 import { findChildByType } from './ReactUtils';
 import { getPercentValue } from './DataUtils';
@@ -34,7 +36,7 @@ const _getCalculatedPadding = (
   const diff = axis.domain[1] - axis.domain[0]
   , smallestDistanceBetweenValues = _calcSmallestDistanceBetweenValues(axis)
   , smallestDistanceInPercent = smallestDistanceBetweenValues / diff
-  , rangeWidth = axis.layout === 'vertical'
+  , rangeWidth = isLayoutVertical(axis.layout)
      ? offset.height
      : offset.width;
   if (axis.padding === 'gap') {
@@ -63,7 +65,7 @@ const _getRange = (
       offset.left + offset.width - (padding.right || 0) - calculatedPadding,
     ];
   } else if (axisType === 'yAxis') {
-    range = layout === 'horizontal'
+    range = isLayoutHorizontal(layout)
       ? [
           offset.top + offset.height - (padding.bottom || 0),
           offset.top + (padding.top || 0)
