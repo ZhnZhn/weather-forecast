@@ -8,8 +8,7 @@ var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _CartesianGridRenderFn = require("./CartesianGridRenderFn");
 var _CartesianGridBackground = _interopRequireDefault(require("./CartesianGridBackground"));
-var _CartesianGridHorizontalLines = _interopRequireDefault(require("./CartesianGridHorizontalLines"));
-var _CartesianGridVerticalLines = _interopRequireDefault(require("./CartesianGridVerticalLines"));
+var _CartesianGridLines = require("./CartesianGridLines");
 var _CartesianGridHorizontalStripes = _interopRequireDefault(require("./CartesianGridHorizontalStripes"));
 var _CartesianGridVerticalStripes = _interopRequireDefault(require("./CartesianGridVerticalStripes"));
 var _CL = require("../CL");
@@ -62,13 +61,13 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
       ry: ry,
       width: width,
       height: height
-    }), _isPoints(horizontal, horizontalPoints) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridHorizontalLines.default, {
+    }), _isPoints(horizontal, horizontalPoints) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridLines.CartesianGridHorizontalLines, {
       className: _CL.CL_GRID_HORIZONTAL,
       x1: x,
       x2: x2,
       points: horizontalPoints,
       props: _lineProps
-    }), _isPoints(vertical, verticalPoints) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridVerticalLines.default, {
+    }), _isPoints(vertical, verticalPoints) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianGridLines.CartesianGridVerticalLines, {
       className: _CL.CL_GRID_VERTICAL,
       y1: y,
       y2: y2,

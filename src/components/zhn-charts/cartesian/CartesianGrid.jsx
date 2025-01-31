@@ -16,8 +16,10 @@ import {
 } from './CartesianGridRenderFn';
 
 import CartesianGridBackground from './CartesianGridBackground';
-import CartesianGridHorizontalLines from './CartesianGridHorizontalLines';
-import CartesianGridVerticalLines from './CartesianGridVerticalLines';
+import {
+  CartesianGridHorizontalLines,
+  CartesianGridVerticalLines
+} from './CartesianGridLines';
 import CartesianGridHorizontalStripes from './CartesianGridHorizontalStripes';
 import CartesianGridVerticalStripes from './CartesianGridVerticalStripes';
 
