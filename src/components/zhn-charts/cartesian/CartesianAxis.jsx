@@ -13,8 +13,7 @@ import { crProps } from '../util/ReactUtils';
 import { Layer } from '../container/Layer';
 import { Label } from '../component/Label';
 
-import { getTicks } from './getTicks';
-import { crFinalTicks } from './CartesianAxisRenderFn';
+import { getCartesianAxisTicks } from './CartesianAxisRenderFn';
 
 import { CartesianAxisLine } from './CartesianAxisLine';
 import { CartesianAxisTicks } from './CartesianAxisTicks';
@@ -109,16 +108,14 @@ export const CartesianAxis = memo(props => {
     return null;
   }
 
-  const finalTicks = crFinalTicks(_props);
-  if (!finalTicks || !finalTicks.length) {
-    return null;
-  }
-
-  const _ticks = getTicks(
-    {..._props, ticks: finalTicks},
+  const _ticks = getCartesianAxisTicks(
+    _props,
     fontSize,
     letterSpacing
   );
+  if (!_ticks) {
+    return null;
+  }
 
   return (
     <Layer

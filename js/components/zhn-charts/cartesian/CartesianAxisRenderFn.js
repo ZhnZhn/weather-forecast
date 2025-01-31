@@ -1,12 +1,12 @@
 "use strict";
 
 exports.__esModule = true;
-exports.getTickLineCoord = exports.getTickAnchors = exports.getClassName = exports.crFinalTicks = void 0;
+exports.getTickLineCoord = exports.getTickAnchors = exports.getClassName = exports.getCartesianAxisTicks = void 0;
 var _FnUtils = require("../util/FnUtils");
-var _DataUtils = require("../util/DataUtils");
+var _getTicks = require("./getTicks");
 const getClassName = obj => obj ? obj.className : void 0;
 exports.getClassName = getClassName;
-const crFinalTicks = props => {
+const _crFinalTicks = props => {
   const {
     ticks,
     ticksGenerator,
@@ -14,9 +14,16 @@ const crFinalTicks = props => {
   } = props;
   return (0, _FnUtils._isFn)(ticksGenerator) ? ticks && ticks.length > 0 ? ticksGenerator(props) : ticksGenerator(noTicksProps) : ticks;
 };
+const getCartesianAxisTicks = (props, fontSize, letterSpacing) => {
+  const finalTicks = _crFinalTicks(props);
+  return (0, _FnUtils._isNotEmptyArr)(finalTicks) ? (0, _getTicks.getTicks)({
+    ...props,
+    ticks: finalTicks
+  }, fontSize, letterSpacing) : void 0;
+};
 
 //[textAnchor, verticalAnchor]
-exports.crFinalTicks = crFinalTicks;
+exports.getCartesianAxisTicks = getCartesianAxisTicks;
 const getTickAnchors = (orientation, mirror) => [orientation === 'left' ? mirror ? 'start' : 'end' : orientation === 'right' ? mirror ? 'end' : 'start' : 'middle', orientation === 'left' || orientation === 'right' ? 'middle' : orientation === 'top' ? mirror ? 'start' : 'end' : mirror ? 'end' : 'start'];
 
 /**
@@ -39,7 +46,7 @@ const getTickLineCoord = (props, data) => {
     } = props,
     sign = mirror ? -1 : 1,
     finalTickSize = data.tickSize || tickSize,
-    tickCoord = (0, _DataUtils.isNumber)(data.tickCoord) ? data.tickCoord : data.coordinate;
+    tickCoord = (0, _FnUtils._isNumber)(data.tickCoord) ? data.tickCoord : data.coordinate;
   let x1, x2, y1, y2, tx, ty;
   switch (orientation) {
     case 'top':

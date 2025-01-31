@@ -9,7 +9,6 @@ var _ShallowEqual = require("../util/ShallowEqual");
 var _ReactUtils = require("../util/ReactUtils");
 var _Layer = require("../container/Layer");
 var _Label = require("../component/Label");
-var _getTicks = require("./getTicks");
 var _CartesianAxisRenderFn = require("./CartesianAxisRenderFn");
 var _CartesianAxisLine = require("./CartesianAxisLine");
 var _CartesianAxisTicks = require("./CartesianAxisTicks");
@@ -89,14 +88,10 @@ const CartesianAxis = exports.CartesianAxis = (0, _uiApi.memo)(props => {
   if (hide || width <= 0 || height <= 0) {
     return null;
   }
-  const finalTicks = (0, _CartesianAxisRenderFn.crFinalTicks)(_props);
-  if (!finalTicks || !finalTicks.length) {
+  const _ticks = (0, _CartesianAxisRenderFn.getCartesianAxisTicks)(_props, fontSize, letterSpacing);
+  if (!_ticks) {
     return null;
   }
-  const _ticks = (0, _getTicks.getTicks)({
-    ..._props,
-    ticks: finalTicks
-  }, fontSize, letterSpacing);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     refEl: _refLayer,
     className: (0, _crCn.default)(_CL.CL_AXIS, className),

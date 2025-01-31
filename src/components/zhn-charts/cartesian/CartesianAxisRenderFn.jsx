@@ -1,5 +1,10 @@
-import { _isFn } from '../util/FnUtils';
-import { isNumber } from '../util/DataUtils';
+import {
+  _isFn,
+  _isNumber,
+  _isNotEmptyArr
+} from '../util/FnUtils';
+
+import { getTicks } from './getTicks';
 
 export const getClassName = (
   obj
@@ -7,7 +12,7 @@ export const getClassName = (
   ? obj.className
   : void 0
 
-export const crFinalTicks = (
+const _crFinalTicks = (
   props
 ) => {
   const {
@@ -21,6 +26,19 @@ export const crFinalTicks = (
        ? ticksGenerator(props)
        : ticksGenerator(noTicksProps)
     : ticks;
+}
+
+export const getCartesianAxisTicks = (
+  props,
+  fontSize,
+  letterSpacing
+) => {
+  const finalTicks = _crFinalTicks(props);
+  return _isNotEmptyArr(finalTicks) ? getTicks(
+    {...props, ticks: finalTicks},
+    fontSize,
+    letterSpacing
+  ) : void 0;
 }
 
 //[textAnchor, verticalAnchor]
@@ -62,7 +80,7 @@ export const getTickLineCoord = (
   } = props
   , sign = mirror ? -1 : 1
   , finalTickSize = data.tickSize || tickSize
-  , tickCoord = isNumber(data.tickCoord)
+  , tickCoord = _isNumber(data.tickCoord)
      ? data.tickCoord
      : data.coordinate;
   let x1, x2, y1, y2, tx, ty;
