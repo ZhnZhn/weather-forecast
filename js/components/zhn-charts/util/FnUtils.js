@@ -2,16 +2,16 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports._upperFirst = exports._uniqBy = exports._throttle = exports._range = exports._min = exports._max = exports._isStr = exports._isObject = exports._isNumber = exports._isNil = exports._isNaN = exports._isFn = exports._isEqual = exports._isBool = exports._isArr = exports._getByPropName = void 0;
+exports._upperFirst = exports._uniqBy = exports._throttle = exports._range = exports._min = exports._max = exports._isStr = exports._isObject = exports._isNumber = exports._isNotEmptyArr = exports._isNil = exports._isNaN = exports._isFn = exports._isEqual = exports._isBool = exports._isArr = exports._getByPropName = void 0;
 var _throttleFn = _interopRequireDefault(require("../../../utils/throttleFn"));
 const _throttle = exports._throttle = _throttleFn.default;
 const _isArr = exports._isArr = Array.isArray;
-const _isFn = v => typeof v === 'function';
-exports._isFn = _isFn;
-const _isBool = v => typeof v === 'boolean';
-exports._isBool = _isBool;
-const _isStr = v => typeof v === 'string';
-exports._isStr = _isStr;
+const _isNotEmptyArr = v => _isArr(v) && v.length > 0;
+exports._isNotEmptyArr = _isNotEmptyArr;
+const _fIsTypeof = str => v => typeof v === str;
+const _isFn = exports._isFn = _fIsTypeof("function");
+const _isBool = exports._isBool = _fIsTypeof("boolean");
+const _isStr = exports._isStr = _fIsTypeof("string");
 const _isNumber = v => typeof v === 'number' && v - v === 0;
 exports._isNumber = _isNumber;
 const _isNil = v => v == null;
@@ -23,7 +23,7 @@ const _upperFirst = str => _isStr(str) && str.length > 0 ? str[0].toUpperCase() 
 exports._upperFirst = _upperFirst;
 const _getByPropName = (obj, propName, dfValue) => obj && propName ? obj[propName] || dfValue : dfValue;
 exports._getByPropName = _getByPropName;
-const _isUndef = v => typeof v === 'undefined';
+const _isUndef = _fIsTypeof("undefined");
 const _range = (startValue, endValue, increment) => {
   const isEndDef = !_isUndef(endValue);
   endValue = isEndDef ? endValue : startValue;
@@ -73,8 +73,8 @@ const _isEqual = (first, second) => {
   if ((first === undefined || second === undefined || first === null || second === null) && (first || second)) {
     return false;
   }
-  const firstType = first == null ? void 0 : first.constructor.name;
-  const secondType = second == null ? void 0 : second.constructor.name;
+  const firstType = first?.constructor.name;
+  const secondType = second?.constructor.name;
   if (firstType !== secondType) {
     return false;
   }

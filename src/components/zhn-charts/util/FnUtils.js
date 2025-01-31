@@ -2,9 +2,14 @@ import throttleFn from '../../../utils/throttleFn';
 export const _throttle = throttleFn;
 
 export const _isArr = Array.isArray
-export const _isFn = v => typeof v === 'function'
-export const _isBool = v => typeof v === 'boolean'
-export const _isStr = v => typeof v === 'string'
+export const _isNotEmptyArr = (
+  v
+) => _isArr(v) && v.length > 0
+
+const _fIsTypeof = (str) => v => typeof v === str
+export const _isFn = _fIsTypeof("function")
+export const _isBool = _fIsTypeof("boolean")
+export const _isStr = _fIsTypeof("string")
 export const _isNumber = v => typeof v === 'number' && v-v === 0
 
 export const _isNil = v => v == null
@@ -28,7 +33,7 @@ export const _getByPropName = (
    ? obj[propName] || dfValue
    : dfValue
 
-const _isUndef = v => typeof v === 'undefined';
+const _isUndef = _fIsTypeof("undefined");
 export const _range = (
   startValue,
   endValue,
@@ -65,7 +70,7 @@ export const _min = (
 
 export const _max = (
   arr
-) => arr && arr.length  
+) => arr && arr.length
   ? Math.max(...arr)
   : void 0;
 
