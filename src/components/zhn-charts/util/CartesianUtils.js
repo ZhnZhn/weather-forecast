@@ -26,6 +26,27 @@ const _calcSmallestDistanceBetweenValues = (
     return smallestDistance;
   }, Infinity);
 
+const _getCalculatedPadding = (
+  axis,
+  offset,
+  props
+) => {
+  const diff = axis.domain[1] - axis.domain[0]
+  , smallestDistanceBetweenValues = _calcSmallestDistanceBetweenValues(axis)
+  , smallestDistanceInPercent = smallestDistanceBetweenValues / diff
+  , rangeWidth = axis.layout === 'vertical'
+     ? offset.height
+     : offset.width;
+  if (axis.padding === 'gap') {
+    return (smallestDistanceInPercent * rangeWidth) / 2;
+  }
+  if (axis.padding === 'no-gap') {
+    const gap = getPercentValue(props.barCategoryGap, smallestDistanceInPercent * rangeWidth)
+    , halfBand = (smallestDistanceInPercent * rangeWidth) / 2;
+    return halfBand - gap - ((halfBand - gap) / rangeWidth) * gap;
+  }
+};
+
 /**
  * Calculate the scale function, position, width, height of axes
  * @param  {Object} props     Latest props
@@ -69,28 +90,17 @@ export const formatAxisMap = (
       mirror,
       reversed
     } = axis
-    , offsetKey = `${orientation}${mirror ? 'Mirror' : ''}`;
-    let calculatedPadding, range, x, y, needSpace;
-    if (axis.type === 'number' && (axis.padding === 'gap' || axis.padding === 'no-gap')) {
-      const diff = domain[1] - domain[0]
-      , smallestDistanceBetweenValues = _calcSmallestDistanceBetweenValues(axis)
-      , smallestDistanceInPercent = smallestDistanceBetweenValues / diff
-      , rangeWidth = axis.layout === 'vertical'
-         ? offset.height
-         : offset.width;
-      if (axis.padding === 'gap') {
-        calculatedPadding = (smallestDistanceInPercent * rangeWidth) / 2;
-      }
-      if (axis.padding === 'no-gap') {
-        const gap = getPercentValue(props.barCategoryGap, smallestDistanceInPercent * rangeWidth)
-        , halfBand = (smallestDistanceInPercent * rangeWidth) / 2;
-        calculatedPadding = halfBand - gap - ((halfBand - gap) / rangeWidth) * gap;
-      }
-    }
+    , offsetKey = `${orientation}${mirror ? 'Mirror' : ''}`
+    , calculatedPadding = axis.type === 'number'
+        && (axis.padding === 'gap' || axis.padding === 'no-gap')
+        ? _getCalculatedPadding(axis, offset, props) || 0
+        : 0;
+    let range, x, y, needSpace;
+
     if (axisType === 'xAxis') {
       range = [
-        offset.left + (padding.left || 0) + (calculatedPadding || 0),
-        offset.left + offset.width - (padding.right || 0) - (calculatedPadding || 0),
+        offset.left + (padding.left || 0) + calculatedPadding,
+        offset.left + offset.width - (padding.right || 0) - calculatedPadding,
       ];
     } else if (axisType === 'yAxis') {
       range = layout === 'horizontal'
@@ -99,8 +109,8 @@ export const formatAxisMap = (
             offset.top + (padding.top || 0)
           ]
         : [
-            offset.top + (padding.top || 0) + (calculatedPadding || 0),
-            offset.top + offset.height - (padding.bottom || 0) - (calculatedPadding || 0),
+            offset.top + (padding.top || 0) + calculatedPadding,
+            offset.top + offset.height - (padding.bottom || 0) - calculatedPadding,
           ];
     } else {
       ({ range } = axis);
