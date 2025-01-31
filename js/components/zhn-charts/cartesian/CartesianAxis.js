@@ -9,6 +9,7 @@ var _ShallowEqual = require("../util/ShallowEqual");
 var _ReactUtils = require("../util/ReactUtils");
 var _Layer = require("../container/Layer");
 var _Label = require("../component/Label");
+var _getTicks = require("./getTicks");
 var _CartesianAxisRenderFn = require("./CartesianAxisRenderFn");
 var _CartesianAxisLine = require("./CartesianAxisLine");
 var _CartesianAxisTicks = require("./CartesianAxisTicks");
@@ -80,30 +81,32 @@ const CartesianAxis = exports.CartesianAxis = (0, _uiApi.memo)(props => {
   }, []);
   const {
     axisLine,
+    className,
     width,
     height,
-    className,
     hide
   } = _props;
-  if (hide) {
+  if (hide || width <= 0 || height <= 0) {
     return null;
   }
   const finalTicks = (0, _CartesianAxisRenderFn.crFinalTicks)(_props);
-  if (width <= 0 || height <= 0 || !finalTicks || !finalTicks.length) {
+  if (!finalTicks || !finalTicks.length) {
     return null;
   }
+  const _ticks = (0, _getTicks.getTicks)({
+    ..._props,
+    ticks: finalTicks
+  }, fontSize, letterSpacing);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     refEl: _refLayer,
     className: (0, _crCn.default)(_CL.CL_AXIS, className),
     children: [axisLine && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianAxisLine.CartesianAxisLine, {
       className: _CL.CL_AXIS_LINE,
-      props: props
+      props: _props
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianAxisTicks.CartesianAxisTicks, {
-      props: props,
-      ticks: finalTicks,
-      fontSize: fontSize,
-      letterSpacing: letterSpacing
-    }), _Label.Label.renderCallByParent(props)]
+      props: _props,
+      ticks: _ticks
+    }), _Label.Label.renderCallByParent(_props)]
   });
 }, _arePropsEqual);
 CartesianAxis.displayName = 'CartesianAxis';

@@ -13,6 +13,7 @@ import { crProps } from '../util/ReactUtils';
 import { Layer } from '../container/Layer';
 import { Label } from '../component/Label';
 
+import { getTicks } from './getTicks';
 import { crFinalTicks } from './CartesianAxisRenderFn';
 
 import { CartesianAxisLine } from './CartesianAxisLine';
@@ -99,23 +100,25 @@ export const CartesianAxis = memo(props => {
 
   const {
     axisLine,
+    className,
     width,
     height,
-    className,
     hide
   } = _props;
-  if (hide) {
+  if (hide || width <= 0 || height <= 0) {
     return null;
   }
 
   const finalTicks = crFinalTicks(_props);
-  if (width <= 0
-    || height <= 0
-    || !finalTicks
-    || !finalTicks.length
-  ) {
+  if (!finalTicks || !finalTicks.length) {
     return null;
   }
+
+  const _ticks = getTicks(
+    {..._props, ticks: finalTicks},
+    fontSize,
+    letterSpacing
+  );
 
   return (
     <Layer
@@ -124,15 +127,13 @@ export const CartesianAxis = memo(props => {
     >
        {axisLine && <CartesianAxisLine
           className={CL_AXIS_LINE}
-          props={props}
+          props={_props}
        />}
        <CartesianAxisTicks
-          props={props}
-          ticks={finalTicks}
-          fontSize={fontSize}
-          letterSpacing={letterSpacing}
+          props={_props}
+          ticks={_ticks}
        />
-       {Label.renderCallByParent(props)}
+       {Label.renderCallByParent(_props)}
     </Layer>
   );
 }, _arePropsEqual)

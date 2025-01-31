@@ -3,7 +3,6 @@
 exports.__esModule = true;
 exports.CartesianAxisTicks = void 0;
 var _ReactUtils = require("../util/ReactUtils");
-var _getTicks = require("./getTicks");
 var _CartesianAxisRenderFn = require("./CartesianAxisRenderFn");
 var _CL = require("../CL");
 var _CartesianAxisTick = require("./CartesianAxisTick");
@@ -17,9 +16,7 @@ var _jsxRuntime = require("react/jsx-runtime");
 const CartesianAxisTicks = _ref => {
   let {
     props,
-    ticks,
-    fontSize,
-    letterSpacing
+    ticks
   } = _ref;
   const {
       tickLine,
@@ -29,10 +26,6 @@ const CartesianAxisTicks = _ref => {
       orientation,
       mirror
     } = props,
-    finalTicks = (0, _getTicks.getTicks)({
-      ...props,
-      ticks
-    }, fontSize, letterSpacing),
     [textAnchor, verticalAnchor] = (0, _CartesianAxisRenderFn.getTickAnchors)(orientation, mirror),
     axisProps = (0, _ReactUtils.filterProps)(props),
     customTickProps = (0, _ReactUtils.filterProps)(tick),
@@ -43,7 +36,7 @@ const CartesianAxisTicks = _ref => {
     };
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
     className: _CL.CL_AXIS_TICKS,
-    children: finalTicks.map((entry, i) => {
+    children: ticks.map((entry, i) => {
       const {
           line: lineCoord,
           tick: tickCoord
@@ -58,7 +51,7 @@ const CartesianAxisTicks = _ref => {
           ...tickCoord,
           index: i,
           payload: entry,
-          visibleTicksCount: finalTicks.length,
+          visibleTicksCount: ticks.length,
           tickFormatter
         };
       return /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianAxisTick.CartesianAxisTick, {

@@ -1,5 +1,4 @@
 import { filterProps } from '../util/ReactUtils';
-import { getTicks } from './getTicks';
 
 import {
   getTickAnchors,
@@ -18,9 +17,7 @@ import { CartesianAxisTick } from './CartesianAxisTick';
 
 export const CartesianAxisTicks = ({
   props,
-  ticks,
-  fontSize,
-  letterSpacing
+  ticks
 }) => {
   const {
     tickLine,
@@ -30,11 +27,6 @@ export const CartesianAxisTicks = ({
     orientation,
     mirror
   } = props
-  , finalTicks = getTicks(
-     { ...props, ticks },
-     fontSize,
-     letterSpacing
-   )
   , [
     textAnchor,
     verticalAnchor
@@ -48,7 +40,7 @@ export const CartesianAxisTicks = ({
   };
   return (
     <g className={CL_AXIS_TICKS}>
-      {finalTicks.map((entry, i) => {
+      {ticks.map((entry, i) => {
           const {
             line: lineCoord,
             tick: tickCoord
@@ -63,7 +55,7 @@ export const CartesianAxisTicks = ({
               ...tickCoord,
               index: i,
               payload: entry,
-              visibleTicksCount: finalTicks.length,
+              visibleTicksCount: ticks.length,
               tickFormatter
           };
           return (
