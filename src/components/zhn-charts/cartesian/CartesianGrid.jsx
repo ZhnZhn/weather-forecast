@@ -20,8 +20,10 @@ import {
   CartesianGridHorizontalLines,
   CartesianGridVerticalLines
 } from './CartesianGridLines';
-import CartesianGridHorizontalStripes from './CartesianGridHorizontalStripes';
-import CartesianGridVerticalStripes from './CartesianGridVerticalStripes';
+import {
+  CartesianGridHorizontalStripes,
+  CartesianGridVerticalStripes
+} from './CartesianGridStripes';
 
 import {
   CL_BG,
