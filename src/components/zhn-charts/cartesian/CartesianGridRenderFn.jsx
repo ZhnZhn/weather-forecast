@@ -1,4 +1,5 @@
 import { _isFn } from '../util/FnUtils';
+import { CL_BG } from '../CL';
 
 export const isPoints = (
   points
@@ -58,11 +59,6 @@ export const crRoundedSortedPoints = (
   return roundedSortedPoints;
 }
 
-export const getFillByIndex = (
-  arrFill,
-  index
-) => arrFill[index % arrFill.length]
-
 export const getStripeLineDimension = (
   p0,
   entry,
@@ -71,3 +67,14 @@ export const getStripeLineDimension = (
 ) => !points[i + 1]
   ? p0 - entry
   : points[i + 1] - entry
+
+export const crStripeRectProps = (
+  arrFill,
+  index,
+  fillOpacity
+) => ({
+  className: CL_BG,
+  stroke: "none",
+  fill: arrFill[index % arrFill.length],
+  fillOpacity
+})

@@ -112,16 +112,20 @@ export const CartesianGrid = memo((
       />}
       {_isPoints(horizontal, horizontalFill) && <CartesianGridHorizontalStripes
          className={CL_STRIPES_HORIZONTAL}
-         x={x} width={width} y0={y2}
+         x={x}
+         width={width}
+         y0={y2}
+         arrFill={horizontalFill}
          fillOpacity={fillOpacity}
-         horizontalFill={horizontalFill}
          points={crRoundedSortedPoints(horizontalPoints, y)}
       />}
       {_isPoints(vertical, verticalFill) && <CartesianGridVerticalStripes
          className={CL_STRIPES_VERTICAL}
-         y={y} height={height} x0={x2}
+         y={y}
+         height={height}
+         x0={x2}
+         arrFill={verticalFill}
          fillOpacity={fillOpacity}
-         verticalFill={verticalFill}
          points={crRoundedSortedPoints(verticalPoints, x)}
       />}
    </g>

@@ -1,8 +1,9 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isPoints = exports.getStripeLineDimension = exports.getFillByIndex = exports.crRoundedSortedPoints = exports.crGridPoints = void 0;
+exports.isPoints = exports.getStripeLineDimension = exports.crStripeRectProps = exports.crRoundedSortedPoints = exports.crGridPoints = void 0;
 var _FnUtils = require("../util/FnUtils");
+var _CL = require("../CL");
 const isPoints = points => points && points.length;
 exports.isPoints = isPoints;
 const _crPoints = (points, pointsGenerator, generatorOptions) => !isPoints(points) && (0, _FnUtils._isFn)(pointsGenerator) ? pointsGenerator(generatorOptions) : points;
@@ -39,8 +40,13 @@ const crRoundedSortedPoints = (points, x) => {
   return roundedSortedPoints;
 };
 exports.crRoundedSortedPoints = crRoundedSortedPoints;
-const getFillByIndex = (arrFill, index) => arrFill[index % arrFill.length];
-exports.getFillByIndex = getFillByIndex;
 const getStripeLineDimension = (p0, entry, i, points) => !points[i + 1] ? p0 - entry : points[i + 1] - entry;
 exports.getStripeLineDimension = getStripeLineDimension;
+const crStripeRectProps = (arrFill, index, fillOpacity) => ({
+  className: _CL.CL_BG,
+  stroke: "none",
+  fill: arrFill[index % arrFill.length],
+  fillOpacity
+});
+exports.crStripeRectProps = crStripeRectProps;
 //# sourceMappingURL=CartesianGridRenderFn.js.map

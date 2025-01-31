@@ -1,16 +1,15 @@
-import { CL_BG } from '../CL';
 import {
-  getFillByIndex,
-  getStripeLineDimension
+  getStripeLineDimension,
+  crStripeRectProps
 } from './CartesianGridRenderFn';
 
 const CartesianGridHorizontalStripes = ({
   className,
-  horizontalFill,
-  fillOpacity,
   x,
   width,
   y0,
+  arrFill,
+  fillOpacity,
   points
 }) => (
   <g className={className}>
@@ -25,12 +24,11 @@ const CartesianGridHorizontalStripes = ({
       return lineHeight > 0 ? (
         <rect
           key={`react-${i}`}
-          y={entry} x={x}
-          height={lineHeight} width={width}
-          stroke="none"
-          fill={getFillByIndex(horizontalFill, i)}
-          fillOpacity={fillOpacity}
-          className={CL_BG}
+          y={entry}
+          x={x}
+          height={lineHeight}
+          width={width}
+          {...crStripeRectProps(arrFill, i, fillOpacity)}
         />) : null;
     })}
   </g>
