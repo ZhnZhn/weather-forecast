@@ -1,4 +1,4 @@
-
+import { isNumber } from '../utils/isTypeFn';
 
 const METRIC = '&units=metric'
 , LANG = '&lang=en'
@@ -15,10 +15,12 @@ const DF = {
   LNG: -0.13
 };
 
-const _roundBy = (n, by=2) =>
-  typeof n === 'number' && n-n === 0
-    ? parseFloat(n.toFixed(by))
-    : n;
+const _roundBy = (
+  n,
+  by=2
+) => isNumber(n)
+  ? parseFloat(n.toFixed(by))
+  : n;
 
 let _apiKey;
 const OpenWeather = {
