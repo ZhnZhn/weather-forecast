@@ -10,3 +10,4 @@ export const isStr = _fIsTypeof('string')
 export const isBool = _fIsTypeof('boolean')
 const _isTypeNumber = _fIsTypeof('number')
 export const isNumber = v => _isTypeNumber(v) && v-v == 0
+export const isNaN = Number.isNaN

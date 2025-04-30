@@ -1,11 +1,15 @@
 import DOMPurify from 'dompurify'
+
+import {
+  isNumber,
+  isNaN
+} from '../utils/isTypeFn';
 import dt from '../utils/dt'
 
 const { sanitize } = DOMPurify;
 
 const NO_DATA = 'No data';
-const _isNumberNotZero = n =>
-  typeof n === 'number' && n !== 0;
+const _isNumberNotZero = n => isNumber(n) && n !== 0;
 
 const _getByPropFromArr = (
   arr=[],
@@ -28,13 +32,11 @@ const _crVane = deg => {
   </svg>`;
 };
 
-const _isNaN = n => n - n !== 0
-
 const _crTemperature = (t, fl) => {
   const _t = parseFloat(t)
   , _fl = parseFloat(fl)
   , _difference = _t - _fl;
-  if (_isNaN(_t)) {
+  if (isNaN(_t)) {
     return NO_DATA;
   }
 
