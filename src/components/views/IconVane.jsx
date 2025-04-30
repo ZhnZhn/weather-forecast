@@ -1,10 +1,8 @@
-//import PropTypes from 'prop-types';
+import { isNumber } from '../../utils/isTypeFn';
 
-const CL_VANE = "icon__popup__vane"
-, _isNumber = n => typeof n === 'number'
-    && n-n === 0;
+const CL_VANE = "icon__popup__vane";
 
-const _crStyle = deg => _isNumber(deg)
+const _crStyle = deg => isNumber(deg)
   ? { transform: `rotate(${deg}deg)` }
   : void 0;
 

@@ -1,24 +1,17 @@
 "use strict";
 
 exports.__esModule = true;
-exports["default"] = void 0;
-
+exports.default = void 0;
+var _isTypeFn = require("../../utils/isTypeFn");
 var _jsxRuntime = require("react/jsx-runtime");
-
-//import PropTypes from 'prop-types';
-var CL_VANE = "icon__popup__vane",
-    _isNumber = function _isNumber(n) {
-  return typeof n === 'number' && n - n === 0;
-};
-
-var _crStyle = function _crStyle(deg) {
-  return _isNumber(deg) ? {
-    transform: "rotate(" + deg + "deg)"
-  } : void 0;
-};
-
-var IconVane = function IconVane(_ref) {
-  var deg = _ref.deg;
+const CL_VANE = "icon__popup__vane";
+const _crStyle = deg => (0, _isTypeFn.isNumber)(deg) ? {
+  transform: `rotate(${deg}deg)`
+} : void 0;
+const IconVane = _ref => {
+  let {
+    deg
+  } = _ref;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     viewBox: "0 0 17 18",
@@ -34,13 +27,11 @@ var IconVane = function IconVane(_ref) {
     })]
   });
 };
+
 /*
 IconVane.propTypes = {
   deg: PropTypes.number
 }
 */
-
-
-var _default = IconVane;
-exports["default"] = _default;
+var _default = exports.default = IconVane;
 //# sourceMappingURL=IconVane.js.map

@@ -1,4 +1,9 @@
+import {
+  isFn,
+  isNumber
+} from '../../utils/isTypeFn';
 import dt from '../../utils/dt';
+
 import IconVane from './IconVane';
 
 const CL_DAY_ITEM = 'day-item'
@@ -54,9 +59,10 @@ const CL_DAY_ITEM = 'day-item'
 };
 
 
-const roundProp = (obj={}, prop) => Math.round(obj[prop])
-, _isNumber = n => typeof n === 'number' && n-n === 0
-, _isFn = fn => typeof fn === 'function';
+const roundProp = (
+  obj={},
+  prop
+) => Math.round(obj[prop])
 
 const DayItem = ({
   style,
@@ -70,7 +76,7 @@ const DayItem = ({
     temp,
     dt:timestamp
   } = item || {}
-  , _speed = _isNumber(speed)
+  , _speed = isNumber(speed)
        ? speed.toFixed(2)
        : ''
   , day = dt.toShortDayOfWeek(timestamp)
@@ -81,7 +87,7 @@ const DayItem = ({
       : void 0
   , tempDay = roundProp(temp, 'day')
   , tempNight = roundProp(temp, 'night')
-  , _focusableAttr = _isFn(onClick)
+  , _focusableAttr = isFn(onClick)
        ? {
            tabIndex: "-1",
            className: CL_DAY_ITEM,
