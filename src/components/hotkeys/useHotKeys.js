@@ -1,4 +1,6 @@
+import { isFn } from '../../utils/isTypeFn';
 import { useEffect } from '../uiApi';
+
 import {
   HAS_HOT_KEYS,
   HOT_KEY_EVENT,
@@ -11,7 +13,7 @@ const _onKeyDown = (evt) => {
      && evt.key
   ) {
     const _onKeyDownHotKey = hmHotKeys[evt.key.toUpperCase()];
-    if (typeof _onKeyDownHotKey === 'function') {
+    if (isFn(_onKeyDownHotKey)) {
       evt.stopImmediatePropagation()
       _onKeyDownHotKey()
     }
