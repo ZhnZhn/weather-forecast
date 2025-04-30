@@ -1,5 +1,6 @@
 import store from './store';
 
+import { isNumber } from '../utils/isTypeFn';
 import throttleFn from '../utils/throttleFn';
 
 import { forecastRequested } from './forecast/actions';
@@ -20,7 +21,7 @@ const MS_PERIOD = 10000
 
 window.weather = {
   fnFetchForecast : (id) => {
-    if (typeof id === 'number' && id !== 0) {
+    if (isNumber(id) && id !== 0) {
        _forecastRequestTh(id)
     }
   }
