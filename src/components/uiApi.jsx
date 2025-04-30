@@ -1,3 +1,8 @@
+import {
+  isStr,
+  isNumber
+} from "../utils/isTypeFn";
+
 export {
   useSelector,
   useStore
@@ -27,9 +32,7 @@ export const createElement = (
   {key, ...restProps}
 ) => (<Comp key={key} {...restProps} />)
 
-const _isStr = v => typeof v == "string"
-, _isNumber = v => typeof v == "number" && v-v == 0
-, _isElementKey = v => _isStr(v) || _isNumber(v);
+const _isElementKey = v => isStr(v) || isNumber(v);
 
 export const cloneUiElement = (
   Element,

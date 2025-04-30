@@ -2,6 +2,7 @@
 
 exports.__esModule = true;
 exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useLayoutEffect = exports.useImperativeHandle = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.createRef = exports.createElement = exports.createContext = exports.cloneUiElement = exports.PureComponent = exports.Component = exports.Children = void 0;
+var _isTypeFn = require("../utils/isTypeFn");
 var _jsxRuntime = require("react/jsx-runtime");
 var _reactRedux = require("react-redux");
 exports.useSelector = _reactRedux.useSelector;
@@ -33,9 +34,7 @@ const createElement = (Comp, _ref) => {
   }, key);
 };
 exports.createElement = createElement;
-const _isStr = v => typeof v == "string",
-  _isNumber = v => typeof v == "number" && v - v == 0,
-  _isElementKey = v => _isStr(v) || _isNumber(v);
+const _isElementKey = v => (0, _isTypeFn.isStr)(v) || (0, _isTypeFn.isNumber)(v);
 const cloneUiElement = function (Element, overrideProps, key) {
   if (key === void 0) {
     key = Element.key;
