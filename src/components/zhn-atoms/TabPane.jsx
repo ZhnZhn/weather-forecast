@@ -1,3 +1,5 @@
+import { isFn } from '../../utils/isTypeFn';
+
 import {
   useState,
   useCallback,
@@ -19,8 +21,7 @@ const S_TABS = {
   height: "100%"
 };
 
-const _isFn = fn => typeof fn === 'function';
-const _isElement = el => el && _isFn(el.type);
+const _isElement = el => el && isFn(el.type);
 
 const _reduceElements = (elements, crElement) =>
 (elements||[])
@@ -79,7 +80,7 @@ const TabPane = ({
     setSelectedTabIndex(index)
     const { props } = tabEl || {}
     , { onClick } = props || {};
-    if (_isFn(onClick)) {
+    if (isFn(onClick)) {
       onClick()
     }
   }, []);

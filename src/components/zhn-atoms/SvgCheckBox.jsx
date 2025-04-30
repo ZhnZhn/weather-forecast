@@ -1,4 +1,7 @@
-//import PropTypes from "prop-types";
+import {
+  isBool
+} from '../../utils/isTypeFn';
+
 import {
   useState,
   useMemo,
@@ -28,7 +31,6 @@ const SvgChecked = ({ stroke }) => (
   />
 );
 
-const _isBool = bool => typeof bool === 'boolean';
 const FN_NOOP = () => {};
 
 const SvgCheckBox = ({
@@ -43,8 +45,8 @@ const SvgCheckBox = ({
   const [
     valueState,
     setValueState
-  ] = useState(() => _isBool(value) ? void 0: !!initialValue)
-  , _isValueState = useRefInit(() => _isBool(valueState))
+  ] = useState(() => isBool(value) ? void 0: !!initialValue)
+  , _isValueState = useRefInit(() => isBool(valueState))
   , _value = _isValueState ? valueState : value
   , _comp = useMemo(() => ({
      setUnchecked: () => setValueState(false)

@@ -2,6 +2,7 @@
 
 exports.__esModule = true;
 exports.default = void 0;
+var _isTypeFn = require("../../utils/isTypeFn");
 var _uiApi = require("../uiApi");
 var _jsxRuntime = require("react/jsx-runtime");
 const S_TABS = {
@@ -22,8 +23,7 @@ const S_TABS = {
     width: "100%",
     height: "100%"
   };
-const _isFn = fn => typeof fn === 'function';
-const _isElement = el => el && _isFn(el.type);
+const _isElement = el => el && (0, _isTypeFn.isFn)(el.type);
 const _reduceElements = (elements, crElement) => (elements || []).reduce((els, el, index) => {
   if (_isElement(el)) {
     els.push(crElement(el, index));
@@ -63,7 +63,7 @@ const TabPane = _ref => {
         {
           onClick
         } = props || {};
-      if (_isFn(onClick)) {
+      if ((0, _isTypeFn.isFn)(onClick)) {
         onClick();
       }
     }, []);
