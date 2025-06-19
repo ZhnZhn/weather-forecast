@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useLayoutEffect = exports.useImperativeHandle = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.createRef = exports.createElement = exports.createContext = exports.cloneUiElement = exports.PureComponent = exports.Component = exports.Children = void 0;
+exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useLayoutEffect = exports.useImperativeHandle = exports.useId = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.createRef = exports.createElement = exports.createContext = exports.cloneUiElement = exports.PureComponent = exports.Component = exports.Children = void 0;
 var _isTypeFn = require("../utils/isTypeFn");
 var _jsxRuntime = require("react/jsx-runtime");
 var _reactRedux = require("react-redux");
@@ -15,6 +15,7 @@ exports.Children = _react.Children;
 exports.createContext = _react.createContext;
 exports.createRef = _react.createRef;
 exports.memo = _react.memo;
+exports.useId = _react.useId;
 exports.useRef = _react.useRef;
 exports.useState = _react.useState;
 exports.useReducer = _react.useReducer;

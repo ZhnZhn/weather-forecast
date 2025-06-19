@@ -16,6 +16,7 @@ export {
   createContext,
   createRef,
   memo,
+  useId,
   useRef,
   useState,
   useReducer,
