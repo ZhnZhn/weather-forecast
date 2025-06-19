@@ -1,7 +1,7 @@
 import { useCallback } from '../uiApi';
 
 import InputSelect from '../zhn-m-input/InputSelect';
-import RowCheckBox from './RowCheckBox';
+import InputSwitch from '../zhn-atoms/InputSwitch';
 import RaisedButton from '../zhn-atoms/RaisedButton';
 
 const S_SELECT = {
@@ -15,8 +15,7 @@ const S_SELECT = {
 , DF_THEME = _themeOptions[0]
 , CAPTION_AIR = "Air Quality"
 , S_CHECK_BOX = { padding: '24px 24px 0 24px'}
-, S_CHECK_CAPTION = { display: 'inline' }
-, IS_AIR = false;
+, IS_AIR = !1;
 
 const CardUi = ({
   style,
@@ -43,13 +42,12 @@ const CardUi = ({
        options={_themeOptions}
        onSelect={onSetTheme}
      />
-     <RowCheckBox
-       style={S_CHECK_BOX}
-       initValue={IS_AIR}
-       caption={CAPTION_AIR}
-       captionStyle={S_CHECK_CAPTION}
-       onCheck={_checkAir}
-       onUnCheck={_uncheckAir}
+     <InputSwitch
+        style={S_CHECK_BOX}
+        initialValue={IS_AIR}
+        caption={CAPTION_AIR}
+        onCheck={_checkAir}
+        onUnCheck={_uncheckAir}
      />
      <div style={buttonsStyle}>
        <RaisedButton
