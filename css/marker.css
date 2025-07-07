@@ -51,7 +51,7 @@
   height: 22px;
   font-size: 24px;
   font-weight: 500;
-  color: #ed5813;
+  color: #795548;
   line-height: 22px;
 }
 
@@ -74,7 +74,7 @@
  cursor: pointer;
 }
 .marker__caption__not-empty:hover {
-  background-color: #646464;
+  background-color: rgba(160,160,160,.3);
 }
 
 .marker__caption__city {
