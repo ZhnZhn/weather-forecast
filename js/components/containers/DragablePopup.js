@@ -24,6 +24,7 @@ const DragablePopup = _ref => {
   let {
     style,
     storeKey,
+    color,
     children
   } = _ref;
   const _refPopup = (0, _uiApi.useRef)(),
@@ -39,6 +40,7 @@ const DragablePopup = _ref => {
       ..._style
     },
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_BtSvgClose.default, {
+      color: color,
       style: S_SVG_CLOSE,
       onClose: _hClose
     }), children]

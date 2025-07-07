@@ -5,6 +5,7 @@ import { sForecast } from '../../flux/selectors';
 
 import DragablePopup from '../containers/DragablePopup';
 import PeriodForecast from '../views/PeriodForecast';
+import { COLOR_BROWN } from '../styles/Color';
 import styleConfig from './Forecast.Style';
 
 const S_CAPTION = { marginRight: 40 }
@@ -27,6 +28,7 @@ const Forecast = ({ style }) => {
     <DragablePopup
         style={{...style, ..._style.ROOT_DIV}}
         storeKey="isPopupForecast"
+        color={COLOR_BROWN}
      >
       <PeriodForecast
           forecast={forecast}

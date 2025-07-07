@@ -20,6 +20,7 @@ const CL_SHOW_POPUP = 'show-popup'
 const DragablePopup = ({
   style,
   storeKey,
+  color,
   children
 }) => {
   const _refPopup = useRef()
@@ -47,6 +48,7 @@ const DragablePopup = ({
        style={{...style, ..._style}}
     >
       <BtSvgClose
+         color={color}
          style={S_SVG_CLOSE}
          onClose={_hClose}
       />
