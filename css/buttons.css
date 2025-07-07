@@ -7,9 +7,7 @@
   padding-top: 6px;
   padding-bottom: 6px;
   font-weight: bold;
-  border-bottom: 3px solid #9e9e9e;
-  cursor: pointer;  
-  outline: 0;
+  border-bottom: 3px solid #9e9e9e;    
 }
 .tab:focus > span {
   color: #81a5ce;
@@ -29,13 +27,13 @@
   font-size: 16px;
   margin-left: 2px;
   margin-right: 2px;
-  cursor: pointer;
 }
 
-.button-type-a:hover, .button-type-a:active, .button-type-a:focus{
+.button-type-a:hover, 
+.button-type-a:active, 
+.button-type-a:focus{
   border: 2px solid green;
   box-shadow: 2px 2px 2px 2px rgba(0,255,0, 0.3);
-  outline: none;
 }
 
 .button-type-b {
@@ -44,12 +42,12 @@
   border: 2px solid #696969;
   padding: 2px 3px;
   border-radius: 4px;
-  cursor: pointer;
 }
 
-.button-type-b:hover, .button-type-b:active, .button-type-b:focus {
+.button-type-b:hover, 
+.button-type-b:active, 
+.button-type-b:focus {
   border: 2px solid green;
-  outline: none;
 }
 
 .button-type-c {
@@ -60,15 +58,23 @@
   padding: 4px 8px;
   font-size: 16px;
   margin-left: 2px;
-  margin-right: 2px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  cursor: pointer;
+  margin-right: 2px;  
 }
 
-.button-type-c:hover, .button-type-c:active, .button-type-c:focus {
+.button-type-c:hover, 
+.button-type-c:active, 
+.button-type-c:focus {
   border: 2px solid green;
-  outline: none;
+}
+
+.bt-svg-close {
+  display: inline-block;
+  float: right;
+  width: 24px;
+  height: 24px;
+  padding: 2px;
+  stroke: #9e9e9e;
+  will-change: transform;
+  transform-origin: center center;
+  transition: transform 0.3s ease-out;
 }

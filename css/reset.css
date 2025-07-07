@@ -20,12 +20,17 @@ html {
 
 button {
   appearance: none;
-  border: none;
-  background-color: transparent;
-  font-size: inherit;
-  cursor: pointer;
   -webkit-appearance: none;
-  -moz-appearance: none;
+
+  border: 0;
+  background-color: transparent;
+  text-decoration: none;
+  font-size: inherit;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  cursor: pointer;
 }
 button:focus,
 button:hover {
