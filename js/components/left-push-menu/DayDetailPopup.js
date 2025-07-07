@@ -5,7 +5,7 @@ exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _dt = _interopRequireDefault(require("../../utils/dt"));
-var _SvgClose = _interopRequireDefault(require("../zhn-atoms/SvgClose"));
+var _BtSvgClose = _interopRequireDefault(require("../zhn-atoms/BtSvgClose"));
 var _theme = require("../styles/theme");
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_DATE = 'marker__caption__date',
@@ -97,7 +97,7 @@ const DayDetailPopup = _ref2 => {
       night = '',
       min = ''
     } = temp,
-    _dateTitle = _dt.default.toDayOfWeek(timestamp) + " " + _dt.default.toTime(timestamp),
+    _dateTitle = `${_dt.default.toDayOfWeek(timestamp)} ${_dt.default.toTime(timestamp)}`,
     description = weather[0] && weather[0].description || 'Without description',
     _isRain = !!rain,
     _isSnow = snow > 0.02,
@@ -109,7 +109,7 @@ const DayDetailPopup = _ref2 => {
       ...S_ROOT_DIV,
       ..._style
     },
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_SvgClose.default, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_BtSvgClose.default, {
       style: S_BT_CLOSE,
       onClose: onClose
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
@@ -127,25 +127,25 @@ const DayDetailPopup = _ref2 => {
       children: [_isRain && /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
         title: "Rain:",
         valueCn: CL_V_RAIN,
-        value: rain + "mm"
+        value: `${rain}mm`
       }), _isSnow && /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
         title: "Snow:",
         valueCn: CL_V_WATER,
-        value: snow + "mm"
+        value: `${snow}mm`
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
         title: _pressureTitle,
         valueCn: CL_V_PRESSURE,
-        value: pressure + "hPa"
+        value: `${pressure}hPa`
       })]
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
         title: "Clouds:",
         valueCn: CL_V_WATER,
-        value: clouds + "%"
+        value: `${clouds}%`
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
         title: "Humidity:",
         valueCn: CL_V_WATER,
-        value: humidity + "%"
+        value: `${humidity}%`
       })]
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {

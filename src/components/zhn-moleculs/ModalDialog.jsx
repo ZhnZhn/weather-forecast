@@ -8,7 +8,7 @@ import {
 
 import useRerender from '../hooks/useRerender';
 
-import SvgClose from '../zhn-atoms/SvgClose';
+import BtSvgClose from '../zhn-atoms/BtSvgClose';
 import RaisedButton from '../zhn-atoms/RaisedButton';
 
 const CL_SHOWING = 'show-popup'
@@ -50,7 +50,7 @@ const DialogCaption = ({
 }) => (
   <div style={S_CAPTON_DIV}>
      <span style={captionStyle}>{caption}</span>
-     <SvgClose onClose={onClose} />
+     <BtSvgClose onClose={onClose} />
   </div>
 );
 

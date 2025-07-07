@@ -2,16 +2,15 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports["default"] = void 0;
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _useRerender = _interopRequireDefault(require("../hooks/useRerender"));
-var _SvgClose = _interopRequireDefault(require("../zhn-atoms/SvgClose"));
+var _BtSvgClose = _interopRequireDefault(require("../zhn-atoms/BtSvgClose"));
 var _RaisedButton = _interopRequireDefault(require("../zhn-atoms/RaisedButton"));
 var _jsxRuntime = require("react/jsx-runtime");
 //import PropTypes from 'prop-types'
 
-var CL_SHOWING = 'show-popup',
+const CL_SHOWING = 'show-popup',
   CL_HIDING = 'hide-popup',
   S_SHOW = {
     display: 'block'
@@ -46,60 +45,67 @@ var CL_SHOWING = 'show-popup',
     margin: '8px 4px 10px 0',
     cursor: 'default'
   };
-var DialogCaption = function DialogCaption(_ref) {
-  var caption = _ref.caption,
-    captionStyle = _ref.captionStyle,
-    onClose = _ref.onClose;
+const DialogCaption = _ref => {
+  let {
+    caption,
+    captionStyle,
+    onClose
+  } = _ref;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     style: S_CAPTON_DIV,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
       style: captionStyle,
       children: caption
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_SvgClose["default"], {
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_BtSvgClose.default, {
       onClose: onClose
     })]
   });
 };
-var CommandButtons = function CommandButtons(_ref2) {
-  var style = _ref2.style,
-    buttons = _ref2.buttons,
-    withoutClose = _ref2.withoutClose,
-    onClose = _ref2.onClose;
+const CommandButtons = _ref2 => {
+  let {
+    style,
+    buttons,
+    withoutClose,
+    onClose
+  } = _ref2;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    style: (0, _extends2["default"])({}, S_COMMAND_DIV, style),
-    children: [buttons, !withoutClose && /*#__PURE__*/(0, _jsxRuntime.jsx)(_RaisedButton["default"], {
+    style: {
+      ...S_COMMAND_DIV,
+      ...style
+    },
+    children: [buttons, !withoutClose && /*#__PURE__*/(0, _jsxRuntime.jsx)(_RaisedButton.default, {
       isPrimary: true,
       caption: "Close",
       onClick: onClose
     })]
   });
 };
-var _hClickDialog = function _hClickDialog(evt) {
+const _hClickDialog = evt => {
   evt.stopPropagation();
 };
-var ModalDialog = function ModalDialog(_ref3) {
-  var isShow = _ref3.isShow,
-    style = _ref3.style,
-    caption = _ref3.caption,
-    captionStyle = _ref3.captionStyle,
-    _ref3$isWithButton = _ref3.isWithButton,
-    isWithButton = _ref3$isWithButton === void 0 ? true : _ref3$isWithButton,
-    withoutClose = _ref3.withoutClose,
-    commandButtons = _ref3.commandButtons,
-    commandStyle = _ref3.commandStyle,
-    _ref3$timeout = _ref3.timeout,
-    timeout = _ref3$timeout === void 0 ? 450 : _ref3$timeout,
-    childrenStyle = _ref3.childrenStyle,
-    children = _ref3.children,
-    onClose = _ref3.onClose;
-  var _refClosing = (0, _uiApi.useRef)(false),
-    rerender = (0, _useRerender["default"])();
-  (0, _uiApi.useEffect)(function () {
+const ModalDialog = _ref3 => {
+  let {
+    isShow,
+    style,
+    caption,
+    captionStyle,
+    isWithButton = true,
+    withoutClose,
+    commandButtons,
+    commandStyle,
+    timeout = 450,
+    childrenStyle,
+    children,
+    onClose
+  } = _ref3;
+  const _refClosing = (0, _uiApi.useRef)(false),
+    rerender = (0, _useRerender.default)();
+  (0, _uiApi.useEffect)(() => {
     if ((0, _uiApi.getRefValue)(_refClosing)) {
       setTimeout(rerender, timeout);
     }
   });
-  var _className, _style;
+  let _className, _style;
   if ((0, _uiApi.getRefValue)(_refClosing)) {
     _style = S_HIDE;
     (0, _uiApi.setRefValue)(_refClosing, false);
@@ -112,7 +118,11 @@ var ModalDialog = function ModalDialog(_ref3) {
   }
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     className: _className,
-    style: (0, _extends2["default"])({}, S_ROOT_DIV, style, _style),
+    style: {
+      ...S_ROOT_DIV,
+      ...style,
+      ..._style
+    },
     onClick: _hClickDialog,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(DialogCaption, {
       caption: caption,
@@ -146,6 +156,5 @@ ModalDialog.propTypes = {
   onClose: PropTypes.func
 }
 */
-var _default = ModalDialog;
-exports["default"] = _default;
+var _default = exports.default = ModalDialog;
 //# sourceMappingURL=ModalDialog.js.map

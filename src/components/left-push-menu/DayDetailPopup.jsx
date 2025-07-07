@@ -1,10 +1,10 @@
-import { 
+import {
   useState,
   useImperativeHandle
 } from '../uiApi';
 import dt from '../../utils/dt';
 
-import SvgClose from '../zhn-atoms/SvgClose'
+import BtSvgClose from '../zhn-atoms/BtSvgClose'
 import { POPUP } from '../styles/theme';
 
 const CL_DATE = 'marker__caption__date'
@@ -92,7 +92,7 @@ const DayDetailPopup = ({
         ...POPUP.CHART, ...S_ROOT_DIV,
         ..._style
      }}>
-      <SvgClose
+      <BtSvgClose
         style={S_BT_CLOSE}
         onClose={onClose}
       />

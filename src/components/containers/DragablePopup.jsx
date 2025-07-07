@@ -6,7 +6,7 @@ import {
 
 import useXYMovable from '../hooks/useXYMovable';
 import { toggleLayout } from '../../flux/handlers';
-import SvgClose from '../zhn-atoms/SvgClose';
+import BtSvgClose from '../zhn-atoms/BtSvgClose';
 
 const CL_SHOW_POPUP = 'show-popup'
 , S_BLOCK = { display: 'block' }
@@ -46,7 +46,7 @@ const DragablePopup = ({
        className={_className}
        style={{...style, ..._style}}
     >
-      <SvgClose
+      <BtSvgClose
          style={S_SVG_CLOSE}
          onClose={_hClose}
       />
