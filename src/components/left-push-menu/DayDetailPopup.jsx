@@ -1,11 +1,18 @@
+import dt from '../../utils/dt';
+
 import {
   useState,
   useImperativeHandle
 } from '../uiApi';
-import dt from '../../utils/dt';
 
-import BtSvgClose from '../zhn-atoms/BtSvgClose'
+import {
+  S_BLOCK,
+  S_NONE
+} from '../styleFn';
+
+import BtSvgClose from '../zhn-atoms/BtSvgClose';
 import { POPUP } from '../styles/theme';
+import {COLOR_GREEN } from '../styles/Color';
 
 const CL_DATE = 'marker__caption__date'
 , CL_DESCR = 'marker__description'
@@ -27,8 +34,6 @@ const CL_DATE = 'marker__caption__date'
   zIndex: 1,
   transition: 'left 0.5s ease-in 0s'
 }
-, S_BLOCK = { display: 'block' }
-, S_NONE = { display: 'none' }
 , S_BT_CLOSE = {
   position: 'absolute',
   top: 7,
@@ -93,6 +98,7 @@ const DayDetailPopup = ({
         ..._style
      }}>
       <BtSvgClose
+        color={COLOR_GREEN}
         style={S_BT_CLOSE}
         onClose={onClose}
       />

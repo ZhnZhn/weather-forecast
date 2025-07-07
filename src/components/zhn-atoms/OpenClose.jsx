@@ -1,10 +1,15 @@
-import Svg100 from './svg/Svg100';
+import {
+  S_BLOCK,
+  S_NONE
+} from '../styleFn';
 
 import useToggle from '../hooks/useToggle';
 import {
   COLOR_YELLOW,
   COLOR_BLANK
 } from '../styles/Color';
+
+import Svg100 from './svg/Svg100';
 
 const CL_SHOW_POPUP = 'show-popup'
 , CL_SELECT_NONE = 'select-none'
@@ -33,8 +38,6 @@ const CL_SHOW_POPUP = 'show-popup'
   ...S_INLINE_BLOCK,
   ...S_CURSOR
 }
-, S_BLOCK = { display: 'block' }
-, S_NONE = { display: 'none' }
 
 , PATH_OPEN = "M 2,14 L 14,14 14,2 2,14"
 , PATH_CLOSE = "M 2,2 L 14,8 2,14 2,2";

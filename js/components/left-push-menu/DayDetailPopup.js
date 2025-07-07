@@ -3,10 +3,12 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.default = void 0;
-var _uiApi = require("../uiApi");
 var _dt = _interopRequireDefault(require("../../utils/dt"));
+var _uiApi = require("../uiApi");
+var _styleFn = require("../styleFn");
 var _BtSvgClose = _interopRequireDefault(require("../zhn-atoms/BtSvgClose"));
 var _theme = require("../styles/theme");
+var _Color = require("../styles/Color");
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_DATE = 'marker__caption__date',
   CL_DESCR = 'marker__description',
@@ -26,12 +28,6 @@ const CL_DATE = 'marker__caption__date',
     boxShadow: 'rgba(0, 0, 0, 0.2) 0px 0px 0px 6px',
     zIndex: 1,
     transition: 'left 0.5s ease-in 0s'
-  },
-  S_BLOCK = {
-    display: 'block'
-  },
-  S_NONE = {
-    display: 'none'
   },
   S_BT_CLOSE = {
     position: 'absolute',
@@ -102,7 +98,7 @@ const DayDetailPopup = _ref2 => {
     _isRain = !!rain,
     _isSnow = snow > 0.02,
     _pressureTitle = _isRain && _isSnow ? 'Press.:' : 'Pressure:',
-    _style = isOpen ? S_BLOCK : S_NONE;
+    _style = isOpen ? _styleFn.S_BLOCK : _styleFn.S_NONE;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     style: {
       ..._theme.POPUP.CHART,
@@ -110,6 +106,7 @@ const DayDetailPopup = _ref2 => {
       ..._style
     },
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_BtSvgClose.default, {
+      color: _Color.COLOR_GREEN,
       style: S_BT_CLOSE,
       onClose: onClose
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {

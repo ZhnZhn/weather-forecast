@@ -4,17 +4,12 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
+var _styleFn = require("../styleFn");
 var _useXYMovable = _interopRequireDefault(require("../hooks/useXYMovable"));
 var _handlers = require("../../flux/handlers");
 var _BtSvgClose = _interopRequireDefault(require("../zhn-atoms/BtSvgClose"));
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_SHOW_POPUP = 'show-popup',
-  S_BLOCK = {
-    display: 'block'
-  },
-  S_NONE = {
-    display: 'none'
-  },
   S_SVG_CLOSE = {
     position: 'absolute',
     top: 16,
@@ -30,7 +25,7 @@ const DragablePopup = _ref => {
   const _refPopup = (0, _uiApi.useRef)(),
     [_selectIsShow, _hClose] = (0, _uiApi.useMemo)(() => [state => state.layout[storeKey], () => (0, _handlers.toggleLayout)(storeKey)], [storeKey]),
     isShow = (0, _uiApi.useSelector)(_selectIsShow),
-    [_style, _className] = isShow ? [S_BLOCK, CL_SHOW_POPUP] : [S_NONE];
+    [_style, _className] = isShow ? [_styleFn.S_BLOCK, CL_SHOW_POPUP] : [_styleFn.S_NONE];
   (0, _useXYMovable.default)(_refPopup);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     ref: _refPopup,

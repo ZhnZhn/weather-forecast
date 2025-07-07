@@ -1,28 +1,18 @@
 "use strict";
 
 exports.__esModule = true;
-exports["default"] = void 0;
-
+exports.default = void 0;
+var _styleFn = require("../styleFn");
 var _jsxRuntime = require("react/jsx-runtime");
-
-var CL_INIT = 'modal-root',
-    CL_SHOWING = CL_INIT + " show-modal",
-    S_SHOW = {
-  display: 'block'
-},
-    S_HIDE = {
-  display: 'none'
-};
-
-var WrapperModalDialog = function WrapperModalDialog(_ref) {
-  var isShow = _ref.isShow,
-      onClose = _ref.onClose,
-      children = _ref.children;
-
-  var _ref2 = isShow ? [CL_SHOWING, S_SHOW] : [CL_INIT, S_HIDE],
-      _className = _ref2[0],
-      _style = _ref2[1];
-
+const CL_INIT = 'modal-root',
+  CL_SHOWING = `${CL_INIT} show-modal`;
+const WrapperModalDialog = _ref => {
+  let {
+    isShow,
+    onClose,
+    children
+  } = _ref;
+  const [_className, _style] = isShow ? [CL_SHOWING, _styleFn.S_BLOCK] : [CL_INIT, _styleFn.S_NONE];
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     role: "presentation",
     className: _className,
@@ -31,7 +21,5 @@ var WrapperModalDialog = function WrapperModalDialog(_ref) {
     children: children
   });
 };
-
-var _default = WrapperModalDialog;
-exports["default"] = _default;
+var _default = exports.default = WrapperModalDialog;
 //# sourceMappingURL=WrapperModalDialog.js.map

@@ -4,6 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
+var _styleFn = require("../styleFn");
 var _useRerender = _interopRequireDefault(require("../hooks/useRerender"));
 var _BtSvgClose = _interopRequireDefault(require("../zhn-atoms/BtSvgClose"));
 var _RaisedButton = _interopRequireDefault(require("../zhn-atoms/RaisedButton"));
@@ -12,12 +13,6 @@ var _jsxRuntime = require("react/jsx-runtime");
 
 const CL_SHOWING = 'show-popup',
   CL_HIDING = 'hide-popup',
-  S_SHOW = {
-    display: 'block'
-  },
-  S_HIDE = {
-    display: 'none'
-  },
   S_HIDE_POPUP = {
     opacity: 0,
     transform: 'scaleY(0)'
@@ -107,11 +102,11 @@ const ModalDialog = _ref3 => {
   });
   let _className, _style;
   if ((0, _uiApi.getRefValue)(_refClosing)) {
-    _style = S_HIDE;
+    _style = _styleFn.S_NONE;
     (0, _uiApi.setRefValue)(_refClosing, false);
   } else {
     _className = isShow ? CL_SHOWING : CL_HIDING;
-    _style = isShow ? S_SHOW : S_HIDE_POPUP;
+    _style = isShow ? _styleFn.S_BLOCK : S_HIDE_POPUP;
     if (!isShow) {
       (0, _uiApi.setRefValue)(_refClosing, true);
     }

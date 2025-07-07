@@ -1,7 +1,10 @@
+import {
+  S_BLOCK,
+  S_NONE
+} from '../styleFn';
+
 const CL_INIT = 'modal-root'
-, CL_SHOWING = `${CL_INIT} show-modal`
-, S_SHOW = { display: 'block' }
-, S_HIDE = { display: 'none' };
+, CL_SHOWING = `${CL_INIT} show-modal`;
 
 const WrapperModalDialog = ({
   isShow,
@@ -12,8 +15,8 @@ const WrapperModalDialog = ({
     _className,
     _style
   ] = isShow
-    ? [CL_SHOWING, S_SHOW]
-    : [CL_INIT, S_HIDE];
+    ? [CL_SHOWING, S_BLOCK]
+    : [CL_INIT, S_NONE];
 
   return (
     <div

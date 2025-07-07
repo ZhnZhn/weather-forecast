@@ -4,13 +4,16 @@ import {
   useMemo
 } from '../uiApi';
 
+import {
+  S_BLOCK,
+  S_NONE
+} from '../styleFn';
+
 import useXYMovable from '../hooks/useXYMovable';
 import { toggleLayout } from '../../flux/handlers';
 import BtSvgClose from '../zhn-atoms/BtSvgClose';
 
 const CL_SHOW_POPUP = 'show-popup'
-, S_BLOCK = { display: 'block' }
-, S_NONE = { display: 'none' }
 , S_SVG_CLOSE = {
    position: 'absolute',
    top: 16,

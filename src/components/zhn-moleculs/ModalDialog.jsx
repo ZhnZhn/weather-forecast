@@ -6,6 +6,11 @@ import {
   setRefValue
 } from '../uiApi';
 
+import {
+  S_BLOCK,
+  S_NONE
+} from '../styleFn';
+
 import useRerender from '../hooks/useRerender';
 
 import BtSvgClose from '../zhn-atoms/BtSvgClose';
@@ -13,8 +18,6 @@ import RaisedButton from '../zhn-atoms/RaisedButton';
 
 const CL_SHOWING = 'show-popup'
 , CL_HIDING = 'hide-popup'
-, S_SHOW = { display: 'block' }
-, S_HIDE = { display: 'none' }
 , S_HIDE_POPUP = {
     opacity: 0,
     transform : 'scaleY(0)'
@@ -101,11 +104,11 @@ const ModalDialog = ({
 
   let _className, _style;
   if (getRefValue(_refClosing)){
-    _style = S_HIDE
+    _style = S_NONE
     setRefValue(_refClosing, false)
   } else {
     _className = isShow ? CL_SHOWING : CL_HIDING
-    _style = isShow ? S_SHOW : S_HIDE_POPUP
+    _style = isShow ? S_BLOCK : S_HIDE_POPUP
     if (!isShow){
       setRefValue(_refClosing, true)
     }
