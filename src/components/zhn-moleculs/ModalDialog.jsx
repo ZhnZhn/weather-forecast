@@ -1,50 +1,34 @@
 //import PropTypes from 'prop-types'
-import {
-  useRef,
-  useEffect,
-  getRefValue,
-  setRefValue
-} from '../uiApi';
+import { crDialogRole } from '../a11yFn';
+import { crShowHide } from '../styleFn';
 
-import {
-  S_BLOCK,
-  S_NONE
-} from '../styleFn';
-
-import useRerender from '../hooks/useRerender';
+import { useKeyEscape } from '../hooks/fUseKey';
 
 import BtSvgClose from '../zhn-atoms/BtSvgClose';
 import RaisedButton from '../zhn-atoms/RaisedButton';
 
-const CL_SHOWING = 'show-popup'
-, CL_HIDING = 'hide-popup'
-, S_HIDE_POPUP = {
-    opacity: 0,
-    transform : 'scaleY(0)'
-  }
-, S_ROOT_DIV = {
-    zIndex: 10,
-    position: 'absolute',
-    top: '15%',
-    left: '40%',
-    display: 'block',
-    backgroundColor: '#4d4d4d',
-    border: 'solid 2px #3f5178',
-    borderRadius: '5px',
-    boxShadow: 'rgba(0, 0, 0, 0.2) 0px 0px 0px 6px',
-  }
+const S_ROOT_DIV = {
+  zIndex: 10,
+  position: 'absolute',
+  top: '15%',
+  left: '40%',
+  display: 'block',
+  backgroundColor: '#4d4d4d',
+  border: 'solid 2px #3f5178',
+  borderRadius: '5px',
+  boxShadow: 'rgba(0, 0, 0, 0.2) 0px 0px 0px 6px',
+}
 , S_CAPTON_DIV = {
-    padding: 5,
-    color: '#9e9e9e',
-    backgroundColor: '#3f5178',
-    textAlign: 'center',
-    fontSize: '18px'
-  }
+  padding: 5,
+  color: '#9e9e9e',
+  backgroundColor: '#3f5178',
+  textAlign: 'center',
+  fontSize: '18px'
+}
 , S_COMMAND_DIV = {
-    textAlign: 'right',
-    margin: '8px 4px 10px 0',
-    cursor: 'default'
- };
+  textAlign: 'right',
+  margin: '8px 4px 10px 0'
+};
 
 const DialogCaption = ({
   caption,
@@ -84,7 +68,7 @@ const ModalDialog = ({
   style,
   caption,
   captionStyle,
-  isWithButton=true,
+  isWithButton=!0,
   withoutClose,
   commandButtons,
   commandStyle,
@@ -93,33 +77,26 @@ const ModalDialog = ({
   children,
   onClose
 }) => {
-  const _refClosing = useRef(false)
-  , rerender = useRerender();
-
-  useEffect(() => {
-    if (getRefValue(_refClosing)){
-      setTimeout(rerender, timeout)
-    }
-  })
-
-  let _className, _style;
-  if (getRefValue(_refClosing)){
-    _style = S_NONE
-    setRefValue(_refClosing, false)
-  } else {
-    _className = isShow ? CL_SHOWING : CL_HIDING
-    _style = isShow ? S_BLOCK : S_HIDE_POPUP
-    if (!isShow){
-      setRefValue(_refClosing, true)
-    }
-  }
+  const _hKeyDown = useKeyEscape(onClose)
+  , [
+    _className,
+    _showHideStyle
+  ] = crShowHide(
+    isShow
+  );
 
   return (
+    /*eslint-disable jsx-a11y/no-static-element-interactions*/
     <div
+       {...crDialogRole(isShow, caption)}
+       aria-modal="true"
        className={_className}
-       style={{...S_ROOT_DIV, ...style, ..._style}}
+       style={{...S_ROOT_DIV, ...style, ..._showHideStyle}}
+       //style={{...S_ROOT_DIV, ...style, ..._style}}
        onClick={_hClickDialog}
+       onKeyDown={_hKeyDown}
     >
+    {/*eslint-enable jsx-a11y/no-static-element-interactions*/}
         <DialogCaption
           caption={caption}
           captionStyle={captionStyle}

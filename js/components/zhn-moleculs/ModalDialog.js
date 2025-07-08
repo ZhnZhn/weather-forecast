@@ -3,21 +3,15 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.default = void 0;
-var _uiApi = require("../uiApi");
+var _a11yFn = require("../a11yFn");
 var _styleFn = require("../styleFn");
-var _useRerender = _interopRequireDefault(require("../hooks/useRerender"));
+var _fUseKey = require("../hooks/fUseKey");
 var _BtSvgClose = _interopRequireDefault(require("../zhn-atoms/BtSvgClose"));
 var _RaisedButton = _interopRequireDefault(require("../zhn-atoms/RaisedButton"));
 var _jsxRuntime = require("react/jsx-runtime");
 //import PropTypes from 'prop-types'
 
-const CL_SHOWING = 'show-popup',
-  CL_HIDING = 'hide-popup',
-  S_HIDE_POPUP = {
-    opacity: 0,
-    transform: 'scaleY(0)'
-  },
-  S_ROOT_DIV = {
+const S_ROOT_DIV = {
     zIndex: 10,
     position: 'absolute',
     top: '15%',
@@ -37,8 +31,7 @@ const CL_SHOWING = 'show-popup',
   },
   S_COMMAND_DIV = {
     textAlign: 'right',
-    margin: '8px 4px 10px 0',
-    cursor: 'default'
+    margin: '8px 4px 10px 0'
   };
 const DialogCaption = _ref => {
   let {
@@ -84,7 +77,7 @@ const ModalDialog = _ref3 => {
     style,
     caption,
     captionStyle,
-    isWithButton = true,
+    isWithButton = !0,
     withoutClose,
     commandButtons,
     commandStyle,
@@ -93,32 +86,21 @@ const ModalDialog = _ref3 => {
     children,
     onClose
   } = _ref3;
-  const _refClosing = (0, _uiApi.useRef)(false),
-    rerender = (0, _useRerender.default)();
-  (0, _uiApi.useEffect)(() => {
-    if ((0, _uiApi.getRefValue)(_refClosing)) {
-      setTimeout(rerender, timeout);
-    }
-  });
-  let _className, _style;
-  if ((0, _uiApi.getRefValue)(_refClosing)) {
-    _style = _styleFn.S_NONE;
-    (0, _uiApi.setRefValue)(_refClosing, false);
-  } else {
-    _className = isShow ? CL_SHOWING : CL_HIDING;
-    _style = isShow ? _styleFn.S_BLOCK : S_HIDE_POPUP;
-    if (!isShow) {
-      (0, _uiApi.setRefValue)(_refClosing, true);
-    }
-  }
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+  const _hKeyDown = (0, _fUseKey.useKeyEscape)(onClose),
+    [_className, _showHideStyle] = (0, _styleFn.crShowHide)(isShow);
+  return /*#__PURE__*/ /*eslint-disable jsx-a11y/no-static-element-interactions*/(0, _jsxRuntime.jsxs)("div", {
+    ...(0, _a11yFn.crDialogRole)(isShow, caption),
+    "aria-modal": "true",
     className: _className,
     style: {
       ...S_ROOT_DIV,
       ...style,
-      ..._style
-    },
+      ..._showHideStyle
+    }
+    //style={{...S_ROOT_DIV, ...style, ..._style}}
+    ,
     onClick: _hClickDialog,
+    onKeyDown: _hKeyDown,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(DialogCaption, {
       caption: caption,
       captionStyle: captionStyle,
