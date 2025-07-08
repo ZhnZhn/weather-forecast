@@ -1,3 +1,21 @@
+
+:root {
+  --bg: grey;
+  --bg-mark: #646464;
+  --bg-dialog: #4d4d4d;
+}
+
+.bg {
+  background-color: grey;
+  background-color: var(--bg, bg);
+}
+
+.dialog {
+  background-color: #4d4d4d;
+  background-color: var(--bg-dialog, #4d4d4d);
+}
+
+
 @media (prefers-reduced-motion: reduce) {
    * {
      animation-duration: 0.01ms !important;
