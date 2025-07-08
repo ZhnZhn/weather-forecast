@@ -17,7 +17,7 @@ import CardUi from './CardUi';
 
 const S_MODAL = {
   position: 'static',
-  width: 342,
+  width: 320,
   height: 285,
   margin: '70px auto 0px'
 }
@@ -32,9 +32,8 @@ const S_MODAL = {
 }
 , S_CARD_BUTTONS = {
   position: 'absolute',
-  right: 4,
-  bottom: 0,
-  cursor: 'default'
+  right: 8,
+  bottom: 4
 };
 
 const SettingsDialog = ({
