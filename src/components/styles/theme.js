@@ -44,6 +44,14 @@ export const COLOR = {
   }
 }
 
+const _setCustomPropertiesFrom = (P) => {
+  const _style = document.body.style;
+
+  _style.setProperty("--bg", P.BG)
+  _style.setProperty("--bg-mark", P.BG_MARK)
+  _style.setProperty("--bg-dialog", P.BG_DIALOG)
+};
+
 const _crBg = conf => {
   conf.BG.backgroundColor = P.BG
 };
@@ -59,6 +67,7 @@ const FN_STYLES = [
 const _setStyleTo = conf => {
   FN_STYLES.forEach(fn => fn(conf))
 };
+
 
 const _stylePopup = () => {
   [...document.querySelectorAll('.leaflet-popup-content-wrapper')]
@@ -99,6 +108,7 @@ const theme = {
   setThemeName(themeName){
     this.themeName = themeName
     _setTheme[themeName]()
+    _setCustomPropertiesFrom(P)
   },
   createStyle(config){
      if (this.themeName !== config._themeName){

@@ -1,5 +1,3 @@
-import useTheme from '../hooks/useTheme';
-import styleConfig from './Dialog.Style';
 import memoIsShow from '../hoc/memoIsShow';
 
 import ModalDialog from '../zhn-moleculs/ModalDialog';
@@ -24,15 +22,14 @@ const ErrorDialog = ({
   store,
   onClose
 }) => {
-  const TS = useTheme(styleConfig)
-  , _errMsg = sModal.errMsg(store.getState());
+  const _errMsg = sModal.errMsg(store.getState());
 
   return (
     <ModalDialog
-       style={{...S_MODAL, ...TS.R_DIALOG}}
-       caption="Error Description"
-       isShow={isShow}
-       onClose={onClose}
+      style={S_MODAL}
+      caption="Error Description"
+      isShow={isShow}
+      onClose={onClose}
     >
       <div style={S_MSG}>
         {_errMsg}

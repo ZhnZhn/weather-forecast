@@ -17,7 +17,6 @@ const S_ROOT_DIV = {
     top: '15%',
     left: '40%',
     display: 'block',
-    backgroundColor: '#4d4d4d',
     border: 'solid 2px #3f5178',
     borderRadius: '5px',
     boxShadow: 'rgba(0, 0, 0, 0.2) 0px 0px 0px 6px'
@@ -87,7 +86,7 @@ const ModalDialog = _ref3 => {
     onClose
   } = _ref3;
   const _hKeyDown = (0, _fUseKey.useKeyEscape)(onClose),
-    [_className, _showHideStyle] = (0, _styleFn.crShowHide)(isShow);
+    [_className, _showHideStyle] = (0, _styleFn.crShowHide)(isShow, _styleFn.CL_DIALOG);
   return /*#__PURE__*/ /*eslint-disable jsx-a11y/no-static-element-interactions*/(0, _jsxRuntime.jsxs)("div", {
     ...(0, _a11yFn.crDialogRole)(isShow, caption),
     "aria-modal": "true",
@@ -96,9 +95,7 @@ const ModalDialog = _ref3 => {
       ...S_ROOT_DIV,
       ...style,
       ..._showHideStyle
-    }
-    //style={{...S_ROOT_DIV, ...style, ..._style}}
-    ,
+    },
     onClick: _hClickDialog,
     onKeyDown: _hKeyDown,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(DialogCaption, {

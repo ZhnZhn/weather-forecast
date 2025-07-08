@@ -5,9 +5,12 @@ import {
 } from '../uiApi';
 
 import {
+  CL_BG,
   S_BLOCK,
   S_NONE
 } from '../styleFn';
+
+import crCn from '../zhn-utils/crCn';
 
 import useXYMovable from '../hooks/useXYMovable';
 import { toggleLayout } from '../../flux/handlers';
@@ -47,7 +50,7 @@ const DragablePopup = ({
   return (
     <div
        ref={_refPopup}
-       className={_className}
+       className={crCn(CL_BG, _className)}
        style={{...style, ..._style}}
     >
       <BtSvgClose

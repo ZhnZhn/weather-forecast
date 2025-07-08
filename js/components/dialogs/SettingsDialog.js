@@ -6,8 +6,6 @@ exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _memoIsShow = _interopRequireDefault(require("../hoc/memoIsShow"));
 var _ThemeContext = _interopRequireDefault(require("../hoc/ThemeContext"));
-var _Dialog = _interopRequireDefault(require("./Dialog.Style"));
-var _useRerender = _interopRequireDefault(require("../hooks/useRerender"));
 var _ModalDialog = _interopRequireDefault(require("../zhn-moleculs/ModalDialog"));
 var _TabPane = _interopRequireDefault(require("../zhn-atoms/TabPane"));
 var _Tab = _interopRequireDefault(require("../zhn-atoms/Tab"));
@@ -49,24 +47,19 @@ const SettingsDialog = _ref => {
       onSet,
       onAir
     } = data,
-    theme = (0, _uiApi.useContext)(_ThemeContext.default),
-    rerender = (0, _useRerender.default)()
+    theme = (0, _uiApi.useContext)(_ThemeContext.default)
     /*eslint-disable react-hooks/exhaustive-deps */,
     _handleSetTheme = (0, _uiApi.useCallback)(item => {
       onSetTheme(theme, item.value);
-      rerender();
-    }, [])
-    // theme, onSetTheme, rerender
-    /*eslint-enable react-hooks/exhaustive-deps */,
-    TS = theme.createStyle(_Dialog.default);
+    }, []);
+  // theme, onSetTheme, rerender
+  /*eslint-enable react-hooks/exhaustive-deps */
+
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ModalDialog.default, {
-    style: {
-      ...S_MODAL,
-      ...TS.R_DIALOG
-    },
+    style: S_MODAL,
     caption: "User Settings",
     isShow: isShow,
-    isWithButton: false,
+    isWithButton: !1,
     onClose: onClose,
     children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_TabPane.default, {
       width: "100%",

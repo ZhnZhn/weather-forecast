@@ -6,8 +6,6 @@ import {
 
 import memoIsShow from '../hoc/memoIsShow';
 import ThemeContext from '../hoc/ThemeContext';
-import styleConfig from './Dialog.Style';
-import useRerender from '../hooks/useRerender';
 
 import ModalDialog from '../zhn-moleculs/ModalDialog';
 import TabPane from '../zhn-atoms/TabPane';
@@ -47,22 +45,19 @@ const SettingsDialog = ({
     onAir
   } = data
   , theme = useContext(ThemeContext)
-  , rerender = useRerender()
   /*eslint-disable react-hooks/exhaustive-deps */
   , _handleSetTheme = useCallback((item) => {
      onSetTheme(theme, item.value)
-     rerender()
   }, [])
   // theme, onSetTheme, rerender
   /*eslint-enable react-hooks/exhaustive-deps */
-  , TS = theme.createStyle(styleConfig);
 
   return (
     <ModalDialog
-       style={{...S_MODAL, ...TS.R_DIALOG}}
+       style={S_MODAL}
        caption="User Settings"
        isShow={isShow}
-       isWithButton={false}
+       isWithButton={!1}
        onClose={onClose}
     >
       <TabPane width="100%" tabsStyle={S_TABS}>

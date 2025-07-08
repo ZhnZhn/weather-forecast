@@ -36,7 +36,6 @@ const S_HEADER = {
   top: 30,
   left: 50,
   padding: '10px 5px 5px 4px',
-  backgroundColor: '#808080',
   border: '1px solid #999',
   borderRadius: 5,
   boxShadow: 'rgba(0, 0, 0, 0.2) 0px 0px 0px 12px',

@@ -1,5 +1,8 @@
 import crCn from './zhn-utils/crCn';
 
+export const CL_BG = 'bg'
+export const CL_DIALOG = 'dialog';
+
 export const  S_BLOCK = { display: 'block' }
 export const  S_NONE = { display: 'none' }
 

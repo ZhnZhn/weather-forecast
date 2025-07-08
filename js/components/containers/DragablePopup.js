@@ -5,6 +5,7 @@ exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _styleFn = require("../styleFn");
+var _crCn = _interopRequireDefault(require("../zhn-utils/crCn"));
 var _useXYMovable = _interopRequireDefault(require("../hooks/useXYMovable"));
 var _handlers = require("../../flux/handlers");
 var _BtSvgClose = _interopRequireDefault(require("../zhn-atoms/BtSvgClose"));
@@ -29,7 +30,7 @@ const DragablePopup = _ref => {
   (0, _useXYMovable.default)(_refPopup);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     ref: _refPopup,
-    className: _className,
+    className: (0, _crCn.default)(_styleFn.CL_BG, _className),
     style: {
       ...style,
       ..._style

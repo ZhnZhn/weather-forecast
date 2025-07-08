@@ -1,12 +1,10 @@
 import { useSelector } from '../uiApi';
-import useTheme from '../hooks/useTheme';
 
 import { sForecast } from '../../flux/selectors';
 
 import DragablePopup from '../containers/DragablePopup';
 import PeriodForecast from '../views/PeriodForecast';
 import { COLOR_BROWN } from '../styles/Color';
-import styleConfig from './Forecast.Style';
 
 const S_CAPTION = { marginRight: 40 }
 , NOT_FOUND_MSG = 'Forecast for place not found'
@@ -20,13 +18,12 @@ const NotFoundMsg = () => (
 
 const Forecast = ({ style }) => {
   const forecast = useSelector(sForecast.forecast)
-  , _style = useTheme(styleConfig)
   , { cod } = forecast || {}
   , _isNotFoundMsg = cod && (''+cod) !== OK_CODE;
 
   return (
     <DragablePopup
-        style={{...style, ..._style.ROOT_DIV}}
+        style={style}
         storeKey="isPopupForecast"
         color={COLOR_BROWN}
      >

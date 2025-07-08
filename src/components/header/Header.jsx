@@ -1,4 +1,4 @@
-import useTheme from '../hooks/useTheme';
+import { CL_BG } from '../styleFn';
 
 import useLayoutButton from '../hooks/useLayoutButton';
 import useHotKey from '../hotkeys/useHotKey';
@@ -12,13 +12,11 @@ import HamburgerButton from '../zhn-atoms/HamburgerButton';
 import ButtonCircle from '../zhn-atoms/ButtonCircle';
 import ProviderLink from '../elements/ProviderLink';
 import GitHubLink from './GitHubLink';
-import styleConfig from './Header.Style';
 
 import {
   toggleLayout,
   showSettings
 } from '../../flux/handlers';
-
 
 const TITLE = "Weather v0.3.0";
 
@@ -38,8 +36,7 @@ const CL_TITLE = 'header__title'
 const Header = ({
   style
 }) => {
-  const TS = useTheme(styleConfig)
-  , [
+  const [
     isActiveForecats,
     hForecast
   ] = useLayoutButton(
@@ -60,7 +57,8 @@ const Header = ({
   return (
     <header
        role="banner"
-       style={{...style, ...TS.HEADER}}
+       className={CL_BG}
+       style={style}
     >
       <ProgressLoading />
       <HamburgerButton

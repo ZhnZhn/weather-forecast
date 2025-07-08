@@ -1,6 +1,9 @@
 //import PropTypes from 'prop-types'
 import { crDialogRole } from '../a11yFn';
-import { crShowHide } from '../styleFn';
+import {
+  crShowHide,
+  CL_DIALOG
+} from '../styleFn';
 
 import { useKeyEscape } from '../hooks/fUseKey';
 
@@ -13,7 +16,6 @@ const S_ROOT_DIV = {
   top: '15%',
   left: '40%',
   display: 'block',
-  backgroundColor: '#4d4d4d',
   border: 'solid 2px #3f5178',
   borderRadius: '5px',
   boxShadow: 'rgba(0, 0, 0, 0.2) 0px 0px 0px 6px',
@@ -82,7 +84,8 @@ const ModalDialog = ({
     _className,
     _showHideStyle
   ] = crShowHide(
-    isShow
+    isShow,
+    CL_DIALOG
   );
 
   return (
@@ -91,8 +94,7 @@ const ModalDialog = ({
        {...crDialogRole(isShow, caption)}
        aria-modal="true"
        className={_className}
-       style={{...S_ROOT_DIV, ...style, ..._showHideStyle}}
-       //style={{...S_ROOT_DIV, ...style, ..._style}}
+       style={{...S_ROOT_DIV, ...style, ..._showHideStyle}}       
        onClick={_hClickDialog}
        onKeyDown={_hKeyDown}
     >
