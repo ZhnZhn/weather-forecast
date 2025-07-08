@@ -1,0 +1,17 @@
+{
+ "version": 3,
+ "sources": [
+  "../../src/components/a11yFn.js"
+ ],
+ "file": "../../src/components/a11yFn.js",
+ "names": [
+  "crDialogRole",
+  "isShow",
+  "caption",
+  "role",
+  "tabIndex",
+  "hidden",
+  "exports"
+ ],
+ "mappings": ";;;;AAAO,MAAMA,YAAY,GAAGA,CAC1BC,MAAM,EACNC,OAAO,MACH;EACJC,IAAI,EAAE,QAAQ;EACdC,QAAQ,EAAE,IAAI;EACdC,MAAM,EAAE,CAACJ,MAAM;EACf,YAAY,EAAEC;AAChB,CAAC,CAAC;AAAAI,OAAA,CAAAN,YAAA,GAAAA,YAAA"
+}
