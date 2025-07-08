@@ -11,7 +11,7 @@ import {
 } from '../styleFn';
 
 import BtSvgClose from '../zhn-atoms/BtSvgClose';
-import { POPUP } from '../styles/theme';
+import { POPUP } from '../styles/uiTheme';
 import {COLOR_GREEN } from '../styles/Color';
 
 const CL_DATE = 'marker__caption__date'

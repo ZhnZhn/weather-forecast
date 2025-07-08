@@ -16,9 +16,9 @@ const RouterData = {
           onSet: (apiKey) => {
             store.dispatch(setSettings(apiKey))
           },
-          onSetTheme: (theme, themeName) => {
-            theme.setThemeName(themeName)
-            store.dispatch(setThemeName(themeName))
+          onSetTheme: (uiTheme, uiThemeName) => {
+            uiTheme.setThemeName(uiThemeName)
+            store.dispatch(setThemeName(uiThemeName))
           },
           onAir: (is) => {
             store.dispatch(setAir(is))

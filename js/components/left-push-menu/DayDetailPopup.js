@@ -7,7 +7,7 @@ var _dt = _interopRequireDefault(require("../../utils/dt"));
 var _uiApi = require("../uiApi");
 var _styleFn = require("../styleFn");
 var _BtSvgClose = _interopRequireDefault(require("../zhn-atoms/BtSvgClose"));
-var _theme = require("../styles/theme");
+var _uiTheme = require("../styles/uiTheme");
 var _Color = require("../styles/Color");
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_DATE = 'marker__caption__date',
@@ -101,7 +101,7 @@ const DayDetailPopup = _ref2 => {
     _style = isOpen ? _styleFn.S_BLOCK : _styleFn.S_NONE;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     style: {
-      ..._theme.POPUP.CHART,
+      ..._uiTheme.POPUP.CHART,
       ...S_ROOT_DIV,
       ..._style
     },

@@ -1,7 +1,7 @@
 import {
   COLOR as C,
   POPUP as P
-} from '../styles/theme';
+} from '../styles/uiTheme';
 import SC from './SeriesColor';
 
 const _crCircleStyle = (

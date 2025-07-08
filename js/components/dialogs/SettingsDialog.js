@@ -5,7 +5,7 @@ exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _memoIsShow = _interopRequireDefault(require("../hoc/memoIsShow"));
-var _ThemeContext = _interopRequireDefault(require("../hoc/ThemeContext"));
+var _uiTheme = require("../styles/uiTheme");
 var _ModalDialog = _interopRequireDefault(require("../zhn-moleculs/ModalDialog"));
 var _TabPane = _interopRequireDefault(require("../zhn-atoms/TabPane"));
 var _Tab = _interopRequireDefault(require("../zhn-atoms/Tab"));
@@ -46,11 +46,11 @@ const SettingsDialog = _ref => {
       onSetTheme,
       onSet,
       onAir
-    } = data,
-    theme = (0, _uiApi.useContext)(_ThemeContext.default)
+    } = data
+    //, theme = useContext(ThemeContext)
     /*eslint-disable react-hooks/exhaustive-deps */,
     _handleSetTheme = (0, _uiApi.useCallback)(item => {
-      onSetTheme(theme, item.value);
+      onSetTheme(_uiTheme.uiTheme, item.value);
     }, []);
   // theme, onSetTheme, rerender
   /*eslint-enable react-hooks/exhaustive-deps */

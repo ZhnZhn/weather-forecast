@@ -1,37 +1,32 @@
 "use strict";
 
 exports.__esModule = true;
-exports["default"] = void 0;
-
+exports.default = void 0;
 var _actions = require("../../flux/settings/actions");
-
 var _actions2 = require("../../flux/layout/actions");
-
-var RouterData = {
-  getData: function getData(store, type) {
+const RouterData = {
+  getData: (store, type) => {
     switch (type) {
       case 'SETTINGS':
         return {
-          onSet: function onSet(apiKey) {
+          onSet: apiKey => {
             store.dispatch((0, _actions.setSettings)(apiKey));
           },
-          onSetTheme: function onSetTheme(theme, themeName) {
-            theme.setThemeName(themeName);
-            store.dispatch((0, _actions2.setThemeName)(themeName));
+          onSetTheme: (uiTheme, uiThemeName) => {
+            uiTheme.setThemeName(uiThemeName);
+            store.dispatch((0, _actions2.setThemeName)(uiThemeName));
           },
-          onAir: function onAir(is) {
+          onAir: is => {
             store.dispatch((0, _actions.setAir)(is));
           },
-          onBeforeClose: function onBeforeClose() {
+          onBeforeClose: () => {
             store.dispatch((0, _actions2.toggleLayout)('isSettings'));
           }
         };
-
       default:
         return;
     }
   }
 };
-var _default = RouterData;
-exports["default"] = _default;
+var _default = exports.default = RouterData;
 //# sourceMappingURL=RouterData.js.map

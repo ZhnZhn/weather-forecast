@@ -5,8 +5,7 @@ import {
   useEffect
 } from './uiApi';
 
-import ThemeContext from './hoc/ThemeContext';
-import theme from './styles/theme';
+import { uiTheme } from './styles/uiTheme';
 
 import useHotKeys from './hotkeys/useHotKeys';
 
@@ -76,14 +75,13 @@ const WeatherSaga = () => {
   useHotKeys()
 
   return (
-    <ThemeContext.Provider value={theme} >
       <div>
         <ModalDialogContainer store={store}/>
         <Header style={S_HEADER} />
         <div>
           <LeftPushMenu
              id={PUSH_MENU_ID}
-             theme={theme}
+             theme={uiTheme}
           />
           <LeafletMap
              id={MAP_ID}
@@ -95,7 +93,6 @@ const WeatherSaga = () => {
           />
         </div>
       </div>
-    </ThemeContext.Provider>
   );
 }
 

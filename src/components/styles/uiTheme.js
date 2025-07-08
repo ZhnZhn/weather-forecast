@@ -97,7 +97,7 @@ const _setTheme = {
   }
 }
 
-const theme = {
+export const uiTheme = {
   themeName: THEME_NAME.DF,
   _init(){
     this.setThemeName(THEME_NAME.DF)
@@ -118,9 +118,7 @@ const theme = {
      return config._style;
   }
 }
-theme._init();
-
-export default theme
+uiTheme._init();
 
 export const POPUP = {
   CHART: {

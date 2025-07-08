@@ -1,4 +1,4 @@
-import { COLOR as C } from '../styles/theme';
+import { COLOR as C } from '../styles/uiTheme';
 import SC from './SeriesColor';
 
 const DF_DASH_FILL = '#808080';

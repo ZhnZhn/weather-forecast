@@ -4,8 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("./uiApi");
-var _ThemeContext = _interopRequireDefault(require("./hoc/ThemeContext"));
-var _theme = _interopRequireDefault(require("./styles/theme"));
+var _uiTheme = require("./styles/uiTheme");
 var _useHotKeys = _interopRequireDefault(require("./hotkeys/useHotKeys"));
 var _ModalDialogContainer = _interopRequireDefault(require("./containers/ModalDialogContainer"));
 var _Header = _interopRequireDefault(require("./header/Header"));
@@ -65,26 +64,23 @@ const WeatherSaga = () => {
     }
   }, [isPushMenu]);
   (0, _useHotKeys.default)();
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ThemeContext.default.Provider, {
-    value: _theme.default,
-    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ModalDialogContainer.default, {
-        store: store
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Header.default, {
-        style: S_HEADER
-      }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_LeftPushMenu.default, {
-          id: PUSH_MENU_ID,
-          theme: _theme.default
-        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_LeafletMap.default, {
-          id: MAP_ID,
-          style: S_MAP,
-          themeName: themeName
-        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Forecast.default, {
-          style: S_FLY_ROOT_DIV
-        })]
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ModalDialogContainer.default, {
+      store: store
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Header.default, {
+      style: S_HEADER
+    }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_LeftPushMenu.default, {
+        id: PUSH_MENU_ID,
+        theme: _uiTheme.uiTheme
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_LeafletMap.default, {
+        id: MAP_ID,
+        style: S_MAP,
+        themeName: themeName
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Forecast.default, {
+        style: S_FLY_ROOT_DIV
       })]
-    })
+    })]
   });
 };
 var _default = exports.default = WeatherSaga;
