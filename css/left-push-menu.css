@@ -1,0 +1,13 @@
+
+.left-push-menu {
+  position: fixed;
+  top: 3rem;
+  left: 0;
+  bottom: 0;
+  border-right: 1px solid #999;
+  transform: translateX(-100%);
+  transition: transform .3s;
+  fill: #646464;
+  fill: var(--bg-mark, #646464);
+  width: 665px;
+}

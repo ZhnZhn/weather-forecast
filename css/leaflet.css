@@ -454,6 +454,8 @@
 	padding: 1px;
 	text-align: left;
 	border-radius: 12px;
+        background-color: grey !important;
+        background-color: var(--bg, grey) !important;
 	}
 .leaflet-popup-content {
 	margin: 13px 19px;
@@ -484,7 +486,7 @@
 	     -o-transform: rotate(45deg);
 	        transform: rotate(45deg);
 	}
-.leaflet-popup-content-wrapper,
+//.leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
 	background: white;
 	color: #333;

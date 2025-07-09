@@ -7,7 +7,7 @@
 
 .bg {
   background-color: grey;
-  background-color: var(--bg, bg);
+  background-color: var(--bg, grey);
 }
 
 .dialog {
