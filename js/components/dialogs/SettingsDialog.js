@@ -47,12 +47,11 @@ const SettingsDialog = _ref => {
       onSet,
       onAir
     } = data
-    //, theme = useContext(ThemeContext)
     /*eslint-disable react-hooks/exhaustive-deps */,
     _handleSetTheme = (0, _uiApi.useCallback)(item => {
       onSetTheme(_uiTheme.uiTheme, item.value);
     }, []);
-  // theme, onSetTheme, rerender
+  // uiTheme, onSetTheme
   /*eslint-enable react-hooks/exhaustive-deps */
 
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ModalDialog.default, {

@@ -1,6 +1,9 @@
 import {
-  COLOR as C,
-  POPUP as P
+  LABEL_COLOR,
+  DAY_COLOR,
+  TEMP_DAY_COLOR,
+  TEMP_NIGHT_COLOR,
+  CHART_POPUP
 } from '../styles/uiTheme';
 import SC from './SeriesColor';
 
@@ -20,12 +23,12 @@ const _crSpanStyle = (
 
 const CAPTION_STYLE = {
   display: 'inline-block',
-  color: C.LABEL.color,
+  color: LABEL_COLOR,
   fontWeight: 'bold',
 };
 
 export const S_TOOLTIP = {
-  ...P.CHART,
+  ...CHART_POPUP,
   padding: 8
 }
 export const S_TOOLTIP_ROW = {
@@ -40,14 +43,14 @@ export const S_CAPTION = {
   paddingRight: 4
 }
 
-export const S_DAY = _crSpanStyle(C.DAY.color)
+export const S_DAY = _crSpanStyle(DAY_COLOR)
 export const S_CIRCLE_SPEED = _crCircleStyle(SC.SPEED, "none")
 export const S_SPEED = _crSpanStyle(SC.SPEED)
 
 export const S_CIRCLE_HUMIDITY = _crCircleStyle(SC.SPEED)
 export const S_HUMIDITY = _crSpanStyle(SC.SPEED)
 
-  //CIRCLE_RAIN : _crCircleStyle(SC.RAIN),
+//CIRCLE_RAIN : _crCircleStyle(SC.RAIN),
 export const S_RECT_RAIN = { stroke : SC.RAIN}
 export const S_RAIN = _crSpanStyle(SC.RAIN)
 
@@ -60,15 +63,15 @@ export const S_TEMP_MAX = _crSpanStyle(SC.TEMP_MAX)
 export const S_CIRCLE_TEMP_MIN = _crCircleStyle(SC.TEMP_MIN, 'none')
 export const S_TEMP_MIN = _crSpanStyle(SC.TEMP_MIN)
 
-export const S_CIRCLE_TEMP_MORN = _crCircleStyle(C.TEMP_DAY.color, 'none')
+export const S_CIRCLE_TEMP_MORN = _crCircleStyle(TEMP_DAY_COLOR, 'none')
 
-export const S_CIRCLE_TEMP_DAY = _crCircleStyle(C.TEMP_DAY.color)
-export const S_TEMP_DAY = _crSpanStyle(C.TEMP_DAY.color)
+export const S_CIRCLE_TEMP_DAY = _crCircleStyle(TEMP_DAY_COLOR)
+export const S_TEMP_DAY = _crSpanStyle(TEMP_DAY_COLOR)
 
-export const S_CIRCLE_TEMP_EVE = _crCircleStyle(C.TEMP_NIGHT.color, 'none')
+export const S_CIRCLE_TEMP_EVE = _crCircleStyle(TEMP_NIGHT_COLOR, 'none')
 
-export const S_CIRCLE_TEMP_NIGHT = _crCircleStyle(C.TEMP_NIGHT.color)
-export const S_TEMP_NIGHT = _crSpanStyle(C.TEMP_NIGHT.color)
+export const S_CIRCLE_TEMP_NIGHT = _crCircleStyle(TEMP_NIGHT_COLOR)
+export const S_TEMP_NIGHT = _crSpanStyle(TEMP_NIGHT_COLOR)
 
 export const S_CIRCLE_PRESSURE = _crCircleStyle(SC.PRESSURE)
 export const S_PRESSURE = _crSpanStyle(SC.PRESSURE)
@@ -77,9 +80,9 @@ export const S_SERIA = _crSpanStyle(SC.SERIA)
 export const S_CIRCLE_SERIA = _crCircleStyle(SC.SERIA)
 
 export const S_POINTER = {
-  lineHeight : 2,
-  cursor : 'pointer'
+  lineHeight: 2,
+  cursor: 'pointer'
 }
 export const S_FILTERED = {
-  color : SC.FILTERED
+  color: SC.FILTERED
 }

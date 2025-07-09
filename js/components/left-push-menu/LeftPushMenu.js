@@ -4,13 +4,14 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
+var _styleFn = require("../styleFn");
 var _selectors = require("../../flux/selectors");
 var _useLoadComp = _interopRequireDefault(require("./useLoadComp"));
 var _WrapperPeriodForecast = _interopRequireDefault(require("../wrapper/WrapperPeriodForecast"));
 var _DayDetailPopup = _interopRequireDefault(require("./DayDetailPopup"));
-var _LeftPushMenu = _interopRequireDefault(require("./LeftPushMenu.Style"));
 var _CompType = _interopRequireDefault(require("./CompType"));
 var _jsxRuntime = require("react/jsx-runtime");
+const CL_LEFT_PUSH_MENU = `${_styleFn.CL_BG} left-push-menu`;
 const LeftPushMenu = _ref => {
   let {
     id,
@@ -23,11 +24,10 @@ const LeftPushMenu = _ref => {
     }, () => {
       (0, _uiApi.getRefValue)(_refDetail).close();
     }], []),
-    CompOrBtOrErrEl = (0, _useLoadComp.default)('CHARTS', _CompType.default.CTB),
-    STYLE = theme.createStyle(_LeftPushMenu.default);
+    CompOrBtOrErrEl = (0, _useLoadComp.default)('CHARTS', _CompType.default.CTB);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     id: id,
-    style: STYLE.ROOT_DIV,
+    className: CL_LEFT_PUSH_MENU,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_WrapperPeriodForecast.default, {
       onUpdate: _hCloseDetail,
       onClickItem: _hClickItem

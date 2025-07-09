@@ -1,4 +1,8 @@
-import { COLOR as C } from '../styles/uiTheme';
+import {
+  DAY_COLOR,
+  TEMP_DAY_COLOR,
+  TEMP_NIGHT_COLOR
+ } from '../styles/uiTheme';
 import SC from './SeriesColor';
 
 const DF_DASH_FILL = '#808080';
@@ -73,8 +77,8 @@ export const S_XAXIS = {
   tickSize: 16,
   tick: {
     style: { fontWeight: 100 },
-    stroke: C.DAY.color,
-    fill: C.DAY.color
+    stroke: DAY_COLOR,
+    fill: DAY_COLOR
   }
 }
 export const S_YAXIS_SPEED = _crYAxisStyle(SC.SPEED)
@@ -93,10 +97,10 @@ export const S_LINE_SPEED = _crLineDashStyle(SC.SPEED, DF_DASH_FILL)
 export const S_LINE_HUMIDITY = _crLineStyle({ stroke: SC.SPEED })
 export const S_LINE_TEMP_MAX = _crLineDashStyle(SC.TEMP_MAX, DF_DASH_FILL)
 export const S_LINE_TEMP_MIN = _crLineDashStyle(SC.TEMP_MIN, DF_DASH_FILL)
-export const S_LINE_TEMP_MORNING = _crLineDashStyle(C.TEMP_DAY.color, DF_DASH_FILL)
-export const S_LINE_TEMP_DAY = _crLineStyle({ stroke: C.TEMP_DAY.color })
-export const S_LINE_TEMP_EVE = _crLineDashStyle(C.TEMP_NIGHT.color, DF_DASH_FILL)
-export const S_LINE_TEMP_NIGHT = _crLineStyle({ stroke: C.TEMP_NIGHT.color })
+export const S_LINE_TEMP_MORNING = _crLineDashStyle(TEMP_DAY_COLOR, DF_DASH_FILL)
+export const S_LINE_TEMP_DAY = _crLineStyle({ stroke: TEMP_DAY_COLOR })
+export const S_LINE_TEMP_EVE = _crLineDashStyle(TEMP_NIGHT_COLOR, DF_DASH_FILL)
+export const S_LINE_TEMP_NIGHT = _crLineStyle({ stroke: TEMP_NIGHT_COLOR })
 
 export const S_BAR_RAIN = _crBarStyle(SC.RAIN)
 export const S_BAR_SNOW = _crBarStyle(SC.SNOW)

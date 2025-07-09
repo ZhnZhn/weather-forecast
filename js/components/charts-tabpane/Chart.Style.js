@@ -77,8 +77,8 @@ const S_XAXIS = exports.S_XAXIS = {
     style: {
       fontWeight: 100
     },
-    stroke: _uiTheme.COLOR.DAY.color,
-    fill: _uiTheme.COLOR.DAY.color
+    stroke: _uiTheme.DAY_COLOR,
+    fill: _uiTheme.DAY_COLOR
   }
 };
 const S_YAXIS_SPEED = exports.S_YAXIS_SPEED = _crYAxisStyle(_SeriesColor.default.SPEED);
@@ -97,13 +97,13 @@ const S_LINE_HUMIDITY = exports.S_LINE_HUMIDITY = _crLineStyle({
 });
 const S_LINE_TEMP_MAX = exports.S_LINE_TEMP_MAX = _crLineDashStyle(_SeriesColor.default.TEMP_MAX, DF_DASH_FILL);
 const S_LINE_TEMP_MIN = exports.S_LINE_TEMP_MIN = _crLineDashStyle(_SeriesColor.default.TEMP_MIN, DF_DASH_FILL);
-const S_LINE_TEMP_MORNING = exports.S_LINE_TEMP_MORNING = _crLineDashStyle(_uiTheme.COLOR.TEMP_DAY.color, DF_DASH_FILL);
+const S_LINE_TEMP_MORNING = exports.S_LINE_TEMP_MORNING = _crLineDashStyle(_uiTheme.TEMP_DAY_COLOR, DF_DASH_FILL);
 const S_LINE_TEMP_DAY = exports.S_LINE_TEMP_DAY = _crLineStyle({
-  stroke: _uiTheme.COLOR.TEMP_DAY.color
+  stroke: _uiTheme.TEMP_DAY_COLOR
 });
-const S_LINE_TEMP_EVE = exports.S_LINE_TEMP_EVE = _crLineDashStyle(_uiTheme.COLOR.TEMP_NIGHT.color, DF_DASH_FILL);
+const S_LINE_TEMP_EVE = exports.S_LINE_TEMP_EVE = _crLineDashStyle(_uiTheme.TEMP_NIGHT_COLOR, DF_DASH_FILL);
 const S_LINE_TEMP_NIGHT = exports.S_LINE_TEMP_NIGHT = _crLineStyle({
-  stroke: _uiTheme.COLOR.TEMP_NIGHT.color
+  stroke: _uiTheme.TEMP_NIGHT_COLOR
 });
 const S_BAR_RAIN = exports.S_BAR_RAIN = _crBarStyle(_SeriesColor.default.RAIN);
 const S_BAR_SNOW = exports.S_BAR_SNOW = _crBarStyle(_SeriesColor.default.SNOW);

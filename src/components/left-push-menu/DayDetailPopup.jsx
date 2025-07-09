@@ -11,7 +11,7 @@ import {
 } from '../styleFn';
 
 import BtSvgClose from '../zhn-atoms/BtSvgClose';
-import { POPUP } from '../styles/uiTheme';
+import { CHART_POPUP } from '../styles/uiTheme';
 import {COLOR_GREEN } from '../styles/Color';
 
 const CL_DATE = 'marker__caption__date'
@@ -93,10 +93,13 @@ const DayDetailPopup = ({
        : S_NONE;
 
   return (
-    <div style={{
-        ...POPUP.CHART, ...S_ROOT_DIV,
+    <div
+      style={{
+        ...CHART_POPUP,
+        ...S_ROOT_DIV,
         ..._style
-     }}>
+      }}
+    >
       <BtSvgClose
         color={COLOR_GREEN}
         style={S_BT_CLOSE}

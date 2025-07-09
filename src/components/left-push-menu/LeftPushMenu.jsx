@@ -6,14 +6,15 @@ import {
   getRefValue
 } from '../uiApi';
 
+import { CL_BG } from '../styleFn';
 import { sSettings } from '../../flux/selectors';
-
 import useLoadComp from './useLoadComp';
 
 import WrapperPeriodForecast from '../wrapper/WrapperPeriodForecast';
 import DayDetailPopup from './DayDetailPopup';
-import styleConfig from './LeftPushMenu.Style';
 import COMP_TYPE from './CompType';
+
+const CL_LEFT_PUSH_MENU = `${CL_BG} left-push-menu`;
 
 const LeftPushMenu = ({
   id,
@@ -32,11 +33,13 @@ const LeftPushMenu = ({
       getRefValue(_refDetail).close();
     }
   ], [])
-  , CompOrBtOrErrEl = useLoadComp('CHARTS', COMP_TYPE.CTB)
-  , STYLE = theme.createStyle(styleConfig);
+  , CompOrBtOrErrEl = useLoadComp('CHARTS', COMP_TYPE.CTB);
 
   return (
-    <div id={id} style={STYLE.ROOT_DIV} >
+    <div
+      id={id}
+      className={CL_LEFT_PUSH_MENU}
+    >
        <WrapperPeriodForecast
           onUpdate={_hCloseDetail}
           onClickItem={_hClickItem}

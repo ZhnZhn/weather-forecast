@@ -41,12 +41,11 @@ const SettingsDialog = ({
     onSet,
     onAir
   } = data
-  //, theme = useContext(ThemeContext)
   /*eslint-disable react-hooks/exhaustive-deps */
   , _handleSetTheme = useCallback((item) => {
      onSetTheme(uiTheme, item.value)
   }, [])
-  // theme, onSetTheme, rerender
+  // uiTheme, onSetTheme
   /*eslint-enable react-hooks/exhaustive-deps */
 
   return (
