@@ -24,3 +24,7 @@ export const crShowHide = (
       className,
       S_NONE
     ]
+
+export const crShowHideStyle = (
+  is
+) => is ? S_BLOCK : S_NONE

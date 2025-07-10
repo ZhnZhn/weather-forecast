@@ -37,6 +37,11 @@ export const KEY_ESCAPE = "Escape"
 export const KEY_TAB = "Tab"
 export const KEY_DELETE = "Delete"
 
+export const bindTo = (
+  fn,
+  ...args
+) => fn.bind(null, ...args);
+
 export const safeMap = (
   items,
   crElement
@@ -70,6 +75,14 @@ export const setRefValue = (
   if (ref) {
     ref.current = value
   }
+}
+
+export const focusElementById = (
+  id
+) => {
+  _focusHtmlElement(
+    document.getElementById(id)
+  )
 }
 
 const _focusHtmlElement = (

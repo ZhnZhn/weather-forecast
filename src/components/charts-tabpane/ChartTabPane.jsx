@@ -4,18 +4,24 @@ import {
   requestAirForecast
 } from '../../flux/handlers';
 
-import TabPane from '../zhn-atoms/TabPane';
-import Tab from '../zhn-atoms/Tab';
+import TabPane from '../zhn-tab/TabPane';
+import Tab from '../zhn-tab/Tab';
 
 import ChartForecast from './ChartForecast';
 import ChartHourly from './ChartHourly';
 import ChartUvi from './ChartUvi';
 import ChartAirForecast from './ChartAirForecast';
 
+const TOKEN_WEATHER_FORECASTS = "Weather forecasts"
 const S_TABS = { textAlign: 'left' };
 
 const ChartTabPane = () => (
-  <TabPane width="100%" tabsStyle={S_TABS}>
+  <TabPane
+     ariaLabel={TOKEN_WEATHER_FORECASTS}
+     id="ctb"
+     width="100%"
+     tabsStyle={S_TABS}
+  >
     <Tab title="7 Days">
        <ChartForecast />
     </Tab>

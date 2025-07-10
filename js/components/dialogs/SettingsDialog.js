@@ -7,14 +7,15 @@ var _uiApi = require("../uiApi");
 var _memoIsShow = _interopRequireDefault(require("../hoc/memoIsShow"));
 var _uiTheme = require("../styles/uiTheme");
 var _ModalDialog = _interopRequireDefault(require("../zhn-moleculs/ModalDialog"));
-var _TabPane = _interopRequireDefault(require("../zhn-atoms/TabPane"));
-var _Tab = _interopRequireDefault(require("../zhn-atoms/Tab"));
+var _TabPane = _interopRequireDefault(require("../zhn-tab/TabPane"));
+var _Tab = _interopRequireDefault(require("../zhn-tab/Tab"));
 var _CardApiKey = _interopRequireDefault(require("./CardApiKey"));
 var _CardUi = _interopRequireDefault(require("./CardUi"));
 var _jsxRuntime = require("react/jsx-runtime");
 //import PropTypes from 'prop-types';
 
-const S_MODAL = {
+const TOKEN_USER_SETTINGS = "User Settings",
+  S_MODAL = {
     position: 'static',
     width: 320,
     height: 285,
@@ -61,8 +62,11 @@ const SettingsDialog = _ref => {
     isWithButton: !1,
     onClose: onClose,
     children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_TabPane.default, {
+      ariaLabel: TOKEN_USER_SETTINGS,
+      id: "sd",
       width: "100%",
       tabsStyle: S_TABS,
+      isShow: isShow,
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Tab.default, {
         title: "API Key",
         selectedStyle: S_TAB_SELECTED,

@@ -5,12 +5,13 @@ import memoIsShow from '../hoc/memoIsShow';
 import { uiTheme } from '../styles/uiTheme';
 
 import ModalDialog from '../zhn-moleculs/ModalDialog';
-import TabPane from '../zhn-atoms/TabPane';
-import Tab from '../zhn-atoms/Tab';
+import TabPane from '../zhn-tab/TabPane';
+import Tab from '../zhn-tab/Tab';
 import CardApiKey from './CardApiKey';
 import CardUi from './CardUi';
 
-const S_MODAL = {
+const TOKEN_USER_SETTINGS = "User Settings"
+, S_MODAL = {
   position: 'static',
   width: 320,
   height: 285,
@@ -56,7 +57,13 @@ const SettingsDialog = ({
        isWithButton={!1}
        onClose={onClose}
     >
-      <TabPane width="100%" tabsStyle={S_TABS}>
+      <TabPane
+         ariaLabel={TOKEN_USER_SETTINGS}
+         id="sd"
+         width="100%"
+         tabsStyle={S_TABS}
+         isShow={isShow}
+      >
         <Tab
           title="API Key"
           selectedStyle={S_TAB_SELECTED}
