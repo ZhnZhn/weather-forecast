@@ -16,6 +16,7 @@ const CL_SELECT = 'm-select'
 , CL_DIV_VALUE = `${CL_SELECT}__div__value`
 , CL_DIV_BT = `${CL_SELECT}__div__bt`
 , CL_INPUT_LINE = `${CL_SELECT}__line`
+, CL_SELECT_OPTIONS = `${CL_SELECT}__options`
 , CL_ITEM = `${CL_SELECT}__item`
 , DF_INIT_ITEM = {
   caption: '',
@@ -75,6 +76,7 @@ const InputSelect = ({
          id={_optionPaneId}
          ariaLabel={ariaLabel}
          isShow={isShowOptions}
+         className={CL_SELECT_OPTIONS}
          item={_item}
          options={options}
          clItem={CL_ITEM}
@@ -91,11 +93,8 @@ const InputSelect = ({
         <button
           type="button"
           className={CL_DIV_BT}
-          tabIndex="0"
         >
-          <div>
-            <ArrowCell />
-          </div>
+          <ArrowCell />
         </button>
         <div className={CL_INPUT_LINE} />
       </div>

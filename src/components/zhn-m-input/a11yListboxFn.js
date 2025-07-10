@@ -9,3 +9,12 @@ export const crAriaListboxProps = (
   role: "listbox",
   "aria-label": ariaLabel || LISTBOX_ARIA_LABEL
 })
+
+export const crAriaOptionProps = (
+  isSelected,
+  tabIndex
+) => ({
+  role: "option",
+  "aria-selected": isSelected,
+  tabIndex
+})

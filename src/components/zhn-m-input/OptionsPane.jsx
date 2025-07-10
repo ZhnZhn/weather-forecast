@@ -1,62 +1,141 @@
-import { crAriaListboxProps } from './a11yListboxFn';
+import {
+  useRef,
+  useEffect,
+  useImperativeHandle,
 
-import ModalPane from '../zhn-moleculs/ModalPane';
+  KEY_ENTER,
+
+  focusRefElement,
+  setRefValue
+} from '../uiApi';
+
 import ShowHide from '../zhn-atoms/ShowHide';
+import ItemStack from '../zhn-atoms/ItemStack';
+import ModalPane from '../zhn-moleculs/ModalPane';
+import {
+  getItemCaption,
+  getItemValue
+} from './OptionFn';
 
-const S_PANE = {
-  position: 'absolute',
-  top: 12,
-  zIndex: 20,
-  width: '100%',
-  padding: '12px 0',
-  backgroundColor: 'rgb(77, 77, 77)',
-  borderRadius: 2,
-  boxShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 2px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px'
-}
-, S_ITEM = { color: 'greenyellow' };
+import useKeyDownArrow from './useKeyDownArrow';
+import {
+  crAriaListboxProps,
+  crAriaOptionProps
+} from './a11yListboxFn';
 
-const _renderOptions = (options, currentItem, clItem, onSelect, isShow) => {
-  return options.map((item, index) => {
-    const _style = (item.value === currentItem.value)
-             ? S_ITEM
-             : void 0;
-    return (
-      <div
-        key={index}
-        style={_style}
-        className={clItem}
-        onClick={onSelect.bind(null, item)}
-      >
-        {item.caption}
-      </div>
-    );
-  });
+const _crItem = (
+  item,
+  index, {
+  refFirstItem,
+  refItem,
+  currentItem,
+  clItem,
+  onSelect
+}) => {
+  const caption = getItemCaption(item)
+  , value = getItemValue(item)
+  , [
+    _tabIndex,
+    _ref,
+    _ariaSelected,
+  ] = value === (currentItem && getItemValue(currentItem))
+    ? ["0", refItem, "true"]
+    : ["-1"]
+  , _refOption = index === 0
+      ? _ref || refFirstItem
+      : _ref
+  , _refOptionFn = el => {
+       if (_refOption) {
+         setRefValue(_refOption, el);
+       }
+    }
+  , _hKeyDown = evt => {
+    if (evt.key === KEY_ENTER) {
+      onSelect(item, evt)
+    }
+  };
+
+  /*eslint-disable jsx-a11y/no-static-element-interactions*/
+  return (
+    <div
+      {...crAriaOptionProps(_ariaSelected, _tabIndex)}
+      key={value}
+      ref={_refOptionFn}
+      className={clItem}
+      onClick={evt => onSelect(item, evt)}
+      onKeyDown={_hKeyDown}
+    >
+      {caption}
+    </div>
+  );
+  /*eslint-enable jsx-a11y/no-static-element-interactions*/
 };
 
 const OptionsPane = ({
+  refOp,
   id,
   ariaLabel,
   isShow,
+  isFocusItem=true,
+  className,
+  style,
   options,
   item,
-  style,
   clItem,
   onSelect,
   onClose
-}) => (
-  <ModalPane
-     style={style}
+}) => {
+  const _refFirstItem = useRef(null)
+  , _refItem = useRef(null)
+  , [
+    _refFocus,
+    _hKeyDownArrow
+  ] = useKeyDownArrow(onClose)
+
+  /*eslint-disable react-hooks/exhaustive-deps */
+  useImperativeHandle(refOp, () => ({
+    hKeyDown: _hKeyDownArrow
+  }), [])
+  // _hKeyDown
+  /*eslint-enable react-hooks/exhaustive-deps */
+
+  /*eslint-disable react-hooks/exhaustive-deps */
+  useEffect(()=>{
+    if (isShow && isFocusItem) {
+      setRefValue(
+        _refFocus,
+        focusRefElement(_refItem, _refFirstItem)
+      )
+    }
+  }, [isShow, isFocusItem])
+  // _refFocus
+  /*eslint-enable react-hooks/exhaustive-deps */
+
+  return (
+   <ModalPane
      isShow={isShow}
      onClose={onClose}
-  >
-    <ShowHide
+   >
+     <ShowHide
        {...crAriaListboxProps(id, ariaLabel)}
+       //isScrollable={true}
        isShow={isShow}
-       style={{...S_PANE, ...style}}
-    >
-      {_renderOptions(options, item, clItem, onSelect, isShow)}
-    </ShowHide>
-  </ModalPane>
-);
+       className={className}
+       style={style}
+       onKeyDown={_hKeyDownArrow}
+     >
+       <ItemStack
+         items={options}
+         crItem={_crItem}
+         refFirstItem={_refFirstItem}
+         refItem={_refItem}
+         currentItem={item}
+         clItem={clItem}
+         onSelect={onSelect}
+       />
+     </ShowHide>
+   </ModalPane>
+ );
+};
 
 export default OptionsPane

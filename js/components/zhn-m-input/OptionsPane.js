@@ -3,58 +3,103 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.default = void 0;
-var _a11yListboxFn = require("./a11yListboxFn");
-var _ModalPane = _interopRequireDefault(require("../zhn-moleculs/ModalPane"));
+var _uiApi = require("../uiApi");
 var _ShowHide = _interopRequireDefault(require("../zhn-atoms/ShowHide"));
+var _ItemStack = _interopRequireDefault(require("../zhn-atoms/ItemStack"));
+var _ModalPane = _interopRequireDefault(require("../zhn-moleculs/ModalPane"));
+var _OptionFn = require("./OptionFn");
+var _useKeyDownArrow = _interopRequireDefault(require("./useKeyDownArrow"));
+var _a11yListboxFn = require("./a11yListboxFn");
+var _react = require("react");
 var _jsxRuntime = require("react/jsx-runtime");
-const S_PANE = {
-    position: 'absolute',
-    top: 12,
-    zIndex: 20,
-    width: '100%',
-    padding: '12px 0',
-    backgroundColor: 'rgb(77, 77, 77)',
-    borderRadius: 2,
-    boxShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 2px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px'
-  },
-  S_ITEM = {
-    color: 'greenyellow'
-  };
-const _renderOptions = (options, currentItem, clItem, onSelect, isShow) => {
-  return options.map((item, index) => {
-    const _style = item.value === currentItem.value ? S_ITEM : void 0;
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      style: _style,
-      className: clItem,
-      onClick: onSelect.bind(null, item),
-      children: item.caption
-    }, index);
-  });
-};
-const OptionsPane = _ref => {
+const _crItem = (item, index, _ref2) => {
   let {
+    refFirstItem,
+    refItem,
+    currentItem,
+    clItem,
+    onSelect
+  } = _ref2;
+  const caption = (0, _OptionFn.getItemCaption)(item),
+    value = (0, _OptionFn.getItemValue)(item),
+    [_tabIndex, _ref, _ariaSelected] = value === (currentItem && (0, _OptionFn.getItemValue)(currentItem)) ? ["0", refItem, "true"] : ["-1"],
+    _refOption = index === 0 ? _ref || refFirstItem : _ref,
+    _refOptionFn = el => {
+      if (_refOption) {
+        (0, _uiApi.setRefValue)(_refOption, el);
+      }
+    },
+    _hKeyDown = evt => {
+      if (evt.key === _uiApi.KEY_ENTER) {
+        onSelect(item, evt);
+      }
+    };
+
+  /*eslint-disable jsx-a11y/no-static-element-interactions*/
+  return /*#__PURE__*/(0, _react.createElement)("div", {
+    ...(0, _a11yListboxFn.crAriaOptionProps)(_ariaSelected, _tabIndex),
+    key: value,
+    ref: _refOptionFn,
+    className: clItem,
+    onClick: evt => onSelect(item, evt),
+    onKeyDown: _hKeyDown
+  }, caption);
+  /*eslint-enable jsx-a11y/no-static-element-interactions*/
+};
+const OptionsPane = _ref3 => {
+  let {
+    refOp,
     id,
     ariaLabel,
     isShow,
+    isFocusItem = true,
+    className,
+    style,
     options,
     item,
-    style,
     clItem,
     onSelect,
     onClose
-  } = _ref;
+  } = _ref3;
+  const _refFirstItem = (0, _uiApi.useRef)(null),
+    _refItem = (0, _uiApi.useRef)(null),
+    [_refFocus, _hKeyDownArrow] = (0, _useKeyDownArrow.default)(onClose);
+
+  /*eslint-disable react-hooks/exhaustive-deps */
+  (0, _uiApi.useImperativeHandle)(refOp, () => ({
+    hKeyDown: _hKeyDownArrow
+  }), []);
+  // _hKeyDown
+  /*eslint-enable react-hooks/exhaustive-deps */
+
+  /*eslint-disable react-hooks/exhaustive-deps */
+  (0, _uiApi.useEffect)(() => {
+    if (isShow && isFocusItem) {
+      (0, _uiApi.setRefValue)(_refFocus, (0, _uiApi.focusRefElement)(_refItem, _refFirstItem));
+    }
+  }, [isShow, isFocusItem]);
+  // _refFocus
+  /*eslint-enable react-hooks/exhaustive-deps */
+
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ModalPane.default, {
-    style: style,
     isShow: isShow,
     onClose: onClose,
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ShowHide.default, {
       ...(0, _a11yListboxFn.crAriaListboxProps)(id, ariaLabel),
+      //isScrollable={true}
       isShow: isShow,
-      style: {
-        ...S_PANE,
-        ...style
-      },
-      children: _renderOptions(options, item, clItem, onSelect, isShow)
+      className: className,
+      style: style,
+      onKeyDown: _hKeyDownArrow,
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ItemStack.default, {
+        items: options,
+        crItem: _crItem,
+        refFirstItem: _refFirstItem,
+        refItem: _refItem,
+        currentItem: item,
+        clItem: clItem,
+        onSelect: onSelect
+      })
     })
   });
 };

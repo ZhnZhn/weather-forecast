@@ -1,4 +1,6 @@
 import {
+  isFn,
+  isArr,
   isStr,
   isNumber
 } from "../utils/isTypeFn";
@@ -29,6 +31,18 @@ export {
 } from "react";
 
 export const KEY_ARROW_DOWN = "ArrowDown"
+export const KEY_ARROW_UP = "ArrowUp"
+export const KEY_ENTER = "Enter"
+export const KEY_ESCAPE = "Escape"
+export const KEY_TAB = "Tab"
+export const KEY_DELETE = "Delete"
+
+export const safeMap = (
+  items,
+  crElement
+) => isArr(items)
+  ? items.map(crElement)
+  : null
 
 export const createElement = (
   Comp,
@@ -57,6 +71,29 @@ export const setRefValue = (
     ref.current = value
   }
 }
+
+const _focusHtmlElement = (
+  element
+) => {
+  if (element && isFn(element.focus)) {
+    element.focus()
+  }
+  return element;
+}
+
+const _getValueFromFnOrRef = (
+  fnOrRef
+) => isFn(fnOrRef)
+  ? fnOrRef()
+  : getRefValue(fnOrRef);
+export const focusRefElement = (
+  fnOrRef1,
+  fnOrRef2
+) => _focusHtmlElement(
+  _getValueFromFnOrRef(fnOrRef1)
+  || _getValueFromFnOrRef(fnOrRef2)
+)
+
 
 export const stopDefaultFor = (evt) => {
   evt.stopPropagation()

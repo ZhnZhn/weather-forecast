@@ -15,6 +15,7 @@ const CL_SELECT = 'm-select',
   CL_DIV_VALUE = `${CL_SELECT}__div__value`,
   CL_DIV_BT = `${CL_SELECT}__div__bt`,
   CL_INPUT_LINE = `${CL_SELECT}__line`,
+  CL_SELECT_OPTIONS = `${CL_SELECT}__options`,
   CL_ITEM = `${CL_SELECT}__item`,
   DF_INIT_ITEM = {
     caption: '',
@@ -61,6 +62,7 @@ const InputSelect = _ref => {
       id: _optionPaneId,
       ariaLabel: ariaLabel,
       isShow: isShowOptions,
+      className: CL_SELECT_OPTIONS,
       item: _item,
       options: options,
       clItem: CL_ITEM,
@@ -77,10 +79,7 @@ const InputSelect = _ref => {
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
         type: "button",
         className: CL_DIV_BT,
-        tabIndex: "0",
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ArrowCell.default, {})
-        })
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ArrowCell.default, {})
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         className: CL_INPUT_LINE
       })]

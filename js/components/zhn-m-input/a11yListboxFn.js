@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.crAriaListboxProps = void 0;
+exports.crAriaOptionProps = exports.crAriaListboxProps = void 0;
 const LISTBOX_ARIA_LABEL = "Suggestions";
 const crAriaListboxProps = (id, ariaLabel) => ({
   id,
@@ -9,4 +9,10 @@ const crAriaListboxProps = (id, ariaLabel) => ({
   "aria-label": ariaLabel || LISTBOX_ARIA_LABEL
 });
 exports.crAriaListboxProps = crAriaListboxProps;
+const crAriaOptionProps = (isSelected, tabIndex) => ({
+  role: "option",
+  "aria-selected": isSelected,
+  tabIndex
+});
+exports.crAriaOptionProps = crAriaOptionProps;
 //# sourceMappingURL=a11yListboxFn.js.map

@@ -1,8 +1,6 @@
 
 const S_SVG = {
   display: 'inline-block',
-  color: 'black',
-  fill: 'black',
   height: 24,
   width: 24,
   userSelect: 'none',

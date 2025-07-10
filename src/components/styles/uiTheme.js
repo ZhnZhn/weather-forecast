@@ -1,19 +1,36 @@
 
+const _crRgba = (
+  v,
+  a
+) => `rgba(${v}, ${v}, ${v}, ${a})`;
+
 let P = {};
 const TH_GREY = {
   BG: 'grey',
   BG_MARK: '#646464',
-  BG_DIALOG: '#4d4d4d'
+  BG_DIALOG: '#4d4d4d',
+
+  BG_OPTIONS: '#404040',
+  MSI_C: '#f8f8ff',
+  MSI_FH: _crRgba(255, 0.1)
 }
 const TH_SAND = {
   BG: '#e8e0cb',
   BG_MARK: 'grey',
-  BG_DIALOG: '#e8e0cb'
+  BG_DIALOG: '#e8e0cb',
+
+  BG_OPTIONS: '#c6bda5',
+  MSI_C: '#303030',
+  MSI_FH: _crRgba(255, 0.4)
 };
 const TH_WHITE = {
   BG: 'white',
   BG_MARK: 'grey',
-  BG_DIALOG: 'white'
+  BG_DIALOG: 'white',
+
+  BG_OPTIONS: '#dfe4e7',
+  MSI_C: '#303030',
+  MSI_FH: _crRgba(255, 0.4)
 };
 
 export const THEME_NAME = {
@@ -34,6 +51,10 @@ const _setCustomPropertiesFrom = (P) => {
   _style.setProperty("--bg", P.BG)
   _style.setProperty("--bg-mark", P.BG_MARK)
   _style.setProperty("--bg-dialog", P.BG_DIALOG)
+
+  _style.setProperty("--mso-bg", P.BG_OPTIONS)
+  _style.setProperty("--msi-c", P.MSI_C)
+  _style.setProperty("--msi-fh", P.MSI_FH)
 };
 
 const _setTheme = {
