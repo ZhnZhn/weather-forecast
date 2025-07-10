@@ -28,6 +28,8 @@ export {
   useImperativeHandle
 } from "react";
 
+export const KEY_ARROW_DOWN = "ArrowDown"
+
 export const createElement = (
   Comp,
   {key, ...restProps}

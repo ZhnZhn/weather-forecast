@@ -38,6 +38,7 @@ const CardUi = ({
      <InputSelect
        style={S_INPUT_SELECT}
        caption="Theme (Default: Grey)"
+       ariaLabel="UI themes list"
        initItem={DF_THEME}
        options={_themeOptions}
        onSelect={onSetTheme}

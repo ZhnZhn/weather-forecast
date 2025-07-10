@@ -1,0 +1,21 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/zhn-m-input/useAriaCombobox.js"
+ ],
+ "file": "../../../src/components/zhn-m-input/useAriaCombobox.js",
+ "names": [
+  "_uiApi",
+  "require",
+  "useAriaCombobox",
+  "isShowOptions",
+  "isAutocomplete",
+  "_controlsId",
+  "useId",
+  "role",
+  "_default",
+  "exports",
+  "default"
+ ],
+ "mappings": ";;;;AAAA,IAAAA,MAAA,GAAAC,OAAA;AAEA,MAAMC,eAAe,GAAGA,CACtBC,aAAa,EACbC,cAAc,KACX;EACH,MAAMC,WAAW,GAAG,IAAAC,YAAK,EAAC,CAAC;EAC3B,OAAO,CACLD,WAAW,EAAE;IACXE,IAAI,EAAE,UAAU;IAChB,mBAAmB,EAAEH,cAAc,GAC9B,MAAM,GAAG,MAAM;IACpB,eAAe,EAAED,aAAa,GACzBE,WAAW,GAAG,KAAK,CAAC;IACzB,eAAe,EAAEF;EACnB,CAAC,CACF;AACH,CAAC;AAAC,IAAAK,QAAA,GAAAC,OAAA,CAAAC,OAAA,GAEaR,eAAe"
+}

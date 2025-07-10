@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useLayoutEffect = exports.useImperativeHandle = exports.useId = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.createRef = exports.createElement = exports.createContext = exports.cloneUiElement = exports.PureComponent = exports.Component = exports.Children = void 0;
+exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useLayoutEffect = exports.useImperativeHandle = exports.useId = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.createRef = exports.createElement = exports.createContext = exports.cloneUiElement = exports.PureComponent = exports.KEY_ARROW_DOWN = exports.Component = exports.Children = void 0;
 var _isTypeFn = require("../utils/isTypeFn");
 var _jsxRuntime = require("react/jsx-runtime");
 var _reactRedux = require("react-redux");
@@ -25,6 +25,7 @@ exports.useMemo = _react.useMemo;
 exports.useEffect = _react.useEffect;
 exports.useLayoutEffect = _react.useLayoutEffect;
 exports.useImperativeHandle = _react.useImperativeHandle;
+const KEY_ARROW_DOWN = exports.KEY_ARROW_DOWN = "ArrowDown";
 const createElement = (Comp, _ref) => {
   let {
     key,

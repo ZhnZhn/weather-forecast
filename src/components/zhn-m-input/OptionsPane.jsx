@@ -1,3 +1,5 @@
+import { crAriaListboxProps } from './a11yListboxFn';
+
 import ModalPane from '../zhn-moleculs/ModalPane';
 import ShowHide from '../zhn-atoms/ShowHide';
 
@@ -32,6 +34,8 @@ const _renderOptions = (options, currentItem, clItem, onSelect, isShow) => {
 };
 
 const OptionsPane = ({
+  id,
+  ariaLabel,
   isShow,
   options,
   item,
@@ -46,6 +50,7 @@ const OptionsPane = ({
      onClose={onClose}
   >
     <ShowHide
+       {...crAriaListboxProps(id, ariaLabel)}
        isShow={isShow}
        style={{...S_PANE, ...style}}
     >

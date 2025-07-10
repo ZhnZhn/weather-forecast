@@ -1,8 +1,11 @@
 import {
+  KEY_ARROW_DOWN,
   useState,
   useCallback
 } from '../uiApi';
+
 import useBool from '../hooks/useBool';
+import useAriaCombobox from './useAriaCombobox';
 
 import ArrowCell from './ArrowCell';
 import OptionsPane from './OptionsPane';
@@ -21,6 +24,7 @@ const CL_SELECT = 'm-select'
 
 const InputSelect = ({
   caption,
+  ariaLabel,
   options,
   style,
   selectedItem,
@@ -28,38 +32,54 @@ const InputSelect = ({
   onSelect
 }) => {
   const [
-    isShow,
-    _hOpen,
-    _hClose
-  ] = useBool(!1)
-  , [
     item,
     setItem
   ] = useState(initItem)
+  , [
+    isShowOptions,
+    _hOpenOptions,
+    _hCloseOptions
+  ] = useBool(!1)
+  , _hKeyDown = (evt) => {
+      if (evt.key === KEY_ARROW_DOWN) {
+        _hOpenOptions()
+      }
+    }
+  , [
+    _optionPaneId,
+    _ariaComboboxProps
+  ] = useAriaCombobox(isShowOptions)
   /*eslint-disable react-hooks/exhaustive-deps */
   , _hSelect = useCallback((item, evt) => {
       evt.stopPropagation()
       onSelect(item)
-      _hClose()
+      _hCloseOptions()
       setItem(item)
   }, [])
   // _handleClose, onSelect
   /*eslint-enable react-hooks/exhaustive-deps */
   , _item = selectedItem || item;
 
+  /*eslint-disable jsx-a11y/no-static-element-interactions*/
   return (
     <div
+      {..._ariaComboboxProps}
+      tabIndex="-1"
       className={CL_SELECT}
       style={style}
-      onClick={_hOpen}
+      onClick={_hOpenOptions}
+      onKeyDown={_hKeyDown}
     >
+    {/*eslint-enable jsx-a11y/no-static-element-interactions*/}
       <OptionsPane
-         isShow={isShow}
+         id={_optionPaneId}
+         ariaLabel={ariaLabel}
+         isShow={isShowOptions}
          item={_item}
          options={options}
          clItem={CL_ITEM}
          onSelect={_hSelect}
-         onClose={_hClose}
+         onClose={_hCloseOptions}
        />
       <label className={CL_LABEL}>
         {caption}
