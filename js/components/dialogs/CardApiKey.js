@@ -5,7 +5,7 @@ exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _PasswordField = _interopRequireDefault(require("../zhn-m-input/PasswordField"));
-var _RaisedButton = _interopRequireDefault(require("../zhn-atoms/RaisedButton"));
+var _RaisedButton = _interopRequireDefault(require("../zhn/RaisedButton"));
 var _jsxRuntime = require("react/jsx-runtime");
 const S_SECRET = {
     width: 280

@@ -1,51 +1,24 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 exports.__esModule = true;
-exports["default"] = void 0;
-
+exports.default = void 0;
 var _uiApi = require("../uiApi");
-
+var _memoEqual = _interopRequireDefault(require("../hoc/memoEqual"));
 var _selectors = require("../../flux/selectors");
-
 var _constants = require("../../flux/fetching/constants");
-
-var _ProgressLine = _interopRequireDefault(require("../zhn-atoms/ProgressLine"));
-
+var _ProgressLine = _interopRequireDefault(require("../zhn/ProgressLine"));
 var _jsxRuntime = require("react/jsx-runtime");
-
-var COLOR_LOADING = '#2f7ed8',
-    COLOR_FAILED = '#ed5813',
-    _getDerivedState = function _getDerivedState(fetching) {
-  switch (fetching) {
-    case _constants.FETCH.LOADING:
-      return [35, COLOR_LOADING];
-
-    case _constants.FETCH.SUCCESS:
-      return [100, COLOR_LOADING];
-
-    case _constants.FETCH.FAILED:
-      return [100, COLOR_FAILED];
-
-    default:
-      return [0, COLOR_LOADING];
-  }
-};
-
-var ProgressLoading = function ProgressLoading() {
-  var fetching = (0, _uiApi.useSelector)(_selectors.sApp.fetching),
-      _getDerivedState2 = _getDerivedState(fetching),
-      completed = _getDerivedState2[0],
-      color = _getDerivedState2[1];
-
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ProgressLine["default"], {
-    height: 3,
+const COLOR_LOADING = '#2f7ed8',
+  COLOR_FAILED = '#ed5813',
+  _getDerivedState = fetching => fetching === _constants.FETCH.LOADING ? [35, COLOR_LOADING] : fetching === _constants.FETCH.SUCCESS ? [100, COLOR_LOADING] : fetching === _constants.FETCH.FAILED ? [100, COLOR_FAILED] : [0, COLOR_LOADING];
+const ProgressLoading = () => {
+  const fetching = (0, _uiApi.useSelector)(_selectors.sApp.fetching),
+    [completed, color] = _getDerivedState(fetching);
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ProgressLine.default, {
     color: color,
     completed: completed
   });
 };
-
-var _default = ProgressLoading;
-exports["default"] = _default;
+var _default = exports.default = (0, _memoEqual.default)(ProgressLoading);
 //# sourceMappingURL=ProgressLoading.js.map

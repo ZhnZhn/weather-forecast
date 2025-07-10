@@ -1,9 +1,9 @@
 {
  "version": 3,
  "sources": [
-  "../../../src/components/zhn-atoms/WrapperModalDialog.js"
+  "../../../src/components/zhn/WrapperModalDialog.js"
  ],
- "file": "../../../src/components/zhn-atoms/WrapperModalDialog.js",
+ "file": "../../../src/components/zhn/WrapperModalDialog.js",
  "names": [
   "_styleFn",
   "require",

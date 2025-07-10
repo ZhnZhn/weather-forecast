@@ -1,9 +1,9 @@
 import { useState } from '../uiApi';
 
 import RouterComp from './RouterComp';
-import RaisedButton from '../zhn-atoms/RaisedButton';
-import SpinnerLoading from '../zhn-atoms/SpinnerLoading';
-import ErrMsg from '../zhn-atoms/ErrMsg';
+import RaisedButton from '../zhn/RaisedButton';
+import SpinnerLoading from '../zhn/SpinnerLoading';
+import ErrMsg from '../zhn/ErrMsg';
 
 const S_BT_LOAD = { margin: '16px 0 0 8px' }
 , S_SPINNER = { margin: '24px 0 0 70px' }

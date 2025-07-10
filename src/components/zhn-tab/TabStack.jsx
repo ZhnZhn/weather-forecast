@@ -8,7 +8,7 @@ import {
   stopDefaultFor
 } from '../uiApi';
 
-import ItemStack from '../zhn-atoms/ItemStack';
+import ItemStack from '../zhn/ItemStack';
 import {
   CL_TABS,
   crTabId
@@ -21,7 +21,7 @@ const _crItemTab = (
   selectedTabIndex,
   hClick,
   hKeyDown
-}) => cloneUiElement(tabEl, {   
+}) => cloneUiElement(tabEl, {
    id,
    index: index,
    isSelected: index === selectedTabIndex,

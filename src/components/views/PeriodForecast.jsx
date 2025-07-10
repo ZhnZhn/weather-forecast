@@ -1,4 +1,4 @@
-import OpenClose from '../zhn-atoms/OpenClose';
+import OpenClose from '../zhn/OpenClose';
 import { COLOR_BROWN } from '../styles/Color';
 
 import Caption from './Caption';

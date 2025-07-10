@@ -1,9 +1,9 @@
 {
  "version": 3,
  "sources": [
-  "../../../src/components/zhn-atoms/ItemStack.js"
+  "../../../src/components/zhn/ItemStack.js"
  ],
- "file": "../../../src/components/zhn-atoms/ItemStack.js",
+ "file": "../../../src/components/zhn/ItemStack.js",
  "names": [
   "_uiApi",
   "require",

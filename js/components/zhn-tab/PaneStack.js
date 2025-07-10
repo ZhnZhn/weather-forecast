@@ -5,7 +5,7 @@ exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _styleFn = require("../styleFn");
-var _ItemStack = _interopRequireDefault(require("../zhn-atoms/ItemStack"));
+var _ItemStack = _interopRequireDefault(require("../zhn/ItemStack"));
 var _tabPaneFn = require("./tabPaneFn");
 var _jsxRuntime = require("react/jsx-runtime");
 const _crItemPane = (tab, index, _ref) => {

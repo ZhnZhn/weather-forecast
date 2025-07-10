@@ -5,8 +5,8 @@ exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _InputSelect = _interopRequireDefault(require("../zhn-m-input/InputSelect"));
-var _InputSwitch = _interopRequireDefault(require("../zhn-atoms/InputSwitch"));
-var _RaisedButton = _interopRequireDefault(require("../zhn-atoms/RaisedButton"));
+var _InputSwitch = _interopRequireDefault(require("../zhn/InputSwitch"));
+var _RaisedButton = _interopRequireDefault(require("../zhn/RaisedButton"));
 var _jsxRuntime = require("react/jsx-runtime");
 const S_INPUT_SELECT = {
     width: 280

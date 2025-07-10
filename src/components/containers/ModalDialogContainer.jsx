@@ -11,7 +11,7 @@ import {
 
 import Router from '../dialogs/Router';
 import RouterData from '../dialogs/RouterData';
-import WrapperModalDialog from '../zhn-atoms/WrapperModalDialog';
+import WrapperModalDialog from '../zhn/WrapperModalDialog';
 
 const DialogStack = ({
   store,

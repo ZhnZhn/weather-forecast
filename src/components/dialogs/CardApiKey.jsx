@@ -4,7 +4,7 @@ import {
 } from '../uiApi';
 
 import PasswordField from '../zhn-m-input/PasswordField';
-import RaisedButton from '../zhn-atoms/RaisedButton';
+import RaisedButton from '../zhn/RaisedButton';
 
 const S_SECRET = { width: 280 }
 , FN_TEST = v => !v || v.length === 32;

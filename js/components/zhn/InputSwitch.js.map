@@ -1,9 +1,9 @@
 {
  "version": 3,
  "sources": [
-  "../../../src/components/zhn-atoms/InputSwitch.js"
+  "../../../src/components/zhn/InputSwitch.js"
  ],
- "file": "../../../src/components/zhn-atoms/InputSwitch.js",
+ "file": "../../../src/components/zhn/InputSwitch.js",
  "names": [
   "_uiApi",
   "require",

@@ -10,7 +10,8 @@ import {
   S_NONE
 } from '../styleFn';
 
-import BtSvgClose from '../zhn-atoms/BtSvgClose';
+import BtSvgClose from '../zhn/BtSvgClose';
+
 import { CHART_POPUP } from '../styles/uiTheme';
 import {COLOR_GREEN } from '../styles/Color';
 

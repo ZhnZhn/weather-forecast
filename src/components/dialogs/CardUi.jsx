@@ -1,8 +1,8 @@
 import { useCallback } from '../uiApi';
 
 import InputSelect from '../zhn-m-input/InputSelect';
-import InputSwitch from '../zhn-atoms/InputSwitch';
-import RaisedButton from '../zhn-atoms/RaisedButton';
+import InputSwitch from '../zhn/InputSwitch';
+import RaisedButton from '../zhn/RaisedButton';
 
 const S_INPUT_SELECT = {
   width: 280

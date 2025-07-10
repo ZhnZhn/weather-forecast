@@ -6,7 +6,7 @@ exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _Router = _interopRequireDefault(require("../dialogs/Router"));
 var _RouterData = _interopRequireDefault(require("../dialogs/RouterData"));
-var _WrapperModalDialog = _interopRequireDefault(require("../zhn-atoms/WrapperModalDialog"));
+var _WrapperModalDialog = _interopRequireDefault(require("../zhn/WrapperModalDialog"));
 var _jsxRuntime = require("react/jsx-runtime");
 //import PropTypes from 'prop-types';
 

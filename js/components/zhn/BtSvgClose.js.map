@@ -1,9 +1,9 @@
 {
  "version": 3,
  "sources": [
-  "../../../src/components/zhn-atoms/BtSvgClose.js"
+  "../../../src/components/zhn/BtSvgClose.js"
  ],
- "file": "../../../src/components/zhn-atoms/BtSvgClose.js",
+ "file": "../../../src/components/zhn/BtSvgClose.js",
  "names": [
   "_Svg",
   "_interopRequireDefault",

@@ -1,22 +1,23 @@
 "use strict";
 
 exports.__esModule = true;
-exports["default"] = void 0;
+exports.default = void 0;
 var _jsxRuntime = require("react/jsx-runtime");
-var CL_BT = 'bt-raised',
-  CL_BT_DIV = CL_BT + "__div",
-  CL_BT_SPAN = CL_BT + "__span",
+const CL_BT = 'bt-raised',
+  CL_BT_DIV = `${CL_BT}__div`,
+  CL_BT_SPAN = `${CL_BT}__span`,
   S_PRIMARY_SPAN = {
     color: 'greenyellow'
   };
-var RaisedButton = function RaisedButton(_ref) {
-  var style = _ref.style,
-    _ref$clDiv = _ref.clDiv,
-    clDiv = _ref$clDiv === void 0 ? CL_BT_DIV : _ref$clDiv,
-    caption = _ref.caption,
-    isPrimary = _ref.isPrimary,
-    onClick = _ref.onClick;
-  var _spanStyle = isPrimary ? S_PRIMARY_SPAN : void 0;
+const RaisedButton = _ref => {
+  let {
+    style,
+    clDiv = CL_BT_DIV,
+    caption,
+    isPrimary,
+    onClick
+  } = _ref;
+  const _spanStyle = isPrimary ? S_PRIMARY_SPAN : void 0;
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
     type: "button",
     tabIndex: 0,
@@ -33,6 +34,5 @@ var RaisedButton = function RaisedButton(_ref) {
     })
   });
 };
-var _default = RaisedButton;
-exports["default"] = _default;
+var _default = exports.default = RaisedButton;
 //# sourceMappingURL=RaisedButton.js.map

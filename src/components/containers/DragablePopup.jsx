@@ -14,7 +14,7 @@ import crCn from '../zhn-utils/crCn';
 
 import useXYMovable from '../hooks/useXYMovable';
 import { toggleLayout } from '../../flux/handlers';
-import BtSvgClose from '../zhn-atoms/BtSvgClose';
+import BtSvgClose from '../zhn/BtSvgClose';
 
 const CL_SHOW_POPUP = 'show-popup'
 , S_SVG_CLOSE = {

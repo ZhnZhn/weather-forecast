@@ -7,10 +7,11 @@ import {
   HK_SETTINGS
 } from '../hotkeys/hotkeys';
 
-import ProgressLoading from './ProgressLoading';
-import HamburgerButton from '../zhn-atoms/HamburgerButton';
-import ButtonCircle from '../zhn-atoms/ButtonCircle';
+import HamburgerButton from '../zhn/HamburgerButton';
+import ButtonCircle from '../zhn/ButtonCircle';
 import ProviderLink from '../elements/ProviderLink';
+
+import ProgressLoading from './ProgressLoading';
 import GitHubLink from './GitHubLink';
 
 import {

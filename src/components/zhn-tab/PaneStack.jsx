@@ -1,7 +1,7 @@
 import { cloneUiElement } from '../uiApi';
 import { crShowHideStyle } from '../styleFn';
 
-import ItemStack from '../zhn-atoms/ItemStack';
+import ItemStack from '../zhn/ItemStack';
 import {
   CL_PANES,
   crTabId,

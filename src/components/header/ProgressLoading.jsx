@@ -3,7 +3,7 @@ import memoEqual from '../hoc/memoEqual';
 
 import { sApp } from '../../flux/selectors';
 import { FETCH } from '../../flux/fetching/constants';
-import ProgressLine from '../zhn-atoms/ProgressLine';
+import ProgressLine from '../zhn/ProgressLine';
 
 const COLOR_LOADING = '#2f7ed8'
 , COLOR_FAILED = '#ed5813'

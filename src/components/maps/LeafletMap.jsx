@@ -15,7 +15,7 @@ import throttleFn from '../../utils/throttleFn';
 import { requestPlace }  from '../../flux/handlers';
 import { sPlace } from '../../flux/selectors';
 
-import ErrMsg from '../zhn-atoms/ErrMsg';
+import ErrMsg from '../zhn/ErrMsg';
 
 const PERIOD_MS = 5000;
 

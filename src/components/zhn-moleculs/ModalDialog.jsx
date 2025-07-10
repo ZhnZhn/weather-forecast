@@ -7,8 +7,8 @@ import {
 
 import { useKeyEscape } from '../hooks/fUseKey';
 
-import BtSvgClose from '../zhn-atoms/BtSvgClose';
-import RaisedButton from '../zhn-atoms/RaisedButton';
+import BtSvgClose from '../zhn/BtSvgClose';
+import RaisedButton from '../zhn/RaisedButton';
 
 const S_ROOT_DIV = {
   zIndex: 10,
@@ -94,7 +94,7 @@ const ModalDialog = ({
        {...crDialogRole(isShow, caption)}
        aria-modal="true"
        className={_className}
-       style={{...S_ROOT_DIV, ...style, ..._showHideStyle}}       
+       style={{...S_ROOT_DIV, ...style, ..._showHideStyle}}
        onClick={_hClickDialog}
        onKeyDown={_hKeyDown}
     >

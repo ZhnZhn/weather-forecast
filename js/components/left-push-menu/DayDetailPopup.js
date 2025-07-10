@@ -6,7 +6,7 @@ exports.default = void 0;
 var _dt = _interopRequireDefault(require("../../utils/dt"));
 var _uiApi = require("../uiApi");
 var _styleFn = require("../styleFn");
-var _BtSvgClose = _interopRequireDefault(require("../zhn-atoms/BtSvgClose"));
+var _BtSvgClose = _interopRequireDefault(require("../zhn/BtSvgClose"));
 var _uiTheme = require("../styles/uiTheme");
 var _Color = require("../styles/Color");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -101,7 +101,7 @@ const DayDetailPopup = _ref2 => {
     _style = isOpen ? _styleFn.S_BLOCK : _styleFn.S_NONE;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     style: {
-      ..._uiTheme.POPUP.CHART,
+      ..._uiTheme.CHART_POPUP,
       ...S_ROOT_DIV,
       ..._style
     },
