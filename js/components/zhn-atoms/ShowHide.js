@@ -12,7 +12,8 @@ const ShowHide = _ref => {
     isShow,
     className,
     style,
-    children
+    children,
+    ...restProps
   } = _ref;
   const _className = (0, _crCn.default)(className, [isShow, CL_SHOW_POPUP]),
     _styleShow = isShow ? _styleFn.S_BLOCK : _styleFn.S_NONE;
@@ -22,6 +23,7 @@ const ShowHide = _ref => {
       ...style,
       ..._styleShow
     },
+    ...restProps,
     children: children
   });
 };

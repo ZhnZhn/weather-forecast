@@ -12,7 +12,8 @@ const ShowHide = ({
   isShow,
   className,
   style,
-  children
+  children,
+  ...restProps
 }) => {
   const _className = crCn(
     className, [isShow, CL_SHOW_POPUP]
@@ -23,6 +24,7 @@ const ShowHide = ({
     <div
       className={_className}
       style={{...style, ..._styleShow}}
+      {...restProps}
     >
       {children}
     </div>
