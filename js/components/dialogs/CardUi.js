@@ -8,10 +8,8 @@ var _InputSelect = _interopRequireDefault(require("../zhn-m-input/InputSelect"))
 var _InputSwitch = _interopRequireDefault(require("../zhn-atoms/InputSwitch"));
 var _RaisedButton = _interopRequireDefault(require("../zhn-atoms/RaisedButton"));
 var _jsxRuntime = require("react/jsx-runtime");
-const S_SELECT = {
-    ROOT: {
-      width: 280
-    }
+const S_INPUT_SELECT = {
+    width: 280
   },
   _themeOptions = [{
     caption: 'Grey',
@@ -39,17 +37,17 @@ const CardUi = _ref => {
   } = _ref;
   /*eslint-disable react-hooks/exhaustive-deps */
   const _checkAir = (0, _uiApi.useCallback)(() => {
-      onAir(true);
+      onAir(!0);
     }, []),
     _uncheckAir = (0, _uiApi.useCallback)(() => {
-      onAir(false);
+      onAir(!1);
     }, []);
   // onAir
   /*eslint-enable react-hooks/exhaustive-deps */
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     style: style,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_InputSelect.default, {
-      styleConfig: S_SELECT,
+      style: S_INPUT_SELECT,
       caption: "Theme (Default: Grey)",
       initItem: DF_THEME,
       options: _themeOptions,

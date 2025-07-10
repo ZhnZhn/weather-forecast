@@ -17,14 +17,12 @@ const CL_SELECT = 'm-select'
 , DF_INIT_ITEM = {
   caption: '',
   value: ''
-}
-, DF_TS = {};
-
+};
 
 const InputSelect = ({
   caption,
   options,
-  styleConfig:TS=DF_TS,
+  style,
   selectedItem,
   initItem=DF_INIT_ITEM,
   onSelect
@@ -33,7 +31,7 @@ const InputSelect = ({
     isShow,
     _hOpen,
     _hClose
-  ] = useBool(false)
+  ] = useBool(!1)
   , [
     item,
     setItem
@@ -52,15 +50,14 @@ const InputSelect = ({
   return (
     <div
       className={CL_SELECT}
-      style={TS.ROOT}
+      style={style}
       onClick={_hOpen}
     >
       <OptionsPane
-         style={TS.MODAL_PANE}
          isShow={isShow}
          item={_item}
          options={options}
-         clItem={TS.CL_ITEM || CL_ITEM}
+         clItem={CL_ITEM}
          onSelect={_hSelect}
          onClose={_hClose}
        />

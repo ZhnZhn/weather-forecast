@@ -4,8 +4,8 @@ import InputSelect from '../zhn-m-input/InputSelect';
 import InputSwitch from '../zhn-atoms/InputSwitch';
 import RaisedButton from '../zhn-atoms/RaisedButton';
 
-const S_SELECT = {
-  ROOT: { width: 280 }
+const S_INPUT_SELECT = {
+  width: 280
 }
 , _themeOptions = [
   { caption: 'Grey', value: 'GREY' },
@@ -26,17 +26,17 @@ const CardUi = ({
 }) => {
   /*eslint-disable react-hooks/exhaustive-deps */
   const _checkAir = useCallback(() => {
-    onAir(true)
+    onAir(!0)
   }, [])
   , _uncheckAir = useCallback(() => {
-    onAir(false)
+    onAir(!1)
   }, [])
   // onAir
   /*eslint-enable react-hooks/exhaustive-deps */
   return(
    <div style={style}>
      <InputSelect
-       styleConfig={S_SELECT}
+       style={S_INPUT_SELECT}
        caption="Theme (Default: Grey)"
        initItem={DF_THEME}
        options={_themeOptions}
