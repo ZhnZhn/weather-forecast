@@ -3,6 +3,10 @@
   --bg: grey;
   --bg-mark: #646464;
   --bg-dialog: #4d4d4d;
+
+  --mso-bg: #404040;
+  --msi-c: #f8f8ff;
+  --msi-hf: rgba(255, 255, 255, 0.1); 
 }
 
 .bg {

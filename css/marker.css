@@ -19,26 +19,6 @@
   border: 2px solid #795548;
 }
 
-
-.popup--white .leaflet-popup-content-wrapper,
-.popup--white .leaflet-popup-tip {
-  background: white;
-  border: 1px solid #999;
-  border-bottom-width: 0px;
-  box-shadow: 0px 0px 0px 6px rgba(0,0,0,0.2);
-
-}
-
-.popup--sand .leaflet-popup-content-wrapper,
-.popup--sand .leaflet-popup-tip {
-  background: #e8e0cb;
-  border: 1px solid #999;
-  border-bottom-width: 0px;
-  box-shadow: 0px 0px 0px 6px rgba(0,0,0,0.2);
-
-}
-
-
 .leaflet-popup-content {
   margin: 12px 12px;
   margin-right: 24px;
