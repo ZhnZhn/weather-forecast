@@ -7,6 +7,8 @@ import {
 import useBool from '../hooks/useBool';
 import useAriaCombobox from './useAriaCombobox';
 
+import { getItemCaption } from './OptionFn';
+
 import ArrowCell from './ArrowCell';
 import OptionsPane from './OptionsPane';
 
@@ -88,7 +90,7 @@ const InputSelect = ({
       </label>
       <div className={CL_DIV}>
         <div className={CL_DIV_VALUE}>
-           {_item.caption}
+           {getItemCaption(_item)}
         </div>
         <button
           type="button"

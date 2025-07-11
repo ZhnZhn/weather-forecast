@@ -6,6 +6,7 @@ exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _useBool = _interopRequireDefault(require("../hooks/useBool"));
 var _useAriaCombobox = _interopRequireDefault(require("./useAriaCombobox"));
+var _OptionFn = require("./OptionFn");
 var _ArrowCell = _interopRequireDefault(require("./ArrowCell"));
 var _OptionsPane = _interopRequireDefault(require("./OptionsPane"));
 var _jsxRuntime = require("react/jsx-runtime");
@@ -75,7 +76,7 @@ const InputSelect = _ref => {
       className: CL_DIV,
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         className: CL_DIV_VALUE,
-        children: _item.caption
+        children: (0, _OptionFn.getItemCaption)(_item)
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
         type: "button",
         className: CL_DIV_BT,
