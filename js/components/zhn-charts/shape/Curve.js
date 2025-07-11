@@ -1,9 +1,8 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Curve = void 0;
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _d3Shape = require("../d3Shape");
 var _FnUtils = require("../util/FnUtils");
 var _types = require("../util/types");
@@ -32,8 +31,8 @@ const getCurveFactory = (type, layout) => {
   if ((0, _FnUtils._isFn)(type)) {
     return type;
   }
-  const name = "curve" + (0, _FnUtils._upperFirst)(type);
-  return name === 'curveMonotone' && layout ? CURVE_FACTORIES["" + name + (_isLayoutVertical(layout) ? 'Y' : 'X')] : CURVE_FACTORIES[name] || _d3Shape.curveLinear;
+  const name = `curve${(0, _FnUtils._upperFirst)(type)}`;
+  return name === 'curveMonotone' && layout ? CURVE_FACTORIES[`${name}${_isLayoutVertical(layout) ? 'Y' : 'X'}`] : CURVE_FACTORIES[name] || _d3Shape.curveLinear;
 };
 
 /**
@@ -87,7 +86,7 @@ const Curve = props => {
   return (!points || !points.length) && !path ? null : /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
     ...(0, _ReactUtils.filterProps)(_props),
     ...(0, _types.adaptEventHandlers)(_props),
-    className: (0, _crCn.default)(_CL.CL_CURVE, className),
+    className: (0, _styleFn.crCn)(_CL.CL_CURVE, className),
     d: points && points.length ? getPath(props) : path,
     ref: pathRef
   });

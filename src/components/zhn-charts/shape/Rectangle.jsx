@@ -6,7 +6,7 @@ import {
   getRefValue
 } from '../../uiApi';
 
-import crCn from '../../zhn-utils/crCn';
+import { crCn } from '../../styleFn';
 import { Animate } from '../../zhn-animate';
 
 import {

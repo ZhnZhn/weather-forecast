@@ -1,10 +1,9 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.DefaultTooltipContent = void 0;
 var _uiApi = require("../../uiApi");
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _FnUtils = require("../util/FnUtils");
 var _DataUtils = require("../util/DataUtils");
 var _CL = require("../CL");
@@ -65,7 +64,7 @@ const _renderContent = props => {
             className: _CL.CL_TOOLTIP_ITEM_UNIT,
             children: entry.unit || ''
           })]
-        }, "tooltip-item-" + i);
+        }, `tooltip-item-${i}`);
       });
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
       className: _CL.CL_TOOLTIP_ITEM_LIST,
@@ -75,7 +74,7 @@ const _renderContent = props => {
   }
   return null;
 };
-const DefaultTooltipContent = (0, _uiApi.memo)(props => {
+const DefaultTooltipContent = exports.DefaultTooltipContent = (0, _uiApi.memo)(props => {
   const {
       wrapperClassName,
       contentStyle,
@@ -99,8 +98,8 @@ const DefaultTooltipContent = (0, _uiApi.memo)(props => {
     },
     hasLabel = !(0, _FnUtils._isNil)(label);
   let finalLabel = hasLabel ? label : '';
-  const wrapperCN = (0, _crCn.default)(_CL.CL_DEFAULT_TOOLTIP, wrapperClassName),
-    labelCN = (0, _crCn.default)(_CL.CL_TOOLTIP_LABEL, labelClassName);
+  const wrapperCN = (0, _styleFn.crCn)(_CL.CL_DEFAULT_TOOLTIP, wrapperClassName),
+    labelCN = (0, _styleFn.crCn)(_CL.CL_TOOLTIP_LABEL, labelClassName);
   if (hasLabel && labelFormatter && payload !== void 0 && payload !== null) {
     finalLabel = labelFormatter(label, payload);
   }
@@ -110,11 +109,10 @@ const DefaultTooltipContent = (0, _uiApi.memo)(props => {
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("p", {
       className: labelCN,
       style: finalLabelStyle,
-      children: (0, _uiApi.isValidElement)(finalLabel) ? finalLabel : "" + finalLabel
+      children: (0, _uiApi.isValidElement)(finalLabel) ? finalLabel : `${finalLabel}`
     }), _renderContent((void 0).props)]
   });
 });
-exports.DefaultTooltipContent = DefaultTooltipContent;
 DefaultTooltipContent.displayName = 'DefaultTooltipContent';
 DefaultTooltipContent.defaultProps = {
   separator: ' : ',

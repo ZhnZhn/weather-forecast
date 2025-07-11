@@ -5,12 +5,11 @@ import {
 } from '../uiApi';
 
 import {
+  crCn,
   CL_BG,
   S_BLOCK,
   S_NONE
 } from '../styleFn';
-
-import crCn from '../zhn-utils/crCn';
 
 import useXYMovable from '../hooks/useXYMovable';
 import { toggleLayout } from '../../flux/handlers';

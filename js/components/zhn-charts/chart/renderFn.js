@@ -1,10 +1,9 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.renderMap = void 0;
 var _uiApi = require("../../uiApi");
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _CartesianAxis = require("../cartesian/CartesianAxis");
 var _Tooltip = require("../component/Tooltip");
 var _Curve = require("../shape/Curve");
@@ -119,7 +118,7 @@ const _renderAxis = (axisOptions, element, displayName, index, props) => {
   return /*#__PURE__*/(0, _react.createElement)(_CartesianAxis.CartesianAxis, {
     ...axisOptions,
     key: element.key || `${displayName}-${index}`,
-    className: (0, _crCn.default)((0, _CL.crAxisCl)(axisType), className),
+    className: (0, _styleFn.crCn)((0, _CL.crAxisCl)(axisType), className),
     viewBox: {
       x: 0,
       y: 0,

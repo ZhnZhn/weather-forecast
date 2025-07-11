@@ -8,7 +8,7 @@ import {
   useEffect
 } from "../../uiApi";
 
-import crCn from "../../zhn-utils/crCn";
+import { crCn } from "../../styleFn";
 import { translateStyle } from "../../zhn-animate";
 
 import {

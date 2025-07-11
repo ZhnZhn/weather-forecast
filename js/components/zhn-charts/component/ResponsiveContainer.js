@@ -4,7 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.ResponsiveContainer = void 0;
 var _uiApi = require("../../uiApi");
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _throttleFn = _interopRequireDefault(require("../../../utils/throttleFn"));
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
@@ -118,7 +118,7 @@ const ResponsiveContainer = _ref => {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     ref: _refContainer,
     id: id ? id : void 0,
-    className: (0, _crCn.default)("recharts-responsive-container", className),
+    className: (0, _styleFn.crCn)("recharts-responsive-container", className),
     style: {
       ...style,
       width,

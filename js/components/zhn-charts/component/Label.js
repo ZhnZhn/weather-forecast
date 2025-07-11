@@ -1,10 +1,9 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Label = void 0;
 var _uiApi = require("../../uiApi");
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _FnUtils = require("../util/FnUtils");
 var _Text = require("./Text");
 var _ReactUtils = require("../util/ReactUtils");
@@ -42,7 +41,7 @@ const Label = props => {
     label = (0, _LabelFn.getLabel)(_props);
   }
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, {
-    className: (0, _crCn.default)(_CL.CL_LABEL, className)
+    className: (0, _styleFn.crCn)(_CL.CL_LABEL, className)
     // attrs
     ,
     ...(0, _ReactUtils.filterProps)(_props, true),

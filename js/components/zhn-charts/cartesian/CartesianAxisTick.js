@@ -1,9 +1,8 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.CartesianAxisTick = void 0;
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _types = require("../util/types");
 var _FnUtils = require("../util/FnUtils");
 var _Layer = require("../container/Layer");
@@ -40,7 +39,7 @@ const CartesianAxisTick = _ref => {
     children: [tickLine && /*#__PURE__*/(0, _jsxRuntime.jsx)("line", {
       ...tickLineProps,
       ...lineCoord,
-      className: (0, _crCn.default)(_CL.CL_AXIS_TICK_LINE, _tickLineClassName)
+      className: (0, _styleFn.crCn)(_CL.CL_AXIS_TICK_LINE, _tickLineClassName)
     }), tick && _renderTickItem(tick, tickProps, `${(0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)]
   });
 };

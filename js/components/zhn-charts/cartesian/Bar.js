@@ -4,7 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.Bar = void 0;
 var _uiApi = require("../../uiApi");
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _FnUtils = require("../util/FnUtils");
 var _Global = require("../util/Global");
 var _DataUtils = require("../util/DataUtils");
@@ -51,7 +51,7 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
   if ((0, _cartesianFn.isHideOrNoData)(_props, data)) {
     return null;
   }
-  const layerClass = (0, _crCn.default)(_CL.CL_BAR, className),
+  const layerClass = (0, _styleFn.crCn)(_CL.CL_BAR, className),
     needClip = (0, _cartesianFn.isNeedClip)(_props);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     className: layerClass,
@@ -61,7 +61,7 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
       props: _props
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
       className: _CL.CL_BAR_RECTANGLES,
-      clipPath: needClip ? "url(#clipPath-" + clipPathId + ")" : null,
+      clipPath: needClip ? `url(#clipPath-${clipPathId})` : null,
       children: [(0, _BarRenderFn.renderBackground)(_props), (0, _BarRenderFn.renderRectangles)(_props, prevData, handleAnimationStart, handleAnimationEnd)]
     }), (!isAnimationActive || isAnimationFinished) && _LabelList.LabelList.renderCallByParent(_props, data)]
   });
@@ -122,7 +122,6 @@ Bar.getComposedData = _ref => {
       }
     }
     if (layout === 'horizontal') {
-      var _ref2;
       const [baseValueScale, currentValueScale] = [yAxis.scale(value[0]), yAxis.scale(value[1])];
       x = (0, _ChartUtils.getCateCoordinateOfBar)({
         axis: xAxis,
@@ -132,7 +131,7 @@ Bar.getComposedData = _ref => {
         entry,
         index
       });
-      y = (_ref2 = currentValueScale != null ? currentValueScale : baseValueScale) != null ? _ref2 : void 0;
+      y = currentValueScale ?? baseValueScale ?? void 0;
       width = pos.size;
       const computedHeight = baseValueScale - currentValueScale;
       height = Number.isNaN(computedHeight) ? 0 : computedHeight;

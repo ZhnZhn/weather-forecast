@@ -1,10 +1,9 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.generateCategoricalChart = void 0;
 var _uiApi = require("../../uiApi");
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _FnUtils = require("../util/FnUtils");
 var _Surface = require("../container/Surface");
 var _Tooltip = require("../component/Tooltip");
@@ -421,7 +420,7 @@ const generateCategoricalChart = _ref => {
       return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
         role: "region",
         ref: this._refContainer,
-        className: (0, _crCn.default)(_CL.CL_WRAPPER, className),
+        className: (0, _styleFn.crCn)(_CL.CL_WRAPPER, className),
         style: {
           position: 'relative',
           cursor: 'default',

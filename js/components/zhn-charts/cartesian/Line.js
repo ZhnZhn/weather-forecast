@@ -4,7 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.Line = void 0;
 var _uiApi = require("../../uiApi");
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _FnUtils = require("../util/FnUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _Layer = require("../container/Layer");
@@ -78,7 +78,7 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
     return null;
   }
   const hasSinglePoint = points.length === 1,
-    layerClass = (0, _crCn.default)(_CL.CL_LINE, className),
+    layerClass = (0, _styleFn.crCn)(_CL.CL_LINE, className),
     needClip = (0, _cartesianFn.isNeedClip)(_props),
     _clipPathProps = (0, _cartesianFn.crClipPathProps)(needClip, clipPathId),
     _isAnimationNotActiveOrFinished = !isAnimationActive || isAnimationFinished,

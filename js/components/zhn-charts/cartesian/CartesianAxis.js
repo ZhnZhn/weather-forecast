@@ -1,10 +1,9 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.CartesianAxis = void 0;
 var _uiApi = require("../../uiApi");
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _ShallowEqual = require("../util/ShallowEqual");
 var _ReactUtils = require("../util/ReactUtils");
 var _Layer = require("../container/Layer");
@@ -94,7 +93,7 @@ const CartesianAxis = exports.CartesianAxis = (0, _uiApi.memo)(props => {
   }
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     refEl: _refLayer,
-    className: (0, _crCn.default)(_CL.CL_AXIS, className),
+    className: (0, _styleFn.crCn)(_CL.CL_AXIS, className),
     children: [axisLine && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianAxisLine.CartesianAxisLine, {
       className: _CL.CL_AXIS_LINE,
       props: _props

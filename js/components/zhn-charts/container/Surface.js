@@ -1,9 +1,8 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Surface = void 0;
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _ReactUtils = require("../util/ReactUtils");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -14,7 +13,7 @@ const _crViewBox = _ref => {
     width,
     height
   } = _ref;
-  return x + " " + y + " " + width + " " + height;
+  return `${x} ${y} ${width} ${height}`;
 };
 const Surface = props => {
   const {
@@ -34,7 +33,7 @@ const Surface = props => {
     };
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("svg", {
     ...(0, _ReactUtils.filterProps)(restProps, true, 'svg'),
-    className: (0, _crCn.default)(_CL.CL_RECHARTS_SURFACE, className),
+    className: (0, _styleFn.crCn)(_CL.CL_RECHARTS_SURFACE, className),
     width: width,
     height: height,
     style: style,

@@ -3,7 +3,7 @@ import {
   cloneUiElement
 } from '../../uiApi';
 
-import crCn from '../../zhn-utils/crCn';
+import { crCn } from '../../styleFn';
 
 import { adaptEventsOfChild } from '../util/types';
 import { Surface } from '../container/Surface';

@@ -1,4 +1,4 @@
-import crCn  from '../zhn-utils/crCn';
+import { crCn }  from '../styleFn';
 
 export const CL_TAB = "tab"
 , CL_ACTIVE = "active"

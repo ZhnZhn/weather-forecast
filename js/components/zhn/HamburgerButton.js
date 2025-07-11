@@ -6,7 +6,7 @@ exports.default = void 0;
 var _useLayoutButton = _interopRequireDefault(require("../hooks/useLayoutButton"));
 var _hotkeys = require("../hotkeys/hotkeys");
 var _useHotKey = _interopRequireDefault(require("../hotkeys/useHotKey"));
-var _crCn = _interopRequireDefault(require("../zhn-utils/crCn"));
+var _styleFn = require("../styleFn");
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_BT_HAMBURGER = "bt-hamburger",
   CL_OPENED = "opened",
@@ -24,7 +24,7 @@ const HamburgerButton = _ref => {
     onClick
   } = _ref;
   const [isOpen, _hClick] = (0, _useLayoutButton.default)(storeKey, onClick),
-    btClass = (0, _crCn.default)(CL_BT_HAMBURGER, [isOpen, CL_OPENED]);
+    btClass = (0, _styleFn.crCn)(CL_BT_HAMBURGER, [isOpen, CL_OPENED]);
   (0, _useHotKey.default)(_hotkeys.HK_MENU, _hClick);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
     type: "button",

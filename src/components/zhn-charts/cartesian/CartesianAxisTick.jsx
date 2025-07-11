@@ -1,4 +1,4 @@
-import crCn from '../../zhn-utils/crCn';
+import { crCn } from '../../styleFn';
 
 import { adaptEventsOfChild } from '../util/types';
 import { _isFn } from '../util/FnUtils';

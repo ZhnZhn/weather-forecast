@@ -1,4 +1,4 @@
-import crCn from '../../zhn-utils/crCn';
+import { crCn } from '../../styleFn';
 
 import { filterProps } from '../util/ReactUtils';
 import { getClassName } from './CartesianAxisRenderFn';

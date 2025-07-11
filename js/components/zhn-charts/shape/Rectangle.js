@@ -1,10 +1,9 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Rectangle = void 0;
 var _uiApi = require("../../uiApi");
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _zhnAnimate = require("../../zhn-animate");
 var _ReactUtils = require("../util/ReactUtils");
 var _FnUtils = require("../util/FnUtils");
@@ -59,7 +58,7 @@ const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
   if (x !== +x || y !== +y || width !== +width || height !== +height || width === 0 || height === 0) {
     return null;
   }
-  const layerClass = (0, _crCn.default)(_CL.CL_RESTANGLE, className);
+  const layerClass = (0, _styleFn.crCn)(_CL.CL_RESTANGLE, className);
   return isUpdateAnimationActive ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_zhnAnimate.Animate, {
     isActive: isUpdateAnimationActive,
     canBegin: totalLength > 0,
@@ -87,8 +86,8 @@ const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
       return /*#__PURE__*/(0, _jsxRuntime.jsx)(_zhnAnimate.Animate, {
         isActive: isAnimationActive,
         canBegin: totalLength > 0,
-        from: "0px " + (totalLength === -1 ? 1 : totalLength) + "px",
-        to: totalLength + "px 0px",
+        from: `0px ${totalLength === -1 ? 1 : totalLength}px`,
+        to: `${totalLength}px 0px`,
         attributeName: "strokeDasharray",
         begin: animationBegin,
         duration: animationDuration,

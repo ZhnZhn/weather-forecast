@@ -3,7 +3,7 @@ import useLayoutButton from '../hooks/useLayoutButton';
 import { HK_MENU } from '../hotkeys/hotkeys';
 import useHotKey from '../hotkeys/useHotKey';
 
-import crCn from '../zhn-utils/crCn';
+import { crCn } from '../styleFn';
 
 const CL_BT_HAMBURGER = "bt-hamburger"
 , CL_OPENED = "opened"

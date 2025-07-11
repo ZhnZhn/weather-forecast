@@ -1,12 +1,10 @@
 import {
+  crCn,
   S_BLOCK,
   S_NONE
 } from '../styleFn';
 
-import crCn from '../zhn-utils/crCn';
-
-const CL_SHOW_POPUP = 'show-popup'
-
+const CL_SHOW_POPUP = 'show-popup';
 
 const ShowHide = ({
   isShow,

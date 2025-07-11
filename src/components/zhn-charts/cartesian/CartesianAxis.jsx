@@ -5,8 +5,8 @@ import {
   useEffect,
   getRefValue
 } from '../../uiApi';
+import { crCn } from '../../styleFn';
 
-import crCn from '../../zhn-utils/crCn';
 import { shallowEqual } from '../util/ShallowEqual';
 import { crProps } from '../util/ReactUtils';
 

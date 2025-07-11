@@ -1,4 +1,4 @@
-import crCn from '../../zhn-utils/crCn';
+import { crCn } from '../../styleFn';
 import { filterProps } from '../util/ReactUtils';
 
 import { CL_RECHARTS_SURFACE } from '../CL';
@@ -23,7 +23,7 @@ export const Surface = (
     ...restProps
   } = props
   , svgView = viewBox
-     || { x: 0, y: 0, width, height };  
+     || { x: 0, y: 0, width, height };
   return (
     <svg
       {...filterProps(restProps, true, 'svg')}

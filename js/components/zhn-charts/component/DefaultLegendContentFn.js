@@ -1,10 +1,9 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.renderItems = void 0;
 var _uiApi = require("../../uiApi");
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _types = require("../util/types");
 var _Surface = require("../container/Surface");
 var _CL = require("../CL");
@@ -85,7 +84,7 @@ const renderItems = props => {
     };
   return payload.map((entry, i) => {
     const finalFormatter = entry.formatter || formatter,
-      className = (0, _crCn.default)(`${_CL.CL_LEGEND_ITEM} legend-item-${i}`, entry.inactive && 'inactive');
+      className = (0, _styleFn.crCn)(`${_CL.CL_LEGEND_ITEM} legend-item-${i}`, entry.inactive && 'inactive');
     if (entry.type === 'none') {
       return null;
     }

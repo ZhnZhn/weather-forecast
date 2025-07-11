@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Text = void 0;
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _CL = require("../CL");
@@ -65,10 +65,10 @@ const Text = props => {
       {
         width
       } = _props;
-    transforms.push("scale(" + ((0, _DataUtils.isNumber)(width) ? width / lineWidth : 1) / lineWidth + ")");
+    transforms.push(`scale(${((0, _DataUtils.isNumber)(width) ? width / lineWidth : 1) / lineWidth})`);
   }
   if (angle) {
-    transforms.push("rotate(" + angle + ", " + x + ", " + y + ")");
+    transforms.push(`rotate(${angle}, ${x}, ${y})`);
   }
   if (transforms.length) {
     textProps.transform = transforms.join(' ');
@@ -77,7 +77,7 @@ const Text = props => {
     ...(0, _ReactUtils.filterProps)(textProps, true),
     x: x,
     y: y,
-    className: (0, _crCn.default)(_CL.CL_TEXT, className),
+    className: (0, _styleFn.crCn)(_CL.CL_TEXT, className),
     textAnchor: textAnchor,
     fill: textProps.fill.includes('url') ? DF_PROPS.fill : textProps.fill,
     children: wordsByLines.map((line, index) => /*#__PURE__*/(0, _jsxRuntime.jsx)("tspan", {

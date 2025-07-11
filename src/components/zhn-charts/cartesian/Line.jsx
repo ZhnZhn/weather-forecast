@@ -4,7 +4,7 @@ import {
   useState,
   useEffect
 } from '../../uiApi';
-import crCn from '../../zhn-utils/crCn';
+import { crCn } from '../../styleFn';
 
 import { _isNil } from '../util/FnUtils';
 import { crProps } from '../util/ReactUtils';

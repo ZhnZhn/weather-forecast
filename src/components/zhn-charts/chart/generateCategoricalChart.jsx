@@ -1,6 +1,5 @@
 import { Component } from '../../uiApi';
-
-import crCn from '../../zhn-utils/crCn';
+import { crCn } from '../../styleFn';
 
 import {
   _throttle,
@@ -407,7 +406,7 @@ export const generateCategoricalChart = ({
                   ...tooltipEvents,
               };
             }
-                        
+
             render() {
               if (!validateWidthHeight(this)) {
                 return null;

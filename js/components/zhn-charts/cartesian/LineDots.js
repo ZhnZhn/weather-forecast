@@ -1,9 +1,8 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.LineDots = void 0;
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _ReactUtils = require("../util/ReactUtils");
 var _Dot = require("../shape/Dot");
 var _Layer = require("../container/Layer");
@@ -17,7 +16,7 @@ const _crDotItem = (_ref, option) => {
   } = _ref;
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Dot.Dot, {
     ...restProps,
-    className: (0, _crCn.default)(_CL.CL_LINE_DOT, option && option.className)
+    className: (0, _styleFn.crCn)(_CL.CL_LINE_DOT, option && option.className)
   }, key);
 };
 const _renderDotItem = (0, _cartesianFn.fCreateElement)(_crDotItem);

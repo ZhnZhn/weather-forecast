@@ -1,10 +1,9 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Tooltip = void 0;
 var _uiApi = require("../../uiApi");
-var _crCn = _interopRequireDefault(require("../../zhn-utils/crCn"));
+var _styleFn = require("../../styleFn");
 var _zhnAnimate = require("../../zhn-animate");
 var _FnUtils = require("../util/FnUtils");
 var _Global = require("../util/Global");
@@ -57,9 +56,9 @@ const DF_PROPS = {
 const _crClassName = (coordinate, translateX, translateY) => {
   const _isTranslateCoordinateX = (0, _DataUtils.isNumber)(translateX) && coordinate && (0, _DataUtils.isNumber)(coordinate.x),
     _isTranslateCoordinateY = (0, _DataUtils.isNumber)(translateY) && coordinate && (0, _DataUtils.isNumber)(coordinate.y),
-    _clX = _isTranslateCoordinateX ? (0, _crCn.default)(translateX >= coordinate.x && `${_CL.CL_TOOLTIP_WRAPPER}-right`, translateX < coordinate.x && `${_CL.CL_TOOLTIP_WRAPPER}-left`) : '',
-    _clY = _isTranslateCoordinateY ? (0, _crCn.default)(translateY >= coordinate.y && `${_CL.CL_TOOLTIP_WRAPPER}-bottom`, translateY < coordinate.y && `${_CL.CL_TOOLTIP_WRAPPER}-top`) : '';
-  return (0, _crCn.default)(_CL.CL_TOOLTIP_WRAPPER, (0, _crCn.default)(_clX, _clY));
+    _clX = _isTranslateCoordinateX ? (0, _styleFn.crCn)(translateX >= coordinate.x && `${_CL.CL_TOOLTIP_WRAPPER}-right`, translateX < coordinate.x && `${_CL.CL_TOOLTIP_WRAPPER}-left`) : '',
+    _clY = _isTranslateCoordinateY ? (0, _styleFn.crCn)(translateY >= coordinate.y && `${_CL.CL_TOOLTIP_WRAPPER}-bottom`, translateY < coordinate.y && `${_CL.CL_TOOLTIP_WRAPPER}-top`) : '';
+  return (0, _styleFn.crCn)(_CL.CL_TOOLTIP_WRAPPER, (0, _styleFn.crCn)(_clX, _clY));
 };
 const Tooltip = props => {
   const [boxWidth, setBoxWidth] = (0, _uiApi.useState)(-1),

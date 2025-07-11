@@ -1,5 +1,5 @@
 import { memo } from '../../uiApi';
-import crCn from '../../zhn-utils/crCn';
+import { crCn } from '../../styleFn';
 
 import { adaptEventHandlers } from '../util/types';
 import { filterProps } from '../util/ReactUtils';
@@ -12,7 +12,7 @@ export const Dot = memo((props) => {
     r,
     className
   } = props;
-  
+
   return cx === +cx && cy === +cy && r === +r
     ? (
         <circle
