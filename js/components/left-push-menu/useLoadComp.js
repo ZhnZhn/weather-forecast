@@ -4,6 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
+var _Tokens = require("../styles/Tokens");
 var _RouterComp = _interopRequireDefault(require("./RouterComp"));
 var _RaisedButton = _interopRequireDefault(require("../zhn/RaisedButton"));
 var _SpinnerLoading = _interopRequireDefault(require("../zhn/SpinnerLoading"));
@@ -46,7 +47,7 @@ const useLoadComp = (caption, compType) => {
   } else if (loadStatus === FAILED) {
     return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ErrMsg.default, {
       style: S_ERR_MSG,
-      msg: "Error during loading."
+      msg: _Tokens.MSG_LOADING_COMP_FALED
     });
   }
   return null;

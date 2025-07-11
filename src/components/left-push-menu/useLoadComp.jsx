@@ -1,5 +1,9 @@
 import { useState } from '../uiApi';
 
+import {
+  MSG_LOADING_COMP_FALED
+} from '../styles/Tokens';
+
 import RouterComp from './RouterComp';
 import RaisedButton from '../zhn/RaisedButton';
 import SpinnerLoading from '../zhn/SpinnerLoading';
@@ -44,7 +48,7 @@ const useLoadComp = (caption, compType) => {
     return (
       <ErrMsg
         style={S_ERR_MSG}
-        msg="Error during loading."
+        msg={MSG_LOADING_COMP_FALED}
       />
     );
   }
