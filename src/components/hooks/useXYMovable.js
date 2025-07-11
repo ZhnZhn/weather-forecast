@@ -31,6 +31,21 @@ const _fGetIntStyleProperty = (
 , _getIntStyleTop = _fGetIntStyleProperty('top')
 , _getIntStyleLeft = _fGetIntStyleProperty('left');
 
+const ABSOLUTE_TOP = 70
+, MIN_VISIABLE_HEIGHT = 70
+, MIN_BOTTOM_GAP = ABSOLUTE_TOP + MIN_VISIABLE_HEIGHT;
+
+const _crMoveDoneTopValue = (
+  currentTop
+) => {
+  const _windowInnerHeght = window.innerHeight;
+  return currentTop < 0
+    ? 0
+    : _windowInnerHeght - currentTop < MIN_BOTTOM_GAP
+        ? _windowInnerHeght - MIN_BOTTOM_GAP
+        : currentTop;
+};
+
 const VALUE_GAP = 8;
 const _crNextValue = (
   value,
@@ -70,7 +85,7 @@ const _isInitEvent = (
     for(let i=0; i<_composedPath.length; i++){
       const _el = _composedPath[i];
       if (_isExcludeElement(_el)) {
-        return false;
+        return !1;
       }
       if (_el === element) {
         break;
@@ -78,7 +93,7 @@ const _isInitEvent = (
     }
   }
 
-  if (!HAS_TOUCH_EVENTS) { return true; }
+  if (!HAS_TOUCH_EVENTS) { return !0; }
 
   const {
     left,
@@ -109,10 +124,9 @@ const useXYMovable = (
           _prevLeft + _diffX,
           window.innerWidth - _element.clientWidth
         )
-      , _nextTop = _crNextValue(
-          _prevTop + _diffY,
-          window.innerHeight - _element.clientHeight
-        );
+      , _nextTop = _crMoveDoneTopValue(
+          _prevTop + _diffY
+      );
 
       _assign(_elementStyle, {
         top: `${_nextTop}px`,
