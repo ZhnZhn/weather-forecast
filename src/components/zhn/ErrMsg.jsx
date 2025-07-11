@@ -1,13 +1,16 @@
 
-const S = {
+const S_ERR_MSG = {
   color: '#080101',
   fontWeight: 'bold',
   fontSize: '18px'
 };
 
-const ErrMsg = ({ style, msg }) => (
-  <div style={{...S, ...style}}>
-    {msg}
+const ErrMsg = ({
+  style,
+  msg
+}) => (
+  <div style={{...S_ERR_MSG, ...style}}>
+    {msg ? msg + '.' : msg}
   </div>
 );
 
