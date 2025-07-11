@@ -1,4 +1,4 @@
-import Svg100 from './svg/Svg100';
+import { Svg100 } from './Svg';
 
 const CL_SVG_CLOSE = "bt-svg-close"
 , STROKE_LINECAP_ROUND_PROPS = ({

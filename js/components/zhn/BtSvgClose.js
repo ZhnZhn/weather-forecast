@@ -1,9 +1,8 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.default = void 0;
-var _Svg = _interopRequireDefault(require("./svg/Svg100"));
+var _Svg = require("./Svg");
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_SVG_CLOSE = "bt-svg-close",
   STROKE_LINECAP_ROUND_PROPS = {
@@ -26,7 +25,7 @@ const BtSvgClose = _ref => {
     className: CL_SVG_CLOSE,
     style: style,
     onClick: onClose,
-    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Svg.default, {
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Svg.Svg100, {
       ...STROKE_LINECAP_ROUND_PROPS,
       w: "12",
       style: {

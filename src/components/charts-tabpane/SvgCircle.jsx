@@ -1,3 +1,4 @@
+import { Svg100WithTitle } from '../zhn/Svg';
 
 const S_SVG = {
   position: 'relative',
@@ -11,14 +12,21 @@ const SvgCircle = ({
   stroke,
   fill
 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 18 18" width="100%" height="100%"
-     preserveAspectRatio="none" aria-labelledby="title"
+  <Svg100WithTitle
+     title="Circle Marker"
+     w="18"
      style={S_SVG}
   >
-   <title id="title">Circle Marker</title>
-   <circle r="6" stroke={stroke} strokeWidth="2" fill={fill} cx="9" cy="9" />
-  </svg>
+    <circle
+      fill={fill}
+      stroke={stroke}
+      strokeWidth="2"
+      r="6"
+      cx="9"
+      cy="9"
+    />
+  </Svg100WithTitle>
 );
+
 
 export default SvgCircle

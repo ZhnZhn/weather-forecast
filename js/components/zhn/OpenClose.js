@@ -6,7 +6,7 @@ exports.default = void 0;
 var _styleFn = require("../styleFn");
 var _useToggle = _interopRequireDefault(require("../hooks/useToggle"));
 var _Color = require("../styles/Color");
-var _Svg = _interopRequireDefault(require("./svg/Svg100"));
+var _Svg = require("./Svg");
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_SHOW_POPUP = 'show-popup',
   CL_SELECT_NONE = 'select-none',
@@ -78,7 +78,7 @@ const OpenClose = _ref => {
         onClick: toggleIsOpen,
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
           style: S_ROOT_SVG,
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Svg.default, {
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Svg.Svg100, {
             w: "16",
             style: S_INLINE_BLOCK,
             children: /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {

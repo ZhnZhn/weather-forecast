@@ -1,3 +1,4 @@
+import { Svg100WithTitle } from '../zhn/Svg';
 
 const S_SVG = {
   position: 'relative',
@@ -11,17 +12,17 @@ const SvgRest = ({
   stroke='green',
   fill=stroke
 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 18 18" width="100%" height="100%"
-     preserveAspectRatio="none" aria-labelledby="title"
+  <Svg100WithTitle
+     title="Rest Marker"
+     w="18"
+     aria-labelledby="title"
      style={S_SVG}
   >
-   <title id="title">Rest Marker</title>
-   <rect
-     x="3" y="0" width="11" height="18"
-     stroke={stroke} fill={fill}
-   />
-  </svg>
+    <rect
+      x="3" y="0" width="11" height="18"
+      stroke={stroke} fill={fill}
+    />
+  </Svg100WithTitle>
 );
 
 export default SvgRest

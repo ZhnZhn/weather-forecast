@@ -9,7 +9,7 @@ import {
   COLOR_BLANK
 } from '../styles/Color';
 
-import Svg100 from './svg/Svg100';
+import { Svg100 } from './Svg';
 
 const CL_SHOW_POPUP = 'show-popup'
 , CL_SELECT_NONE = 'select-none'
