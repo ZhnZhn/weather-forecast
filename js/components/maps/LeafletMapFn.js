@@ -1,38 +1,20 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 exports.__esModule = true;
 exports.createMap = exports.addMarker = void 0;
-
 var _leaflet = _interopRequireDefault(require("leaflet"));
-
 var _marker = _interopRequireDefault(require("../../templates/marker"));
-
-var L = _leaflet["default"] || window.L;
-var POPUP_CL = {
-  DF: '',
-  WHITE: 'popup--white',
-  SAND: 'popup--sand'
-};
-
-var _crPopupOptions = function _crPopupOptions(themeName) {
-  return {
-    className: POPUP_CL[themeName] || POPUP_CL.DF
-  };
-};
-
-var DF_LAT = 50,
-    DF_LNG = 0,
-    DF_ZOOM = 2;
-
-var createMap = function createMap(id, onLoad) {
+const L = _leaflet.default || window.L;
+const DF_LAT = 50,
+  DF_LNG = 0,
+  DF_ZOOM = 2;
+const createMap = (id, onLoad) => {
   if (!L) {
     return;
   }
-
-  var map = L.map(id, {
-    zoomControl: true
+  const map = L.map(id, {
+    zoomControl: !0
   }).on('load', onLoad).setView([DF_LAT, DF_LNG], DF_ZOOM);
   map.zoomControl.setPosition('bottomright');
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -42,31 +24,28 @@ var createMap = function createMap(id, onLoad) {
   }).addTo(map);
   return map;
 };
-
 exports.createMap = createMap;
-
-var addMarker = function addMarker(w, themeName, map) {
+const addMarker = (w, map) => {
   if (!L) {
     return;
   }
-
-  var icon = L.divIcon({
-    html: _marker["default"].fDivIcon(w)
-  }),
-      _ref = w || {},
-      coord = _ref.coord,
-      _ref2 = coord || {},
-      lat = _ref2.lat,
-      lon = _ref2.lon;
-
+  const icon = L.divIcon({
+      html: _marker.default.fDivIcon(w)
+    }),
+    {
+      coord
+    } = w || {},
+    {
+      lat,
+      lon
+    } = coord || {};
   if (lat && lon) {
     L.marker([lat, lon], {
       icon: icon,
       title: w.name,
       alt: w.name
-    }).bindPopup(_marker["default"].fPopup(w), _crPopupOptions(themeName)).addTo(map);
+    }).bindPopup(_marker.default.fPopup(w)).addTo(map);
   }
 };
-
 exports.addMarker = addMarker;
-//# sourceMappingURL=fnLeaflet.js.map
+//# sourceMappingURL=LeafletMapFn.js.map

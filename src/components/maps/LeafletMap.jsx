@@ -1,4 +1,9 @@
 //import PropTypes from 'prop-types';
+import throttleFn from '../../utils/throttleFn';
+
+import { requestPlace }  from '../../flux/handlers';
+import { sPlace } from '../../flux/selectors';
+
 import {
   useSelector,
   useState,
@@ -7,15 +12,15 @@ import {
 } from '../uiApi';
 
 import {
-  createMap,
-  addMarker
-} from './fnLeaflet';
-import throttleFn from '../../utils/throttleFn';
-
-import { requestPlace }  from '../../flux/handlers';
-import { sPlace } from '../../flux/selectors';
+  MSH_LEAFLET_MAP_LOADING_FAILED
+} from '../styles/Tokens';
 
 import ErrMsg from '../zhn/ErrMsg';
+
+import {
+  createMap,
+  addMarker
+} from './LeafletMapFn';
 
 const PERIOD_MS = 5000;
 
@@ -39,11 +44,11 @@ const LeafletMap = ({
   themeName
 }) => {
   const _refMap = useRef()
-  , _refThemeName = useRef(themeName)
-  , [mapStatus, setMapStatus] = useState(MAP_STATUS_LOADING)
+  , [
+    mapStatus,
+    setMapStatus
+  ] = useState(MAP_STATUS_LOADING)
   , forecast = useSelector(sPlace.forecast);
-
-  _refThemeName.current = themeName
 
   /*eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -62,10 +67,9 @@ const LeafletMap = ({
   /*eslint-enable react-hooks/exhaustive-deps */
 
   useEffect(()=>{
-    if (forecast){
+    if (forecast) {
       addMarker(
         forecast,
-        _refThemeName.current,
         _refMap.current
       );
     }
@@ -79,7 +83,7 @@ const LeafletMap = ({
      {mapStatus === MAP_STATUS_FAILED && (
        <ErrMsg
          style={S_ERR_MSG}
-         msg="LeafletMap Loading Has Failed."
+         msg={MSH_LEAFLET_MAP_LOADING_FAILED}
        />
      )}
     </div>

@@ -1,11 +1,4 @@
-import {
-  useSelector,
-  useStore,
-  useRef,
-  useEffect
-} from './uiApi';
-
-import { uiTheme } from './styles/uiTheme';
+import { useStore  } from './uiApi';
 
 import useHotKeys from './hotkeys/useHotKeys';
 
@@ -14,7 +7,6 @@ import Header from './header/Header';
 import LeftPushMenu from './left-push-menu/LeftPushMenu';
 import LeafletMap from './maps/LeafletMap';
 import PopupForecast from './popups/Forecast';
-import { sLayout } from '../flux/selectors';
 
 const MAP_ID = 'map_id';
 const PUSH_MENU_ID = 'left_push_menu';
@@ -32,45 +24,17 @@ const S_HEADER = {
 }
 , S_FLY_ROOT_DIV = {
   position: 'absolute',
-  top: 30,
-  left: 50,
+  top: 70,
+  left: 170,
   padding: '10px 5px 5px 4px',
   border: '1px solid #999',
   borderRadius: 5,
   boxShadow: 'rgba(0, 0, 0, 0.2) 0px 0px 0px 12px',
-  zIndex: 500
+  zIndex: 1500
 }
 
-const _assign = Object.assign;
-
 const WeatherSaga = () => {
-  const _refMap = useRef()
-  , _refMenu = useRef()
-  , themeName = useSelector(sLayout.themeName)
-  , isPushMenu = useSelector(sLayout.isPushMenu)
-  , store = useStore();
-
-  useEffect(()=>{
-    _refMap.current = document.getElementById(MAP_ID)
-    _refMenu.current = document.getElementById(PUSH_MENU_ID)
-  }, [])
-
-  useEffect(() => {
-    if (isPushMenu){
-      const width = _refMenu.current.getBoundingClientRect().width
-      _assign(_refMap.current.style, {
-        transform: `translateX(${width}px)`,
-        width: `calc(100vw - ${width}px)`
-      })
-      _refMenu.current.style.transform = 'translateX(0px)'
-    } else {
-      _assign(_refMap.current.style, {
-        transform: 'translateX(0px)',
-        width: '100vw'
-      })
-      _refMenu.current.style.transform = `translateX(-100%)`
-    }
-  }, [isPushMenu])
+  const store = useStore();
 
   useHotKeys()
 
@@ -81,12 +45,10 @@ const WeatherSaga = () => {
         <div>
           <LeftPushMenu
              id={PUSH_MENU_ID}
-             theme={uiTheme}
           />
           <LeafletMap
              id={MAP_ID}
              style={S_MAP}
-             themeName={themeName}
           />
           <PopupForecast
              style={S_FLY_ROOT_DIV}

@@ -1,8 +1,5 @@
 //import PropTypes from 'prop-types';
-import { useCallback } from '../uiApi';
-
 import memoIsShow from '../hoc/memoIsShow';
-import { uiTheme } from '../styles/uiTheme';
 
 import ModalDialog from '../zhn-moleculs/ModalDialog';
 import TabPane from '../zhn-tab/TabPane';
@@ -36,61 +33,48 @@ const SettingsDialog = ({
   isShow,
   data,
   onClose,
-}) => {
-  const {
-    onSetTheme,
-    onSet,
-    onAir
-  } = data
-  /*eslint-disable react-hooks/exhaustive-deps */
-  , _handleSetTheme = useCallback((item) => {
-     onSetTheme(uiTheme, item.value)
-  }, [])
-  // uiTheme, onSetTheme
-  /*eslint-enable react-hooks/exhaustive-deps */
-
-  return (
-    <ModalDialog
-       style={S_MODAL}
-       caption="User Settings"
+}) => (
+  <ModalDialog
+     style={S_MODAL}
+     caption="User Settings"
+     isShow={isShow}
+     isWithButton={!1}
+     onClose={onClose}
+  >
+    <TabPane
+       ariaLabel={TOKEN_USER_SETTINGS}
+       id="sd"
+       width="100%"
+       tabsStyle={S_TABS}
        isShow={isShow}
-       isWithButton={!1}
-       onClose={onClose}
     >
-      <TabPane
-         ariaLabel={TOKEN_USER_SETTINGS}
-         id="sd"
-         width="100%"
-         tabsStyle={S_TABS}
-         isShow={isShow}
+      <Tab
+        title="API Key"
+        selectedStyle={S_TAB_SELECTED}
+       >
+         <CardApiKey
+           style={S_CARD_ROOT}
+           buttonsStyle={S_CARD_BUTTONS}
+           onSet={data.onSet}
+           onClose={onClose}
+         />
+      </Tab>
+      <Tab
+        title="UI Theme"
+        selectedStyle={S_TAB_SELECTED}
       >
-        <Tab
-          title="API Key"
-          selectedStyle={S_TAB_SELECTED}
-         >
-           <CardApiKey
-             style={S_CARD_ROOT}
-             buttonsStyle={S_CARD_BUTTONS}
-             onSet={onSet}
-             onClose={onClose}
-           />
-        </Tab>
-        <Tab
-          title="UI Theme"
-          selectedStyle={S_TAB_SELECTED}
-        >
-           <CardUi
-             style={S_CARD_ROOT}
-             buttonsStyle={S_CARD_BUTTONS}
-             onSetTheme={_handleSetTheme}
-             onAir={onAir}
-             onClose={onClose}
-           />
-        </Tab>
-      </TabPane>
-    </ModalDialog>
-  );
-};
+         <CardUi
+           style={S_CARD_ROOT}
+           buttonsStyle={S_CARD_BUTTONS}
+           onUiTheme={data.onUiTheme}
+           onAir={data.onAir}
+           onClose={onClose}
+         />
+      </Tab>
+    </TabPane>
+  </ModalDialog>
+);
+
 
 /*
 SettingsDialog.propTypes = {

@@ -3,9 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.default = void 0;
-var _uiApi = require("../uiApi");
 var _memoIsShow = _interopRequireDefault(require("../hoc/memoIsShow"));
-var _uiTheme = require("../styles/uiTheme");
 var _ModalDialog = _interopRequireDefault(require("../zhn-moleculs/ModalDialog"));
 var _TabPane = _interopRequireDefault(require("../zhn-tab/TabPane"));
 var _Tab = _interopRequireDefault(require("../zhn-tab/Tab"));
@@ -43,18 +41,6 @@ const SettingsDialog = _ref => {
     data,
     onClose
   } = _ref;
-  const {
-      onSetTheme,
-      onSet,
-      onAir
-    } = data
-    /*eslint-disable react-hooks/exhaustive-deps */,
-    _handleSetTheme = (0, _uiApi.useCallback)(item => {
-      onSetTheme(_uiTheme.uiTheme, item.value);
-    }, []);
-  // uiTheme, onSetTheme
-  /*eslint-enable react-hooks/exhaustive-deps */
-
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ModalDialog.default, {
     style: S_MODAL,
     caption: "User Settings",
@@ -73,7 +59,7 @@ const SettingsDialog = _ref => {
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_CardApiKey.default, {
           style: S_CARD_ROOT,
           buttonsStyle: S_CARD_BUTTONS,
-          onSet: onSet,
+          onSet: data.onSet,
           onClose: onClose
         })
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Tab.default, {
@@ -82,8 +68,8 @@ const SettingsDialog = _ref => {
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_CardUi.default, {
           style: S_CARD_ROOT,
           buttonsStyle: S_CARD_BUTTONS,
-          onSetTheme: _handleSetTheme,
-          onAir: onAir,
+          onUiTheme: data.onUiTheme,
+          onAir: data.onAir,
           onClose: onClose
         })
       })]

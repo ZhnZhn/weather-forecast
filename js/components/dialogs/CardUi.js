@@ -4,6 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
+var _uiTheme = require("../styles/uiTheme");
 var _InputSelect = _interopRequireDefault(require("../zhn-m-input/InputSelect"));
 var _InputSwitch = _interopRequireDefault(require("../zhn/InputSwitch"));
 var _RaisedButton = _interopRequireDefault(require("../zhn/RaisedButton"));
@@ -11,17 +12,7 @@ var _jsxRuntime = require("react/jsx-runtime");
 const S_INPUT_SELECT = {
     width: 280
   },
-  _themeOptions = [{
-    caption: 'Grey',
-    value: 'GREY'
-  }, {
-    caption: 'Sand',
-    value: 'SAND'
-  }, {
-    caption: 'White',
-    value: 'WHITE'
-  }],
-  DF_THEME = _themeOptions[0],
+  DF_THEME = _uiTheme.UI_THEME_OPTIONS[0],
   CAPTION_AIR = "Air Quality",
   S_CHECK_BOX = {
     padding: '24px 24px 0 24px'
@@ -31,7 +22,7 @@ const CardUi = _ref => {
   let {
     style,
     buttonsStyle,
-    onSetTheme,
+    onUiTheme,
     onAir,
     onClose
   } = _ref;
@@ -51,8 +42,8 @@ const CardUi = _ref => {
       caption: "Theme (Default: Grey)",
       ariaLabel: "UI themes list",
       initItem: DF_THEME,
-      options: _themeOptions,
-      onSelect: onSetTheme
+      options: _uiTheme.UI_THEME_OPTIONS,
+      onSelect: onUiTheme
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_InputSwitch.default, {
       style: S_CHECK_BOX,
       initialValue: IS_AIR,

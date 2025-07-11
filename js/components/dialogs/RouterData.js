@@ -4,6 +4,7 @@ exports.__esModule = true;
 exports.default = void 0;
 var _actions = require("../../flux/settings/actions");
 var _actions2 = require("../../flux/layout/actions");
+var _uiTheme = require("../styles/uiTheme");
 const RouterData = {
   getData: (store, type) => {
     switch (type) {
@@ -12,9 +13,9 @@ const RouterData = {
           onSet: apiKey => {
             store.dispatch((0, _actions.setSettings)(apiKey));
           },
-          onSetTheme: (uiTheme, uiThemeName) => {
-            uiTheme.setThemeName(uiThemeName);
-            store.dispatch((0, _actions2.setThemeName)(uiThemeName));
+          onUiTheme: uiThemeId => {
+            (0, _uiTheme.setUiTheme)(uiThemeId);
+            store.dispatch((0, _actions2.setThemeName)(uiThemeId));
           },
           onAir: is => {
             store.dispatch((0, _actions.setAir)(is));

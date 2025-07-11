@@ -3,16 +3,6 @@ import marker from '../../templates/marker';
 
 const L = Leaflet || window.L;
 
-const POPUP_CL = {
-  DF: '',
-  WHITE: 'popup--white',
-  SAND: 'popup--sand'
-};
-
-const _crPopupOptions = themeName => ({
-  className: POPUP_CL[themeName] || POPUP_CL.DF
-});
-
 const DF_LAT = 50
 , DF_LNG = 0
 , DF_ZOOM = 2;
@@ -23,7 +13,7 @@ export const createMap = (
 ) => {
    if (!L) { return; }
    const map = L
-     .map(id, { zoomControl: true })
+     .map(id, { zoomControl: !0 })
      .on('load', onLoad)
      .setView([DF_LAT, DF_LNG], DF_ZOOM);
    map.zoomControl.setPosition('bottomright');
@@ -37,21 +27,19 @@ export const createMap = (
 
 export const addMarker = (
   w,
-  themeName,
   map
 ) => {
    if (!L) { return; }
    const icon = L.divIcon({ html: marker.fDivIcon(w)})
    , { coord } = w  || {}
    , { lat, lon } = coord || {};
-   if (lat && lon){
+   if (lat && lon) {
      L.marker([lat, lon], {
        icon: icon,
        title: w.name,
        alt: w.name,
      }).bindPopup(
        marker.fPopup(w),
-       _crPopupOptions(themeName)
      ).addTo(map)
    }
 }

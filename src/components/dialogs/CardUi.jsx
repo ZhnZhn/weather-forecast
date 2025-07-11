@@ -1,5 +1,7 @@
 import { useCallback } from '../uiApi';
 
+import { UI_THEME_OPTIONS } from '../styles/uiTheme';
+
 import InputSelect from '../zhn-m-input/InputSelect';
 import InputSwitch from '../zhn/InputSwitch';
 import RaisedButton from '../zhn/RaisedButton';
@@ -7,12 +9,7 @@ import RaisedButton from '../zhn/RaisedButton';
 const S_INPUT_SELECT = {
   width: 280
 }
-, _themeOptions = [
-  { caption: 'Grey', value: 'GREY' },
-  { caption: 'Sand', value: 'SAND' },
-  { caption: 'White', value: 'WHITE' }
-]
-, DF_THEME = _themeOptions[0]
+, DF_THEME = UI_THEME_OPTIONS[0]
 , CAPTION_AIR = "Air Quality"
 , S_CHECK_BOX = { padding: '24px 24px 0 24px'}
 , IS_AIR = !1;
@@ -20,7 +17,7 @@ const S_INPUT_SELECT = {
 const CardUi = ({
   style,
   buttonsStyle,
-  onSetTheme,
+  onUiTheme,
   onAir,
   onClose
 }) => {
@@ -40,8 +37,8 @@ const CardUi = ({
        caption="Theme (Default: Grey)"
        ariaLabel="UI themes list"
        initItem={DF_THEME}
-       options={_themeOptions}
-       onSelect={onSetTheme}
+       options={UI_THEME_OPTIONS}
+       onSelect={onUiTheme}
      />
      <InputSwitch
         style={S_CHECK_BOX}

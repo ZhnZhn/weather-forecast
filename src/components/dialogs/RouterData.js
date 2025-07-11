@@ -8,6 +8,8 @@ import {
   setThemeName
 } from '../../flux/layout/actions'
 
+import { setUiTheme } from '../styles/uiTheme';
+
 const RouterData = {
   getData: (store, type) => {
     switch(type){
@@ -16,9 +18,9 @@ const RouterData = {
           onSet: (apiKey) => {
             store.dispatch(setSettings(apiKey))
           },
-          onSetTheme: (uiTheme, uiThemeName) => {
-            uiTheme.setThemeName(uiThemeName)
-            store.dispatch(setThemeName(uiThemeName))
+          onUiTheme: (uiThemeId) => {
+            setUiTheme(uiThemeId)
+            store.dispatch(setThemeName(uiThemeId))
           },
           onAir: (is) => {
             store.dispatch(setAir(is))
