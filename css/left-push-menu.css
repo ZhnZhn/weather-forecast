@@ -1,10 +1,10 @@
 
 .left-push-menu {
+  z-index: 1000;
   position: fixed;
   top: 3rem;
   left: 0;
-  bottom: 0;
-  border-right: 1px solid #999;
+  bottom: 0;  
   transform: translateX(-100%);
   transition: transform .3s;
   fill: #646464;
