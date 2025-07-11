@@ -5,7 +5,7 @@ exports.__esModule = true;
 exports.default = void 0;
 var _uiApi = require("../uiApi");
 var _selectors = require("../../flux/selectors");
-var _DragablePopup = _interopRequireDefault(require("../containers/DragablePopup"));
+var _DraggablePopup = _interopRequireDefault(require("../containers/DraggablePopup"));
 var _PeriodForecast = _interopRequireDefault(require("../views/PeriodForecast"));
 var _Color = require("../styles/Color");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -28,7 +28,7 @@ const Forecast = _ref => {
       cod
     } = forecast || {},
     _isNotFoundMsg = cod && '' + cod !== OK_CODE;
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_DragablePopup.default, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_DraggablePopup.default, {
     style: style,
     storeKey: "isPopupForecast",
     color: _Color.COLOR_BROWN,

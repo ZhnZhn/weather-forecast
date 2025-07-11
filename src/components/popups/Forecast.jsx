@@ -2,7 +2,7 @@ import { useSelector } from '../uiApi';
 
 import { sForecast } from '../../flux/selectors';
 
-import DragablePopup from '../containers/DragablePopup';
+import DraggablePopup from '../containers/DraggablePopup';
 import PeriodForecast from '../views/PeriodForecast';
 import { COLOR_BROWN } from '../styles/Color';
 
@@ -22,7 +22,7 @@ const Forecast = ({ style }) => {
   , _isNotFoundMsg = cod && (''+cod) !== OK_CODE;
 
   return (
-    <DragablePopup
+    <DraggablePopup
         style={style}
         storeKey="isPopupForecast"
         color={COLOR_BROWN}
@@ -32,7 +32,7 @@ const Forecast = ({ style }) => {
           captionStyle={S_CAPTION}
       />
       {_isNotFoundMsg && <NotFoundMsg />}
-    </DragablePopup>
+    </DraggablePopup>
   );
 };
 

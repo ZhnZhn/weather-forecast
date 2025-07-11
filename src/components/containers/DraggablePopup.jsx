@@ -20,10 +20,10 @@ const CL_SHOW_POPUP = 'show-popup'
 , S_SVG_CLOSE = {
    position: 'absolute',
    top: 16,
-   right: 6
+   right: 12
 };
 
-const DragablePopup = ({
+const DraggablePopup = ({
   style,
   storeKey,
   color,
@@ -63,4 +63,4 @@ const DragablePopup = ({
   );
 };
 
-export default DragablePopup
+export default DraggablePopup

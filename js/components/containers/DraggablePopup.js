@@ -14,9 +14,9 @@ const CL_SHOW_POPUP = 'show-popup',
   S_SVG_CLOSE = {
     position: 'absolute',
     top: 16,
-    right: 6
+    right: 12
   };
-const DragablePopup = _ref => {
+const DraggablePopup = _ref => {
   let {
     style,
     storeKey,
@@ -42,5 +42,5 @@ const DragablePopup = _ref => {
     }), children]
   });
 };
-var _default = exports.default = DragablePopup;
-//# sourceMappingURL=DragablePopup.js.map
+var _default = exports.default = DraggablePopup;
+//# sourceMappingURL=DraggablePopup.js.map
