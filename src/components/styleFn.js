@@ -12,6 +12,13 @@ export const crCn = (conf1, conf2) => {
     : _cl2 || void 0 ;
 };
 
+export const crStyle2 = (
+  style1,
+  style2
+) => style2
+ ? {...style1, ...style2}
+ : style1;
+
 export const CL_BG = 'bg'
 export const CL_DIALOG = 'dialog';
 
