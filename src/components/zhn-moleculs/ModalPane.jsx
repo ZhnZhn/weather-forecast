@@ -1,52 +1,35 @@
-import { useRef, useCallback, useEffect } from '../uiApi';
+import {
+  crStyle2,
+  S_NONE
+} from '../styleFn';
 
-const _removeClickListener = (listener, ref) => {
-  if (ref.current) {
-   document.removeEventListener('click', listener, true);
-   ref.current = null
-  }
-};
+import useClickOutside from '../hooks/useClickOutside';
+import { useKeyEscape } from '../hooks/fUseKey';
 
 const ModalPane = ({
   isShow,
+  className,
   style,
-  onClose,
   children,
+  onClose,
+  onKeyDown,
+  ...restProps
 }) => {
-  const _refNode = useRef(null)
-  , _refIs = useRef(null)
-  /*eslint-disable react-hooks/exhaustive-deps */
-  , _hClickOutside = useCallback(event => {
-      if (_refNode?.current?.contains
-          && !_refNode.current.contains(event.target)
-      ){
-        event.stopPropagation()
-        onClose(event)
-      }
-  }, []);
-  // onClose
-  useEffect(() => {
-    if (isShow && !_refIs.current) {
-      document.addEventListener('click', _hClickOutside, true)
-      _refIs.current = true
-    } else if (!isShow) {
-      _removeClickListener(_hClickOutside, _refIs)
-    }
-  })
-  useEffect(() => {
-    return () => _removeClickListener(_hClickOutside, _refIs)
-  }, [])
-  // _hClickOutside
-  /*eslint-enable react-hooks/exhaustive-deps */
-
+  const _refEl = useClickOutside(isShow, onClose)
+  , _hKeyEscape = useKeyEscape(onClose);
+  /*eslint-disable jsx-a11y/no-static-element-interactions*/
   return (
     <div
-       ref={_refNode}
-       style={style}
+      {...restProps}
+      ref={_refEl}
+      className={className}
+      style={crStyle2(style, isShow ? void 0 : S_NONE)}
+      onKeyDown={isShow ? onKeyDown || _hKeyEscape : void 0}
     >
       {children}
     </div>
   );
+  /*eslint-enable jsx-a11y/no-static-element-interactions*/
 };
 
 export default ModalPane

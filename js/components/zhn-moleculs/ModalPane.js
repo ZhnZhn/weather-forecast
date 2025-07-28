@@ -1,62 +1,34 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports["default"] = void 0;
-
-var _uiApi = require("../uiApi");
-
+exports.default = void 0;
+var _styleFn = require("../styleFn");
+var _useClickOutside = _interopRequireDefault(require("../hooks/useClickOutside"));
+var _fUseKey = require("../hooks/fUseKey");
 var _jsxRuntime = require("react/jsx-runtime");
-
-var _removeClickListener = function _removeClickListener(listener, ref) {
-  if (ref.current) {
-    document.removeEventListener('click', listener, true);
-    ref.current = null;
-  }
-};
-
-var ModalPane = function ModalPane(_ref) {
-  var isShow = _ref.isShow,
-      style = _ref.style,
-      onClose = _ref.onClose,
-      children = _ref.children;
-
-  var _refNode = (0, _uiApi.useRef)(null),
-      _refIs = (0, _uiApi.useRef)(null)
-  /*eslint-disable react-hooks/exhaustive-deps */
-  ,
-      _hClickOutside = (0, _uiApi.useCallback)(function (event) {
-    var _refNode$current;
-
-    if (_refNode != null && (_refNode$current = _refNode.current) != null && _refNode$current.contains && !_refNode.current.contains(event.target)) {
-      event.stopPropagation();
-      onClose(event);
-    }
-  }, []); // onClose
-
-
-  (0, _uiApi.useEffect)(function () {
-    if (isShow && !_refIs.current) {
-      document.addEventListener('click', _hClickOutside, true);
-      _refIs.current = true;
-    } else if (!isShow) {
-      _removeClickListener(_hClickOutside, _refIs);
-    }
-  });
-  (0, _uiApi.useEffect)(function () {
-    return function () {
-      return _removeClickListener(_hClickOutside, _refIs);
-    };
-  }, []); // _hClickOutside
-
-  /*eslint-enable react-hooks/exhaustive-deps */
-
+const ModalPane = _ref => {
+  let {
+    isShow,
+    className,
+    style,
+    children,
+    onClose,
+    onKeyDown,
+    ...restProps
+  } = _ref;
+  const _refEl = (0, _useClickOutside.default)(isShow, onClose),
+    _hKeyEscape = (0, _fUseKey.useKeyEscape)(onClose);
+  /*eslint-disable jsx-a11y/no-static-element-interactions*/
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    ref: _refNode,
-    style: style,
+    ...restProps,
+    ref: _refEl,
+    className: className,
+    style: (0, _styleFn.crStyle2)(style, isShow ? void 0 : _styleFn.S_NONE),
+    onKeyDown: isShow ? onKeyDown || _hKeyEscape : void 0,
     children: children
   });
+  /*eslint-enable jsx-a11y/no-static-element-interactions*/
 };
-
-var _default = ModalPane;
-exports["default"] = _default;
+var _default = exports.default = ModalPane;
 //# sourceMappingURL=ModalPane.js.map
