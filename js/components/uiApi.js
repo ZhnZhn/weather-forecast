@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useLayoutEffect = exports.useImperativeHandle = exports.useId = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.safeMap = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.focusRefElement = exports.focusElementById = exports.createRef = exports.createElement = exports.createContext = exports.cloneUiElement = exports.bindTo = exports.PureComponent = exports.KEY_TAB = exports.KEY_ESCAPE = exports.KEY_ENTER = exports.KEY_DELETE = exports.KEY_ARROW_UP = exports.KEY_ARROW_DOWN = exports.Component = exports.Children = void 0;
+exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useLayoutEffect = exports.useImperativeHandle = exports.useId = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.safeMap = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.focusRefElement = exports.focusElementById = exports.createRef = exports.createElement = exports.createContext = exports.cloneUiElement = exports.bindTo = exports.PureComponent = exports.KEY_TAB = exports.KEY_SPACE = exports.KEY_HOME = exports.KEY_ESCAPE = exports.KEY_ENTER = exports.KEY_END = exports.KEY_DELETE = exports.KEY_ARROW_UP = exports.KEY_ARROW_DOWN = exports.Component = exports.Children = void 0;
 var _isTypeFn = require("../utils/isTypeFn");
 var _jsxRuntime = require("react/jsx-runtime");
 var _reactRedux = require("react-redux");
@@ -28,8 +28,11 @@ exports.useImperativeHandle = _react.useImperativeHandle;
 const KEY_ARROW_DOWN = exports.KEY_ARROW_DOWN = "ArrowDown";
 const KEY_ARROW_UP = exports.KEY_ARROW_UP = "ArrowUp";
 const KEY_ENTER = exports.KEY_ENTER = "Enter";
+const KEY_SPACE = exports.KEY_SPACE = " ";
 const KEY_ESCAPE = exports.KEY_ESCAPE = "Escape";
 const KEY_TAB = exports.KEY_TAB = "Tab";
+const KEY_HOME = exports.KEY_HOME = "Home";
+const KEY_END = exports.KEY_END = "End";
 const KEY_DELETE = exports.KEY_DELETE = "Delete";
 const bindTo = function (fn) {
   for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {

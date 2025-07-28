@@ -21,3 +21,6 @@ export const getItemValue = (
    ? value.trim()
    : value;
 }
+
+export const FOCUS_NEXT_OPTION = "n"
+export const FOCUS_PREV_OPTION = "p"

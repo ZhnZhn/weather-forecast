@@ -1,66 +1,99 @@
 import {
   useRef,
+  useCallback,
   useEffect,
-  useImperativeHandle,
 
+  KEY_ARROW_DOWN,
+  KEY_ARROW_UP,
+  KEY_HOME,
+  KEY_END,
   KEY_ENTER,
+  KEY_SPACE,
+  KEY_ESCAPE,
+  KEY_TAB,
 
-  focusRefElement,
-  setRefValue
+  getRefValue,
+  setRefValue,
+  stopDefaultFor
 } from '../uiApi';
 
-import ShowHide from '../zhn/ShowHide';
 import ItemStack from '../zhn/ItemStack';
 import ModalPane from '../zhn-moleculs/ModalPane';
 import {
+  FOCUS_NEXT_OPTION,
+  FOCUS_PREV_OPTION,
   getItemCaption,
   getItemValue
 } from './OptionFn';
 
-import useKeyDownArrow from './useKeyDownArrow';
-import {
-  crAriaListboxProps,
-  crAriaOptionProps
-} from './a11yListboxFn';
+const SCROLL_OPTIONS = {
+  block: 'center',
+  behavior: 'smooth'
+};
+
+const _setItemFocus = (
+  elItem,
+  ref
+) => elItem
+  ? (
+  elItem.scrollIntoView(SCROLL_OPTIONS),
+  elItem.focus(),
+  setRefValue(ref, elItem),
+  !0
+) : !1;
+
+const _fFocusItem = propName => ref => {
+  const _elItem = (getRefValue(ref) || {})[propName];
+  return _setItemFocus(_elItem, ref);
+};
+
+const _focusNextItem = _fFocusItem('nextSibling');
+const _focusPrevItem = _fFocusItem('previousSibling');
+
+const _fFocusParentItem = propName => ref => {
+  const _elItem = ((getRefValue(ref) || {}).parentNode || {})[propName];
+  _setItemFocus(_elItem, ref)
+}
+
+const _focusFirstItem = _fFocusParentItem('firstChild');
+const _focusLastItem = _fFocusParentItem('lastChild');
 
 const _crItem = (
   item,
   index, {
-  refFirstItem,
   refItem,
   currentItem,
   clItem,
-  onSelect
+  onSelect,
+  onTabSelect
 }) => {
   const caption = getItemCaption(item)
   , value = getItemValue(item)
+  , currentItemCaption = getItemCaption(currentItem)
   , [
     _tabIndex,
     _ref,
     _ariaSelected,
-  ] = value === (currentItem && getItemValue(currentItem))
-    ? ["0", refItem, "true"]
-    : ["-1"]
-  , _refOption = index === 0
-      ? _ref || refFirstItem
-      : _ref
-  , _refOptionFn = el => {
-       if (_refOption) {
-         setRefValue(_refOption, el);
-       }
-    }
+  ] = currentItemCaption !== void 0 && caption === currentItemCaption
+      ? ["0", refItem, "true"]
+      : currentItemCaption === void 0 && index === 0
+         ? ["0", refItem]
+         : ["-1"]
   , _hKeyDown = evt => {
-    if (evt.key === KEY_ENTER) {
+    if (evt.key === KEY_ENTER || evt.key === KEY_SPACE) {
       onSelect(item, evt)
+    } if (evt.key === KEY_TAB) {
+      onTabSelect(item)
     }
   };
 
-  /*eslint-disable jsx-a11y/no-static-element-interactions*/
   return (
     <div
-      {...crAriaOptionProps(_ariaSelected, _tabIndex)}
       key={value}
-      ref={_refOptionFn}
+      role="option"
+      ref={_ref}
+      aria-selected={_ariaSelected}
+      tabIndex={_tabIndex}
       className={clItem}
       onClick={evt => onSelect(item, evt)}
       onKeyDown={_hKeyDown}
@@ -68,72 +101,84 @@ const _crItem = (
       {caption}
     </div>
   );
-  /*eslint-enable jsx-a11y/no-static-element-interactions*/
 };
 
 const OptionsPane = ({
-  refOp,
   id,
-  ariaLabel,
   isShow,
-  isFocusItem=true,
+  focusOption,
   className,
-  style,
   options,
   item,
   clItem,
   onSelect,
+  onTabSelect,
   onClose
 }) => {
-  const _refFirstItem = useRef(null)
-  , _refItem = useRef(null)
-  , [
-    _refFocus,
-    _hKeyDownArrow
-  ] = useKeyDownArrow(onClose)
-
+  const _refItem = useRef(null)
+  , _refItemFocused = useRef(null)
   /*eslint-disable react-hooks/exhaustive-deps */
-  useImperativeHandle(refOp, () => ({
-    hKeyDown: _hKeyDownArrow
-  }), [])
-  // _hKeyDown
-  /*eslint-enable react-hooks/exhaustive-deps */
-
-  /*eslint-disable react-hooks/exhaustive-deps */
-  useEffect(()=>{
-    if (isShow && isFocusItem) {
-      setRefValue(
-        _refFocus,
-        focusRefElement(_refItem, _refFirstItem)
-      )
+  , _hKeyDown = useCallback(evt => {
+    if (evt.key === KEY_ARROW_DOWN) {
+      stopDefaultFor(evt)
+      _focusNextItem(_refItemFocused)
+    } else if (evt.key === KEY_ARROW_UP) {
+      stopDefaultFor(evt)
+      _focusPrevItem(_refItemFocused)
+    } else if (evt.key === KEY_HOME) {
+      stopDefaultFor(evt)
+      _focusFirstItem(_refItemFocused)
+    } else if (evt.key === KEY_END) {
+      stopDefaultFor(evt)
+      _focusLastItem(_refItemFocused)
+    } else if (evt.key === KEY_TAB) {
+      stopDefaultFor(evt)
+      _focusNextItem(_refItemFocused)
+    } else if (evt.key === KEY_ESCAPE) {
+      stopDefaultFor(evt)
+      onClose()
     }
-  }, [isShow, isFocusItem])
-  // _refFocus
+  }, []);
+  //onClose
   /*eslint-enable react-hooks/exhaustive-deps */
 
+  useEffect(()=>{
+    if (isShow) {
+      const _elItem = getRefValue(_refItem);
+      if (!getRefValue(_refItemFocused) && focusOption) {
+        setRefValue(_refItemFocused, _elItem)
+      }
+
+      const _hasBeenItemFocused = focusOption === FOCUS_NEXT_OPTION
+        ? _focusNextItem(_refItemFocused)
+        : focusOption === FOCUS_PREV_OPTION
+        ? _focusPrevItem(_refItemFocused)
+        : !1;
+
+      if (!_hasBeenItemFocused) {
+        _setItemFocus(_elItem, _refItemFocused)
+      }
+    }
+  }, [isShow, focusOption])
   return (
    <ModalPane
+     id={id}
+     role="listbox"
+     data-scrollable="true"
      isShow={isShow}
+     className={className}
      onClose={onClose}
+     onKeyDown={_hKeyDown}
    >
-     <ShowHide
-       {...crAriaListboxProps(id, ariaLabel)}
-       //isScrollable={true}
-       isShow={isShow}
-       className={className}
-       style={style}
-       onKeyDown={_hKeyDownArrow}
-     >
-       <ItemStack
-         items={options}
-         crItem={_crItem}
-         refFirstItem={_refFirstItem}
-         refItem={_refItem}
-         currentItem={item}
-         clItem={clItem}
-         onSelect={onSelect}
-       />
-     </ShowHide>
+     <ItemStack
+       items={options}
+       crItem={_crItem}
+       refItem={_refItem}
+       currentItem={item}
+       clItem={clItem}
+       onSelect={onSelect}
+       onTabSelect={onTabSelect}
+     />
    </ModalPane>
  );
 };

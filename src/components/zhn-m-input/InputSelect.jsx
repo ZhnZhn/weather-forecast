@@ -1,107 +1,142 @@
 import {
-  KEY_ARROW_DOWN,
+  useId,
+  useRef,
   useState,
-  useCallback
+  useMemo,
+  KEY_ARROW_DOWN,
+  KEY_ARROW_UP,
+  focusRefElement,
+  stopDefaultFor
 } from '../uiApi';
-
-import useBool from '../hooks/useBool';
-import useAriaCombobox from './useAriaCombobox';
-
-import { getItemCaption } from './OptionFn';
 
 import ArrowCell from './ArrowCell';
 import OptionsPane from './OptionsPane';
+import {
+  FOCUS_NEXT_OPTION,
+  FOCUS_PREV_OPTION,
+  getItemCaption
+} from './OptionFn';
 
 const CL_SELECT = 'm-select'
-, CL_LABEL = `${CL_SELECT}__label`
+, CL_CAPTION = `${CL_SELECT}__caption`
+, CL_VALUE = `${CL_SELECT}__value`
 , CL_DIV = `${CL_SELECT}__div`
-, CL_DIV_VALUE = `${CL_SELECT}__div__value`
-, CL_DIV_BT = `${CL_SELECT}__div__bt`
+, CL_INPUT_SVG = `${CL_SELECT}__svg`
 , CL_INPUT_LINE = `${CL_SELECT}__line`
-, CL_SELECT_OPTIONS = `${CL_SELECT}__options`
+, CL_SELECT_OPTIONS = `${CL_SELECT}__options with-scroll`
 , CL_ITEM = `${CL_SELECT}__item`
+, DF_CAPTION = 'Item'
 , DF_INIT_ITEM = {
-  caption: '',
-  value: ''
+  caption: void 0,
+  value: void 0
 };
 
 const InputSelect = ({
+  id,
+  initItem,
   caption,
-  ariaLabel,
   options,
   style,
-  selectedItem,
-  initItem=DF_INIT_ITEM,
   onSelect
 }) => {
-  const [
+  const _listboxId = useId()
+  , _captionId = useId()
+  , _refBtCombobox = useRef()
+  , [
     item,
     setItem
-  ] = useState(initItem)
+  ] = useState(initItem || DF_INIT_ITEM)
+  , [
+    isShowTuple,
+    setIsShowTuple
+  ] = useState([!1])
+  , [
+    showOptions,
+    hideOptions
+  ] = useMemo(() => [
+    (focusOption) => setIsShowTuple([!0, focusOption]),
+    () => setIsShowTuple([!1])
+  ], [])
   , [
     isShowOptions,
-    _hOpenOptions,
-    _hCloseOptions
-  ] = useBool(!1)
-  , _hKeyDown = (evt) => {
+    focusOption
+  ] = isShowTuple
+  /*eslint-disable react-hooks/exhaustive-deps */
+  , _hCloseOptions = useMemo(() => () => {
+    hideOptions()
+    focusRefElement(_refBtCombobox)
+  }, [])
+  // hideOptions
+  , [
+    _hSelect,
+    _hTabSelect,
+    _hKeyDown
+  ] = useMemo(() => [
+    (item, evt) => {
+        stopDefaultFor(evt)
+        onSelect(item, id)
+        _hCloseOptions()
+        setItem(item)
+    },
+    // id, onSelect, _closeOptions
+    (item) => {
+        onSelect(item, id)
+        setItem(item)
+    },
+    // id, onSelect
+    (evt) => {
       if (evt.key === KEY_ARROW_DOWN) {
-        _hOpenOptions()
+        stopDefaultFor(evt)
+        showOptions(FOCUS_NEXT_OPTION)
+      } else if (evt.key === KEY_ARROW_UP) {
+        stopDefaultFor(evt)
+        showOptions(FOCUS_PREV_OPTION)
       }
     }
-  , [
-    _optionPaneId,
-    _ariaComboboxProps
-  ] = useAriaCombobox(isShowOptions)
-  /*eslint-disable react-hooks/exhaustive-deps */
-  , _hSelect = useCallback((item, evt) => {
-      evt.stopPropagation()
-      onSelect(item)
-      _hCloseOptions()
-      setItem(item)
-  }, [])
-  // _handleClose, onSelect
+    // showOptions
+  ]
+  , []);
   /*eslint-enable react-hooks/exhaustive-deps */
-  , _item = selectedItem || item;
 
-  /*eslint-disable jsx-a11y/no-static-element-interactions*/
   return (
-    <div
-      {..._ariaComboboxProps}
-      tabIndex="-1"
+    <button
+      ref={_refBtCombobox}
+      type="button"
+      role="combobox"
+      aria-expanded={isShowOptions}
+      aria-controls={_listboxId}
+      aria-labelledby={_captionId}
       className={CL_SELECT}
       style={style}
-      onClick={_hOpenOptions}
+      onClick={showOptions}
       onKeyDown={_hKeyDown}
     >
-    {/*eslint-enable jsx-a11y/no-static-element-interactions*/}
+      <div id={_captionId} className={CL_CAPTION}>
+        {caption || DF_CAPTION}
+      </div>
+      <div className={CL_VALUE}>
+        {getItemCaption(item)}
+      </div>
       <OptionsPane
-         id={_optionPaneId}
-         ariaLabel={ariaLabel}
-         isShow={isShowOptions}
-         className={CL_SELECT_OPTIONS}
-         item={_item}
-         options={options}
-         clItem={CL_ITEM}
-         onSelect={_hSelect}
-         onClose={_hCloseOptions}
-       />
-      <label className={CL_LABEL}>
-        {caption}
-      </label>
-      <div className={CL_DIV}>
-        <div className={CL_DIV_VALUE}>
-           {getItemCaption(_item)}
-        </div>
-        <button
-          type="button"
-          className={CL_DIV_BT}
-        >
+        id={_listboxId}
+        isShow={isShowOptions}
+        focusOption={focusOption}
+        className={CL_SELECT_OPTIONS}
+        item={item}
+        options={options}
+        clItem={CL_ITEM}
+        onSelect={_hSelect}
+        onTabSelect={_hTabSelect}
+        onClose={_hCloseOptions}
+      />
+      <div aria-hidden="true" className={CL_DIV}>
+        <div className={CL_INPUT_SVG}>
           <ArrowCell />
-        </button>
+        </div>
         <div className={CL_INPUT_LINE} />
       </div>
-    </div>
+    </button>
   );
-};
+}
 
 export default InputSelect

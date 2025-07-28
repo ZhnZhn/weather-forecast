@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.getItemValue = exports.getItemCaption = void 0;
+exports.getItemValue = exports.getItemCaption = exports.FOCUS_PREV_OPTION = exports.FOCUS_NEXT_OPTION = void 0;
 var _isTypeFn = require("../../utils/isTypeFn");
 const getItemCaption = item => (0, _isTypeFn.isArr)(item) ? item[0] : (0, _isTypeFn.isStr)(item) ? item : void 0;
 exports.getItemCaption = getItemCaption;
@@ -10,4 +10,6 @@ const getItemValue = item => {
   return (0, _isTypeFn.isStr)(value) ? value.trim() : value;
 };
 exports.getItemValue = getItemValue;
+const FOCUS_NEXT_OPTION = exports.FOCUS_NEXT_OPTION = "n";
+const FOCUS_PREV_OPTION = exports.FOCUS_PREV_OPTION = "p";
 //# sourceMappingURL=OptionFn.js.map
