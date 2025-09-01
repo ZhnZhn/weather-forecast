@@ -1,8 +1,8 @@
 import {
-  _isFn,
-  _isNil,
-  _isObject
-} from '../util/FnUtils';
+  isFn,
+  isNullOrUndef,
+  isObj
+} from '../../../utils/isTypeFn';
 
 import {
   isNumber,
@@ -17,10 +17,10 @@ export const getLabel = (
     value,
     formatter
   } = props
-  , label = _isNil(props.children)
+  , label = isNullOrUndef(props.children)
     ? value
     : props.children;
-  return _isFn(formatter)
+  return isFn(formatter)
     ? formatter(label)
     : label;
 };
@@ -193,7 +193,7 @@ export const getAttrsOfCartesianLabel = (
       ...sizeAttrs
     };
   }
-  if (_isObject(position)
+  if (isObj(position)
     && (isNumber(position.x) || isPercent(position.x))
     && (isNumber(position.y) || isPercent(position.y))
   ) {

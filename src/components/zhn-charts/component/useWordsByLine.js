@@ -1,7 +1,10 @@
+import { 
+  isNumber,
+  isNullOrUndef
+} from '../../../utils/isTypeFn';
+
 import { useMemo } from '../../uiApi';
 
-import { _isNil } from '../util/FnUtils';
-import { isNumber } from '../util/DataUtils';
 import { IS_SSR } from '../util/Global';
 import { getStringSize } from '../util/DOMUtils';
 
@@ -12,7 +15,7 @@ const calculateWordWidths = ({
   style
 }) => {
   try {
-    const words = _isNil(children) ? [] : children
+    const words = isNullOrUndef(children) ? [] : children
       .toString()
       .split(breakAll ? '' : BREAKING_SPACES)
     , wordsWithComputedWidth = words
@@ -107,7 +110,7 @@ const calculateWordsByLines = ({
 };
 
 const getWordsWithoutCalculate = (children) => {
-  const words = !_isNil(children)
+  const words = !isNullOrUndef(children)
     ? children.toString().split(BREAKING_SPACES)
     : [];
   return [{ words }];

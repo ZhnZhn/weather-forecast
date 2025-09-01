@@ -2,13 +2,13 @@
 
 exports.__esModule = true;
 exports.DefaultTooltipContent = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
-var _FnUtils = require("../util/FnUtils");
 var _DataUtils = require("../util/DataUtils");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-const _defaultFormatter = value => (0, _FnUtils._isArr)(value) && (0, _DataUtils.isNumOrStr)(value[0]) && (0, _DataUtils.isNumOrStr)(value[1]) ? value.join(' ~ ') : value;
+const _defaultFormatter = value => (0, _isTypeFn.isArr)(value) && (0, _DataUtils.isNumOrStr)(value[0]) && (0, _DataUtils.isNumOrStr)(value[1]) ? value.join(' ~ ') : value;
 const _renderContent = props => {
   const {
     payload,
@@ -42,7 +42,7 @@ const _renderContent = props => {
         } = entry;
         if (finalFormatter && value != null && name != null) {
           const formatted = finalFormatter(value, name, entry, i, payload);
-          if ((0, _FnUtils._isArr)(formatted)) {
+          if ((0, _isTypeFn.isArr)(formatted)) {
             [value, name] = formatted;
           } else {
             value = formatted;
@@ -96,7 +96,7 @@ const DefaultTooltipContent = exports.DefaultTooltipContent = (0, _uiApi.memo)(p
       margin: 0,
       ...labelStyle
     },
-    hasLabel = !(0, _FnUtils._isNil)(label);
+    hasLabel = !(0, _isTypeFn.isNullOrUndef)(label);
   let finalLabel = hasLabel ? label : '';
   const wrapperCN = (0, _styleFn.crCn)(_CL.CL_DEFAULT_TOOLTIP, wrapperClassName),
     labelCN = (0, _styleFn.crCn)(_CL.CL_TOOLTIP_LABEL, labelClassName);

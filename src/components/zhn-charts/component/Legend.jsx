@@ -1,4 +1,9 @@
 import {
+  isFn,
+  isNumber
+} from "../../../utils/isTypeFn";
+
+import {
   isValidElement,
   cloneUiElement,
   createElement,
@@ -9,8 +14,6 @@ import {
   setRefValue
 } from "../../uiApi";
 
-import { _isFn } from "../util/FnUtils";
-import { isNumber } from "../util/DataUtils";
 import { crProps } from "../util/ReactUtils";
 
 import { getUniqPayload } from "./componentFn";
@@ -29,7 +32,7 @@ const _renderContent = (
   if (isValidElement(ContentElementOrComp)) {
     return cloneUiElement(ContentElementOrComp, props);
   }
-  if (_isFn(ContentElementOrComp)) {
+  if (isFn(ContentElementOrComp)) {
     return createElement(ContentElementOrComp, props);
   }
   /*eslint-disable no-unused-vars*/

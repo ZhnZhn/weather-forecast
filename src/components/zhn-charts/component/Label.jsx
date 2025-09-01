@@ -1,16 +1,16 @@
 import {
+  isFn,
+  isNullOrUndef,
+  isObj
+} from '../../../utils/isTypeFn';
+
+import {
   isValidElement,
   cloneUiElement,
   createElement
 } from "../../uiApi";
 
 import { crCn } from "../../styleFn";
-
-import {
-  _isFn,
-  _isNil,
-  _isObject
-} from "../util/FnUtils";
 
 import { Text } from "./Text";
 import {
@@ -47,7 +47,7 @@ export const Label = (
     className,
     textBreakAll
   } = _props;
-  if (!viewBox || (_isNil(value) && _isNil(children) && !isValidElement(ContentElementOrComp) && !_isFn(ContentElementOrComp))) {
+  if (!viewBox || (isNullOrUndef(value) && isNullOrUndef(children) && !isValidElement(ContentElementOrComp) && !isFn(ContentElementOrComp))) {
     return null;
   }
 
@@ -56,7 +56,7 @@ export const Label = (
   }
 
   let label;
-  if (_isFn(ContentElementOrComp)) {
+  if (isFn(ContentElementOrComp)) {
     label = createElement(ContentElementOrComp, props);
     if (isValidElement(label)) {
       return label;
@@ -151,10 +151,10 @@ const parseLabel = (
     }
     return <Label key={KEY_LABEL_IMPLICIT} content={label} viewBox={viewBox}/>;
   }
-  if (_isFn(label)) {
+  if (isFn(label)) {
     return <Label key={KEY_LABEL_IMPLICIT} content={label} viewBox={viewBox}/>;
   }
-  if (_isObject(label)) {
+  if (isObj(label)) {
     return <Label key={KEY_LABEL_IMPLICIT} viewBox={viewBox} {...label} />;
   }
   return null;

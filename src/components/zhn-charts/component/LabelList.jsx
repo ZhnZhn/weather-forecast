@@ -1,14 +1,14 @@
 import {
+  isArr,
+  isFn,
+  isNullOrUndef,
+  isObj
+} from '../../../utils/isTypeFn';
+
+import {
   isValidElement,
   cloneUiElement
 } from '../../uiApi';
-
-import {
-  _isArr,
-  _isNil,
-  _isFn,
-  _isObject
-} from '../util/FnUtils';
 
 import { Label } from './Label';
 import { Layer } from '../container/Layer';
@@ -23,7 +23,7 @@ const CL_LABEL_LIST = "recharts-label-list";
 const defaultProps = {
   valueAccessor: (entry) => {
     const { value } = entry || {};
-    return _isArr(value)
+    return isArr(value)
       ? value[value.length-1]
       : value
   }
@@ -48,10 +48,10 @@ export const LabelList = (
   return (
     <Layer className={CL_LABEL_LIST}>
       {data.map((entry, index) => {
-          const value = _isNil(dataKey)
+          const value = isNullOrUndef(dataKey)
             ? valueAccessor(entry, index)
             : getValueByDataKey(entry && entry.payload, dataKey)
-          , idProps = _isNil(id)
+          , idProps = isNullOrUndef(id)
             ? {}
             : { id: `${id}-${index}` };
           return (
@@ -63,7 +63,7 @@ export const LabelList = (
               index={index}
               value={value}
               textBreakAll={textBreakAll}
-              viewBox={Label.parseViewBox(_isNil(clockWise) ? entry : { ...entry, clockWise })}
+              viewBox={Label.parseViewBox(isNullOrUndef(clockWise) ? entry : { ...entry, clockWise })}
               key={`label-${index}`}
             />
           );
@@ -88,7 +88,7 @@ function _parseLabelList(
       />
     );
   }
-  if (isValidElement(label) || _isFn(label)) {
+  if (isValidElement(label) || isFn(label)) {
     return (
       <LabelList
         key={KEY_LABELLIST_IMPLICIT}
@@ -97,7 +97,7 @@ function _parseLabelList(
       />
     );
   }
-  if (_isObject(label)) {
+  if (isObj(label)) {
     return (
       <LabelList
         data={data}

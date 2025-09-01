@@ -2,9 +2,9 @@
 
 exports.__esModule = true;
 exports.Label = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
-var _FnUtils = require("../util/FnUtils");
 var _Text = require("./Text");
 var _ReactUtils = require("../util/ReactUtils");
 var _DataUtils = require("../util/DataUtils");
@@ -25,14 +25,14 @@ const Label = props => {
       className,
       textBreakAll
     } = _props;
-  if (!viewBox || (0, _FnUtils._isNil)(value) && (0, _FnUtils._isNil)(children) && !(0, _uiApi.isValidElement)(ContentElementOrComp) && !(0, _FnUtils._isFn)(ContentElementOrComp)) {
+  if (!viewBox || (0, _isTypeFn.isNullOrUndef)(value) && (0, _isTypeFn.isNullOrUndef)(children) && !(0, _uiApi.isValidElement)(ContentElementOrComp) && !(0, _isTypeFn.isFn)(ContentElementOrComp)) {
     return null;
   }
   if ((0, _uiApi.isValidElement)(ContentElementOrComp)) {
     return (0, _uiApi.cloneUiElement)(ContentElementOrComp, _props);
   }
   let label;
-  if ((0, _FnUtils._isFn)(ContentElementOrComp)) {
+  if ((0, _isTypeFn.isFn)(ContentElementOrComp)) {
     label = (0, _uiApi.createElement)(ContentElementOrComp, props);
     if ((0, _uiApi.isValidElement)(label)) {
       return label;
@@ -143,13 +143,13 @@ const parseLabel = (label, viewBox) => {
       viewBox: viewBox
     }, KEY_LABEL_IMPLICIT);
   }
-  if ((0, _FnUtils._isFn)(label)) {
+  if ((0, _isTypeFn.isFn)(label)) {
     return /*#__PURE__*/(0, _jsxRuntime.jsx)(Label, {
       content: label,
       viewBox: viewBox
     }, KEY_LABEL_IMPLICIT);
   }
-  if ((0, _FnUtils._isObject)(label)) {
+  if ((0, _isTypeFn.isObj)(label)) {
     return /*#__PURE__*/(0, _jsxRuntime.jsx)(Label, {
       viewBox: viewBox,
       ...label

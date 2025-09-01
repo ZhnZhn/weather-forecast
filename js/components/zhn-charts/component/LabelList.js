@@ -2,8 +2,8 @@
 
 exports.__esModule = true;
 exports.LabelList = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
-var _FnUtils = require("../util/FnUtils");
 var _Label = require("./Label");
 var _Layer = require("../container/Layer");
 var _ReactUtils = require("../util/ReactUtils");
@@ -16,7 +16,7 @@ const defaultProps = {
     const {
       value
     } = entry || {};
-    return (0, _FnUtils._isArr)(value) ? value[value.length - 1] : value;
+    return (0, _isTypeFn.isArr)(value) ? value[value.length - 1] : value;
   }
 };
 const LabelList = props => {
@@ -35,8 +35,8 @@ const LabelList = props => {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
     className: CL_LABEL_LIST,
     children: data.map((entry, index) => {
-      const value = (0, _FnUtils._isNil)(dataKey) ? valueAccessor(entry, index) : (0, _ChartUtils.getValueByDataKey)(entry && entry.payload, dataKey),
-        idProps = (0, _FnUtils._isNil)(id) ? {} : {
+      const value = (0, _isTypeFn.isNullOrUndef)(dataKey) ? valueAccessor(entry, index) : (0, _ChartUtils.getValueByDataKey)(entry && entry.payload, dataKey),
+        idProps = (0, _isTypeFn.isNullOrUndef)(id) ? {} : {
           id: `${id}-${index}`
         };
       return /*#__PURE__*/(0, _react.createElement)(_Label.Label, {
@@ -47,7 +47,7 @@ const LabelList = props => {
         index: index,
         value: value,
         textBreakAll: textBreakAll,
-        viewBox: _Label.Label.parseViewBox((0, _FnUtils._isNil)(clockWise) ? entry : {
+        viewBox: _Label.Label.parseViewBox((0, _isTypeFn.isNullOrUndef)(clockWise) ? entry : {
           ...entry,
           clockWise
         }),
@@ -67,13 +67,13 @@ function _parseLabelList(label, data) {
       data: data
     }, KEY_LABELLIST_IMPLICIT);
   }
-  if ((0, _uiApi.isValidElement)(label) || (0, _FnUtils._isFn)(label)) {
+  if ((0, _uiApi.isValidElement)(label) || (0, _isTypeFn.isFn)(label)) {
     return /*#__PURE__*/(0, _jsxRuntime.jsx)(LabelList, {
       data: data,
       content: label
     }, KEY_LABELLIST_IMPLICIT);
   }
-  if ((0, _FnUtils._isObject)(label)) {
+  if ((0, _isTypeFn.isObj)(label)) {
     return /*#__PURE__*/(0, _react.createElement)(LabelList, {
       data: data,
       ...label,

@@ -2,9 +2,8 @@
 
 exports.__esModule = true;
 exports.default = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
-var _FnUtils = require("../util/FnUtils");
-var _DataUtils = require("../util/DataUtils");
 var _Global = require("../util/Global");
 var _DOMUtils = require("../util/DOMUtils");
 const BREAKING_SPACES = /[ \f\n\r\t\v\u2028\u2029]+/;
@@ -15,7 +14,7 @@ const calculateWordWidths = _ref => {
     style
   } = _ref;
   try {
-    const words = (0, _FnUtils._isNil)(children) ? [] : children.toString().split(breakAll ? '' : BREAKING_SPACES),
+    const words = (0, _isTypeFn.isNullOrUndef)(children) ? [] : children.toString().split(breakAll ? '' : BREAKING_SPACES),
       wordsWithComputedWidth = words.map(word => ({
         word,
         width: (0, _DOMUtils.getStringSize)(word, style).width
@@ -36,7 +35,7 @@ const calculateWordsByLines = (_ref2, initialWordsWithComputedWith, spaceWidth, 
     style,
     breakAll
   } = _ref2;
-  const shouldLimitLines = (0, _DataUtils.isNumber)(maxLines),
+  const shouldLimitLines = (0, _isTypeFn.isNumber)(maxLines),
     text = children,
     calculate = function (words) {
       if (words === void 0) {
@@ -106,7 +105,7 @@ const calculateWordsByLines = (_ref2, initialWordsWithComputedWith, spaceWidth, 
   return trimmedResult || originalResult;
 };
 const getWordsWithoutCalculate = children => {
-  const words = !(0, _FnUtils._isNil)(children) ? children.toString().split(BREAKING_SPACES) : [];
+  const words = !(0, _isTypeFn.isNullOrUndef)(children) ? children.toString().split(BREAKING_SPACES) : [];
   return [{
     words
   }];

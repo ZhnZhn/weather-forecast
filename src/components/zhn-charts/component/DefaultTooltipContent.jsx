@@ -1,14 +1,14 @@
 import {
+  isArr,
+  isNullOrUndef
+} from '../../../utils/isTypeFn';
+
+import {
   memo,
   isValidElement
 } from '../../uiApi';
 
 import { crCn } from '../../styleFn';
-
-import {
-  _isArr,
-  _isNil
-} from '../util/FnUtils';
 
 import { isNumOrStr } from '../util/DataUtils';
 
@@ -25,7 +25,7 @@ import {
 
 const _defaultFormatter = (
   value
-) => _isArr(value)
+) => isArr(value)
   && isNumOrStr(value[0])
   && isNumOrStr(value[1])
   ? value.join(' ~ ')
@@ -76,7 +76,7 @@ const _renderContent = (
             i,
             payload
           );
-          if (_isArr(formatted)) {
+          if (isArr(formatted)) {
             [value, name] = formatted;
           } else {
             value = formatted;
@@ -134,7 +134,7 @@ export const DefaultTooltipContent = memo((props) => {
       margin: 0,
       ...labelStyle,
   }
-  , hasLabel = !_isNil(label);
+  , hasLabel = !isNullOrUndef(label);
   let finalLabel = hasLabel ? label : '';
   const wrapperCN = crCn(CL_DEFAULT_TOOLTIP, wrapperClassName)
   , labelCN = crCn(CL_TOOLTIP_LABEL, labelClassName);

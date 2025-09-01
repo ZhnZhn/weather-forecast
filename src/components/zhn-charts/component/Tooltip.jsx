@@ -1,4 +1,10 @@
 import {
+  isNumber,
+  isFn,
+  isNullOrUndef
+} from "../../../utils/isTypeFn";
+
+import {
   isValidElement,
   cloneUiElement,
   createElement,
@@ -11,12 +17,7 @@ import {
 import { crCn } from "../../styleFn";
 import { translateStyle } from "../../zhn-animate";
 
-import {
-  _isFn,
-  _isNil
-} from "../util/FnUtils";
 import { IS_SSR } from "../util/Global";
-import { isNumber } from "../util/DataUtils";
 import { crProps } from "../util/ReactUtils";
 
 import { DefaultTooltipContent } from "./DefaultTooltipContent";
@@ -35,7 +36,7 @@ const _renderContent = (
   props
 ) => isValidElement(ContentElementOrComp)
   ? cloneUiElement(ContentElementOrComp, props)
-  : _isFn(ContentElementOrComp)
+  : isFn(ContentElementOrComp)
       ? createElement(ContentElementOrComp, props)
       : createElement(DefaultTooltipContent, props);
 
@@ -203,7 +204,7 @@ export const Tooltip = (props) => {
   , finalPayload = getUniqPayload(
       payloadUniqBy,
       filterNull && payload && payload.length
-         ? payload.filter(entry => !_isNil(entry.value))
+         ? payload.filter(entry => !isNullOrUndef(entry.value))
          : payload,
       _defaultUniqBy
   )

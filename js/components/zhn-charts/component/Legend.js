@@ -2,9 +2,8 @@
 
 exports.__esModule = true;
 exports.Legend = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
-var _FnUtils = require("../util/FnUtils");
-var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _componentFn = require("./componentFn");
 var _DefaultLegendContent = require("./DefaultLegendContent");
@@ -15,7 +14,7 @@ const _renderContent = (ContentElementOrComp, props) => {
   if ((0, _uiApi.isValidElement)(ContentElementOrComp)) {
     return (0, _uiApi.cloneUiElement)(ContentElementOrComp, props);
   }
-  if ((0, _FnUtils._isFn)(ContentElementOrComp)) {
+  if ((0, _isTypeFn.isFn)(ContentElementOrComp)) {
     return (0, _uiApi.createElement)(ContentElementOrComp, props);
   }
   /*eslint-disable no-unused-vars*/
@@ -162,7 +161,7 @@ Legend.getWithHeight = (item, chartWidth) => {
     layout,
     height
   } = item.props;
-  return layout === "vertical" && (0, _DataUtils.isNumber)(height) ? {
+  return layout === "vertical" && (0, _isTypeFn.isNumber)(height) ? {
     height
   } : layout === "horizontal" ? {
     width: item.props.width || chartWidth

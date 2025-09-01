@@ -2,12 +2,11 @@
 
 exports.__esModule = true;
 exports.Tooltip = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _zhnAnimate = require("../../zhn-animate");
-var _FnUtils = require("../util/FnUtils");
 var _Global = require("../util/Global");
-var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _DefaultTooltipContent = require("./DefaultTooltipContent");
 var _componentFn = require("./componentFn");
@@ -16,7 +15,7 @@ var _jsxRuntime = require("react/jsx-runtime");
 //const CLS_PREFIX = 'recharts-tooltip-wrapper';
 const EPS = 1;
 const _defaultUniqBy = entry => entry.dataKey;
-const _renderContent = (ContentElementOrComp, props) => (0, _uiApi.isValidElement)(ContentElementOrComp) ? (0, _uiApi.cloneUiElement)(ContentElementOrComp, props) : (0, _FnUtils._isFn)(ContentElementOrComp) ? (0, _uiApi.createElement)(ContentElementOrComp, props) : (0, _uiApi.createElement)(_DefaultTooltipContent.DefaultTooltipContent, props);
+const _renderContent = (ContentElementOrComp, props) => (0, _uiApi.isValidElement)(ContentElementOrComp) ? (0, _uiApi.cloneUiElement)(ContentElementOrComp, props) : (0, _isTypeFn.isFn)(ContentElementOrComp) ? (0, _uiApi.createElement)(ContentElementOrComp, props) : (0, _uiApi.createElement)(_DefaultTooltipContent.DefaultTooltipContent, props);
 const DF_PROPS = {
   active: false,
   allowEscapeViewBox: {
@@ -54,8 +53,8 @@ const DF_PROPS = {
   useTranslate3d: false
 };
 const _crClassName = (coordinate, translateX, translateY) => {
-  const _isTranslateCoordinateX = (0, _DataUtils.isNumber)(translateX) && coordinate && (0, _DataUtils.isNumber)(coordinate.x),
-    _isTranslateCoordinateY = (0, _DataUtils.isNumber)(translateY) && coordinate && (0, _DataUtils.isNumber)(coordinate.y),
+  const _isTranslateCoordinateX = (0, _isTypeFn.isNumber)(translateX) && coordinate && (0, _isTypeFn.isNumber)(coordinate.x),
+    _isTranslateCoordinateY = (0, _isTypeFn.isNumber)(translateY) && coordinate && (0, _isTypeFn.isNumber)(coordinate.y),
     _clX = _isTranslateCoordinateX ? (0, _styleFn.crCn)(translateX >= coordinate.x && `${_CL.CL_TOOLTIP_WRAPPER}-right`, translateX < coordinate.x && `${_CL.CL_TOOLTIP_WRAPPER}-left`) : '',
     _clY = _isTranslateCoordinateY ? (0, _styleFn.crCn)(translateY >= coordinate.y && `${_CL.CL_TOOLTIP_WRAPPER}-bottom`, translateY < coordinate.y && `${_CL.CL_TOOLTIP_WRAPPER}-top`) : '';
   return (0, _styleFn.crCn)(_CL.CL_TOOLTIP_WRAPPER, (0, _styleFn.crCn)(_clX, _clY));
@@ -120,7 +119,7 @@ const Tooltip = props => {
       tooltipDimension,
       viewBoxDimension
     } = _ref;
-    if (position && (0, _DataUtils.isNumber)(position[key])) {
+    if (position && (0, _isTypeFn.isNumber)(position[key])) {
       return position[key];
     }
     const negative = coordinate[key] - tooltipDimension - offset,
@@ -148,7 +147,7 @@ const Tooltip = props => {
       animationDuration,
       animationEasing
     } = _props,
-    finalPayload = (0, _componentFn.getUniqPayload)(payloadUniqBy, filterNull && payload && payload.length ? payload.filter(entry => !(0, _FnUtils._isNil)(entry.value)) : payload, _defaultUniqBy),
+    finalPayload = (0, _componentFn.getUniqPayload)(payloadUniqBy, filterNull && payload && payload.length ? payload.filter(entry => !(0, _isTypeFn.isNullOrUndef)(entry.value)) : payload, _defaultUniqBy),
     hasPayload = finalPayload && finalPayload.length,
     {
       content
@@ -163,7 +162,7 @@ const Tooltip = props => {
     },
     translateX,
     translateY;
-  if (position && (0, _DataUtils.isNumber)(position.x) && (0, _DataUtils.isNumber)(position.y)) {
+  if (position && (0, _isTypeFn.isNumber)(position.x) && (0, _isTypeFn.isNumber)(position.y)) {
     translateX = position.x;
     translateY = position.y;
   } else if (boxWidth > 0 && boxHeight > 0 && coordinate) {
