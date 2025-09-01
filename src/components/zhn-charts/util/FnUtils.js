@@ -1,27 +1,13 @@
+import {
+  isStr,
+  isUndef
+} from '../../../utils/isTypeFn';
 import throttleFn from '../../../utils/throttleFn';
 export const _throttle = throttleFn;
 
-export const _isArr = Array.isArray
-export const _isNotEmptyArr = (
-  v
-) => _isArr(v) && v.length > 0
-
-const _fIsTypeof = (str) => v => typeof v === str
-export const _isFn = _fIsTypeof("function")
-export const _isBool = _fIsTypeof("boolean")
-export const _isStr = _fIsTypeof("string")
-export const _isNumber = v => typeof v === 'number' && v-v === 0
-
-export const _isNil = v => v == null
-export const _isNaN = Number.isNaN
-
-export const _isObject = (
-  value
-) => value != null && typeof value === "object"
-
 export const _upperFirst = (
   str
-) => _isStr(str) && str.length > 0
+) => isStr(str) && str.length > 0
   ? str[0].toUpperCase() + str.slice(1)
   : '';
 
@@ -33,18 +19,17 @@ export const _getByPropName = (
    ? obj[propName] || dfValue
    : dfValue
 
-const _isUndef = _fIsTypeof("undefined");
 export const _range = (
   startValue,
   endValue,
   increment
 ) => {
-  const isEndDef = !_isUndef(endValue)
+  const isEndDef = !isUndef(endValue)
   endValue = isEndDef ? endValue : startValue
   startValue = isEndDef ? startValue : 0
   const _diff = endValue - startValue
 
-  if (_isUndef(increment)) {
+  if (isUndef(increment)) {
     increment = Math.sign(_diff)
   }
 
@@ -78,7 +63,7 @@ export const _uniqBy = (
   arr,
   iteratee
 ) => {
-  if (_isStr(iteratee)) {
+  if (isStr(iteratee)) {
     const prop = iteratee
     iteratee = item => item[prop]
   }

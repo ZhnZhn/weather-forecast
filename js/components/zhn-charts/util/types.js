@@ -2,8 +2,8 @@
 
 exports.__esModule = true;
 exports.isLikelyOnEventProperty = exports.adaptEventsOfChild = exports.adaptEventHandlers = exports.SVGElementPropKeys = exports.FilteredElementKeyMap = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
-var _FnUtils = require("./FnUtils");
 const _getObjectKeys = Object.keys;
 const SVGContainerPropKeys = ['viewBox', 'children'];
 const SVGElementPropKeys = exports.SVGElementPropKeys = ['aria-activedescendant', 'aria-atomic', 'aria-autocomplete', 'aria-busy', 'aria-checked', 'aria-colcount', 'aria-colindex', 'aria-colspan', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-flowto', 'aria-haspopup', 'aria-hidden', 'aria-invalid', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-level', 'aria-live', 'aria-modal', 'aria-multiline', 'aria-multiselectable', 'aria-orientation', 'aria-owns', 'aria-placeholder', 'aria-posinset', 'aria-pressed', 'aria-readonly', 'aria-relevant', 'aria-required', 'aria-roledescription', 'aria-rowcount', 'aria-rowindex', 'aria-rowspan', 'aria-selected', 'aria-setsize', 'aria-sort', 'aria-valuemax', 'aria-valuemin', 'aria-valuenow', 'aria-valuetext', 'className', 'color', 'height', 'id', 'lang', 'max', 'media', 'method', 'min', 'name', 'style',
@@ -26,14 +26,14 @@ const FilteredElementKeyMap = exports.FilteredElementKeyMap = {
 const isLikelyOnEventProperty = propName => (propName || '').slice(0, 2) === 'on' && /^[A-Z]/.test((propName || '')[2]);
 exports.isLikelyOnEventProperty = isLikelyOnEventProperty;
 const adaptEventHandlers = (props, newHandler) => {
-  if (!props || (0, _FnUtils._isFn)(props) || (0, _FnUtils._isBool)(props)) {
+  if (!props || (0, _isTypeFn.isFn)(props) || (0, _isTypeFn.isBool)(props)) {
     return null;
   }
   let inputProps = props;
   if ((0, _uiApi.isValidElement)(props)) {
     inputProps = props.props;
   }
-  return (0, _FnUtils._isObject)(inputProps) ? _getObjectKeys(inputProps).reduce((eventProps, propName) => {
+  return (0, _isTypeFn.isObj)(inputProps) ? _getObjectKeys(inputProps).reduce((eventProps, propName) => {
     if (isLikelyOnEventProperty(propName)) {
       eventProps[propName] = newHandler || (evt => inputProps[propName](inputProps, evt));
     }
@@ -45,9 +45,9 @@ const getEventHandlerOfChild = (originalHandler, data, index) => evt => {
   originalHandler(data, index, evt);
   return null;
 };
-const adaptEventsOfChild = (props, data, index) => (0, _FnUtils._isObject)(props) ? _getObjectKeys(props).reduce((eventProps, propName) => {
+const adaptEventsOfChild = (props, data, index) => (0, _isTypeFn.isObj)(props) ? _getObjectKeys(props).reduce((eventProps, propName) => {
   const originalHandler = props[propName];
-  if (isLikelyOnEventProperty(propName) && (0, _FnUtils._isFn)(originalHandler)) {
+  if (isLikelyOnEventProperty(propName) && (0, _isTypeFn.isFn)(originalHandler)) {
     if (!eventProps) {
       eventProps = {};
     }

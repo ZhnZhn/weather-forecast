@@ -1,18 +1,18 @@
 import {
+  isNullOrUndef,
+  isArr,
+  isFn,
+  isNumber,
+  isStr,
+  isBool,
+  isObj
+} from '../../../utils/isTypeFn';
+
+import {
   isValidElement,
   Children
 } from '../../uiApi';
 
-import  {
-  _isNil,
-  _isArr,
-  _isFn,
-  _isStr,
-  _isBool,
-  _isObject
-} from './FnUtils';
-
-import { isNumber } from './DataUtils';
 import { shallowEqual } from './ShallowEqual';
 import {
   FilteredElementKeyMap,
@@ -79,12 +79,12 @@ let lastResult = null;
 export const toArray = (
   children
 ) => {
-  if (children === lastChildren && _isArr(lastResult)) {
+  if (children === lastChildren && isArr(lastResult)) {
     return lastResult;
   }
   let result = [];
   Children.forEach(children, child => {
-    if (_isNil(child))
+    if (isNullOrUndef(child))
       return;
     if (isFragment(child)) {
       result = result.concat(toArray(child.props.children));
@@ -103,7 +103,7 @@ export const toArray = (
  */
 export function findAllByType(children, type) {
   const result = []
-  , types = _isArr(type)
+  , types = isArr(type)
      ? type.map(t => getDisplayName(t))
      : [getDisplayName(type)];
 
@@ -234,7 +234,7 @@ const SVG_TAGS = [
 const isSvgElement = (
   child
 ) => child
-  && _isStr(child.type)
+  && isStr(child.type)
   && SVG_TAGS.indexOf(child.type) >= 0;
 
 /**
@@ -257,7 +257,7 @@ export const isValidSpreadableProp = (
    * @todo Add an internal cjs version of https://github.com/wooorm/svg-element-attributes for full coverage.
    */
   const matchingElementTypeKeys = FilteredElementKeyMap?.[svgElementType] ?? [];
-  return !!(( !_isFn(property) && ((svgElementType && matchingElementTypeKeys.includes(key)) || SVGElementPropKeys.includes(key)) )
+  return !!(( !isFn(property) && ((svgElementType && matchingElementTypeKeys.includes(key)) || SVGElementPropKeys.includes(key)) )
     || (includeEvents && isLikelyOnEventProperty(key)));
 };
 
@@ -266,13 +266,13 @@ export const filterProps = (
   includeEvents,
   svgElementType
 ) => {
-  if (!props || _isFn(props) || _isBool(props)) {
+  if (!props || isFn(props) || isBool(props)) {
     return null;
   }
   const inputProps = isValidElement(props)
     ? props.props
     : props;
-  if (!_isObject(inputProps)) {
+  if (!isObj(inputProps)) {
     return null;
   }
   const filteredProps = {};
@@ -296,7 +296,7 @@ export const isSingleChildEqual = (
   nextChild,
   prevChild
 ) => {
-  if (!_isNil(nextChild) && !_isNil(prevChild)) {
+  if (!isNullOrUndef(nextChild) && !isNullOrUndef(prevChild)) {
     const {
       children: nextChildren,
       ...nextProps
@@ -312,12 +312,12 @@ export const isSingleChildEqual = (
           : false;
   }
 
-  return _isNil(nextChild) && _isNil(prevChild);
+  return isNullOrUndef(nextChild) && isNullOrUndef(prevChild);
 }
 
 const _getElementFromChildren = (
   children
-) => _isArr(children)
+) => isArr(children)
   ? children[0]
   : children;
 
@@ -351,7 +351,7 @@ export const isChildrenEqual = (
   for (let i = 0; i < count; i++) {
     const nextChild = nextChildren[i]
     , prevChild = prevChildren[i];
-    if ((_isArr(nextChild) || _isArr(prevChild))
+    if ((isArr(nextChild) || isArr(prevChild))
        && !isChildrenEqual(nextChild, prevChild)
     ) {
       return false;
@@ -397,7 +397,7 @@ export const renderByMap = (
 
 export const getReactEventByType = (e) => {
   const type = e && e.type;
-  return (_isStr(type) && REACT_BROWSER_EVENT_MAP[type])
+  return (isStr(type) && REACT_BROWSER_EVENT_MAP[type])
     || null;
 };
 

@@ -5,9 +5,8 @@ exports.filterProps = exports.crProps = void 0;
 exports.findAllByType = findAllByType;
 exports.findChildByType = findChildByType;
 exports.validateWidthHeight = exports.toArray = exports.renderByMap = exports.parseChildIndex = exports.isValidSpreadableProp = exports.isSingleChildEqual = exports.isChildrenEqual = exports.getReactEventByType = exports.getDisplayName = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
-var _FnUtils = require("./FnUtils");
-var _DataUtils = require("./DataUtils");
 var _ShallowEqual = require("./ShallowEqual");
 var _types = require("./types");
 const _getObjectKeys = Object.keys;
@@ -47,12 +46,12 @@ exports.getDisplayName = getDisplayName;
 let lastChildren = null;
 let lastResult = null;
 const toArray = children => {
-  if (children === lastChildren && (0, _FnUtils._isArr)(lastResult)) {
+  if (children === lastChildren && (0, _isTypeFn.isArr)(lastResult)) {
     return lastResult;
   }
   let result = [];
   _uiApi.Children.forEach(children, child => {
-    if ((0, _FnUtils._isNil)(child)) return;
+    if ((0, _isTypeFn.isNullOrUndef)(child)) return;
     if (isFragment(child)) {
       result = result.concat(toArray(child.props.children));
     } else {
@@ -71,7 +70,7 @@ const toArray = children => {
 exports.toArray = toArray;
 function findAllByType(children, type) {
   const result = [],
-    types = (0, _FnUtils._isArr)(type) ? type.map(t => getDisplayName(t)) : [getDisplayName(type)];
+    types = (0, _isTypeFn.isArr)(type) ? type.map(t => getDisplayName(t)) : [getDisplayName(type)];
   toArray(children).forEach(child => {
     const childType = _getElementType(child);
     if (types.indexOf(childType) !== -1) {
@@ -103,7 +102,7 @@ const validateWidthHeight = el => {
     width,
     height
   } = el.props;
-  return !(0, _DataUtils.isNumber)(width) || width <= 0 || !(0, _DataUtils.isNumber)(height) || height <= 0 ? false : true;
+  return !(0, _isTypeFn.isNumber)(width) || width <= 0 || !(0, _isTypeFn.isNumber)(height) || height <= 0 ? false : true;
 };
 exports.validateWidthHeight = validateWidthHeight;
 const SVG_TAGS = ['a', 'altGlyph', 'altGlyphDef', 'altGlyphItem', 'animate', 'animateColor', 'animateMotion', 'animateTransform', 'circle', 'clipPath', 'color-profile', 'cursor', 'defs', 'desc', 'ellipse',
@@ -134,7 +133,7 @@ const SVG_TAGS = ['a', 'altGlyph', 'altGlyphDef', 'altGlyphItem', 'animate', 'an
 'feTurbulence',
 */
 'filter', 'font', 'font-face', 'font-face-format', 'font-face-name', 'font-face-url', 'foreignObject', 'g', 'glyph', 'glyphRef', 'hkern', 'image', 'line', 'lineGradient', 'marker', 'mask', 'metadata', 'missing-glyph', 'mpath', 'path', 'pattern', 'polygon', 'polyline', 'radialGradient', 'rect', 'script', 'set', 'stop', 'style', 'svg', 'switch', 'symbol', 'text', 'textPath', 'title', 'tref', 'tspan', 'use', 'view', 'vkern'];
-const isSvgElement = child => child && (0, _FnUtils._isStr)(child.type) && SVG_TAGS.indexOf(child.type) >= 0;
+const isSvgElement = child => child && (0, _isTypeFn.isStr)(child.type) && SVG_TAGS.indexOf(child.type) >= 0;
 
 /**
  * Checks if the property is valid to spread onto an SVG element or onto a specific component
@@ -145,22 +144,21 @@ const isSvgElement = child => child && (0, _FnUtils._isStr)(child.type) && SVG_T
  * @returns {boolean} is prop valid
  */
 const isValidSpreadableProp = (property, key, includeEvents, svgElementType) => {
-  var _FilteredElementKeyMa;
   /**
    * If the svg element type is explicitly included, check against the filtered element key map
    * to determine if there are attributes that should only exist on that element type.
    * @todo Add an internal cjs version of https://github.com/wooorm/svg-element-attributes for full coverage.
    */
-  const matchingElementTypeKeys = (_FilteredElementKeyMa = _types.FilteredElementKeyMap == null ? void 0 : _types.FilteredElementKeyMap[svgElementType]) != null ? _FilteredElementKeyMa : [];
-  return !!(!(0, _FnUtils._isFn)(property) && (svgElementType && matchingElementTypeKeys.includes(key) || _types.SVGElementPropKeys.includes(key)) || includeEvents && (0, _types.isLikelyOnEventProperty)(key));
+  const matchingElementTypeKeys = _types.FilteredElementKeyMap?.[svgElementType] ?? [];
+  return !!(!(0, _isTypeFn.isFn)(property) && (svgElementType && matchingElementTypeKeys.includes(key) || _types.SVGElementPropKeys.includes(key)) || includeEvents && (0, _types.isLikelyOnEventProperty)(key));
 };
 exports.isValidSpreadableProp = isValidSpreadableProp;
 const filterProps = (props, includeEvents, svgElementType) => {
-  if (!props || (0, _FnUtils._isFn)(props) || (0, _FnUtils._isBool)(props)) {
+  if (!props || (0, _isTypeFn.isFn)(props) || (0, _isTypeFn.isBool)(props)) {
     return null;
   }
   const inputProps = (0, _uiApi.isValidElement)(props) ? props.props : props;
-  if (!(0, _FnUtils._isObject)(inputProps)) {
+  if (!(0, _isTypeFn.isObj)(inputProps)) {
     return null;
   }
   const filteredProps = {};
@@ -180,7 +178,7 @@ const filterProps = (props, includeEvents, svgElementType) => {
 };
 exports.filterProps = filterProps;
 const isSingleChildEqual = (nextChild, prevChild) => {
-  if (!(0, _FnUtils._isNil)(nextChild) && !(0, _FnUtils._isNil)(prevChild)) {
+  if (!(0, _isTypeFn.isNullOrUndef)(nextChild) && !(0, _isTypeFn.isNullOrUndef)(prevChild)) {
     const {
         children: nextChildren,
         ...nextProps
@@ -191,10 +189,10 @@ const isSingleChildEqual = (nextChild, prevChild) => {
       } = prevChild.props || {};
     return nextChildren && prevChildren ? (0, _ShallowEqual.shallowEqual)(nextProps, prevProps) && isChildrenEqual(nextChildren, prevChildren) : !nextChildren && !prevChildren ? (0, _ShallowEqual.shallowEqual)(nextProps, prevProps) : false;
   }
-  return (0, _FnUtils._isNil)(nextChild) && (0, _FnUtils._isNil)(prevChild);
+  return (0, _isTypeFn.isNullOrUndef)(nextChild) && (0, _isTypeFn.isNullOrUndef)(prevChild);
 };
 exports.isSingleChildEqual = isSingleChildEqual;
-const _getElementFromChildren = children => (0, _FnUtils._isArr)(children) ? children[0] : children;
+const _getElementFromChildren = children => (0, _isTypeFn.isArr)(children) ? children[0] : children;
 
 /**
  * Wether props of children changed
@@ -219,7 +217,7 @@ const isChildrenEqual = (nextChildren, prevChildren) => {
   for (let i = 0; i < count; i++) {
     const nextChild = nextChildren[i],
       prevChild = prevChildren[i];
-    if (((0, _FnUtils._isArr)(nextChild) || (0, _FnUtils._isArr)(prevChild)) && !isChildrenEqual(nextChild, prevChild)) {
+    if (((0, _isTypeFn.isArr)(nextChild) || (0, _isTypeFn.isArr)(prevChild)) && !isChildrenEqual(nextChild, prevChild)) {
       return false;
     } else if (!isSingleChildEqual(nextChild, prevChild)) {
       return false;
@@ -263,7 +261,7 @@ const renderByMap = (chartInst, renderMap) => {
 exports.renderByMap = renderByMap;
 const getReactEventByType = e => {
   const type = e && e.type;
-  return (0, _FnUtils._isStr)(type) && REACT_BROWSER_EVENT_MAP[type] || null;
+  return (0, _isTypeFn.isStr)(type) && REACT_BROWSER_EVENT_MAP[type] || null;
 };
 exports.getReactEventByType = getReactEventByType;
 const parseChildIndex = (child, children) => toArray(children).indexOf(child);

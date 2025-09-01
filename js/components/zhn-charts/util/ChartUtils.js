@@ -4,6 +4,7 @@ exports.__esModule = true;
 exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarSizeList = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.combineEventHandlers = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
 exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _d3Scale = require("../d3Scale");
 var _d3Shape = require("../d3Shape");
 var _FnUtils = require("./FnUtils");
@@ -19,7 +20,7 @@ const isLayoutVertical = exports.isLayoutVertical = _fIs("vertical");
 const isLayoutCentric = exports.isLayoutCentric = _fIs("centric");
 const isAxisTypeX = exports.isAxisTypeX = _fIs("xAxis");
 const isAxisTypeY = exports.isAxisTypeY = _fIs("yAxis");
-const getValueByDataKey = (obj, dataKey, defaultValue) => (0, _FnUtils._isNil)(obj) || (0, _FnUtils._isNil)(dataKey) ? defaultValue : (0, _DataUtils.isNumOrStr)(dataKey) ? (0, _FnUtils._getByPropName)(obj, dataKey, defaultValue) : (0, _FnUtils._isFn)(dataKey) ? dataKey(obj) : defaultValue;
+const getValueByDataKey = (obj, dataKey, defaultValue) => (0, _isTypeFn.isNullOrUndef)(obj) || (0, _isTypeFn.isNullOrUndef)(dataKey) ? defaultValue : (0, _isTypeFn.isNumOrStr)(dataKey) ? (0, _FnUtils._getByPropName)(obj, dataKey, defaultValue) : (0, _isTypeFn.isFn)(dataKey) ? dataKey(obj) : defaultValue;
 /**
  * Get domain of data by key
  * @param  {Array}   data      The data displayed in the chart
@@ -33,11 +34,11 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
   //const flattenData = _flatMap(data, entry => getValueByDataKey(entry, key));
   const flattenData = data.flatMap(entry => getValueByDataKey(entry, key));
   if (type === 'number') {
-    const domain = flattenData.filter(entry => (0, _DataUtils.isNumber)(entry) || parseFloat(entry));
+    const domain = flattenData.filter(entry => (0, _isTypeFn.isNumber)(entry) || parseFloat(entry));
     return domain.length ? [(0, _FnUtils._min)(domain), (0, _FnUtils._max)(domain)] : [Infinity, -Infinity];
   }
-  const validateData = filterNil ? flattenData.filter(entry => !(0, _FnUtils._isNil)(entry)) : flattenData;
-  return validateData.map(entry => (0, _DataUtils.isNumOrStr)(entry) || entry instanceof Date ? entry : '');
+  const validateData = filterNil ? flattenData.filter(entry => !(0, _isTypeFn.isNullOrUndef)(entry)) : flattenData;
+  return validateData.map(entry => (0, _isTypeFn.isNumOrStr)(entry) || entry instanceof Date ? entry : '');
 }
 const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axis) {
   if (ticks === void 0) {
@@ -229,7 +230,7 @@ const getBarSizeList = _ref4 => {
         result[cateId].push({
           item: barItems[0],
           stackList: barItems.slice(1),
-          barSize: (0, _FnUtils._isNil)(selfSize) ? globalSize : selfSize
+          barSize: (0, _isTypeFn.isNullOrUndef)(selfSize) ? globalSize : selfSize
         });
       }
     }
@@ -349,13 +350,13 @@ const appendOffsetOfLegend = (offset, items, props, legendBox) => {
         verticalAlign,
         layout
       } = legendProps;
-    if ((isLayoutVertical(layout) || isLayoutHorizontal(layout) && verticalAlign === 'middle') && (0, _DataUtils.isNumber)(offset[align])) {
+    if ((isLayoutVertical(layout) || isLayoutHorizontal(layout) && verticalAlign === 'middle') && (0, _isTypeFn.isNumber)(offset[align])) {
       newOffset = {
         ...offset,
         [align]: newOffset[align] + (box.width || 0)
       };
     }
-    if ((isLayoutHorizontal(layout) || isLayoutVertical(layout) && align === 'center') && (0, _DataUtils.isNumber)(offset[verticalAlign])) {
+    if ((isLayoutHorizontal(layout) || isLayoutVertical(layout) && align === 'center') && (0, _isTypeFn.isNumber)(offset[verticalAlign])) {
       newOffset = {
         ...offset,
         [verticalAlign]: newOffset[verticalAlign] + (box.height || 0)
@@ -464,7 +465,7 @@ const getTicksOfAxis = (axis, isGrid, isAll) => {
         offset
       };
     });
-    return result.filter(row => !(0, _FnUtils._isNaN)(row.coordinate));
+    return result.filter(row => !(0, _isTypeFn.isNaN)(row.coordinate));
   }
   // When axis is a categorial axis, but the type of axis is number or the scale of axis is not "auto"
   if (axis.isCategorical && axis.categoricalDomain) {
@@ -501,17 +502,17 @@ const getTicksOfAxis = (axis, isGrid, isAll) => {
 exports.getTicksOfAxis = getTicksOfAxis;
 const combineEventHandlers = (defaultHandler, parentHandler, childHandler) => {
   let customizedHandler;
-  if ((0, _FnUtils._isFn)(childHandler)) {
+  if ((0, _isTypeFn.isFn)(childHandler)) {
     customizedHandler = childHandler;
-  } else if ((0, _FnUtils._isFn)(parentHandler)) {
+  } else if ((0, _isTypeFn.isFn)(parentHandler)) {
     customizedHandler = parentHandler;
   }
-  if ((0, _FnUtils._isFn)(defaultHandler) || customizedHandler) {
+  if ((0, _isTypeFn.isFn)(defaultHandler) || customizedHandler) {
     return (arg1, arg2, arg3, arg4) => {
-      if ((0, _FnUtils._isFn)(defaultHandler)) {
+      if ((0, _isTypeFn.isFn)(defaultHandler)) {
         defaultHandler(arg1, arg2, arg3, arg4);
       }
-      if ((0, _FnUtils._isFn)(customizedHandler)) {
+      if ((0, _isTypeFn.isFn)(customizedHandler)) {
         customizedHandler(arg1, arg2, arg3, arg4);
       }
     };
@@ -570,7 +571,7 @@ const parseScale = (axis, chartType, hasBar) => {
     };
   }
   */
-  return (0, _FnUtils._isFn)(scale) ? {
+  return (0, _isTypeFn.isFn)(scale) ? {
     scale
   } : _crScalePoint();
 };
@@ -605,16 +606,16 @@ const findPositionOfBar = (barPosition, child) => {
 };
 exports.findPositionOfBar = findPositionOfBar;
 const truncateByDomain = (value, domain) => {
-  if (!domain || domain.length !== 2 || !(0, _DataUtils.isNumber)(domain[0]) || !(0, _DataUtils.isNumber)(domain[1])) {
+  if (!domain || domain.length !== 2 || !(0, _isTypeFn.isNumber)(domain[0]) || !(0, _isTypeFn.isNumber)(domain[1])) {
     return value;
   }
   const min = Math.min(domain[0], domain[1]),
     max = Math.max(domain[0], domain[1]),
     result = [value[0], value[1]];
-  if (!(0, _DataUtils.isNumber)(value[0]) || value[0] < min) {
+  if (!(0, _isTypeFn.isNumber)(value[0]) || value[0] < min) {
     result[0] = min;
   }
-  if (!(0, _DataUtils.isNumber)(value[1]) || value[1] > max) {
+  if (!(0, _isTypeFn.isNumber)(value[1]) || value[1] > max) {
     result[1] = max;
   }
   if (result[0] > max) {
@@ -635,7 +636,7 @@ const offsetSign = series => {
     let positive = 0;
     let negative = 0;
     for (let i = 0; i < n; ++i) {
-      const value = (0, _FnUtils._isNaN)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
+      const value = (0, _isTypeFn.isNaN)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
       if (value >= 0) {
         series[i][j][0] = positive;
         series[i][j][1] = positive + value;
@@ -657,7 +658,7 @@ const offsetPositive = series => {
   for (let j = 0, m = series[0].length; j < m; ++j) {
     let positive = 0;
     for (let i = 0; i < n; ++i) {
-      const value = (0, _FnUtils._isNaN)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
+      const value = (0, _isTypeFn.isNaN)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
       if (value >= 0) {
         series[i][j][0] = positive;
         series[i][j][1] = positive + value;
@@ -703,7 +704,7 @@ const getStackGroupsByAxisId = (data, _items, numericAxisId, cateAxisId, offsetT
         hasStack: false,
         stackGroups: {}
       };
-      if ((0, _DataUtils.isNumOrStr)(stackId)) {
+      if ((0, _isTypeFn.isNumOrStr)(stackId)) {
         const childGroup = parentGroup.stackGroups[stackId] || {
           numericAxisId,
           cateAxisId,
@@ -799,7 +800,7 @@ const getCateCoordinateOfLine = _ref6 => {
   } = _ref6;
   if (axis.type === 'category') {
     // find coordinate of category axis by the value of category
-    if (!axis.allowDuplicatedCategory && axis.dataKey && !(0, _FnUtils._isNil)(entry[axis.dataKey])) {
+    if (!axis.allowDuplicatedCategory && axis.dataKey && !(0, _isTypeFn.isNullOrUndef)(entry[axis.dataKey])) {
       const matchedTick = (0, _DataUtils.findEntryInArray)(ticks, 'value', entry[axis.dataKey]);
       if (matchedTick) {
         return matchedTick.coordinate + bandSize / 2;
@@ -807,8 +808,8 @@ const getCateCoordinateOfLine = _ref6 => {
     }
     return ticks[index] ? ticks[index].coordinate + bandSize / 2 : null;
   }
-  const value = getValueByDataKey(entry, !(0, _FnUtils._isNil)(dataKey) ? dataKey : axis.dataKey);
-  return !(0, _FnUtils._isNil)(value) ? axis.scale(value) : null;
+  const value = getValueByDataKey(entry, !(0, _isTypeFn.isNullOrUndef)(dataKey) ? dataKey : axis.dataKey);
+  return !(0, _isTypeFn.isNullOrUndef)(value) ? axis.scale(value) : null;
 };
 exports.getCateCoordinateOfLine = getCateCoordinateOfLine;
 const getCateCoordinateOfBar = _ref7 => {
@@ -824,7 +825,7 @@ const getCateCoordinateOfBar = _ref7 => {
     return ticks[index] ? ticks[index].coordinate + offset : null;
   }
   const value = getValueByDataKey(entry, axis.dataKey, axis.domain[index]);
-  return !(0, _FnUtils._isNil)(value) ? axis.scale(value) - bandSize / 2 + offset : null;
+  return !(0, _isTypeFn.isNullOrUndef)(value) ? axis.scale(value) - bandSize / 2 + offset : null;
 };
 exports.getCateCoordinateOfBar = getCateCoordinateOfBar;
 const getBaseValueOfBar = _ref8 => {
@@ -850,7 +851,7 @@ const getStackedDataOfItem = (item, stackGroups) => {
   const {
     stackId
   } = item.props;
-  if ((0, _DataUtils.isNumOrStr)(stackId)) {
+  if ((0, _isTypeFn.isNumOrStr)(stackId)) {
     const group = stackGroups[stackId];
     if (group && group.items.length) {
       let itemIndex = -1;
@@ -866,7 +867,7 @@ const getStackedDataOfItem = (item, stackGroups) => {
   return null;
 };
 exports.getStackedDataOfItem = getStackedDataOfItem;
-const getDomainOfSingle = data => data.reduce((result, entry) => [(0, _FnUtils._min)(entry.concat([result[0]]).filter(_DataUtils.isNumber)), (0, _FnUtils._max)(entry.concat([result[1]]).filter(_DataUtils.isNumber))], [Infinity, -Infinity]);
+const getDomainOfSingle = data => data.reduce((result, entry) => [(0, _FnUtils._min)(entry.concat([result[0]]).filter(_isTypeFn.isNumber)), (0, _FnUtils._max)(entry.concat([result[1]]).filter(_isTypeFn.isNumber))], [Infinity, -Infinity]);
 const getDomainOfStackGroups = (stackGroups, startIndex, endIndex) => _getObjectKeys(stackGroups).reduce((result, stackId) => {
   const group = stackGroups[stackId],
     {
@@ -882,29 +883,29 @@ exports.getDomainOfStackGroups = getDomainOfStackGroups;
 const MIN_VALUE_REG = exports.MIN_VALUE_REG = /^dataMin[\s]*-[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
 const MAX_VALUE_REG = exports.MAX_VALUE_REG = /^dataMax[\s]*\+[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
 const parseSpecifiedDomain = (specifiedDomain, dataDomain, allowDataOverflow) => {
-  if ((0, _FnUtils._isFn)(specifiedDomain)) {
+  if ((0, _isTypeFn.isFn)(specifiedDomain)) {
     return specifiedDomain(dataDomain, allowDataOverflow);
   }
-  if (!(0, _FnUtils._isArr)(specifiedDomain)) {
+  if (!(0, _isTypeFn.isArr)(specifiedDomain)) {
     return dataDomain;
   }
   const domain = [];
-  if ((0, _DataUtils.isNumber)(specifiedDomain[0])) {
+  if ((0, _isTypeFn.isNumber)(specifiedDomain[0])) {
     domain[0] = allowDataOverflow ? specifiedDomain[0] : Math.min(specifiedDomain[0], dataDomain[0]);
   } else if (MIN_VALUE_REG.test(specifiedDomain[0])) {
     const value = +MIN_VALUE_REG.exec(specifiedDomain[0])[1];
     domain[0] = dataDomain[0] - value;
-  } else if ((0, _FnUtils._isFn)(specifiedDomain[0])) {
+  } else if ((0, _isTypeFn.isFn)(specifiedDomain[0])) {
     domain[0] = specifiedDomain[0](dataDomain[0]);
   } else {
     domain[0] = dataDomain[0];
   }
-  if ((0, _DataUtils.isNumber)(specifiedDomain[1])) {
+  if ((0, _isTypeFn.isNumber)(specifiedDomain[1])) {
     domain[1] = allowDataOverflow ? specifiedDomain[1] : Math.max(specifiedDomain[1], dataDomain[1]);
   } else if (MAX_VALUE_REG.test(specifiedDomain[1])) {
     const value = +MAX_VALUE_REG.exec(specifiedDomain[1])[1];
     domain[1] = dataDomain[1] + value;
-  } else if ((0, _FnUtils._isFn)(specifiedDomain[1])) {
+  } else if ((0, _isTypeFn.isFn)(specifiedDomain[1])) {
     domain[1] = specifiedDomain[1](dataDomain[1]);
   } else {
     domain[1] = dataDomain[1];

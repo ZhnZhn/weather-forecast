@@ -2,34 +2,20 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports._upperFirst = exports._uniqBy = exports._throttle = exports._range = exports._min = exports._max = exports._isStr = exports._isObject = exports._isNumber = exports._isNotEmptyArr = exports._isNil = exports._isNaN = exports._isFn = exports._isEqual = exports._isBool = exports._isArr = exports._getByPropName = void 0;
+exports._upperFirst = exports._uniqBy = exports._throttle = exports._range = exports._min = exports._max = exports._isEqual = exports._getByPropName = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _throttleFn = _interopRequireDefault(require("../../../utils/throttleFn"));
 const _throttle = exports._throttle = _throttleFn.default;
-const _isArr = exports._isArr = Array.isArray;
-const _isNotEmptyArr = v => _isArr(v) && v.length > 0;
-exports._isNotEmptyArr = _isNotEmptyArr;
-const _fIsTypeof = str => v => typeof v === str;
-const _isFn = exports._isFn = _fIsTypeof("function");
-const _isBool = exports._isBool = _fIsTypeof("boolean");
-const _isStr = exports._isStr = _fIsTypeof("string");
-const _isNumber = v => typeof v === 'number' && v - v === 0;
-exports._isNumber = _isNumber;
-const _isNil = v => v == null;
-exports._isNil = _isNil;
-const _isNaN = exports._isNaN = Number.isNaN;
-const _isObject = value => value != null && typeof value === "object";
-exports._isObject = _isObject;
-const _upperFirst = str => _isStr(str) && str.length > 0 ? str[0].toUpperCase() + str.slice(1) : '';
+const _upperFirst = str => (0, _isTypeFn.isStr)(str) && str.length > 0 ? str[0].toUpperCase() + str.slice(1) : '';
 exports._upperFirst = _upperFirst;
 const _getByPropName = (obj, propName, dfValue) => obj && propName ? obj[propName] || dfValue : dfValue;
 exports._getByPropName = _getByPropName;
-const _isUndef = _fIsTypeof("undefined");
 const _range = (startValue, endValue, increment) => {
-  const isEndDef = !_isUndef(endValue);
+  const isEndDef = !(0, _isTypeFn.isUndef)(endValue);
   endValue = isEndDef ? endValue : startValue;
   startValue = isEndDef ? startValue : 0;
   const _diff = endValue - startValue;
-  if (_isUndef(increment)) {
+  if ((0, _isTypeFn.isUndef)(increment)) {
     increment = Math.sign(_diff);
   }
   const length = Math.abs(_diff / (increment || 1));
@@ -58,7 +44,7 @@ exports._min = _min;
 const _max = arr => arr && arr.length ? Math.max(...arr) : void 0;
 exports._max = _max;
 const _uniqBy = (arr, iteratee) => {
-  if (_isStr(iteratee)) {
+  if ((0, _isTypeFn.isStr)(iteratee)) {
     const prop = iteratee;
     iteratee = item => item[prop];
   }

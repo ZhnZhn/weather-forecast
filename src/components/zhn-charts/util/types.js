@@ -1,13 +1,12 @@
+import {
+  isObj,
+  isFn,
+  isBool
+} from '../../../utils/isTypeFn';
+
 import { isValidElement } from '../../uiApi';
 
-import {
-  _isObject,
-  _isFn,
-  _isBool
-} from './FnUtils';
-
 const _getObjectKeys = Object.keys;
-
 const SVGContainerPropKeys = ['viewBox', 'children'];
 
 export const SVGElementPropKeys = [
@@ -339,7 +338,7 @@ export const adaptEventHandlers = (
   props,
   newHandler
 ) => {
-  if (!props || _isFn(props) || _isBool(props)) {
+  if (!props || isFn(props) || isBool(props)) {
     return null;
   }
   let inputProps = props;
@@ -347,7 +346,7 @@ export const adaptEventHandlers = (
     inputProps = props.props;
   }
 
-  return _isObject(inputProps) ? _getObjectKeys(inputProps)
+  return isObj(inputProps) ? _getObjectKeys(inputProps)
     .reduce((eventProps, propName) => {
       if (isLikelyOnEventProperty(propName)) {
         eventProps[propName] = newHandler
@@ -370,10 +369,10 @@ export const adaptEventsOfChild = (
   props,
   data,
   index
-) => _isObject(props) ? _getObjectKeys(props)
+) => isObj(props) ? _getObjectKeys(props)
   .reduce((eventProps, propName) => {
      const originalHandler = props[propName];
-     if (isLikelyOnEventProperty(propName) && _isFn(originalHandler)) {
+     if (isLikelyOnEventProperty(propName) && isFn(originalHandler)) {
        if (!eventProps) {
          eventProps = {};
        }

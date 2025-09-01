@@ -1,4 +1,13 @@
 import {
+  isArr,
+  isNaN,
+  isNullOrUndef,
+  isFn,
+  isNumber,
+  isNumOrStr
+} from '../../../utils/isTypeFn';
+
+import {
   scaleBand,
   scalePoint,
   scaleLinear
@@ -14,10 +23,6 @@ import {
 } from '../d3Shape';
 
 import {
-  _isNil,
-  _isFn,
-  _isArr,
-  _isNaN,
   _getByPropName,
   _min,
   _max,
@@ -33,8 +38,6 @@ import { Legend } from '../component/Legend';
 import {
   findEntryInArray,
   getPercentValue,
-  isNumber,
-  isNumOrStr,
   mathSign,
   uniqueId
 } from './DataUtils';
@@ -65,11 +68,11 @@ export const getValueByDataKey = (
   obj,
   dataKey,
   defaultValue
-) => _isNil(obj) || _isNil(dataKey)
+) => isNullOrUndef(obj) || isNullOrUndef(dataKey)
   ? defaultValue
   : isNumOrStr(dataKey)
       ? _getByPropName(obj, dataKey, defaultValue)
-      : _isFn(dataKey)
+      : isFn(dataKey)
           ? dataKey(obj)
           : defaultValue;
 /**
@@ -92,7 +95,7 @@ export function getDomainOfDataByKey(
     const domain = flattenData.filter(entry => isNumber(entry) || parseFloat(entry));
     return domain.length ? [_min(domain), _max(domain)] : [Infinity, -Infinity];
   }
-  const validateData = filterNil ? flattenData.filter(entry => !_isNil(entry)) : flattenData;
+  const validateData = filterNil ? flattenData.filter(entry => !isNullOrUndef(entry)) : flattenData;
   return validateData
    .map(entry => (isNumOrStr(entry) || entry instanceof Date ? entry : ''));
 }
@@ -290,7 +293,7 @@ export const getBarSizeList = ({
         result[cateId].push({
           item: barItems[0],
           stackList: barItems.slice(1),
-          barSize: _isNil(selfSize) ? globalSize : selfSize,
+          barSize: isNullOrUndef(selfSize) ? globalSize : selfSize,
         });
       }
     }
@@ -538,7 +541,7 @@ export const getTicksOfAxis = (
         offset
       };
     });
-    return result.filter((row) => !_isNaN(row.coordinate));
+    return result.filter((row) => !isNaN(row.coordinate));
   }
   // When axis is a categorial axis, but the type of axis is number or the scale of axis is not "auto"
   if (axis.isCategorical && axis.categoricalDomain) {
@@ -578,17 +581,17 @@ export const combineEventHandlers = (
   childHandler
 ) => {
   let customizedHandler;
-  if (_isFn(childHandler)) {
+  if (isFn(childHandler)) {
     customizedHandler = childHandler;
-  } else if (_isFn(parentHandler)) {
+  } else if (isFn(parentHandler)) {
     customizedHandler = parentHandler;
   }
-  if (_isFn(defaultHandler) || customizedHandler) {
+  if (isFn(defaultHandler) || customizedHandler) {
     return (arg1, arg2, arg3, arg4) => {
-      if (_isFn(defaultHandler)) {
+      if (isFn(defaultHandler)) {
         defaultHandler(arg1, arg2, arg3, arg4);
       }
-      if (_isFn(customizedHandler)) {
+      if (isFn(customizedHandler)) {
         customizedHandler(arg1, arg2, arg3, arg4);
       }
     };
@@ -656,7 +659,7 @@ export const parseScale = (
     };
   }
   */
-  return _isFn(scale)
+  return isFn(scale)
     ? { scale }
     : _crScalePoint();
 };
@@ -731,7 +734,7 @@ export const offsetSign = (
     let positive = 0;
     let negative = 0;
     for (let i = 0; i < n; ++i) {
-      const value = _isNaN(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
+      const value = isNaN(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
       if (value >= 0) {
         series[i][j][0] = positive;
         series[i][j][1] = positive + value;
@@ -755,7 +758,7 @@ export const offsetPositive = (
   for (let j = 0, m = series[0].length; j < m; ++j) {
     let positive = 0;
     for (let i = 0; i < n; ++i) {
-      const value = _isNaN(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
+      const value = isNaN(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
       if (value >= 0) {
         series[i][j][0] = positive;
         series[i][j][1] = positive + value;
@@ -911,7 +914,7 @@ export const getCateCoordinateOfLine = ({
 }) => {
   if (axis.type === 'category') {
     // find coordinate of category axis by the value of category
-    if (!axis.allowDuplicatedCategory && axis.dataKey && !_isNil(entry[axis.dataKey])) {
+    if (!axis.allowDuplicatedCategory && axis.dataKey && !isNullOrUndef(entry[axis.dataKey])) {
       const matchedTick = findEntryInArray(ticks, 'value', entry[axis.dataKey]);
       if (matchedTick) {
         return matchedTick.coordinate + bandSize / 2;
@@ -921,10 +924,10 @@ export const getCateCoordinateOfLine = ({
       ? ticks[index].coordinate + bandSize / 2
       : null;
   }
-  const value = getValueByDataKey(entry, !_isNil(dataKey)
+  const value = getValueByDataKey(entry, !isNullOrUndef(dataKey)
     ? dataKey
     : axis.dataKey);
-  return !_isNil(value)
+  return !isNullOrUndef(value)
     ? axis.scale(value)
     : null;
 };
@@ -943,7 +946,7 @@ export const getCateCoordinateOfBar = ({
       : null;
   }
   const value = getValueByDataKey(entry, axis.dataKey, axis.domain[index]);
-  return !_isNil(value)
+  return !isNullOrUndef(value)
     ? axis.scale(value) - bandSize / 2 + offset
     : null;
 };
@@ -1028,10 +1031,10 @@ export const parseSpecifiedDomain = (
   dataDomain,
   allowDataOverflow
 ) => {
-  if (_isFn(specifiedDomain)) {
+  if (isFn(specifiedDomain)) {
     return specifiedDomain(dataDomain, allowDataOverflow);
   }
-  if (!_isArr(specifiedDomain)) {
+  if (!isArr(specifiedDomain)) {
     return dataDomain;
   }
   const domain = [];
@@ -1042,7 +1045,7 @@ export const parseSpecifiedDomain = (
   } else if (MIN_VALUE_REG.test(specifiedDomain[0])) {
     const value = +MIN_VALUE_REG.exec(specifiedDomain[0])[1];
     domain[0] = dataDomain[0] - value;
-  } else if (_isFn(specifiedDomain[0])) {
+  } else if (isFn(specifiedDomain[0])) {
     domain[0] = specifiedDomain[0](dataDomain[0]);
   } else {
     domain[0] = dataDomain[0];
@@ -1052,7 +1055,7 @@ export const parseSpecifiedDomain = (
   } else if (MAX_VALUE_REG.test(specifiedDomain[1])) {
     const value = +MAX_VALUE_REG.exec(specifiedDomain[1])[1];
     domain[1] = dataDomain[1] + value;
-  } else if (_isFn(specifiedDomain[1])) {
+  } else if (isFn(specifiedDomain[1])) {
     domain[1] = specifiedDomain[1](dataDomain[1]);
   } else {
     domain[1] = dataDomain[1];
