@@ -1,8 +1,8 @@
 import {
-  _isFn,
-  _isNumber,
-  _isNotEmptyArr
-} from '../util/FnUtils';
+  isFn,
+  isNumber,
+  isNotEmptyArr
+} from '../../../utils/isTypeFn';
 
 import { getTicks } from './getTicks';
 
@@ -21,7 +21,7 @@ const _crFinalTicks = (
     ...noTicksProps
   } = props;
 
-  return _isFn(ticksGenerator)
+  return isFn(ticksGenerator)
     ? ticks && ticks.length > 0
        ? ticksGenerator(props)
        : ticksGenerator(noTicksProps)
@@ -34,7 +34,7 @@ export const getCartesianAxisTicks = (
   letterSpacing
 ) => {
   const finalTicks = _crFinalTicks(props);
-  return _isNotEmptyArr(finalTicks) ? getTicks(
+  return isNotEmptyArr(finalTicks) ? getTicks(
     {...props, ticks: finalTicks},
     fontSize,
     letterSpacing
@@ -80,7 +80,7 @@ export const getTickLineCoord = (
   } = props
   , sign = mirror ? -1 : 1
   , finalTickSize = data.tickSize || tickSize
-  , tickCoord = _isNumber(data.tickCoord)
+  , tickCoord = isNumber(data.tickCoord)
      ? data.tickCoord
      : data.coordinate;
   let x1, x2, y1, y2, tx, ty;

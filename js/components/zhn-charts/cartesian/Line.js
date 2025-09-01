@@ -3,14 +3,14 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Line = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
-var _FnUtils = require("../util/FnUtils");
-var _ReactUtils = require("../util/ReactUtils");
 var _Layer = require("../container/Layer");
 var _LabelList = require("../component/LabelList");
 var _Global = require("../util/Global");
 var _ChartUtils = require("../util/ChartUtils");
+var _ReactUtils = require("../util/ReactUtils");
 var _cartesianFn = require("./cartesianFn");
 var _useAnimationHandle = _interopRequireDefault(require("./useAnimationHandle"));
 var _usePrevCurData = _interopRequireDefault(require("./usePrevCurData"));
@@ -146,11 +146,11 @@ Line.getComposedData = _ref => {
           entry,
           index
         }),
-        y: (0, _FnUtils._isNil)(value) ? null : yAxis.scale(value),
+        y: (0, _isTypeFn.isNull)(value) ? null : yAxis.scale(value),
         value,
         payload: entry
       } : {
-        x: (0, _FnUtils._isNil)(value) ? null : xAxis.scale(value),
+        x: (0, _isTypeFn.isNull)(value) ? null : xAxis.scale(value),
         y: (0, _ChartUtils.getCateCoordinateOfLine)({
           axis: yAxis,
           ticks: yAxisTicks,

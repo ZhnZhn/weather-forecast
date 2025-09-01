@@ -1,7 +1,9 @@
+import {
+  isArr,
+  isNaN
+} from '../../../utils/isTypeFn';
 import { memo } from '../../uiApi';
 import { crCn } from '../../styleFn';
-
-import { _isArr } from '../util/FnUtils';
 
 import { IS_SSR } from '../util/Global';
 import { mathSign } from '../util/DataUtils';
@@ -177,7 +179,7 @@ Bar.getComposedData = ({
       value = truncateByDomain(stackedData[dataStartIndex + index], stackedDomain);
     } else {
       value = getValueByDataKey(entry, dataKey);
-      if (!_isArr(value)) {
+      if (!isArr(value)) {
         value = [baseValue, value];
       }
     }
@@ -201,8 +203,9 @@ Bar.getComposedData = ({
       width = pos.size;
 
       const computedHeight = baseValueScale - currentValueScale;
-      height = Number.isNaN(computedHeight)
-        ? 0 : computedHeight;
+      height = isNaN(computedHeight)
+        ? 0 
+        : computedHeight;
       background = {
         y: yAxis.y,
         height: yAxis.height,

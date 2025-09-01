@@ -1,12 +1,10 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isPoints = exports.getStripeLineDimension = exports.crStripeRectProps = exports.crRoundedSortedPoints = exports.crGridPoints = void 0;
-var _FnUtils = require("../util/FnUtils");
+exports.getStripeLineDimension = exports.crStripeRectProps = exports.crRoundedSortedPoints = exports.crGridPoints = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _CL = require("../CL");
-const isPoints = points => points && points.length;
-exports.isPoints = isPoints;
-const _crPoints = (points, pointsGenerator, generatorOptions) => !isPoints(points) && (0, _FnUtils._isFn)(pointsGenerator) ? pointsGenerator(generatorOptions) : points;
+const _crPoints = (points, pointsGenerator, generatorOptions) => !(0, _isTypeFn.isNotEmptyArr)(points) && (0, _isTypeFn.isFn)(pointsGenerator) ? pointsGenerator(generatorOptions) : points;
 const crGridPoints = props => {
   const {
       horizontalCoordinatesGenerator,

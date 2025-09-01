@@ -3,9 +3,9 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Bar = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
-var _FnUtils = require("../util/FnUtils");
 var _Global = require("../util/Global");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
@@ -117,7 +117,7 @@ Bar.getComposedData = _ref => {
       value = (0, _ChartUtils.truncateByDomain)(stackedData[dataStartIndex + index], stackedDomain);
     } else {
       value = (0, _ChartUtils.getValueByDataKey)(entry, dataKey);
-      if (!(0, _FnUtils._isArr)(value)) {
+      if (!(0, _isTypeFn.isArr)(value)) {
         value = [baseValue, value];
       }
     }
@@ -134,7 +134,7 @@ Bar.getComposedData = _ref => {
       y = currentValueScale ?? baseValueScale ?? void 0;
       width = pos.size;
       const computedHeight = baseValueScale - currentValueScale;
-      height = Number.isNaN(computedHeight) ? 0 : computedHeight;
+      height = (0, _isTypeFn.isNaN)(computedHeight) ? 0 : computedHeight;
       background = {
         y: yAxis.y,
         height: yAxis.height,

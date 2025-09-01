@@ -1,3 +1,4 @@
+import { isNotEmptyArr } from '../../../utils/isTypeFn';
 import { memo } from '../../uiApi';
 
 import {
@@ -11,7 +12,6 @@ import {
 
 import {
   crGridPoints,
-  isPoints,
   crRoundedSortedPoints
 } from './CartesianGridRenderFn';
 
@@ -37,7 +37,7 @@ import {
 const _isPoints = (
   is,
   points
-) => is && isPoints(points);
+) => is && isNotEmptyArr(points);
 
 const DF_PROPS = {
   horizontal: true,

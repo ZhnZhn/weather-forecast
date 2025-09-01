@@ -2,7 +2,7 @@
 
 exports.__esModule = true;
 exports.getTickLineCoord = exports.getTickAnchors = exports.getClassName = exports.getCartesianAxisTicks = void 0;
-var _FnUtils = require("../util/FnUtils");
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _getTicks = require("./getTicks");
 const getClassName = obj => obj ? obj.className : void 0;
 exports.getClassName = getClassName;
@@ -12,11 +12,11 @@ const _crFinalTicks = props => {
     ticksGenerator,
     ...noTicksProps
   } = props;
-  return (0, _FnUtils._isFn)(ticksGenerator) ? ticks && ticks.length > 0 ? ticksGenerator(props) : ticksGenerator(noTicksProps) : ticks;
+  return (0, _isTypeFn.isFn)(ticksGenerator) ? ticks && ticks.length > 0 ? ticksGenerator(props) : ticksGenerator(noTicksProps) : ticks;
 };
 const getCartesianAxisTicks = (props, fontSize, letterSpacing) => {
   const finalTicks = _crFinalTicks(props);
-  return (0, _FnUtils._isNotEmptyArr)(finalTicks) ? (0, _getTicks.getTicks)({
+  return (0, _isTypeFn.isNotEmptyArr)(finalTicks) ? (0, _getTicks.getTicks)({
     ...props,
     ticks: finalTicks
   }, fontSize, letterSpacing) : void 0;
@@ -46,7 +46,7 @@ const getTickLineCoord = (props, data) => {
     } = props,
     sign = mirror ? -1 : 1,
     finalTickSize = data.tickSize || tickSize,
-    tickCoord = (0, _FnUtils._isNumber)(data.tickCoord) ? data.tickCoord : data.coordinate;
+    tickCoord = (0, _isTypeFn.isNumber)(data.tickCoord) ? data.tickCoord : data.coordinate;
   let x1, x2, y1, y2, tx, ty;
   switch (orientation) {
     case 'top':

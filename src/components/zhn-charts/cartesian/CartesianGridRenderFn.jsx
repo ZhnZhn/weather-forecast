@@ -1,15 +1,15 @@
-import { _isFn } from '../util/FnUtils';
-import { CL_BG } from '../CL';
+import {
+  isFn,
+  isNotEmptyArr
+} from '../../../utils/isTypeFn';
 
-export const isPoints = (
-  points
-) => points && points.length
+import { CL_BG } from '../CL';
 
 const _crPoints = (
   points,
   pointsGenerator,
   generatorOptions
-) => !isPoints(points) && _isFn(pointsGenerator)
+) => !isNotEmptyArr(points) && isFn(pointsGenerator)
   ? pointsGenerator(generatorOptions)
   : points;
 

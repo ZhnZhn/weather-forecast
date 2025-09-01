@@ -3,6 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.CartesianGrid = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
@@ -12,7 +13,7 @@ var _CartesianGridLines = require("./CartesianGridLines");
 var _CartesianGridStripes = require("./CartesianGridStripes");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-const _isPoints = (is, points) => is && (0, _CartesianGridRenderFn.isPoints)(points);
+const _isPoints = (is, points) => is && (0, _isTypeFn.isNotEmptyArr)(points);
 const DF_PROPS = {
   horizontal: true,
   vertical: true,

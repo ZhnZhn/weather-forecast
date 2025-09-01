@@ -2,9 +2,9 @@
 
 exports.__esModule = true;
 exports.CartesianAxisTick = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _styleFn = require("../../styleFn");
 var _types = require("../util/types");
-var _FnUtils = require("../util/FnUtils");
 var _Layer = require("../container/Layer");
 var _Text = require("../component/Text");
 var _cartesianFn = require("./cartesianFn");
@@ -40,7 +40,7 @@ const CartesianAxisTick = _ref => {
       ...tickLineProps,
       ...lineCoord,
       className: (0, _styleFn.crCn)(_CL.CL_AXIS_TICK_LINE, _tickLineClassName)
-    }), tick && _renderTickItem(tick, tickProps, `${(0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)]
+    }), tick && _renderTickItem(tick, tickProps, `${(0, _isTypeFn.isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)]
   });
 };
 exports.CartesianAxisTick = CartesianAxisTick;

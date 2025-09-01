@@ -1,3 +1,5 @@
+import { isNull } from '../../../utils/isTypeFn';
+
 import {
   memo,
   useRef,
@@ -5,9 +7,6 @@ import {
   useEffect
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
-
-import { _isNil } from '../util/FnUtils';
-import { crProps } from '../util/ReactUtils';
 
 import { Layer } from '../container/Layer';
 import { LabelList } from '../component/LabelList';
@@ -17,6 +16,7 @@ import {
   getCateCoordinateOfLine,
   getValueByDataKey
 } from '../util/ChartUtils';
+import { crProps } from '../util/ReactUtils';
 
 import {
   isHideOrNoData,
@@ -196,12 +196,12 @@ Line.getComposedData = ({
       return layout === 'horizontal'
         ? {
             x: getCateCoordinateOfLine({ axis: xAxis, ticks: xAxisTicks, bandSize, entry, index }),
-            y: _isNil(value) ? null : yAxis.scale(value),
+            y: isNull(value) ? null : yAxis.scale(value),
             value,
             payload: entry
           }
         : {
-            x: _isNil(value) ? null : xAxis.scale(value),
+            x: isNull(value) ? null : xAxis.scale(value),
             y: getCateCoordinateOfLine({ axis: yAxis, ticks: yAxisTicks, bandSize, entry, index }),
             value,
             payload: entry

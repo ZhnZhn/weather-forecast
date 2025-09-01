@@ -4,7 +4,7 @@ exports.__esModule = true;
 exports.getEveryNThTick = getEveryNThTick;
 exports.getNumberIntervalTicks = getNumberIntervalTicks;
 exports.getTicks = getTicks;
-var _FnUtils = require("../util/FnUtils");
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _DataUtils = require("../util/DataUtils");
 var _DOMUtils = require("../util/DOMUtils");
 var _Global = require("../util/Global");
@@ -68,7 +68,7 @@ function getTicksEnd(_ref) {
   let [start, end] = _crStartEnd(_isSizeKeyWidth, x, y, width, height, sign);
   for (let i = len - 1; i >= 0; i--) {
     let entry = result[i];
-    const content = (0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, len - i - 1) : entry.value,
+    const content = (0, _isTypeFn.isFn)(tickFormatter) ? tickFormatter(entry.value, len - i - 1) : entry.value,
       size = (0, _DOMUtils.getStringSize)(content, {
         fontSize,
         letterSpacing
@@ -128,7 +128,7 @@ function getTicksStart(_ref2, preserveEnd) {
   if (preserveEnd) {
     // Try to guarantee the tail to be displayed
     let tail = ticks[len - 1];
-    const tailContent = (0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(tail.value, len - 1) : tail.value,
+    const tailContent = (0, _isTypeFn.isFn)(tickFormatter) ? tickFormatter(tail.value, len - 1) : tail.value,
       tailSize = (0, _DOMUtils.getStringSize)(tailContent, {
         fontSize,
         letterSpacing
@@ -150,7 +150,7 @@ function getTicksStart(_ref2, preserveEnd) {
   const count = preserveEnd ? len - 1 : len;
   for (let i = 0; i < count; i++) {
     let entry = result[i];
-    const content = (0, _FnUtils._isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value,
+    const content = (0, _isTypeFn.isFn)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value,
       size = (0, _DOMUtils.getStringSize)(content, {
         fontSize,
         letterSpacing

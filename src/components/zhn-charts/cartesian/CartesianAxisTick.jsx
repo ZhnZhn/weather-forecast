@@ -1,7 +1,7 @@
+import { isFn } from '../../../utils/isTypeFn';
 import { crCn } from '../../styleFn';
 
 import { adaptEventsOfChild } from '../util/types';
-import { _isFn } from '../util/FnUtils';
 
 import { Layer } from '../container/Layer';
 import { Text } from '../component/Text';
@@ -53,7 +53,7 @@ export const CartesianAxisTick = ({
             className={crCn(CL_AXIS_TICK_LINE, _tickLineClassName)}
          />
        )}
-      {tick && _renderTickItem(tick, tickProps, `${_isFn(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)}
+      {tick && _renderTickItem(tick, tickProps, `${isFn(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)}
     </Layer>
   );
 }

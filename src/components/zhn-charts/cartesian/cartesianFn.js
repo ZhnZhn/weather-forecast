@@ -1,14 +1,15 @@
 import {
+  isArr,
+  isFn
+} from '../../../utils/isTypeFn';
+
+import {
   isValidElement,
   cloneUiElement
 } from '../../uiApi';
 
 import { getValueByDataKey } from '../util/ChartUtils';
 import { ifOverflowMatches } from '../util/IfOverflowMatches';
-import {
-  _isArr,
-  _isFn
-} from '../util/FnUtils';
 
 export const DF_AXIS_PROPS = {
   allowDataOverflow: false,
@@ -46,7 +47,7 @@ export const fCreateElement = (
   value
 ) => isValidElement(option)
   ? cloneUiElement(option, props)
-  : _isFn(option)
+  : isFn(option)
      ? option(props)
      : crElement(props, option, value)
 
@@ -56,7 +57,7 @@ export const dataPointFormatter = (
 ) => ({
    x: dataPoint.x,
    y: dataPoint.y,
-   value: _isArr(dataPoint.value)
+   value: isArr(dataPoint.value)
     ? dataPoint.value[1]
     : dataPoint.value,
    errorVal: getValueByDataKey(dataPoint, dataKey)

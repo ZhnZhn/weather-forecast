@@ -1,4 +1,4 @@
-import { _isFn } from '../util/FnUtils';
+import { isFn } from '../../../utils/isTypeFn';
 
 import { mathSign, isNumber } from '../util/DataUtils';
 import { getStringSize } from '../util/DOMUtils';
@@ -98,7 +98,7 @@ function getTicksEnd({
 
   for (let i = len - 1; i >= 0; i--) {
     let entry = result[i];
-    const content = _isFn(tickFormatter)
+    const content = isFn(tickFormatter)
       ? tickFormatter(entry.value, len - i - 1)
       : entry.value
     , size = getStringSize(
@@ -173,7 +173,7 @@ function getTicksStart({
   if (preserveEnd) {
     // Try to guarantee the tail to be displayed
     let tail = ticks[len - 1];
-    const tailContent = _isFn(tickFormatter) ? tickFormatter(tail.value, len - 1) : tail.value
+    const tailContent = isFn(tickFormatter) ? tickFormatter(tail.value, len - 1) : tail.value
     , tailSize = getStringSize(tailContent, { fontSize, letterSpacing })[sizeKey] + unitSize
     , tailGap = sign * (tail.coordinate + (sign * tailSize) / 2 - end);
     result[len - 1] = tail = {
@@ -192,7 +192,7 @@ function getTicksStart({
   const count = preserveEnd ? len - 1 : len;
   for (let i = 0; i < count; i++) {
     let entry = result[i];
-    const content = _isFn(tickFormatter)
+    const content = isFn(tickFormatter)
       ? tickFormatter(entry.value, i)
       : entry.value
     , size = getStringSize(content, { fontSize, letterSpacing })[sizeKey] + unitSize
