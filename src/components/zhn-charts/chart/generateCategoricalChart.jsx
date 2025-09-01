@@ -1,11 +1,14 @@
+import {
+  isNullOrUndef,
+  isBool,
+  isFn
+} from '../../../utils/isTypeFn';
+
 import { Component } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
 import {
   _throttle,
-  _isBool,
-  _isNil,
-  _isFn,
   _getByPropName
 } from '../util/FnUtils';
 
@@ -103,7 +106,7 @@ export const generateCategoricalChart = ({
             constructor(props) {
               super(props);
 
-              this.uniqueChartId = _isNil(props.id)
+              this.uniqueChartId = isNullOrUndef(props.id)
                 ? uniqueId('recharts')
                 : props.id;
               this.clipPathId = `${this.uniqueChartId}-clip`;
@@ -160,7 +163,7 @@ export const generateCategoricalChart = ({
               if (mouse) {
                 const nextState = { ...mouse, isTooltipActive: true };
                 this.setState(nextState);
-                if (_isFn(onMouseEnter)) {
+                if (isFn(onMouseEnter)) {
                   onMouseEnter(nextState, e);
                 }
               }
@@ -173,7 +176,7 @@ export const generateCategoricalChart = ({
                  ? { ...mouse, isTooltipActive: true }
                  : { isTooltipActive: false };
               this.setState(nextState);
-              if (_isFn(onMouseMove)) {
+              if (isFn(onMouseMove)) {
                 onMouseMove(nextState, e);
               }
             };
@@ -194,7 +197,7 @@ export const generateCategoricalChart = ({
             }
 
             handleMouseMove = (e) => {
-              if (e && _isFn(e.persist)) {
+              if (e && isFn(e.persist)) {
                 e.persist();
               }
               this.triggeredAfterMouseMove(e);
@@ -204,7 +207,7 @@ export const generateCategoricalChart = ({
               const { onMouseLeave } = this.props
               , nextState = { isTooltipActive: false };
               this.setState(nextState);
-              if (_isFn(onMouseLeave)) {
+              if (isFn(onMouseLeave)) {
                 onMouseLeave(nextState, e);
               }
               this.cancelThrottledTriggerAfterMouseMove();
@@ -213,7 +216,7 @@ export const generateCategoricalChart = ({
             handleOuterEvent = (e) => {
               const eventName = getReactEventByType(e)
               , event = _getByPropName(this.props, `${eventName}`);
-              if (eventName && _isFn(event)) {
+              if (eventName && isFn(event)) {
                 const mouse = /.*touch.*/i.test(eventName)
                   ? this.getMouseInfo(e.changedTouches[0])
                   : this.getMouseInfo(e);
@@ -231,7 +234,7 @@ export const generateCategoricalChart = ({
                   isTooltipActive: true
                 };
                 this.setState(nextState);
-                if (_isFn(onClick)) {
+                if (isFn(onClick)) {
                   onClick(nextState, e);
                 }
               }
@@ -239,7 +242,7 @@ export const generateCategoricalChart = ({
 
             handleMouseDown = (e) => {
               const { onMouseDown } = this.props;
-              if (_isFn(onMouseDown)) {
+              if (isFn(onMouseDown)) {
                 const nextState = this.getMouseInfo(e);
                 onMouseDown(nextState, e);
               }
@@ -247,7 +250,7 @@ export const generateCategoricalChart = ({
 
             handleMouseUp = (e) => {
               const { onMouseUp } = this.props;
-              if (_isFn(onMouseUp)) {
+              if (isFn(onMouseUp)) {
                 const nextState = this.getMouseInfo(e);
                 onMouseUp(nextState, e);
               }
@@ -332,7 +335,7 @@ export const generateCategoricalChart = ({
             }
             getTooltipEventType() {
                 const tooltipItem = findChildByType(this.props.children, Tooltip);
-                if (tooltipItem && _isBool(tooltipItem.props.shared)) {
+                if (tooltipItem && isBool(tooltipItem.props.shared)) {
                     const eventType = tooltipItem.props.shared ? 'axis' : 'item';
                     return validateTooltipEventTypes.indexOf(eventType) >= 0 ? eventType : defaultTooltipEventType;
                 }

@@ -1,11 +1,11 @@
 import {
+  isFn
+} from '../../../utils/isTypeFn';
+
+import {
   isValidElement,
   cloneUiElement
 } from '../../uiApi';
-
-import {
-  _isFn
-} from '../util/FnUtils';
 
 import {
   getMainColorOfGraphicItem,
@@ -28,7 +28,7 @@ const renderActiveDot = (
 ) => {
   const dot = isValidElement(option)
     ? cloneUiElement(option, props)
-    : _isFn(option)
+    : isFn(option)
         ? option(props)
         : <Dot {...props}/>;
 

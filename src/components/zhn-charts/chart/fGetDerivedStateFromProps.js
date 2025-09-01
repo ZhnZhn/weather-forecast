@@ -1,4 +1,5 @@
-import { _isNil } from '../util/FnUtils';
+import { isNullOrUndef } from '../../../utils/isTypeFn';
+
 import { isChildrenEqual } from '../util/ReactUtils';
 import { shallowEqual } from '../util/ShallowEqual';
 import { getTooltipData } from './generateCategoricalChartFn';
@@ -28,8 +29,8 @@ const _createDefaultState = (
     dataStartIndex: startIndex,
     dataEndIndex: endIndex,
     activeTooltipIndex: -1,
-    isTooltipActive: !_isNil(defaultShowTooltip)
-      ? defaultShowTooltip : false
+    isTooltipActive: isNullOrUndef(defaultShowTooltip)
+      ? !1: defaultShowTooltip
   };
 };
 
@@ -48,7 +49,7 @@ export const fGetDerivedStateFromProps = (
     stackOffset,
     margin
   } = nextProps;
-  if (_isNil(prevState.updateId)) {
+  if (isNullOrUndef(prevState.updateId)) {
     const defaultState = _createDefaultState(nextProps);
     return {
       ...defaultState,
@@ -108,7 +109,7 @@ export const fGetDerivedStateFromProps = (
 
   if (!isChildrenEqual(children, prevState.prevChildren)) {
     // update configuration in children
-    const hasGlobalData = !_isNil(data)
+    const hasGlobalData = !isNullOrUndef(data)
     , newUpdateId = hasGlobalData
        ? prevState.updateId
        : prevState.updateId + 1;

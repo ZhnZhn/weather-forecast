@@ -1,4 +1,9 @@
 import {
+  isNullOrUndef,
+  isFn
+} from '../../../utils/isTypeFn';
+
+import {
   isValidElement,
   cloneUiElement,
   createElement
@@ -9,11 +14,6 @@ import { crCn } from '../../styleFn';
 import { CartesianAxis } from '../cartesian/CartesianAxis';
 import { Tooltip } from '../component/Tooltip';
 import { Curve } from '../shape/Curve';
-
-import {
-  _isNil,
-  _isFn
-} from '../util/FnUtils';
 
 import {
   isLayoutHorizontal,
@@ -328,7 +328,7 @@ const renderGraphicChild = ({
     }, key);
 
   function findWithPayload(entry) {
-    return _isFn(tooltipAxis.dataKey)
+    return isFn(tooltipAxis.dataKey)
       ? tooltipAxis.dataKey(entry.payload)
       : null;
   }
@@ -337,7 +337,7 @@ const renderGraphicChild = ({
     let activePoint, basePoint;
     if (tooltipAxis.dataKey && !tooltipAxis.allowDuplicatedCategory) {
       // number transform to string
-      const specifiedKey = _isFn(tooltipAxis.dataKey)
+      const specifiedKey = isFn(tooltipAxis.dataKey)
         ? findWithPayload
         : 'payload.'.concat(tooltipAxis.dataKey.toString());
       activePoint = findEntryInArray(points, specifiedKey, activeLabel);
@@ -347,7 +347,7 @@ const renderGraphicChild = ({
       basePoint = isRange && baseLine && baseLine[activeTooltipIndex];
     }
 
-    if (!_isNil(activePoint)) {
+    if (!isNullOrUndef(activePoint)) {
       return [
         graphicalItem,
         ...renderActivePoints({

@@ -2,6 +2,7 @@
 
 exports.__esModule = true;
 exports.getAxisMapByAxes = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _FnUtils = require("../util/FnUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ChartUtils = require("../util/ChartUtils");
@@ -19,13 +20,13 @@ const _isValueNumber = _fIsValueEqual('number');
  * @returns {Boolean}                         `true` if domain is specified by user
  */
 const isDomainSpecifiedByUser = (domain, allowDataOverflow, axisType) => {
-  if (_isValueNumber(axisType) && allowDataOverflow === true && (0, _FnUtils._isArr)(domain)) {
+  if (_isValueNumber(axisType) && allowDataOverflow === true && (0, _isTypeFn.isArr)(domain)) {
     const [domainStart, domainEnd] = domain;
     /*
      * The `isNumber` check is needed because the user could also provide strings like "dataMin" via the domain props.
      * In such case, we have to compute the domain from the data.
      */
-    if (!!domainStart && !!domainEnd && (0, _DataUtils.isNumber)(domainStart) && (0, _DataUtils.isNumber)(domainEnd)) {
+    if (!!domainStart && !!domainEnd && (0, _isTypeFn.isNumber)(domainStart) && (0, _isTypeFn.isNumber)(domainEnd)) {
       return true;
     }
   }
@@ -62,7 +63,6 @@ const getAxisMapByAxes = (props, _ref) => {
     isCategorical = (0, _ChartUtils.isCategoricalAxis)(layout, axisType);
   // Eliminate duplicated axes
   const axisMap = axes.reduce((result, child) => {
-    var _child$props$domain2;
     const {
         type,
         dataKey,
@@ -107,8 +107,7 @@ const getAxisMapByAxes = (props, _ref) => {
 
     // we didn't create the domain from user's props above, so we need to calculate it
     if (!domain || domain.length === 0) {
-      var _child$props$domain;
-      const childDomain = (_child$props$domain = child.props.domain) != null ? _child$props$domain : defaultDomain;
+      const childDomain = child.props.domain ?? defaultDomain;
       if (dataKey) {
         // has dataKey in <Axis />
         domain = (0, _ChartUtils.getDomainOfDataByKey)(displayedData, dataKey, type);
@@ -126,10 +125,10 @@ const getAxisMapByAxes = (props, _ref) => {
         } else if (_isValueCategory(type)) {
           // the field type is category data and this axis is numerical axis
           if (!allowDuplicatedCategory) {
-            domain = (0, _ChartUtils.parseDomainOfCategoryAxis)(childDomain, domain, child).reduce((finalDomain, entry) => finalDomain.indexOf(entry) >= 0 || entry === '' || (0, _FnUtils._isNil)(entry) ? finalDomain : [...finalDomain, entry], []);
+            domain = (0, _ChartUtils.parseDomainOfCategoryAxis)(childDomain, domain, child).reduce((finalDomain, entry) => finalDomain.indexOf(entry) >= 0 || entry === '' || (0, _isTypeFn.isNullOrUndef)(entry) ? finalDomain : [...finalDomain, entry], []);
           } else {
             // eliminate undefined or null or empty string
-            domain = domain.filter(entry => entry !== '' && !(0, _FnUtils._isNil)(entry));
+            domain = domain.filter(entry => entry !== '' && !(0, _isTypeFn.isNullOrUndef)(entry));
           }
         } else if (_isValueNumber(type)) {
           // the field type is numerical
@@ -170,7 +169,7 @@ const getAxisMapByAxes = (props, _ref) => {
         categoricalDomain,
         duplicateDomain,
         layout,
-        originalDomain: (_child$props$domain2 = child.props.domain) != null ? _child$props$domain2 : defaultDomain
+        originalDomain: child.props.domain ?? defaultDomain
       }
     };
   }, {});

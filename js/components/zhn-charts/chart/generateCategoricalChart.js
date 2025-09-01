@@ -2,6 +2,7 @@
 
 exports.__esModule = true;
 exports.generateCategoricalChart = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _FnUtils = require("../util/FnUtils");
@@ -73,7 +74,7 @@ const generateCategoricalChart = _ref => {
     accessibilityManager = (() => new _AccessibilityManager.AccessibilityManager())();
     constructor(props) {
       super(props);
-      this.uniqueChartId = (0, _FnUtils._isNil)(props.id) ? (0, _DataUtils.uniqueId)('recharts') : props.id;
+      this.uniqueChartId = (0, _isTypeFn.isNullOrUndef)(props.id) ? (0, _DataUtils.uniqueId)('recharts') : props.id;
       this.clipPathId = `${this.uniqueChartId}-clip`;
       if (props.throttleDelay) {
         this.triggeredAfterMouseMove = (0, _FnUtils._throttle)(this.triggeredAfterMouseMove, props.throttleDelay);
@@ -134,7 +135,7 @@ const generateCategoricalChart = _ref => {
           isTooltipActive: true
         };
         this.setState(nextState);
-        if ((0, _FnUtils._isFn)(onMouseEnter)) {
+        if ((0, _isTypeFn.isFn)(onMouseEnter)) {
           onMouseEnter(nextState, e);
         }
       }
@@ -151,7 +152,7 @@ const generateCategoricalChart = _ref => {
           isTooltipActive: false
         };
       this.setState(nextState);
-      if ((0, _FnUtils._isFn)(onMouseMove)) {
+      if ((0, _isTypeFn.isFn)(onMouseMove)) {
         onMouseMove(nextState, e);
       }
     };
@@ -172,7 +173,7 @@ const generateCategoricalChart = _ref => {
       }));
     };
     handleMouseMove = e => {
-      if (e && (0, _FnUtils._isFn)(e.persist)) {
+      if (e && (0, _isTypeFn.isFn)(e.persist)) {
         e.persist();
       }
       this.triggeredAfterMouseMove(e);
@@ -185,7 +186,7 @@ const generateCategoricalChart = _ref => {
           isTooltipActive: false
         };
       this.setState(nextState);
-      if ((0, _FnUtils._isFn)(onMouseLeave)) {
+      if ((0, _isTypeFn.isFn)(onMouseLeave)) {
         onMouseLeave(nextState, e);
       }
       this.cancelThrottledTriggerAfterMouseMove();
@@ -193,7 +194,7 @@ const generateCategoricalChart = _ref => {
     handleOuterEvent = e => {
       const eventName = (0, _ReactUtils.getReactEventByType)(e),
         event = (0, _FnUtils._getByPropName)(this.props, `${eventName}`);
-      if (eventName && (0, _FnUtils._isFn)(event)) {
+      if (eventName && (0, _isTypeFn.isFn)(event)) {
         const mouse = /.*touch.*/i.test(eventName) ? this.getMouseInfo(e.changedTouches[0]) : this.getMouseInfo(e);
         // handler event case;
         event(mouse, e);
@@ -210,7 +211,7 @@ const generateCategoricalChart = _ref => {
           isTooltipActive: true
         };
         this.setState(nextState);
-        if ((0, _FnUtils._isFn)(onClick)) {
+        if ((0, _isTypeFn.isFn)(onClick)) {
           onClick(nextState, e);
         }
       }
@@ -219,7 +220,7 @@ const generateCategoricalChart = _ref => {
       const {
         onMouseDown
       } = this.props;
-      if ((0, _FnUtils._isFn)(onMouseDown)) {
+      if ((0, _isTypeFn.isFn)(onMouseDown)) {
         const nextState = this.getMouseInfo(e);
         onMouseDown(nextState, e);
       }
@@ -228,7 +229,7 @@ const generateCategoricalChart = _ref => {
       const {
         onMouseUp
       } = this.props;
-      if ((0, _FnUtils._isFn)(onMouseUp)) {
+      if ((0, _isTypeFn.isFn)(onMouseUp)) {
         const nextState = this.getMouseInfo(e);
         onMouseUp(nextState, e);
       }
@@ -304,7 +305,7 @@ const generateCategoricalChart = _ref => {
     }
     getTooltipEventType() {
       const tooltipItem = (0, _ReactUtils.findChildByType)(this.props.children, _Tooltip.Tooltip);
-      if (tooltipItem && (0, _FnUtils._isBool)(tooltipItem.props.shared)) {
+      if (tooltipItem && (0, _isTypeFn.isBool)(tooltipItem.props.shared)) {
         const eventType = tooltipItem.props.shared ? 'axis' : 'item';
         return validateTooltipEventTypes.indexOf(eventType) >= 0 ? eventType : defaultTooltipEventType;
       }

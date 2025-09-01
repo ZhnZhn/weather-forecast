@@ -1,6 +1,4 @@
-import {
-  _isNil
-} from '../util/FnUtils';
+import { isNullOrUndef } from '../../../utils/isTypeFn';
 
 import {
   getBarSizeList,
@@ -94,7 +92,7 @@ const fGetFormatItems = (
     let barPosition = [];
     if (itemIsBar) {
       // ???bar,??bar???
-      const maxBarSize = _isNil(childMaxBarSize)
+      const maxBarSize = isNullOrUndef(childMaxBarSize)
         ? globalMaxBarSize
         : childMaxBarSize
       , barBandSize = getBandSizeOfAxis(

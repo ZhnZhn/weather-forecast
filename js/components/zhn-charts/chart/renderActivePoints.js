@@ -2,8 +2,8 @@
 
 exports.__esModule = true;
 exports.renderActivePoints = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
-var _FnUtils = require("../util/FnUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _types = require("../util/types");
@@ -11,7 +11,7 @@ var _Dot = require("../shape/Dot");
 var _Layer = require("../container/Layer");
 var _jsxRuntime = require("react/jsx-runtime");
 const renderActiveDot = (option, props) => {
-  const dot = (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneUiElement)(option, props) : (0, _FnUtils._isFn)(option) ? option(props) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_Dot.Dot, {
+  const dot = (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneUiElement)(option, props) : (0, _isTypeFn.isFn)(option) ? option(props) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_Dot.Dot, {
     ...props
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {

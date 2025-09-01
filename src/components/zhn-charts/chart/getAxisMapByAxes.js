@@ -1,19 +1,17 @@
 import {
-  _isArr,
-  _isNil,
-  _range
-} from '../util/FnUtils';
+  isArr,
+  isNullOrUndef,
+  isNumber
+} from '../../../utils/isTypeFn';
 
-import {
-  isNumber,
-  hasDuplicate
-} from '../util/DataUtils';
+import { _range } from '../util/FnUtils';
+import { hasDuplicate } from '../util/DataUtils';
 
 import {
   isCategoricalAxis,
   getDomainOfItemsWithSameAxis,
   getDomainOfStackGroups,
-  getDomainOfDataByKey,  
+  getDomainOfDataByKey,
   parseSpecifiedDomain,
   parseDomainOfCategoryAxis
 } from '../util/ChartUtils';
@@ -45,7 +43,7 @@ const isDomainSpecifiedByUser = (
 ) => {
   if (_isValueNumber(axisType)
       && allowDataOverflow === true
-      && _isArr(domain)
+      && isArr(domain)
   ) {
     const [
       domainStart,
@@ -168,12 +166,12 @@ export const getAxisMapByAxes = (
               } else if (_isValueCategory(type)) {
                   // the field type is category data and this axis is numerical axis
                   if (!allowDuplicatedCategory) {
-                    domain = parseDomainOfCategoryAxis(childDomain, domain, child).reduce((finalDomain, entry) => finalDomain.indexOf(entry) >= 0 || entry === '' || _isNil(entry)
+                    domain = parseDomainOfCategoryAxis(childDomain, domain, child).reduce((finalDomain, entry) => finalDomain.indexOf(entry) >= 0 || entry === '' || isNullOrUndef(entry)
                       ? finalDomain
                       : [...finalDomain, entry], []);
                   } else {
                     // eliminate undefined or null or empty string
-                    domain = domain.filter((entry) => entry !== '' && !_isNil(entry));
+                    domain = domain.filter((entry) => entry !== '' && !isNullOrUndef(entry));
                   }
               } else if (_isValueNumber(type)) {
                   // the field type is numerical

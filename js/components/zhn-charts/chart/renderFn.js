@@ -2,12 +2,12 @@
 
 exports.__esModule = true;
 exports.renderMap = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _CartesianAxis = require("../cartesian/CartesianAxis");
 var _Tooltip = require("../component/Tooltip");
 var _Curve = require("../shape/Curve");
-var _FnUtils = require("../util/FnUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
@@ -248,20 +248,20 @@ const renderGraphicChild = _ref6 => {
       ...itemEvents
     }, key);
   function findWithPayload(entry) {
-    return (0, _FnUtils._isFn)(tooltipAxis.dataKey) ? tooltipAxis.dataKey(entry.payload) : null;
+    return (0, _isTypeFn.isFn)(tooltipAxis.dataKey) ? tooltipAxis.dataKey(entry.payload) : null;
   }
   if (hasActive) {
     let activePoint, basePoint;
     if (tooltipAxis.dataKey && !tooltipAxis.allowDuplicatedCategory) {
       // number transform to string
-      const specifiedKey = (0, _FnUtils._isFn)(tooltipAxis.dataKey) ? findWithPayload : 'payload.'.concat(tooltipAxis.dataKey.toString());
+      const specifiedKey = (0, _isTypeFn.isFn)(tooltipAxis.dataKey) ? findWithPayload : 'payload.'.concat(tooltipAxis.dataKey.toString());
       activePoint = (0, _DataUtils.findEntryInArray)(points, specifiedKey, activeLabel);
       basePoint = isRange && baseLine && (0, _DataUtils.findEntryInArray)(baseLine, specifiedKey, activeLabel);
     } else {
       activePoint = points[activeTooltipIndex];
       basePoint = isRange && baseLine && baseLine[activeTooltipIndex];
     }
-    if (!(0, _FnUtils._isNil)(activePoint)) {
+    if (!(0, _isTypeFn.isNullOrUndef)(activePoint)) {
       return [graphicalItem, ...(0, _renderActivePoints.renderActivePoints)({
         isRange,
         item,
