@@ -13,6 +13,7 @@ const _fIsTypeof = (
   strType
 ) => v => typeof v == strType
 
+export const isUndef = _fIsTypeof('undefined');
 export const isFn = _fIsTypeof('function')
 export const isStr = _fIsTypeof('string')
 export const isBool = _fIsTypeof('boolean')
