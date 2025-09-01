@@ -1,12 +1,12 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isStr = exports.isPositiveNumber = exports.isNumber = exports.isNumOrStr = exports.isNull = exports.isNotEmptyArr = exports.isNaN = exports.isFn = exports.isBool = exports.isArr = void 0;
+exports.isStr = exports.isPositiveNumber = exports.isNumber = exports.isNumOrStr = exports.isNullOrUndef = exports.isNotEmptyArr = exports.isNaN = exports.isFn = exports.isBool = exports.isArr = void 0;
 const isArr = exports.isArr = Array.isArray;
 const isNotEmptyArr = arr => isArr(arr) && arr.length > 0;
 exports.isNotEmptyArr = isNotEmptyArr;
-const isNull = v => v === null;
-exports.isNull = isNull;
+const isNullOrUndef = v => v == null;
+exports.isNullOrUndef = isNullOrUndef;
 const _fIsTypeof = strType => v => typeof v == strType;
 const isFn = exports.isFn = _fIsTypeof('function');
 const isStr = exports.isStr = _fIsTypeof('string');

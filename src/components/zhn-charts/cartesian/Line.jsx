@@ -1,4 +1,4 @@
-import { isNull } from '../../../utils/isTypeFn';
+import { isNullOrUndef } from '../../../utils/isTypeFn';
 
 import {
   memo,
@@ -196,12 +196,12 @@ Line.getComposedData = ({
       return layout === 'horizontal'
         ? {
             x: getCateCoordinateOfLine({ axis: xAxis, ticks: xAxisTicks, bandSize, entry, index }),
-            y: isNull(value) ? null : yAxis.scale(value),
+            y: isNullOrUndef(value) ? null : yAxis.scale(value),
             value,
             payload: entry
           }
         : {
-            x: isNull(value) ? null : xAxis.scale(value),
+            x: isNullOrUndef(value) ? null : xAxis.scale(value),
             y: getCateCoordinateOfLine({ axis: yAxis, ticks: yAxisTicks, bandSize, entry, index }),
             value,
             payload: entry

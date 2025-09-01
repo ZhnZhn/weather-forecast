@@ -146,11 +146,11 @@ Line.getComposedData = _ref => {
           entry,
           index
         }),
-        y: (0, _isTypeFn.isNull)(value) ? null : yAxis.scale(value),
+        y: (0, _isTypeFn.isNullOrUndef)(value) ? null : yAxis.scale(value),
         value,
         payload: entry
       } : {
-        x: (0, _isTypeFn.isNull)(value) ? null : xAxis.scale(value),
+        x: (0, _isTypeFn.isNullOrUndef)(value) ? null : xAxis.scale(value),
         y: (0, _ChartUtils.getCateCoordinateOfLine)({
           axis: yAxis,
           ticks: yAxisTicks,

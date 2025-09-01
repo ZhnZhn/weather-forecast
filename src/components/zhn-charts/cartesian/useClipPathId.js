@@ -1,4 +1,4 @@
-import { isNull } from '../../../utils/isTypeFn';
+import { isNullOrUndef } from '../../../utils/isTypeFn';
 import { useMemo } from '../../uiApi';
 import { uniqueId } from '../util/DataUtils';
 
@@ -6,7 +6,7 @@ import { uniqueId } from '../util/DataUtils';
 const useClipPathId = (
   idPrefix,
   id
-) => useMemo(() => isNull(id)
+) => useMemo(() => isNullOrUndef(id)
   ? uniqueId(`${idPrefix}-`)
   : id,
   [id]

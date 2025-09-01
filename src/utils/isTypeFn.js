@@ -4,7 +4,7 @@ export const isNotEmptyArr = (
   arr
 ) => isArr(arr) && arr.length > 0
 
-export const isNull = v => v === null
+export const isNullOrUndef = v => v == null
 
 const _fIsTypeof = (
   strType
