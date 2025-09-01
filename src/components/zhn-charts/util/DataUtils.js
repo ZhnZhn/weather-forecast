@@ -1,11 +1,19 @@
 import {
-  _isNaN,
-  _isArr,
-  _isStr,
-  _isNumber,
-  _isFn,
-  _getByPropName
-} from './FnUtils';
+  isArr,
+  isNotEmptyArr,
+  isNaN,
+  isStr,
+  isNumber,
+  isFn
+} from '../../../utils/isTypeFn';
+
+import { _getByPropName } from './FnUtils';
+
+export {
+  isNumber,
+  isPositiveNumber,
+  isNumOrStr
+} from '../../../utils/isTypeFn';
 
 const _getObjectKeys = Object.keys;
 
@@ -17,23 +25,9 @@ export const mathSign = (
      ? 1
      : -1
 
-
 export const isPercent = (
   value
-) => _isStr(value)
-  && value.indexOf('%') === value.length - 1;
-
-export const isNumber = (
-  value
-) => _isNumber(value) && !_isNaN(value);
-
-export const isPositiveNumber = (
-  value
-) => isNumber(value) && value >= 0
-
-export const isNumOrStr = (
-  value
-) => isNumber(value) || _isStr(value);
+) => isStr(value) && value.slice(-1) === '%'
 
 let idCounter = 0;
 export const uniqueId = (
@@ -55,9 +49,9 @@ export const getPercentValue = (
   percent,
   totalValue,
   defaultValue = 0,
-  validate = false
+  validate = !1
 ) => {
-  if (!isNumber(percent) && !_isStr(percent)) {
+  if (!isNumber(percent) && !isStr(percent)) {
     return defaultValue;
   }
 
@@ -70,7 +64,7 @@ export const getPercentValue = (
     value = +percent;
   }
 
-  if (_isNaN(value)) {
+  if (isNaN(value)) {
     value = defaultValue;
   }
 
@@ -79,7 +73,7 @@ export const getPercentValue = (
   }
 
   return value;
-};
+}
 
 export const getAnyElementOfObject = (obj) => {
   if (!obj) {
@@ -92,11 +86,11 @@ export const getAnyElementOfObject = (obj) => {
   }
 
   return null;
-};
+}
 
 export const hasDuplicate = (ary) => {
-  if (!_isArr(ary)) {
-    return false;
+  if (!isArr(ary)) {
+    return !1;
   }
 
   const len = ary.length
@@ -104,42 +98,36 @@ export const hasDuplicate = (ary) => {
 
   for (let i = 0; i < len; i++) {
     if (!cache[ary[i]]) {
-      cache[ary[i]] = true;
+      cache[ary[i]] = !0;
     } else {
-      return true;
+      return !0;
     }
   }
 
-  return false;
-};
+  return !1;
+}
 
 export const interpolateNumber = (
   numberA,
   numberB
 ) => isNumber(numberA) && isNumber(numberB)
   ? (t) => numberA + t * (numberB - numberA)
-  : () => numberB;
+  : () => numberB
 
 export const getInterpolatedNumber = (
   fromNumber,
   toNumber,
   t
-) => interpolateNumber(fromNumber, toNumber)(t);
+) => interpolateNumber(fromNumber, toNumber)(t)
 
 export const findEntryInArray = (
   arr,
   specifiedKey,
   specifiedValue
-) => {
-  if (!_isArr(arr) || !arr.length) {
-    return null;
-  }
-
-  return arr.find(
-    entry => entry
-     && (_isFn(specifiedKey)
-           ? specifiedKey(entry)
-           : _getByPropName(entry, specifiedKey)
-         ) === specifiedValue
-  );
-}
+) => isNotEmptyArr(arr) ? arr.find(
+  entry => entry
+    && (isFn(specifiedKey)
+         ? specifiedKey(entry)
+         : _getByPropName(entry, specifiedKey)
+       ) === specifiedValue
+) : null
