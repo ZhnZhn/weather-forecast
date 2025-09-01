@@ -2,11 +2,11 @@
 
 exports.__esModule = true;
 exports.Rectangle = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _zhnAnimate = require("../../zhn-animate");
 var _ReactUtils = require("../util/ReactUtils");
-var _FnUtils = require("../util/FnUtils");
 var _CL = require("../CL");
 var _RectangleFn = require("./RectangleFn");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -30,7 +30,7 @@ const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
     [totalLength, setTotalLength] = (0, _uiApi.useState)(-1);
   (0, _uiApi.useEffect)(() => {
     const _el = (0, _uiApi.getRefValue)(_refNode);
-    if (_el && (0, _FnUtils._isFn)(_el.getTotalLength)) {
+    if (_el && (0, _isTypeFn.isFn)(_el.getTotalLength)) {
       try {
         const totalLength = _el.getTotalLength();
         if (totalLength) {

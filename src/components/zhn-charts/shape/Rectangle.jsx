@@ -1,4 +1,8 @@
 import {
+  isFn
+} from '../../../utils/isTypeFn';
+
+import {
   memo,
   useRef,
   useState,
@@ -13,7 +17,6 @@ import {
   crProps,
   filterProps
 } from '../util/ReactUtils';
-import { _isFn } from '../util/FnUtils';
 
 import { CL_RESTANGLE } from '../CL';
 
@@ -44,7 +47,7 @@ export const Rectangle = memo((props) => {
 
   useEffect(() => {
     const _el = getRefValue(_refNode);
-    if (_el && _isFn(_el.getTotalLength)) {
+    if (_el && isFn(_el.getTotalLength)) {
       try {
         const totalLength = _el.getTotalLength();
         if (totalLength) {

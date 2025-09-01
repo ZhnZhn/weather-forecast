@@ -1,3 +1,9 @@
+import {
+  isArr,
+  isNumber,
+  isFn
+} from '../../../utils/isTypeFn';
+
 import { crCn } from '../../styleFn';
 
 import {
@@ -17,8 +23,6 @@ import {
 } from '../d3Shape';
 
 import {
-  _isFn,
-  _isArr,
   _upperFirst
 } from '../util/FnUtils';
 
@@ -27,7 +31,6 @@ import {
   crProps,
   filterProps
 } from '../util/ReactUtils';
-import { isNumber } from '../util/DataUtils';
 
 import { CL_CURVE } from '../CL';
 
@@ -59,7 +62,7 @@ const getCurveFactory = (
   type,
   layout
 ) => {
-  if (_isFn(type)) {
+  if (isFn(type)) {
     return type;
   }
   const name = `curve${_upperFirst(type)}`;
@@ -84,7 +87,7 @@ const getPath = ({
         ? points.filter(entry => defined(entry))
         : points;
     let lineFunction;
-    if (_isArr(baseLine)) {
+    if (isArr(baseLine)) {
         const formatBaseLine = connectNulls
           ? baseLine.filter(base => defined(base))
           : baseLine

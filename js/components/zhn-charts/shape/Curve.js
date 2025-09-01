@@ -2,12 +2,12 @@
 
 exports.__esModule = true;
 exports.Curve = void 0;
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _styleFn = require("../../styleFn");
 var _d3Shape = require("../d3Shape");
 var _FnUtils = require("../util/FnUtils");
 var _types = require("../util/types");
 var _ReactUtils = require("../util/ReactUtils");
-var _DataUtils = require("../util/DataUtils");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 const CURVE_FACTORIES = {
@@ -28,7 +28,7 @@ const defined = p => p.x === +p.x && p.y === +p.y,
   getX = p => p.x,
   getY = p => p.y;
 const getCurveFactory = (type, layout) => {
-  if ((0, _FnUtils._isFn)(type)) {
+  if ((0, _isTypeFn.isFn)(type)) {
     return type;
   }
   const name = `curve${(0, _FnUtils._upperFirst)(type)}`;
@@ -50,7 +50,7 @@ const getPath = _ref => {
   const curveFactory = getCurveFactory(type, layout),
     formatPoints = connectNulls ? points.filter(entry => defined(entry)) : points;
   let lineFunction;
-  if ((0, _FnUtils._isArr)(baseLine)) {
+  if ((0, _isTypeFn.isArr)(baseLine)) {
     const formatBaseLine = connectNulls ? baseLine.filter(base => defined(base)) : baseLine,
       areaPoints = formatPoints.map((entry, index) => ({
         ...entry,
@@ -60,9 +60,9 @@ const getPath = _ref => {
     lineFunction.defined(defined).curve(curveFactory);
     return lineFunction(areaPoints);
   }
-  if (_isLayoutVertical(layout) && (0, _DataUtils.isNumber)(baseLine)) {
+  if (_isLayoutVertical(layout) && (0, _isTypeFn.isNumber)(baseLine)) {
     lineFunction = (0, _d3Shape.area)().y(getY).x1(getX).x0(baseLine);
-  } else if ((0, _DataUtils.isNumber)(baseLine)) {
+  } else if ((0, _isTypeFn.isNumber)(baseLine)) {
     lineFunction = (0, _d3Shape.area)().x(getX).y1(getY).y0(baseLine);
   } else {
     lineFunction = (0, _d3Shape.line)().x(getX).y(getY);
