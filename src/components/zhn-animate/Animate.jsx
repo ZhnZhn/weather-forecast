@@ -133,6 +133,7 @@ export class Animate extends PureComponent {
     super(props, context);
     this._refStopJsAnimation = createRef()
     this._refIsMounted = createRef(!1)
+    this._refAnimateManager = createRef()
     this.state = _crInitialState(props)
   }
 
@@ -187,8 +188,9 @@ export class Animate extends PureComponent {
       return;
     }
 
-    if (this.manager) {
-      this.manager.stop();
+    const _animateManager = getRefValue(this._refAnimateManager);
+    if (_animateManager) {
+      _animateManager.stop();
     }
     _stopJsAnimation(this._refStopJsAnimation)
 
@@ -226,9 +228,10 @@ export class Animate extends PureComponent {
       this.unSubscribe();
     }
 
-    if (this.manager) {
-      this.manager.stop();
-      this.manager = null;
+    const _animateManager = getRefValue(this._refAnimateManager)
+    if (_animateManager) {
+      _animateManager.stop();
+      setRefValue(this._refAnimateManager, null)
     }
 
     _stopJsAnimation(this._refStopJsAnimation)
@@ -255,7 +258,7 @@ export class Animate extends PureComponent {
        setRefValue(this._refStopJsAnimation, startAnimation());
     };
 
-    this.manager.start([
+    getRefValue(this._refAnimateManager).start([
       onAnimationStart,
       begin,
       finalStartAnimation,
@@ -326,7 +329,7 @@ export class Animate extends PureComponent {
       ].filter(identity);
     };
 
-    return this.manager.start([
+    return getRefValue(this._refAnimateManager).start([
       onAnimationStart,
       ...steps.reduce(addStyle, [initialStyle, Math.max(initialTime, begin)]),
       props.onAnimationEnd
@@ -334,10 +337,10 @@ export class Animate extends PureComponent {
   }
 
   runAnimation(props) {
-    if (!this.manager) {
-      this.manager = createAnimateManager();
+    if (!getRefValue(this._refAnimateManager)) {
+      setRefValue(this._refAnimateManager, createAnimateManager())
     }
-    const manager = this.manager
+    const _animateManager = getRefValue(this._refAnimateManager)
     , {
       begin,
       duration,
@@ -350,7 +353,7 @@ export class Animate extends PureComponent {
       children,
     } = props;
 
-    this.unSubscribe = manager.subscribe(this.changeStyle);
+    this.unSubscribe = _animateManager.subscribe(this.changeStyle);
 
     if (_isFn(easing)
       || _isFn(children)
@@ -374,7 +377,7 @@ export class Animate extends PureComponent {
         easing
     );
 
-    manager.start([
+    _animateManager.start([
       onAnimationStart,
       begin,
       { ...to, transition },

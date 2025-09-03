@@ -117,6 +117,7 @@ class Animate extends _uiApi.PureComponent {
     super(props, context);
     this._refStopJsAnimation = (0, _uiApi.createRef)();
     this._refIsMounted = (0, _uiApi.createRef)(!1);
+    this._refAnimateManager = (0, _uiApi.createRef)();
     this.state = _crInitialState(props);
   }
   componentDidMount() {
@@ -157,8 +158,9 @@ class Animate extends _uiApi.PureComponent {
     if ((0, _util.shallowEqual)(prevProps.to, this.props.to) && prevProps.canBegin && prevProps.isActive) {
       return;
     }
-    if (this.manager) {
-      this.manager.stop();
+    const _animateManager = (0, _uiApi.getRefValue)(this._refAnimateManager);
+    if (_animateManager) {
+      _animateManager.stop();
     }
     _stopJsAnimation(this._refStopJsAnimation);
     const isTriggered = !prevProps.canBegin || !prevProps.isActive,
@@ -185,9 +187,10 @@ class Animate extends _uiApi.PureComponent {
     if (this.unSubscribe) {
       this.unSubscribe();
     }
-    if (this.manager) {
-      this.manager.stop();
-      this.manager = null;
+    const _animateManager = (0, _uiApi.getRefValue)(this._refAnimateManager);
+    if (_animateManager) {
+      _animateManager.stop();
+      (0, _uiApi.setRefValue)(this._refAnimateManager, null);
     }
     _stopJsAnimation(this._refStopJsAnimation);
   }
@@ -205,7 +208,7 @@ class Animate extends _uiApi.PureComponent {
       finalStartAnimation = () => {
         (0, _uiApi.setRefValue)(this._refStopJsAnimation, startAnimation());
       };
-    this.manager.start([onAnimationStart, begin, finalStartAnimation, duration, onAnimationEnd]);
+    (0, _uiApi.getRefValue)(this._refAnimateManager).start([onAnimationStart, begin, finalStartAnimation, duration, onAnimationEnd]);
   }
   runStepAnimation(props) {
     const {
@@ -246,13 +249,13 @@ class Animate extends _uiApi.PureComponent {
         };
       return [...sequence, newStyle, duration, onAnimationEnd].filter(_util.identity);
     };
-    return this.manager.start([onAnimationStart, ...steps.reduce(addStyle, [initialStyle, Math.max(initialTime, begin)]), props.onAnimationEnd]);
+    return (0, _uiApi.getRefValue)(this._refAnimateManager).start([onAnimationStart, ...steps.reduce(addStyle, [initialStyle, Math.max(initialTime, begin)]), props.onAnimationEnd]);
   }
   runAnimation(props) {
-    if (!this.manager) {
-      this.manager = (0, _AnimateManager.default)();
+    if (!(0, _uiApi.getRefValue)(this._refAnimateManager)) {
+      (0, _uiApi.setRefValue)(this._refAnimateManager, (0, _AnimateManager.default)());
     }
-    const manager = this.manager,
+    const _animateManager = (0, _uiApi.getRefValue)(this._refAnimateManager),
       {
         begin,
         duration,
@@ -264,7 +267,7 @@ class Animate extends _uiApi.PureComponent {
         steps,
         children
       } = props;
-    this.unSubscribe = manager.subscribe(this.changeStyle);
+    this.unSubscribe = _animateManager.subscribe(this.changeStyle);
     if (_isFn(easing) || _isFn(children) || easing === 'spring') {
       this.runJSAnimation(props);
       return;
@@ -277,7 +280,7 @@ class Animate extends _uiApi.PureComponent {
         [attributeName]: propsTo
       } : propsTo,
       transition = (0, _util.getTransitionVal)(_getObjectKeys(to), duration, easing);
-    manager.start([onAnimationStart, begin, {
+    _animateManager.start([onAnimationStart, begin, {
       ...to,
       transition
     }, duration, onAnimationEnd]);
