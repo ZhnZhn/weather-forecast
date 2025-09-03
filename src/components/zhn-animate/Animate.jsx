@@ -1,6 +1,9 @@
 import {
   PureComponent,
   Children,
+  createRef,
+  getRefValue,
+  setRefValue,
   cloneUiElement
 } from '../uiApi';
 
@@ -71,6 +74,13 @@ const _crInitialState = props => {
   }
 };
 
+const _stopJsAnimation = (refStopJsAnimation) => {
+  const _stopAnimation = getRefValue(refStopJsAnimation);
+  if (_stopAnimation) {
+    _stopAnimation();
+  }
+};
+
 export class Animate extends PureComponent {
   static displayName = 'Animate';
 
@@ -121,6 +131,7 @@ export class Animate extends PureComponent {
 
   constructor(props, context) {
     super(props, context);
+    this._refStopJsAnimation = createRef()
     this.state = _crInitialState(props)
   }
 
@@ -178,9 +189,7 @@ export class Animate extends PureComponent {
     if (this.manager) {
       this.manager.stop();
     }
-    if (this.stopJSAnimation) {
-      this.stopJSAnimation();
-    }
+    _stopJsAnimation(this._refStopJsAnimation)
 
     const isTriggered = !prevProps.canBegin
       || !prevProps.isActive
@@ -221,9 +230,7 @@ export class Animate extends PureComponent {
       this.manager = null;
     }
 
-    if (this.stopJSAnimation) {
-      this.stopJSAnimation();
-    }
+    _stopJsAnimation(this._refStopJsAnimation)
   }
 
   runJSAnimation(props) {
@@ -244,7 +251,7 @@ export class Animate extends PureComponent {
        this.changeStyle
      )
     , finalStartAnimation = () => {
-       this.stopJSAnimation = startAnimation();
+       setRefValue(this._refStopJsAnimation, startAnimation());
     };
 
     this.manager.start([
@@ -341,7 +348,7 @@ export class Animate extends PureComponent {
       steps,
       children,
     } = props;
-    
+
     this.unSubscribe = manager.subscribe(this.changeStyle);
 
     if (_isFn(easing)

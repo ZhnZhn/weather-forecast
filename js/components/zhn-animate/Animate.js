@@ -60,6 +60,12 @@ const _crInitialState = props => {
     };
   }
 };
+const _stopJsAnimation = refStopJsAnimation => {
+  const _stopAnimation = (0, _uiApi.getRefValue)(refStopJsAnimation);
+  if (_stopAnimation) {
+    _stopAnimation();
+  }
+};
 class Animate extends _uiApi.PureComponent {
   static displayName = 'Animate';
 
@@ -109,6 +115,7 @@ class Animate extends _uiApi.PureComponent {
   }))();
   constructor(props, context) {
     super(props, context);
+    this._refStopJsAnimation = (0, _uiApi.createRef)();
     this.state = _crInitialState(props);
   }
   componentDidMount() {
@@ -152,9 +159,7 @@ class Animate extends _uiApi.PureComponent {
     if (this.manager) {
       this.manager.stop();
     }
-    if (this.stopJSAnimation) {
-      this.stopJSAnimation();
-    }
+    _stopJsAnimation(this._refStopJsAnimation);
     const isTriggered = !prevProps.canBegin || !prevProps.isActive,
       from = isTriggered || shouldReAnimate ? this.props.from : prevProps.to;
     if (this.state && this.state.style) {
@@ -183,9 +188,7 @@ class Animate extends _uiApi.PureComponent {
       this.manager.stop();
       this.manager = null;
     }
-    if (this.stopJSAnimation) {
-      this.stopJSAnimation();
-    }
+    _stopJsAnimation(this._refStopJsAnimation);
   }
   runJSAnimation(props) {
     const {
@@ -199,7 +202,7 @@ class Animate extends _uiApi.PureComponent {
       } = props,
       startAnimation = (0, _configUpdate.default)(from, to, (0, _easing.configEasing)(easing), duration, this.changeStyle),
       finalStartAnimation = () => {
-        this.stopJSAnimation = startAnimation();
+        (0, _uiApi.setRefValue)(this._refStopJsAnimation, startAnimation());
       };
     this.manager.start([onAnimationStart, begin, finalStartAnimation, duration, onAnimationEnd]);
   }
