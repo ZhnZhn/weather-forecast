@@ -134,6 +134,7 @@ export class Animate extends PureComponent {
     this._refStopJsAnimation = createRef()
     this._refIsMounted = createRef(!1)
     this._refAnimateManager = createRef()
+    this._refUnSubscribe = createRef()
     this.state = _crInitialState(props)
   }
 
@@ -224,8 +225,9 @@ export class Animate extends PureComponent {
   componentWillUnmount() {
     setRefValue(this._refIsMounted, !1)
 
-    if (this.unSubscribe) {
-      this.unSubscribe();
+    const _unSubscribe = getRefValue(this._refUnSubscribe);
+    if (_unSubscribe) {
+      _unSubscribe();
     }
 
     const _animateManager = getRefValue(this._refAnimateManager)
@@ -353,7 +355,10 @@ export class Animate extends PureComponent {
       children,
     } = props;
 
-    this.unSubscribe = _animateManager.subscribe(this.changeStyle);
+    setRefValue(
+      this._refUnSubscribe,
+      _animateManager.subscribe(this.changeStyle)
+    )
 
     if (_isFn(easing)
       || _isFn(children)

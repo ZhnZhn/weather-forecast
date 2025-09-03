@@ -118,6 +118,7 @@ class Animate extends _uiApi.PureComponent {
     this._refStopJsAnimation = (0, _uiApi.createRef)();
     this._refIsMounted = (0, _uiApi.createRef)(!1);
     this._refAnimateManager = (0, _uiApi.createRef)();
+    this._refUnSubscribe = (0, _uiApi.createRef)();
     this.state = _crInitialState(props);
   }
   componentDidMount() {
@@ -184,8 +185,9 @@ class Animate extends _uiApi.PureComponent {
   }
   componentWillUnmount() {
     (0, _uiApi.setRefValue)(this._refIsMounted, !1);
-    if (this.unSubscribe) {
-      this.unSubscribe();
+    const _unSubscribe = (0, _uiApi.getRefValue)(this._refUnSubscribe);
+    if (_unSubscribe) {
+      _unSubscribe();
     }
     const _animateManager = (0, _uiApi.getRefValue)(this._refAnimateManager);
     if (_animateManager) {
@@ -267,7 +269,7 @@ class Animate extends _uiApi.PureComponent {
         steps,
         children
       } = props;
-    this.unSubscribe = _animateManager.subscribe(this.changeStyle);
+    (0, _uiApi.setRefValue)(this._refUnSubscribe, _animateManager.subscribe(this.changeStyle));
     if (_isFn(easing) || _isFn(children) || easing === 'spring') {
       this.runJSAnimation(props);
       return;
