@@ -7,19 +7,17 @@ import {
   cloneUiElement
 } from '../uiApi';
 
-import createAnimateManager from './AnimateManager';
-import { configEasing } from './easing';
-import configUpdate from './configUpdate';
-
 import {
-  getTransitionVal,
-  identity,
   translateStyle,
   shallowEqual
 } from './util';
 
+import {
+  stopJsAnimation,
+  runAnimation
+} from './AnimateFn';
+
 const _isFn = v => typeof v === 'function';
-const _getObjectKeys = Object.keys;
 
 const _fCloneContainer = (
   restProps,
@@ -73,127 +71,6 @@ const _crInitialState = props => {
     return { style: {} };
   }
 };
-
-const _stopJsAnimation = (refStopJsAnimation) => {
-  const _stopAnimation = getRefValue(refStopJsAnimation);
-  if (_stopAnimation) {
-    _stopAnimation();
-  }
-};
-
-const _runJSAnimation = (
-  props,
-  _changeStyle,
-  _refStopJsAnimation,
-  _refAnimateManager
-) =>  {
-  const {
-    from,
-    to,
-    duration,
-    easing,
-    begin,
-    onAnimationEnd,
-    onAnimationStart
-  } = props
-  , startAnimation = configUpdate(
-     from,
-     to,
-     configEasing(easing),
-     duration,
-     _changeStyle
-   )
-  , finalStartAnimation = () => {
-     setRefValue(_refStopJsAnimation, startAnimation());
-  };
-
-  getRefValue(_refAnimateManager).start([
-    onAnimationStart,
-    begin,
-    finalStartAnimation,
-    duration,
-    onAnimationEnd,
-  ]);
-};
-
-const _runStepAnimation = (
-  props,
-  changeStyle,
-  _refStopJsAnimation,
-  _refAnimateManager
-) => {
-  const {
-    steps,
-    begin,
-    onAnimationStart
-  } = props
-  , {
-    style: initialStyle,
-    duration: initialTime = 0
-  } = steps[0];
-
-  const addStyle = (sequence, nextItem, index) => {
-    if (index === 0) {
-      return sequence;
-    }
-
-    const {
-      duration,
-      easing = 'ease',
-      style,
-      properties: nextProperties,
-      onAnimationEnd,
-    } = nextItem;
-
-    const preItem = index > 0
-      ? steps[index - 1]
-      : nextItem
-    , properties = nextProperties
-       || _getObjectKeys(style);
-
-    if (_isFn(easing) || easing === 'spring') {
-      return [
-        ...sequence,
-        _runJSAnimation(
-          {
-            from: preItem.style,
-            to: style,
-            duration,
-            easing,
-          },
-          changeStyle,
-          _refStopJsAnimation,
-          _refAnimateManager
-        ),
-        duration
-      ];
-    }
-
-    const transition = getTransitionVal(
-      properties,
-      duration,
-      easing
-    )
-    , newStyle = {
-       ...preItem.style,
-       ...style,
-       transition
-    };
-
-    return [
-      ...sequence,
-      newStyle,
-      duration,
-      onAnimationEnd
-    ].filter(identity);
-  };
-
-  return getRefValue(_refAnimateManager).start([
-    onAnimationStart,
-    ...steps.reduce(addStyle, [initialStyle, Math.max(initialTime, begin)]),
-    props.onAnimationEnd
-  ]);
-}
 
 export class Animate extends PureComponent {
   static displayName = 'Animate';
@@ -264,7 +141,13 @@ export class Animate extends PureComponent {
       return;
     }
 
-    this.runAnimation(this.props);
+    runAnimation(
+      this.props,
+      this.changeStyle,
+      this._refStopJsAnimation,
+      this._refAnimateManager,
+      this._refUnSubscribe
+    )
   }
 
   componentDidUpdate(prevProps) {
@@ -307,7 +190,7 @@ export class Animate extends PureComponent {
     if (_animateManager) {
       _animateManager.stop();
     }
-    _stopJsAnimation(this._refStopJsAnimation)
+    stopJsAnimation(this._refStopJsAnimation)
 
     const isTriggered = !prevProps.canBegin
       || !prevProps.isActive
@@ -329,11 +212,17 @@ export class Animate extends PureComponent {
       }
     }
 
-    this.runAnimation({
-      ...this.props,
-      from,
-      begin: 0
-    });
+    runAnimation(
+      {
+        ...this.props,
+        from,
+        begin: 0
+      },
+      this.changeStyle,
+      this._refStopJsAnimation,
+      this._refAnimateManager,
+      this._refUnSubscribe
+    )
   }
 
   componentWillUnmount() {
@@ -350,70 +239,7 @@ export class Animate extends PureComponent {
       setRefValue(this._refAnimateManager, null)
     }
 
-    _stopJsAnimation(this._refStopJsAnimation)
-  }
-  
-  runAnimation(props) {
-    if (!getRefValue(this._refAnimateManager)) {
-      setRefValue(this._refAnimateManager, createAnimateManager())
-    }
-    const _animateManager = getRefValue(this._refAnimateManager)
-    , {
-      begin,
-      duration,
-      attributeName,
-      to: propsTo,
-      easing,
-      onAnimationStart,
-      onAnimationEnd,
-      steps,
-      children,
-    } = props;
-
-    setRefValue(
-      this._refUnSubscribe,
-      _animateManager.subscribe(this.changeStyle)
-    )
-
-    if (_isFn(easing)
-      || _isFn(children)
-      || easing === 'spring'
-    ) {
-      _runJSAnimation(
-        props,
-        this.changeStyle,
-        this._refStopJsAnimation,
-        this._refAnimateManager
-      )
-      return;
-    }
-
-    if (steps.length > 1) {
-      _runStepAnimation(
-        props,
-        this.changeStyle,
-        this._refStopJsAnimation,
-        this._refAnimateManager
-      )
-      return;
-    }
-
-    const to = attributeName
-       ? { [attributeName]: propsTo }
-       : propsTo
-    , transition = getTransitionVal(
-        _getObjectKeys(to),
-        duration,
-        easing
-    );
-
-    _animateManager.start([
-      onAnimationStart,
-      begin,
-      { ...to, transition },
-      duration,
-      onAnimationEnd
-    ]);
+    stopJsAnimation(this._refStopJsAnimation)
   }
 
   changeStyle = (style) => {
