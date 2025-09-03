@@ -116,6 +116,7 @@ class Animate extends _uiApi.PureComponent {
   constructor(props, context) {
     super(props, context);
     this._refStopJsAnimation = (0, _uiApi.createRef)();
+    this._refIsMounted = (0, _uiApi.createRef)(!1);
     this.state = _crInitialState(props);
   }
   componentDidMount() {
@@ -123,7 +124,7 @@ class Animate extends _uiApi.PureComponent {
       isActive,
       canBegin
     } = this.props;
-    this.mounted = true;
+    (0, _uiApi.setRefValue)(this._refIsMounted, !0);
     if (!isActive || !canBegin) {
       return;
     }
@@ -180,7 +181,7 @@ class Animate extends _uiApi.PureComponent {
     });
   }
   componentWillUnmount() {
-    this.mounted = false;
+    (0, _uiApi.setRefValue)(this._refIsMounted, !1);
     if (this.unSubscribe) {
       this.unSubscribe();
     }
@@ -282,7 +283,7 @@ class Animate extends _uiApi.PureComponent {
     }, duration, onAnimationEnd]);
   }
   changeStyle = style => {
-    if (this.mounted) {
+    if ((0, _uiApi.getRefValue)(this._refIsMounted)) {
       this.setState({
         style
       });

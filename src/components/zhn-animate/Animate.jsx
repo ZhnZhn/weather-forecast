@@ -132,6 +132,7 @@ export class Animate extends PureComponent {
   constructor(props, context) {
     super(props, context);
     this._refStopJsAnimation = createRef()
+    this._refIsMounted = createRef(!1)
     this.state = _crInitialState(props)
   }
 
@@ -141,7 +142,7 @@ export class Animate extends PureComponent {
       canBegin
     } = this.props;
 
-    this.mounted = true;
+    setRefValue(this._refIsMounted, !0)
 
     if (!isActive || !canBegin) {
       return;
@@ -219,7 +220,7 @@ export class Animate extends PureComponent {
   }
 
   componentWillUnmount() {
-    this.mounted = false;
+    setRefValue(this._refIsMounted, !1)
 
     if (this.unSubscribe) {
       this.unSubscribe();
@@ -383,7 +384,7 @@ export class Animate extends PureComponent {
   }
 
   changeStyle = (style) => {
-    if (this.mounted) {
+    if (getRefValue(this._refIsMounted)) {
       this.setState({ style });
     }
   }
