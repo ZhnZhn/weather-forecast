@@ -66,6 +66,22 @@ const _stopJsAnimation = refStopJsAnimation => {
     _stopAnimation();
   }
 };
+const _runJSAnimation = (props, _changeStyle, _refStopJsAnimation, _refAnimateManager) => {
+  const {
+      from,
+      to,
+      duration,
+      easing,
+      begin,
+      onAnimationEnd,
+      onAnimationStart
+    } = props,
+    startAnimation = (0, _configUpdate.default)(from, to, (0, _easing.configEasing)(easing), duration, _changeStyle),
+    finalStartAnimation = () => {
+      (0, _uiApi.setRefValue)(_refStopJsAnimation, startAnimation());
+    };
+  (0, _uiApi.getRefValue)(_refAnimateManager).start([onAnimationStart, begin, finalStartAnimation, duration, onAnimationEnd]);
+};
 class Animate extends _uiApi.PureComponent {
   static displayName = 'Animate';
 
@@ -196,22 +212,6 @@ class Animate extends _uiApi.PureComponent {
     }
     _stopJsAnimation(this._refStopJsAnimation);
   }
-  runJSAnimation(props) {
-    const {
-        from,
-        to,
-        duration,
-        easing,
-        begin,
-        onAnimationEnd,
-        onAnimationStart
-      } = props,
-      startAnimation = (0, _configUpdate.default)(from, to, (0, _easing.configEasing)(easing), duration, this.changeStyle),
-      finalStartAnimation = () => {
-        (0, _uiApi.setRefValue)(this._refStopJsAnimation, startAnimation());
-      };
-    (0, _uiApi.getRefValue)(this._refAnimateManager).start([onAnimationStart, begin, finalStartAnimation, duration, onAnimationEnd]);
-  }
   runStepAnimation(props) {
     const {
         steps,
@@ -236,12 +236,12 @@ class Animate extends _uiApi.PureComponent {
       const preItem = index > 0 ? steps[index - 1] : nextItem,
         properties = nextProperties || _getObjectKeys(style);
       if (_isFn(easing) || easing === 'spring') {
-        return [...sequence, this.runJSAnimation.bind(this, {
+        return [...sequence, _runJSAnimation({
           from: preItem.style,
           to: style,
           duration,
           easing
-        }), duration];
+        }, this.changeStyle, this._refStopJsAnimation, this._refAnimateManager), duration];
       }
       const transition = (0, _util.getTransitionVal)(properties, duration, easing),
         newStyle = {
@@ -271,7 +271,7 @@ class Animate extends _uiApi.PureComponent {
       } = props;
     (0, _uiApi.setRefValue)(this._refUnSubscribe, _animateManager.subscribe(this.changeStyle));
     if (_isFn(easing) || _isFn(children) || easing === 'spring') {
-      this.runJSAnimation(props);
+      _runJSAnimation(props, this.changeStyle, this._refStopJsAnimation, this._refAnimateManager);
       return;
     }
     if (steps.length > 1) {

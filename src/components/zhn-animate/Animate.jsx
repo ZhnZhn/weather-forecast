@@ -81,6 +81,41 @@ const _stopJsAnimation = (refStopJsAnimation) => {
   }
 };
 
+const _runJSAnimation = (
+  props,
+  _changeStyle,
+  _refStopJsAnimation,
+  _refAnimateManager
+) =>  {
+  const {
+    from,
+    to,
+    duration,
+    easing,
+    begin,
+    onAnimationEnd,
+    onAnimationStart
+  } = props
+  , startAnimation = configUpdate(
+     from,
+     to,
+     configEasing(easing),
+     duration,
+     _changeStyle
+   )
+  , finalStartAnimation = () => {
+     setRefValue(_refStopJsAnimation, startAnimation());
+  };
+
+  getRefValue(_refAnimateManager).start([
+    onAnimationStart,
+    begin,
+    finalStartAnimation,
+    duration,
+    onAnimationEnd,
+  ]);
+};
+
 export class Animate extends PureComponent {
   static displayName = 'Animate';
 
@@ -239,36 +274,7 @@ export class Animate extends PureComponent {
     _stopJsAnimation(this._refStopJsAnimation)
   }
 
-  runJSAnimation(props) {
-    const {
-      from,
-      to,
-      duration,
-      easing,
-      begin,
-      onAnimationEnd,
-      onAnimationStart
-    } = props
-    , startAnimation = configUpdate(
-       from,
-       to,
-       configEasing(easing),
-       duration,
-       this.changeStyle
-     )
-    , finalStartAnimation = () => {
-       setRefValue(this._refStopJsAnimation, startAnimation());
-    };
-
-    getRefValue(this._refAnimateManager).start([
-      onAnimationStart,
-      begin,
-      finalStartAnimation,
-      duration,
-      onAnimationEnd,
-    ]);
-  }
-
+  
   runStepAnimation(props) {
     const {
       steps,
@@ -302,12 +308,17 @@ export class Animate extends PureComponent {
       if (_isFn(easing) || easing === 'spring') {
         return [
           ...sequence,
-          this.runJSAnimation.bind(this, {
-            from: preItem.style,
-            to: style,
-            duration,
-            easing,
-          }),
+          _runJSAnimation(
+            {
+              from: preItem.style,
+              to: style,
+              duration,
+              easing,
+            },
+            this.changeStyle,
+            this._refStopJsAnimation,
+            this._refAnimateManager
+          ),
           duration
         ];
       }
@@ -364,7 +375,12 @@ export class Animate extends PureComponent {
       || _isFn(children)
       || easing === 'spring'
     ) {
-      this.runJSAnimation(props);
+      _runJSAnimation(
+        props,
+        this.changeStyle,
+        this._refStopJsAnimation,
+        this._refAnimateManager
+      )
       return;
     }
 
