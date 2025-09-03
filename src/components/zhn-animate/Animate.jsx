@@ -116,6 +116,85 @@ const _runJSAnimation = (
   ]);
 };
 
+const _runStepAnimation = (
+  props,
+  changeStyle,
+  _refStopJsAnimation,
+  _refAnimateManager
+) => {
+  const {
+    steps,
+    begin,
+    onAnimationStart
+  } = props
+  , {
+    style: initialStyle,
+    duration: initialTime = 0
+  } = steps[0];
+
+  const addStyle = (sequence, nextItem, index) => {
+    if (index === 0) {
+      return sequence;
+    }
+
+    const {
+      duration,
+      easing = 'ease',
+      style,
+      properties: nextProperties,
+      onAnimationEnd,
+    } = nextItem;
+
+    const preItem = index > 0
+      ? steps[index - 1]
+      : nextItem
+    , properties = nextProperties
+       || _getObjectKeys(style);
+
+    if (_isFn(easing) || easing === 'spring') {
+      return [
+        ...sequence,
+        _runJSAnimation(
+          {
+            from: preItem.style,
+            to: style,
+            duration,
+            easing,
+          },
+          changeStyle,
+          _refStopJsAnimation,
+          _refAnimateManager
+        ),
+        duration
+      ];
+    }
+
+    const transition = getTransitionVal(
+      properties,
+      duration,
+      easing
+    )
+    , newStyle = {
+       ...preItem.style,
+       ...style,
+       transition
+    };
+
+    return [
+      ...sequence,
+      newStyle,
+      duration,
+      onAnimationEnd
+    ].filter(identity);
+  };
+
+  return getRefValue(_refAnimateManager).start([
+    onAnimationStart,
+    ...steps.reduce(addStyle, [initialStyle, Math.max(initialTime, begin)]),
+    props.onAnimationEnd
+  ]);
+}
+
 export class Animate extends PureComponent {
   static displayName = 'Animate';
 
@@ -273,82 +352,7 @@ export class Animate extends PureComponent {
 
     _stopJsAnimation(this._refStopJsAnimation)
   }
-
   
-  runStepAnimation(props) {
-    const {
-      steps,
-      begin,
-      onAnimationStart
-    } = props
-    , {
-      style: initialStyle,
-      duration: initialTime = 0
-    } = steps[0];
-
-    const addStyle = (sequence, nextItem, index) => {
-      if (index === 0) {
-        return sequence;
-      }
-
-      const {
-        duration,
-        easing = 'ease',
-        style,
-        properties: nextProperties,
-        onAnimationEnd,
-      } = nextItem;
-
-      const preItem = index > 0
-        ? steps[index - 1]
-        : nextItem
-      , properties = nextProperties
-         || _getObjectKeys(style);
-
-      if (_isFn(easing) || easing === 'spring') {
-        return [
-          ...sequence,
-          _runJSAnimation(
-            {
-              from: preItem.style,
-              to: style,
-              duration,
-              easing,
-            },
-            this.changeStyle,
-            this._refStopJsAnimation,
-            this._refAnimateManager
-          ),
-          duration
-        ];
-      }
-
-      const transition = getTransitionVal(
-        properties,
-        duration,
-        easing
-      )
-      , newStyle = {
-         ...preItem.style,
-         ...style,
-         transition
-      };
-
-      return [
-        ...sequence,
-        newStyle,
-        duration,
-        onAnimationEnd
-      ].filter(identity);
-    };
-
-    return getRefValue(this._refAnimateManager).start([
-      onAnimationStart,
-      ...steps.reduce(addStyle, [initialStyle, Math.max(initialTime, begin)]),
-      props.onAnimationEnd
-    ]);
-  }
-
   runAnimation(props) {
     if (!getRefValue(this._refAnimateManager)) {
       setRefValue(this._refAnimateManager, createAnimateManager())
@@ -385,7 +389,12 @@ export class Animate extends PureComponent {
     }
 
     if (steps.length > 1) {
-      this.runStepAnimation(props);
+      _runStepAnimation(
+        props,
+        this.changeStyle,
+        this._refStopJsAnimation,
+        this._refAnimateManager
+      )
       return;
     }
 

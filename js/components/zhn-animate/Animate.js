@@ -82,6 +82,47 @@ const _runJSAnimation = (props, _changeStyle, _refStopJsAnimation, _refAnimateMa
     };
   (0, _uiApi.getRefValue)(_refAnimateManager).start([onAnimationStart, begin, finalStartAnimation, duration, onAnimationEnd]);
 };
+const _runStepAnimation = (props, changeStyle, _refStopJsAnimation, _refAnimateManager) => {
+  const {
+      steps,
+      begin,
+      onAnimationStart
+    } = props,
+    {
+      style: initialStyle,
+      duration: initialTime = 0
+    } = steps[0];
+  const addStyle = (sequence, nextItem, index) => {
+    if (index === 0) {
+      return sequence;
+    }
+    const {
+      duration,
+      easing = 'ease',
+      style,
+      properties: nextProperties,
+      onAnimationEnd
+    } = nextItem;
+    const preItem = index > 0 ? steps[index - 1] : nextItem,
+      properties = nextProperties || _getObjectKeys(style);
+    if (_isFn(easing) || easing === 'spring') {
+      return [...sequence, _runJSAnimation({
+        from: preItem.style,
+        to: style,
+        duration,
+        easing
+      }, changeStyle, _refStopJsAnimation, _refAnimateManager), duration];
+    }
+    const transition = (0, _util.getTransitionVal)(properties, duration, easing),
+      newStyle = {
+        ...preItem.style,
+        ...style,
+        transition
+      };
+    return [...sequence, newStyle, duration, onAnimationEnd].filter(_util.identity);
+  };
+  return (0, _uiApi.getRefValue)(_refAnimateManager).start([onAnimationStart, ...steps.reduce(addStyle, [initialStyle, Math.max(initialTime, begin)]), props.onAnimationEnd]);
+};
 class Animate extends _uiApi.PureComponent {
   static displayName = 'Animate';
 
@@ -212,47 +253,6 @@ class Animate extends _uiApi.PureComponent {
     }
     _stopJsAnimation(this._refStopJsAnimation);
   }
-  runStepAnimation(props) {
-    const {
-        steps,
-        begin,
-        onAnimationStart
-      } = props,
-      {
-        style: initialStyle,
-        duration: initialTime = 0
-      } = steps[0];
-    const addStyle = (sequence, nextItem, index) => {
-      if (index === 0) {
-        return sequence;
-      }
-      const {
-        duration,
-        easing = 'ease',
-        style,
-        properties: nextProperties,
-        onAnimationEnd
-      } = nextItem;
-      const preItem = index > 0 ? steps[index - 1] : nextItem,
-        properties = nextProperties || _getObjectKeys(style);
-      if (_isFn(easing) || easing === 'spring') {
-        return [...sequence, _runJSAnimation({
-          from: preItem.style,
-          to: style,
-          duration,
-          easing
-        }, this.changeStyle, this._refStopJsAnimation, this._refAnimateManager), duration];
-      }
-      const transition = (0, _util.getTransitionVal)(properties, duration, easing),
-        newStyle = {
-          ...preItem.style,
-          ...style,
-          transition
-        };
-      return [...sequence, newStyle, duration, onAnimationEnd].filter(_util.identity);
-    };
-    return (0, _uiApi.getRefValue)(this._refAnimateManager).start([onAnimationStart, ...steps.reduce(addStyle, [initialStyle, Math.max(initialTime, begin)]), props.onAnimationEnd]);
-  }
   runAnimation(props) {
     if (!(0, _uiApi.getRefValue)(this._refAnimateManager)) {
       (0, _uiApi.setRefValue)(this._refAnimateManager, (0, _AnimateManager.default)());
@@ -275,7 +275,7 @@ class Animate extends _uiApi.PureComponent {
       return;
     }
     if (steps.length > 1) {
-      this.runStepAnimation(props);
+      _runStepAnimation(props, this.changeStyle, this._refStopJsAnimation, this._refAnimateManager);
       return;
     }
     const to = attributeName ? {
