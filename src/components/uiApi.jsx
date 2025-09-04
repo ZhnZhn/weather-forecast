@@ -13,10 +13,8 @@ export {
 export {
   isValidElement,
   Component,
-  PureComponent,
   Children,
   createContext,
-  createRef,
   memo,
   useId,
   useRef,
