@@ -1,0 +1,21 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../src/components/hooks/usePrevValue.js"
+ ],
+ "file": "../../../src/components/hooks/usePrevValue.js",
+ "names": [
+  "_uiApi",
+  "require",
+  "usePrevValue",
+  "value",
+  "_refPrevValue",
+  "useRef",
+  "useEffect",
+  "current",
+  "_default",
+  "exports",
+  "default"
+ ],
+ "mappings": ";;;;AAAA,IAAAA,MAAA,GAAAC,OAAA;AAKA,MAAMC,YAAY,GAAGC,KAAK,IAAI;EAC5B,MAAMC,aAAa,GAAG,IAAAC,aAAM,EAAC,CAAC;EAC9B,IAAAC,gBAAS,EAAC,MAAM;IACdF,aAAa,CAACG,OAAO,GAAGJ,KAAK;EAC/B,CAAC,CAAC;EACF,OAAOC,aAAa,CAACG,OAAO;AAC9B,CAAC;AAAC,IAAAC,QAAA,GAAAC,OAAA,CAAAC,OAAA,GAEaR,YAAY"
+}
