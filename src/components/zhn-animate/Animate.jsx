@@ -1,11 +1,21 @@
 import {
-  PureComponent,
+  isFn
+} from '../../utils/isTypeFn';
+
+import {
+  memo,
+  crProps,
+  useRef,
+  useState,
+  useMemo,
+  useEffect,
   Children,
-  createRef,
   getRefValue,
   setRefValue,
   cloneUiElement
 } from '../uiApi';
+
+import usePrevValue from '../hooks/usePrevValue';
 
 import {
   translateStyle,
@@ -16,8 +26,6 @@ import {
   stopJsAnimation,
   runAnimation
 } from './AnimateFn';
-
-const _isFn = v => typeof v === 'function';
 
 const _fCloneContainer = (
   restProps,
@@ -52,7 +60,7 @@ const _crInitialState = props => {
 
   if (!isActive) {
     // if children is a function and animation is not active, set style to 'to'
-    return _isFn(children)
+    return isFn(children)
       ? { style: to }
       : { style: {} };
   } else if (steps && steps.length) {
@@ -60,7 +68,7 @@ const _crInitialState = props => {
       style: steps[0].style
     };
   } else if (from) {
-    return _isFn(children)
+    return isFn(children)
       ? { style: from }
       : {
           style: attributeName
@@ -72,223 +80,220 @@ const _crInitialState = props => {
   }
 };
 
-export class Animate extends PureComponent {
-  static displayName = 'Animate';
+const DF_PROPS = {
+  begin: 0,
+  duration: 1000,
+  from: '',
+  to: '',
+  attributeName: '',
+  easing: 'ease',
+  isActive: true,
+  canBegin: true,
+  //steps: [],
+  onAnimationEnd: FN_NOOP,
+  onAnimationStart: FN_NOOP
+};
 
-  /*
-  static propTypes = {
-    from: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    to: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    attributeName: PropTypes.string,
-    // animation duration
-    duration: PropTypes.number,
-    begin: PropTypes.number,
-    easing: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-    steps: PropTypes.arrayOf(PropTypes.shape({
-      duration: PropTypes.number.isRequired,
-      style: PropTypes.object.isRequired,
-      easing: PropTypes.oneOfType([
-        PropTypes.oneOf(['ease', 'ease-in', 'ease-out', 'ease-in-out', 'linear']),
-        PropTypes.func,
-      ]),
-      // transition css properties(dash case), optional
-      properties: PropTypes.arrayOf('string'),
-      onAnimationEnd: PropTypes.func,
-    })),
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-    isActive: PropTypes.bool,
-    canBegin: PropTypes.bool,
-    onAnimationEnd: PropTypes.func,
-    // decide if it should reanimate with initial from style when props change
-    shouldReAnimate: PropTypes.bool,
-    onAnimationStart: PropTypes.func,
-    onAnimationReStart: PropTypes.func,
-  };
-  */
+export const Animate = memo(props => {
+  const _props = useMemo(() => crProps({
+    ...DF_PROPS,
+    steps: []
+  }, props), [props])
+  , _prevProps = usePrevValue(_props)
 
-  static defaultProps = {
-    begin: 0,
-    duration: 1000,
-    from: '',
-    to: '',
-    attributeName: '',
-    easing: 'ease',
-    isActive: true,
-    canBegin: true,
-    steps: [],
-    onAnimationEnd: FN_NOOP,
-    onAnimationStart: FN_NOOP
-  };
+  , _refStopJsAnimation = useRef()
+  , _refIsMounted = useRef(!1)
+  , _refAnimateManager = useRef()
+  , _refUnSubscribe = useRef()
 
-  constructor(props, context) {
-    super(props, context);
-    this._refStopJsAnimation = createRef()
-    this._refIsMounted = createRef(!1)
-    this._refAnimateManager = createRef()
-    this._refUnSubscribe = createRef()
-    this.state = _crInitialState(props)
-  }
+  , [
+    state,
+    setState
+  ] = useState(() => _crInitialState(_props))
 
-  componentDidMount() {
-    const {
-      isActive,
-      canBegin
-    } = this.props;
-
-    setRefValue(this._refIsMounted, !0)
-
-    if (!isActive || !canBegin) {
-      return;
+  , changeStyle = useMemo(() => style => {
+    if (getRefValue(_refIsMounted)) {
+      setState({ style });
     }
+  }, [])
 
-    runAnimation(
-      this.props,
-      this.changeStyle,
-      this._refStopJsAnimation,
-      this._refAnimateManager,
-      this._refUnSubscribe
-    )
-  }
+  /*eslint-disable no-unused-vars*/
+  , {
+    children,
+    begin,
+    duration,
+    attributeName,
+    easing,
+    isActive,
+    steps,
+    from,
+    to,
+    canBegin,
+    onAnimationEnd,
+    shouldReAnimate,
+    onAnimationReStart,
+    ...restProps
+  } = _props
+  /*eslint-enable no-unused-vars*/
 
-  componentDidUpdate(prevProps) {
-    const {
-      isActive,
-      canBegin,
-      attributeName,
-      shouldReAnimate
-    } = this.props;
+  /*eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    setRefValue(_refIsMounted, !0)
 
-    if (!canBegin) {
-      return;
+    if (isActive && canBegin) {
+      runAnimation(
+        _props,
+        changeStyle,
+        _refStopJsAnimation,
+        _refAnimateManager,
+        _refUnSubscribe
+      )
     }
+    return () => {
+      setRefValue(_refIsMounted, !1)
 
-    if (!isActive) {
-      const newState = {
-        style: attributeName
-          ? { [attributeName]: this.props.to }
-          : this.props.to
-      };
-      if (this.state && this.state.style) {
-        if ((attributeName && this.state.style[attributeName] !== this.props.to)
-          || (!attributeName && this.state.style !== this.props.to)
+      const _unSubscribe = getRefValue(_refUnSubscribe);
+      if (_unSubscribe) {
+        _unSubscribe();
+      }
+
+      const _animateManager = getRefValue(_refAnimateManager)
+      if (_animateManager) {
+        _animateManager.stop();
+        setRefValue(_refAnimateManager, null)
+      }
+
+      stopJsAnimation(_refStopJsAnimation)
+    }
+  }, [])
+  //changeStyle, _props, isActive, canBegin
+  /*eslint-enable react-hooks/exhaustive-deps */
+
+  /*eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    if (_prevProps) {
+      if (!canBegin) {
+        return;
+      }
+
+      if (!isActive) {
+        const newState = {
+          style: attributeName
+            ? { [attributeName]: _props.to }
+            : _props.to
+        };
+        if (state && state.style) {
+          if ((attributeName && state.style[attributeName] !== _props.to)
+            || (!attributeName && state.style !== _props.to)
+          ) {
+            setState(newState);
+          }
+        }
+        return;
+      }
+
+      if (shallowEqual(_prevProps.to, _props.to)
+        && _prevProps.canBegin
+        && _prevProps.isActive
+      ) {
+        return;
+      }
+
+      const _animateManager = getRefValue(_refAnimateManager);
+      if (_animateManager) {
+        _animateManager.stop();
+      }
+      stopJsAnimation(_refStopJsAnimation)
+
+      const isTriggered = !_prevProps.canBegin
+        || !_prevProps.isActive
+      , from = isTriggered || shouldReAnimate
+         ? _props.from
+         : _prevProps.to;
+
+      if (state && state.style) {
+        const newState = {
+          style: attributeName
+            ? { [attributeName]: from }
+            : from
+        };
+        if ((attributeName && state.style[attributeName] !== from)
+          || (!attributeName && state.style !== from)
         ) {
-          // eslint-disable-next-line react/no-did-update-set-state
-          this.setState(newState);
+          setState(newState);
         }
       }
-      return;
+
+      runAnimation(
+        {
+          ..._props,
+          from,
+          begin: 0
+        },
+        changeStyle,
+        _refStopJsAnimation,
+        _refAnimateManager,
+        _refUnSubscribe
+      )
     }
+  }, [_props, state])
+  //changeStyle
+  //attributeName, isActive, canBegin, shouldReAnimate
+  //_prevProps.isActivem, _prevProps.canBegin, _prevProps.to
+  /*eslint-enable react-hooks/exhaustive-deps */
 
-    if (shallowEqual(prevProps.to, this.props.to)
-      && prevProps.canBegin
-      && prevProps.isActive
-    ) {
-      return;
-    }
+  const count = Children.count(children)
+  , stateStyle = translateStyle(state.style);
 
-    const _animateManager = getRefValue(this._refAnimateManager);
-    if (_animateManager) {
-      _animateManager.stop();
-    }
-    stopJsAnimation(this._refStopJsAnimation)
-
-    const isTriggered = !prevProps.canBegin
-      || !prevProps.isActive
-    , from = isTriggered || shouldReAnimate
-       ? this.props.from
-       : prevProps.to;
-
-    if (this.state && this.state.style) {
-      const newState = {
-        style: attributeName
-          ? { [attributeName]: from }
-          : from
-      };
-      if ((attributeName && this.state.style[attributeName] !== from)
-        || (!attributeName && this.state.style !== from)
-      ) {
-        // eslint-disable-next-line react/no-did-update-set-state
-        this.setState(newState);
-      }
-    }
-
-    runAnimation(
-      {
-        ...this.props,
-        from,
-        begin: 0
-      },
-      this.changeStyle,
-      this._refStopJsAnimation,
-      this._refAnimateManager,
-      this._refUnSubscribe
-    )
+  if (isFn(children)) {
+    return children(stateStyle);
   }
 
-  componentWillUnmount() {
-    setRefValue(this._refIsMounted, !1)
-
-    const _unSubscribe = getRefValue(this._refUnSubscribe);
-    if (_unSubscribe) {
-      _unSubscribe();
-    }
-
-    const _animateManager = getRefValue(this._refAnimateManager)
-    if (_animateManager) {
-      _animateManager.stop();
-      setRefValue(this._refAnimateManager, null)
-    }
-
-    stopJsAnimation(this._refStopJsAnimation)
+  if (!isActive || count === 0) {
+    return children;
   }
 
-  changeStyle = (style) => {
-    if (getRefValue(this._refIsMounted)) {
-      this.setState({ style });
-    }
-  }
+  const cloneContainer = _fCloneContainer(
+    restProps,
+    stateStyle
+  );
 
-  render() {
-    /*eslint-disable no-unused-vars*/
-    const {
-      children,
-      begin,
-      duration,
-      attributeName,
-      easing,
-      isActive,
-      steps,
-      from,
-      to,
-      canBegin,
-      onAnimationEnd,
-      shouldReAnimate,
-      onAnimationReStart,
-      ...restProps
-    } = this.props
-    /*eslint-enable no-unused-vars*/
-    , count = Children.count(children)
-    , stateStyle = translateStyle(this.state.style);
+  return count === 1
+    ? cloneContainer(Children.only(children))
+    : (
+       <div>
+         {Children.map(children, child => cloneContainer(child))}
+       </div>
+     );
+})
 
-    if (_isFn(children)) {
-      return children(stateStyle);
-    }
-
-    if (!isActive || count === 0) {
-      return children;
-    }
-
-    const cloneContainer = _fCloneContainer(
-      restProps,
-      stateStyle
-    );
-
-    return count === 1
-      ? cloneContainer(Children.only(children))
-      : (
-         <div>
-           {Children.map(children, child => cloneContainer(child))}
-         </div>
-       );
-  }
-}
+/*
+static propTypes = {
+  from: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  to: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  attributeName: PropTypes.string,
+  // animation duration
+  duration: PropTypes.number,
+  begin: PropTypes.number,
+  easing: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  steps: PropTypes.arrayOf(PropTypes.shape({
+    duration: PropTypes.number.isRequired,
+    style: PropTypes.object.isRequired,
+    easing: PropTypes.oneOfType([
+      PropTypes.oneOf(['ease', 'ease-in', 'ease-out', 'ease-in-out', 'linear']),
+      PropTypes.func,
+    ]),
+    // transition css properties(dash case), optional
+    properties: PropTypes.arrayOf('string'),
+    onAnimationEnd: PropTypes.func,
+  })),
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  isActive: PropTypes.bool,
+  canBegin: PropTypes.bool,
+  onAnimationEnd: PropTypes.func,
+  // decide if it should reanimate with initial from style when props change
+  shouldReAnimate: PropTypes.bool,
+  onAnimationStart: PropTypes.func,
+  onAnimationReStart: PropTypes.func,
+};
+*/
