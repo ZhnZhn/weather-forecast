@@ -3,12 +3,12 @@ import {
   useState,
   useRef,
   useEffect,
+  crProps,
   getRefValue
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
 import { shallowEqual } from '../util/ShallowEqual';
-import { crProps } from '../util/ReactUtils';
 
 import { Layer } from '../container/Layer';
 import { Label } from '../component/Label';

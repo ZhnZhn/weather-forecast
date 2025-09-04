@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.filterProps = exports.crProps = void 0;
+exports.filterProps = void 0;
 exports.findAllByType = findAllByType;
 exports.findChildByType = findChildByType;
 exports.validateWidthHeight = exports.toArray = exports.renderByMap = exports.parseChildIndex = exports.isValidSpreadableProp = exports.isSingleChildEqual = exports.isChildrenEqual = exports.getReactEventByType = exports.getDisplayName = void 0;
@@ -266,9 +266,4 @@ const getReactEventByType = e => {
 exports.getReactEventByType = getReactEventByType;
 const parseChildIndex = (child, children) => toArray(children).indexOf(child);
 exports.parseChildIndex = parseChildIndex;
-const crProps = (dfProps, props) => ({
-  ...dfProps,
-  ...props
-});
-exports.crProps = crProps;
 //# sourceMappingURL=ReactUtils.js.map

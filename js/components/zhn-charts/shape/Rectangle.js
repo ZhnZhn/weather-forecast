@@ -41,7 +41,7 @@ const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
       }
     }
   }, []);
-  const _props = (0, _ReactUtils.crProps)(DF_PROPS, props),
+  const _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
       x,
       y,

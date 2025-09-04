@@ -7,16 +7,14 @@ import {
   useRef,
   useState,
   useEffect,
+  crProps,
   getRefValue
 } from '../../uiApi';
 
 import { crCn } from '../../styleFn';
 import { Animate } from '../../zhn-animate';
 
-import {
-  crProps,
-  filterProps
-} from '../util/ReactUtils';
+import { filterProps } from '../util/ReactUtils';
 
 import { CL_RESTANGLE } from '../CL';
 

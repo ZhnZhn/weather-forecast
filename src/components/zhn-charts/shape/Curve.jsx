@@ -4,6 +4,7 @@ import {
   isFn
 } from '../../../utils/isTypeFn';
 
+import { crProps } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
 import {
@@ -27,10 +28,7 @@ import {
 } from '../util/FnUtils';
 
 import { adaptEventHandlers } from '../util/types';
-import {
-  crProps,
-  filterProps
-} from '../util/ReactUtils';
+import { filterProps } from '../util/ReactUtils';
 
 import { CL_CURVE } from '../CL';
 

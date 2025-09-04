@@ -2,15 +2,15 @@ import {
   isArr,
   isNaN
 } from '../../../utils/isTypeFn';
-import { memo } from '../../uiApi';
+import {
+  memo,
+  crProps
+} from '../../uiApi';
 import { crCn } from '../../styleFn';
 
 import { IS_SSR } from '../util/Global';
 import { mathSign } from '../util/DataUtils';
-import {
-  crProps,
-  findAllByType
-} from '../util/ReactUtils';
+import { findAllByType } from '../util/ReactUtils';
 import {
   getCateCoordinateOfBar,
   getValueByDataKey,
@@ -204,7 +204,7 @@ Bar.getComposedData = ({
 
       const computedHeight = baseValueScale - currentValueScale;
       height = isNaN(computedHeight)
-        ? 0 
+        ? 0
         : computedHeight;
       background = {
         y: yAxis.y,

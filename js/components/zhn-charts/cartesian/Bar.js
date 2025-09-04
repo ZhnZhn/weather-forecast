@@ -36,7 +36,7 @@ const DF_PROPS = {
   animationEasing: 'ease'
 };
 const Bar = exports.Bar = (0, _uiApi.memo)(props => {
-  const _props = (0, _ReactUtils.crProps)(DF_PROPS, props),
+  const _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
       data,
       className,

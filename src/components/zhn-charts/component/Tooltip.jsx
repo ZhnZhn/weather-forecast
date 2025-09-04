@@ -11,14 +11,14 @@ import {
   useRef,
   useState,
   useCallback,
-  useEffect
+  useEffect,
+  crProps
 } from "../../uiApi";
 
 import { crCn } from "../../styleFn";
 import { translateStyle } from "../../zhn-animate";
 
 import { IS_SSR } from "../util/Global";
-import { crProps } from "../util/ReactUtils";
 
 import { DefaultTooltipContent } from "./DefaultTooltipContent";
 import { getUniqPayload } from "./componentFn";

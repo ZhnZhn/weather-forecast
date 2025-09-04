@@ -1,12 +1,14 @@
 import { isNotEmptyArr } from '../../../utils/isTypeFn';
-import { memo } from '../../uiApi';
+import {
+  memo,
+  crProps
+} from '../../uiApi';
 
 import {
   isNumber,
   isPositiveNumber
 } from '../util/DataUtils';
 import {
-  crProps,
   filterProps
 } from '../util/ReactUtils';
 

@@ -10,11 +10,10 @@ import {
   memo,
   useRef,
   useLayoutEffect,
+  crProps,
   getRefValue,
   setRefValue
 } from "../../uiApi";
-
-import { crProps } from "../util/ReactUtils";
 
 import { getUniqPayload } from "./componentFn";
 import { DefaultLegendContent } from "./DefaultLegendContent";

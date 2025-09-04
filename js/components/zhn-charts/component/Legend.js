@@ -4,7 +4,6 @@ exports.__esModule = true;
 exports.Legend = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
-var _ReactUtils = require("../util/ReactUtils");
 var _componentFn = require("./componentFn");
 var _DefaultLegendContent = require("./DefaultLegendContent");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -93,7 +92,7 @@ const LEGEND_DF_PROPS = {
   verticalAlign: "bottom"
 };
 const Legend = exports.Legend = (0, _uiApi.memo)(props => {
-  const _props = (0, _ReactUtils.crProps)(LEGEND_DF_PROPS, props),
+  const _props = (0, _uiApi.crProps)(LEGEND_DF_PROPS, props),
     _refBoundingBox = (0, _uiApi.useRef)({
       width: -1,
       height: -1

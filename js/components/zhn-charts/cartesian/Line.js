@@ -10,7 +10,6 @@ var _Layer = require("../container/Layer");
 var _LabelList = require("../component/LabelList");
 var _Global = require("../util/Global");
 var _ChartUtils = require("../util/ChartUtils");
-var _ReactUtils = require("../util/ReactUtils");
 var _cartesianFn = require("./cartesianFn");
 var _useAnimationHandle = _interopRequireDefault(require("./useAnimationHandle"));
 var _usePrevCurData = _interopRequireDefault(require("./usePrevCurData"));
@@ -49,7 +48,7 @@ const DF_PROPS = {
   label: false
 };
 const Line = exports.Line = (0, _uiApi.memo)(props => {
-  const _props = (0, _ReactUtils.crProps)(DF_PROPS, props),
+  const _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
       dot,
       points,

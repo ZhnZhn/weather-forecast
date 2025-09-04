@@ -5,7 +5,6 @@ exports.CartesianAxis = void 0;
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _ShallowEqual = require("../util/ShallowEqual");
-var _ReactUtils = require("../util/ReactUtils");
 var _Layer = require("../container/Layer");
 var _Label = require("../component/Label");
 var _CartesianAxisRenderFn = require("./CartesianAxisRenderFn");
@@ -40,8 +39,8 @@ const CARTESIAN_AXIS_DF_PROPS = {
   interval: 'preserveEnd'
 };
 const _arePropsEqual = (prevProps, nextProps) => {
-  const _prevProps = (0, _ReactUtils.crProps)(CARTESIAN_AXIS_DF_PROPS, prevProps),
-    _nextProps = (0, _ReactUtils.crProps)(CARTESIAN_AXIS_DF_PROPS, nextProps),
+  const _prevProps = (0, _uiApi.crProps)(CARTESIAN_AXIS_DF_PROPS, prevProps),
+    _nextProps = (0, _uiApi.crProps)(CARTESIAN_AXIS_DF_PROPS, nextProps),
     {
       viewBox,
       ...restProps
@@ -53,7 +52,7 @@ const _arePropsEqual = (prevProps, nextProps) => {
   return (0, _ShallowEqual.shallowEqual)(viewBox, viewBoxPrev) && (0, _ShallowEqual.shallowEqual)(restProps, restPropsPrev);
 };
 const CartesianAxis = exports.CartesianAxis = (0, _uiApi.memo)(props => {
-  const _props = (0, _ReactUtils.crProps)(CARTESIAN_AXIS_DF_PROPS, props),
+  const _props = (0, _uiApi.crProps)(CARTESIAN_AXIS_DF_PROPS, props),
     [state, setState] = (0, _uiApi.useState)({
       fontSize: '',
       letterSpacing: ''

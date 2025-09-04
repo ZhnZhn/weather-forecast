@@ -16,7 +16,7 @@ const DF_PROPS = {
   className: ""
 };
 const Label = props => {
-  const _props = (0, _ReactUtils.crProps)(DF_PROPS, props),
+  const _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
       viewBox,
       value,

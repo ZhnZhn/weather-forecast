@@ -4,7 +4,8 @@ import {
   memo,
   useRef,
   useState,
-  useEffect
+  useEffect,
+  crProps
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
@@ -16,7 +17,6 @@ import {
   getCateCoordinateOfLine,
   getValueByDataKey
 } from '../util/ChartUtils';
-import { crProps } from '../util/ReactUtils';
 
 import {
   isHideOrNoData,

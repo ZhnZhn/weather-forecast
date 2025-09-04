@@ -7,14 +7,14 @@ import {
 import {
   isValidElement,
   cloneUiElement,
-  createElement
+  createElement,
+  crProps
 } from "../../uiApi";
 
 import { crCn } from "../../styleFn";
 
 import { Text } from "./Text";
 import {
-  crProps,
   findAllByType,
   filterProps
 } from "../util/ReactUtils";

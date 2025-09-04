@@ -3,6 +3,7 @@
 exports.__esModule = true;
 exports.Curve = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
+var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _d3Shape = require("../d3Shape");
 var _FnUtils = require("../util/FnUtils");
@@ -76,7 +77,7 @@ const DF_PROPS = {
   connectNulls: false
 };
 const Curve = props => {
-  const _props = (0, _ReactUtils.crProps)(DF_PROPS, props),
+  const _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
       className,
       points,

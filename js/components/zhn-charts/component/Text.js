@@ -3,6 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Text = void 0;
+var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
@@ -38,7 +39,7 @@ const DF_PROPS = {
   fill: '#808080'
 };
 const Text = props => {
-  const _props = (0, _ReactUtils.crProps)(DF_PROPS, props),
+  const _props = (0, _uiApi.crProps)(DF_PROPS, props),
     wordsByLines = (0, _useWordsByLine.default)(_props),
     {
       dx,

@@ -1,3 +1,4 @@
+import { crProps } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
 import {
@@ -5,7 +6,6 @@ import {
   isNumOrStr
 } from '../util/DataUtils';
 import {
-  crProps,
   filterProps
 } from '../util/ReactUtils';
 

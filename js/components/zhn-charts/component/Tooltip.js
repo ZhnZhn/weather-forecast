@@ -7,7 +7,6 @@ var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _zhnAnimate = require("../../zhn-animate");
 var _Global = require("../util/Global");
-var _ReactUtils = require("../util/ReactUtils");
 var _DefaultTooltipContent = require("./DefaultTooltipContent");
 var _componentFn = require("./componentFn");
 var _CL = require("../CL");
@@ -68,7 +67,7 @@ const Tooltip = props => {
       y: 0
     }),
     wrapperNode = (0, _uiApi.useRef)(),
-    _props = (0, _ReactUtils.crProps)(DF_PROPS, props),
+    _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
       allowEscapeViewBox,
       reverseDirection,
