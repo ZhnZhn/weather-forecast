@@ -136,7 +136,6 @@ export const Animate = memo(props => {
     to,
     canBegin,
     onAnimationEnd,
-    shouldReAnimate,
     onAnimationReStart,
     ...restProps
   } = _props
@@ -205,11 +204,9 @@ export const Animate = memo(props => {
       }
       stopJsAnimation(_refStopJsAnimation)
 
-      const isTriggered = !_prevProps.canBegin
-        || !_prevProps.isActive
-      , from = isTriggered || shouldReAnimate
-         ? _props.from
-         : _prevProps.to;
+      const from = !_prevProps.canBegin || !_prevProps.isActive
+        ? _props.from
+        : _prevProps.to;
 
       _setNextStateIf(
         state,
@@ -232,7 +229,7 @@ export const Animate = memo(props => {
     }
   }, [_props, state])
   //changeStyle
-  //attributeName, isActive, canBegin, shouldReAnimate
+  //attributeName, isActive, canBegin
   //_prevProps.isActivem, _prevProps.canBegin, _prevProps.to
   /*eslint-enable react-hooks/exhaustive-deps */
 
@@ -275,7 +272,6 @@ static propTypes = {
   canBegin: PropTypes.bool,
   onAnimationEnd: PropTypes.func,
   // decide if it should reanimate with initial from style when props change
-  shouldReAnimate: PropTypes.bool,
   onAnimationStart: PropTypes.func,
   onAnimationReStart: PropTypes.func,
 };
