@@ -90,7 +90,6 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
       to,
       canBegin,
       onAnimationEnd,
-      onAnimationReStart,
       ...restProps
     } = _props;
   /*eslint-enable no-unused-vars*/
@@ -179,7 +178,6 @@ static propTypes = {
   onAnimationEnd: PropTypes.func,
   // decide if it should reanimate with initial from style when props change
   onAnimationStart: PropTypes.func,
-  onAnimationReStart: PropTypes.func,
 };
 */
 //# sourceMappingURL=Animate.js.map
