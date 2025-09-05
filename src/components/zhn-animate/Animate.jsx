@@ -1,5 +1,6 @@
 import {
-  isFn
+  isFn,
+  isNotEmptyArr
 } from '../../utils/isTypeFn';
 
 import {
@@ -48,37 +49,30 @@ const _fCloneContainer = (
 
 const FN_NOOP = () => {}
 
-const _crInitialState = props => {
-  const {
-    isActive,
-    attributeName,
-    from,
-    to,
-    steps,
-    children
-  } = props;
+const _crStyleState = (
+  value,
+  attributeName
+) => ({
+  style: attributeName
+    ? { [attributeName]: value }
+    : value
+});
 
-  if (!isActive) {
-    // if children is a function and animation is not active, set style to 'to'
-    return isFn(children)
-      ? { style: to }
-      : { style: {} };
-  } else if (steps && steps.length) {
-    return {
-      style: steps[0].style
-    };
-  } else if (from) {
-    return isFn(children)
-      ? { style: from }
-      : {
-          style: attributeName
-           ? { [attributeName]: from }
-           : from
-        };
-  } else {
-    return { style: {} };
-  }
-};
+const _crInitialState = ({
+  isActive,
+  attributeName,
+  from,
+  to,
+  steps,
+  children
+}) => !isActive
+  // if children is a function and animation is not active, set style to 'to'
+  ? _crStyleState(isFn(children) ? to : {})
+  : isNotEmptyArr(steps)
+  ? _crStyleState(steps[0].style)
+  : from
+  ? _crStyleState(from, isFn(children) ? void 0 : attributeName)
+  : _crStyleState({});
 
 const DF_PROPS = {
   begin: 0,
@@ -87,12 +81,32 @@ const DF_PROPS = {
   to: '',
   attributeName: '',
   easing: 'ease',
-  isActive: true,
-  canBegin: true,
+  isActive: !0,
+  canBegin: !0,
   //steps: [],
   onAnimationEnd: FN_NOOP,
   onAnimationStart: FN_NOOP
 };
+
+const _isStyleChanged = (
+  style,
+  value,
+  attributeName
+) => attributeName
+  ? style[attributeName] !== value
+  : style !== value;
+
+const _setNextStateIf = (
+  state,
+  attributeName,
+  value,
+  setState
+) => {
+  const { style } = state || {};
+  if (style && _isStyleChanged(style, value, attributeName)) {
+    setState(_crStyleState(value, attributeName));
+  }
+}
 
 export const Animate = memo(props => {
   const _props = useMemo(() => crProps({
@@ -177,18 +191,12 @@ export const Animate = memo(props => {
       }
 
       if (!isActive) {
-        const newState = {
-          style: attributeName
-            ? { [attributeName]: _props.to }
-            : _props.to
-        };
-        if (state && state.style) {
-          if ((attributeName && state.style[attributeName] !== _props.to)
-            || (!attributeName && state.style !== _props.to)
-          ) {
-            setState(newState);
-          }
-        }
+        _setNextStateIf(
+          state,
+          attributeName,
+          _props.to,
+          setState
+        )
         return;
       }
 
@@ -211,18 +219,12 @@ export const Animate = memo(props => {
          ? _props.from
          : _prevProps.to;
 
-      if (state && state.style) {
-        const newState = {
-          style: attributeName
-            ? { [attributeName]: from }
-            : from
-        };
-        if ((attributeName && state.style[attributeName] !== from)
-          || (!attributeName && state.style !== from)
-        ) {
-          setState(newState);
-        }
-      }
+      _setNextStateIf(
+        state,
+        attributeName,
+        from,
+        setState
+      )
 
       runAnimation(
         {

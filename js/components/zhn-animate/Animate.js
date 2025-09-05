@@ -24,39 +24,23 @@ const _fCloneContainer = (restProps, stateStyle) => container => {
   });
 };
 const FN_NOOP = () => {};
-const _crInitialState = props => {
-  const {
+const _crStyleState = (value, attributeName) => ({
+  style: attributeName ? {
+    [attributeName]: value
+  } : value
+});
+const _crInitialState = _ref => {
+  let {
     isActive,
     attributeName,
     from,
     to,
     steps,
     children
-  } = props;
-  if (!isActive) {
-    // if children is a function and animation is not active, set style to 'to'
-    return (0, _isTypeFn.isFn)(children) ? {
-      style: to
-    } : {
-      style: {}
-    };
-  } else if (steps && steps.length) {
-    return {
-      style: steps[0].style
-    };
-  } else if (from) {
-    return (0, _isTypeFn.isFn)(children) ? {
-      style: from
-    } : {
-      style: attributeName ? {
-        [attributeName]: from
-      } : from
-    };
-  } else {
-    return {
-      style: {}
-    };
-  }
+  } = _ref;
+  return !isActive
+  // if children is a function and animation is not active, set style to 'to'
+  ? _crStyleState((0, _isTypeFn.isFn)(children) ? to : {}) : (0, _isTypeFn.isNotEmptyArr)(steps) ? _crStyleState(steps[0].style) : from ? _crStyleState(from, (0, _isTypeFn.isFn)(children) ? void 0 : attributeName) : _crStyleState({});
 };
 const DF_PROPS = {
   begin: 0,
@@ -65,11 +49,20 @@ const DF_PROPS = {
   to: '',
   attributeName: '',
   easing: 'ease',
-  isActive: true,
-  canBegin: true,
+  isActive: !0,
+  canBegin: !0,
   //steps: [],
   onAnimationEnd: FN_NOOP,
   onAnimationStart: FN_NOOP
+};
+const _isStyleChanged = (style, value, attributeName) => attributeName ? style[attributeName] !== value : style !== value;
+const _setNextStateIf = (state, attributeName, value, setState) => {
+  const {
+    style
+  } = state || {};
+  if (style && _isStyleChanged(style, value, attributeName)) {
+    setState(_crStyleState(value, attributeName));
+  }
 };
 const Animate = exports.Animate = (0, _uiApi.memo)(props => {
   const _props = (0, _uiApi.useMemo)(() => (0, _uiApi.crProps)({
@@ -139,16 +132,7 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
         return;
       }
       if (!isActive) {
-        const newState = {
-          style: attributeName ? {
-            [attributeName]: _props.to
-          } : _props.to
-        };
-        if (state && state.style) {
-          if (attributeName && state.style[attributeName] !== _props.to || !attributeName && state.style !== _props.to) {
-            setState(newState);
-          }
-        }
+        _setNextStateIf(state, attributeName, _props.to, setState);
         return;
       }
       if ((0, _util.shallowEqual)(_prevProps.to, _props.to) && _prevProps.canBegin && _prevProps.isActive) {
@@ -161,16 +145,7 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
       (0, _AnimateFn.stopJsAnimation)(_refStopJsAnimation);
       const isTriggered = !_prevProps.canBegin || !_prevProps.isActive,
         from = isTriggered || shouldReAnimate ? _props.from : _prevProps.to;
-      if (state && state.style) {
-        const newState = {
-          style: attributeName ? {
-            [attributeName]: from
-          } : from
-        };
-        if (attributeName && state.style[attributeName] !== from || !attributeName && state.style !== from) {
-          setState(newState);
-        }
-      }
+      _setNextStateIf(state, attributeName, from, setState);
       (0, _AnimateFn.runAnimation)({
         ..._props,
         from,
