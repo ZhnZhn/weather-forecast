@@ -35,12 +35,11 @@ const _crInitialState = _ref => {
     attributeName,
     from,
     to,
-    steps,
     children
   } = _ref;
   return !isActive
   // if children is a function and animation is not active, set style to 'to'
-  ? _crStyleState((0, _isTypeFn.isFn)(children) ? to : {}) : (0, _isTypeFn.isNotEmptyArr)(steps) ? _crStyleState(steps[0].style) : from ? _crStyleState(from, (0, _isTypeFn.isFn)(children) ? void 0 : attributeName) : _crStyleState({});
+  ? _crStyleState((0, _isTypeFn.isFn)(children) ? to : {}) : from ? _crStyleState(from, (0, _isTypeFn.isFn)(children) ? void 0 : attributeName) : _crStyleState({});
 };
 const DF_PROPS = {
   begin: 0,
@@ -51,7 +50,6 @@ const DF_PROPS = {
   easing: 'ease',
   isActive: !0,
   canBegin: !0,
-  //steps: [],
   onAnimationEnd: FN_NOOP,
   onAnimationStart: FN_NOOP
 };
@@ -65,10 +63,7 @@ const _setNextStateIf = (state, attributeName, value, setState) => {
   }
 };
 const Animate = exports.Animate = (0, _uiApi.memo)(props => {
-  const _props = (0, _uiApi.useMemo)(() => (0, _uiApi.crProps)({
-      ...DF_PROPS,
-      steps: []
-    }, props), [props]),
+  const _props = (0, _uiApi.useMemo)(() => (0, _uiApi.crProps)(DF_PROPS, props), [props]),
     _prevProps = (0, _usePrevValue.default)(_props),
     _refStopJsAnimation = (0, _uiApi.useRef)(),
     _refIsMounted = (0, _uiApi.useRef)(!1),
@@ -91,7 +86,6 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
       attributeName,
       easing,
       isActive,
-      steps,
       from,
       to,
       canBegin,
@@ -181,17 +175,6 @@ static propTypes = {
   duration: PropTypes.number,
   begin: PropTypes.number,
   easing: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-  steps: PropTypes.arrayOf(PropTypes.shape({
-    duration: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
-    easing: PropTypes.oneOfType([
-      PropTypes.oneOf(['ease', 'ease-in', 'ease-out', 'ease-in-out', 'linear']),
-      PropTypes.func,
-    ]),
-    // transition css properties(dash case), optional
-    properties: PropTypes.arrayOf('string'),
-    onAnimationEnd: PropTypes.func,
-  })),
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   isActive: PropTypes.bool,
   canBegin: PropTypes.bool,
