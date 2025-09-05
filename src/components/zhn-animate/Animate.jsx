@@ -71,8 +71,8 @@ const _crInitialState = ({
 const DF_PROPS = {
   begin: 0,
   duration: 1000,
-  from: '',
-  to: '',
+  //from: {t: 0},
+  //to:  {t: 1},
   attributeName: '',
   easing: 'ease',
   isActive: !0,
@@ -103,7 +103,11 @@ const _setNextStateIf = (
 
 export const Animate = memo(props => {
   const _props = useMemo(
-    () => crProps(DF_PROPS, props),
+    () => crProps({
+      ...DF_PROPS,
+      from: {t: 0},
+      to:  {t: 1}
+    }, props),
     [props]
   )
   , _prevProps = usePrevValue(_props)

@@ -29,12 +29,6 @@ const _getStrokeDasharray = (length, totalLength, lines) => {
   const emptyLines = remainLines.length % 2 === 0 ? [0, restLength] : [restLength];
   return [..._repeat(lines, count), ...remainLines, ...emptyLines].map(line => `${line}px`).join(', ');
 };
-const ANIMATE_CURVE_FROM = {
-  t: 0
-};
-const ANIMATE_CURVE_TO = {
-  t: 1
-};
 const _mathFloor = Math.floor;
 const _crStepItem = (entry, prev, animateNewValues, width, height, t) => {
   const [x, y] = prev ? [(0, _DataUtils.getInterpolatedNumber)(prev.x, entry.x, t), (0, _DataUtils.getInterpolatedNumber)(prev.y, entry.y, t)]
@@ -75,8 +69,6 @@ const LineCurveWithAnimation = _ref => {
     begin: animationBegin,
     duration: animationDuration,
     easing: animationEasing,
-    from: ANIMATE_CURVE_FROM,
-    to: ANIMATE_CURVE_TO,
     onAnimationEnd: handleAnimationEnd,
     onAnimationStart: handleAnimationStart,
     children: _ref2 => {

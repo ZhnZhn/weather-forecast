@@ -44,8 +44,8 @@ const _crInitialState = _ref => {
 const DF_PROPS = {
   begin: 0,
   duration: 1000,
-  from: '',
-  to: '',
+  //from: {t: 0},
+  //to:  {t: 1},
   attributeName: '',
   easing: 'ease',
   isActive: !0,
@@ -63,7 +63,15 @@ const _setNextStateIf = (state, attributeName, value, setState) => {
   }
 };
 const Animate = exports.Animate = (0, _uiApi.memo)(props => {
-  const _props = (0, _uiApi.useMemo)(() => (0, _uiApi.crProps)(DF_PROPS, props), [props]),
+  const _props = (0, _uiApi.useMemo)(() => (0, _uiApi.crProps)({
+      ...DF_PROPS,
+      from: {
+        t: 0
+      },
+      to: {
+        t: 1
+      }
+    }, props), [props]),
     _prevProps = (0, _usePrevValue.default)(_props),
     _refStopJsAnimation = (0, _uiApi.useRef)(),
     _refIsMounted = (0, _uiApi.useRef)(!1),

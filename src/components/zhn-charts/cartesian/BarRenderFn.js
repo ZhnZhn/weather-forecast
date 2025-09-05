@@ -84,8 +84,6 @@ export const renderBackground = (
   });
 }
 
-const ANIMATE_RECT_FROM = { t: 0 };
-const ANIMATE_RECT_TO = { t: 1 };
 const _crStepData = (
   data,
   prevData,
@@ -137,9 +135,7 @@ const _renderRectanglesWithAnimation = (
          isActive={isAnimationActive}
          begin={animationBegin}
          duration={animationDuration}
-         easing={animationEasing}
-         from={ANIMATE_RECT_FROM}
-         to={ANIMATE_RECT_TO}
+         easing={animationEasing}         
          onAnimationEnd={handleAnimationEnd}
          onAnimationStart={handleAnimationStart}
       >

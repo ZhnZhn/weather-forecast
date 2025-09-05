@@ -46,9 +46,6 @@ const _getStrokeDasharray = (
   ].map(line => `${line}px`).join(', ');
 };
 
-const ANIMATE_CURVE_FROM = {t: 0};
-const ANIMATE_CURVE_TO = {t: 1};
-
 const _mathFloor = Math.floor;
 const _crStepItem = (
   entry,
@@ -120,9 +117,7 @@ export const LineCurveWithAnimation = ({
        isActive={isAnimationActive}
        begin={animationBegin}
        duration={animationDuration}
-       easing={animationEasing}
-       from={ANIMATE_CURVE_FROM}
-       to={ANIMATE_CURVE_TO}
+       easing={animationEasing}       
        onAnimationEnd={handleAnimationEnd}
        onAnimationStart={handleAnimationStart}
     >

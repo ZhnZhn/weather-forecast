@@ -35,7 +35,7 @@ const _renderRectanglesStatically = (props, data) => {
     };
     return /*#__PURE__*/(0, _react.createElement)(_Layer.Layer, {
       ...(0, _types.adaptEventsOfChild)(rectangleProps, entry, i),
-      key: "rectangle-" + i,
+      key: `rectangle-${i}`,
       className: _CL.CL_BAR_RECTANGLE
     }, _renderRectangle(shape, rectangleProps));
   });
@@ -68,19 +68,13 @@ const renderBackground = props => {
       ...backgroundProps,
       ...(0, _types.adaptEventsOfChild)(props, entry, i),
       index: i,
-      key: "background-bar-" + i,
+      key: `background-bar-${i}`,
       className: _CL.CL_BAR_BACKGROUND_RECTANGLE
     };
     return _renderRectangle(props.background, _props);
   });
 };
 exports.renderBackground = renderBackground;
-const ANIMATE_RECT_FROM = {
-  t: 0
-};
-const ANIMATE_RECT_TO = {
-  t: 1
-};
 const _crStepData = (data, prevData, layout, t) => data.map((entry, index) => {
   const prev = prevData && prevData[index];
   if (prev) {
@@ -120,8 +114,6 @@ const _renderRectanglesWithAnimation = (props, prevData, handleAnimationStart, h
     begin: animationBegin,
     duration: animationDuration,
     easing: animationEasing,
-    from: ANIMATE_RECT_FROM,
-    to: ANIMATE_RECT_TO,
     onAnimationEnd: handleAnimationEnd,
     onAnimationStart: handleAnimationStart,
     children: _ref2 => {
@@ -132,7 +124,7 @@ const _renderRectanglesWithAnimation = (props, prevData, handleAnimationStart, h
         children: _renderRectanglesStatically(props, _crStepData(data, prevData, layout, t))
       });
     }
-  }, "bar-" + animationId);
+  }, `bar-${animationId}`);
 };
 const renderRectangles = (props, prevData, handleAnimationStart, handleAnimationEnd) => {
   const {
