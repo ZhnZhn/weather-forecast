@@ -1,5 +1,6 @@
 import {
-  isFn
+  isFn,
+  isStr
 } from '../../../utils/isTypeFn';
 
 import {
@@ -8,12 +9,15 @@ import {
   useState,
   useEffect,
   crProps,
-  getRefValue
+  getRefValue,
+  setRefValue
 } from '../../uiApi';
 
 import { crCn } from '../../styleFn';
 import { Animate } from '../../zhn-animate';
+import { getTransitionVal } from '../../zhn-animate/util';
 
+import { getInterpolatedNumber as interpolate } from '../util/DataUtils';
 import { filterProps } from '../util/ReactUtils';
 
 import { CL_RESTANGLE } from '../CL';
@@ -31,10 +35,24 @@ const DF_PROPS = {
   radius: 0,
   isAnimationActive: false,
   isUpdateAnimationActive: false,
+
   animationBegin: 0,
   animationDuration: 1500,
   animationEasing: 'ease'
 }
+
+const _crAnimationStyle = (
+  isAnimationActive,
+  to,
+  t,
+  transition,
+  from
+) => !isAnimationActive
+  ? { strokeDasharray: to }
+  : t > 0
+  ? { strokeDasharray: to, transition }
+  : { strokeDasharray: from }
+
 
 export const Rectangle = memo((props) => {
   const _refNode = useRef()
@@ -74,45 +92,73 @@ export const Rectangle = memo((props) => {
     isUpdateAnimationActive
   } = _props;
 
+  const prevWidthRef = useRef(width)
+  , prevHeightRef = useRef(height)
+  , prevXRef = useRef(x)
+  , prevYRef = useRef(y);
+
   if (x !== +x || y !== +y || width !== +width || height !== +height || width === 0 || height === 0) {
     return null;
   }
 
-  const layerClass = crCn(CL_RESTANGLE, className);
+  const layerClass = crCn(CL_RESTANGLE, className)
+  , _canBegin = totalLength > 0;
+
+  const prevWidth = getRefValue(prevWidthRef)
+  , prevHeight = getRefValue(prevHeightRef)
+  , prevX = getRefValue(prevXRef)
+  , prevY = getRefValue(prevYRef);
+
+  const from = `0px ${totalLength === -1 ? 1 : totalLength}px`
+  , to = `${totalLength}px 0px`
+  , transition = getTransitionVal(
+    ['strokeDasharray'],
+    animationDuration,
+    isStr(animationEasing) ? animationEasing : void 0
+  );
+
   return isUpdateAnimationActive
    ? (
       <Animate
         isActive={isUpdateAnimationActive}
-        canBegin={totalLength > 0}
-        from={{ width, height, x, y }}
-        to={{ width, height, x, y }}
+        canBegin={_canBegin}
         duration={animationDuration}
-        animationEasing={animationEasing}
+        easing={animationEasing}
+        begin={animationBegin}
       >
-       {({
-           width: currWidth,
-           height: currHeight,
-           x: currX,
-           y: currY
-         }) => (
-           <Animate
-             isActive={isAnimationActive}
-             canBegin={totalLength > 0}
-             from={`0px ${totalLength === -1 ? 1 : totalLength}px`}
-             to={`${totalLength}px 0px`}
-             attributeName="strokeDasharray"
-             begin={animationBegin}
-             duration={animationDuration}
-             easing={animationEasing}
-            >
-              <path
-                 {...filterProps(_props, true)}
-                 className={layerClass}
-                 d={getRectanglePath(currX, currY, currWidth, currHeight, radius)}
-                 ref={_refNode}
-              />
-            </Animate>
-        )}
+       {({ t }) => {
+         const currWidth = interpolate(prevWidth, width, t)
+         , currHeight = interpolate(prevHeight, height, t)
+         , currX = interpolate(prevX, x, t)
+         , currY = interpolate(prevY, y, t);
+
+         if (getRefValue(_refNode)) {
+           setRefValue(prevWidthRef, currWidth);
+           setRefValue(prevHeightRef, currHeight);
+           setRefValue(prevXRef, currX);
+           setRefValue(prevYRef, currY);
+         }
+
+         const animationStyle = _crAnimationStyle(
+           isAnimationActive,
+           to,
+           t,
+           transition,
+           from
+         );
+
+         return (
+           <path
+             {...filterProps(_props, true)}
+             className={layerClass}
+             d={getRectanglePath(currX, currY, currWidth, currHeight, radius)}
+             ref={_refNode}
+             style={{
+               ...animationStyle,
+               ...props.style,
+             }}
+           />
+        )}}
       </Animate>
     )
   : (
