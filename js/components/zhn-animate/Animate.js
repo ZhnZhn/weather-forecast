@@ -3,63 +3,40 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.Animate = void 0;
-var _isTypeFn = require("../../utils/isTypeFn");
 var _uiApi = require("../uiApi");
 var _usePrevValue = _interopRequireDefault(require("../hooks/usePrevValue"));
 var _util = require("./util");
 var _AnimateFn = require("./AnimateFn");
-var _jsxRuntime = require("react/jsx-runtime");
-const _fCloneContainer = (restProps, stateStyle) => container => {
-  const {
-    style = {},
-    className
-  } = container.props;
-  return (0, _uiApi.cloneUiElement)(container, {
-    ...restProps,
-    style: {
-      ...style,
-      ...stateStyle
-    },
-    className
-  });
-};
 const FN_NOOP = () => {};
-const _crStyleState = (value, attributeName) => ({
-  style: attributeName ? {
-    [attributeName]: value
-  } : value
+const _crStyleState = value => ({
+  style: value
 });
 const _crInitialState = _ref => {
   let {
     isActive,
-    attributeName,
     from,
-    to,
-    children
+    to
   } = _ref;
-  return !isActive
-  // if children is a function and animation is not active, set style to 'to'
-  ? _crStyleState((0, _isTypeFn.isFn)(children) ? to : {}) : from ? _crStyleState(from, (0, _isTypeFn.isFn)(children) ? void 0 : attributeName) : _crStyleState({});
+  return isActive ? _crStyleState(from) : _crStyleState(to);
 };
 const DF_PROPS = {
   begin: 0,
   duration: 1000,
   //from: {t: 0},
   //to:  {t: 1},
-  attributeName: '',
   easing: 'ease',
   isActive: !0,
   canBegin: !0,
   onAnimationEnd: FN_NOOP,
   onAnimationStart: FN_NOOP
 };
-const _isStyleChanged = (style, value, attributeName) => attributeName ? style[attributeName] !== value : style !== value;
-const _setNextStateIf = (state, attributeName, value, setState) => {
+const _isStyleChanged = (style, value) => style !== value;
+const _setNextStateIf = (state, value, setState) => {
   const {
     style
   } = state || {};
-  if (style && _isStyleChanged(style, value, attributeName)) {
-    setState(_crStyleState(value, attributeName));
+  if (style && _isStyleChanged(style, value)) {
+    setState(_crStyleState(value));
   }
 };
 const Animate = exports.Animate = (0, _uiApi.memo)(props => {
@@ -89,16 +66,8 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
     /*eslint-disable no-unused-vars*/,
     {
       children,
-      begin,
-      duration,
-      attributeName,
-      easing,
       isActive,
-      from,
-      to,
-      canBegin,
-      onAnimationEnd,
-      ...restProps
+      canBegin
     } = _props;
   /*eslint-enable no-unused-vars*/
 
@@ -132,7 +101,7 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
         return;
       }
       if (!isActive) {
-        _setNextStateIf(state, attributeName, _props.to, setState);
+        _setNextStateIf(state, _props.to, setState);
         return;
       }
       if ((0, _util.shallowEqual)(_prevProps.to, _props.to) && _prevProps.canBegin && _prevProps.isActive) {
@@ -144,7 +113,7 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
       }
       (0, _AnimateFn.stopJsAnimation)(_refStopJsAnimation);
       const from = !_prevProps.canBegin || !_prevProps.isActive ? _props.from : _prevProps.to;
-      _setNextStateIf(state, attributeName, from, setState);
+      _setNextStateIf(state, from, setState);
       (0, _AnimateFn.runAnimation)({
         ..._props,
         from,
@@ -153,34 +122,22 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
     }
   }, [_props, state]);
   //changeStyle
-  //attributeName, isActive, canBegin
+  //isActive, canBegin
   //_prevProps.isActivem, _prevProps.canBegin, _prevProps.to
   /*eslint-enable react-hooks/exhaustive-deps */
 
-  const count = _uiApi.Children.count(children),
-    stateStyle = (0, _util.translateStyle)(state.style);
-  if ((0, _isTypeFn.isFn)(children)) {
-    return children(stateStyle);
-  }
-  if (!isActive || count === 0) {
-    return children;
-  }
-  const cloneContainer = _fCloneContainer(restProps, stateStyle);
-  return count === 1 ? cloneContainer(_uiApi.Children.only(children)) : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    children: _uiApi.Children.map(children, child => cloneContainer(child))
-  });
+  return children((0, _util.translateStyle)(state.style));
 });
 
 /*
 static propTypes = {
   from: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   to: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  attributeName: PropTypes.string,
   // animation duration
   duration: PropTypes.number,
   begin: PropTypes.number,
   easing: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  children: PropTypes.func,
   isActive: PropTypes.bool,
   canBegin: PropTypes.bool,
   onAnimationEnd: PropTypes.func,

@@ -1,5 +1,3 @@
-import { isFn } from '../../utils/isTypeFn';
-
 import {
   memo,
   crProps,
@@ -7,10 +5,8 @@ import {
   useState,
   useMemo,
   useEffect,
-  Children,
   getRefValue,
-  setRefValue,
-  cloneUiElement
+  setRefValue
 } from '../uiApi';
 
 import usePrevValue from '../hooks/usePrevValue';
@@ -25,55 +21,27 @@ import {
   runAnimation
 } from './AnimateFn';
 
-const _fCloneContainer = (
-  restProps,
-  stateStyle
-) => (container) => {
-  const {
-    style = {},
-    className
-  } = container.props;
-
-  return cloneUiElement(container, {
-    ...restProps,
-    style: {
-      ...style,
-      ...stateStyle
-    },
-    className
-  });
-};
-
 const FN_NOOP = () => {}
 
 const _crStyleState = (
-  value,
-  attributeName
+  value
 ) => ({
-  style: attributeName
-    ? { [attributeName]: value }
-    : value
+  style: value
 });
 
 const _crInitialState = ({
   isActive,
-  attributeName,
   from,
-  to,
-  children
-}) => !isActive
-  // if children is a function and animation is not active, set style to 'to'
-  ? _crStyleState(isFn(children) ? to : {})
-  : from
-  ? _crStyleState(from, isFn(children) ? void 0 : attributeName)
-  : _crStyleState({});
+  to
+}) => isActive
+ ? _crStyleState(from)
+ : _crStyleState(to);
 
 const DF_PROPS = {
   begin: 0,
   duration: 1000,
   //from: {t: 0},
   //to:  {t: 1},
-  attributeName: '',
   easing: 'ease',
   isActive: !0,
   canBegin: !0,
@@ -83,21 +51,17 @@ const DF_PROPS = {
 
 const _isStyleChanged = (
   style,
-  value,
-  attributeName
-) => attributeName
-  ? style[attributeName] !== value
-  : style !== value;
+  value
+) => style !== value;
 
 const _setNextStateIf = (
   state,
-  attributeName,
   value,
   setState
 ) => {
   const { style } = state || {};
-  if (style && _isStyleChanged(style, value, attributeName)) {
-    setState(_crStyleState(value, attributeName));
+  if (style && _isStyleChanged(style, value)) {
+    setState(_crStyleState(value));
   }
 }
 
@@ -131,16 +95,8 @@ export const Animate = memo(props => {
   /*eslint-disable no-unused-vars*/
   , {
     children,
-    begin,
-    duration,
-    attributeName,
-    easing,
     isActive,
-    from,
-    to,
-    canBegin,
-    onAnimationEnd,
-    ...restProps
+    canBegin
   } = _props
   /*eslint-enable no-unused-vars*/
 
@@ -187,7 +143,6 @@ export const Animate = memo(props => {
       if (!isActive) {
         _setNextStateIf(
           state,
-          attributeName,
           _props.to,
           setState
         )
@@ -213,7 +168,6 @@ export const Animate = memo(props => {
 
       _setNextStateIf(
         state,
-        attributeName,
         from,
         setState
       )
@@ -232,45 +186,22 @@ export const Animate = memo(props => {
     }
   }, [_props, state])
   //changeStyle
-  //attributeName, isActive, canBegin
+  //isActive, canBegin
   //_prevProps.isActivem, _prevProps.canBegin, _prevProps.to
   /*eslint-enable react-hooks/exhaustive-deps */
 
-  const count = Children.count(children)
-  , stateStyle = translateStyle(state.style);
-
-  if (isFn(children)) {
-    return children(stateStyle);
-  }
-
-  if (!isActive || count === 0) {
-    return children;
-  }
-
-  const cloneContainer = _fCloneContainer(
-    restProps,
-    stateStyle
-  );
-
-  return count === 1
-    ? cloneContainer(Children.only(children))
-    : (
-       <div>
-         {Children.map(children, child => cloneContainer(child))}
-       </div>
-     );
+  return children(translateStyle(state.style));
 })
 
 /*
 static propTypes = {
   from: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   to: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  attributeName: PropTypes.string,
   // animation duration
   duration: PropTypes.number,
   begin: PropTypes.number,
   easing: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  children: PropTypes.func,
   isActive: PropTypes.bool,
   canBegin: PropTypes.bool,
   onAnimationEnd: PropTypes.func,
