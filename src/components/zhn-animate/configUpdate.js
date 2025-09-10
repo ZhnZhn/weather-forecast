@@ -1,5 +1,5 @@
 import {
-  getIntersectionKeys,
+  //getIntersectionKeys,
   mapObject
 } from './util';
 
@@ -49,23 +49,25 @@ const calStepperVals = (
 };
 
 // configure update function
-export default (from, to, easing, duration, render) => {
-  const interKeys = getIntersectionKeys(from, to);
-  const timingStyle = interKeys.reduce((res, key) => ({
-    ...res,
-    [key]: [from[key], to[key]],
-  }), {});
-
-  let stepperStyle = interKeys.reduce((res, key) => ({
-    ...res,
-    [key]: {
-      from: from[key],
+export default (
+  from,
+  to,
+  easing,
+  duration,
+  render
+) => {
+  const timingStyle = {
+    t: [from.t, to.t]
+  };
+  
+  let stepperStyle = {
+    t: {
+      from: from.t,
       velocity: 0,
-      to: to[key],
-    },
-  }), {});
-
-  let cafId = -1
+      to: to.t
+    }
+  }
+  , cafId = -1
   , preTime
   , beginTime
   , update = () => null;

@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.translateStyle = exports.shallowEqual = exports.mapObject = exports.identity = exports.getTransitionVal = exports.getIntersectionKeys = void 0;
+exports.translateStyle = exports.shallowEqual = exports.mapObject = exports.identity = exports.getTransitionVal = void 0;
 var _shallowEqual = require("../../utils/shallowEqual");
 exports.shallowEqual = _shallowEqual.shallowEqual;
 /* eslint no-console: 0 */
@@ -25,7 +25,7 @@ const _generatePrefixStyle = (name, value) => {
   let styleVal = value;
   return PREFIX_LIST.reduce((result, property, i) => {
     if (isTransition) {
-      styleVal = value.replace(/(transform|transform-origin)/gim, IN_LINE_PREFIX_LIST[i] + "$1");
+      styleVal = value.replace(/(transform|transform-origin)/gim, `${IN_LINE_PREFIX_LIST[i]}$1`);
     }
     return {
       ...result,
@@ -44,14 +44,22 @@ const translateStyle = style => _getObjectKeys(style).reduce((res, key) => ({
 }), style);
 exports.translateStyle = translateStyle;
 const identity = param => param;
-exports.identity = identity;
-const getIntersectionKeys = (preObj, nextObj) => [_getObjectKeys(preObj), _getObjectKeys(nextObj)].reduce((a, b) => a.filter(c => b.includes(c)));
+
+/*
+export const getIntersectionKeys = (
+  preObj,
+  nextObj
+) => [
+  _getObjectKeys(preObj),
+  _getObjectKeys(nextObj)
+].reduce((a, b) => a.filter(c => b.includes(c)))
+*/
 
 /*
  * @description: map object on every element in this object.
  * (function, object) => object
  */
-exports.getIntersectionKeys = getIntersectionKeys;
+exports.identity = identity;
 const mapObject = (fn, obj) => _getObjectKeys(obj).reduce((res, key) => ({
   ...res,
   [key]: fn(key, obj[key])
@@ -62,7 +70,7 @@ const mapObject = (fn, obj) => _getObjectKeys(obj).reduce((res, key) => ({
  * string => string
  */
 exports.mapObject = mapObject;
-const _getDashCase = name => name.replace(/([A-Z])/g, v => "-" + v.toLowerCase());
-const getTransitionVal = (props, duration, easing) => props.map(prop => _getDashCase(prop) + " " + duration + "ms " + easing).join(',');
+const _getDashCase = name => name.replace(/([A-Z])/g, v => `-${v.toLowerCase()}`);
+const getTransitionVal = (props, duration, easing) => props.map(prop => `${_getDashCase(prop)} ${duration}ms ${easing}`).join(',');
 exports.getTransitionVal = getTransitionVal;
 //# sourceMappingURL=util.js.map

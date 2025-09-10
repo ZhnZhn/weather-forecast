@@ -51,6 +51,7 @@ export const translateStyle = (
 
 export const identity = param => param
 
+/*
 export const getIntersectionKeys = (
   preObj,
   nextObj
@@ -58,6 +59,7 @@ export const getIntersectionKeys = (
   _getObjectKeys(preObj),
   _getObjectKeys(nextObj)
 ].reduce((a, b) => a.filter(c => b.includes(c)))
+*/
 
 
 /*
