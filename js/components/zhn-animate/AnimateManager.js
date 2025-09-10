@@ -2,16 +2,15 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports["default"] = createAnimateManager;
+exports.default = createAnimateManager;
 var _setRafTimeout = _interopRequireDefault(require("./setRafTimeout"));
-var _isArr = Array.isArray;
+const _isArr = Array.isArray;
+const _bindTo = (fn, value) => fn.bind(null, value);
 function createAnimateManager() {
-  var currStyle = {},
-    handleChange = function handleChange() {
-      return null;
-    },
-    shouldStop = false;
-  var setStyle = function setStyle(_style) {
+  let currStyle = {},
+    handleChange = () => null,
+    shouldStop = !1;
+  const setStyle = _style => {
     if (shouldStop) {
       return;
     }
@@ -19,15 +18,14 @@ function createAnimateManager() {
       if (!_style.length) {
         return;
       }
-      var styles = _style,
-        curr = styles[0],
-        restStyles = styles.slice(1);
+      const styles = _style,
+        [curr, ...restStyles] = styles;
       if (typeof curr === 'number') {
-        (0, _setRafTimeout["default"])(setStyle.bind(null, restStyles), curr);
+        (0, _setRafTimeout.default)(_bindTo(setStyle, restStyles), curr);
         return;
       }
       setStyle(curr);
-      (0, _setRafTimeout["default"])(setStyle.bind(null, restStyles));
+      (0, _setRafTimeout.default)(_bindTo(setStyle, restStyles));
       return;
     }
     if (typeof _style === 'object') {
@@ -39,19 +37,17 @@ function createAnimateManager() {
     }
   };
   return {
-    stop: function stop() {
-      shouldStop = true;
+    stop: () => {
+      shouldStop = !0;
     },
-    start: function start(style) {
-      shouldStop = false;
+    start: style => {
+      shouldStop = !1;
       setStyle(style);
     },
-    subscribe: function subscribe(_handleChange) {
+    subscribe: _handleChange => {
       handleChange = _handleChange;
-      return function () {
-        handleChange = function handleChange() {
-          return null;
-        };
+      return () => {
+        handleChange = () => null;
       };
     }
   };

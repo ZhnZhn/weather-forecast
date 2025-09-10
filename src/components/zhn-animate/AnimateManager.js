@@ -1,11 +1,15 @@
 import setRafTimeout from './setRafTimeout';
 
-const _isArr = Array.isArray
+const _isArr = Array.isArray;
+const _bindTo = (
+  fn,
+  value
+) => fn.bind(null, value);
 
 export default function createAnimateManager() {
   let currStyle = {}
   , handleChange = () => null
-  , shouldStop = false;
+  , shouldStop = !1;
 
   const setStyle = (_style) => {
     if (shouldStop) {
@@ -21,14 +25,15 @@ export default function createAnimateManager() {
       , [curr, ...restStyles] = styles;
 
       if (typeof curr === 'number') {
-        setRafTimeout(setStyle.bind(null, restStyles), curr);
+        setRafTimeout(_bindTo(setStyle, restStyles), curr);
         return;
       }
 
       setStyle(curr);
-      setRafTimeout(setStyle.bind(null, restStyles));
+      setRafTimeout(_bindTo(setStyle, restStyles));
       return;
     }
+
 
     if (typeof _style === 'object') {
       currStyle = _style;
@@ -38,14 +43,15 @@ export default function createAnimateManager() {
     if (typeof _style === 'function') {
       _style();
     }
+
   };
 
   return {
     stop: () => {
-      shouldStop = true;
+      shouldStop = !0;
     },
     start: (style) => {
-      shouldStop = false;
+      shouldStop = !1;
       setStyle(style);
     },
     subscribe: (_handleChange) => {
