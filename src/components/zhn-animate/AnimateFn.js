@@ -7,11 +7,6 @@ import createAnimateManager from './AnimateManager';
 import { configEasing } from './easing';
 import configUpdate from './configUpdate';
 
-import { getTransitionVal } from './util';
-
-const _isFn = v => typeof v === 'function';
-const _getObjectKeys = Object.keys;
-
 export const stopJsAnimation = (
   refStopJsAnimation
 ) => {
@@ -69,50 +64,16 @@ export const runAnimation = (
       createAnimateManager()
     )
   }
-  const _animateManager = getRefValue(_refAnimateManager)
-  , {
-    begin,
-    duration,
-    attributeName,
-    to: propsTo,
-    easing,
-    onAnimationStart,
-    onAnimationEnd,
-    children,
-  } = props;
 
   setRefValue(
     _refUnSubscribe,
-    _animateManager.subscribe(changeStyle)
+    getRefValue(_refAnimateManager).subscribe(changeStyle)
   )
 
-  const _runAnimation = _isFn(easing) || _isFn(children) || easing === 'spring'
-    ? _runJSAnimation
-    : void 0;
-  if (_runAnimation) {
-    _runAnimation(
-      props,
-      changeStyle,
-      _refStopJsAnimation,
-      _refAnimateManager
-    )
-    return;
-  }
-
-  const to = attributeName
-     ? { [attributeName]: propsTo }
-     : propsTo
-  , transition = getTransitionVal(
-      _getObjectKeys(to),
-      duration,
-      easing
-  );
-
-  _animateManager.start([
-    onAnimationStart,
-    begin,
-    { ...to, transition },
-    duration,
-    onAnimationEnd
-  ]);
+  _runJSAnimation(
+    props,
+    changeStyle,
+    _refStopJsAnimation,
+    _refAnimateManager
+  )
 }
