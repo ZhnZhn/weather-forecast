@@ -10,11 +10,7 @@ import {
 } from '../uiApi';
 
 import usePrevValue from '../hooks/usePrevValue';
-
-import {
-  translateStyle,
-  shallowEqual
-} from './util';
+import { translateStyle } from './util';
 
 import {
   stopJsAnimation,
@@ -23,25 +19,11 @@ import {
 
 const FN_NOOP = () => {}
 
-const _crStyleState = (
-  value
-) => ({
-  style: value
-});
-
-const _crInitialState = ({
-  isActive,
-  from,
-  to
-}) => isActive
- ? _crStyleState(from)
- : _crStyleState(to);
-
 const DF_PROPS = {
   begin: 0,
   duration: 1000,
-  //from: {t: 0},
-  //to:  {t: 1},
+  from: 0,
+  to: 1,
   easing: 'ease',
   isActive: !0,
   canBegin: !0,
@@ -49,29 +31,19 @@ const DF_PROPS = {
   onAnimationStart: FN_NOOP
 };
 
-const _isStyleChanged = (
-  style,
-  value
-) => style !== value;
-
 const _setNextStateIf = (
   state,
   value,
   setState
 ) => {
-  const { style } = state || {};
-  if (style && _isStyleChanged(style, value)) {
-    setState(_crStyleState(value));
+  if (state !== value) {
+    setState(value);
   }
 }
 
 export const Animate = memo(props => {
   const _props = useMemo(
-    () => crProps({
-      ...DF_PROPS,
-      from: {t: 0},
-      to:  {t: 1}
-    }, props),
+    () => crProps(DF_PROPS, props),
     [props]
   )
   , _prevProps = usePrevValue(_props)
@@ -84,11 +56,11 @@ export const Animate = memo(props => {
   , [
     state,
     setState
-  ] = useState(() => _crInitialState(_props))
+  ] = useState(() => _props.isActive ? _props.from : _props.to)
 
   , changeStyle = useMemo(() => style => {
     if (getRefValue(_refIsMounted)) {
-      setState({ style });
+      setState(style.t);
     }
   }, [])
 
@@ -149,7 +121,7 @@ export const Animate = memo(props => {
         return;
       }
 
-      if (shallowEqual(_prevProps.to, _props.to)
+      if (_prevProps.to === _props.to
         && _prevProps.canBegin
         && _prevProps.isActive
       ) {
@@ -190,13 +162,13 @@ export const Animate = memo(props => {
   //_prevProps.isActivem, _prevProps.canBegin, _prevProps.to
   /*eslint-enable react-hooks/exhaustive-deps */
 
-  return children(translateStyle(state.style));
+  return children(translateStyle(state));
 })
 
 /*
 static propTypes = {
-  from: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  to: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  from: PropTypes.number,
+  to: PropTypes.number,
   // animation duration
   duration: PropTypes.number,
   begin: PropTypes.number,

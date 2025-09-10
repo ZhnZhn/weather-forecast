@@ -12,7 +12,7 @@ describe('Animate', () => {
       <Animate
         duration={500}
       >
-        {({ t }) => <div className="test-wrapper" style={{opacity: t}} />}
+        {(t) => <div className="test-wrapper" style={{opacity: t}} />}
       </Animate>
     );
 

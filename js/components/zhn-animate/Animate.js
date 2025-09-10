@@ -8,58 +8,33 @@ var _usePrevValue = _interopRequireDefault(require("../hooks/usePrevValue"));
 var _util = require("./util");
 var _AnimateFn = require("./AnimateFn");
 const FN_NOOP = () => {};
-const _crStyleState = value => ({
-  style: value
-});
-const _crInitialState = _ref => {
-  let {
-    isActive,
-    from,
-    to
-  } = _ref;
-  return isActive ? _crStyleState(from) : _crStyleState(to);
-};
 const DF_PROPS = {
   begin: 0,
   duration: 1000,
-  //from: {t: 0},
-  //to:  {t: 1},
+  from: 0,
+  to: 1,
   easing: 'ease',
   isActive: !0,
   canBegin: !0,
   onAnimationEnd: FN_NOOP,
   onAnimationStart: FN_NOOP
 };
-const _isStyleChanged = (style, value) => style !== value;
 const _setNextStateIf = (state, value, setState) => {
-  const {
-    style
-  } = state || {};
-  if (style && _isStyleChanged(style, value)) {
-    setState(_crStyleState(value));
+  if (state !== value) {
+    setState(value);
   }
 };
 const Animate = exports.Animate = (0, _uiApi.memo)(props => {
-  const _props = (0, _uiApi.useMemo)(() => (0, _uiApi.crProps)({
-      ...DF_PROPS,
-      from: {
-        t: 0
-      },
-      to: {
-        t: 1
-      }
-    }, props), [props]),
+  const _props = (0, _uiApi.useMemo)(() => (0, _uiApi.crProps)(DF_PROPS, props), [props]),
     _prevProps = (0, _usePrevValue.default)(_props),
     _refStopJsAnimation = (0, _uiApi.useRef)(),
     _refIsMounted = (0, _uiApi.useRef)(!1),
     _refAnimateManager = (0, _uiApi.useRef)(),
     _refUnSubscribe = (0, _uiApi.useRef)(),
-    [state, setState] = (0, _uiApi.useState)(() => _crInitialState(_props)),
+    [state, setState] = (0, _uiApi.useState)(() => _props.isActive ? _props.from : _props.to),
     changeStyle = (0, _uiApi.useMemo)(() => style => {
       if ((0, _uiApi.getRefValue)(_refIsMounted)) {
-        setState({
-          style
-        });
+        setState(style.t);
       }
     }, [])
 
@@ -104,7 +79,7 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
         _setNextStateIf(state, _props.to, setState);
         return;
       }
-      if ((0, _util.shallowEqual)(_prevProps.to, _props.to) && _prevProps.canBegin && _prevProps.isActive) {
+      if (_prevProps.to === _props.to && _prevProps.canBegin && _prevProps.isActive) {
         return;
       }
       const _animateManager = (0, _uiApi.getRefValue)(_refAnimateManager);
@@ -126,13 +101,13 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
   //_prevProps.isActivem, _prevProps.canBegin, _prevProps.to
   /*eslint-enable react-hooks/exhaustive-deps */
 
-  return children((0, _util.translateStyle)(state.style));
+  return children((0, _util.translateStyle)(state));
 });
 
 /*
 static propTypes = {
-  from: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  to: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  from: PropTypes.number,
+  to: PropTypes.number,
   // animation duration
   duration: PropTypes.number,
   begin: PropTypes.number,

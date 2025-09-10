@@ -61,7 +61,6 @@ export const getIntersectionKeys = (
 ].reduce((a, b) => a.filter(c => b.includes(c)))
 */
 
-
 /*
  * @description: map object on every element in this object.
  * (function, object) => object

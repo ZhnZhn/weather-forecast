@@ -46,13 +46,13 @@ const calStepperVals = (easing, preVals, steps) => {
 // configure update function
 var _default = (from, to, easing, duration, render) => {
   const timingStyle = {
-    t: [from.t, to.t]
+    t: [from, to]
   };
   let stepperStyle = {
       t: {
-        from: from.t,
+        from,
         velocity: 0,
-        to: to.t
+        to
       }
     },
     cafId = -1,
@@ -72,8 +72,8 @@ var _default = (from, to, easing, duration, render) => {
     stepperStyle = calStepperVals(easing, stepperStyle, steps);
     // get union set and add compatible prefix
     render({
-      ...from,
-      ...to,
+      //...from,
+      //...to,
       ...getCurrStyle(stepperStyle)
     });
     preTime = now;
@@ -87,13 +87,13 @@ var _default = (from, to, easing, duration, render) => {
     if (!beginTime) {
       beginTime = now;
     }
-    const t = (now - beginTime) / duration;
-    const currStyle = (0, _util.mapObject)((key, val) => alpha(...val, easing(t)), timingStyle);
+    const t = (now - beginTime) / duration,
+      currStyle = (0, _util.mapObject)((key, val) => alpha(...val, easing(t)), timingStyle);
 
     // get union set and add compatible prefix
     render({
-      ...from,
-      ...to,
+      //...from,
+      //...to,
       ...currStyle
     });
     if (t < 1) {
@@ -101,8 +101,8 @@ var _default = (from, to, easing, duration, render) => {
     } else {
       const finalStyle = (0, _util.mapObject)((key, val) => alpha(...val, easing(1)), timingStyle);
       render({
-        ...from,
-        ...to,
+        //...from,
+        //...to,
         ...finalStyle
       });
     }

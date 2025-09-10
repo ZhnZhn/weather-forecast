@@ -9,17 +9,12 @@ describe('Animate', () => {
       container
     } = (0, _react.render)(/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Animate, {
       duration: 500,
-      children: _ref => {
-        let {
-          t
-        } = _ref;
-        return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-          className: "test-wrapper",
-          style: {
-            opacity: t
-          }
-        });
-      }
+      children: t => /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: "test-wrapper",
+        style: {
+          opacity: t
+        }
+      })
     }));
     const element = container.getElementsByClassName('test-wrapper')[0];
     expect(element.style.opacity).toBe('0');

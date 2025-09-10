@@ -1,7 +1,4 @@
-import {
-  //getIntersectionKeys,
-  mapObject
-} from './util';
+import { mapObject } from './util';
 
 const alpha = (begin, end, k) => begin + (end - begin) * k;
 const needContinue = ({ from, to }) => from !== to;
@@ -57,14 +54,14 @@ export default (
   render
 ) => {
   const timingStyle = {
-    t: [from.t, to.t]
+    t: [from, to]
   };
-  
+
   let stepperStyle = {
     t: {
-      from: from.t,
+      from,
       velocity: 0,
-      to: to.t
+      to
     }
   }
   , cafId = -1
@@ -72,8 +69,13 @@ export default (
   , beginTime
   , update = () => null;
 
-  const getCurrStyle = () => mapObject((key, val) => val.from, stepperStyle)
-  , shouldStopAnimation = () => !Object.values(stepperStyle).filter(needContinue).length;
+  const getCurrStyle = () => mapObject(
+    (key, val) => val.from,
+    stepperStyle
+  )
+  , shouldStopAnimation = () => !Object
+     .values(stepperStyle)
+     .filter(needContinue).length;
 
   // stepper timing function like spring
   const stepperUpdate = (now) => {
@@ -86,8 +88,8 @@ export default (
     stepperStyle = calStepperVals(easing, stepperStyle, steps);
     // get union set and add compatible prefix
     render({
-      ...from,
-      ...to,
+      //...from,
+      //...to,
       ...getCurrStyle(stepperStyle)
     });
 
@@ -104,26 +106,30 @@ export default (
       beginTime = now;
     }
 
-    const t = (now - beginTime) / duration;
-    const currStyle = mapObject((key, val) =>
-      alpha(...val, easing(t)), timingStyle);
+    const t = (now - beginTime) / duration
+    , currStyle = mapObject(
+        (key, val) => alpha(...val, easing(t)),
+        timingStyle
+    );
 
     // get union set and add compatible prefix
     render({
-      ...from,
-      ...to,
+      //...from,
+      //...to,
       ...currStyle,
     });
 
     if (t < 1) {
       cafId = requestAnimationFrame(update);
     } else {
-      const finalStyle = mapObject((key, val) =>
-        alpha(...val, easing(1)), timingStyle);
+      const finalStyle = mapObject(
+        (key, val) => alpha(...val, easing(1)),
+        timingStyle
+      );
 
       render({
-        ...from,
-        ...to,
+        //...from,
+        //...to,
         ...finalStyle,
       });
     }
