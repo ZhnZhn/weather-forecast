@@ -16,7 +16,7 @@ import {
 } from "../../uiApi";
 
 import { crCn } from "../../styleFn";
-import { translateStyle } from "../../zhn-animate";
+
 
 import { IS_SSR } from "../util/Global";
 
@@ -239,19 +239,19 @@ export const Tooltip = (props) => {
     outerStyle.visibility = "hidden";
   }
   outerStyle = {
-    ...translateStyle({
+    ...{
       transform: useTranslate3d
         ? `translate3d(${translateX}px, ${translateY}px, 0)`
         : `translate(${translateX}px, ${translateY}px)`,
-    }),
-    ...outerStyle,
+    },
+    ...outerStyle
   };
   if (isAnimationActive && active) {
     outerStyle = {
-      ...translateStyle({
+      ...{
         transition: `transform ${animationDuration}ms ${animationEasing}`,
-      }),
-      ...outerStyle,
+      },
+      ...outerStyle
     };
   }
   const _className = _crClassName(

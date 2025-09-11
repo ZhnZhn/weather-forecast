@@ -2,7 +2,7 @@
 
 exports.__esModule = true;
 exports.LineCurveWithAnimation = void 0;
-var _zhnAnimate = require("../../zhn-animate");
+var _JsAnimation = require("../../zhn-animation/JsAnimation");
 var _DataUtils = require("../util/DataUtils");
 var _LineCurveStatically = require("./LineCurveStatically");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -64,17 +64,14 @@ const LineCurveWithAnimation = _ref => {
     width,
     height
   } = props;
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_zhnAnimate.Animate, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_JsAnimation.JsAnimation, {
     isActive: isAnimationActive,
     begin: animationBegin,
     duration: animationDuration,
     easing: animationEasing,
     onAnimationEnd: handleAnimationEnd,
     onAnimationStart: handleAnimationStart,
-    children: _ref2 => {
-      let {
-        t
-      } = _ref2;
+    children: t => {
       let prevPointsDiffFactor;
       const [_points, options] = prevPoints ? (prevPointsDiffFactor = prevPoints.length / points.length, [points.map((entry, index) => _crStepItem(entry, prevPoints[_mathFloor(index * prevPointsDiffFactor)], animateNewValues, width, height, t))]) : [points, {
         strokeDasharray: _crCurrentStrokeDashArray((0, _DataUtils.getInterpolatedNumber)(0, totalLength, t), totalLength, strokeDasharray)

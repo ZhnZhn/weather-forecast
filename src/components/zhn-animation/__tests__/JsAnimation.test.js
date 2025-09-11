@@ -3,17 +3,17 @@ import {
   waitFor
 } from '@testing-library/react';
 
-import { Animate } from '../index';
+import { JsAnimation } from '../JsAnimation';
 
-describe('Animate', () => {
+describe('JsAnimation', () => {
 
-  test('should change the style of children from to value by attributeName and duration', () => {
+  test('should change the style of children from to to value and duration', () => {
     const { container } = render(
-      <Animate
+      <JsAnimation
         duration={500}
       >
         {(t) => <div className="test-wrapper" style={{opacity: t}} />}
-      </Animate>
+      </JsAnimation>
     );
 
     const element = container.getElementsByClassName('test-wrapper')[0];
@@ -29,13 +29,13 @@ describe('Animate', () => {
     const handleAnimationEnd = jest.fn()
 
     render(
-      <Animate
+      <JsAnimation
         attributeName="opacity"
         duration={500}
         onAnimationEnd={handleAnimationEnd}
       >
         {() => <div />}
-      </Animate>
+      </JsAnimation>
     );
 
     expect(handleAnimationEnd).toHaveBeenCalledTimes(0)

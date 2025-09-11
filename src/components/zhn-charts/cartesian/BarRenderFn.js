@@ -1,4 +1,4 @@
-import { Animate } from '../../zhn-animate';
+import { JsAnimation } from '../../zhn-animation/JsAnimation';
 
 import { filterProps } from '../util/ReactUtils';
 import { interpolateNumber } from '../util/DataUtils';
@@ -130,16 +130,16 @@ const _renderRectanglesWithAnimation = (
       animationId
     } = props;
     return (
-      <Animate
+      <JsAnimation
          key={`bar-${animationId}`}
          isActive={isAnimationActive}
          begin={animationBegin}
          duration={animationDuration}
-         easing={animationEasing}         
+         easing={animationEasing}
          onAnimationEnd={handleAnimationEnd}
          onAnimationStart={handleAnimationStart}
       >
-       {({ t }) => (
+       {(t) => (
           <Layer>
            {_renderRectanglesStatically(
               props,
@@ -147,7 +147,7 @@ const _renderRectanglesWithAnimation = (
             )}
           </Layer>
         )}
-     </Animate>
+     </JsAnimation>
    );
 }
 

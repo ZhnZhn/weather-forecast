@@ -1,4 +1,4 @@
-import { Animate } from '../../zhn-animate';
+import { JsAnimation } from '../../zhn-animation/JsAnimation';
 
 import { getInterpolatedNumber } from '../util/DataUtils';
 
@@ -112,16 +112,16 @@ export const LineCurveWithAnimation = ({
     height
   } = props;
   return (
-    <Animate
+    <JsAnimation
        key={`line-${animationId}`}
        isActive={isAnimationActive}
        begin={animationBegin}
        duration={animationDuration}
-       easing={animationEasing}       
+       easing={animationEasing}
        onAnimationEnd={handleAnimationEnd}
        onAnimationStart={handleAnimationStart}
     >
-      {({ t }) => {
+      {(t) => {
           let prevPointsDiffFactor;
           const [
             _points,
@@ -157,6 +157,6 @@ export const LineCurveWithAnimation = ({
           />
         );
       }}
-   </Animate>
+   </JsAnimation>
   );
 }

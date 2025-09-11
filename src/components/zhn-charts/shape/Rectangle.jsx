@@ -14,8 +14,8 @@ import {
 } from '../../uiApi';
 
 import { crCn } from '../../styleFn';
-import { Animate } from '../../zhn-animate';
-import { getTransitionVal } from '../../zhn-animate/util';
+import { JsAnimation } from '../../zhn-animation/JsAnimation';
+import { getTransitionVal } from '../../zhn-animation/utils';
 
 import { getInterpolatedNumber as interpolate } from '../util/DataUtils';
 import { filterProps } from '../util/ReactUtils';
@@ -33,8 +33,8 @@ const DF_PROPS = {
   // The radius of four corners when radius is a number
   // The radius of left-top, right-top, right-bottom, left-bottom when radius is an array
   radius: 0,
-  isAnimationActive: false,
-  isUpdateAnimationActive: false,
+  isAnimationActive: !1,
+  isUpdateAnimationActive: !1,
 
   animationBegin: 0,
   animationDuration: 1500,
@@ -119,14 +119,14 @@ export const Rectangle = memo((props) => {
 
   return isUpdateAnimationActive
    ? (
-      <Animate
+      <JsAnimation
         isActive={isUpdateAnimationActive}
         canBegin={_canBegin}
         duration={animationDuration}
         easing={animationEasing}
         begin={animationBegin}
       >
-       {({ t }) => {
+       {(t) => {
          const currWidth = interpolate(prevWidth, width, t)
          , currHeight = interpolate(prevHeight, height, t)
          , currX = interpolate(prevX, x, t)
@@ -149,7 +149,7 @@ export const Rectangle = memo((props) => {
 
          return (
            <path
-             {...filterProps(_props, true)}
+             {...filterProps(_props, !0)}
              className={layerClass}
              d={getRectanglePath(currX, currY, currWidth, currHeight, radius)}
              ref={_refNode}
@@ -159,11 +159,11 @@ export const Rectangle = memo((props) => {
              }}
            />
         )}}
-      </Animate>
+      </JsAnimation>
     )
   : (
       <path
-        {...filterProps(_props, true)}
+        {...filterProps(_props, !0)}
         className={layerClass}
         d={getRectanglePath(x, y, width, height, radius)}
       />

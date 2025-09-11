@@ -64,7 +64,7 @@
     "testEnvironment": "jsdom",
     "roots": [
       "<rootDir>/js/math/decimal-light",
-      "<rootDir>/js/components/zhn-animate",
+      "<rootDir>/js/components/zhn-animation",
       "<rootDir>/js/components/zhn-charts/cartesian",
       "<rootDir>/js/components/zhn-charts/d3Color",
       "<rootDir>/js/components/zhn-charts/d3Format",

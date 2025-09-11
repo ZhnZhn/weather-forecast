@@ -2,7 +2,7 @@
 
 exports.__esModule = true;
 exports.renderRectangles = exports.renderBackground = void 0;
-var _zhnAnimate = require("../../zhn-animate");
+var _JsAnimation = require("../../zhn-animation/JsAnimation");
 var _ReactUtils = require("../util/ReactUtils");
 var _DataUtils = require("../util/DataUtils");
 var _types = require("../util/types");
@@ -109,21 +109,16 @@ const _renderRectanglesWithAnimation = (props, prevData, handleAnimationStart, h
     animationEasing,
     animationId
   } = props;
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_zhnAnimate.Animate, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_JsAnimation.JsAnimation, {
     isActive: isAnimationActive,
     begin: animationBegin,
     duration: animationDuration,
     easing: animationEasing,
     onAnimationEnd: handleAnimationEnd,
     onAnimationStart: handleAnimationStart,
-    children: _ref2 => {
-      let {
-        t
-      } = _ref2;
-      return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
-        children: _renderRectanglesStatically(props, _crStepData(data, prevData, layout, t))
-      });
-    }
+    children: t => /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
+      children: _renderRectanglesStatically(props, _crStepData(data, prevData, layout, t))
+    })
   }, `bar-${animationId}`);
 };
 const renderRectangles = (props, prevData, handleAnimationStart, handleAnimationEnd) => {

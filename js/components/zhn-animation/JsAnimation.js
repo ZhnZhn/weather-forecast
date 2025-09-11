@@ -2,11 +2,10 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.Animate = void 0;
+exports.JsAnimation = void 0;
 var _uiApi = require("../uiApi");
 var _usePrevValue = _interopRequireDefault(require("../hooks/usePrevValue"));
-var _util = require("./util");
-var _AnimateFn = require("./AnimateFn");
+var _JsAnimationFn = require("./JsAnimationFn");
 const FN_NOOP = () => {};
 const DF_PROPS = {
   begin: 0,
@@ -24,7 +23,7 @@ const _setNextStateIf = (state, value, setState) => {
     setState(value);
   }
 };
-const Animate = exports.Animate = (0, _uiApi.memo)(props => {
+const JsAnimation = exports.JsAnimation = (0, _uiApi.memo)(props => {
   const _props = (0, _uiApi.useMemo)(() => (0, _uiApi.crProps)(DF_PROPS, props), [props]),
     _prevProps = (0, _usePrevValue.default)(_props),
     _refStopJsAnimation = (0, _uiApi.useRef)(),
@@ -50,7 +49,7 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
   (0, _uiApi.useEffect)(() => {
     (0, _uiApi.setRefValue)(_refIsMounted, !0);
     if (isActive && canBegin) {
-      (0, _AnimateFn.runAnimation)(_props, changeStyle, _refStopJsAnimation, _refAnimateManager, _refUnSubscribe);
+      (0, _JsAnimationFn.runAnimation)(_props, changeStyle, _refStopJsAnimation, _refAnimateManager, _refUnSubscribe);
     }
     return () => {
       (0, _uiApi.setRefValue)(_refIsMounted, !1);
@@ -63,7 +62,7 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
         _animateManager.stop();
         (0, _uiApi.setRefValue)(_refAnimateManager, null);
       }
-      (0, _AnimateFn.stopJsAnimation)(_refStopJsAnimation);
+      (0, _JsAnimationFn.stopJsAnimation)(_refStopJsAnimation);
     };
   }, []);
   //changeStyle, _props, isActive, canBegin
@@ -86,10 +85,10 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
       if (_animateManager) {
         _animateManager.stop();
       }
-      (0, _AnimateFn.stopJsAnimation)(_refStopJsAnimation);
+      (0, _JsAnimationFn.stopJsAnimation)(_refStopJsAnimation);
       const from = !_prevProps.canBegin || !_prevProps.isActive ? _props.from : _prevProps.to;
       _setNextStateIf(state, from, setState);
-      (0, _AnimateFn.runAnimation)({
+      (0, _JsAnimationFn.runAnimation)({
         ..._props,
         from,
         begin: 0
@@ -101,7 +100,7 @@ const Animate = exports.Animate = (0, _uiApi.memo)(props => {
   //_prevProps.isActivem, _prevProps.canBegin, _prevProps.to
   /*eslint-enable react-hooks/exhaustive-deps */
 
-  return children((0, _util.translateStyle)(state));
+  return children(state);
 });
 
 /*
@@ -120,4 +119,4 @@ static propTypes = {
   onAnimationStart: PropTypes.func,
 };
 */
-//# sourceMappingURL=Animate.js.map
+//# sourceMappingURL=JsAnimation.js.map

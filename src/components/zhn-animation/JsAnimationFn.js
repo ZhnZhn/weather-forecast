@@ -3,7 +3,7 @@ import {
   setRefValue
 } from '../uiApi';
 
-import createAnimateManager from './AnimateManager';
+import createAnimationManager from './JsAnimationManager';
 import { configEasing } from './easing';
 import configUpdate from './configUpdate';
 
@@ -61,7 +61,7 @@ export const runAnimation = (
   if (!getRefValue(_refAnimateManager)) {
     setRefValue(
       _refAnimateManager,
-      createAnimateManager()
+      createAnimationManager()
     )
   }
 

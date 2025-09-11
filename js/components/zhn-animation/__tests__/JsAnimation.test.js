@@ -1,13 +1,13 @@
 "use strict";
 
 var _react = require("@testing-library/react");
-var _index = require("../index");
+var _JsAnimation = require("../JsAnimation");
 var _jsxRuntime = require("react/jsx-runtime");
-describe('Animate', () => {
-  test('should change the style of children from to value by attributeName and duration', () => {
+describe('JsAnimation', () => {
+  test('should change the style of children from to to value and duration', () => {
     const {
       container
-    } = (0, _react.render)(/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Animate, {
+    } = (0, _react.render)(/*#__PURE__*/(0, _jsxRuntime.jsx)(_JsAnimation.JsAnimation, {
       duration: 500,
       children: t => /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         className: "test-wrapper",
@@ -27,7 +27,7 @@ describe('Animate', () => {
   });
   test('should called onAnimationEnd', async () => {
     const handleAnimationEnd = jest.fn();
-    (0, _react.render)(/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Animate, {
+    (0, _react.render)(/*#__PURE__*/(0, _jsxRuntime.jsx)(_JsAnimation.JsAnimation, {
       attributeName: "opacity",
       duration: 500,
       onAnimationEnd: handleAnimationEnd,
@@ -41,4 +41,4 @@ describe('Animate', () => {
     });
   });
 });
-//# sourceMappingURL=Animate.test.js.map
+//# sourceMappingURL=JsAnimation.test.js.map

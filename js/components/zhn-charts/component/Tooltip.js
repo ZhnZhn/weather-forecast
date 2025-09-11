@@ -5,7 +5,6 @@ exports.Tooltip = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
-var _zhnAnimate = require("../../zhn-animate");
 var _Global = require("../util/Global");
 var _DefaultTooltipContent = require("./DefaultTooltipContent");
 var _componentFn = require("./componentFn");
@@ -179,16 +178,16 @@ const Tooltip = props => {
     outerStyle.visibility = "hidden";
   }
   outerStyle = {
-    ...(0, _zhnAnimate.translateStyle)({
+    ...{
       transform: useTranslate3d ? `translate3d(${translateX}px, ${translateY}px, 0)` : `translate(${translateX}px, ${translateY}px)`
-    }),
+    },
     ...outerStyle
   };
   if (isAnimationActive && active) {
     outerStyle = {
-      ...(0, _zhnAnimate.translateStyle)({
+      ...{
         transition: `transform ${animationDuration}ms ${animationEasing}`
-      }),
+      },
       ...outerStyle
     };
   }

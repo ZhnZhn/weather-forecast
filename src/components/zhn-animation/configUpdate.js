@@ -1,4 +1,4 @@
-import { mapObject } from './util';
+import { mapObject } from './utils';
 
 const alpha = (begin, end, k) => begin + (end - begin) * k;
 const needContinue = ({ from, to }) => from !== to;

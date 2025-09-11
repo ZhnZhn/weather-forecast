@@ -1,13 +1,13 @@
 "use strict";
 
 exports.__esModule = true;
-exports["default"] = setRafTimeout;
+exports.default = setRafTimeout;
 function setRafTimeout(callback, timeout) {
   if (timeout === void 0) {
     timeout = 0;
   }
-  var currTime = -1;
-  var shouldUpdate = function shouldUpdate(now) {
+  let currTime = -1;
+  const shouldUpdate = now => {
     if (currTime < 0) {
       currTime = now;
     }

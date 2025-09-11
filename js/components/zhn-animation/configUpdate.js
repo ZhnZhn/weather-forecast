@@ -2,7 +2,7 @@
 
 exports.__esModule = true;
 exports.default = void 0;
-var _util = require("./util");
+var _utils = require("./utils");
 const alpha = (begin, end, k) => begin + (end - begin) * k;
 const needContinue = _ref => {
   let {
@@ -17,7 +17,7 @@ const needContinue = _ref => {
  * @return: { [styleProperty]: { from, to, velocity } }
  */
 const calStepperVals = (easing, preVals, steps) => {
-  const nextStepVals = (0, _util.mapObject)((key, val) => {
+  const nextStepVals = (0, _utils.mapObject)((key, val) => {
     if (needContinue(val)) {
       const [newX, newV] = easing(val.from, val.to, val.velocity);
       return {
@@ -29,7 +29,7 @@ const calStepperVals = (easing, preVals, steps) => {
     return val;
   }, preVals);
   if (steps < 1) {
-    return (0, _util.mapObject)((key, val) => {
+    return (0, _utils.mapObject)((key, val) => {
       if (needContinue(val)) {
         return {
           ...val,
@@ -59,7 +59,7 @@ var _default = (from, to, easing, duration, render) => {
     preTime,
     beginTime,
     update = () => null;
-  const getCurrStyle = () => (0, _util.mapObject)((key, val) => val.from, stepperStyle),
+  const getCurrStyle = () => (0, _utils.mapObject)((key, val) => val.from, stepperStyle),
     shouldStopAnimation = () => !Object.values(stepperStyle).filter(needContinue).length;
 
   // stepper timing function like spring
@@ -88,7 +88,7 @@ var _default = (from, to, easing, duration, render) => {
       beginTime = now;
     }
     const t = (now - beginTime) / duration,
-      currStyle = (0, _util.mapObject)((key, val) => alpha(...val, easing(t)), timingStyle);
+      currStyle = (0, _utils.mapObject)((key, val) => alpha(...val, easing(t)), timingStyle);
 
     // get union set and add compatible prefix
     render({
@@ -99,7 +99,7 @@ var _default = (from, to, easing, duration, render) => {
     if (t < 1) {
       cafId = requestAnimationFrame(update);
     } else {
-      const finalStyle = (0, _util.mapObject)((key, val) => alpha(...val, easing(1)), timingStyle);
+      const finalStyle = (0, _utils.mapObject)((key, val) => alpha(...val, easing(1)), timingStyle);
       render({
         //...from,
         //...to,

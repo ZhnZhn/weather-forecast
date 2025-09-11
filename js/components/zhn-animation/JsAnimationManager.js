@@ -2,11 +2,11 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.default = createAnimateManager;
+exports.default = createAnimationManager;
 var _setRafTimeout = _interopRequireDefault(require("./setRafTimeout"));
 const _isArr = Array.isArray;
 const _bindTo = (fn, value) => fn.bind(null, value);
-function createAnimateManager() {
+function createAnimationManager() {
   let currStyle = {},
     handleChange = () => null,
     shouldStop = !1;
@@ -52,4 +52,4 @@ function createAnimateManager() {
     }
   };
 }
-//# sourceMappingURL=AnimateManager.js.map
+//# sourceMappingURL=JsAnimationManager.js.map

@@ -6,7 +6,7 @@ const _bindTo = (
   value
 ) => fn.bind(null, value);
 
-export default function createAnimateManager() {
+export default function createAnimationManager() {
   let currStyle = {}
   , handleChange = () => null
   , shouldStop = !1;

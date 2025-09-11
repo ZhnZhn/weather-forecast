@@ -10,12 +10,11 @@ import {
 } from '../uiApi';
 
 import usePrevValue from '../hooks/usePrevValue';
-import { translateStyle } from './util';
 
 import {
   stopJsAnimation,
   runAnimation
-} from './AnimateFn';
+} from './JsAnimationFn';
 
 const FN_NOOP = () => {}
 
@@ -41,7 +40,7 @@ const _setNextStateIf = (
   }
 }
 
-export const Animate = memo(props => {
+export const JsAnimation = memo(props => {
   const _props = useMemo(
     () => crProps(DF_PROPS, props),
     [props]
@@ -162,7 +161,7 @@ export const Animate = memo(props => {
   //_prevProps.isActivem, _prevProps.canBegin, _prevProps.to
   /*eslint-enable react-hooks/exhaustive-deps */
 
-  return children(translateStyle(state));
+  return children(state);
 })
 
 /*

@@ -4,7 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.stopJsAnimation = exports.runAnimation = void 0;
 var _uiApi = require("../uiApi");
-var _AnimateManager = _interopRequireDefault(require("./AnimateManager"));
+var _JsAnimationManager = _interopRequireDefault(require("./JsAnimationManager"));
 var _easing = require("./easing");
 var _configUpdate = _interopRequireDefault(require("./configUpdate"));
 const stopJsAnimation = refStopJsAnimation => {
@@ -32,10 +32,10 @@ const _runJSAnimation = (props, _changeStyle, _refStopJsAnimation, _refAnimateMa
 };
 const runAnimation = (props, changeStyle, _refStopJsAnimation, _refAnimateManager, _refUnSubscribe) => {
   if (!(0, _uiApi.getRefValue)(_refAnimateManager)) {
-    (0, _uiApi.setRefValue)(_refAnimateManager, (0, _AnimateManager.default)());
+    (0, _uiApi.setRefValue)(_refAnimateManager, (0, _JsAnimationManager.default)());
   }
   (0, _uiApi.setRefValue)(_refUnSubscribe, (0, _uiApi.getRefValue)(_refAnimateManager).subscribe(changeStyle));
   _runJSAnimation(props, changeStyle, _refStopJsAnimation, _refAnimateManager);
 };
 exports.runAnimation = runAnimation;
-//# sourceMappingURL=AnimateFn.js.map
+//# sourceMappingURL=JsAnimationFn.js.map
