@@ -52,32 +52,26 @@ const derivativeCubicBezier = (
   return multyTime(newParams, t);
 };
 
+const BEZIER_CONFIG = {
+  linear: [0.0, 0.0, 1.0, 1.0],
+  ease: [0.25, 0.1, 0.25, 1.0],
+  'ease-in': [0.42, 0.0, 1.0, 1.0],
+  'ease-out': [0.42, 0.0, 0.58, 1.0],
+  'ease-in-out': [0.0, 0.0, 0.58, 1.0]
+};
+
 // calculate cubic-bezier using Newton's method
 export const configBezier = (...args) => {
   let [x1, y1, x2, y2] = args;
 
   if (args.length === 1) {
-    switch (args[0]) {
-      case 'linear':
-        [x1, y1, x2, y2] = [0.0, 0.0, 1.0, 1.0];
-        break;
-      case 'ease':
-        [x1, y1, x2, y2] = [0.25, 0.1, 0.25, 1.0];
-        break;
-      case 'ease-in':
-        [x1, y1, x2, y2] = [0.42, 0.0, 1.0, 1.0];
-        break;
-      case 'ease-out':
-        [x1, y1, x2, y2] = [0.42, 0.0, 0.58, 1.0];
-        break;
-      case 'ease-in-out':
-        [x1, y1, x2, y2] = [0.0, 0.0, 0.58, 1.0];
-        break;
-      default: {
-        const easing = args[0].split('(');
-        if (easing[0] === 'cubic-bezier' && easing[1].split(')')[0].split(',').length === 4) {
-          [x1, y1, x2, y2] = easing[1].split(')')[0].split(',').map(x => parseFloat(x));
-        }
+    const _config = BEZIER_CONFIG[args[0]];
+    if (_config) {
+      [x1, y1, x2, y2] = _config
+    } else {
+      const easing = args[0].split('(');
+      if (easing[0] === 'cubic-bezier' && easing[1].split(')')[0].split(',').length === 4) {
+        [x1, y1, x2, y2] = easing[1].split(')')[0].split(',').map(x => parseFloat(x));
       }
     }
   }
