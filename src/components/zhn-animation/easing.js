@@ -1,3 +1,7 @@
+import {
+  isStr,
+  isFn
+} from '../../utils/isTypeFn';
 /*
 configBezier arguments should be one of
 'ease', 'ease-in', 'ease-out', ease-in-out',
@@ -11,6 +15,7 @@ function or string
 */
 
 const ACCURACY = 1e-4;
+const _mathAbs = Math.abs;
 
 const cubicBezierFactor = (
   c1,
@@ -93,7 +98,7 @@ export const configBezier = (...args) => {
       const evalT = curveX(x) - t
       , derVal = derCurveX(x);
 
-      if (Math.abs(evalT - t) < ACCURACY || derVal < ACCURACY) {
+      if (_mathAbs(evalT - t) < ACCURACY || derVal < ACCURACY) {
         return curveY(x);
       }
       x = rangeValue(x - evalT / derVal);
@@ -121,7 +126,7 @@ export const configSpring = (
      , newV = currV + (FSpring - FDamping) * dt / 1000
      , newX = currV * dt / 1000 + currX;
 
-     return Math.abs(newX - destX) < ACCURACY && Math.abs(newV) < ACCURACY
+     return _mathAbs(newX - destX) < ACCURACY && _mathAbs(newV) < ACCURACY
        ? [destX, 0]
        : [newX, newV];
   };
@@ -135,26 +140,17 @@ export const configSpring = (
 export const configEasing = (...args) => {
   const [easing] = args;
 
-  if (typeof easing === 'string') {
-    switch (easing) {
-      case 'ease':
-      case 'ease-in-out':
-      case 'ease-out':
-      case 'ease-in':
-      case 'linear':
-        return configBezier(easing);
-      case 'spring':
-        return configSpring();
-      default:
-        if (easing.split('(')[0] === 'cubic-bezier') {
-          return configBezier(easing);
-        }
+  if (isStr(easing)) {
+    if (BEZIER_CONFIG[easing]) {
+      return configBezier(easing);
+    }
+    if (easing === 'spring') {
+      return configSpring();
+    }
+    if (easing.split('(')[0] === 'cubic-bezier') {
+      return configBezier(easing);
     }
   }
 
-  if (typeof easing === 'function') {
-    return easing;
-  }
-
-  return null;
+  return isFn(easing) ? easing : null;
 };
