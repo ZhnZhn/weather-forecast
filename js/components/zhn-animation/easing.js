@@ -1,7 +1,8 @@
 "use strict";
 
 exports.__esModule = true;
-exports.configSpring = exports.configEasing = exports.configBezier = void 0;
+exports.configSpring = exports.configEasing = exports.configBezier = exports.ACCURACY = void 0;
+var _isTypeFn = require("../../utils/isTypeFn");
 /*
 configBezier arguments should be one of
 'ease', 'ease-in', 'ease-out', ease-in-out',
@@ -14,7 +15,8 @@ configEasing first argument type should be
 function or string
 */
 
-const ACCURACY = 1e-4;
+const ACCURACY = exports.ACCURACY = 1e-4;
+const _mathAbs = Math.abs;
 const cubicBezierFactor = (c1, c2) => [0, 3 * c1, 3 * c2 - 6 * c1, 3 * c1 - 3 * c2 + 1];
 const multyTime = (params, t) => params.map((param, i) => param * t ** i).reduce((pre, curr) => pre + curr);
 const cubicBezier = (c1, c2) => t => multyTime(cubicBezierFactor(c1, c2), t);
@@ -58,7 +60,7 @@ const configBezier = function () {
     for (let i = 0; i < 8; ++i) {
       const evalT = curveX(x) - t,
         derVal = derCurveX(x);
-      if (Math.abs(evalT - t) < ACCURACY || derVal < ACCURACY) {
+      if (_mathAbs(evalT - t) < ACCURACY || derVal < ACCURACY) {
         return curveY(x);
       }
       x = rangeValue(x - evalT / derVal);
@@ -83,7 +85,7 @@ const configSpring = function (config) {
         FDamping = currV * damping,
         newV = currV + (FSpring - FDamping) * dt / 1000,
         newX = currV * dt / 1000 + currX;
-      return Math.abs(newX - destX) < ACCURACY && Math.abs(newV) < ACCURACY ? [destX, 0] : [newX, newV];
+      return _mathAbs(newX - destX) < ACCURACY && _mathAbs(newV) < ACCURACY ? [destX, 0] : [newX, newV];
     };
   stepper.isStepper = true;
   stepper.dt = dt;
@@ -95,26 +97,18 @@ const configEasing = function () {
     args[_key2] = arguments[_key2];
   }
   const [easing] = args;
-  if (typeof easing === 'string') {
-    switch (easing) {
-      case 'ease':
-      case 'ease-in-out':
-      case 'ease-out':
-      case 'ease-in':
-      case 'linear':
-        return configBezier(easing);
-      case 'spring':
-        return configSpring();
-      default:
-        if (easing.split('(')[0] === 'cubic-bezier') {
-          return configBezier(easing);
-        }
+  if ((0, _isTypeFn.isStr)(easing)) {
+    if (BEZIER_CONFIG[easing]) {
+      return configBezier(easing);
+    }
+    if (easing === 'spring') {
+      return configSpring();
+    }
+    if (easing.split('(')[0] === 'cubic-bezier') {
+      return configBezier(easing);
     }
   }
-  if (typeof easing === 'function') {
-    return easing;
-  }
-  return null;
+  return (0, _isTypeFn.isFn)(easing) ? easing : null;
 };
 exports.configEasing = configEasing;
 //# sourceMappingURL=easing.js.map

@@ -14,7 +14,7 @@ configEasing first argument type should be
 function or string
 */
 
-const ACCURACY = 1e-4;
+export const ACCURACY = 1e-4;
 const _mathAbs = Math.abs;
 
 const cubicBezierFactor = (
