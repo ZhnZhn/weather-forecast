@@ -5,6 +5,7 @@ exports.__esModule = true;
 exports.JsAnimation = void 0;
 var _uiApi = require("../uiApi");
 var _usePrevValue = _interopRequireDefault(require("../hooks/usePrevValue"));
+var _JsAnimationManager = _interopRequireDefault(require("./JsAnimationManager"));
 var _JsAnimationFn = require("./JsAnimationFn");
 const FN_NOOP = () => {};
 const DF_PROPS = {
@@ -35,6 +36,12 @@ const JsAnimation = exports.JsAnimation = (0, _uiApi.memo)(props => {
       if ((0, _uiApi.getRefValue)(_refIsMounted)) {
         setState(style.t);
       }
+    }, []),
+    getAnimationManager = (0, _uiApi.useMemo)(() => () => {
+      if (!(0, _uiApi.getRefValue)(_refAnimateManager)) {
+        (0, _uiApi.setRefValue)(_refAnimateManager, (0, _JsAnimationManager.default)());
+      }
+      return (0, _uiApi.getRefValue)(_refAnimateManager);
     }, [])
 
     /*eslint-disable no-unused-vars*/,
@@ -49,7 +56,7 @@ const JsAnimation = exports.JsAnimation = (0, _uiApi.memo)(props => {
   (0, _uiApi.useEffect)(() => {
     (0, _uiApi.setRefValue)(_refIsMounted, !0);
     if (isActive && canBegin) {
-      (0, _JsAnimationFn.runAnimation)(_props, changeStyle, _refStopJsAnimation, _refAnimateManager, _refUnSubscribe);
+      (0, _JsAnimationFn.runAnimation)(_props, changeStyle, getAnimationManager(), _refStopJsAnimation, _refUnSubscribe);
     }
     return () => {
       (0, _uiApi.setRefValue)(_refIsMounted, !1);
@@ -92,7 +99,7 @@ const JsAnimation = exports.JsAnimation = (0, _uiApi.memo)(props => {
         ..._props,
         from,
         begin: 0
-      }, changeStyle, _refStopJsAnimation, _refAnimateManager, _refUnSubscribe);
+      }, changeStyle, getAnimationManager(), _refStopJsAnimation, _refUnSubscribe);
     }
   }, [_props, state]);
   //changeStyle

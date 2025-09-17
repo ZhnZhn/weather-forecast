@@ -11,6 +11,7 @@ import {
 
 import usePrevValue from '../hooks/usePrevValue';
 
+import createAnimationManager from './JsAnimationManager';
 import {
   stopJsAnimation,
   runAnimation
@@ -62,6 +63,15 @@ export const JsAnimation = memo(props => {
       setState(style.t);
     }
   }, [])
+  , getAnimationManager = useMemo(() => () => {
+    if (!getRefValue(_refAnimateManager)) {
+      setRefValue(
+        _refAnimateManager,
+        createAnimationManager()
+      )
+    }
+    return getRefValue(_refAnimateManager);
+  }, [])
 
   /*eslint-disable no-unused-vars*/
   , {
@@ -79,8 +89,8 @@ export const JsAnimation = memo(props => {
       runAnimation(
         _props,
         changeStyle,
+        getAnimationManager(),
         _refStopJsAnimation,
-        _refAnimateManager,
         _refUnSubscribe
       )
     }
@@ -150,8 +160,8 @@ export const JsAnimation = memo(props => {
           begin: 0
         },
         changeStyle,
+        getAnimationManager(),
         _refStopJsAnimation,
-        _refAnimateManager,
         _refUnSubscribe
       )
     }

@@ -3,7 +3,6 @@ import {
   setRefValue
 } from '../uiApi';
 
-import createAnimationManager from './JsAnimationManager';
 import { configEasing } from './easing';
 import configUpdate from './configUpdate';
 
@@ -18,9 +17,9 @@ export const stopJsAnimation = (
 
 const _runJSAnimation = (
   props,
-  _changeStyle,
-  _refStopJsAnimation,
-  _refAnimateManager
+  changeStyle,
+  animateManager,
+  _refStopJsAnimation
 ) =>  {
   const {
     from,
@@ -36,13 +35,13 @@ const _runJSAnimation = (
      to,
      configEasing(easing),
      duration,
-     _changeStyle
+     changeStyle
    )
   , finalStartAnimation = () => {
      setRefValue(_refStopJsAnimation, startAnimation());
   };
 
-  getRefValue(_refAnimateManager).start([
+  animateManager.start([
     onAnimationStart,
     begin,
     finalStartAnimation,
@@ -54,26 +53,20 @@ const _runJSAnimation = (
 export const runAnimation = (
   props,
   changeStyle,
+  animateManager,
   _refStopJsAnimation,
-  _refAnimateManager,
   _refUnSubscribe
 ) => {
-  if (!getRefValue(_refAnimateManager)) {
-    setRefValue(
-      _refAnimateManager,
-      createAnimationManager()
-    )
-  }
 
   setRefValue(
     _refUnSubscribe,
-    getRefValue(_refAnimateManager).subscribe(changeStyle)
+    animateManager.subscribe(changeStyle)
   )
 
   _runJSAnimation(
     props,
     changeStyle,
-    _refStopJsAnimation,
-    _refAnimateManager
+    animateManager,
+    _refStopJsAnimation
   )
 }
