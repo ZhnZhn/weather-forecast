@@ -1,7 +1,7 @@
 import {
-  ACCURACY,
+  //ACCURACY,
   configBezier,
-  configSpring,
+  //configSpring,
   configEasing
 } from '../easing';
 
@@ -138,6 +138,7 @@ describe('configBezier', ()=>{
 
 })
 
+/*
 describe('configSpring', ()=>{
   const fn = configSpring;
   it('should return a stepper function with default config', () => {
@@ -199,6 +200,7 @@ describe('configSpring', ()=>{
     expect(v).toBeCloseTo(0, 1);
   });
 })
+*/
 
 describe('configEasing', ()=>{
   const fn = configEasing;
@@ -207,12 +209,14 @@ describe('configEasing', ()=>{
     expect(typeof easing).toBe('function');
   });
 
+  /*
   it('should return stepper function', () => {
     const _spring = fn('spring');
     expect(typeof _spring).toBe('function');
     expect(_spring.isStepper).toBe(true);
     expect(_spring(0, 1, 0)).toEqual([0, 1.7]);
   });
+  */
 
   it('should handle cubic-bezier input', () => {
     const _bezier = fn('cubic-bezier(0.42,0,0.58,1)');
@@ -232,7 +236,5 @@ describe('configEasing', ()=>{
     const _result = fn('invalid');
     expect(_result).toBeNull();
   });
-
-
 
 })

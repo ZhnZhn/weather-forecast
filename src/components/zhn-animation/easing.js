@@ -94,7 +94,7 @@ export const configBezier = (...args) => {
       const [easing, pointsToken] = args[0].split('(');
       if (_isCubicBezier(easing) && _isCorrectCubicBezierPointsToken(pointsToken)) {
         [x1, y1, x2, y2] = _getCubicBezierPoints(pointsToken)
-          .map(x => parseFloat(x));
+          .map(parseFloat);
       }
     }
   }
@@ -129,7 +129,7 @@ export const configBezier = (...args) => {
   return bezier;
 };
 
-
+/*
 export const configSpring = (
   config = {}
 ) => {
@@ -154,18 +154,12 @@ export const configSpring = (
 
   return stepper;
 };
+*/
 
-export const configEasing = (...args) => {
-  const [easing] = args;
-
-  if (isStr(easing)) {
-    if (BEZIER_CONFIG[easing] || _isCubicBezier(easing.split('(')[0])) {
-      return configBezier(easing);
-    }
-    if (easing === 'spring') {
-      return configSpring();
-    }
-  }
-
-  return isFn(easing) ? easing : null;
-};
+export const configEasing = (
+  easing
+) => isStr(easing) && (BEZIER_CONFIG[easing] || _isCubicBezier(easing.split('(')[0]))
+  ? configBezier(easing)
+  : isFn(easing)
+  ? easing
+  : null;
