@@ -10,7 +10,7 @@ var _FnUtils = require("./FnUtils");
 const _getObjectKeys = Object.keys;
 const mathSign = value => value === 0 ? 0 : value > 0 ? 1 : -1;
 exports.mathSign = mathSign;
-const isPercent = value => (0, _isTypeFn.isStr)(value) && value.slice(-1) === '%';
+const isPercent = value => (0, _isTypeFn.isStr)(value) && value.indexOf('%') === value.length - 1;
 exports.isPercent = isPercent;
 let idCounter = 0;
 const uniqueId = prefix => {
@@ -82,8 +82,8 @@ const hasDuplicate = ary => {
 exports.hasDuplicate = hasDuplicate;
 const interpolateNumber = (numberA, numberB) => (0, _isTypeFn.isNumber)(numberA) && (0, _isTypeFn.isNumber)(numberB) ? t => numberA + t * (numberB - numberA) : () => numberB;
 exports.interpolateNumber = interpolateNumber;
-const getInterpolatedNumber = (fromNumber, toNumber, t) => interpolateNumber(fromNumber, toNumber)(t);
+const getInterpolatedNumber = (fromNumber, toNumber, t) => (0, _isTypeFn.isNumber)(fromNumber) && (0, _isTypeFn.isNumber)(toNumber) ? interpolateNumber(fromNumber, toNumber)(t) : toNumber;
 exports.getInterpolatedNumber = getInterpolatedNumber;
-const findEntryInArray = (arr, specifiedKey, specifiedValue) => (0, _isTypeFn.isNotEmptyArr)(arr) ? arr.find(entry => entry && ((0, _isTypeFn.isFn)(specifiedKey) ? specifiedKey(entry) : (0, _FnUtils._getByPropName)(entry, specifiedKey)) === specifiedValue) : null;
+const findEntryInArray = (arr, specifiedKey, specifiedValue) => (0, _isTypeFn.isNotEmptyArr)(arr) ? arr.find(entry => entry && ((0, _isTypeFn.isFn)(specifiedKey) ? specifiedKey(entry) : (0, _FnUtils._getByPropName)(entry, specifiedKey)) === specifiedValue) : void 0;
 exports.findEntryInArray = findEntryInArray;
 //# sourceMappingURL=DataUtils.js.map

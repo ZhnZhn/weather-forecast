@@ -27,7 +27,7 @@ export const mathSign = (
 
 export const isPercent = (
   value
-) => isStr(value) && value.slice(-1) === '%'
+) => isStr(value) && value.indexOf('%') === value.length - 1
 
 let idCounter = 0;
 export const uniqueId = (
@@ -118,7 +118,9 @@ export const getInterpolatedNumber = (
   fromNumber,
   toNumber,
   t
-) => interpolateNumber(fromNumber, toNumber)(t)
+) => isNumber(fromNumber) && isNumber(toNumber)
+  ? interpolateNumber(fromNumber, toNumber)(t)
+  : toNumber
 
 export const findEntryInArray = (
   arr,
@@ -130,4 +132,4 @@ export const findEntryInArray = (
          ? specifiedKey(entry)
          : _getByPropName(entry, specifiedKey)
        ) === specifiedValue
-) : null
+) : void 0
