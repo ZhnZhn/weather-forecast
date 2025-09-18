@@ -8,7 +8,8 @@ var _throttleFn = _interopRequireDefault(require("../../../utils/throttleFn"));
 const _throttle = exports._throttle = _throttleFn.default;
 const _upperFirst = str => (0, _isTypeFn.isStr)(str) && str.length > 0 ? str[0].toUpperCase() + str.slice(1) : '';
 exports._upperFirst = _upperFirst;
-const _getByPropName = (obj, propName, dfValue) => obj && propName ? obj[propName] || dfValue : dfValue;
+const _get = (obj, propPath) => propPath.split('.').reduce((value, prop) => (value || {})[prop], obj);
+const _getByPropName = (obj, propName, dfValue) => obj && propName ? _get(obj, propName) || dfValue : dfValue;
 exports._getByPropName = _getByPropName;
 const _range = (startValue, endValue, increment) => {
   const isEndDef = !(0, _isTypeFn.isUndef)(endValue);

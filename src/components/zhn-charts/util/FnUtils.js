@@ -11,12 +11,19 @@ export const _upperFirst = (
   ? str[0].toUpperCase() + str.slice(1)
   : '';
 
+const _get = (
+  obj,
+  propPath
+) => propPath
+  .split('.')
+  .reduce((value, prop) => (value || {})[prop], obj);
+
 export const _getByPropName = (
   obj,
   propName,
   dfValue
 ) => obj && propName
-   ? obj[propName] || dfValue
+   ? _get(obj, propName) || dfValue
    : dfValue
 
 export const _range = (
