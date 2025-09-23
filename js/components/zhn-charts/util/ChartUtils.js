@@ -40,6 +40,7 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
   const validateData = filterNil ? flattenData.filter(entry => !(0, _isTypeFn.isNullOrUndef)(entry)) : flattenData;
   return validateData.map(entry => (0, _isTypeFn.isNumOrStr)(entry) || entry instanceof Date ? entry : '');
 }
+const _getMinMax = (a, b) => [Math.min(a, b), Math.max(a, b)];
 const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axis) {
   if (ticks === void 0) {
     ticks = [];
@@ -61,19 +62,17 @@ const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axi
         after = i >= len - 1 ? unsortedTicks[0].coordinate : unsortedTicks[i + 1].coordinate;
       let sameDirectionCoord;
       if ((0, _DataUtils.mathSign)(cur - before) !== (0, _DataUtils.mathSign)(after - cur)) {
-        const diffInterval = [];
+        let diffInterval = [];
         if ((0, _DataUtils.mathSign)(after - cur) === (0, _DataUtils.mathSign)(range[1] - range[0])) {
           sameDirectionCoord = after;
           const curInRange = cur + range[1] - range[0];
-          diffInterval[0] = Math.min(curInRange, (curInRange + before) / 2);
-          diffInterval[1] = Math.max(curInRange, (curInRange + before) / 2);
+          diffInterval = _getMinMax(curInRange, (curInRange + before) / 2);
         } else {
           sameDirectionCoord = before;
           const afterInRange = after + range[1] - range[0];
-          diffInterval[0] = Math.min(cur, (afterInRange + cur) / 2);
-          diffInterval[1] = Math.max(cur, (afterInRange + cur) / 2);
+          diffInterval = _getMinMax(cur, (afterInRange + cur) / 2);
         }
-        const sameInterval = [Math.min(cur, (sameDirectionCoord + cur) / 2), Math.max(cur, (sameDirectionCoord + cur) / 2)];
+        const sameInterval = _getMinMax(cur, (sameDirectionCoord + cur) / 2);
         if (coordinate > sameInterval[0] && coordinate <= sameInterval[1] || coordinate >= diffInterval[0] && coordinate <= diffInterval[1]) {
           ({
             index
@@ -81,8 +80,7 @@ const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axi
           break;
         }
       } else {
-        const min = Math.min(before, after),
-          max = Math.max(before, after);
+        const [min, max] = _getMinMax(before, after);
         if (coordinate > (min + cur) / 2 && coordinate <= (max + cur) / 2) {
           ({
             index

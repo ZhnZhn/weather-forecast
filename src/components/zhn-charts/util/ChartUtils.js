@@ -100,6 +100,11 @@ export function getDomainOfDataByKey(
    .map(entry => (isNumOrStr(entry) || entry instanceof Date ? entry : ''));
 }
 
+const _getMinMax = (a, b) => [
+  Math.min(a, b),
+  Math.max(a, b)
+];
+
 export const calculateActiveTickIndex = (
   coordinate,
   ticks = [],
@@ -125,22 +130,17 @@ export const calculateActiveTickIndex = (
         : unsortedTicks[i + 1].coordinate;
       let sameDirectionCoord;
       if (mathSign(cur - before) !== mathSign(after - cur)) {
-        const diffInterval = [];
+        let diffInterval = [];
         if (mathSign(after - cur) === mathSign(range[1] - range[0])) {
           sameDirectionCoord = after;
           const curInRange = cur + range[1] - range[0];
-          diffInterval[0] = Math.min(curInRange, (curInRange + before) / 2);
-          diffInterval[1] = Math.max(curInRange, (curInRange + before) / 2);
+          diffInterval = _getMinMax(curInRange, (curInRange + before) / 2);
         } else {
           sameDirectionCoord = before;
           const afterInRange = after + range[1] - range[0];
-          diffInterval[0] = Math.min(cur, (afterInRange + cur) / 2);
-          diffInterval[1] = Math.max(cur, (afterInRange + cur) / 2);
+          diffInterval = _getMinMax(cur, (afterInRange + cur) / 2)
         }
-        const sameInterval = [
-          Math.min(cur, (sameDirectionCoord + cur) / 2),
-          Math.max(cur, (sameDirectionCoord + cur) / 2),
-        ];
+        const sameInterval = _getMinMax(cur, (sameDirectionCoord + cur) / 2)
         if ((coordinate > sameInterval[0] && coordinate <= sameInterval[1]) ||
             (coordinate >= diffInterval[0] && coordinate <= diffInterval[1])
         ) {
@@ -148,8 +148,7 @@ export const calculateActiveTickIndex = (
           break;
         }
       } else {
-        const min = Math.min(before, after)
-        , max = Math.max(before, after);
+        const [min, max] = _getMinMax(before, after);
         if (coordinate > (min + cur) / 2 && coordinate <= (max + cur) / 2) {
           ({ index } = unsortedTicks[i]);
           break;
