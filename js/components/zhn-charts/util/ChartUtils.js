@@ -41,25 +41,29 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
   return validateData.map(entry => (0, _isTypeFn.isNumOrStr)(entry) || entry instanceof Date ? entry : '');
 }
 const _getMinMax = (a, b) => a > b ? [b, a] : [a, b];
+const _getTickCoordinate = tick => tick.coordinate;
+const _calcAverageTicksCoordinate = (tickA, tickB) => tickA && tickB ? (_getTickCoordinate(tickA) + _getTickCoordinate(tickB)) / 2 : NaN;
 const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axis) {
   if (ticks === void 0) {
     ticks = [];
   }
-  let index = -1;
   const len = ticks?.length ?? 0;
   // if there are 1 or less ticks ticks then the active tick is at index 0
   if (len <= 1) {
     return 0;
   }
+  const endIndex = len - 1;
   if (axis && axis.axisType === 'angleAxis' && Math.abs(Math.abs(axis.range[1] - axis.range[0]) - 360) <= 1e-6) {
     const {
       range
     } = axis;
     // ticks are distributed in a circle
     for (let i = 0; i < len; i++) {
-      const before = i > 0 ? unsortedTicks[i - 1].coordinate : unsortedTicks[len - 1].coordinate,
-        cur = unsortedTicks[i].coordinate,
-        after = i >= len - 1 ? unsortedTicks[0].coordinate : unsortedTicks[i + 1].coordinate;
+      const beforeTick = i > 0 ? unsortedTicks[i - 1] : unsortedTicks[endIndex],
+        before = _getTickCoordinate(beforeTick),
+        cur = _getTickCoordinate(unsortedTicks[i]),
+        afterTick = i >= len - 1 ? unsortedTicks[0] : unsortedTicks[i + 1],
+        after = _getTickCoordinate(afterTick);
       let sameDirectionCoord;
       if ((0, _DataUtils.mathSign)(cur - before) !== (0, _DataUtils.mathSign)(after - cur)) {
         let diffInterval = [];
@@ -74,33 +78,24 @@ const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axi
         }
         const sameInterval = _getMinMax(cur, (sameDirectionCoord + cur) / 2);
         if (coordinate > sameInterval[0] && coordinate <= sameInterval[1] || coordinate >= diffInterval[0] && coordinate <= diffInterval[1]) {
-          ({
-            index
-          } = unsortedTicks[i]);
-          break;
+          return unsortedTicks[i].index;
         }
       } else {
         const [min, max] = _getMinMax(before, after);
         if (coordinate > (min + cur) / 2 && coordinate <= (max + cur) / 2) {
-          ({
-            index
-          } = unsortedTicks[i]);
-          break;
+          return unsortedTicks[i].index;
         }
       }
     }
-  } else {
-    // ticks are distributed in a single direction
-    for (let i = 0; i < len; i++) {
-      if (i === 0 && coordinate <= (ticks[i].coordinate + ticks[i + 1].coordinate) / 2 || i > 0 && i < len - 1 && coordinate > (ticks[i].coordinate + ticks[i - 1].coordinate) / 2 && coordinate <= (ticks[i].coordinate + ticks[i + 1].coordinate) / 2 || i === len - 1 && coordinate > (ticks[i].coordinate + ticks[i - 1].coordinate) / 2) {
-        ({
-          index
-        } = ticks[i]);
-        break;
-      }
+  }
+  for (let i = 0; i < len; i++) {
+    const _averageUp = _calcAverageTicksCoordinate(ticks[i], ticks[i + 1]),
+      _averageDown = _calcAverageTicksCoordinate(ticks[i], ticks[i - 1]);
+    if (i === 0 && coordinate <= _averageUp || i > 0 && i < endIndex && coordinate > _averageDown && coordinate <= _averageUp || i === endIndex && coordinate > _averageDown) {
+      return ticks[i].index;
     }
   }
-  return index;
+  return -1;
 };
 
 /**
