@@ -100,10 +100,9 @@ export function getDomainOfDataByKey(
    .map(entry => (isNumOrStr(entry) || entry instanceof Date ? entry : ''));
 }
 
-const _getMinMax = (a, b) => [
-  Math.min(a, b),
-  Math.max(a, b)
-];
+const _getMinMax = (a, b) => a > b
+  ? [b, a]
+  : [a, b];
 
 export const calculateActiveTickIndex = (
   coordinate,

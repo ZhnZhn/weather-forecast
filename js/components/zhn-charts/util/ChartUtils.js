@@ -40,7 +40,7 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
   const validateData = filterNil ? flattenData.filter(entry => !(0, _isTypeFn.isNullOrUndef)(entry)) : flattenData;
   return validateData.map(entry => (0, _isTypeFn.isNumOrStr)(entry) || entry instanceof Date ? entry : '');
 }
-const _getMinMax = (a, b) => [Math.min(a, b), Math.max(a, b)];
+const _getMinMax = (a, b) => a > b ? [b, a] : [a, b];
 const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axis) {
   if (ticks === void 0) {
     ticks = [];
