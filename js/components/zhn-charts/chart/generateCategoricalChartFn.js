@@ -77,19 +77,11 @@ const hasGraphicalBarItem = graphicalItems => !graphicalItems || !graphicalItems
   return name && name.indexOf('Bar') >= 0;
 });
 exports.hasGraphicalBarItem = hasGraphicalBarItem;
-const getAxisNameByLayout = layout => (0, _ChartUtils.isLayoutHorizontal)(layout) ? {
-  numericAxisName: 'yAxis',
-  cateAxisName: 'xAxis'
-} : (0, _ChartUtils.isLayoutVertical)(layout) ? {
-  numericAxisName: 'xAxis',
-  cateAxisName: 'yAxis'
-} : (0, _ChartUtils.isLayoutCentric)(layout) ? {
-  numericAxisName: 'radiusAxis',
-  cateAxisName: 'angleAxis'
-} : {
-  numericAxisName: 'angleAxis',
-  cateAxisName: 'radiusAxis'
-};
+const _crAxisName = (numericAxisName, cateAxisName) => ({
+  numericAxisName,
+  cateAxisName
+});
+const getAxisNameByLayout = layout => (0, _ChartUtils.isLayoutHorizontal)(layout) ? _crAxisName('yAxis', 'xAxis') : (0, _ChartUtils.isLayoutVertical)(layout) ? _crAxisName('xAxis', 'yAxis') : (0, _ChartUtils.isLayoutCentric)(layout) ? _crAxisName('radiusAxis', 'angleAxis') : _crAxisName('angleAxis', 'radiusAxis');
 exports.getAxisNameByLayout = getAxisNameByLayout;
 const verticalCoordinatesGenerator = _ref => {
   let {

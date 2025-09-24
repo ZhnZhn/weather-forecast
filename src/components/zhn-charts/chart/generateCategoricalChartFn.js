@@ -138,15 +138,22 @@ export const hasGraphicalBarItem = (
       return name && name.indexOf('Bar') >= 0;
     });
 
+const _crAxisName = (
+  numericAxisName,
+  cateAxisName
+) => ({
+  numericAxisName,
+  cateAxisName
+});
 export const getAxisNameByLayout = (
   layout
 ) => isLayoutHorizontal(layout)
-  ? { numericAxisName: 'yAxis', cateAxisName: 'xAxis' }
+  ? _crAxisName('yAxis','xAxis')
   : isLayoutVertical(layout)
-      ? { numericAxisName: 'xAxis', cateAxisName: 'yAxis' }
+      ? _crAxisName('xAxis', 'yAxis')
       : isLayoutCentric(layout)
-          ? { numericAxisName: 'radiusAxis', cateAxisName: 'angleAxis' }
-          : { numericAxisName: 'angleAxis', cateAxisName: 'radiusAxis' };
+          ? _crAxisName('radiusAxis', 'angleAxis')
+          : _crAxisName('angleAxis', 'radiusAxis');
 
 export const verticalCoordinatesGenerator = ({
   xAxis,
