@@ -61,7 +61,7 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
       props: _props
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
       className: _CL.CL_BAR_RECTANGLES,
-      clipPath: needClip ? `url(#clipPath-${clipPathId})` : null,
+      clipPath: (0, _cartesianFn.crClipPath)(needClip, clipPathId),
       children: [(0, _BarRenderFn.renderBackground)(_props), (0, _BarRenderFn.renderRectangles)(_props, prevData, handleAnimationStart, handleAnimationEnd)]
     }), (!isAnimationActive || isAnimationFinished) && _LabelList.LabelList.renderCallByParent(_props, data)]
   });

@@ -31,7 +31,8 @@ import {
 
 import {
   isHideOrNoData,
-  isNeedClip
+  isNeedClip,
+  crClipPath
 } from './cartesianFn';
 
 import useAnimationHandle from './useAnimationHandle';
@@ -101,10 +102,7 @@ export const Bar = memo((props) => {
       />
       <Layer
         className={CL_BAR_RECTANGLES}
-        clipPath={needClip
-          ? `url(#clipPath-${clipPathId})`
-          : null
-        }
+        clipPath={crClipPath(needClip, clipPathId)}
       >
         {renderBackground(_props)}
         {renderRectangles(

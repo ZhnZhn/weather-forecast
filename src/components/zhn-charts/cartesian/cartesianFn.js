@@ -63,11 +63,16 @@ export const dataPointFormatter = (
    errorVal: getValueByDataKey(dataPoint, dataKey)
 })
 
+export const crClipPath = (
+  needClip,
+  clipPathId
+) => needClip
+  ? `url(#clipPath-${clipPathId})`
+  : null
+
 export const crClipPathProps = (
   needClip,
   clipPathId
 )=> ({
-  clipPath: needClip
-    ? `url(#clipPath-${clipPathId})`
-    : null
+  clipPath: crClipPath(needClip, clipPathId)
 })
