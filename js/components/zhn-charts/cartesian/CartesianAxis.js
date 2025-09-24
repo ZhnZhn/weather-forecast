@@ -54,7 +54,7 @@ const _arePropsEqual = (prevProps, nextProps) => {
   return (0, _ShallowEqual.shallowEqual)(viewBox, viewBoxPrev) && (0, _ShallowEqual.shallowEqual)(restProps, restPropsPrev);
 };
 const CartesianAxis = exports.CartesianAxis = (0, _uiApi.memo)(props => {
-  const _props = (0, _uiApi.crProps)(CARTESIAN_AXIS_DF_PROPS, props),
+  const _props = (0, _uiApi.useDefaultProps)(CARTESIAN_AXIS_DF_PROPS, props),
     _refLayer = (0, _uiApi.useRef)(),
     {
       fontSize,

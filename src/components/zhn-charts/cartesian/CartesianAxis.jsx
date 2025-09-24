@@ -1,7 +1,8 @@
 import {
   memo,
   useRef,
-  crProps
+  crProps,
+  useDefaultProps
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
@@ -63,10 +64,10 @@ const _arePropsEqual = (
 };
 
 export const CartesianAxis = memo(props => {
-  const _props = crProps(
+  const _props = useDefaultProps(
     CARTESIAN_AXIS_DF_PROPS,
     props
-  )  
+  )
   , _refLayer = useRef()
   , {
     fontSize,

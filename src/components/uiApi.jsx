@@ -5,6 +5,8 @@ import {
   isNumber
 } from "../utils/isTypeFn";
 
+import { useMemo } from "react";
+
 export {
   useSelector,
   useStore
@@ -74,6 +76,14 @@ export const crProps = (
   ...dfProps,
   ...props
 })
+
+export const useDefaultProps = (
+  dfProps,
+  props
+) => useMemo(
+  () => crProps(dfProps, props),
+  [props, dfProps]
+)
 
 export const getRefValue = ref => (ref || {}).current
 

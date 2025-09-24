@@ -1,13 +1,10 @@
 "use strict";
 
 exports.__esModule = true;
-exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useMemo = exports.useLayoutEffect = exports.useImperativeHandle = exports.useId = exports.useEffect = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.safeMap = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.focusRefElement = exports.focusElementById = exports.createElement = exports.createContext = exports.crProps = exports.cloneUiElement = exports.bindTo = exports.KEY_TAB = exports.KEY_SPACE = exports.KEY_HOME = exports.KEY_ESCAPE = exports.KEY_ENTER = exports.KEY_END = exports.KEY_DELETE = exports.KEY_ARROW_UP = exports.KEY_ARROW_DOWN = exports.Component = exports.Children = void 0;
+exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useLayoutEffect = exports.useImperativeHandle = exports.useId = exports.useEffect = exports.useDefaultProps = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.safeMap = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.focusRefElement = exports.focusElementById = exports.createElement = exports.createContext = exports.crProps = exports.cloneUiElement = exports.bindTo = exports.KEY_TAB = exports.KEY_SPACE = exports.KEY_HOME = exports.KEY_ESCAPE = exports.KEY_ENTER = exports.KEY_END = exports.KEY_DELETE = exports.KEY_ARROW_UP = exports.KEY_ARROW_DOWN = exports.Component = exports.Children = void 0;
 var _isTypeFn = require("../utils/isTypeFn");
-var _jsxRuntime = require("react/jsx-runtime");
-var _reactRedux = require("react-redux");
-exports.useSelector = _reactRedux.useSelector;
-exports.useStore = _reactRedux.useStore;
 var _react = require("react");
+exports.useMemo = _react.useMemo;
 exports.isValidElement = _react.isValidElement;
 exports.Component = _react.Component;
 exports.Children = _react.Children;
@@ -19,10 +16,13 @@ exports.useState = _react.useState;
 exports.useReducer = _react.useReducer;
 exports.useContext = _react.useContext;
 exports.useCallback = _react.useCallback;
-exports.useMemo = _react.useMemo;
 exports.useEffect = _react.useEffect;
 exports.useLayoutEffect = _react.useLayoutEffect;
 exports.useImperativeHandle = _react.useImperativeHandle;
+var _jsxRuntime = require("react/jsx-runtime");
+var _reactRedux = require("react-redux");
+exports.useSelector = _reactRedux.useSelector;
+exports.useStore = _reactRedux.useStore;
 const KEY_ARROW_DOWN = exports.KEY_ARROW_DOWN = "ArrowDown";
 const KEY_ARROW_UP = exports.KEY_ARROW_UP = "ArrowUp";
 const KEY_ENTER = exports.KEY_ENTER = "Enter";
@@ -67,6 +67,8 @@ const crProps = (dfProps, props) => ({
   ...props
 });
 exports.crProps = crProps;
+const useDefaultProps = (dfProps, props) => (0, _react.useMemo)(() => crProps(dfProps, props), [props, dfProps]);
+exports.useDefaultProps = useDefaultProps;
 const getRefValue = ref => (ref || {}).current;
 exports.getRefValue = getRefValue;
 const setRefValue = (ref, value) => {
