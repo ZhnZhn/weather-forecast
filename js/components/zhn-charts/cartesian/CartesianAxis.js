@@ -1,5 +1,6 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.CartesianAxis = void 0;
 var _uiApi = require("../../uiApi");
@@ -7,6 +8,7 @@ var _styleFn = require("../../styleFn");
 var _ShallowEqual = require("../util/ShallowEqual");
 var _Layer = require("../container/Layer");
 var _Label = require("../component/Label");
+var _useFontSizeByClassName = _interopRequireDefault(require("./useFontSizeByClassName"));
 var _CartesianAxisRenderFn = require("./CartesianAxisRenderFn");
 var _CartesianAxisLine = require("./CartesianAxisLine");
 var _CartesianAxisTicks = require("./CartesianAxisTicks");
@@ -53,29 +55,11 @@ const _arePropsEqual = (prevProps, nextProps) => {
 };
 const CartesianAxis = exports.CartesianAxis = (0, _uiApi.memo)(props => {
   const _props = (0, _uiApi.crProps)(CARTESIAN_AXIS_DF_PROPS, props),
-    [state, setState] = (0, _uiApi.useState)({
-      fontSize: '',
-      letterSpacing: ''
-    }),
+    _refLayer = (0, _uiApi.useRef)(),
     {
       fontSize,
       letterSpacing
-    } = state,
-    _refLayer = (0, _uiApi.useRef)();
-  (0, _uiApi.useEffect)(() => {
-    const htmlLayer = (0, _uiApi.getRefValue)(_refLayer);
-    if (!htmlLayer) {
-      return;
-    }
-    const tick = htmlLayer.getElementsByClassName(_CL.CL_AXIS_TICK_VALUE)[0];
-    if (tick) {
-      const _tickComputedStyle = window.getComputedStyle(tick);
-      setState({
-        fontSize: _tickComputedStyle.fontSize,
-        letterSpacing: _tickComputedStyle.letterSpacing
-      });
-    }
-  }, []);
+    } = (0, _useFontSizeByClassName.default)(_refLayer, _CL.CL_AXIS_TICK_VALUE);
   const {
     axisLine,
     className,

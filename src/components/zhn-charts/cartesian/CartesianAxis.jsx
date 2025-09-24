@@ -1,10 +1,7 @@
 import {
   memo,
-  useState,
   useRef,
-  useEffect,
-  crProps,
-  getRefValue
+  crProps
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
@@ -13,6 +10,7 @@ import { shallowEqual } from '../util/ShallowEqual';
 import { Layer } from '../container/Layer';
 import { Label } from '../component/Label';
 
+import useFontSizeByClassName from './useFontSizeByClassName';
 import { getCartesianAxisTicks } from './CartesianAxisRenderFn';
 
 import { CartesianAxisLine } from './CartesianAxisLine';
@@ -68,34 +66,15 @@ export const CartesianAxis = memo(props => {
   const _props = crProps(
     CARTESIAN_AXIS_DF_PROPS,
     props
-  )
-  , [
-    state,
-    setState
-  ] = useState({
-    fontSize: '',
-    letterSpacing: ''
-  })
+  )  
+  , _refLayer = useRef()
   , {
     fontSize,
     letterSpacing
-  } = state
-  , _refLayer = useRef();
-
-  useEffect(() => {
-    const htmlLayer = getRefValue(_refLayer);
-    if (!htmlLayer) {
-      return;
-    }
-    const tick = htmlLayer.getElementsByClassName(CL_AXIS_TICK_VALUE)[0];
-    if (tick) {
-      const _tickComputedStyle = window.getComputedStyle(tick);
-      setState({
-        fontSize: _tickComputedStyle.fontSize,
-        letterSpacing: _tickComputedStyle.letterSpacing
-      })
-    }
-  }, [])
+  } = useFontSizeByClassName(
+    _refLayer,
+    CL_AXIS_TICK_VALUE
+  );
 
   const {
     axisLine,
