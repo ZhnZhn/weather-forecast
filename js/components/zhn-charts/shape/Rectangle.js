@@ -8,7 +8,6 @@ var _styleFn = require("../../styleFn");
 var _JsAnimation = require("../../zhn-animation/JsAnimation");
 var _utils = require("../../zhn-animation/utils");
 var _DataUtils = require("../util/DataUtils");
-var _ReactUtils = require("../util/ReactUtils");
 var _CL = require("../CL");
 var _RectangleFn = require("./RectangleFn");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -72,7 +71,7 @@ const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
   if (x !== +x || y !== +y || width !== +width || height !== +height || width === 0 || height === 0) {
     return null;
   }
-  const layerClass = (0, _styleFn.crCn)(_CL.CL_RESTANGLE, className),
+  const layerClass = (0, _styleFn.crCn)(_CL.CL_RECTANGLE, className),
     _canBegin = totalLength > 0;
   const prevWidth = (0, _uiApi.getRefValue)(prevWidthRef),
     prevHeight = (0, _uiApi.getRefValue)(prevHeightRef),
@@ -100,7 +99,7 @@ const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
       }
       const animationStyle = _crAnimationStyle(isAnimationActive, to, t, transition, from);
       return /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
-        ...(0, _ReactUtils.filterProps)(_props, !0),
+        fill: _props.fill,
         className: layerClass,
         d: (0, _RectangleFn.getRectanglePath)(currX, currY, currWidth, currHeight, radius),
         ref: _refNode,
@@ -111,7 +110,7 @@ const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
       });
     }
   }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
-    ...(0, _ReactUtils.filterProps)(_props, !0),
+    fill: _props.fill,
     className: layerClass,
     d: (0, _RectangleFn.getRectanglePath)(x, y, width, height, radius)
   });

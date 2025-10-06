@@ -18,9 +18,7 @@ import { JsAnimation } from '../../zhn-animation/JsAnimation';
 import { getTransitionVal } from '../../zhn-animation/utils';
 
 import { getInterpolatedNumber as interpolate } from '../util/DataUtils';
-import { filterProps } from '../util/ReactUtils';
-
-import { CL_RESTANGLE } from '../CL';
+import { CL_RECTANGLE } from '../CL';
 
 import { getRectanglePath } from './RectangleFn';
 
@@ -101,7 +99,7 @@ export const Rectangle = memo((props) => {
     return null;
   }
 
-  const layerClass = crCn(CL_RESTANGLE, className)
+  const layerClass = crCn(CL_RECTANGLE, className)
   , _canBegin = totalLength > 0;
 
   const prevWidth = getRefValue(prevWidthRef)
@@ -149,7 +147,7 @@ export const Rectangle = memo((props) => {
 
          return (
            <path
-             {...filterProps(_props, !0)}
+             fill={_props.fill}
              className={layerClass}
              d={getRectanglePath(currX, currY, currWidth, currHeight, radius)}
              ref={_refNode}
@@ -163,7 +161,7 @@ export const Rectangle = memo((props) => {
     )
   : (
       <path
-        {...filterProps(_props, !0)}
+        fill={_props.fill}
         className={layerClass}
         d={getRectanglePath(x, y, width, height, radius)}
       />
