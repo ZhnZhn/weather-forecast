@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react';
 import { Bar, Surface } from '../../index';
 import {
+  CL_BAR,
+  CL_RECTANGLE,
   CL_BAR_RECTANGLE,
   CL_BAR_BACKGROUND_RECTANGLE
 } from '../../CL';
@@ -17,9 +19,9 @@ const _getElementByClassName = (
 
 describe('<Bar />', () => {
   const data = [
-    { x: 10, y: 50, width: 20, height: 50, value: 100, label: 'test' },
-    { x: 50, y: 50, width: 20, height: 50, value: 100, label: 'test' },
-    { x: 90, y: 50, width: 20, height: 50, value: 100, label: 'test' }
+    { x: 10, y: 50, width: 20, height: 50, value: 100, label: 'test1' },
+    { x: 50, y: 50, width: 20, height: 50, value: 200, label: 'test2' },
+    { x: 90, y: 50, width: 20, height: 50, value: 300, label: 'test3' }
   ];
 
   it(`Render ${data.length} rectangles in a simple Bar`, () => {
@@ -30,11 +32,100 @@ describe('<Bar />', () => {
           layout="horizontal"
           data={data}
           dataKey="value"
+          fill="#0922a5"
         />
       </Surface>
     );
 
     expect(_getElementByClassName(container)).toHaveLength(data.length);
+
+    const allBarPaths = _getElementByClassName(
+      container,
+      `${CL_BAR} .${CL_RECTANGLE}`
+    )
+    , _renderedPaths = Array
+       .from(allBarPaths)
+       .map(bar => ({
+         d: bar.getAttribute("d"),
+         fill: bar.getAttribute("fill"),
+       }));
+
+    expect(_renderedPaths).toEqual([
+      {
+        d: "M 10,50 h 20 v 50 h -20 Z",
+        fill: "#0922a5"
+      },
+      {
+        d: "M 50,50 h 20 v 50 h -20 Z",
+        fill: "#0922a5"
+      },
+      {
+        d: "M 90,50 h 20 v 50 h -20 Z",
+        fill: "#0922a5"
+      }
+    ]);
+  });
+
+  it(`Should use property radius`, () => {
+    const { container } = render(
+      <Surface width={500} height={500}>
+        <Bar
+          isAnimationActive={false}
+          layout="horizontal"
+          data={data}
+          dataKey="value"
+          fill="#0922a5"
+          radius={2}
+        />
+      </Surface>
+    );
+
+    expect(_getElementByClassName(container)).toHaveLength(data.length);
+
+    const allBarPaths = _getElementByClassName(
+      container,
+      `${CL_BAR} .${CL_RECTANGLE}`
+    )
+    , _renderedPaths = Array
+       .from(allBarPaths)
+       .map(bar => ({
+         d: bar.getAttribute("d"),
+         fill: bar.getAttribute("fill"),
+       }));
+
+    expect(_renderedPaths).toEqual([
+      {
+        d: `M 10,52
+        A 2,2,0,0,1,12,50
+        L 28,50
+        A 2,2,0,0,1,30,52
+        L 30,98
+        A 2,2,0,0,1,28,100
+        L 12,100
+        A 2,2,0,0,1,10,98 Z`,
+        fill: "#0922a5"
+      },{
+        d: `M 50,52
+        A 2,2,0,0,1,52,50
+        L 68,50
+        A 2,2,0,0,1,70,52
+        L 70,98
+        A 2,2,0,0,1,68,100
+        L 52,100
+        A 2,2,0,0,1,50,98 Z`,
+        fill: "#0922a5"
+      },{
+        d: `M 90,52
+        A 2,2,0,0,1,92,50
+        L 108,50
+        A 2,2,0,0,1,110,52
+        L 110,98
+        A 2,2,0,0,1,108,100
+        L 92,100
+        A 2,2,0,0,1,90,98 Z`,
+        fill: "#0922a5"
+      }
+    ]);
   });
 
   it(`Render ${data.length} rectangles in a vertical Bar`, () => {
