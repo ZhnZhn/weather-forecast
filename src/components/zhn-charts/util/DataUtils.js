@@ -17,6 +17,8 @@ export {
 
 const _getObjectKeys = Object.keys;
 
+export const mathAbs = Math.abs
+
 export const mathSign = (
   value
 ) => value === 0

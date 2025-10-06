@@ -1,13 +1,14 @@
 "use strict";
 
 exports.__esModule = true;
-exports.uniqueId = exports.mathSign = exports.isPositiveNumber = exports.isPercent = exports.isNumOrStr = exports.interpolateNumber = exports.hasDuplicate = exports.getPercentValue = exports.getInterpolatedNumber = exports.getAnyElementOfObject = exports.findEntryInArray = void 0;
+exports.uniqueId = exports.mathSign = exports.mathAbs = exports.isPositiveNumber = exports.isPercent = exports.isNumOrStr = exports.interpolateNumber = exports.hasDuplicate = exports.getPercentValue = exports.getInterpolatedNumber = exports.getAnyElementOfObject = exports.findEntryInArray = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 exports.isNumber = _isTypeFn.isNumber;
 exports.isPositiveNumber = _isTypeFn.isPositiveNumber;
 exports.isNumOrStr = _isTypeFn.isNumOrStr;
 var _FnUtils = require("./FnUtils");
 const _getObjectKeys = Object.keys;
+const mathAbs = exports.mathAbs = Math.abs;
 const mathSign = value => value === 0 ? 0 : value > 0 ? 1 : -1;
 exports.mathSign = mathSign;
 const isPercent = value => (0, _isTypeFn.isStr)(value) && value.indexOf('%') === value.length - 1;
