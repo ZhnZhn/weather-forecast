@@ -121,6 +121,30 @@ export const Bar = memo((props) => {
 
 Bar.displayName = 'Bar';
 
+
+const _getValueArr = (
+  arrOrValue,
+  baseValue
+) => isArr(arrOrValue)
+  ? arrOrValue
+  : [baseValue, arrOrValue];
+
+const _fCrDisplayedDataValue = (
+  stackedData,
+  dataStartIndex,
+  stackedDomain,
+  dataKey,
+  baseValue
+) => stackedData
+  ? (entry, index) => truncateByDomain(
+      stackedData[dataStartIndex + index],
+      stackedDomain
+    )
+  : (entry, index) => _getValueArr(
+      getValueByDataKey(entry, dataKey),
+      baseValue
+    )
+
 /**
  * Compose the data of each group
  * @param {Object} props Props for the component
@@ -166,21 +190,22 @@ Bar.getComposedData = ({
      : null
   , baseValue = getBaseValueOfBar({ numericAxis })
   , cells = findAllByType(children, Cell)
+  , _crDisplayedDataValue = _fCrDisplayedDataValue(
+     stackedData,
+     dataStartIndex,
+     stackedDomain,
+     dataKey,
+     baseValue
+  );
   const rects = displayedData.map((entry, index) => {
-    let value
+
+    let value = _crDisplayedDataValue(entry, index)
     , x
     , y
     , width
     , height
     , background;
-    if (stackedData) {
-      value = truncateByDomain(stackedData[dataStartIndex + index], stackedDomain);
-    } else {
-      value = getValueByDataKey(entry, dataKey);
-      if (!isArr(value)) {
-        value = [baseValue, value];
-      }
-    }
+
     if (layout === 'horizontal') {
       const [
         baseValueScale,

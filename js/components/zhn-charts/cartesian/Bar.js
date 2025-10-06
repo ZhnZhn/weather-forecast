@@ -67,6 +67,8 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
   });
 });
 Bar.displayName = 'Bar';
+const _getValueArr = (arrOrValue, baseValue) => (0, _isTypeFn.isArr)(arrOrValue) ? arrOrValue : [baseValue, arrOrValue];
+const _fCrDisplayedDataValue = (stackedData, dataStartIndex, stackedDomain, dataKey, baseValue) => stackedData ? (entry, index) => (0, _ChartUtils.truncateByDomain)(stackedData[dataStartIndex + index], stackedDomain) : (entry, index) => _getValueArr((0, _ChartUtils.getValueByDataKey)(entry, dataKey), baseValue);
 
 /**
  * Compose the data of each group
@@ -110,17 +112,15 @@ Bar.getComposedData = _ref => {
     baseValue = (0, _ChartUtils.getBaseValueOfBar)({
       numericAxis
     }),
-    cells = (0, _ReactUtils.findAllByType)(children, _Cell.Cell);
+    cells = (0, _ReactUtils.findAllByType)(children, _Cell.Cell),
+    _crDisplayedDataValue = _fCrDisplayedDataValue(stackedData, dataStartIndex, stackedDomain, dataKey, baseValue);
   const rects = displayedData.map((entry, index) => {
-    let value, x, y, width, height, background;
-    if (stackedData) {
-      value = (0, _ChartUtils.truncateByDomain)(stackedData[dataStartIndex + index], stackedDomain);
-    } else {
-      value = (0, _ChartUtils.getValueByDataKey)(entry, dataKey);
-      if (!(0, _isTypeFn.isArr)(value)) {
-        value = [baseValue, value];
-      }
-    }
+    let value = _crDisplayedDataValue(entry, index),
+      x,
+      y,
+      width,
+      height,
+      background;
     if (layout === 'horizontal') {
       const [baseValueScale, currentValueScale] = [yAxis.scale(value[0]), yAxis.scale(value[1])];
       x = (0, _ChartUtils.getCateCoordinateOfBar)({
