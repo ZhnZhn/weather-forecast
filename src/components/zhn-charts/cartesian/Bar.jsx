@@ -146,6 +146,13 @@ const _fCrDisplayedDataValue = (
       baseValue
     )
 
+const _mathAbs = Math.abs;
+const _isMinPointSizeCase = (
+  minPointSize,
+  value
+) => _mathAbs(minPointSize) > 0
+  && _mathAbs(value) < _mathAbs(minPointSize)
+
 /**
  * Compose the data of each group
  * @param {Object} props Props for the component
@@ -236,7 +243,7 @@ Bar.getComposedData = ({
         x,
         width
       };
-      if (Math.abs(minPointSize) > 0 && Math.abs(height) < Math.abs(minPointSize)) {
+      if (_isMinPointSizeCase(minPointSize, height)) {
         const delta = mathSign(height || minPointSize) * (Math.abs(minPointSize) - Math.abs(height));
         y -= delta;
         height += delta;
@@ -266,7 +273,7 @@ Bar.getComposedData = ({
         y,
         height
       };
-      if (Math.abs(minPointSize) > 0 && Math.abs(width) < Math.abs(minPointSize)) {
+      if (_isMinPointSizeCase(minPointSize, width)) {
         const delta = mathSign(width || minPointSize) * (Math.abs(minPointSize) - Math.abs(width));
         width += delta;
       }
