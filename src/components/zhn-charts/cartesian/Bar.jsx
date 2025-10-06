@@ -12,6 +12,7 @@ import { IS_SSR } from '../util/Global';
 import { mathSign } from '../util/DataUtils';
 import { findAllByType } from '../util/ReactUtils';
 import {
+  isLayoutHorizontal,
   getCateCoordinateOfBar,
   getValueByDataKey,
   truncateByDomain,
@@ -182,7 +183,7 @@ Bar.getComposedData = ({
     children,
     minPointSize
   } = item.props
-  , numericAxis = layout === 'horizontal'
+  , numericAxis = isLayoutHorizontal(layout)
      ? yAxis
      : xAxis
   , stackedDomain = stackedData
@@ -206,7 +207,7 @@ Bar.getComposedData = ({
     , height
     , background;
 
-    if (layout === 'horizontal') {
+    if (isLayoutHorizontal(layout)) {
       const [
         baseValueScale,
         currentValueScale

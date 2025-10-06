@@ -107,7 +107,7 @@ Bar.getComposedData = _ref => {
       children,
       minPointSize
     } = item.props,
-    numericAxis = layout === 'horizontal' ? yAxis : xAxis,
+    numericAxis = (0, _ChartUtils.isLayoutHorizontal)(layout) ? yAxis : xAxis,
     stackedDomain = stackedData ? numericAxis.scale.domain() : null,
     baseValue = (0, _ChartUtils.getBaseValueOfBar)({
       numericAxis
@@ -121,7 +121,7 @@ Bar.getComposedData = _ref => {
       width,
       height,
       background;
-    if (layout === 'horizontal') {
+    if ((0, _ChartUtils.isLayoutHorizontal)(layout)) {
       const [baseValueScale, currentValueScale] = [yAxis.scale(value[0]), yAxis.scale(value[1])];
       x = (0, _ChartUtils.getCateCoordinateOfBar)({
         axis: xAxis,
