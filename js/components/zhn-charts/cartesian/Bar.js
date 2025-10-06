@@ -69,8 +69,8 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
 Bar.displayName = 'Bar';
 const _getValueArr = (arrOrValue, baseValue) => (0, _isTypeFn.isArr)(arrOrValue) ? arrOrValue : [baseValue, arrOrValue];
 const _fCrDisplayedDataValue = (stackedData, dataStartIndex, stackedDomain, dataKey, baseValue) => stackedData ? (entry, index) => (0, _ChartUtils.truncateByDomain)(stackedData[dataStartIndex + index], stackedDomain) : (entry, index) => _getValueArr((0, _ChartUtils.getValueByDataKey)(entry, dataKey), baseValue);
-const _mathAbs = Math.abs;
-const _isMinPointSizeCase = (minPointSize, value) => _mathAbs(minPointSize) > 0 && _mathAbs(value) < _mathAbs(minPointSize);
+const _isMinPointSizeCase = (minPointSize, value) => (0, _DataUtils.mathAbs)(minPointSize) > 0 && (0, _DataUtils.mathAbs)(value) < (0, _DataUtils.mathAbs)(minPointSize),
+  _calcMinPointSizeDelta = (minPointSize, value) => (0, _DataUtils.mathSign)(value || minPointSize) * ((0, _DataUtils.mathAbs)(minPointSize) - (0, _DataUtils.mathAbs)(value));
 
 /**
  * Compose the data of each group
@@ -144,7 +144,7 @@ Bar.getComposedData = _ref => {
         width
       };
       if (_isMinPointSizeCase(minPointSize, height)) {
-        const delta = (0, _DataUtils.mathSign)(height || minPointSize) * (Math.abs(minPointSize) - Math.abs(height));
+        const delta = _calcMinPointSizeDelta(minPointSize, height);
         y -= delta;
         height += delta;
       }
@@ -168,8 +168,7 @@ Bar.getComposedData = _ref => {
         height
       };
       if (_isMinPointSizeCase(minPointSize, width)) {
-        const delta = (0, _DataUtils.mathSign)(width || minPointSize) * (Math.abs(minPointSize) - Math.abs(width));
-        width += delta;
+        width += _calcMinPointSizeDelta(minPointSize, width);
       }
     }
     return {

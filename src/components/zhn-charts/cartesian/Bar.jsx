@@ -9,7 +9,10 @@ import {
 import { crCn } from '../../styleFn';
 
 import { IS_SSR } from '../util/Global';
-import { mathSign } from '../util/DataUtils';
+import {
+  mathAbs,
+  mathSign
+} from '../util/DataUtils';
 import { findAllByType } from '../util/ReactUtils';
 import {
   isLayoutHorizontal,
@@ -146,12 +149,15 @@ const _fCrDisplayedDataValue = (
       baseValue
     )
 
-const _mathAbs = Math.abs;
 const _isMinPointSizeCase = (
   minPointSize,
   value
-) => _mathAbs(minPointSize) > 0
-  && _mathAbs(value) < _mathAbs(minPointSize)
+) => mathAbs(minPointSize) > 0
+  && mathAbs(value) < mathAbs(minPointSize)
+, _calcMinPointSizeDelta = (
+  minPointSize,
+  value
+) => mathSign(value || minPointSize) * (mathAbs(minPointSize) - mathAbs(value));  
 
 /**
  * Compose the data of each group
@@ -244,7 +250,7 @@ Bar.getComposedData = ({
         width
       };
       if (_isMinPointSizeCase(minPointSize, height)) {
-        const delta = mathSign(height || minPointSize) * (Math.abs(minPointSize) - Math.abs(height));
+        const delta = _calcMinPointSizeDelta(minPointSize, height);
         y -= delta;
         height += delta;
       }
@@ -274,8 +280,7 @@ Bar.getComposedData = ({
         height
       };
       if (_isMinPointSizeCase(minPointSize, width)) {
-        const delta = mathSign(width || minPointSize) * (Math.abs(minPointSize) - Math.abs(width));
-        width += delta;
+        width += _calcMinPointSizeDelta(minPointSize, width);
       }
     }
     return {
