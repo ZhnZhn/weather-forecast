@@ -70,7 +70,8 @@ Bar.displayName = 'Bar';
 const _getValueArr = (arrOrValue, baseValue) => (0, _isTypeFn.isArr)(arrOrValue) ? arrOrValue : [baseValue, arrOrValue];
 const _fCrDisplayedDataValue = (stackedData, dataStartIndex, stackedDomain, dataKey, baseValue) => stackedData ? (entry, index) => (0, _ChartUtils.truncateByDomain)(stackedData[dataStartIndex + index], stackedDomain) : (entry, index) => _getValueArr((0, _ChartUtils.getValueByDataKey)(entry, dataKey), baseValue);
 const _isMinPointSizeCase = (minPointSize, value) => (0, _DataUtils.mathAbs)(minPointSize) > 0 && (0, _DataUtils.mathAbs)(value) < (0, _DataUtils.mathAbs)(minPointSize),
-  _calcMinPointSizeDelta = (minPointSize, value) => (0, _DataUtils.mathSign)(value || minPointSize) * ((0, _DataUtils.mathAbs)(minPointSize) - (0, _DataUtils.mathAbs)(value));
+  _calcMinPointSizeDelta = (minPointSize, value) => (0, _DataUtils.mathSign)(value || minPointSize) * ((0, _DataUtils.mathAbs)(minPointSize) - (0, _DataUtils.mathAbs)(value)),
+  _crValueScaleTuple = (xyAxis, value) => [xyAxis.scale(value[0]), xyAxis.scale(value[1])];
 
 /**
  * Compose the data of each group
@@ -124,7 +125,7 @@ Bar.getComposedData = _ref => {
       height,
       background;
     if ((0, _ChartUtils.isLayoutHorizontal)(layout)) {
-      const [baseValueScale, currentValueScale] = [yAxis.scale(value[0]), yAxis.scale(value[1])];
+      const [baseValueScale, currentValueScale] = _crValueScaleTuple(yAxis, value);
       x = (0, _ChartUtils.getCateCoordinateOfBar)({
         axis: xAxis,
         ticks: xAxisTicks,
@@ -149,7 +150,7 @@ Bar.getComposedData = _ref => {
         height += delta;
       }
     } else {
-      const [baseValueScale, currentValueScale] = [xAxis.scale(value[0]), xAxis.scale(value[1])];
+      const [baseValueScale, currentValueScale] = _crValueScaleTuple(xAxis, value);
       x = baseValueScale;
       y = (0, _ChartUtils.getCateCoordinateOfBar)({
         axis: yAxis,

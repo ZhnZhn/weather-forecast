@@ -157,7 +157,15 @@ const _isMinPointSizeCase = (
 , _calcMinPointSizeDelta = (
   minPointSize,
   value
-) => mathSign(value || minPointSize) * (mathAbs(minPointSize) - mathAbs(value));  
+) => mathSign(value || minPointSize) * (mathAbs(minPointSize) - mathAbs(value))
+
+, _crValueScaleTuple = (
+  xyAxis,
+  value
+) => [
+  xyAxis.scale(value[0]),
+  xyAxis.scale(value[1])
+]
 
 /**
  * Compose the data of each group
@@ -224,10 +232,7 @@ Bar.getComposedData = ({
       const [
         baseValueScale,
         currentValueScale
-      ] = [
-        yAxis.scale(value[0]),
-        yAxis.scale(value[1])
-      ];
+      ] = _crValueScaleTuple(yAxis, value);
       x = getCateCoordinateOfBar({
         axis: xAxis,
         ticks: xAxisTicks,
@@ -258,10 +263,7 @@ Bar.getComposedData = ({
       const [
         baseValueScale,
         currentValueScale
-      ] = [
-        xAxis.scale(value[0]),
-        xAxis.scale(value[1])
-      ];
+      ] = _crValueScaleTuple(xAxis, value);
       x = baseValueScale;
       y = getCateCoordinateOfBar({
         axis: yAxis,
