@@ -14,8 +14,8 @@ let reI = "\\s*([+-]?\\d+)\\s*"
 , reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`)
 , reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`)
 , reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`)
-, reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`)
-, reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
+//, reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`)
+//, reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
 
 /*
 const named = {
@@ -174,6 +174,7 @@ const mathMin = Math.min
 , mathMax = Math.max
 , mathPow = Math.pow
 , mathRound = Math.round
+/*
 , clamph = value => {
   value = (value || 0) % 360;
   return value < 0
@@ -190,6 +191,7 @@ const mathMin = Math.min
   : h < 180 ? m2
   : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
   : m1) * 255;
+*/
 
 define(Color, color, {
   copy(channels) {
@@ -201,7 +203,7 @@ define(Color, color, {
   hex: color_formatHex, // Deprecated! Use color.formatHex.
   formatHex: color_formatHex,
   formatHex8: color_formatHex8,
-  formatHsl: color_formatHsl,
+  //formatHsl: color_formatHsl,
   formatRgb: color_formatRgb,
   toString: color_formatRgb
 });
@@ -214,9 +216,11 @@ function color_formatHex8() {
   return this.rgb().formatHex8();
 }
 
+/*
 function color_formatHsl() {
   return hslConvert(this).formatHsl();
 }
+*/
 
 function color_formatRgb() {
   return this.rgb().formatRgb();
@@ -234,8 +238,8 @@ export default function color(format) {
       : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
       : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
       : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-      : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-      : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+      //: (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+      //: (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
       //: named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
       : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
       : null;
@@ -343,14 +347,16 @@ function hex(value) {
   return (value < 16 ? "0" : "") + value.toString(16);
 }
 
+/*
 function hsla(h, s, l, a) {
   if (a <= 0) h = s = l = NaN;
   else if (l <= 0 || l >= 1) h = s = NaN;
   else if (s <= 0) h = NaN;
   return new Hsl(h, s, l, a);
 }
+*/
 
-
+/*
 export function hslConvert(o) {
   if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
   if (!(o instanceof Color)) o = color(o);
@@ -376,7 +382,9 @@ export function hslConvert(o) {
   }
   return new Hsl(h, s, l, o.opacity);
 }
+*/
 
+/*
 export function hsl(...args) {
   const [
     h, s, l, opacity
@@ -385,15 +393,18 @@ export function hsl(...args) {
     ? hslConvert(h)
     : new Hsl(h, s, l, opacity == null ? 1 : opacity);
 }
+*/
 
-
+/*
 function Hsl(h, s, l, opacity) {
   this.h = +h;
   this.s = +s;
   this.l = +l;
   this.opacity = +opacity;
 }
+*/
 
+/*
 define(Hsl, hsl, extend(Color, {
   brighter(k) {
     k = k == null
@@ -443,3 +454,4 @@ define(Hsl, hsl, extend(Color, {
     return `${a === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
   }
 }));
+*/

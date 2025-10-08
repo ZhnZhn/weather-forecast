@@ -4,8 +4,6 @@ exports.__esModule = true;
 exports.Rgb = Rgb;
 exports.darker = exports.brighter = void 0;
 exports.default = color;
-exports.hsl = hsl;
-exports.hslConvert = hslConvert;
 exports.rgb = rgb;
 exports.rgbConvert = rgbConvert;
 var _define = _interopRequireWildcard(require("./define"));
@@ -21,9 +19,9 @@ let reI = "\\s*([+-]?\\d+)\\s*",
   reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`),
   reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`),
   reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`),
-  reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`),
-  reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`),
-  reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
+  reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`);
+//, reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`)
+//, reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
 
 /*
 const named = {
@@ -181,15 +179,26 @@ const named = {
 const mathMin = Math.min,
   mathMax = Math.max,
   mathPow = Math.pow,
-  mathRound = Math.round,
-  clamph = value => {
-    value = (value || 0) % 360;
-    return value < 0 ? value + 360 : value;
-  },
-  clampt = value => mathMax(0, mathMin(1, value || 0))
-  // From FvD 13.37, CSS Color Module Level 3
-  ,
-  hsl2rgb = (h, m1, m2) => (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
+  mathRound = Math.round;
+/*
+, clamph = value => {
+  value = (value || 0) % 360;
+  return value < 0
+    ? value + 360
+    : value;
+}
+, clampt = value => mathMax(0, mathMin(1, value || 0))
+// From FvD 13.37, CSS Color Module Level 3
+, hsl2rgb = (
+  h,
+  m1,
+  m2
+) => (h < 60 ? m1 + (m2 - m1) * h / 60
+  : h < 180 ? m2
+  : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+  : m1) * 255;
+*/
+
 (0, _define.default)(Color, color, {
   copy(channels) {
     return Object.assign(new this.constructor(), this, channels);
@@ -201,7 +210,7 @@ const mathMin = Math.min,
   // Deprecated! Use color.formatHex.
   formatHex: color_formatHex,
   formatHex8: color_formatHex8,
-  formatHsl: color_formatHsl,
+  //formatHsl: color_formatHsl,
   formatRgb: color_formatRgb,
   toString: color_formatRgb
 });
@@ -211,9 +220,13 @@ function color_formatHex() {
 function color_formatHex8() {
   return this.rgb().formatHex8();
 }
+
+/*
 function color_formatHsl() {
   return hslConvert(this).formatHsl();
 }
+*/
+
 function color_formatRgb() {
   return this.rgb().formatRgb();
 }
@@ -229,8 +242,8 @@ function color(format) {
   : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
   : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
   : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-  : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-  : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+  //: (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+  //: (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
   //: named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
   : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
 }
@@ -305,26 +318,35 @@ function hex(value) {
   value = clampi(value);
   return (value < 16 ? "0" : "") + value.toString(16);
 }
+
+/*
 function hsla(h, s, l, a) {
-  if (a <= 0) h = s = l = NaN;else if (l <= 0 || l >= 1) h = s = NaN;else if (s <= 0) h = NaN;
+  if (a <= 0) h = s = l = NaN;
+  else if (l <= 0 || l >= 1) h = s = NaN;
+  else if (s <= 0) h = NaN;
   return new Hsl(h, s, l, a);
 }
-function hslConvert(o) {
+*/
+
+/*
+export function hslConvert(o) {
   if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
   if (!(o instanceof Color)) o = color(o);
-  if (!o) return new Hsl();
+  if (!o) return new Hsl;
   if (o instanceof Hsl) return o;
   o = o.rgb();
-  let r = o.r / 255,
-    g = o.g / 255,
-    b = o.b / 255,
-    min = mathMin(r, g, b),
-    max = mathMax(r, g, b),
-    h = NaN,
-    s = max - min,
-    l = (max + min) / 2;
+  let r = o.r / 255
+  , g = o.g / 255
+  , b = o.b / 255
+  , min = mathMin(r, g, b)
+  , max = mathMax(r, g, b)
+  , h = NaN
+  , s = max - min
+  , l = (max + min) / 2;
   if (s) {
-    if (r === max) h = (g - b) / s + (g < b) * 6;else if (g === max) h = (b - r) / s + 2;else h = (r - g) / s + 4;
+    if (r === max) h = (g - b) / s + (g < b) * 6;
+    else if (g === max) h = (b - r) / s + 2;
+    else h = (r - g) / s + 4;
     s /= l < 0.5 ? max + min : 2 - max - min;
     h *= 60;
   } else {
@@ -332,45 +354,77 @@ function hslConvert(o) {
   }
   return new Hsl(h, s, l, o.opacity);
 }
-function hsl() {
-  for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-    args[_key2] = arguments[_key2];
-  }
-  const [h, s, l, opacity] = args;
-  return args.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+*/
+
+/*
+export function hsl(...args) {
+  const [
+    h, s, l, opacity
+  ] = args;
+  return args.length === 1
+    ? hslConvert(h)
+    : new Hsl(h, s, l, opacity == null ? 1 : opacity);
 }
+*/
+
+/*
 function Hsl(h, s, l, opacity) {
   this.h = +h;
   this.s = +s;
   this.l = +l;
   this.opacity = +opacity;
 }
-(0, _define.default)(Hsl, hsl, (0, _define.extend)(Color, {
+*/
+
+/*
+define(Hsl, hsl, extend(Color, {
   brighter(k) {
-    k = k == null ? brighter : mathPow(brighter, k);
-    return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    k = k == null
+      ? brighter
+      : mathPow(brighter, k);
+    return new Hsl(
+      this.h,
+      this.s,
+      this.l * k,
+      this.opacity
+    );
   },
   darker(k) {
-    k = k == null ? darker : mathPow(darker, k);
-    return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    k = k == null
+      ? darker
+      : mathPow(darker, k);
+    return new Hsl(
+      this.h,
+      this.s,
+      this.l * k,
+      this.opacity
+    );
   },
   rgb() {
-    let h = this.h % 360 + (this.h < 0) * 360,
-      s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
-      l = this.l,
-      m2 = l + (l < 0.5 ? l : 1 - l) * s,
-      m1 = 2 * l - m2;
-    return new Rgb(hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb(h, m1, m2), hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+    let h = this.h % 360 + (this.h < 0) * 360
+    , s = isNaN(h) || isNaN(this.s) ? 0 : this.s
+    , l = this.l
+    , m2 = l + (l < 0.5 ? l : 1 - l) * s
+    , m1 = 2 * l - m2;
+    return new Rgb(
+      hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
+      hsl2rgb(h, m1, m2),
+      hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
+      this.opacity
+    );
   },
   clamp() {
     return new Hsl(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
   },
   displayable() {
-    return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
+    return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+        && (0 <= this.l && this.l <= 1)
+        && (0 <= this.opacity && this.opacity <= 1);
   },
   formatHsl() {
     const a = clampa(this.opacity);
     return `${a === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
   }
 }));
+*/
 //# sourceMappingURL=color.js.map

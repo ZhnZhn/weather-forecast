@@ -2,9 +2,11 @@ import {
   color,
   rgb,
 } from "../index";
+/*
 import {
   hsl
 } from "../color";
+*/
 
 import {
   assertRgbApproxEqual,
@@ -32,41 +34,43 @@ describe('d3Color rgb', () => {
   it("rgb.toString() formats as rgb(…) or rgba(…)", () => {
     expect(rgb("#abcdef") + "").toBe("rgb(171, 205, 239)");
     expect(rgb(COLOR_MOCCASIN) + "").toBe("rgb(255, 228, 181)");
-    expect(rgb("hsl(60, 100%, 20%)") + "").toBe("rgb(102, 102, 0)");
+    //expect(rgb("hsl(60, 100%, 20%)") + "").toBe("rgb(102, 102, 0)");
     expect(rgb("rgb(12, 34, 56)") + "").toBe("rgb(12, 34, 56)");
     expect(rgb(rgb(12, 34, 56)) + "").toBe("rgb(12, 34, 56)");
-    expect(rgb(hsl(60, 1, 0.2)) + "").toBe("rgb(102, 102, 0)");
+    //expect(rgb(hsl(60, 1, 0.2)) + "").toBe("rgb(102, 102, 0)");
     expect(rgb("rgba(12, 34, 56, 0.4)") + "").toBe("rgba(12, 34, 56, 0.4)");
     expect(rgb("rgba(12%, 34%, 56%, 0.4)") + "").toBe("rgba(31, 87, 143, 0.4)");
-    expect(rgb("hsla(60, 100%, 20%, 0.4)") + "").toBe("rgba(102, 102, 0, 0.4)");
+    //expect(rgb("hsla(60, 100%, 20%, 0.4)") + "").toBe("rgba(102, 102, 0, 0.4)");
   });
 
   it("rgb.formatRgb() formats as rgb(…) or rgba(…)", () => {
     expect(rgb("#abcdef").formatRgb()).toBe("rgb(171, 205, 239)");
-    expect(rgb("hsl(60, 100%, 20%)").formatRgb()).toBe("rgb(102, 102, 0)");
+    //expect(rgb("hsl(60, 100%, 20%)").formatRgb()).toBe("rgb(102, 102, 0)");
     expect(rgb("rgba(12%, 34%, 56%, 0.4)").formatRgb()).toBe("rgba(31, 87, 143, 0.4)");
-    expect(rgb("hsla(60, 100%, 20%, 0.4)").formatRgb()).toBe("rgba(102, 102, 0, 0.4)");
+    //expect(rgb("hsla(60, 100%, 20%, 0.4)").formatRgb()).toBe("rgba(102, 102, 0, 0.4)");
   });
 
+  /*
   it("rgb.formatHsl() formats as hsl(…) or hsla(…)", () => {
     expect(rgb("#abcdef").formatHsl()).toBe("hsl(210, 68%, 80.3921568627451%)");
     expect(rgb("hsl(60, 100%, 20%)").formatHsl()).toBe("hsl(60, 100%, 20%)");
     expect(rgb("rgba(12%, 34%, 56%, 0.4)").formatHsl()).toBe("hsla(210, 64.70588235294117%, 34%, 0.4)");
     expect(rgb("hsla(60, 100%, 20%, 0.4)").formatHsl()).toBe("hsla(60, 100%, 20%, 0.4)");
   });
+  */
 
   it("rgb.formatHex() formats as #rrggbb", () => {
     expect(rgb("#abcdef").formatHex()).toBe("#abcdef");
-    expect(rgb("hsl(60, 100%, 20%)").formatHex()).toBe("#666600");
+    //expect(rgb("hsl(60, 100%, 20%)").formatHex()).toBe("#666600");
     expect(rgb("rgba(12%, 34%, 56%, 0.4)").formatHex()).toBe("#1f578f");
-    expect(rgb("hsla(60, 100%, 20%, 0.4)").formatHex()).toBe("#666600");
+    //expect(rgb("hsla(60, 100%, 20%, 0.4)").formatHex()).toBe("#666600");
   });
 
   it("rgb.formatHex8() formats as #rrggbbaa", () => {
     expect(rgb("#abcdef").formatHex8()).toBe("#abcdefff");
-    expect(rgb("hsl(60, 100%, 20%)").formatHex8()).toBe("#666600ff");
+    //expect(rgb("hsl(60, 100%, 20%)").formatHex8()).toBe("#666600ff");
     expect(rgb("rgba(12%, 34%, 56%, 0.4)").formatHex8()).toBe("#1f578f66");
-    expect(rgb("hsla(60, 100%, 20%, 0.4)").formatHex8()).toBe("#66660066");
+    //expect(rgb("hsla(60, 100%, 20%, 0.4)").formatHex8()).toBe("#66660066");
   });
 
   it("rgb.hex() is an alias for rgb.formatHex()", () => {
@@ -163,9 +167,9 @@ describe('d3Color rgb', () => {
     assertRgbApproxEqual(rgb("#abc"), 170, 187, 204, 1);
     assertRgbApproxEqual(rgb("rgb(12, 34, 56)"), 12, 34, 56, 1);
     assertRgbApproxEqual(rgb("rgb(12%, 34%, 56%)"), 31, 87, 143, 1);
-    assertRgbApproxEqual(rgb("hsl(60,100%,20%)"), 102, 102, 0, 1);
+    //assertRgbApproxEqual(rgb("hsl(60,100%,20%)"), 102, 102, 0, 1);
     assertRgbApproxEqual(rgb(COLOR_ALICEBLUE), 240, 248, 255, 1);
-    assertRgbApproxEqual(rgb("hsla(60,100%,20%,0.4)"), 102, 102, 0, 0.4);
+    //assertRgbApproxEqual(rgb("hsla(60,100%,20%,0.4)"), 102, 102, 0, 0.4);
   });
 
   it("rgb(format) ignores all channels if the alpha is <= 0", () => {
@@ -186,10 +190,12 @@ describe('d3Color rgb', () => {
     assertRgbApproxEqual(c2, 70, 130, 180, 0.4);
   });
 
+  /*
   it("rgb(hsl) converts from HSL", () => {
     assertRgbApproxEqual(rgb(hsl(0, 1, 0.5)), 255, 0, 0, 1);
     assertRgbApproxEqual(rgb(hsl(0, 1, 0.5, 0.4)), 255, 0, 0, 0.4);
   });
+  */
 
   it("rgb(color) converts from another colorspace via rgb()", () => {
     function TestColor() {}

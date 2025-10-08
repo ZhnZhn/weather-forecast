@@ -147,10 +147,22 @@ describe('d3Scale linear', () => {
     expect((0, _index.scaleLinear)().range([COLOR_RED, COLOR_BLUE])(0.5)).toBe("rgb(128, 0, 128)");
     expect((0, _index.scaleLinear)().range(["#ff0000", "#0000ff"])(0.5)).toBe("rgb(128, 0, 128)");
     expect((0, _index.scaleLinear)().range(["#f00", "#00f"])(0.5)).toBe("rgb(128, 0, 128)");
-    expect((0, _index.scaleLinear)().range(["rgb(255,0,0)", "hsl(240,100%,50%)"])(0.5)).toBe("rgb(128, 0, 128)");
-    expect((0, _index.scaleLinear)().range(["rgb(100%,0%,0%)", "hsl(240,100%,50%)"])(0.5)).toBe("rgb(128, 0, 128)");
-    expect((0, _index.scaleLinear)().range(["hsl(0,100%,50%)", "hsl(240,100%,50%)"])(0.5)).toBe("rgb(128, 0, 128)");
   });
+
+  /*
+  it("linear.range(range) hsl case can accept range values as colors", () => {
+    expect(scaleLinear()
+      .range(["rgb(255,0,0)", "hsl(240,100%,50%)"])(0.5)
+    ).toBe("rgb(128, 0, 128)");
+    expect(scaleLinear()
+      .range(["rgb(100%,0%,0%)", "hsl(240,100%,50%)"])(0.5)
+    ).toBe("rgb(128, 0, 128)");
+    expect(scaleLinear()
+      .range(["hsl(0,100%,50%)", "hsl(240,100%,50%)"])(0.5)
+    ).toBe("rgb(128, 0, 128)");
+  });
+  */
+
   it("linear.range(range) can accept range values as arrays or objects", () => {
     expect((0, _index.scaleLinear)().range([{
       color: COLOR_RED
