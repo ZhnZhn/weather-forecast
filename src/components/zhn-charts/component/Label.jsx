@@ -16,7 +16,7 @@ import { crCn } from "../../styleFn";
 import { Text } from "./Text";
 import {
   findAllByType,
-  //filterProps
+  filterProps
 } from "../util/ReactUtils";
 import {
   isNumOrStr,
@@ -69,7 +69,7 @@ export const Label = (
     <Text
       className={crCn(CL_LABEL, className)}
       // attrs
-      //{...filterProps(_props, true)}
+      {...filterProps(_props, true)}
       // positionAttrs
       {...getAttrsOfCartesianLabel(_props)}
       breakAll={textBreakAll}

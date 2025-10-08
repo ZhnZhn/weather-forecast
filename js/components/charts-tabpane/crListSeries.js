@@ -1,38 +1,36 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports["default"] = void 0;
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+exports.default = void 0;
 var _Chart = require("../charts/Chart");
 var _Chart2 = require("./Chart.Style");
 var _jsxRuntime = require("react/jsx-runtime");
-var _crDataKey = function _crDataKey(filtered, propName) {
-    return filtered[propName] ? 'empty' : propName;
-  },
+const _crDataKey = (filtered, propName) => filtered[propName] ? 'empty' : propName,
   DF_IS_NOT = Object.create(null);
-var crListSeries = function crListSeries(configs, filtered, isNot) {
+const crListSeries = function (configs, filtered, isNot) {
   if (isNot === void 0) {
     isNot = DF_IS_NOT;
   }
-  return configs.map(function (_ref) {
-    var id = _ref.id,
-      type = _ref.type,
-      _ref$yId = _ref.yId,
-      yId = _ref$yId === void 0 ? 1 : _ref$yId,
-      _ref$style = _ref.style,
-      style = _ref$style === void 0 ? _Chart2.S_LINE_TEMP_NIGHT : _ref$style;
+  return configs.map(_ref => {
+    let {
+      id,
+      type,
+      yId = 1,
+      style = _Chart2.S_LINE_TEMP_NIGHT
+    } = _ref;
     if (isNot[id]) {
       return null;
     }
-    var SeriaComp = type === 'bar' ? _Chart.Bar : _Chart.Line;
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)(SeriaComp, (0, _extends2["default"])({}, style, {
+    const _isTypeBar = type === 'bar',
+      SeriaComp = _isTypeBar ? _Chart.Bar : _Chart.Line;
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)(SeriaComp, {
+      ...style,
       connectNulls: true,
       yAxisId: yId,
-      dataKey: _crDataKey(filtered, id)
-    }), id);
+      dataKey: _crDataKey(filtered, id),
+      radius: _isTypeBar ? [3, 3, 0, 0] : void 0
+    }, id);
   });
 };
-var _default = crListSeries;
-exports["default"] = _default;
+var _default = exports.default = crListSeries;
 //# sourceMappingURL=crListSeries.js.map

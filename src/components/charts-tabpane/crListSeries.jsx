@@ -25,9 +25,8 @@ const crListSeries = (
   if (isNot[id]) {
     return null;
   }
-  const SeriaComp = (type === 'bar')
-    ? Bar
-    : Line;
+  const _isTypeBar = type === 'bar'
+  , SeriaComp = _isTypeBar ? Bar : Line;
   return (
     <SeriaComp
       key={id}
@@ -35,6 +34,7 @@ const crListSeries = (
       connectNulls={true}
       yAxisId={yId}
       dataKey={_crDataKey(filtered, id)}
+      radius={_isTypeBar ? [3, 3, 0, 0]: void 0}
     />
   );
 });

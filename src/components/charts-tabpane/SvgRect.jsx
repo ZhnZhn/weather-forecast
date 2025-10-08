@@ -19,7 +19,7 @@ const SvgRest = ({
      style={S_SVG}
   >
     <rect
-      x="3" y="0" width="11" height="18"
+      x="3" y="0" width="11" height="18" rx="2"
       stroke={stroke} fill={fill}
     />
   </Svg100WithTitle>

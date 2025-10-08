@@ -3,9 +3,10 @@
 exports.__esModule = true;
 exports.Surface = void 0;
 var _styleFn = require("../../styleFn");
-var _ReactUtils = require("../util/ReactUtils");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
+//import { filterProps } from '../util/ReactUtils';
+
 const _crViewBox = _ref => {
   let {
     x,
@@ -22,8 +23,8 @@ const Surface = props => {
       height,
       viewBox,
       className,
-      style,
-      ...restProps
+      style
+      //...restProps
     } = props,
     svgView = viewBox || {
       x: 0,
@@ -32,7 +33,7 @@ const Surface = props => {
       height
     };
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("svg", {
-    ...(0, _ReactUtils.filterProps)(restProps, true, 'svg'),
+    //{...filterProps(restProps, true, 'svg')}
     className: (0, _styleFn.crCn)(_CL.CL_RECHARTS_SURFACE, className),
     width: width,
     height: height,

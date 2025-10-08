@@ -1,5 +1,5 @@
 import { crCn } from '../../styleFn';
-import { filterProps } from '../util/ReactUtils';
+//import { filterProps } from '../util/ReactUtils';
 
 import { CL_RECHARTS_SURFACE } from '../CL';
 
@@ -20,13 +20,13 @@ export const Surface = (
     viewBox,
     className,
     style,
-    ...restProps
+    //...restProps
   } = props
   , svgView = viewBox
      || { x: 0, y: 0, width, height };
   return (
     <svg
-      {...filterProps(restProps, true, 'svg')}
+      //{...filterProps(restProps, true, 'svg')}
       className={crCn(CL_RECHARTS_SURFACE, className)}
       width={width}
       height={height}

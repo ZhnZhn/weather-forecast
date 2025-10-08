@@ -1,6 +1,6 @@
 import { crCn } from '../../styleFn';
 
-import { filterProps } from '../util/ReactUtils';
+//import { filterProps } from '../util/ReactUtils';
 import { CL_RECHARTS_LAYER } from '../CL';
 
 export const Layer = ({
@@ -10,9 +10,9 @@ export const Layer = ({
   ...restProps
 }) => (
   <g
-    className={crCn(CL_RECHARTS_LAYER, className)}
-    {...filterProps(restProps, true)}
     ref={refEl}
+    className={crCn(CL_RECHARTS_LAYER, className)}
+    //{...filterProps(restProps, true)}
   >
     {children}
   </g>
