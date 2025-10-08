@@ -1,9 +1,10 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isLikelyOnEventProperty = exports.adaptEventsOfChild = exports.adaptEventHandlers = exports.SVGElementPropKeys = exports.FilteredElementKeyMap = void 0;
+exports.isLikelyOnEventProperty = exports.adaptEventsOfChild = exports.SVGElementPropKeys = exports.FilteredElementKeyMap = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
-var _uiApi = require("../../uiApi");
+//import { isValidElement } from '../../uiApi';
+
 const _getObjectKeys = Object.keys;
 const SVGContainerPropKeys = ['viewBox', 'children'];
 const SVGElementPropKeys = exports.SVGElementPropKeys = ['aria-activedescendant', 'aria-atomic', 'aria-autocomplete', 'aria-busy', 'aria-checked', 'aria-colcount', 'aria-colindex', 'aria-colspan', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-flowto', 'aria-haspopup', 'aria-hidden', 'aria-invalid', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-level', 'aria-live', 'aria-modal', 'aria-multiline', 'aria-multiselectable', 'aria-orientation', 'aria-owns', 'aria-placeholder', 'aria-posinset', 'aria-pressed', 'aria-readonly', 'aria-relevant', 'aria-required', 'aria-roledescription', 'aria-rowcount', 'aria-rowindex', 'aria-rowspan', 'aria-selected', 'aria-setsize', 'aria-sort', 'aria-valuemax', 'aria-valuemin', 'aria-valuenow', 'aria-valuetext', 'className', 'color', 'height', 'id', 'lang', 'max', 'media', 'method', 'min', 'name', 'style',
@@ -24,23 +25,31 @@ const FilteredElementKeyMap = exports.FilteredElementKeyMap = {
   polyline: PolyElementKeys
 };
 const isLikelyOnEventProperty = propName => (propName || '').slice(0, 2) === 'on' && /^[A-Z]/.test((propName || '')[2]);
-exports.isLikelyOnEventProperty = isLikelyOnEventProperty;
-const adaptEventHandlers = (props, newHandler) => {
-  if (!props || (0, _isTypeFn.isFn)(props) || (0, _isTypeFn.isBool)(props)) {
+
+/*
+export const adaptEventHandlers = (
+  props,
+  newHandler
+) => {
+  if (!props || isFn(props) || isBool(props)) {
     return null;
   }
   let inputProps = props;
-  if ((0, _uiApi.isValidElement)(props)) {
+  if (isValidElement(props)) {
     inputProps = props.props;
   }
-  return (0, _isTypeFn.isObj)(inputProps) ? _getObjectKeys(inputProps).reduce((eventProps, propName) => {
-    if (isLikelyOnEventProperty(propName)) {
-      eventProps[propName] = newHandler || (evt => inputProps[propName](inputProps, evt));
-    }
-    return eventProps;
-  }, {}) : null;
+
+  return isObj(inputProps) ? _getObjectKeys(inputProps)
+    .reduce((eventProps, propName) => {
+      if (isLikelyOnEventProperty(propName)) {
+        eventProps[propName] = newHandler
+          || ((evt) => inputProps[propName](inputProps, evt));
+      }
+      return eventProps;
+    }, {}) : null;
 };
-exports.adaptEventHandlers = adaptEventHandlers;
+*/
+exports.isLikelyOnEventProperty = isLikelyOnEventProperty;
 const getEventHandlerOfChild = (originalHandler, data, index) => evt => {
   originalHandler(data, index, evt);
   return null;

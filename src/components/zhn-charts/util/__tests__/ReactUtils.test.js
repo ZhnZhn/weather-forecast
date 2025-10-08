@@ -17,7 +17,7 @@ import {
   //withoutType,
 } from '../ReactUtils';
 import {
-  adaptEventHandlers,
+  //adaptEventHandlers,
   adaptEventsOfChild
 } from '../types';
 
@@ -153,6 +153,7 @@ describe('ReactUtils', () => {
     });
   });
 
+  /*
   describe('adaptEventHandlers', () => {
     test('adaptEventHandlers return event attributes', () => {
       const resultKeys = Object.keys(adaptEventHandlers({
@@ -169,6 +170,7 @@ describe('ReactUtils', () => {
       expect(adaptEventHandlers(1)).toBe(null);
     });
   });
+  */
 
   describe('adaptEventsOfChild', () => {
     test('adaptEventsOfChild return null when input is not a props', () => {

@@ -1,35 +1,29 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 var _react = require("@testing-library/react");
 var _index = require("../../index");
 var _ReactUtils = require("../ReactUtils");
 var _types = require("../types");
 var _jsxRuntime = require("react/jsx-runtime");
-var _crElementKeys = function _crElementKeys(elements) {
-  return elements.map(function (el) {
-    return el.key;
-  });
-};
-describe('ReactUtils', function () {
-  describe('filterProps', function () {
-    test('should call filterProps wtesth any boolean and return a null result', function () {
+const _crElementKeys = elements => elements.map(el => el.key);
+describe('ReactUtils', () => {
+  describe('filterProps', () => {
+    test('should call filterProps wtesth any boolean and return a null result', () => {
       expect((0, _ReactUtils.filterProps)(true)).toBe(null);
       expect((0, _ReactUtils.filterProps)(false)).toBe(null);
     });
-    test('should call filterProps wtesth a non-object and return null', function () {
+    test('should call filterProps wtesth a non-object and return null', () => {
       expect((0, _ReactUtils.filterProps)(125)).toBe(null);
     });
-    test('should call filterProps wtesth a react element extract properties and filter out non-svg properties', function () {
-      expect((0, _ReactUtils.filterProps)( /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+    test('should call filterProps wtesth a react element extract properties and filter out non-svg properties', () => {
+      expect((0, _ReactUtils.filterProps)(/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
         id: "test",
         value: 1
       }))).toEqual({
         id: 'test'
       });
     });
-    test('should pass props and filter out non wanted properties', function () {
+    test('should pass props and filter out non wanted properties', () => {
       expect((0, _ReactUtils.filterProps)({
         test: '1234',
         helloWorld: 1234,
@@ -41,7 +35,7 @@ describe('ReactUtils', function () {
         dy: 1
       });
     });
-    test('should expect viewBox on type "svg"', function () {
+    test('should expect viewBox on type "svg"', () => {
       expect((0, _ReactUtils.filterProps)({
         test: '1234',
         helloWorld: 1234,
@@ -50,7 +44,7 @@ describe('ReactUtils', function () {
         viewBox: '0 0 0 0'
       });
     });
-    test('should include events when includeEvents is true', function () {
+    test('should include events when includeEvents is true', () => {
       expect((0, _ReactUtils.filterProps)({
         test: '1234',
         helloWorld: 1234,
@@ -61,7 +55,7 @@ describe('ReactUtils', function () {
         onClick: expect.any(Function)
       });
     });
-    test('should filter out "points" attribute when included without an svg type that explicitly uses "points"', function () {
+    test('should filter out "points" attribute when included without an svg type that explicitly uses "points"', () => {
       expect((0, _ReactUtils.filterProps)({
         test: '1234',
         points: '1234',
@@ -70,8 +64,8 @@ describe('ReactUtils', function () {
         onClick: expect.any(Function)
       });
     });
-    test('filterProps return presentation attributes', function () {
-      var resultKeys = Object.keys((0, _ReactUtils.filterProps)({
+    test('filterProps return presentation attributes', () => {
+      const resultKeys = Object.keys((0, _ReactUtils.filterProps)({
         stroke: '#000',
         fill: '#000',
         r: 6
@@ -81,87 +75,90 @@ describe('ReactUtils', function () {
       expect(resultKeys).toContain('r');
     });
   });
-  describe('isValidSpreadableProp', function () {
-    test('return true for valid SVG element attribute', function () {
-      var isValid = (0, _ReactUtils.isValidSpreadableProp)(42, 'height');
+  describe('isValidSpreadableProp', () => {
+    test('return true for valid SVG element attribute', () => {
+      const isValid = (0, _ReactUtils.isValidSpreadableProp)(42, 'height');
       expect(isValid).toBe(true);
     });
-    test('return false for invalid SVG element attribute', function () {
-      var isValid = (0, _ReactUtils.isValidSpreadableProp)(42, 'type');
+    test('return false for invalid SVG element attribute', () => {
+      const isValid = (0, _ReactUtils.isValidSpreadableProp)(42, 'type');
       expect(isValid).toBe(false);
     });
-    test('return true for event when includeEvents is true', function () {
-      var isValid = (0, _ReactUtils.isValidSpreadableProp)(function () {
-        return true;
-      }, 'onClick', true);
+    test('return true for event when includeEvents is true', () => {
+      const isValid = (0, _ReactUtils.isValidSpreadableProp)(() => true, 'onClick', true);
       expect(isValid).toBe(true);
     });
-    test('return true for valid SVGElementType', function () {
-      var isValid = (0, _ReactUtils.isValidSpreadableProp)('00 00 00 00', 'points', false, 'polyline');
+    test('return true for valid SVGElementType', () => {
+      const isValid = (0, _ReactUtils.isValidSpreadableProp)('00 00 00 00', 'points', false, 'polyline');
       expect(isValid).toBe(true);
     });
   });
-  describe('getDisplayName', function () {
-    test('getDisplayName return empty string when has a null as input', function () {
+  describe('getDisplayName', () => {
+    test('getDisplayName return empty string when has a null as input', () => {
       // added never casting to test runtime value
-      var result = (0, _ReactUtils.getDisplayName)(null);
+      const result = (0, _ReactUtils.getDisplayName)(null);
       expect(result).toBe('');
     });
-    test('getDisplayName return the same string when has a string as input', function () {
-      var result = (0, _ReactUtils.getDisplayName)('test');
+    test('getDisplayName return the same string when has a string as input', () => {
+      const result = (0, _ReactUtils.getDisplayName)('test');
       expect(result).toBe('test');
     });
-    test('getDisplayName return the "Component" when has an object as input', function () {
-      var test = {},
+    test('getDisplayName return the "Component" when has an object as input', () => {
+      const test = {},
         result = (0, _ReactUtils.getDisplayName)(test);
       expect(result).toBe('Component');
     });
   });
-  describe('adaptEventHandlers', function () {
-    test('adaptEventHandlers return event attributes', function () {
-      var resultKeys = Object.keys((0, _types.adaptEventHandlers)({
+
+  /*
+  describe('adaptEventHandlers', () => {
+    test('adaptEventHandlers return event attributes', () => {
+      const resultKeys = Object.keys(adaptEventHandlers({
         a: 1,
-        onMouseEnter: jest.fn()
+        onMouseEnter: jest.fn(),
       }));
       expect(resultKeys).toContain('onMouseEnter');
       expect(resultKeys).not.toContain('a');
     });
-    test('adaptEventHandlers return null when input is not a react element', function () {
-      expect((0, _types.adaptEventHandlers)(null)).toBe(null);
-      expect((0, _types.adaptEventHandlers)(jest.fn())).toBe(null);
-      expect((0, _types.adaptEventHandlers)(1)).toBe(null);
+      test('adaptEventHandlers return null when input is not a react element', () => {
+      expect(adaptEventHandlers(null)).toBe(null);
+      expect(adaptEventHandlers(jest.fn())).toBe(null);
+      expect(adaptEventHandlers(1)).toBe(null);
     });
   });
-  describe('adaptEventsOfChild', function () {
-    test('adaptEventsOfChild return null when input is not a props', function () {
+  */
+
+  describe('adaptEventsOfChild', () => {
+    test('adaptEventsOfChild return null when input is not a props', () => {
       expect((0, _types.adaptEventsOfChild)(null, undefined, 0)).toBe(null);
       expect((0, _types.adaptEventsOfChild)(1, undefined, 0)).toBe(null);
     });
   });
-  describe('validateWidthHeight', function () {
-    test('validateWidthHeight return false when a react element has width or height smaller than 0', function () {
-      var _render = (0, _react.render)( /*#__PURE__*/(0, _jsxRuntime.jsxs)(_index.LineChart, {
-          width: 0,
-          height: 0,
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
-            dataKey: "a"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
-            dataKey: "b"
-          })]
-        })),
-        container = _render.container;
+  describe('validateWidthHeight', () => {
+    test('validateWidthHeight return false when a react element has width or height smaller than 0', () => {
+      const {
+        container
+      } = (0, _react.render)(/*#__PURE__*/(0, _jsxRuntime.jsxs)(_index.LineChart, {
+        width: 0,
+        height: 0,
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
+          dataKey: "a"
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
+          dataKey: "b"
+        })]
+      }));
       expect((0, _ReactUtils.validateWidthHeight)(container)).toBe(false);
     });
-    test('validateWidthHeight return false when input is not a react element', function () {
+    test('validateWidthHeight return false when input is not a react element', () => {
       expect((0, _ReactUtils.validateWidthHeight)({
         a: 1
       })).toBe(false);
       expect((0, _ReactUtils.validateWidthHeight)(jest.fn())).toBe(false);
     });
   });
-  describe('isChildrenEqual', function () {
-    test('isChildrenEqual when children has no null children', function () {
-      var children = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+  describe('isChildrenEqual', () => {
+    test('isChildrenEqual when children has no null children', () => {
+      const children = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
           dataKey: "a"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
@@ -179,8 +176,8 @@ describe('ReactUtils', function () {
       })];
       expect((0, _ReactUtils.isChildrenEqual)(children, children)).toBe(true);
     });
-    test('isChildrenEqual when children has null children', function () {
-      var children = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    test('isChildrenEqual when children has null children', () => {
+      const children = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
           dataKey: "a"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
@@ -198,8 +195,8 @@ describe('ReactUtils', function () {
       })];
       expect((0, _ReactUtils.isChildrenEqual)(children, children)).toBe(true);
     });
-    test('isChildrenEqual false when children are not equal', function () {
-      var childrenOne = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    test('isChildrenEqual false when children are not equal', () => {
+      const childrenOne = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
           dataKey: "a"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
@@ -215,7 +212,7 @@ describe('ReactUtils', function () {
           children: "12"
         })]
       })];
-      var childrenTwo = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+      const childrenTwo = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
           dataKey: "a"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
@@ -229,36 +226,36 @@ describe('ReactUtils', function () {
       })];
       expect((0, _ReactUtils.isChildrenEqual)(childrenOne, childrenTwo)).toBe(false);
     });
-    test('isChildrenEqual return false when single child are not equal', function () {
-      var childrenOne = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
+    test('isChildrenEqual return false when single child are not equal', () => {
+      const childrenOne = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
         dataKey: "a"
       })];
-      var childrenTwo = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
+      const childrenTwo = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
         dataKey: "b"
       })];
       expect((0, _ReactUtils.isChildrenEqual)(childrenOne, childrenTwo)).toBe(false);
     });
-    test("isChildrenEqual return false when one has child and another don't has child", function () {
-      var childrenOne = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+    test("isChildrenEqual return false when one has child and another don't has child", () => {
+      const childrenOne = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
         children: null
       })];
-      var childrenTwo = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+      const childrenTwo = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
           dataKey: "b"
         })
       })];
       expect((0, _ReactUtils.isChildrenEqual)(childrenOne, childrenTwo)).toBe(false);
     });
-    test('isChildrenEqual return true when only has a child in an array', function () {
-      var childrenOne = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
-        children: ['A'].map(function (value) {
+    test('isChildrenEqual return true when only has a child in an array', () => {
+      const childrenOne = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+        children: ['A'].map(value => {
           return /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
             dataKey: value
           }, value);
         })
       })];
-      var childrenTwo = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
-        children: ['B'].map(function (value) {
+      const childrenTwo = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+        children: ['B'].map(value => {
           return /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
             dataKey: value
           }, value);
@@ -267,9 +264,9 @@ describe('ReactUtils', function () {
       expect((0, _ReactUtils.isChildrenEqual)(childrenOne, childrenTwo)).toBe(false);
     });
   });
-  describe('toArray', function () {
-    test('basic', function () {
-      var children = [/*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
+  describe('toArray', () => {
+    test('basic', () => {
+      const children = [/*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
           children: "1"
         }, "1"), /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
           children: "2"
@@ -280,8 +277,8 @@ describe('ReactUtils', function () {
       expect(result.length).toBe(3);
       expect(_crElementKeys(result)).toEqual(['1', '2', '3']);
     });
-    test('Array', function () {
-      var children = [/*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
+    test('Array', () => {
+      const children = [/*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
           children: "1"
         }, "1"), /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
           children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
@@ -294,39 +291,27 @@ describe('ReactUtils', function () {
       expect(result.length).toBe(3);
       expect(_crElementKeys(result)).toEqual(['1', '2', '3']);
     });
-    test('Ignores `undefined` and `null`', function () {
-      var children = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    test('Ignores `undefined` and `null`', () => {
+      const children = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
           children: [null, /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {}, "1"), null, undefined, /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {}, "2"), undefined, /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {}, "3")]
         })],
         result = (0, _ReactUtils.toArray)(children);
       expect(result.length).toBe(3);
       expect(_crElementKeys(result)).toEqual(['1', '2', '3']);
     });
-    test('Iterable', function () {
-      var _iterable;
-      var iterable = (_iterable = {}, _iterable[Symbol.iterator] = /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-        return _regenerator["default"].wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
-                children: "5"
-              }, "5");
-            case 2:
-              _context.next = 4;
-              return null;
-            case 4:
-              _context.next = 6;
-              return /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
-                children: "6"
-              }, "6");
-            case 6:
-            case "end":
-              return _context.stop();
-          }
-        }, _callee);
-      }), _iterable);
-      var children = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    test('Iterable', () => {
+      const iterable = {
+        *[Symbol.iterator]() {
+          yield /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
+            children: "5"
+          }, "5");
+          yield null;
+          yield /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
+            children: "6"
+          }, "6");
+        }
+      };
+      const children = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
           children: [[/*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
             children: "1"
           }, "1")], /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
@@ -341,8 +326,8 @@ describe('ReactUtils', function () {
       expect(result.length).toBe(6);
       expect(_crElementKeys(result)).toEqual(['1', '2', '3', '4', '5', '6']);
     });
-    test('Fragment', function () {
-      var children = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    test('Fragment', () => {
+      const children = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
           children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
             children: "1"
           }, "1"), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
@@ -366,17 +351,17 @@ describe('ReactUtils', function () {
       expect(_crElementKeys(result)).toEqual(['1', '2', '3', '4', '5']);
     });
   });
-  describe('findAllByType', function () {
-    test('findAllByType returns children that matched the type', function () {
-      var children = [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {}, "a"), null, /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
+  describe('findAllByType', () => {
+    test('findAllByType returns children that matched the type', () => {
+      const children = [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {}, "a"), null, /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
           dataKey: "A"
         }), undefined, /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {}, "b"), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {}, "c")],
         lineChildren = (0, _ReactUtils.findAllByType)(children, _index.Line);
       expect(lineChildren.length).toBe(3);
       expect(_crElementKeys(lineChildren)).toEqual(['a', 'b', 'c']);
     });
-    test('findAllByType includes children inside of the fragment', function () {
-      var children = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {}, "a"), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    test('findAllByType includes children inside of the fragment', () => {
+      const children = [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {}, "a"), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
           children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {}, "b"), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {}, "c"), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
             dataKey: "A"
           }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {

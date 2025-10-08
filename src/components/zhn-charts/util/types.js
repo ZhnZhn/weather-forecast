@@ -1,10 +1,10 @@
 import {
   isObj,
   isFn,
-  isBool
+  //isBool
 } from '../../../utils/isTypeFn';
 
-import { isValidElement } from '../../uiApi';
+//import { isValidElement } from '../../uiApi';
 
 const _getObjectKeys = Object.keys;
 const SVGContainerPropKeys = ['viewBox', 'children'];
@@ -334,6 +334,7 @@ export const isLikelyOnEventProperty = (
 ) => (propName || '').slice(0, 2) === 'on'
   && /^[A-Z]/.test((propName || '')[2])
 
+/*
 export const adaptEventHandlers = (
   props,
   newHandler
@@ -355,6 +356,7 @@ export const adaptEventHandlers = (
       return eventProps;
     }, {}) : null;
 };
+*/
 
 const getEventHandlerOfChild = (
   originalHandler,
