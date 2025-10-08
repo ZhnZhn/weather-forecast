@@ -7,10 +7,10 @@ var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _d3Shape = require("../d3Shape");
 var _FnUtils = require("../util/FnUtils");
-var _types = require("../util/types");
-var _ReactUtils = require("../util/ReactUtils");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
+//import { adaptEventHandlers } from '../util/types';
+
 const CURVE_FACTORIES = {
   curveBasisClosed: _d3Shape.curveBasisClosed,
   curveBasisOpen: _d3Shape.curveBasisOpen,
@@ -79,15 +79,18 @@ const DF_PROPS = {
 const Curve = props => {
   const _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
-      className,
       points,
       path,
       pathRef
     } = _props;
   return (!points || !points.length) && !path ? null : /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
-    ...(0, _ReactUtils.filterProps)(_props),
-    ...(0, _types.adaptEventHandlers)(_props),
-    className: (0, _styleFn.crCn)(_CL.CL_CURVE, className),
+    fill: _props.fill,
+    stroke: _props.stroke,
+    strokeWidth: _props.strokeWidth,
+    strokeDasharray: _props.strokeDasharray
+    //{...adaptEventHandlers(_props)}
+    ,
+    className: (0, _styleFn.crCn)(_CL.CL_CURVE, _props.className),
     d: points && points.length ? getPath(props) : path,
     ref: pathRef
   });

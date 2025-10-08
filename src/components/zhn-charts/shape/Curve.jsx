@@ -27,8 +27,7 @@ import {
   _upperFirst
 } from '../util/FnUtils';
 
-import { adaptEventHandlers } from '../util/types';
-import { filterProps } from '../util/ReactUtils';
+//import { adaptEventHandlers } from '../util/types';
 
 import { CL_CURVE } from '../CL';
 
@@ -142,7 +141,6 @@ const DF_PROPS = {
 export const Curve = props => {
   const _props = crProps(DF_PROPS, props)
   , {
-    className,
     points,
     path,
     pathRef
@@ -152,9 +150,12 @@ export const Curve = props => {
     ? null
     : (
        <path
-         {...filterProps(_props)}
-         {...adaptEventHandlers(_props)}
-         className={crCn(CL_CURVE, className)}
+         fill={_props.fill}
+         stroke={_props.stroke}
+         strokeWidth={_props.strokeWidth}
+         strokeDasharray={_props.strokeDasharray}
+         //{...adaptEventHandlers(_props)}
+         className={crCn(CL_CURVE, _props.className)}
          d={points && points.length
              ? getPath(props)
              : path
