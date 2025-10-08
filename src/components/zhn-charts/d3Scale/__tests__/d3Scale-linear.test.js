@@ -1,5 +1,10 @@
 import { scaleLinear } from "../index";
 
+const COLOR_RED = "#ff0000" //red
+, COLOR_BLUE = "#0000ff" // blue
+, COLOR_WHITE = "#ffffff" // white
+, COLOR_GREEN = "#008000" //green
+
 function roundEpsilon(x) {
   return Math.round(x * 1e12) / 1e12;
 }
@@ -14,8 +19,8 @@ describe('d3Scale linear', () => {
     expect(s.unknown()).toBe(undefined);
 
     expect(s.interpolate()(
-      { array: ["red"] },
-      { array: ["blue"] }
+      { array: [COLOR_RED]},
+      { array: [COLOR_BLUE]}
     )(0.5)).toEqual({ array: ["rgb(128, 0, 128)"] });
   });
 
@@ -95,12 +100,12 @@ describe('d3Scale linear', () => {
   it("linear(x) can map a polylinear domain with more than two values to the corresponding range", () => {
     const s = scaleLinear()
       .domain([-10, 0, 100])
-      .range(["red", "white", "green"]);
+      .range([COLOR_RED, COLOR_WHITE, COLOR_GREEN]);
 
     expect(s.domain()).toEqual([-10, 0, 100]);
     expect(s(-5)).toBe("rgb(255, 128, 128)");
     expect(s(50)).toBe("rgb(128, 192, 128)");
-    expect(s(75)).toBe("rgb(64, 160, 64)");
+    expect(s(75)).toBe("rgb(64, 160, 64)");    
 
     s.domain([4, 2, 1]).range([1, 2, 4]);
     expect(s(1.5)).toBe(3);
@@ -230,7 +235,7 @@ describe('d3Scale linear', () => {
 
   it("linear.range(range) can accept range values as colors", () => {
     expect(scaleLinear()
-      .range(["red", "blue"])(0.5)
+      .range([COLOR_RED, COLOR_BLUE])(0.5)
     ).toBe("rgb(128, 0, 128)");
     expect(scaleLinear()
       .range(["#ff0000", "#0000ff"])(0.5)
@@ -251,10 +256,10 @@ describe('d3Scale linear', () => {
 
   it("linear.range(range) can accept range values as arrays or objects", () => {
     expect(scaleLinear()
-      .range([{color: "red"}, {color: "blue"}])(0.5)
+      .range([{color: COLOR_RED}, {color: COLOR_BLUE}])(0.5)
     ).toEqual({color: "rgb(128, 0, 128)"});
     expect(scaleLinear()
-      .range([["red"], ["blue"]])(0.5)
+      .range([[COLOR_RED], [COLOR_BLUE]])(0.5)
     ).toEqual(["rgb(128, 0, 128)"]);
   });
 
@@ -776,7 +781,7 @@ it("linear.copy() returns a copy with changes to the range are isolated", () => 
 });
 
 it("linear.copy() returns a copy with changes to the interpolator are isolated", () => {
-  const x = scaleLinear().range(["red", "blue"]);
+  const x = scaleLinear().range([COLOR_RED, COLOR_BLUE]);
   const y = x.copy();
   const i0 = x.interpolate();
   const i1 = function(a, b) {
@@ -785,7 +790,7 @@ it("linear.copy() returns a copy with changes to the interpolator are isolated",
 
   x.interpolate(i1);
   expect(y.interpolate()).toBe(i0);
-  expect(x(0.5)).toBe("blue");
+  expect(x(0.5)).toBe(COLOR_BLUE);
   expect(y(0.5)).toBe("rgb(128, 0, 128)");
 });
 

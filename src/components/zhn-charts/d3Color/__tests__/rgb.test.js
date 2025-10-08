@@ -11,6 +11,12 @@ import {
   assertRgbEqual
 } from "./asserts.test";
 
+const COLOR_BLACK = "#000000" // black
+, COLOR_MOCCASIN = "#ffe4b5"  // moccasin
+, COLOR_ALICEBLUE = "#f0f8ff"  // aliceblue
+, COLOR_RED = "#ff0000" //red
+, COLOR_WHITE = "#ffffff" // white
+
 describe('d3Color rgb', () => {
   it("rgb(…) returns an instance of rgb and color", () => {
     const c = rgb(70, 130, 180);
@@ -25,7 +31,7 @@ describe('d3Color rgb', () => {
 
   it("rgb.toString() formats as rgb(…) or rgba(…)", () => {
     expect(rgb("#abcdef") + "").toBe("rgb(171, 205, 239)");
-    expect(rgb("moccasin") + "").toBe("rgb(255, 228, 181)");
+    expect(rgb(COLOR_MOCCASIN) + "").toBe("rgb(255, 228, 181)");
     expect(rgb("hsl(60, 100%, 20%)") + "").toBe("rgb(102, 102, 0)");
     expect(rgb("rgb(12, 34, 56)") + "").toBe("rgb(12, 34, 56)");
     expect(rgb(rgb(12, 34, 56)) + "").toBe("rgb(12, 34, 56)");
@@ -158,7 +164,7 @@ describe('d3Color rgb', () => {
     assertRgbApproxEqual(rgb("rgb(12, 34, 56)"), 12, 34, 56, 1);
     assertRgbApproxEqual(rgb("rgb(12%, 34%, 56%)"), 31, 87, 143, 1);
     assertRgbApproxEqual(rgb("hsl(60,100%,20%)"), 102, 102, 0, 1);
-    assertRgbApproxEqual(rgb("aliceblue"), 240, 248, 255, 1);
+    assertRgbApproxEqual(rgb(COLOR_ALICEBLUE), 240, 248, 255, 1);
     assertRgbApproxEqual(rgb("hsla(60,100%,20%,0.4)"), 102, 102, 0, 0.4);
   });
 
@@ -194,9 +200,9 @@ describe('d3Color rgb', () => {
   });
 
   it("rgb.displayable() returns true if the color is within the RGB gamut and opacity is in [0,1]", () => {
-    expect(rgb("white").displayable()).toBe(true);
-    expect(rgb("red").displayable()).toBe(true);
-    expect(rgb("black").displayable()).toBe(true);
+    expect(rgb(COLOR_WHITE).displayable()).toBe(true);
+    expect(rgb(COLOR_RED).displayable()).toBe(true);
+    expect(rgb(COLOR_BLACK).displayable()).toBe(true);
     expect(rgb("invalid").displayable()).toBe(false);
     expect(rgb(-1, 0, 0).displayable()).toBe(false);
     expect(rgb(0, -1, 0).displayable()).toBe(false);
@@ -238,7 +244,7 @@ describe('d3Color rgb', () => {
   });
 
   it("rgb(\"black\").brighter() still returns black", () => {
-    const c1 = rgb("black");
+    const c1 = rgb(COLOR_BLACK);
     const c2 = c1.brighter(1);
     assertRgbApproxEqual(c1, 0, 0, 0, 1);
     assertRgbApproxEqual(c2, 0, 0, 0, 1);
