@@ -15,27 +15,27 @@ import {
   filterProps
 } from '../util/ReactUtils';
 
-import {
-  adaptEventHandlers
-} from '../util/types';
+/*
+import { adaptEventHandlers } from '../util/types';
+*/
 
 import { Dot } from '../shape/Dot';
 import { Layer } from '../container/Layer';
 
 const renderActiveDot = (
   option,
-  props
+  {key, ...restProps}
 ) => {
   const dot = isValidElement(option)
-    ? cloneUiElement(option, props)
+    ? cloneUiElement(option, restProps)
     : isFn(option)
-        ? option(props)
-        : <Dot {...props}/>;
+        ? option(restProps)
+        : <Dot {...restProps}/>;
 
   return (
     <Layer
         className="recharts-active-dot"
-        key={props.key}
+        key={key}
     >
       {dot}
     </Layer>
@@ -70,9 +70,8 @@ export const renderActivePoints = ({
       value: activePoint.value,
       key: `${key}-activePoint-${childIndex}`,
       ...filterProps(activeDot),
-      ...adaptEventHandlers(activeDot),
+      //...adaptEventHandlers(activeDot),
   };
-
   result.push(renderActiveDot(activeDot, dotProps));
 
   if (basePoint) {

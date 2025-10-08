@@ -12,7 +12,6 @@ var _ReactUtils = require("../util/ReactUtils");
 var _DOMUtils = require("../util/DOMUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ChartUtils = require("../util/ChartUtils");
-var _types = require("../util/types");
 var _AccessibilityManager = require("./AccessibilityManager");
 var _fUpdateStateOfAxisOffsetAndStackGroups = require("./fUpdateStateOfAxisOffsetAndStackGroups");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
@@ -23,6 +22,8 @@ var _renderTooltip = require("./renderTooltip");
 var _renderClipPath = require("./renderClipPath");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
+//import { adaptEventHandlers } from '../util/types';
+
 const _inRange = (x, y, props, state) => {
   const {
     layout
@@ -367,12 +368,18 @@ const generateCategoricalChart = _ref => {
           onTouchMove: this.handleTouchMove,
           onTouchStart: this.handleTouchStart,
           onTouchEnd: this.handleTouchEnd
-        } : {},
-        outerEvents = (0, _types.adaptEventHandlers)(this.props, this.handleOuterEvent);
-      return {
-        ...outerEvents,
-        ...tooltipEvents
+        } : {};
+      /*
+      , outerEvents = adaptEventHandlers(
+         this.props,
+         this.handleOuterEvent
+      );
+        return {
+          ...outerEvents,
+          ...tooltipEvents,
       };
+      */
+      return tooltipEvents;
     }
     render() {
       if (!(0, _ReactUtils.validateWidthHeight)(this)) {

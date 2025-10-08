@@ -35,7 +35,7 @@ import {
   isLayoutVertical
 } from '../util/ChartUtils';
 
-import { adaptEventHandlers} from '../util/types';
+//import { adaptEventHandlers } from '../util/types';
 
 import { AccessibilityManager } from './AccessibilityManager';
 import {
@@ -399,15 +399,19 @@ export const generateCategoricalChart = ({
                          onTouchStart: this.handleTouchStart,
                          onTouchEnd: this.handleTouchEnd,
                        }
-                  : {}
+                  : {};
+              /*
               , outerEvents = adaptEventHandlers(
                  this.props,
                  this.handleOuterEvent
               );
+
               return {
                   ...outerEvents,
                   ...tooltipEvents,
               };
+              */
+              return tooltipEvents;
             }
 
             render() {
