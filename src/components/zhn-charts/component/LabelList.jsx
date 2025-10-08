@@ -56,6 +56,7 @@ export const LabelList = (
             : { id: `${id}-${index}` };
           return (
             <Label
+              key={`label-${index}`}
               {...filterProps(entry, true)}
               {...restProps}
               {...idProps}
@@ -63,8 +64,7 @@ export const LabelList = (
               index={index}
               value={value}
               textBreakAll={textBreakAll}
-              viewBox={Label.parseViewBox(isNullOrUndef(clockWise) ? entry : { ...entry, clockWise })}
-              key={`label-${index}`}
+              viewBox={Label.parseViewBox(isNullOrUndef(clockWise) ? entry : { ...entry, clockWise })}              
             />
           );
       })}

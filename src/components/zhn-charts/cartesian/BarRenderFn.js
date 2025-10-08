@@ -1,6 +1,6 @@
 import { JsAnimation } from '../../zhn-animation/JsAnimation';
 
-import { filterProps } from '../util/ReactUtils';
+//import { filterProps } from '../util/ReactUtils';
 import { interpolateNumber } from '../util/DataUtils';
 import { adaptEventsOfChild } from '../util/types';
 
@@ -30,17 +30,18 @@ const _renderRectanglesStatically = (
   data
 ) => {
   const { shape } = props
-  , baseProps = filterProps(props);
+  //, baseProps = filterProps(props);
   return (data && data.map((entry, i) => {
     const rectangleProps = {
-      ...baseProps,
+      ...props,
+      //...baseProps,
       ...entry,
       index: i
     };
     return (
       <Layer
-        {...adaptEventsOfChild(rectangleProps, entry, i)}
         key={`rectangle-${i}`}
+        {...adaptEventsOfChild(rectangleProps, entry, i)}
         className={CL_BAR_RECTANGLE}
       >
         {_renderRectangle(shape, rectangleProps)}
@@ -57,7 +58,7 @@ export const renderBackground = (
     return null;
   }
   const { data } = props
-  , backgroundProps = filterProps(propsBackground);
+  //, backgroundProps = filterProps(propsBackground);
   return data.map((entry, i) => {
     /*eslint-disable no-unused-vars*/
     const {
@@ -74,7 +75,8 @@ export const renderBackground = (
       ...rest,
       fill: '#eee',
       ...background,
-      ...backgroundProps,
+      //...backgroundProps,
+      ...propsBackground,
       ...adaptEventsOfChild(props, entry, i),
       index: i,
       key: `background-bar-${i}`,

@@ -8,8 +8,8 @@ var _Label = require("./Label");
 var _Layer = require("../container/Layer");
 var _ReactUtils = require("../util/ReactUtils");
 var _ChartUtils = require("../util/ChartUtils");
-var _react = require("react");
 var _jsxRuntime = require("react/jsx-runtime");
+var _react = require("react");
 const CL_LABEL_LIST = "recharts-label-list";
 const defaultProps = {
   valueAccessor: entry => {
@@ -39,7 +39,7 @@ const LabelList = props => {
         idProps = (0, _isTypeFn.isNullOrUndef)(id) ? {} : {
           id: `${id}-${index}`
         };
-      return /*#__PURE__*/(0, _react.createElement)(_Label.Label, {
+      return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Label.Label, {
         ...(0, _ReactUtils.filterProps)(entry, true),
         ...restProps,
         ...idProps,
@@ -50,9 +50,8 @@ const LabelList = props => {
         viewBox: _Label.Label.parseViewBox((0, _isTypeFn.isNullOrUndef)(clockWise) ? entry : {
           ...entry,
           clockWise
-        }),
-        key: `label-${index}`
-      });
+        })
+      }, `label-${index}`);
     })
   });
 };

@@ -43,8 +43,9 @@ const Label = props => {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, {
     className: (0, _styleFn.crCn)(_CL.CL_LABEL, className)
     // attrs
+    //{...filterProps(_props, true)}
+    // positionAttrs
     ,
-    ...(0, _ReactUtils.filterProps)(_props, true),
     ...(0, _LabelFn.getAttrsOfCartesianLabel)(_props),
     breakAll: textBreakAll,
     children: label

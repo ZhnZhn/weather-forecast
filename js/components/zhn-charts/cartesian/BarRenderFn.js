@@ -3,7 +3,6 @@
 exports.__esModule = true;
 exports.renderRectangles = exports.renderBackground = void 0;
 var _JsAnimation = require("../../zhn-animation/JsAnimation");
-var _ReactUtils = require("../util/ReactUtils");
 var _DataUtils = require("../util/DataUtils");
 var _types = require("../util/types");
 var _Rectangle = require("../shape/Rectangle");
@@ -11,7 +10,8 @@ var _Layer = require("../container/Layer");
 var _cartesianFn = require("./cartesianFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-var _react = require("react");
+//import { filterProps } from '../util/ReactUtils';
+
 const _crElementRectangle = _ref => {
   let {
     key,
@@ -24,20 +24,21 @@ const _crElementRectangle = _ref => {
 const _renderRectangle = (0, _cartesianFn.fCreateElement)(_crElementRectangle);
 const _renderRectanglesStatically = (props, data) => {
   const {
-      shape
-    } = props,
-    baseProps = (0, _ReactUtils.filterProps)(props);
+    shape
+  } = props;
+  //, baseProps = filterProps(props);
   return data && data.map((entry, i) => {
     const rectangleProps = {
-      ...baseProps,
+      ...props,
+      //...baseProps,
       ...entry,
       index: i
     };
-    return /*#__PURE__*/(0, _react.createElement)(_Layer.Layer, {
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
       ...(0, _types.adaptEventsOfChild)(rectangleProps, entry, i),
-      key: `rectangle-${i}`,
-      className: _CL.CL_BAR_RECTANGLE
-    }, _renderRectangle(shape, rectangleProps));
+      className: _CL.CL_BAR_RECTANGLE,
+      children: _renderRectangle(shape, rectangleProps)
+    }, `rectangle-${i}`);
   });
 };
 const renderBackground = props => {
@@ -46,9 +47,9 @@ const renderBackground = props => {
     return null;
   }
   const {
-      data
-    } = props,
-    backgroundProps = (0, _ReactUtils.filterProps)(propsBackground);
+    data
+  } = props;
+  //, backgroundProps = filterProps(propsBackground);
   return data.map((entry, i) => {
     /*eslint-disable no-unused-vars*/
     const {
@@ -65,7 +66,8 @@ const renderBackground = props => {
       ...rest,
       fill: '#eee',
       ...background,
-      ...backgroundProps,
+      //...backgroundProps,
+      ...propsBackground,
       ...(0, _types.adaptEventsOfChild)(props, entry, i),
       index: i,
       key: `background-bar-${i}`,
