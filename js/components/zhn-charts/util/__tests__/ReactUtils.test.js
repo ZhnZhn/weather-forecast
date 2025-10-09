@@ -7,74 +7,83 @@ var _types = require("../types");
 var _jsxRuntime = require("react/jsx-runtime");
 const _crElementKeys = elements => elements.map(el => el.key);
 describe('ReactUtils', () => {
+  /*
   describe('filterProps', () => {
     test('should call filterProps wtesth any boolean and return a null result', () => {
-      expect((0, _ReactUtils.filterProps)(true)).toBe(null);
-      expect((0, _ReactUtils.filterProps)(false)).toBe(null);
+      expect(filterProps(true)).toBe(null);
+      expect(filterProps(false)).toBe(null);
     });
-    test('should call filterProps wtesth a non-object and return null', () => {
-      expect((0, _ReactUtils.filterProps)(125)).toBe(null);
+      test('should call filterProps wtesth a non-object and return null', () => {
+      expect(filterProps(125)).toBe(null);
     });
-    test('should call filterProps wtesth a react element extract properties and filter out non-svg properties', () => {
-      expect((0, _ReactUtils.filterProps)(/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-        id: "test",
-        value: 1
-      }))).toEqual({
-        id: 'test'
+      test('should call filterProps wtesth a react element extract properties and filter out non-svg properties', () => {
+      expect(
+        filterProps(<input id="test" value={1} />)
+      )
+      .toEqual({ id: 'test' });
+    });
+      test('should pass props and filter out non wanted properties', () => {
+      expect(
+        filterProps({
+          test: '1234',
+          helloWorld: 1234,
+          viewBox: '0 0 0 0',
+          dx: 1,
+          dy: 1
+        }))
+      .toEqual({
+          dx: 1,
+          dy: 1,
       });
     });
-    test('should pass props and filter out non wanted properties', () => {
-      expect((0, _ReactUtils.filterProps)({
-        test: '1234',
-        helloWorld: 1234,
-        viewBox: '0 0 0 0',
-        dx: 1,
-        dy: 1
-      })).toEqual({
-        dx: 1,
-        dy: 1
+      test('should expect viewBox on type "svg"', () => {
+      expect(
+        filterProps({
+          test: '1234',
+          helloWorld: 1234,
+          viewBox: '0 0 0 0'
+        }, false, 'svg'))
+      .toEqual({
+          viewBox: '0 0 0 0',
       });
     });
-    test('should expect viewBox on type "svg"', () => {
-      expect((0, _ReactUtils.filterProps)({
-        test: '1234',
-        helloWorld: 1234,
-        viewBox: '0 0 0 0'
-      }, false, 'svg')).toEqual({
-        viewBox: '0 0 0 0'
+      test('should include events when includeEvents is true', () => {
+      expect(
+        filterProps({
+          test: '1234',
+          helloWorld: 1234,
+          viewBox: '0 0 0 0',
+          onClick: jest.fn()
+        }, true, 'svg'),
+      ).toEqual({
+          viewBox: '0 0 0 0',
+          onClick: expect.any(Function)
       });
     });
-    test('should include events when includeEvents is true', () => {
-      expect((0, _ReactUtils.filterProps)({
-        test: '1234',
-        helloWorld: 1234,
-        viewBox: '0 0 0 0',
-        onClick: jest.fn()
-      }, true, 'svg')).toEqual({
-        viewBox: '0 0 0 0',
-        onClick: expect.any(Function)
+      test('should filter out "points" attribute when included without an svg type that explicitly uses "points"', () => {
+      expect(
+        filterProps({
+          test: '1234',
+          points: '1234',
+          onClick: jest.fn()
+        }, true))
+      .toEqual({
+          onClick: expect.any(Function)
       });
     });
-    test('should filter out "points" attribute when included without an svg type that explicitly uses "points"', () => {
-      expect((0, _ReactUtils.filterProps)({
-        test: '1234',
-        points: '1234',
-        onClick: jest.fn()
-      }, true)).toEqual({
-        onClick: expect.any(Function)
-      });
-    });
-    test('filterProps return presentation attributes', () => {
-      const resultKeys = Object.keys((0, _ReactUtils.filterProps)({
+      test('filterProps return presentation attributes', () => {
+      const resultKeys = Object.keys(filterProps({
         stroke: '#000',
         fill: '#000',
         r: 6
       }));
-      expect(resultKeys).toContain('stroke');
+        expect(resultKeys).toContain('stroke');
       expect(resultKeys).toContain('fill');
       expect(resultKeys).toContain('r');
     });
   });
+  */
+
   describe('isValidSpreadableProp', () => {
     test('return true for valid SVG element attribute', () => {
       const isValid = (0, _ReactUtils.isValidSpreadableProp)(42, 'height');

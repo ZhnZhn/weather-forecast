@@ -4,13 +4,14 @@ exports.__esModule = true;
 exports.Label = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
-var _styleFn = require("../../styleFn");
 var _Text = require("./Text");
 var _ReactUtils = require("../util/ReactUtils");
 var _DataUtils = require("../util/DataUtils");
 var _LabelFn = require("./LabelFn");
-var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
+//import { crCn } from "../../styleFn";
+
+//import { CL_LABEL } from "../CL";
 const DF_PROPS = {
   offset: 5,
   className: ""
@@ -22,7 +23,7 @@ const Label = props => {
       value,
       children,
       content: ContentElementOrComp,
-      className,
+      //className,
       textBreakAll
     } = _props;
   if (!viewBox || (0, _isTypeFn.isNullOrUndef)(value) && (0, _isTypeFn.isNullOrUndef)(children) && !(0, _uiApi.isValidElement)(ContentElementOrComp) && !(0, _isTypeFn.isFn)(ContentElementOrComp)) {
@@ -40,11 +41,16 @@ const Label = props => {
   } else {
     label = (0, _LabelFn.getLabel)(_props);
   }
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, {
-    className: (0, _styleFn.crCn)(_CL.CL_LABEL, className)
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text
+  //className={crCn(CL_LABEL, className)}
+  , {
+    offset: _props.offset,
+    fill: _props.fill,
+    stroke: _props.stroke,
+    className: _props.className
     // attrs
+    // positionAttrs
     ,
-    ...(0, _ReactUtils.filterProps)(_props, true),
     ...(0, _LabelFn.getAttrsOfCartesianLabel)(_props),
     breakAll: textBreakAll,
     children: label

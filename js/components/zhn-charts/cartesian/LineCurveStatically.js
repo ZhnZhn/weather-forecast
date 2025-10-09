@@ -2,7 +2,6 @@
 
 exports.__esModule = true;
 exports.LineCurveStatically = void 0;
-var _ReactUtils = require("../util/ReactUtils");
 var _Curve = require("../shape/Curve");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -26,7 +25,12 @@ const LineCurveStatically = _ref => {
   //ref
   /*eslint-enable no-unused-vars*/
   const curveProps = {
-    ...(0, _ReactUtils.filterProps)(restProps, true),
+    stroke: restProps.stroke,
+    strokeWidth: restProps.strokeWidth,
+    strokeDasharray: restProps.strokeDasharray,
+    radius: restProps.radius,
+    width: restProps.width,
+    height: restProps.height,
     fill: 'none',
     className: _CL.CL_LINE_CURVE,
     ...clipPathProps,

@@ -3,7 +3,6 @@
 exports.__esModule = true;
 exports.CartesianAxisLine = void 0;
 var _styleFn = require("../../styleFn");
-var _ReactUtils = require("../util/ReactUtils");
 var _CartesianAxisRenderFn = require("./CartesianAxisRenderFn");
 var _jsxRuntime = require("react/jsx-runtime");
 const CartesianAxisLine = _ref => {
@@ -21,8 +20,13 @@ const CartesianAxisLine = _ref => {
       axisLine
     } = props,
     _props = {
-      ...(0, _ReactUtils.filterProps)(props),
-      ...(0, _ReactUtils.filterProps)(axisLine),
+      className: props.className,
+      orientation: props.orientation,
+      stroke: axisLine ? axisLine.stroke || props.stroke : props.stroke,
+      x: props.x,
+      y: props.y,
+      width: props.width,
+      height: props.height,
       fill: 'none'
     };
   let needHeight, needWidth;

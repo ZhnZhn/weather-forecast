@@ -12,10 +12,7 @@ import {
 
 import { Label } from './Label';
 import { Layer } from '../container/Layer';
-import {
-  findAllByType,
-  filterProps
-} from '../util/ReactUtils';
+import { findAllByType } from '../util/ReactUtils';
 import { getValueByDataKey } from '../util/ChartUtils';
 
 const CL_LABEL_LIST = "recharts-label-list";
@@ -42,10 +39,7 @@ export const LabelList = (
     ...restProps
   } = props;
 
-  if (!data || !data.length) {
-    return null;
-  }
-  return (
+  return data && data.length ? (
     <Layer className={CL_LABEL_LIST}>
       {data.map((entry, index) => {
           const value = isNullOrUndef(dataKey)
@@ -57,19 +51,18 @@ export const LabelList = (
           return (
             <Label
               key={`label-${index}`}
-              {...filterProps(entry, true)}
               {...restProps}
               {...idProps}
               parentViewBox={entry.parentViewBox}
               index={index}
               value={value}
               textBreakAll={textBreakAll}
-              viewBox={Label.parseViewBox(isNullOrUndef(clockWise) ? entry : { ...entry, clockWise })}              
+              viewBox={Label.parseViewBox(isNullOrUndef(clockWise) ? entry : { ...entry, clockWise })}
             />
           );
       })}
-   </Layer>
-  );
+    </Layer>
+  ) : null;
 }
 
 const KEY_LABELLIST_IMPLICIT = "labelList-implicit";

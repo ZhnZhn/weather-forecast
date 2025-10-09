@@ -392,10 +392,10 @@ const generateCategoricalChart = _ref => {
           style,
           compact,
           title,
-          desc,
-          ...others
+          desc
+          //...others
         } = this.props,
-        attrs = (0, _ReactUtils.filterProps)(others);
+        attrs = {};
 
       // The "compact" mode is mainly used as the panorama within Brush
       if (compact) {

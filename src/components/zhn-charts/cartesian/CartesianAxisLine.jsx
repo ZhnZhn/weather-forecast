@@ -1,6 +1,5 @@
 import { crCn } from '../../styleFn';
 
-import { filterProps } from '../util/ReactUtils';
 import { getClassName } from './CartesianAxisRenderFn';
 
 export const CartesianAxisLine = ({
@@ -17,11 +16,18 @@ export const CartesianAxisLine = ({
     axisLine
   } = props
   , _props = {
-    ...filterProps(props),
-    ...filterProps(axisLine),
+    className: props.className,
+    orientation: props.orientation,
+    stroke: axisLine
+      ? axisLine.stroke || props.stroke
+      : props.stroke,
+    x: props.x,
+    y: props.y,
+    width: props.width,
+    height: props.height,
+    
     fill: 'none'
   };
-
   let needHeight, needWidth;
   const _lineProps = orientation === 'top' || orientation === 'bottom'
     ? (needHeight = +((orientation === 'top' && !mirror) || (orientation === 'bottom' && mirror)), {

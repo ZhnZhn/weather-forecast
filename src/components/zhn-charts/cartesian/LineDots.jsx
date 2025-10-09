@@ -1,7 +1,5 @@
 import { crCn } from '../../styleFn';
 
-import { filterProps } from '../util/ReactUtils';
-
 import { Dot } from '../shape/Dot';
 import { Layer } from '../container/Layer';
 
@@ -36,9 +34,7 @@ export const LineDots = ({
     dot,
     points,
     dataKey
-  } = props
-  , lineProps = filterProps(props)
-  , customDotProps = filterProps(dot, true);
+  } = props;
   return (
     <Layer
        className={CL_LINE_DOTS}
@@ -48,9 +44,16 @@ export const LineDots = ({
     >
       {points.map((entry, i) => _renderDotItem(dot, {
          key: `dot-${i}`,
-         r: 3,
-         ...lineProps,
-         ...customDotProps,
+         r: dot.r || 3,
+
+         fill: dot.fill || props.fill,
+         stroke: dot.stroke || props.stroke,
+         strokeWidth: dot.strokeWidth || props.strokeWidth,
+         strokeDasharray: dot.strokeDasharray || props.strokeDasharray,
+         radius: props.radius,
+         width: props.width,
+         height: props.height,
+         
          value: entry.value,
          dataKey,
          cx: entry.x,

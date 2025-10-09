@@ -333,7 +333,6 @@ const renderCursor = _ref7 => {
       pointerEvents: 'none',
       ...offset,
       ...restProps,
-      ...(0, _ReactUtils.filterProps)(_elementPropsCursor),
       key,
       className: CL_TOOLTIP_CURSOR,
       payload: activePayload,

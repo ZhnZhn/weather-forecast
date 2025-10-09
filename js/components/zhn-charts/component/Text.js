@@ -6,7 +6,6 @@ exports.Text = void 0;
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _DataUtils = require("../util/DataUtils");
-var _ReactUtils = require("../util/ReactUtils");
 var _CL = require("../CL");
 var _useWordsByLine = _interopRequireDefault(require("./useWordsByLine"));
 var _jsxRuntime = require("react/jsx-runtime");
@@ -49,9 +48,9 @@ const Text = props => {
       scaleToFit,
       angle,
       lineHeight,
-      //capHeight,
       className,
       breakAll,
+      fill,
       ...textProps
     } = _props;
   if (!(0, _DataUtils.isNumOrStr)(textProps.x) || !(0, _DataUtils.isNumOrStr)(textProps.y)) {
@@ -75,12 +74,15 @@ const Text = props => {
     textProps.transform = transforms.join(' ');
   }
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("text", {
-    ...(0, _ReactUtils.filterProps)(textProps, true),
+    capHeight: textProps.capHeight,
+    offset: textProps.offset,
+    stroke: textProps.stroke,
+    orientation: textProps.orientation,
     x: x,
     y: y,
     className: (0, _styleFn.crCn)(_CL.CL_TEXT, className),
     textAnchor: textAnchor,
-    fill: textProps.fill.includes('url') ? DF_PROPS.fill : textProps.fill,
+    fill: fill && fill.includes('url') ? DF_PROPS.fill : fill,
     children: wordsByLines.map((line, index) => /*#__PURE__*/(0, _jsxRuntime.jsx)("tspan", {
       x: x,
       dy: index === 0 ? startDy : lineHeight,

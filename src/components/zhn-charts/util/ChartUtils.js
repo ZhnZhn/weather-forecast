@@ -42,7 +42,6 @@ import {
   uniqueId
 } from './DataUtils';
 import {
-  filterProps,
   findChildByType,
   getDisplayName
 } from './ReactUtils';
@@ -1126,7 +1125,12 @@ export const getTooltipItem = (
     chartType
   } = graphicalItem.props;
   return {
-    ...filterProps(graphicalItem),
+    fill: graphicalItem.fill,
+    radius: graphicalItem.radius,
+    stroke: graphicalItem.stroke,
+    strokeWidth: graphicalItem.strokeWidth,
+    strokeDasharray: graphicalItem.strokeDasharray,
+  
     dataKey,
     unit,
     formatter,

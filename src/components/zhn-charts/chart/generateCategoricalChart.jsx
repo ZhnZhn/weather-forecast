@@ -19,8 +19,7 @@ import {
   validateWidthHeight,
   renderByMap,
   getReactEventByType,
-  findChildByType,
-  filterProps
+  findChildByType
 } from '../util/ReactUtils';
 import {
   calculateChartCoordinate,
@@ -427,9 +426,10 @@ export const generateCategoricalChart = ({
                 compact,
                 title,
                 desc,
-                ...others
+                //...others
               } = this.props
-              , attrs = filterProps(others);
+              , attrs = {};
+
 
               // The "compact" mode is mainly used as the panorama within Brush
               if (compact) {

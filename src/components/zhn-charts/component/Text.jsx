@@ -5,9 +5,6 @@ import {
   isNumber,
   isNumOrStr
 } from '../util/DataUtils';
-import {
-  filterProps
-} from '../util/ReactUtils';
 
 import { CL_TEXT } from '../CL';
 import useWordsByLine from './useWordsByLine';
@@ -54,10 +51,10 @@ export const Text = (props) => {
     verticalAnchor,
     scaleToFit,
     angle,
-    lineHeight,
-    //capHeight,
+    lineHeight,  
     className,
     breakAll,
+    fill,
     ...textProps
   } = _props;
 
@@ -79,15 +76,20 @@ export const Text = (props) => {
   if (transforms.length) {
     textProps.transform = transforms.join(' ');
   }
+
   return (
     <text
-      {...filterProps(textProps, true)}
+      capHeight={textProps.capHeight}
+      offset={textProps.offset}
+      stroke={textProps.stroke}
+      orientation={textProps.orientation}
+
       x={x} y={y}
       className={crCn(CL_TEXT, className)}
       textAnchor={textAnchor}
-      fill={textProps.fill.includes('url')
+      fill={fill && fill.includes('url')
         ? DF_PROPS.fill
-        : textProps.fill
+        : fill
       }
     >
       {wordsByLines.map((line, index) => (

@@ -11,10 +11,6 @@ import {
   getMainColorOfGraphicItem,
 } from '../util/ChartUtils';
 
-import {
-  filterProps
-} from '../util/ReactUtils';
-
 /*
 import { adaptEventHandlers } from '../util/types';
 */
@@ -62,14 +58,16 @@ export const renderActivePoints = ({
       dataKey,
       cx: activePoint.x,
       cy: activePoint.y,
-      r: 4,
-      fill: getMainColorOfGraphicItem(item.item),
-      strokeWidth: 2,
-      stroke: '#fff',
+
+      r: activeDot.r || 4,
+      fill: activeDot.fill || getMainColorOfGraphicItem(item.item),
+      stroke: activeDot.stroke || '#fff',
+      strokeWidth: activeDot.strokeWidth || 2,
+      strokeDasharray: activeDot.strokeDasharray,
+
       payload: activePoint.payload,
       value: activePoint.value,
       key: `${key}-activePoint-${childIndex}`,
-      ...filterProps(activeDot),
       //...adaptEventHandlers(activeDot),
   };
   result.push(renderActiveDot(activeDot, dotProps));

@@ -29,10 +29,7 @@ const LabelList = props => {
     textBreakAll,
     ...restProps
   } = props;
-  if (!data || !data.length) {
-    return null;
-  }
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
+  return data && data.length ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
     className: CL_LABEL_LIST,
     children: data.map((entry, index) => {
       const value = (0, _isTypeFn.isNullOrUndef)(dataKey) ? valueAccessor(entry, index) : (0, _ChartUtils.getValueByDataKey)(entry && entry.payload, dataKey),
@@ -40,7 +37,6 @@ const LabelList = props => {
           id: `${id}-${index}`
         };
       return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Label.Label, {
-        ...(0, _ReactUtils.filterProps)(entry, true),
         ...restProps,
         ...idProps,
         parentViewBox: entry.parentViewBox,
@@ -53,7 +49,7 @@ const LabelList = props => {
         })
       }, `label-${index}`);
     })
-  });
+  }) : null;
 };
 exports.LabelList = LabelList;
 const KEY_LABELLIST_IMPLICIT = "labelList-implicit";

@@ -2,7 +2,6 @@
 
 exports.__esModule = true;
 exports.CartesianAxisTicks = void 0;
-var _ReactUtils = require("../util/ReactUtils");
 var _CartesianAxisRenderFn = require("./CartesianAxisRenderFn");
 var _CL = require("../CL");
 var _CartesianAxisTick = require("./CartesianAxisTick");
@@ -27,12 +26,24 @@ const CartesianAxisTicks = _ref => {
       mirror
     } = props,
     [textAnchor, verticalAnchor] = (0, _CartesianAxisRenderFn.getTickAnchors)(orientation, mirror),
-    axisProps = (0, _ReactUtils.filterProps)(props),
-    customTickProps = (0, _ReactUtils.filterProps)(tick),
+    axisProps = {
+      className: props.className,
+      orientation: props.orientation,
+      stroke: props.stroke,
+      x: props.x,
+      y: props.y,
+      width: props.width,
+      height: props.height
+    },
+    customTickProps = tick ? {
+      fill: tick.fill,
+      stroke: tick.stroke,
+      style: tick.style
+    } : null,
     tickLineProps = {
       ...axisProps,
       fill: 'none',
-      ...(0, _ReactUtils.filterProps)(tickLine)
+      stroke: tickLine ? tickLine.stroke : void 0
     };
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("g", {
     className: _CL.CL_AXIS_TICKS,

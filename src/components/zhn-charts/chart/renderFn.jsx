@@ -30,8 +30,7 @@ import {
 
 import {
   getDisplayName,
-  findChildByType,
-  filterProps
+  findChildByType
 } from '../util/ReactUtils';
 
 import { crAxisCl } from '../CL';
@@ -435,7 +434,6 @@ const renderCursor = ({
       pointerEvents: 'none',
       ...offset,
       ...restProps,
-      ...filterProps(_elementPropsCursor),
       key,
       className: CL_TOOLTIP_CURSOR,
       payload: activePayload,

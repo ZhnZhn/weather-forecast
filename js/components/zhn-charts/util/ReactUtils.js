@@ -1,7 +1,6 @@
 "use strict";
 
 exports.__esModule = true;
-exports.filterProps = void 0;
 exports.findAllByType = findAllByType;
 exports.findChildByType = findChildByType;
 exports.validateWidthHeight = exports.toArray = exports.renderByMap = exports.parseChildIndex = exports.isValidSpreadableProp = exports.isSingleChildEqual = exports.isChildrenEqual = exports.getReactEventByType = exports.getDisplayName = void 0;
@@ -9,7 +8,6 @@ var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _ShallowEqual = require("./ShallowEqual");
 var _types = require("./types");
-const _getObjectKeys = Object.keys;
 const _getElementType = element => {
   const _elementType = element && element.type;
   return _elementType ? _elementType.displayName || _elementType.name : void 0;
@@ -104,36 +102,102 @@ const validateWidthHeight = el => {
   } = el.props;
   return !(0, _isTypeFn.isNumber)(width) || width <= 0 || !(0, _isTypeFn.isNumber)(height) || height <= 0 ? false : true;
 };
-exports.validateWidthHeight = validateWidthHeight;
-const SVG_TAGS = ['a', 'altGlyph', 'altGlyphDef', 'altGlyphItem', 'animate', 'animateColor', 'animateMotion', 'animateTransform', 'circle', 'clipPath', 'color-profile', 'cursor', 'defs', 'desc', 'ellipse',
+
 /*
-'feBlend',
-'feColormatrix',
-'feComponentTransfer',
-'feComposite',
-'feConvolveMatrix',
-'feDiffuseLighting',
-'feDisplacementMap',
-'feDistantLight',
-'feFlood',
-'feFuncA',
-'feFuncB',
-'feFuncG',
-'feFuncR',
-'feGaussianBlur',
-'feImage',
-'feMerge',
-'feMergeNode',
-'feMorphology',
-'feOffset',
-'fePointLight',
-'feSpecularLighting',
-'feSpotLight',
-'feTile',
-'feTurbulence',
+const SVG_TAGS = [
+  'a',
+  'altGlyph',
+  'altGlyphDef',
+  'altGlyphItem',
+  'animate',
+  'animateColor',
+  'animateMotion',
+  'animateTransform',
+  'circle',
+  'clipPath',
+  'color-profile',
+  'cursor',
+  'defs',
+  'desc',
+  'ellipse',
+
+  'feBlend',
+  'feColormatrix',
+  'feComponentTransfer',
+  'feComposite',
+  'feConvolveMatrix',
+  'feDiffuseLighting',
+  'feDisplacementMap',
+  'feDistantLight',
+  'feFlood',
+  'feFuncA',
+  'feFuncB',
+  'feFuncG',
+  'feFuncR',
+  'feGaussianBlur',
+  'feImage',
+  'feMerge',
+  'feMergeNode',
+  'feMorphology',
+  'feOffset',
+  'fePointLight',
+  'feSpecularLighting',
+  'feSpotLight',
+  'feTile',
+  'feTurbulence',
+
+
+  'filter',
+  'font',
+  'font-face',
+  'font-face-format',
+  'font-face-name',
+  'font-face-url',
+  'foreignObject',
+
+  'g',
+  'glyph',
+  'glyphRef',
+  'hkern',
+  'image',
+  'line',
+  'lineGradient',
+  'marker',
+  'mask',
+  'metadata',
+  'missing-glyph',
+  'mpath',
+  'path',
+  'pattern',
+  'polygon',
+  'polyline',
+  'radialGradient',
+  'rect',
+  'script',
+  'set',
+  'stop',
+  'style',
+  'svg',
+  'switch',
+  'symbol',
+  'text',
+  'textPath',
+  'title',
+  'tref',
+  'tspan',
+  'use',
+  'view',
+  'vkern'
+];
 */
-'filter', 'font', 'font-face', 'font-face-format', 'font-face-name', 'font-face-url', 'foreignObject', 'g', 'glyph', 'glyphRef', 'hkern', 'image', 'line', 'lineGradient', 'marker', 'mask', 'metadata', 'missing-glyph', 'mpath', 'path', 'pattern', 'polygon', 'polyline', 'radialGradient', 'rect', 'script', 'set', 'stop', 'style', 'svg', 'switch', 'symbol', 'text', 'textPath', 'title', 'tref', 'tspan', 'use', 'view', 'vkern'];
-const isSvgElement = child => child && (0, _isTypeFn.isStr)(child.type) && SVG_TAGS.indexOf(child.type) >= 0;
+
+/*
+const isSvgElement = (
+  child
+) => child
+  && isStr(child.type)
+  && SVG_TAGS.indexOf(child.type) >= 0;
+*/
 
 /**
  * Checks if the property is valid to spread onto an SVG element or onto a specific component
@@ -143,6 +207,7 @@ const isSvgElement = child => child && (0, _isTypeFn.isStr)(child.type) && SVG_T
  * @param {boolean} svgElementType checks against map of SVG element types to attributes
  * @returns {boolean} is prop valid
  */
+exports.validateWidthHeight = validateWidthHeight;
 const isValidSpreadableProp = (property, key, includeEvents, svgElementType) => {
   /**
    * If the svg element type is explicitly included, check against the filtered element key map
@@ -153,30 +218,6 @@ const isValidSpreadableProp = (property, key, includeEvents, svgElementType) => 
   return !!(!(0, _isTypeFn.isFn)(property) && (svgElementType && matchingElementTypeKeys.includes(key) || _types.SVGElementPropKeys.includes(key)) || includeEvents && (0, _types.isLikelyOnEventProperty)(key));
 };
 exports.isValidSpreadableProp = isValidSpreadableProp;
-const filterProps = (props, includeEvents, svgElementType) => {
-  if (!props || (0, _isTypeFn.isFn)(props) || (0, _isTypeFn.isBool)(props)) {
-    return null;
-  }
-  const inputProps = (0, _uiApi.isValidElement)(props) ? props.props : props;
-  if (!(0, _isTypeFn.isObj)(inputProps)) {
-    return null;
-  }
-  const filteredProps = {};
-  /**
-   * Props are blindly spread onto SVG elements. This loop filters out properties that we don't want to spread.
-   * Items filtered out are as follows:
-   *   - functions in properties that are SVG attributes (functions are included when includeEvents is true)
-   *   - props that are SVG attributes but don't matched the passed svgElementType
-   *   - any prop that is not in SVGElementPropKeys (or in EventKeys if includeEvents is true)
-   */
-  _getObjectKeys(inputProps).forEach(key => {
-    if (isValidSpreadableProp(inputProps[key], key, includeEvents, svgElementType)) {
-      filteredProps[key] = inputProps[key];
-    }
-  });
-  return filteredProps;
-};
-exports.filterProps = filterProps;
 const isSingleChildEqual = (nextChild, prevChild) => {
   if (!(0, _isTypeFn.isNullOrUndef)(nextChild) && !(0, _isTypeFn.isNullOrUndef)(prevChild)) {
     const {
@@ -236,9 +277,10 @@ const renderByMap = (chartInst, renderMap) => {
     elements = [],
     record = {};
   toArray(children).forEach((child, index) => {
-    if (isSvgElement(child)) {
-      elements.push(child);
-    } else if (child) {
+    //if (isSvgElement(child)) {
+    //  elements.push(child);
+    //} else if (child) {
+    if (child) {
       const displayName = getDisplayName(child.type),
         {
           handler,

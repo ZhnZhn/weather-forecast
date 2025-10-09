@@ -6,7 +6,7 @@ import {
   LineChart
 } from '../../index';
 import {
-  filterProps,
+  //filterProps,
   //filterSvgElements,
   findAllByType,
   getDisplayName,
@@ -26,6 +26,7 @@ const _crElementKeys = (
 ) => elements.map(el => el.key);
 
 describe('ReactUtils', () => {
+  /*
   describe('filterProps', () => {
     test('should call filterProps wtesth any boolean and return a null result', () => {
       expect(filterProps(true)).toBe(null);
@@ -108,6 +109,7 @@ describe('ReactUtils', () => {
       expect(resultKeys).toContain('r');
     });
   });
+  */
 
   describe('isValidSpreadableProp', () => {
     test('return true for valid SVG element attribute', () => {

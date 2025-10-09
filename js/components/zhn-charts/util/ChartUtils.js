@@ -955,7 +955,11 @@ const getTooltipItem = (graphicalItem, payload) => {
     chartType
   } = graphicalItem.props;
   return {
-    ...(0, _ReactUtils.filterProps)(graphicalItem),
+    fill: graphicalItem.fill,
+    radius: graphicalItem.radius,
+    stroke: graphicalItem.stroke,
+    strokeWidth: graphicalItem.strokeWidth,
+    strokeDasharray: graphicalItem.strokeDasharray,
     dataKey,
     unit,
     formatter,

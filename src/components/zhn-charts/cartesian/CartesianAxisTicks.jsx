@@ -1,5 +1,3 @@
-import { filterProps } from '../util/ReactUtils';
-
 import {
   getTickAnchors,
   getTickLineCoord
@@ -31,12 +29,25 @@ export const CartesianAxisTicks = ({
     textAnchor,
     verticalAnchor
   ] = getTickAnchors(orientation, mirror)
-  , axisProps = filterProps(props)
-  , customTickProps = filterProps(tick)
+  , axisProps = {
+    className: props.className,
+    orientation: props.orientation,
+    stroke: props.stroke,
+    x: props.x,
+    y: props.y,
+    width: props.width,
+    height: props.height
+  }
+  , customTickProps = tick
+      ? {
+        fill: tick.fill,
+        stroke: tick.stroke,
+        style: tick.style
+      } : null
   , tickLineProps = {
       ...axisProps,
       fill: 'none',
-      ...filterProps(tickLine),
+      stroke: tickLine ? tickLine.stroke : void 0
   };
   return (
     <g className={CL_AXIS_TICKS}>

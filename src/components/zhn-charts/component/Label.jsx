@@ -11,13 +11,10 @@ import {
   crProps
 } from "../../uiApi";
 
-import { crCn } from "../../styleFn";
+//import { crCn } from "../../styleFn";
 
 import { Text } from "./Text";
-import {
-  findAllByType,
-  filterProps
-} from "../util/ReactUtils";
+import { findAllByType } from "../util/ReactUtils";
 import {
   isNumOrStr,
   isNumber
@@ -28,7 +25,7 @@ import {
   getLabel
 } from "./LabelFn";
 
-import { CL_LABEL } from "../CL";
+//import { CL_LABEL } from "../CL";
 
 const DF_PROPS = {
   offset: 5,
@@ -44,7 +41,7 @@ export const Label = (
     value,
     children,
     content:ContentElementOrComp,
-    className,
+    //className,
     textBreakAll
   } = _props;
   if (!viewBox || (isNullOrUndef(value) && isNullOrUndef(children) && !isValidElement(ContentElementOrComp) && !isFn(ContentElementOrComp))) {
@@ -64,12 +61,14 @@ export const Label = (
   } else {
     label = getLabel(_props);
   }
-
   return (
     <Text
-      className={crCn(CL_LABEL, className)}
+      //className={crCn(CL_LABEL, className)}
+      offset={_props.offset}
+      fill={_props.fill}
+      stroke={_props.stroke}
+      className={_props.className}
       // attrs
-      {...filterProps(_props, true)}
       // positionAttrs
       {...getAttrsOfCartesianLabel(_props)}
       breakAll={textBreakAll}

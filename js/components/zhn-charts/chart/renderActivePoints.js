@@ -5,7 +5,6 @@ exports.renderActivePoints = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _ChartUtils = require("../util/ChartUtils");
-var _ReactUtils = require("../util/ReactUtils");
 var _Dot = require("../shape/Dot");
 var _Layer = require("../container/Layer");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -47,14 +46,14 @@ const renderActivePoints = _ref2 => {
       dataKey,
       cx: activePoint.x,
       cy: activePoint.y,
-      r: 4,
-      fill: (0, _ChartUtils.getMainColorOfGraphicItem)(item.item),
-      strokeWidth: 2,
-      stroke: '#fff',
+      r: activeDot.r || 4,
+      fill: activeDot.fill || (0, _ChartUtils.getMainColorOfGraphicItem)(item.item),
+      stroke: activeDot.stroke || '#fff',
+      strokeWidth: activeDot.strokeWidth || 2,
+      strokeDasharray: activeDot.strokeDasharray,
       payload: activePoint.payload,
       value: activePoint.value,
-      key: `${key}-activePoint-${childIndex}`,
-      ...(0, _ReactUtils.filterProps)(activeDot)
+      key: `${key}-activePoint-${childIndex}`
       //...adaptEventHandlers(activeDot),
     };
   result.push(renderActiveDot(activeDot, dotProps));

@@ -6,7 +6,6 @@ exports.CartesianGrid = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _DataUtils = require("../util/DataUtils");
-var _ReactUtils = require("../util/ReactUtils");
 var _CartesianGridRenderFn = require("./CartesianGridRenderFn");
 var _CartesianGridBackground = _interopRequireDefault(require("./CartesianGridBackground"));
 var _CartesianGridLines = require("./CartesianGridLines");
@@ -47,7 +46,10 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
     return null;
   }
   const [horizontalPoints, verticalPoints] = (0, _CartesianGridRenderFn.crGridPoints)(_props),
-    _lineProps = (0, _ReactUtils.filterProps)(restProps),
+    _lineProps = {
+      offset: restProps.offset,
+      stroke: restProps.stroke
+    },
     x2 = x + width,
     y2 = y + height;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("g", {

@@ -3,15 +3,10 @@ import {
   isArr,
   isFn,
   isNumber,
-  isStr,
-  isBool,
-  isObj
+  isStr
 } from '../../../utils/isTypeFn';
 
-import {
-  isValidElement,
-  Children
-} from '../../uiApi';
+import { Children } from '../../uiApi';
 
 import { shallowEqual } from './ShallowEqual';
 import {
@@ -20,7 +15,6 @@ import {
   isLikelyOnEventProperty
 } from './types';
 
-const _getObjectKeys = Object.keys;
 const _getElementType = (
   element
 ) => {
@@ -147,6 +141,7 @@ export const validateWidthHeight = (el) => {
     : true;
 };
 
+/*
 const SVG_TAGS = [
   'a',
   'altGlyph',
@@ -163,7 +158,7 @@ const SVG_TAGS = [
   'defs',
   'desc',
   'ellipse',
-  /*
+
   'feBlend',
   'feColormatrix',
   'feComponentTransfer',
@@ -188,7 +183,8 @@ const SVG_TAGS = [
   'feSpotLight',
   'feTile',
   'feTurbulence',
-  */
+
+
   'filter',
   'font',
   'font-face',
@@ -196,6 +192,7 @@ const SVG_TAGS = [
   'font-face-name',
   'font-face-url',
   'foreignObject',
+
   'g',
   'glyph',
   'glyphRef',
@@ -230,12 +227,15 @@ const SVG_TAGS = [
   'view',
   'vkern'
 ];
+*/
 
+/*
 const isSvgElement = (
   child
 ) => child
   && isStr(child.type)
   && SVG_TAGS.indexOf(child.type) >= 0;
+*/
 
 /**
  * Checks if the property is valid to spread onto an SVG element or onto a specific component
@@ -260,37 +260,6 @@ export const isValidSpreadableProp = (
   return !!(( !isFn(property) && ((svgElementType && matchingElementTypeKeys.includes(key)) || SVGElementPropKeys.includes(key)) )
     || (includeEvents && isLikelyOnEventProperty(key)));
 };
-
-export const filterProps = (
-  props,
-  includeEvents,
-  svgElementType
-) => {
-  if (!props || isFn(props) || isBool(props)) {
-    return null;
-  }
-  const inputProps = isValidElement(props)
-    ? props.props
-    : props;
-  if (!isObj(inputProps)) {
-    return null;
-  }
-  const filteredProps = {};
-  /**
-   * Props are blindly spread onto SVG elements. This loop filters out properties that we don't want to spread.
-   * Items filtered out are as follows:
-   *   - functions in properties that are SVG attributes (functions are included when includeEvents is true)
-   *   - props that are SVG attributes but don't matched the passed svgElementType
-   *   - any prop that is not in SVGElementPropKeys (or in EventKeys if includeEvents is true)
-   */
-  _getObjectKeys(inputProps).forEach(key => {
-    if (isValidSpreadableProp(inputProps[key], key, includeEvents, svgElementType)) {
-      filteredProps[key] = inputProps[key];
-    }
-  });
-  return filteredProps;
-};
-
 
 export const isSingleChildEqual = (
   nextChild,
@@ -372,9 +341,10 @@ export const renderByMap = (
   , elements = []
   , record = {};
   toArray(children).forEach((child, index) => {
-    if (isSvgElement(child)) {
-      elements.push(child);
-    } else if (child) {
+    //if (isSvgElement(child)) {
+    //  elements.push(child);
+    //} else if (child) {
+    if (child) {
        const displayName = getDisplayName(child.type)
        , {
          handler,
