@@ -1,13 +1,12 @@
 "use strict";
 
 var _index = require("../index");
+/*
 const COLOR_RED = "#ff0000" //red
-  ,
-  COLOR_BLUE = "#0000ff" // blue
-  ,
-  COLOR_WHITE = "#ffffff" // white
-  ,
-  COLOR_GREEN = "#008000"; //green
+, COLOR_BLUE = "#0000ff" // blue
+, COLOR_WHITE = "#ffffff" // white
+, COLOR_GREEN = "#008000" //green
+*/
 
 function roundEpsilon(x) {
   return Math.round(x * 1e12) / 1e12;
@@ -19,13 +18,12 @@ describe('d3Scale linear', () => {
     expect(s.range()).toEqual([0, 1]);
     expect(s.clamp()).toBe(false);
     expect(s.unknown()).toBe(undefined);
-    expect(s.interpolate()({
-      array: [COLOR_RED]
-    }, {
-      array: [COLOR_BLUE]
-    })(0.5)).toEqual({
-      array: ["rgb(128, 0, 128)"]
-    });
+    /*
+    expect(s.interpolate()(
+      { array: [COLOR_RED]},
+      { array: [COLOR_BLUE]}
+    )(0.5)).toEqual({ array: ["rgb(128, 0, 128)"] });
+    */
   });
   it("scaleLinear(range) sets the range", () => {
     const s = (0, _index.scaleLinear)([1, 2]);
@@ -68,23 +66,29 @@ describe('d3Scale linear', () => {
     expect(s.invert(1.0)).toBe(2.0);
     expect(s.invert(1.5)).toBe(2.5);
   });
+
+  /*
   it("linear(x) can map a polylinear domain with more than two values to the corresponding range", () => {
-    const s = (0, _index.scaleLinear)().domain([-10, 0, 100]).range([COLOR_RED, COLOR_WHITE, COLOR_GREEN]);
-    expect(s.domain()).toEqual([-10, 0, 100]);
+    const s = scaleLinear()
+      .domain([-10, 0, 100])
+      .range([COLOR_RED, COLOR_WHITE, COLOR_GREEN]);
+      expect(s.domain()).toEqual([-10, 0, 100]);
     expect(s(-5)).toBe("rgb(255, 128, 128)");
     expect(s(50)).toBe("rgb(128, 192, 128)");
     expect(s(75)).toBe("rgb(64, 160, 64)");
-    s.domain([4, 2, 1]).range([1, 2, 4]);
+      s.domain([4, 2, 1]).range([1, 2, 4]);
     expect(s(1.5)).toBe(3);
     expect(s(3)).toBe(1.5);
     expect(s.invert(1.5)).toBe(3);
     expect(s.invert(3)).toBe(1.5);
-    s.domain([1, 2, 4]).range([4, 2, 1]);
+      s.domain([1, 2, 4]).range([4, 2, 1]);
     expect(s(1.5)).toBe(3);
     expect(s(3)).toBe(1.5);
     expect(s.invert(1.5)).toBe(3);
     expect(s.invert(3)).toBe(1.5);
   });
+  */
+
   it("linear.invert(y) maps a range value y to a domain value x", () => {
     expect((0, _index.scaleLinear)().range([1, 2]).invert(1.5)).toBe(0.5);
   });
@@ -143,12 +147,20 @@ describe('d3Scale linear', () => {
   it("linear.range(range) accepts an iterable", () => {
     expect((0, _index.scaleLinear)().range(new Set([1, 2])).range()).toEqual([1, 2]);
   });
-  it("linear.range(range) can accept range values as colors", () => {
-    expect((0, _index.scaleLinear)().range([COLOR_RED, COLOR_BLUE])(0.5)).toBe("rgb(128, 0, 128)");
-    expect((0, _index.scaleLinear)().range(["#ff0000", "#0000ff"])(0.5)).toBe("rgb(128, 0, 128)");
-    expect((0, _index.scaleLinear)().range(["#f00", "#00f"])(0.5)).toBe("rgb(128, 0, 128)");
-  });
 
+  /*
+  it("linear.range(range) can accept range values as colors", () => {
+    expect(scaleLinear()
+      .range([COLOR_RED, COLOR_BLUE])(0.5)
+    ).toBe("rgb(128, 0, 128)");
+    expect(scaleLinear()
+      .range(["#ff0000", "#0000ff"])(0.5)
+    ).toBe("rgb(128, 0, 128)");
+    expect(scaleLinear()
+      .range(["#f00", "#00f"])(0.5)
+    ).toBe("rgb(128, 0, 128)");
+  });
+  */
   /*
   it("linear.range(range) hsl case can accept range values as colors", () => {
     expect(scaleLinear()
@@ -162,17 +174,16 @@ describe('d3Scale linear', () => {
     ).toBe("rgb(128, 0, 128)");
   });
   */
-
+  /*
   it("linear.range(range) can accept range values as arrays or objects", () => {
-    expect((0, _index.scaleLinear)().range([{
-      color: COLOR_RED
-    }, {
-      color: COLOR_BLUE
-    }])(0.5)).toEqual({
-      color: "rgb(128, 0, 128)"
-    });
-    expect((0, _index.scaleLinear)().range([[COLOR_RED], [COLOR_BLUE]])(0.5)).toEqual(["rgb(128, 0, 128)"]);
+    expect(scaleLinear()
+      .range([{color: COLOR_RED}, {color: COLOR_BLUE}])(0.5)
+    ).toEqual({color: "rgb(128, 0, 128)"});
+    expect(scaleLinear()
+      .range([[COLOR_RED], [COLOR_BLUE]])(0.5)
+    ).toEqual(["rgb(128, 0, 128)"]);
   });
+  */
   it("linear.range(range) makes a copy of range values", () => {
     const r = [1, 2],
       s = (0, _index.scaleLinear)().range(r);
@@ -447,20 +458,21 @@ describe('d3Scale linear', () => {
     expect(x.range()).toEqual([1, 2]);
     expect(y.range()).toEqual([2, 3]);
   });
+  /*
   it("linear.copy() returns a copy with changes to the interpolator are isolated", () => {
-    const x = (0, _index.scaleLinear)().range([COLOR_RED, COLOR_BLUE]);
+    const x = scaleLinear().range([COLOR_RED, COLOR_BLUE]);
     const y = x.copy();
     const i0 = x.interpolate();
-    const i1 = function (a, b) {
-      return function () {
-        return b;
-      };
+    const i1 = function(a, b) {
+      return function() { return b; };
     };
+  
     x.interpolate(i1);
     expect(y.interpolate()).toBe(i0);
     expect(x(0.5)).toBe(COLOR_BLUE);
     expect(y(0.5)).toBe("rgb(128, 0, 128)");
   });
+  */
   it("linear.copy() returns a copy with changes to clamping are isolated", () => {
     const x = (0, _index.scaleLinear)().clamp(true),
       y = x.copy();

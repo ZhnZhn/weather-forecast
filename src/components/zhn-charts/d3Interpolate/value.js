@@ -1,5 +1,6 @@
-import { color } from "../d3Color";
-import rgb from "./rgb.js";
+// Remove color interpolation case 4K
+//import { color } from "../d3Color";
+//import rgb from "./rgb.js";
 import {genericArray} from "./array.js";
 import date from "./date.js";
 import number from "./number.js";
@@ -9,11 +10,13 @@ import constant from "./constant.js";
 import numberArray, {isNumberArray} from "./numberArray.js";
 
 export default function(a, b) {
-  let t = typeof b, c;
+  //let t = typeof b, c;
+  const t = typeof b;
   return b == null || t === "boolean" ? constant(b)
     : (t === "number" ? number
-    : t === "string" ? ((c = color(b)) ? (b = c, rgb) : string)
-    : b instanceof color ? rgb
+    : t === "string" ? string
+    //: t === "string" ? ((c = color(b)) ? (b = c, rgb) : string)
+    //: b instanceof color ? rgb
     : b instanceof Date ? date
     : isNumberArray(b) ? numberArray
     : Array.isArray(b) ? genericArray
