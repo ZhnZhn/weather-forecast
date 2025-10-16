@@ -12,8 +12,9 @@ const _mathCeil = Math.ceil,
   _mathAbs = Math.abs,
   _mathFloor = Math.floor,
   _mathMax = Math.max,
-  _isFinite = Number.isFinite;
-const _getValidInterval = _ref => {
+  _isFinite = Number.isFinite,
+  _crDecimalMul = (value, step) => new _decimalLight.default(value).mul(step),
+  _getValidInterval = _ref => {
     let [min, max] = _ref;
     return min > max ? [max, min] : [min, max];
   },
@@ -76,7 +77,7 @@ function getTickOfSingleValue(value, tickCount, allowDecimals) {
     middle = new _decimalLight.default(_mathFloor(value));
   }
   const middleIndex = _mathFloor((tickCount - 1) / 2);
-  const fn = (0, _utils.compose)((0, _utils.map)(n => middle.add(new _decimalLight.default(n - middleIndex).mul(step)).toNumber()), _utils.range);
+  const fn = (0, _utils.compose)((0, _utils.map)(n => middle.add(_crDecimalMul(n - middleIndex, step)).toNumber()), _utils.range);
   return fn(0, tickCount);
 }
 
@@ -131,7 +132,7 @@ function calculateStep(min, max, tickCount, allowDecimals, correctionFactor) {
     upCount = max > 0 ? upCount + (tickCount - scaleCount) : upCount;
     belowCount = max > 0 ? belowCount : belowCount + (tickCount - scaleCount);
   }
-  return _crStepConfig(step, middle.sub(new _decimalLight.default(belowCount).mul(step)), middle.add(new _decimalLight.default(upCount).mul(step)));
+  return _crStepConfig(step, middle.sub(_crDecimalMul(belowCount, step)), middle.add(_crDecimalMul(upCount, step)));
 }
 const _crTickCountRange = (tickCount, infinityValue) => (0, _utils.range)(0, tickCount - 1).map(() => infinityValue),
   _getValues = (min, max, values) => min > max ? (0, _utils.reverse)(values) : values;
@@ -168,7 +169,7 @@ function getNiceTickValuesFn(_ref2, tickCount, allowDecimals) {
       tickMin,
       tickMax
     } = calculateStep(cormin, cormax, count, allowDecimals),
-    values = (0, _arithmetic.rangeStep)(tickMin, tickMax.add(new _decimalLight.default(0.1).mul(step)), step);
+    values = (0, _arithmetic.rangeStep)(tickMin, tickMax.add(_crDecimalMul(0.1, step)), step);
   return _getValues(min, max, values);
 }
 
@@ -194,7 +195,7 @@ function getTickValuesFixedDomainFn(_ref3, tickCount, allowDecimals) {
   }
   const count = _mathMax(tickCount, 2),
     step = getFormatStep(new _decimalLight.default(cormax).sub(cormin).div(count - 1), allowDecimals, 0),
-    values = [...(0, _arithmetic.rangeStep)(new _decimalLight.default(cormin), new _decimalLight.default(cormax).sub(new _decimalLight.default(0.99).mul(step)), step), cormax];
+    values = [...(0, _arithmetic.rangeStep)(new _decimalLight.default(cormin), new _decimalLight.default(cormax).sub(_crDecimalMul(0.99, step)), step), cormax];
   return _getValues(min, max, values);
 }
 const getNiceTickValues = exports.getNiceTickValues = (0, _utils.memoize)(getNiceTickValuesFn);

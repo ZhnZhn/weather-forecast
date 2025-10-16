@@ -18,9 +18,14 @@ const _mathCeil = Math.ceil
 , _mathAbs = Math.abs
 , _mathFloor = Math.floor
 , _mathMax = Math.max
-, _isFinite = Number.isFinite;
+, _isFinite = Number.isFinite
 
-const _getValidInterval = (
+, _crDecimalMul = (
+  value,
+  step
+) => new Decimal(value).mul(step)
+
+,  _getValidInterval = (
   [min, max]
 ) => min > max
   ? [max, min]
@@ -29,7 +34,6 @@ const _getValidInterval = (
   cormin,
   cormax
 ) => cormin === -Infinity || cormax === Infinity;
-
 
 /**
  * Calculate the step which is easy to understand between ticks, like 10, 20, 25
@@ -110,7 +114,7 @@ function getTickOfSingleValue(
   const middleIndex = _mathFloor((tickCount - 1) / 2);
 
   const fn = compose(
-    map((n) => middle.add(new Decimal(n - middleIndex).mul(step)).toNumber()),
+    map(n => middle.add(_crDecimalMul(n - middleIndex, step)).toNumber()),
     range,
   );
 
@@ -188,8 +192,8 @@ function calculateStep(
 
   return _crStepConfig(
     step,
-    middle.sub(new Decimal(belowCount).mul(step)),
-    middle.add(new Decimal(upCount).mul(step))
+    middle.sub(_crDecimalMul(belowCount, step)),
+    middle.add(_crDecimalMul(upCount, step))
   );
 }
 
@@ -253,7 +257,7 @@ function getNiceTickValuesFn(
   )
   , values = rangeStep(
      tickMin,
-     tickMax.add(new Decimal(0.1).mul(step)),
+     tickMax.add(_crDecimalMul(0.1, step)),
      step
    );
 
@@ -297,13 +301,13 @@ function getTickValuesFixedDomainFn(
   , values = [
      ...rangeStep(
        new Decimal(cormin),
-       new Decimal(cormax).sub(new Decimal(0.99).mul(step)),
+       new Decimal(cormax).sub(_crDecimalMul(0.99, step)),
        step
     ),
     cormax
   ];
 
-  return _getValues(min, max, values);    
+  return _getValues(min, max, values);
 }
 
 export const getNiceTickValues = memoize(getNiceTickValuesFn);
