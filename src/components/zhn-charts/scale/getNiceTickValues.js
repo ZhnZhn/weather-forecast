@@ -192,6 +192,11 @@ function calculateStep(
     middle.add(new Decimal(upCount).mul(step))
   );
 }
+
+const _crTickCountRange = (
+  tickCount,
+  infinityValue
+) => range(0, tickCount - 1).map(() => infinityValue)
 /**
  * Calculate the ticks of an interval, the count of ticks will be guraranteed
  *
@@ -207,14 +212,19 @@ function getNiceTickValuesFn(
 ) {
   // More than two ticks should be return
   const count = _mathMax(tickCount, 2)
-  , [cormin, cormax] = _getValidInterval([min, max]);
+  , [
+    cormin,
+    cormax
+  ] = _getValidInterval([min, max]);
 
   if (_isEqualInfinity(cormin, cormax)) {
     const values = cormax === Infinity
-      ? [cormin, ...range(0, tickCount - 1).map(() => Infinity)]
-      : [...range(0, tickCount - 1).map(() => -Infinity), cormax];
+      ? [cormin, ..._crTickCountRange(tickCount, Infinity)]
+      : [..._crTickCountRange(tickCount, -Infinity), cormax];
 
-    return min > max ? reverse(values) : values;
+    return min > max
+      ? reverse(values)
+      : values;
   }
 
   if (cormin === cormax) {
@@ -274,15 +284,6 @@ function getTickValuesFixedDomainFn(
   if (_edgeValues) {
     return _edgeValues;
   }
-  /*
-  if (_isEqualInfinity(cormin, cormax)) {
-    return [min, max];
-  }
-
-  if (cormin === cormax) {
-    return [cormin];
-  }
-  */
 
   const count = _mathMax(tickCount, 2)
   , step = getFormatStep(

@@ -133,6 +133,7 @@ function calculateStep(min, max, tickCount, allowDecimals, correctionFactor) {
   }
   return _crStepConfig(step, middle.sub(new _decimalLight.default(belowCount).mul(step)), middle.add(new _decimalLight.default(upCount).mul(step)));
 }
+const _crTickCountRange = (tickCount, infinityValue) => (0, _utils.range)(0, tickCount - 1).map(() => infinityValue);
 /**
  * Calculate the ticks of an interval, the count of ticks will be guraranteed
  *
@@ -153,7 +154,7 @@ function getNiceTickValuesFn(_ref2, tickCount, allowDecimals) {
   const count = _mathMax(tickCount, 2),
     [cormin, cormax] = _getValidInterval([min, max]);
   if (_isEqualInfinity(cormin, cormax)) {
-    const values = cormax === Infinity ? [cormin, ...(0, _utils.range)(0, tickCount - 1).map(() => Infinity)] : [...(0, _utils.range)(0, tickCount - 1).map(() => -Infinity), cormax];
+    const values = cormax === Infinity ? [cormin, ..._crTickCountRange(tickCount, Infinity)] : [..._crTickCountRange(tickCount, -Infinity), cormax];
     return min > max ? (0, _utils.reverse)(values) : values;
   }
   if (cormin === cormax) {
@@ -190,15 +191,6 @@ function getTickValuesFixedDomainFn(_ref3, tickCount, allowDecimals) {
   if (_edgeValues) {
     return _edgeValues;
   }
-  /*
-  if (_isEqualInfinity(cormin, cormax)) {
-    return [min, max];
-  }
-    if (cormin === cormax) {
-    return [cormin];
-  }
-  */
-
   const count = _mathMax(tickCount, 2),
     step = getFormatStep(new _decimalLight.default(cormax).sub(cormin).div(count - 1), allowDecimals, 0),
     values = [...(0, _arithmetic.rangeStep)(new _decimalLight.default(cormin), new _decimalLight.default(cormax).sub(new _decimalLight.default(0.99).mul(step)), step), cormax];
