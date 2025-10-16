@@ -197,6 +197,13 @@ const _crTickCountRange = (
   tickCount,
   infinityValue
 ) => range(0, tickCount - 1).map(() => infinityValue)
+, _getValues = (
+  min,
+  max,
+  values
+) => min > max
+  ? reverse(values)
+  : values;
 /**
  * Calculate the ticks of an interval, the count of ticks will be guraranteed
  *
@@ -222,9 +229,7 @@ function getNiceTickValuesFn(
       ? [cormin, ..._crTickCountRange(tickCount, Infinity)]
       : [..._crTickCountRange(tickCount, -Infinity), cormax];
 
-    return min > max
-      ? reverse(values)
-      : values;
+    return _getValues(min, max, values);
   }
 
   if (cormin === cormax) {
@@ -252,9 +257,7 @@ function getNiceTickValuesFn(
      step
    );
 
-  return min > max
-    ? reverse(values)
-    : values;
+  return _getValues(min, max, values);
 }
 
 /**
@@ -300,9 +303,7 @@ function getTickValuesFixedDomainFn(
     cormax
   ];
 
-  return min > max
-    ? reverse(values)
-    : values;
+  return _getValues(min, max, values);    
 }
 
 export const getNiceTickValues = memoize(getNiceTickValuesFn);

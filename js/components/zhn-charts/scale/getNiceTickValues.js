@@ -133,7 +133,8 @@ function calculateStep(min, max, tickCount, allowDecimals, correctionFactor) {
   }
   return _crStepConfig(step, middle.sub(new _decimalLight.default(belowCount).mul(step)), middle.add(new _decimalLight.default(upCount).mul(step)));
 }
-const _crTickCountRange = (tickCount, infinityValue) => (0, _utils.range)(0, tickCount - 1).map(() => infinityValue);
+const _crTickCountRange = (tickCount, infinityValue) => (0, _utils.range)(0, tickCount - 1).map(() => infinityValue),
+  _getValues = (min, max, values) => min > max ? (0, _utils.reverse)(values) : values;
 /**
  * Calculate the ticks of an interval, the count of ticks will be guraranteed
  *
@@ -155,7 +156,7 @@ function getNiceTickValuesFn(_ref2, tickCount, allowDecimals) {
     [cormin, cormax] = _getValidInterval([min, max]);
   if (_isEqualInfinity(cormin, cormax)) {
     const values = cormax === Infinity ? [cormin, ..._crTickCountRange(tickCount, Infinity)] : [..._crTickCountRange(tickCount, -Infinity), cormax];
-    return min > max ? (0, _utils.reverse)(values) : values;
+    return _getValues(min, max, values);
   }
   if (cormin === cormax) {
     return getTickOfSingleValue(cormin, tickCount, allowDecimals);
@@ -168,7 +169,7 @@ function getNiceTickValuesFn(_ref2, tickCount, allowDecimals) {
       tickMax
     } = calculateStep(cormin, cormax, count, allowDecimals),
     values = (0, _arithmetic.rangeStep)(tickMin, tickMax.add(new _decimalLight.default(0.1).mul(step)), step);
-  return min > max ? (0, _utils.reverse)(values) : values;
+  return _getValues(min, max, values);
 }
 
 /**
@@ -194,7 +195,7 @@ function getTickValuesFixedDomainFn(_ref3, tickCount, allowDecimals) {
   const count = _mathMax(tickCount, 2),
     step = getFormatStep(new _decimalLight.default(cormax).sub(cormin).div(count - 1), allowDecimals, 0),
     values = [...(0, _arithmetic.rangeStep)(new _decimalLight.default(cormin), new _decimalLight.default(cormax).sub(new _decimalLight.default(0.99).mul(step)), step), cormax];
-  return min > max ? (0, _utils.reverse)(values) : values;
+  return _getValues(min, max, values);
 }
 const getNiceTickValues = exports.getNiceTickValues = (0, _utils.memoize)(getNiceTickValuesFn);
 const getTickValuesFixedDomain = exports.getTickValuesFixedDomain = (0, _utils.memoize)(getTickValuesFixedDomainFn);
