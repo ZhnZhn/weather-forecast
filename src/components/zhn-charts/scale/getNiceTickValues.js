@@ -24,7 +24,12 @@ const _getValidInterval = (
   [min, max]
 ) => min > max
   ? [max, min]
-  : [min, max];
+  : [min, max]
+, _isEqualInfinity = (
+  cormin,
+  cormax
+) => cormin === -Infinity || cormax === Infinity;
+
 
 /**
  * Calculate the step which is easy to understand between ticks, like 10, 20, 25
@@ -204,7 +209,7 @@ function getNiceTickValuesFn(
   const count = _mathMax(tickCount, 2)
   , [cormin, cormax] = _getValidInterval([min, max]);
 
-  if (cormin === -Infinity || cormax === Infinity) {
+  if (_isEqualInfinity(cormin, cormax)) {
     const values = cormax === Infinity
       ? [cormin, ...range(0, tickCount - 1).map(() => Infinity)]
       : [...range(0, tickCount - 1).map(() => -Infinity), cormax];
@@ -260,15 +265,24 @@ function getTickValuesFixedDomainFn(
   const [
     cormin,
     cormax
-  ] = _getValidInterval([min, max]);
-
-  if (cormin === -Infinity || cormax === Infinity) {
+  ] = _getValidInterval([min, max])
+  , _edgeValues = _isEqualInfinity(cormin, cormax)
+      ? [min, max]
+      : cormin === cormax
+      ? [cormin]
+      : !1;
+  if (_edgeValues) {
+    return _edgeValues;
+  }
+  /*
+  if (_isEqualInfinity(cormin, cormax)) {
     return [min, max];
   }
 
   if (cormin === cormax) {
     return [cormin];
   }
+  */
 
   const count = _mathMax(tickCount, 2)
   , step = getFormatStep(
