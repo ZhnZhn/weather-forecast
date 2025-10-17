@@ -1,7 +1,4 @@
-export default function(numerals) {
-  return function(value) {
-    return value.replace(/[0-9]/g, function(i) {
-      return numerals[+i];
-    });
-  };
-}
+export default (
+  numerals
+) => value => value
+  .replace(/[0-9]/g, i => numerals[+i])

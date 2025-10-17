@@ -1,10 +1,10 @@
 "use strict";
 
 exports.__esModule = true;
-exports["default"] = _default;
+exports.default = void 0;
 // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
-function _default(s) {
-  var n = s.length,
+var _default = s => {
+  let n = s.length,
     i = 1,
     i0 = -1,
     i1;
@@ -24,5 +24,6 @@ function _default(s) {
     }
   }
   return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
-}
+};
+exports.default = _default;
 //# sourceMappingURL=formatTrim.js.map

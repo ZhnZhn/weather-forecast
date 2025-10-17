@@ -1,6 +1,6 @@
-import { formatDecimalParts } from "./formatDecimal.js";
+import { formatDecimalParts } from "./formatDecimal";
 
-export default function(x, p) {
+export default (x, p) => {
   let d = formatDecimalParts(x, p);
   if (!d) return x + "";
   let coefficient = d[0]

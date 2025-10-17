@@ -1,13 +1,11 @@
-export default function(x) {
-  return Math.abs(x = Math.round(x)) >= 1e21
-    ? x.toLocaleString("en").replace(/,/g, "")
-    : x.toString(10);
-}
+export default x => Math.abs(x = Math.round(x)) >= 1e21
+  ? x.toLocaleString("en").replace(/,/g, "")
+  : x.toString(10);
 
 // Computes the decimal coefficient and exponent of the specified number x with
 // significant digits p, where x is positive and p is in [1, 21] or undefined.
 // For example, formatDecimalParts(1.23) returns ["123", 0].
-export function formatDecimalParts(x, p) {
+export const formatDecimalParts = (x, p) => {
   let i, coefficient;
   if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
   coefficient = x.slice(0, i);

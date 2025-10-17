@@ -1,5 +1,5 @@
 // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
-export default function(s) {
+export default s => {
   let n = s.length
   , i = 1
   , i0 = -1

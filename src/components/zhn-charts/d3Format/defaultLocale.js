@@ -1,17 +1,11 @@
-import formatLocale from './locale';
-
-let locale;
-export let format;
-export let formatPrefix;
+import formatLocale from "./locale";
 
 const _DF_LOCALE_DEFINITION = {
   thousands: ",",
   grouping: [3],
   currency: ["$", ""]
 };
-(function defaultLocale(definition) {
-  locale = formatLocale(definition);
-  format = locale.format;
-  formatPrefix = locale.formatPrefix;
-  return locale;
-}(_DF_LOCALE_DEFINITION))
+
+let locale = formatLocale(_DF_LOCALE_DEFINITION);
+export let format = locale.format
+export let formatPrefix = locale.formatPrefix
