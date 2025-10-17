@@ -73,8 +73,7 @@ function getTickOfSingleValue(value, tickCount, allowDecimals) {
     middle = new _decimalLight.default(_mathFloor(value));
   }
   const middleIndex = _mathFloor((tickCount - 1) / 2);
-  const fn = (0, _utils.compose)((0, _utils.map)(n => middle.add(_crDecimalMul(n - middleIndex, step)).toNumber()), _utils.range);
-  return fn(0, tickCount);
+  return (0, _utils.range)(0, tickCount).map(n => middle.add(_crDecimalMul(n - middleIndex, step)).toNumber());
 }
 
 /**
@@ -131,7 +130,7 @@ function calculateStep(min, max, tickCount, allowDecimals, correctionFactor) {
   return _crStepConfig(step, middle.sub(_crDecimalMul(belowCount, step)), middle.add(_crDecimalMul(upCount, step)));
 }
 const _crTickCountRange = (tickCount, infinityValue) => (0, _utils.range)(0, tickCount - 1).map(() => infinityValue),
-  _getValues = (min, max, values) => min > max ? (0, _utils.reverse)(values) : values,
+  _getValues = (min, max, values) => min > max ? values.reverse() : values,
   _crEdgeValues = (cormin, cormax, crValuesInfinityCase, crValuesEqualCase) => cormin === -Infinity || cormax === Infinity ? crValuesInfinityCase() : cormin === cormax ? crValuesEqualCase() : !1;
 
 /**

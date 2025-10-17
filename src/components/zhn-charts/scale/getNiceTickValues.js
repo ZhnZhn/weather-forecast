@@ -2,11 +2,8 @@
 import Decimal from '../../../math/decimal-light/decimalLight';
 
 import {
-  compose,
   range,
-  memoize,
-  map,
-  reverse,
+  memoize
 } from './util/utils';
 import {
   getDigitCount,
@@ -109,13 +106,8 @@ function getTickOfSingleValue(
   }
 
   const middleIndex = _mathFloor((tickCount - 1) / 2);
-
-  const fn = compose(
-    map(n => middle.add(_crDecimalMul(n - middleIndex, step)).toNumber()),
-    range,
-  );
-
-  return fn(0, tickCount);
+  return range(0, tickCount)
+    .map(n => middle.add(_crDecimalMul(n - middleIndex, step)).toNumber())
 }
 
 /**
@@ -203,7 +195,7 @@ const _crTickCountRange = (
   max,
   values
 ) => min > max
-  ? reverse(values)
+  ? values.reverse()
   : values
 , _crEdgeValues = (
   cormin,
