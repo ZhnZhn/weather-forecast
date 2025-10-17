@@ -22,15 +22,18 @@ export function formatSpecifier(specifier) {
 
 formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
 
+const _getNumberValue = value => value === void 0
+  ? void 0
+  : +value;
 export function FormatSpecifier(specifier) {
   this.fill = getStrValue(specifier.fill, " ");
   this.align = getStrValue(specifier.align, ">");
   this.sign = getStrValue(specifier.sign, "-");
   this.symbol = getStrValue(specifier.symbol, "");
   this.zero = !!specifier.zero;
-  this.width = specifier.width === undefined ? undefined : +specifier.width;
+  this.width = _getNumberValue(specifier.width);
   this.comma = !!specifier.comma;
-  this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+  this.precision = _getNumberValue(specifier.precision);
   this.trim = !!specifier.trim;
   this.type = getStrValue(specifier.type, "");
 }
