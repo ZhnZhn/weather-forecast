@@ -4,23 +4,28 @@ import formatNumerals from "./formatNumerals.js";
 import { formatSpecifier } from "./formatSpecifier.js";
 import formatTrim from "./formatTrim.js";
 import formatTypes from "./formatTypes.js";
-import {prefixExponent} from "./formatPrefixAuto.js";
+import { prefixExponent } from "./formatPrefixAuto.js";
 import identity from "./identity.js";
 
 const map = Array.prototype.map
-, prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+, prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"]
+, _getLocaleStrValue = (
+  value,
+  dfValue
+) => value === void 0 ? dfValue : value + "";
 
 export default function(locale) {
-  let group = locale.grouping === undefined || locale.thousands === undefined ? identity : formatGroup(map.call(locale.grouping, Number), locale.thousands + "")
-  , currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + ""
-  , currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + ""
-  , decimal = locale.decimal === undefined ? "." : locale.decimal + ""
+  const group = locale.grouping === undefined || locale.thousands === undefined ? identity : formatGroup(map.call(locale.grouping, Number), locale.thousands + "")
+  , localCurrency = locale.currency
+  , currencyPrefix = localCurrency === undefined ? "" : localCurrency[0] + ""
+  , currencySuffix = localCurrency === undefined ? "" : localCurrency[1] + ""
+  , decimal = _getLocaleStrValue(locale.decimal, ".")
   , numerals = locale.numerals === undefined ? identity : formatNumerals(map.call(locale.numerals, String))
-  , percent = locale.percent === undefined ? "%" : locale.percent + ""
-  , minus = locale.minus === undefined ? "−" : locale.minus + ""
-  , nan = locale.nan === undefined ? "NaN" : locale.nan + "";
+  , percent = _getLocaleStrValue(locale.percent, "%")
+  , minus = _getLocaleStrValue(locale.minus, "−")
+  , nan = _getLocaleStrValue(locale.nan, "NaN")
 
-  function newFormat(specifier) {
+  , format = (specifier) => {
     specifier = formatSpecifier(specifier);
 
     let fill = specifier.fill
@@ -80,11 +85,13 @@ export default function(locale) {
     // or clamp the specified precision to the supported range.
     // For significant precision, it must be in [1, 21].
     // For fixed precision, it must be in [0, 20].
-    precision = precision === undefined ? 6
-        : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
-        : Math.max(0, Math.min(20, precision));
+    precision = precision === undefined
+      ? 6
+      : /[gprs]/.test(type)
+      ? Math.max(1, Math.min(21, precision))
+      : Math.max(0, Math.min(20, precision));
 
-    function format(value) {
+    const formatImpl = (value) => {
       let valuePrefix = prefix
       , valueSuffix = suffix
       , i, n, c;
@@ -142,35 +149,29 @@ export default function(locale) {
       }
 
       // Reconstruct the final output based on the desired alignment.
-      switch (align) {
-        case "<": value = valuePrefix + value + valueSuffix + padding; break;
-        case "=": value = valuePrefix + padding + value + valueSuffix; break;
-        case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
-        default: value = padding + valuePrefix + value + valueSuffix; break;
-      }
+      value = align === "<"
+        ? valuePrefix + value + valueSuffix + padding
+        : align === "="
+        ? valuePrefix + padding + value + valueSuffix
+        : align === "^"
+        ? padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length)
+        : padding + valuePrefix + value + valueSuffix
 
       return numerals(value);
     }
 
-    format.toString = function() {
-      return specifier + "";
-    };
-
-    return format;
+    formatImpl.toString = () => specifier + ""
+    return formatImpl;
   }
-
-  function formatPrefix(specifier, value) {
-    let f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier))
+  , formatPrefix = (specifier, value) => {
+    const f = format((specifier = formatSpecifier(specifier), specifier.type = "f", specifier))
     , e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3
     , k = Math.pow(10, -e)
     , prefix = prefixes[8 + e / 3];
-    return function(value) {
-      return f(k * value) + prefix;
-    };
-  }
-
+    return value => f(k * value) + prefix;
+  };
   return {
-    format: newFormat,
-    formatPrefix: formatPrefix
+    format,
+    formatPrefix
   };
 }
