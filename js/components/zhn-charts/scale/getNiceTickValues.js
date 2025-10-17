@@ -14,11 +14,7 @@ const _mathCeil = Math.ceil,
   _mathMax = Math.max,
   _isFinite = Number.isFinite,
   _crDecimalMul = (value, step) => new _decimalLight.default(value).mul(step),
-  _getValidInterval = _ref => {
-    let [min, max] = _ref;
-    return min > max ? [max, min] : [min, max];
-  },
-  _isEqualInfinity = (cormin, cormax) => cormin === -Infinity || cormax === Infinity;
+  _getValidInterval = (min, max) => min > max ? [max, min] : [min, max];
 
 /**
  * Calculate the step which is easy to understand between ticks, like 10, 20, 25
@@ -42,7 +38,7 @@ function getFormatStep(roughStep, allowDecimals, correctionFactor) {
     stepRatio = roughStep.div(digitCountValue)
     // When an integer and a float multiplied, the accuracy of result may be wrong
     ,
-    stepRatioScale = digitCount !== 1 ? 0.05 : 0.1,
+    stepRatioScale = digitCount === 1 ? 0.1 : 0.05,
     amendStepRatio = new _decimalLight.default(_mathCeil(stepRatio.div(stepRatioScale).toNumber())).add(correctionFactor).mul(stepRatioScale);
   const formatStep = amendStepRatio.mul(digitCountValue);
   return allowDecimals ? formatStep : new _decimalLight.default(_mathCeil(formatStep));
@@ -135,7 +131,9 @@ function calculateStep(min, max, tickCount, allowDecimals, correctionFactor) {
   return _crStepConfig(step, middle.sub(_crDecimalMul(belowCount, step)), middle.add(_crDecimalMul(upCount, step)));
 }
 const _crTickCountRange = (tickCount, infinityValue) => (0, _utils.range)(0, tickCount - 1).map(() => infinityValue),
-  _getValues = (min, max, values) => min > max ? (0, _utils.reverse)(values) : values;
+  _getValues = (min, max, values) => min > max ? (0, _utils.reverse)(values) : values,
+  _crEdgeValues = (cormin, cormax, crValuesInfinityCase, crValuesEqualCase) => cormin === -Infinity || cormax === Infinity ? crValuesInfinityCase() : cormin === cormax ? crValuesEqualCase() : !1;
+
 /**
  * Calculate the ticks of an interval, the count of ticks will be guraranteed
  *
@@ -144,23 +142,20 @@ const _crTickCountRange = (tickCount, infinityValue) => (0, _utils.range)(0, tic
  * @param  {Boolean} allowDecimals Allow the ticks to be decimals or not
  * @return {Array}   ticks
  */
-function getNiceTickValuesFn(_ref2, tickCount, allowDecimals) {
-  let [min, max] = _ref2;
+function getNiceTickValuesFn(_ref, tickCount, allowDecimals) {
+  let [min, max] = _ref;
   if (tickCount === void 0) {
     tickCount = 6;
   }
   if (allowDecimals === void 0) {
-    allowDecimals = true;
+    allowDecimals = !0;
   }
   // More than two ticks should be return
   const count = _mathMax(tickCount, 2),
-    [cormin, cormax] = _getValidInterval([min, max]);
-  if (_isEqualInfinity(cormin, cormax)) {
-    const values = cormax === Infinity ? [cormin, ..._crTickCountRange(tickCount, Infinity)] : [..._crTickCountRange(tickCount, -Infinity), cormax];
-    return _getValues(min, max, values);
-  }
-  if (cormin === cormax) {
-    return getTickOfSingleValue(cormin, tickCount, allowDecimals);
+    [cormin, cormax] = _getValidInterval(min, max),
+    _edgeValues = _crEdgeValues(cormin, cormax, () => _getValues(min, max, cormax === Infinity ? [cormin, ..._crTickCountRange(tickCount, Infinity)] : [..._crTickCountRange(tickCount, -Infinity), cormax]), () => getTickOfSingleValue(cormin, tickCount, allowDecimals));
+  if (_edgeValues) {
+    return _edgeValues;
   }
 
   // Get the step between two ticks
@@ -182,14 +177,14 @@ function getNiceTickValuesFn(_ref2, tickCount, allowDecimals) {
  * @param  {Boolean} allowDecimals Allow the ticks to be decimals or not
  * @return {Array}   ticks
  */
-function getTickValuesFixedDomainFn(_ref3, tickCount, allowDecimals) {
-  let [min, max] = _ref3;
+function getTickValuesFixedDomainFn(_ref2, tickCount, allowDecimals) {
+  let [min, max] = _ref2;
   if (allowDecimals === void 0) {
-    allowDecimals = true;
+    allowDecimals = !0;
   }
   // More than two ticks should be return
-  const [cormin, cormax] = _getValidInterval([min, max]),
-    _edgeValues = _isEqualInfinity(cormin, cormax) ? [min, max] : cormin === cormax ? [cormin] : !1;
+  const [cormin, cormax] = _getValidInterval(min, max),
+    _edgeValues = _crEdgeValues(cormin, cormax, () => [min, max], () => [cormin]);
   if (_edgeValues) {
     return _edgeValues;
   }

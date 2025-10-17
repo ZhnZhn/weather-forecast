@@ -26,14 +26,11 @@ const _mathCeil = Math.ceil
 ) => new Decimal(value).mul(step)
 
 ,  _getValidInterval = (
-  [min, max]
+  min,
+  max
 ) => min > max
   ? [max, min]
-  : [min, max]
-, _isEqualInfinity = (
-  cormin,
-  cormax
-) => cormin === -Infinity || cormax === Infinity;
+  : [min, max];
 
 /**
  * Calculate the step which is easy to understand between ticks, like 10, 20, 25
@@ -60,9 +57,9 @@ function getFormatStep(
   , digitCountValue = getByPow10(digitCount)
   , stepRatio = roughStep.div(digitCountValue)
   // When an integer and a float multiplied, the accuracy of result may be wrong
-  , stepRatioScale = digitCount !== 1
-      ? 0.05
-      : 0.1
+  , stepRatioScale = digitCount === 1
+      ? 0.1
+      : 0.05
   , amendStepRatio = new Decimal(
     _mathCeil(stepRatio.div(stepRatioScale).toNumber())
   ).add(correctionFactor)
@@ -207,7 +204,18 @@ const _crTickCountRange = (
   values
 ) => min > max
   ? reverse(values)
-  : values;
+  : values
+, _crEdgeValues = (
+  cormin,
+  cormax,
+  crValuesInfinityCase,
+  crValuesEqualCase
+) => cormin === -Infinity || cormax === Infinity
+  ? crValuesInfinityCase()
+  : cormin === cormax
+  ? crValuesEqualCase()
+  : !1;
+
 /**
  * Calculate the ticks of an interval, the count of ticks will be guraranteed
  *
@@ -219,29 +227,24 @@ const _crTickCountRange = (
 function getNiceTickValuesFn(
   [min, max],
   tickCount = 6,
-  allowDecimals = true
+  allowDecimals = !0
 ) {
   // More than two ticks should be return
   const count = _mathMax(tickCount, 2)
   , [
     cormin,
     cormax
-  ] = _getValidInterval([min, max]);
-
-  if (_isEqualInfinity(cormin, cormax)) {
-    const values = cormax === Infinity
-      ? [cormin, ..._crTickCountRange(tickCount, Infinity)]
-      : [..._crTickCountRange(tickCount, -Infinity), cormax];
-
-    return _getValues(min, max, values);
-  }
-
-  if (cormin === cormax) {
-    return getTickOfSingleValue(
-      cormin,
-      tickCount,
-      allowDecimals
-    );
+  ] = _getValidInterval(min, max)
+  , _edgeValues = _crEdgeValues(
+    cormin,
+    cormax,
+    () => _getValues(min, max, cormax === Infinity
+       ? [cormin, ..._crTickCountRange(tickCount, Infinity)]
+       : [..._crTickCountRange(tickCount, -Infinity), cormax]),
+    () => getTickOfSingleValue(cormin, tickCount, allowDecimals)
+  )
+  if (_edgeValues) {
+    return _edgeValues;
   }
 
   // Get the step between two ticks
@@ -276,18 +279,19 @@ function getNiceTickValuesFn(
 function getTickValuesFixedDomainFn(
   [min, max],
   tickCount,
-  allowDecimals = true
+  allowDecimals = !0
 ) {
   // More than two ticks should be return
   const [
     cormin,
     cormax
-  ] = _getValidInterval([min, max])
-  , _edgeValues = _isEqualInfinity(cormin, cormax)
-      ? [min, max]
-      : cormin === cormax
-      ? [cormin]
-      : !1;
+  ] = _getValidInterval(min, max)
+  , _edgeValues = _crEdgeValues(
+    cormin,
+    cormax,
+    () => [min, max],
+    () => [cormin]
+  )
   if (_edgeValues) {
     return _edgeValues;
   }
