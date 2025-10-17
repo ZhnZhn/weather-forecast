@@ -13,7 +13,8 @@ var _formatPrefixAuto = require("./formatPrefixAuto.js");
 var _identity = _interopRequireDefault(require("./identity.js"));
 const map = Array.prototype.map,
   prefixes = ["y", "z", "a", "f", "p", "n", "µ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"],
-  _getLocaleStrValue = (value, dfValue) => value === void 0 ? dfValue : value + "";
+  _getLocaleStrValue = (value, dfValue) => value === void 0 ? dfValue : value + "",
+  _calcMaxMin = (n1, n2, n3) => Math.max(n1, Math.min(n2, n3));
 function _default(locale) {
   const group = locale.grouping === undefined || locale.thousands === undefined ? _identity.default : (0, _formatGroup.default)(map.call(locale.grouping, Number), locale.thousands + ""),
     localCurrency = locale.currency,
@@ -75,7 +76,7 @@ function _default(locale) {
       // or clamp the specified precision to the supported range.
       // For significant precision, it must be in [1, 21].
       // For fixed precision, it must be in [0, 20].
-      precision = precision === undefined ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
+      precision = precision === undefined ? 6 : /[gprs]/.test(type) ? _calcMaxMin(1, 21, precision) : _calcMaxMin(0, 20, precision);
       const formatImpl = value => {
         let valuePrefix = prefix,
           valueSuffix = suffix,
@@ -141,7 +142,7 @@ function _default(locale) {
     },
     formatPrefix = (specifier, value) => {
       const f = format((specifier = (0, _formatSpecifier.formatSpecifier)(specifier), specifier.type = "f", specifier)),
-        e = Math.max(-8, Math.min(8, Math.floor((0, _exponent.default)(value) / 3))) * 3,
+        e = _calcMaxMin(-8, 8, Math.floor((0, _exponent.default)(value) / 3)) * 3,
         k = Math.pow(10, -e),
         prefix = prefixes[8 + e / 3];
       return value => f(k * value) + prefix;

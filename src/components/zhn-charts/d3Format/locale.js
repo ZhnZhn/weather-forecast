@@ -12,7 +12,8 @@ const map = Array.prototype.map
 , _getLocaleStrValue = (
   value,
   dfValue
-) => value === void 0 ? dfValue : value + "";
+) => value === void 0 ? dfValue : value + ""
+, _calcMaxMin = (n1, n2, n3) => Math.max(n1, Math.min(n2, n3));
 
 export default function(locale) {
   const group = locale.grouping === undefined || locale.thousands === undefined ? identity : formatGroup(map.call(locale.grouping, Number), locale.thousands + "")
@@ -88,8 +89,8 @@ export default function(locale) {
     precision = precision === undefined
       ? 6
       : /[gprs]/.test(type)
-      ? Math.max(1, Math.min(21, precision))
-      : Math.max(0, Math.min(20, precision));
+      ? _calcMaxMin(1, 21, precision)
+      : _calcMaxMin(0, 20, precision);
 
     const formatImpl = (value) => {
       let valuePrefix = prefix
@@ -106,7 +107,9 @@ export default function(locale) {
         let valueNegative = value < 0 || 1 / value < 0;
 
         // Perform the initial formatting.
-        value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
+        value = isNaN(value)
+          ? nan
+          : formatType(Math.abs(value), precision);
 
         // Trim insignificant zeros.
         if (trim) value = formatTrim(value);
@@ -165,7 +168,7 @@ export default function(locale) {
   }
   , formatPrefix = (specifier, value) => {
     const f = format((specifier = formatSpecifier(specifier), specifier.type = "f", specifier))
-    , e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3
+    , e = _calcMaxMin(-8, 8, Math.floor(exponent(value) / 3)) * 3    
     , k = Math.pow(10, -e)
     , prefix = prefixes[8 + e / 3];
     return value => f(k * value) + prefix;
