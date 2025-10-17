@@ -11,20 +11,20 @@ var _formatTrim = _interopRequireDefault(require("./formatTrim.js"));
 var _formatTypes = _interopRequireDefault(require("./formatTypes.js"));
 var _formatPrefixAuto = require("./formatPrefixAuto.js");
 var _identity = _interopRequireDefault(require("./identity.js"));
+var _formatFn = require("./formatFn");
 const map = Array.prototype.map,
   prefixes = ["y", "z", "a", "f", "p", "n", "µ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"],
-  _getLocaleStrValue = (value, dfValue) => value === void 0 ? dfValue : value + "",
   _calcMaxMin = (n1, n2, n3) => Math.max(n1, Math.min(n2, n3));
 function _default(locale) {
   const group = locale.grouping === undefined || locale.thousands === undefined ? _identity.default : (0, _formatGroup.default)(map.call(locale.grouping, Number), locale.thousands + ""),
     localCurrency = locale.currency,
     currencyPrefix = localCurrency === undefined ? "" : localCurrency[0] + "",
     currencySuffix = localCurrency === undefined ? "" : localCurrency[1] + "",
-    decimal = _getLocaleStrValue(locale.decimal, "."),
+    decimal = (0, _formatFn.getStrValue)(locale.decimal, "."),
     numerals = locale.numerals === undefined ? _identity.default : (0, _formatNumerals.default)(map.call(locale.numerals, String)),
-    percent = _getLocaleStrValue(locale.percent, "%"),
-    minus = _getLocaleStrValue(locale.minus, "−"),
-    nan = _getLocaleStrValue(locale.nan, "NaN"),
+    percent = (0, _formatFn.getStrValue)(locale.percent, "%"),
+    minus = (0, _formatFn.getStrValue)(locale.minus, "−"),
+    nan = (0, _formatFn.getStrValue)(locale.nan, "NaN"),
     format = specifier => {
       specifier = (0, _formatSpecifier.formatSpecifier)(specifier);
       let fill = specifier.fill,

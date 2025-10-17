@@ -3,11 +3,12 @@
 exports.__esModule = true;
 exports.FormatSpecifier = FormatSpecifier;
 exports.formatSpecifier = formatSpecifier;
+var _formatFn = require("./formatFn");
 // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
-var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+const re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
 function formatSpecifier(specifier) {
+  let match;
   if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-  var match;
   return new FormatSpecifier({
     fill: match[1],
     align: match[2],
@@ -24,16 +25,16 @@ function formatSpecifier(specifier) {
 formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
 
 function FormatSpecifier(specifier) {
-  this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
-  this.align = specifier.align === undefined ? ">" : specifier.align + "";
-  this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
-  this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+  this.fill = (0, _formatFn.getStrValue)(specifier.fill, " ");
+  this.align = (0, _formatFn.getStrValue)(specifier.align, ">");
+  this.sign = (0, _formatFn.getStrValue)(specifier.sign, "-");
+  this.symbol = (0, _formatFn.getStrValue)(specifier.symbol, "");
   this.zero = !!specifier.zero;
   this.width = specifier.width === undefined ? undefined : +specifier.width;
   this.comma = !!specifier.comma;
   this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
   this.trim = !!specifier.trim;
-  this.type = specifier.type === undefined ? "" : specifier.type + "";
+  this.type = (0, _formatFn.getStrValue)(specifier.type, "");
 }
 FormatSpecifier.prototype.toString = function () {
   return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width === undefined ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;

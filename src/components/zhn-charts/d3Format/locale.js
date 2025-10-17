@@ -6,13 +6,10 @@ import formatTrim from "./formatTrim.js";
 import formatTypes from "./formatTypes.js";
 import { prefixExponent } from "./formatPrefixAuto.js";
 import identity from "./identity.js";
+import { getStrValue } from "./formatFn";
 
 const map = Array.prototype.map
 , prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"]
-, _getLocaleStrValue = (
-  value,
-  dfValue
-) => value === void 0 ? dfValue : value + ""
 , _calcMaxMin = (n1, n2, n3) => Math.max(n1, Math.min(n2, n3));
 
 export default function(locale) {
@@ -20,11 +17,11 @@ export default function(locale) {
   , localCurrency = locale.currency
   , currencyPrefix = localCurrency === undefined ? "" : localCurrency[0] + ""
   , currencySuffix = localCurrency === undefined ? "" : localCurrency[1] + ""
-  , decimal = _getLocaleStrValue(locale.decimal, ".")
+  , decimal = getStrValue(locale.decimal, ".")
   , numerals = locale.numerals === undefined ? identity : formatNumerals(map.call(locale.numerals, String))
-  , percent = _getLocaleStrValue(locale.percent, "%")
-  , minus = _getLocaleStrValue(locale.minus, "−")
-  , nan = _getLocaleStrValue(locale.nan, "NaN")
+  , percent = getStrValue(locale.percent, "%")
+  , minus = getStrValue(locale.minus, "−")
+  , nan = getStrValue(locale.nan, "NaN")
 
   , format = (specifier) => {
     specifier = formatSpecifier(specifier);
@@ -168,7 +165,7 @@ export default function(locale) {
   }
   , formatPrefix = (specifier, value) => {
     const f = format((specifier = formatSpecifier(specifier), specifier.type = "f", specifier))
-    , e = _calcMaxMin(-8, 8, Math.floor(exponent(value) / 3)) * 3    
+    , e = _calcMaxMin(-8, 8, Math.floor(exponent(value) / 3)) * 3
     , k = Math.pow(10, -e)
     , prefix = prefixes[8 + e / 3];
     return value => f(k * value) + prefix;

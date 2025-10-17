@@ -1,9 +1,11 @@
+import { getStrValue } from "./formatFn";
+
 // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
 const re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
 
 export function formatSpecifier(specifier) {
-  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
   let match;
+  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
   return new FormatSpecifier({
     fill: match[1],
     align: match[2],
@@ -21,16 +23,16 @@ export function formatSpecifier(specifier) {
 formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
 
 export function FormatSpecifier(specifier) {
-  this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
-  this.align = specifier.align === undefined ? ">" : specifier.align + "";
-  this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
-  this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+  this.fill = getStrValue(specifier.fill, " ");
+  this.align = getStrValue(specifier.align, ">");
+  this.sign = getStrValue(specifier.sign, "-");
+  this.symbol = getStrValue(specifier.symbol, "");
   this.zero = !!specifier.zero;
   this.width = specifier.width === undefined ? undefined : +specifier.width;
   this.comma = !!specifier.comma;
   this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
   this.trim = !!specifier.trim;
-  this.type = specifier.type === undefined ? "" : specifier.type + "";
+  this.type = getStrValue(specifier.type, "");
 }
 
 FormatSpecifier.prototype.toString = function() {
