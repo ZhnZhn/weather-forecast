@@ -2,23 +2,15 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports["default"] = _default;
-var _number = _interopRequireDefault(require("./number.js"));
-var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
-  reB = new RegExp(reA.source, "g");
-function zero(b) {
-  return function () {
-    return b;
-  };
-}
-function one(b) {
-  return function (t) {
-    return b(t) + "";
-  };
-}
-function _default(a, b) {
+exports.default = void 0;
+var _number = _interopRequireDefault(require("./number"));
+const reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+  reB = new RegExp(reA.source, "g"),
+  zero = b => () => b,
+  one = b => t => b(t) + "";
+var _default = (a, b) => {
   // scan index for next number in b
-  var bi = reA.lastIndex = reB.lastIndex = 0,
+  let bi = reA.lastIndex = reB.lastIndex = 0,
     am // current match in a
     ,
     bm // current match in b
@@ -52,7 +44,7 @@ function _default(a, b) {
       s[++i] = null;
       q.push({
         i: i,
-        x: (0, _number["default"])(am, bm)
+        x: (0, _number.default)(am, bm)
       });
     }
     bi = reB.lastIndex;
@@ -67,9 +59,10 @@ function _default(a, b) {
 
   // Special optimization for only a single match.
   // Otherwise, interpolate each of the numbers and rejoin the string.
-  return s.length < 2 ? q[0] ? one(q[0].x) : zero(b) : (b = q.length, function (t) {
+  return s.length < 2 ? q[0] ? one(q[0].x) : zero(b) : (b = q.length, t => {
     for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
     return s.join("");
   });
-}
+};
+exports.default = _default;
 //# sourceMappingURL=string.js.map

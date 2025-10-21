@@ -1,10 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports["default"] = _default;
-function _default(a, b) {
-  return a = +a, b = +b, function (t) {
-    return Math.round(a * (1 - t) + b * t);
-  };
-}
+exports.default = void 0;
+var _default = (a, b) => (a = +a, b = +b, t => Math.round(a * (1 - t) + b * t));
+exports.default = _default;
 //# sourceMappingURL=round.js.map

@@ -1,21 +1,11 @@
-import number from "./number.js";
+import number from "./number";
 
 const reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g
-, reB = new RegExp(reA.source, "g");
+, reB = new RegExp(reA.source, "g")
+, zero = b => () => b
+, one = b => t => b(t) + "";
 
-function zero(b) {
-  return function() {
-    return b;
-  };
-}
-
-function one(b) {
-  return function(t) {
-    return b(t) + "";
-  };
-}
-
-export default function(a, b) {
+export default (a, b) => {
   // scan index for next number in b
   let bi = reA.lastIndex = reB.lastIndex = 0
   ,  am // current match in a
@@ -56,10 +46,9 @@ export default function(a, b) {
 
   // Special optimization for only a single match.
   // Otherwise, interpolate each of the numbers and rejoin the string.
-  return s.length < 2 ? (q[0]
-    ? one(q[0].x)
-    : zero(b))
-    : (b = q.length, function(t) {
+  return s.length < 2
+    ? (q[0] ? one(q[0].x) : zero(b))
+    : (b = q.length, (t) => {
         for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
         return s.join("");
       });

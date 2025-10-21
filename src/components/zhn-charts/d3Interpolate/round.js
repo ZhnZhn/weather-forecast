@@ -1,5 +1,4 @@
-export default function(a, b) {
-  return a = +a, b = +b, function(t) {
-    return Math.round(a * (1 - t) + b * t);
-  };
-}
+export default (
+  a,
+  b
+) => (a = +a, b = +b, t =>  Math.round(a * (1 - t) + b * t))  
