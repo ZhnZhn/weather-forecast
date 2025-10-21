@@ -11,10 +11,7 @@ import {
   crProps
 } from "../../uiApi";
 
-//import { crCn } from "../../styleFn";
-
 import { Text } from "./Text";
-import { findAllByType } from "../util/ReactUtils";
 import {
   isNumOrStr,
   isNumber
@@ -24,8 +21,6 @@ import {
   getAttrsOfCartesianLabel,
   getLabel
 } from "./LabelFn";
-
-//import { CL_LABEL } from "../CL";
 
 const DF_PROPS = {
   offset: 5,
@@ -159,33 +154,16 @@ const parseLabel = (
   return null;
 };
 
-const renderCallByParent = (
-  parentProps,
-  viewBox,
-  checkPropsLabel = true
-) => {
-  if (!parentProps || (!parentProps.children && checkPropsLabel && !parentProps.label)) {
-    return null;
-  }
-  const { children } = parentProps
-  , parentViewBox = parseViewBox(parentProps)
-  , explicitChildren = findAllByType(children, Label)
-      .map((ChildElement, index) => cloneUiElement(
-         ChildElement,
-         {viewBox: viewBox || parentViewBox},
-         `label-${index}`
-      ));
-
-  if (!checkPropsLabel) {
-    return explicitChildren;
-  }
-  const implicitLabel = parseLabel(parentProps.label, viewBox || parentViewBox);
-  return [
-    implicitLabel,
-    ...explicitChildren
-  ];
-};
+export const renderLabelByParentProps = (
+  parentProps
+) => parentProps
+  ? [
+      parseLabel(
+        parentProps.label,
+        parseViewBox(parentProps)
+      )
+    ]
+  : null
 
 Label.displayName = "Label";
 Label.parseViewBox = parseViewBox;
-Label.renderCallByParent = renderCallByParent;

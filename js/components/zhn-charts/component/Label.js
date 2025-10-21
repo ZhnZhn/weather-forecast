@@ -1,17 +1,13 @@
 "use strict";
 
 exports.__esModule = true;
-exports.Label = void 0;
+exports.renderLabelByParentProps = exports.Label = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _Text = require("./Text");
-var _ReactUtils = require("../util/ReactUtils");
 var _DataUtils = require("../util/DataUtils");
 var _LabelFn = require("./LabelFn");
 var _jsxRuntime = require("react/jsx-runtime");
-//import { crCn } from "../../styleFn";
-
-//import { CL_LABEL } from "../CL";
 const DF_PROPS = {
   offset: 5,
   className: ""
@@ -43,18 +39,17 @@ const Label = props => {
   }
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text
   //className={crCn(CL_LABEL, className)}
-  , {
+  , Object.assign({
     offset: _props.offset,
     fill: _props.fill,
     stroke: _props.stroke,
     className: _props.className
     // attrs
     // positionAttrs
-    ,
-    ...(0, _LabelFn.getAttrsOfCartesianLabel)(_props),
+  }, (0, _LabelFn.getAttrsOfCartesianLabel)(_props), {
     breakAll: textBreakAll,
     children: label
-  });
+  }));
 };
 exports.Label = Label;
 const parseViewBox = props => {
@@ -156,34 +151,14 @@ const parseLabel = (label, viewBox) => {
     }, KEY_LABEL_IMPLICIT);
   }
   if ((0, _isTypeFn.isObj)(label)) {
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)(Label, {
-      viewBox: viewBox,
-      ...label
-    }, KEY_LABEL_IMPLICIT);
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)(Label, Object.assign({
+      viewBox: viewBox
+    }, label), KEY_LABEL_IMPLICIT);
   }
   return null;
 };
-const renderCallByParent = function (parentProps, viewBox, checkPropsLabel) {
-  if (checkPropsLabel === void 0) {
-    checkPropsLabel = true;
-  }
-  if (!parentProps || !parentProps.children && checkPropsLabel && !parentProps.label) {
-    return null;
-  }
-  const {
-      children
-    } = parentProps,
-    parentViewBox = parseViewBox(parentProps),
-    explicitChildren = (0, _ReactUtils.findAllByType)(children, Label).map((ChildElement, index) => (0, _uiApi.cloneUiElement)(ChildElement, {
-      viewBox: viewBox || parentViewBox
-    }, `label-${index}`));
-  if (!checkPropsLabel) {
-    return explicitChildren;
-  }
-  const implicitLabel = parseLabel(parentProps.label, viewBox || parentViewBox);
-  return [implicitLabel, ...explicitChildren];
-};
+const renderLabelByParentProps = parentProps => parentProps ? [parseLabel(parentProps.label, parseViewBox(parentProps))] : null;
+exports.renderLabelByParentProps = renderLabelByParentProps;
 Label.displayName = "Label";
 Label.parseViewBox = parseViewBox;
-Label.renderCallByParent = renderCallByParent;
 //# sourceMappingURL=Label.js.map
