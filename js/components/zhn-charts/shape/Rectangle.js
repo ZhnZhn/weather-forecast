@@ -12,20 +12,21 @@ var _CL = require("../CL");
 var _RectangleFn = require("./RectangleFn");
 var _jsxRuntime = require("react/jsx-runtime");
 const DF_PROPS = {
-  x: 0,
-  y: 0,
-  width: 0,
-  height: 0,
-  // The radius of border
-  // The radius of four corners when radius is a number
-  // The radius of left-top, right-top, right-bottom, left-bottom when radius is an array
-  radius: 0,
-  isAnimationActive: !1,
-  isUpdateAnimationActive: !1,
-  animationBegin: 0,
-  animationDuration: 1500,
-  animationEasing: 'ease'
-};
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    // The radius of border
+    // The radius of four corners when radius is a number
+    // The radius of left-top, right-top, right-bottom, left-bottom when radius is an array
+    radius: 0,
+    isAnimationActive: !1,
+    isUpdateAnimationActive: !1,
+    animationBegin: 0,
+    animationDuration: 1500,
+    animationEasing: 'ease'
+  },
+  _isNotNumber = v => v !== +v;
 const _crAnimationStyle = (isAnimationActive, to, t, transition, from) => !isAnimationActive ? {
   strokeDasharray: to
 } : t > 0 ? {
@@ -63,22 +64,18 @@ const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
       animationBegin,
       isAnimationActive,
       isUpdateAnimationActive
-    } = _props;
-  const prevWidthRef = (0, _uiApi.useRef)(width),
+    } = _props,
+    prevWidthRef = (0, _uiApi.useRef)(width),
     prevHeightRef = (0, _uiApi.useRef)(height),
     prevXRef = (0, _uiApi.useRef)(x),
     prevYRef = (0, _uiApi.useRef)(y);
-  if (x !== +x || y !== +y || width !== +width || height !== +height || width === 0 || height === 0) {
+  if (_isNotNumber(x) || _isNotNumber(y) || _isNotNumber(width) || _isNotNumber(height) || width === 0 || height === 0) {
     return null;
   }
   const layerClass = (0, _styleFn.crCn)(_CL.CL_RECTANGLE, className),
-    _canBegin = totalLength > 0;
-  const prevWidth = (0, _uiApi.getRefValue)(prevWidthRef),
-    prevHeight = (0, _uiApi.getRefValue)(prevHeightRef),
-    prevX = (0, _uiApi.getRefValue)(prevXRef),
-    prevY = (0, _uiApi.getRefValue)(prevYRef);
-  const from = `0px ${totalLength === -1 ? 1 : totalLength}px`,
-    to = `${totalLength}px 0px`,
+    _canBegin = totalLength > 0,
+    from = "0px " + (totalLength === -1 ? 1 : totalLength) + "px",
+    to = totalLength + "px 0px",
     transition = (0, _utils.getTransitionVal)(['strokeDasharray'], animationDuration, (0, _isTypeFn.isStr)(animationEasing) ? animationEasing : void 0);
   return isUpdateAnimationActive ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_JsAnimation.JsAnimation, {
     isActive: isUpdateAnimationActive,
@@ -87,10 +84,10 @@ const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
     easing: animationEasing,
     begin: animationBegin,
     children: t => {
-      const currWidth = (0, _DataUtils.getInterpolatedNumber)(prevWidth, width, t),
-        currHeight = (0, _DataUtils.getInterpolatedNumber)(prevHeight, height, t),
-        currX = (0, _DataUtils.getInterpolatedNumber)(prevX, x, t),
-        currY = (0, _DataUtils.getInterpolatedNumber)(prevY, y, t);
+      const currWidth = (0, _DataUtils.getInterpolatedNumber)((0, _uiApi.getRefValue)(prevWidthRef), width, t),
+        currHeight = (0, _DataUtils.getInterpolatedNumber)((0, _uiApi.getRefValue)(prevHeightRef), height, t),
+        currX = (0, _DataUtils.getInterpolatedNumber)((0, _uiApi.getRefValue)(prevXRef), x, t),
+        currY = (0, _DataUtils.getInterpolatedNumber)((0, _uiApi.getRefValue)(prevYRef), y, t);
       if ((0, _uiApi.getRefValue)(_refNode)) {
         (0, _uiApi.setRefValue)(prevWidthRef, currWidth);
         (0, _uiApi.setRefValue)(prevHeightRef, currHeight);
@@ -103,10 +100,7 @@ const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
         className: layerClass,
         d: (0, _RectangleFn.getRectanglePath)(currX, currY, currWidth, currHeight, radius),
         ref: _refNode,
-        style: {
-          ...animationStyle,
-          ...props.style
-        }
+        style: Object.assign({}, animationStyle, props.style)
       });
     }
   }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {

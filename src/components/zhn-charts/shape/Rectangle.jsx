@@ -38,6 +38,7 @@ const DF_PROPS = {
   animationDuration: 1500,
   animationEasing: 'ease'
 }
+, _isNotNumber = v => v !== +v
 
 const _crAnimationStyle = (
   isAnimationActive,
@@ -57,7 +58,7 @@ export const Rectangle = memo((props) => {
   , [
     totalLength,
     setTotalLength
-  ] = useState(-1);
+  ] = useState(-1)
 
   useEffect(() => {
     const _el = getRefValue(_refNode);
@@ -88,26 +89,25 @@ export const Rectangle = memo((props) => {
     animationBegin,
     isAnimationActive,
     isUpdateAnimationActive
-  } = _props;
+  } = _props
 
-  const prevWidthRef = useRef(width)
+  , prevWidthRef = useRef(width)
   , prevHeightRef = useRef(height)
   , prevXRef = useRef(x)
   , prevYRef = useRef(y);
 
-  if (x !== +x || y !== +y || width !== +width || height !== +height || width === 0 || height === 0) {
+  if (_isNotNumber(x)
+      || _isNotNumber(y)
+      || _isNotNumber(width)
+      || _isNotNumber(height)
+      || width === 0
+      || height === 0) {
     return null;
   }
 
   const layerClass = crCn(CL_RECTANGLE, className)
-  , _canBegin = totalLength > 0;
-
-  const prevWidth = getRefValue(prevWidthRef)
-  , prevHeight = getRefValue(prevHeightRef)
-  , prevX = getRefValue(prevXRef)
-  , prevY = getRefValue(prevYRef);
-
-  const from = `0px ${totalLength === -1 ? 1 : totalLength}px`
+  , _canBegin = totalLength > 0   
+  , from = `0px ${totalLength === -1 ? 1 : totalLength}px`
   , to = `${totalLength}px 0px`
   , transition = getTransitionVal(
     ['strokeDasharray'],
@@ -125,10 +125,10 @@ export const Rectangle = memo((props) => {
         begin={animationBegin}
       >
        {(t) => {
-         const currWidth = interpolate(prevWidth, width, t)
-         , currHeight = interpolate(prevHeight, height, t)
-         , currX = interpolate(prevX, x, t)
-         , currY = interpolate(prevY, y, t);
+         const currWidth = interpolate(getRefValue(prevWidthRef), width, t)
+         , currHeight = interpolate(getRefValue(prevHeightRef), height, t)
+         , currX = interpolate(getRefValue(prevXRef), x, t)
+         , currY = interpolate(getRefValue(prevYRef), y, t);
 
          if (getRefValue(_refNode)) {
            setRefValue(prevWidthRef, currWidth);
