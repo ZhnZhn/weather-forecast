@@ -3,6 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.CartesianAxis = void 0;
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _ShallowEqual = require("../util/ShallowEqual");
@@ -14,6 +15,8 @@ var _CartesianAxisLine = require("./CartesianAxisLine");
 var _CartesianAxisTicks = require("./CartesianAxisTicks");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
+const _excluded = ["viewBox"],
+  _excluded2 = ["viewBox"];
 const CARTESIAN_AXIS_DF_PROPS = {
   x: 0,
   y: 0,
@@ -44,13 +47,13 @@ const _arePropsEqual = (prevProps, nextProps) => {
   const _prevProps = (0, _uiApi.crProps)(CARTESIAN_AXIS_DF_PROPS, prevProps),
     _nextProps = (0, _uiApi.crProps)(CARTESIAN_AXIS_DF_PROPS, nextProps),
     {
-      viewBox,
-      ...restProps
+      viewBox
     } = _nextProps,
+    restProps = (0, _objectWithoutPropertiesLoose2.default)(_nextProps, _excluded),
     {
-      viewBox: viewBoxPrev,
-      ...restPropsPrev
-    } = _prevProps;
+      viewBox: viewBoxPrev
+    } = _prevProps,
+    restPropsPrev = (0, _objectWithoutPropertiesLoose2.default)(_prevProps, _excluded2);
   return (0, _ShallowEqual.shallowEqual)(viewBox, viewBoxPrev) && (0, _ShallowEqual.shallowEqual)(restProps, restPropsPrev);
 };
 const CartesianAxis = exports.CartesianAxis = (0, _uiApi.memo)(props => {
@@ -83,7 +86,7 @@ const CartesianAxis = exports.CartesianAxis = (0, _uiApi.memo)(props => {
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianAxisTicks.CartesianAxisTicks, {
       props: _props,
       ticks: _ticks
-    }), _Label.Label.renderCallByParent(_props)]
+    }), (0, _Label.renderLabelByParentProps)(_props)]
   });
 }, _arePropsEqual);
 CartesianAxis.displayName = 'CartesianAxis';

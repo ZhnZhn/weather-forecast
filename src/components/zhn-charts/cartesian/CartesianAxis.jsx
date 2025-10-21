@@ -9,7 +9,7 @@ import { crCn } from '../../styleFn';
 import { shallowEqual } from '../util/ShallowEqual';
 
 import { Layer } from '../container/Layer';
-import { Label } from '../component/Label';
+import { renderLabelByParentProps } from '../component/Label';
 
 import useFontSizeByClassName from './useFontSizeByClassName';
 import { getCartesianAxisTicks } from './CartesianAxisRenderFn';
@@ -110,7 +110,7 @@ export const CartesianAxis = memo(props => {
           props={_props}
           ticks={_ticks}
        />
-       {Label.renderCallByParent(_props)}
+       {renderLabelByParentProps(_props)}
     </Layer>
   );
 }, _arePropsEqual)
