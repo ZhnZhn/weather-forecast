@@ -37,17 +37,10 @@ import {
 } from './Chart.Style';
 
 const YAXIS_LABEL_TEMP = {
-    value: "°C",
-    //position: "top",
-    //offset: 8,
-
-   //offset: -18,
-   //position: 'insideTop'
-   //angle: -90,
-   //position: 'insideLeft'
-   //offset: 10,
-   //position: "insideTopRight",
-   //position: "insideStart"
+  value: "°C",
+  position: "top",
+  offset: 8,
+  xTopOffset: 28
 };
 
 const INITIAL_FILTERED = {

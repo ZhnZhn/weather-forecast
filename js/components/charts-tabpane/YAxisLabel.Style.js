@@ -1,50 +1,35 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 exports.__esModule = true;
 exports.crYAxisLabelWind = exports.YAXIS_LABEL_TEMPERATURE = exports.YAXIS_LABEL_SNOW = exports.YAXIS_LABEL_RAIN = exports.YAXIS_LABEL_PRESSURE = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-
 var _SeriesColor = _interopRequireDefault(require("./SeriesColor"));
-
-var LABEL_POSITION = {
+const LABEL_POSITION = {
   position: "top",
   offset: 10
 };
-
-var _crLabelColor = function _crLabelColor(color) {
-  return {
-    stroke: color,
-    fill: color
-  };
-};
-
-var YAXIS_LABEL_TEMPERATURE = (0, _extends2["default"])({}, LABEL_POSITION, {
+const _crLabelColor = color => ({
+  stroke: color,
+  fill: color
+});
+const YAXIS_LABEL_TEMPERATURE = exports.YAXIS_LABEL_TEMPERATURE = Object.assign({}, LABEL_POSITION, {
   value: "°C"
 });
-exports.YAXIS_LABEL_TEMPERATURE = YAXIS_LABEL_TEMPERATURE;
-var YAXIS_LABEL_PRESSURE = (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].PRESSURE), {
-  value: "hPa"
+const YAXIS_LABEL_PRESSURE = exports.YAXIS_LABEL_PRESSURE = Object.assign({}, LABEL_POSITION, _crLabelColor(_SeriesColor.default.PRESSURE), {
+  value: "hPa",
+  xTopOffset: -10
 });
-exports.YAXIS_LABEL_PRESSURE = YAXIS_LABEL_PRESSURE;
-
-var crYAxisLabelWind = function crYAxisLabelWind(value) {
+const crYAxisLabelWind = function (value) {
   if (value === void 0) {
     value = 'm/s';
   }
-
-  return (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].SPEED), {
-    value: value
+  return Object.assign({}, LABEL_POSITION, _crLabelColor(_SeriesColor.default.SPEED), {
+    value
   });
 };
-
 exports.crYAxisLabelWind = crYAxisLabelWind;
-var YAXIS_LABEL_RAIN = (0, _extends2["default"])({}, LABEL_POSITION, _crLabelColor(_SeriesColor["default"].RAIN), {
+const YAXIS_LABEL_RAIN = exports.YAXIS_LABEL_RAIN = Object.assign({}, LABEL_POSITION, _crLabelColor(_SeriesColor.default.RAIN), {
   value: "mm"
 });
-exports.YAXIS_LABEL_RAIN = YAXIS_LABEL_RAIN;
-var YAXIS_LABEL_SNOW = (0, _extends2["default"])({}, YAXIS_LABEL_RAIN, _crLabelColor(_SeriesColor["default"].SNOW));
-exports.YAXIS_LABEL_SNOW = YAXIS_LABEL_SNOW;
+const YAXIS_LABEL_SNOW = exports.YAXIS_LABEL_SNOW = Object.assign({}, YAXIS_LABEL_RAIN, _crLabelColor(_SeriesColor.default.SNOW));
 //# sourceMappingURL=YAxisLabel.Style.js.map

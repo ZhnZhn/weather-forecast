@@ -18,7 +18,8 @@ export const YAXIS_LABEL_TEMPERATURE = {
 export const YAXIS_LABEL_PRESSURE = {
   ...LABEL_POSITION,
   ..._crLabelColor(SC.PRESSURE),
-  value: "hPa"
+  value: "hPa",
+  xTopOffset: -10
 };
 
 export const crYAxisLabelWind = (value='m/s') => ({
