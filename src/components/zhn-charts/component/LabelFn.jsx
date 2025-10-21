@@ -25,6 +25,18 @@ export const getLabel = (
     : label;
 };
 
+const _crAttrs = (
+  x,
+  y,
+  textAnchor,
+  verticalAnchor
+) => ({
+  x,
+  y,
+  textAnchor,
+  verticalAnchor
+});
+
 export const getAttrsOfCartesianLabel = (
   props
 ) => {
@@ -32,7 +44,8 @@ export const getAttrsOfCartesianLabel = (
     viewBox,
     parentViewBox,
     offset,
-    position
+    position,
+    xTopOffset=0
   } = props
   , {
     x,
@@ -51,14 +64,13 @@ export const getAttrsOfCartesianLabel = (
   , horizontalEnd = horizontalSign > 0 ? 'end' : 'start'
   , horizontalStart = horizontalSign > 0 ? 'start' : 'end';
   if (position === 'top') {
-    const attrs = {
-      x: x + width / 2,
-      y: y - verticalSign * offset,
-      textAnchor: 'middle',
-      verticalAnchor: verticalEnd
-    };
     return {
-      ...attrs,
+      ..._crAttrs(
+        x + width / 2 + xTopOffset,
+        y - verticalSign * offset,
+        'middle',
+        verticalEnd
+      ),
       ...(parentViewBox
         ? {
             height: Math.max(y - parentViewBox.y, 0),
@@ -68,14 +80,13 @@ export const getAttrsOfCartesianLabel = (
     };
   }
   if (position === 'bottom') {
-    const attrs = {
-      x: x + width / 2,
-      y: y + height + verticalOffset,
-      textAnchor: 'middle',
-      verticalAnchor: verticalStart,
-    };
     return {
-      ...attrs,
+      ..._crAttrs(
+        x + width / 2,
+        y + height + verticalOffset,
+        'middle',
+        verticalStart
+      ),
       ...(parentViewBox
         ? {
             height: Math.max(parentViewBox.y + parentViewBox.height - (y + height), 0),
@@ -85,12 +96,12 @@ export const getAttrsOfCartesianLabel = (
     };
   }
   if (position === 'left') {
-    const attrs = {
-      x: x - horizontalOffset,
-      y: y + height / 2,
-      textAnchor: horizontalEnd,
-      verticalAnchor: 'middle',
-    };
+    const attrs = _crAttrs(
+      x - horizontalOffset,
+      y + height / 2,
+      horizontalEnd,
+      'middle',
+    );
     return {
       ...attrs,
       ...(parentViewBox
@@ -102,12 +113,12 @@ export const getAttrsOfCartesianLabel = (
     };
   }
   if (position === 'right') {
-    const attrs = {
-      x: x + width + horizontalOffset,
-      y: y + height / 2,
-      textAnchor: horizontalStart,
-      verticalAnchor: 'middle'
-    };
+    const attrs = _crAttrs(
+      x + width + horizontalOffset,
+      y + height / 2,
+      horizontalStart,
+      'middle'
+    );
     return {
       ...attrs,
       ...(parentViewBox
@@ -123,73 +134,89 @@ export const getAttrsOfCartesianLabel = (
     : {};
   if (position === 'insideLeft') {
     return {
-      x: x + horizontalOffset,
-      y: y + height / 2,
-      textAnchor: horizontalStart,
-      verticalAnchor: 'middle',
+      ..._crAttrs(
+        x + horizontalOffset,
+        y + height / 2,
+        horizontalStart,
+        'middle'
+      ),
       ...sizeAttrs
     };
   }
   if (position === 'insideRight') {
     return {
-      x: x + width - horizontalOffset,
-      y: y + height / 2,
-      textAnchor: horizontalEnd,
-      verticalAnchor: 'middle',
+      ..._crAttrs(
+        x + width - horizontalOffset,
+        y + height / 2,
+        horizontalEnd,
+        'middle'
+      ),
       ...sizeAttrs
     };
   }
   if (position === 'insideTop') {
     return {
-      x: x + width / 2,
-      y: y + verticalOffset,
-      textAnchor: 'middle',
-      verticalAnchor: verticalStart,
+      ..._crAttrs(
+        x + width / 2,
+        y + verticalOffset,
+        'middle',
+        verticalStart
+      ),
       ...sizeAttrs
     };
   }
   if (position === 'insideBottom') {
     return {
-      x: x + width / 2,
-      y: y + height - verticalOffset,
-      textAnchor: 'middle',
-      verticalAnchor: verticalEnd,
+      ..._crAttrs(
+        x + width / 2,
+        y + height - verticalOffset,
+        'middle',
+        verticalEnd
+      ),
       ...sizeAttrs
     };
   }
   if (position === 'insideTopLeft') {
     return {
-      x: x + horizontalOffset,
-      y: y + verticalOffset,
-      textAnchor: horizontalStart,
-      verticalAnchor: verticalStart,
+      ..._crAttrs(
+        x + horizontalOffset,
+        y + verticalOffset,
+        horizontalStart,
+        verticalStart
+      ),
       ...sizeAttrs
     };
   }
   if (position === 'insideTopRight') {
     return {
-      x: x + width - horizontalOffset,
-      y: y + verticalOffset,
-      textAnchor: horizontalEnd,
-      verticalAnchor: verticalStart,
+      ..._crAttrs(
+        x + width - horizontalOffset,
+        y + verticalOffset,
+        horizontalEnd,
+        verticalStart
+      ),
       ...sizeAttrs
     };
   }
   if (position === 'insideBottomLeft') {
     return {
-      x: x + horizontalOffset,
-      y: y + height - verticalOffset,
-      textAnchor: horizontalStart,
-      verticalAnchor: verticalEnd,
+      ..._crAttrs(
+        x + horizontalOffset,
+        y + height - verticalOffset,
+        horizontalStart,
+        verticalEnd
+      ),
       ...sizeAttrs
     };
   }
   if (position === 'insideBottomRight') {
     return {
-      x: x + width - horizontalOffset,
-      y: y + height - verticalOffset,
-      textAnchor: horizontalEnd,
-      verticalAnchor: verticalEnd,
+      ..._crAttrs(
+        x + width - horizontalOffset,
+        y + height - verticalOffset,
+        horizontalEnd,
+        verticalEnd
+      ),
       ...sizeAttrs
     };
   }
@@ -198,18 +225,22 @@ export const getAttrsOfCartesianLabel = (
     && (isNumber(position.y) || isPercent(position.y))
   ) {
     return {
-      x: x + getPercentValue(position.x, width),
-      y: y + getPercentValue(position.y, height),
-      textAnchor: 'end',
-      verticalAnchor: 'end',
+      ..._crAttrs(
+        x + getPercentValue(position.x, width),
+        y + getPercentValue(position.y, height),
+        'end',
+        'end'
+      ),
       ...sizeAttrs
     };
   }
   return {
-    x: x + width / 2,
-    y: y + height / 2,
-    textAnchor: 'middle',
-    verticalAnchor: 'middle',
+    ..._crAttrs(
+      x + width / 2,
+      y + height / 2,
+      'middle',
+      'middle'
+    ),
     ...sizeAttrs
   };
 };
