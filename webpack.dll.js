@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path')
-    , webpack = require('webpack')
+    , webpack = require('webpack')   
     , WriteDllStatsPlugin = require('./plugins/write-dll-stats-plugin')
     , TerserPlugin = require('terser-webpack-plugin');
 
@@ -10,7 +10,8 @@ module.exports = {
   entry: {
      lib: [
             "react", "react-dom",
-            "redux", "react-redux", "redux-saga",                                    
+            "redux", "react-redux", 
+            "redux-saga","redux-saga/effects",                                                
             "dompurify"
           ]
   },
@@ -27,7 +28,7 @@ module.exports = {
     new webpack.DllPlugin({
       path: path.join(__dirname, 'dll', '[name]-manifest.json'),
       name: '[name]_vendor'
-    }),
+    }),     
     new WriteDllStatsPlugin()
   ],
   optimization: {
