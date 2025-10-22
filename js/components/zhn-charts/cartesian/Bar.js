@@ -8,11 +8,8 @@ var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _Global = require("../util/Global");
 var _DataUtils = require("../util/DataUtils");
-var _ReactUtils = require("../util/ReactUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _Layer = require("../container/Layer");
-var _Cell = require("../component/Cell");
-var _LabelList = require("../component/LabelList");
 var _BarRenderFn = require("./BarRenderFn");
 var _cartesianFn = require("./cartesianFn");
 var _useAnimationHandle = _interopRequireDefault(require("./useAnimationHandle"));
@@ -40,12 +37,13 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
     {
       data,
       className,
-      isAnimationActive,
-      //background,
       id,
       animationId
-    } = _props,
-    [isAnimationFinished, handleAnimationStart, handleAnimationEnd] = (0, _useAnimationHandle.default)(_props),
+    } = _props
+    /*eslint-disable no-unused-vars*/,
+    [isAnimationFinished, handleAnimationStart, handleAnimationEnd] = (0, _useAnimationHandle.default)(_props)
+    //isAnimationFinished
+    /*eslint-enable no-unused-vars*/,
     [prevData] = (0, _usePrevCurData.default)(data, animationId),
     clipPathId = (0, _useClipPathId.default)(_CL.CL_BAR, id);
   if ((0, _cartesianFn.isHideOrNoData)(_props, data)) {
@@ -63,7 +61,7 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
       className: _CL.CL_BAR_RECTANGLES,
       clipPath: (0, _cartesianFn.crClipPath)(needClip, clipPathId),
       children: [(0, _BarRenderFn.renderBackground)(_props), (0, _BarRenderFn.renderRectangles)(_props, prevData, handleAnimationStart, handleAnimationEnd)]
-    }), (!isAnimationActive || isAnimationFinished) && _LabelList.LabelList.renderCallByParent(_props, data)]
+    })]
   });
 });
 Bar.displayName = 'Bar';
@@ -107,7 +105,6 @@ Bar.getComposedData = _ref => {
     } = props,
     {
       dataKey,
-      children,
       minPointSize
     } = item.props,
     numericAxis = (0, _ChartUtils.isLayoutHorizontal)(layout) ? yAxis : xAxis,
@@ -115,7 +112,6 @@ Bar.getComposedData = _ref => {
     baseValue = (0, _ChartUtils.getBaseValueOfBar)({
       numericAxis
     }),
-    cells = (0, _ReactUtils.findAllByType)(children, _Cell.Cell),
     _crDisplayedDataValue = _fCrDisplayedDataValue(stackedData, dataStartIndex, stackedDomain, dataKey, baseValue);
   const rects = displayedData.map((entry, index) => {
     let value = _crDisplayedDataValue(entry, index),
@@ -125,6 +121,7 @@ Bar.getComposedData = _ref => {
       height,
       background;
     if ((0, _ChartUtils.isLayoutHorizontal)(layout)) {
+      var _ref2;
       const [baseValueScale, currentValueScale] = _crValueScaleTuple(yAxis, value);
       x = (0, _ChartUtils.getCateCoordinateOfBar)({
         axis: xAxis,
@@ -134,7 +131,7 @@ Bar.getComposedData = _ref => {
         entry,
         index
       });
-      y = currentValueScale ?? baseValueScale ?? void 0;
+      y = (_ref2 = currentValueScale != null ? currentValueScale : baseValueScale) != null ? _ref2 : void 0;
       width = pos.size;
       const computedHeight = baseValueScale - currentValueScale;
       height = (0, _isTypeFn.isNaN)(computedHeight) ? 0 : computedHeight;
@@ -172,8 +169,7 @@ Bar.getComposedData = _ref => {
         width += _calcMinPointSizeDelta(minPointSize, width);
       }
     }
-    return {
-      ...entry,
+    return Object.assign({}, entry, {
       x,
       y,
       width,
@@ -181,18 +177,16 @@ Bar.getComposedData = _ref => {
       value: stackedData ? value : value[1],
       payload: entry,
       background,
-      ...(cells && cells[index] && cells[index].props),
       tooltipPayload: [(0, _ChartUtils.getTooltipItem)(item, entry)],
       tooltipPosition: {
         x: x + width / 2,
         y: y + height / 2
       }
-    };
+    });
   });
-  return {
+  return Object.assign({
     data: rects,
-    layout,
-    ...offset
-  };
+    layout
+  }, offset);
 };
 //# sourceMappingURL=Bar.js.map

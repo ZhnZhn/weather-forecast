@@ -10,8 +10,6 @@ import {
 import { crCn } from '../../styleFn';
 
 import { Layer } from '../container/Layer';
-import { LabelList } from '../component/LabelList';
-
 import { IS_SSR } from '../util/Global';
 import {
   getCateCoordinateOfLine,
@@ -157,11 +155,6 @@ export const Line = memo((props) => {
           clipPathProps={_clipPathProps}
           props={_props}
       />)}
-      {_isAnimationNotActiveOrFinished
-        && LabelList.renderCallByParent(
-              _props,
-              points
-      )}
   </Layer>
  );
 })

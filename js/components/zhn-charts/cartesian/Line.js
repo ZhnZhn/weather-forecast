@@ -7,7 +7,6 @@ var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _Layer = require("../container/Layer");
-var _LabelList = require("../component/LabelList");
 var _Global = require("../util/Global");
 var _ChartUtils = require("../util/ChartUtils");
 var _cartesianFn = require("./cartesianFn");
@@ -107,7 +106,7 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
     }), _isLineDots && /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineDots.LineDots, {
       clipPathProps: _clipPathProps,
       props: _props
-    }), _isAnimationNotActiveOrFinished && _LabelList.LabelList.renderCallByParent(_props, points)]
+    })]
   });
 });
 Line.displayName = 'Line';
@@ -161,10 +160,9 @@ Line.getComposedData = _ref => {
         payload: entry
       };
     });
-  return {
+  return Object.assign({
     points,
-    layout,
-    ...offset
-  };
+    layout
+  }, offset);
 };
 //# sourceMappingURL=Line.js.map

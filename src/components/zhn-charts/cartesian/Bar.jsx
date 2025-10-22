@@ -13,7 +13,7 @@ import {
   mathAbs,
   mathSign
 } from '../util/DataUtils';
-import { findAllByType } from '../util/ReactUtils';
+
 import {
   isLayoutHorizontal,
   getCateCoordinateOfBar,
@@ -25,8 +25,6 @@ import {
 } from '../util/ChartUtils';
 
 import { Layer } from '../container/Layer';
-import { Cell } from '../component/Cell';
-import { LabelList } from '../component/LabelList';
 
 import {
   renderBackground,
@@ -69,16 +67,17 @@ export const Bar = memo((props) => {
   , {
     data,
     className,
-    isAnimationActive,
-    //background,
     id,
     animationId
   } = _props
+  /*eslint-disable no-unused-vars*/
   , [
     isAnimationFinished,
     handleAnimationStart,
     handleAnimationEnd
   ] = useAnimationHandle(_props)
+  //isAnimationFinished
+  /*eslint-enable no-unused-vars*/
   , [
     prevData
   ] = usePrevCurData(
@@ -116,9 +115,6 @@ export const Bar = memo((props) => {
            handleAnimationEnd
         )}
       </Layer>
-      {(!isAnimationActive || isAnimationFinished)
-         && LabelList.renderCallByParent(_props, data)
-      }
   </Layer>
  );
 })
@@ -200,8 +196,7 @@ Bar.getComposedData = ({
     layout
   } = props
   , {
-    dataKey,
-    children,
+    dataKey,    
     minPointSize
   } = item.props
   , numericAxis = isLayoutHorizontal(layout)
@@ -211,7 +206,6 @@ Bar.getComposedData = ({
      ? numericAxis.scale.domain()
      : null
   , baseValue = getBaseValueOfBar({ numericAxis })
-  , cells = findAllByType(children, Cell)
   , _crDisplayedDataValue = _fCrDisplayedDataValue(
      stackedData,
      dataStartIndex,
@@ -294,7 +288,6 @@ Bar.getComposedData = ({
       value: stackedData ? value : value[1],
       payload: entry,
       background,
-      ...(cells && cells[index] && cells[index].props),
       tooltipPayload: [getTooltipItem(item, entry)],
       tooltipPosition: {
         x: x + width / 2,
