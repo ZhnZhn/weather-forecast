@@ -15,6 +15,11 @@ import {
   setRefValue
 } from "../../uiApi";
 
+import {
+  isLayoutHorizontal,
+  isLayoutVertical
+} from "../util/ChartUtils";
+
 import { getUniqPayload } from "./componentFn";
 import { DefaultLegendContent } from "./DefaultLegendContent";
 
@@ -27,24 +32,12 @@ const _defaultUniqBy = (
 const _renderContent = (
   ContentElementOrComp,
   props
-) => {
-  if (isValidElement(ContentElementOrComp)) {
-    return cloneUiElement(ContentElementOrComp, props);
-  }
-  if (isFn(ContentElementOrComp)) {
-    return createElement(ContentElementOrComp, props);
-  }
-  /*eslint-disable no-unused-vars*/
-  const {
-    ref,
-    ...restProps
-  } = props;
-  //ref
-  /*eslint-enable no-unused-vars*/
-  return (
-    <DefaultLegendContent {...restProps} />
-  );
-};
+) => isValidElement(ContentElementOrComp)
+  ? cloneUiElement(ContentElementOrComp, props)
+  : isFn(ContentElementOrComp)
+  ? createElement(ContentElementOrComp, props)
+  : (<DefaultLegendContent {...props} />)
+
 
 const _getBBoxSnapshot = (boundingBox) => {
   const {
@@ -73,26 +66,18 @@ const _getDefaultPosition = (
   let hPos, vPos;
 
   if (!style || (style.left == null && style.right == null)) {
-    if (align === "center" && layout === "vertical") {
-      const box = _getBBoxSnapshot(boundingBox);
-      hPos = { left: ((chartWidth || 0) - box.width) / 2 };
-    } else {
-      hPos = align === "right"
-        ? { right: (margin && margin.right) || 0 }
-        : { left: (margin && margin.left) || 0 };
-    }
+    hPos = align === "center" && isLayoutVertical(layout)
+      ? { left: ((chartWidth || 0) - _getBBoxSnapshot(boundingBox).width) / 2 }
+      : align === "right"
+      ? { right: (margin && margin.right) || 0 }
+      : { left: (margin && margin.left) || 0 };
   }
   if (!style || (style.top == null && style.bottom == null)) {
-    if (verticalAlign === "middle") {
-      const box = _getBBoxSnapshot(boundingBox);
-      vPos = {
-        top: ((chartHeight || 0) - box.height) / 2
-      };
-    } else {
-       vPos = verticalAlign === "bottom"
-         ? { bottom: (margin && margin.bottom) || 0 }
-         : { top: (margin && margin.top) || 0 };
-    }
+    vPos = verticalAlign === "middle"
+      ? { top: ((chartHeight || 0) - _getBBoxSnapshot(boundingBox).height) / 2}
+      : verticalAlign === "bottom"
+      ? { bottom: (margin && margin.bottom) || 0 }
+      : { top: (margin && margin.top) || 0 };
   }
   return {
     ...hPos,
@@ -184,16 +169,16 @@ export const Legend = memo((props) => {
 Legend.displayName = "Legend";
 Legend.defaultProps = LEGEND_DF_PROPS
 Legend.getWithHeight = (
-  item,
+  { props },
   chartWidth
 ) => {
   const {
     layout,
     height
-  } = item.props;
-  return layout === "vertical" && isNumber(height)
+  } = props;
+  return isLayoutVertical(layout) && isNumber(height)
     ? { height }
-    : layout === "horizontal"
-      ? { width: item.props.width || chartWidth }
-      : null;
+    : isLayoutHorizontal(layout)
+    ? { width: props.width || chartWidth }
+    : null;
 };

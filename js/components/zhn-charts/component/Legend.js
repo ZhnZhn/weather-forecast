@@ -4,29 +4,13 @@ exports.__esModule = true;
 exports.Legend = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
+var _ChartUtils = require("../util/ChartUtils");
 var _componentFn = require("./componentFn");
 var _DefaultLegendContent = require("./DefaultLegendContent");
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_LEGEND_WRAPPER = "recharts-legend-wrapper";
 const _defaultUniqBy = entry => entry.value;
-const _renderContent = (ContentElementOrComp, props) => {
-  if ((0, _uiApi.isValidElement)(ContentElementOrComp)) {
-    return (0, _uiApi.cloneUiElement)(ContentElementOrComp, props);
-  }
-  if ((0, _isTypeFn.isFn)(ContentElementOrComp)) {
-    return (0, _uiApi.createElement)(ContentElementOrComp, props);
-  }
-  /*eslint-disable no-unused-vars*/
-  const {
-    ref,
-    ...restProps
-  } = props;
-  //ref
-  /*eslint-enable no-unused-vars*/
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_DefaultLegendContent.DefaultLegendContent, {
-    ...restProps
-  });
-};
+const _renderContent = (ContentElementOrComp, props) => (0, _uiApi.isValidElement)(ContentElementOrComp) ? (0, _uiApi.cloneUiElement)(ContentElementOrComp, props) : (0, _isTypeFn.isFn)(ContentElementOrComp) ? (0, _uiApi.createElement)(ContentElementOrComp, props) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_DefaultLegendContent.DefaultLegendContent, Object.assign({}, props));
 const _getBBoxSnapshot = boundingBox => {
   const {
     width,
@@ -51,37 +35,24 @@ const _getDefaultPosition = (style, props, boundingBox) => {
   } = props;
   let hPos, vPos;
   if (!style || style.left == null && style.right == null) {
-    if (align === "center" && layout === "vertical") {
-      const box = _getBBoxSnapshot(boundingBox);
-      hPos = {
-        left: ((chartWidth || 0) - box.width) / 2
-      };
-    } else {
-      hPos = align === "right" ? {
-        right: margin && margin.right || 0
-      } : {
-        left: margin && margin.left || 0
-      };
-    }
+    hPos = align === "center" && (0, _ChartUtils.isLayoutVertical)(layout) ? {
+      left: ((chartWidth || 0) - _getBBoxSnapshot(boundingBox).width) / 2
+    } : align === "right" ? {
+      right: margin && margin.right || 0
+    } : {
+      left: margin && margin.left || 0
+    };
   }
   if (!style || style.top == null && style.bottom == null) {
-    if (verticalAlign === "middle") {
-      const box = _getBBoxSnapshot(boundingBox);
-      vPos = {
-        top: ((chartHeight || 0) - box.height) / 2
-      };
-    } else {
-      vPos = verticalAlign === "bottom" ? {
-        bottom: margin && margin.bottom || 0
-      } : {
-        top: margin && margin.top || 0
-      };
-    }
+    vPos = verticalAlign === "middle" ? {
+      top: ((chartHeight || 0) - _getBBoxSnapshot(boundingBox).height) / 2
+    } : verticalAlign === "bottom" ? {
+      bottom: margin && margin.bottom || 0
+    } : {
+      top: margin && margin.top || 0
+    };
   }
-  return {
-    ...hPos,
-    ...vPos
-  };
+  return Object.assign({}, hPos, vPos);
 };
 const EPS = 1;
 const _mathAbs = Math.abs;
@@ -136,34 +107,34 @@ const Legend = exports.Legend = (0, _uiApi.memo)(props => {
       payloadUniqBy,
       payload
     } = _props,
-    outerStyle = {
+    outerStyle = Object.assign({
       position: "absolute",
       width: width || "auto",
-      height: height || "auto",
-      ..._getDefaultPosition(wrapperStyle, _props, (0, _uiApi.getRefValue)(_refBoundingBox)),
-      ...wrapperStyle
-    };
+      height: height || "auto"
+    }, _getDefaultPosition(wrapperStyle, _props, (0, _uiApi.getRefValue)(_refBoundingBox)), wrapperStyle);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: CL_LEGEND_WRAPPER,
     style: outerStyle,
     ref: _refWrapperNode,
-    children: _renderContent(content, {
-      ..._props,
+    children: _renderContent(content, Object.assign({}, _props, {
       payload: (0, _componentFn.getUniqPayload)(payloadUniqBy, payload, _defaultUniqBy)
-    })
+    }))
   });
 });
 Legend.displayName = "Legend";
 Legend.defaultProps = LEGEND_DF_PROPS;
-Legend.getWithHeight = (item, chartWidth) => {
+Legend.getWithHeight = (_ref, chartWidth) => {
+  let {
+    props
+  } = _ref;
   const {
     layout,
     height
-  } = item.props;
-  return layout === "vertical" && (0, _isTypeFn.isNumber)(height) ? {
+  } = props;
+  return (0, _ChartUtils.isLayoutVertical)(layout) && (0, _isTypeFn.isNumber)(height) ? {
     height
-  } : layout === "horizontal" ? {
-    width: item.props.width || chartWidth
+  } : (0, _ChartUtils.isLayoutHorizontal)(layout) ? {
+    width: props.width || chartWidth
   } : null;
 };
 //# sourceMappingURL=Legend.js.map
