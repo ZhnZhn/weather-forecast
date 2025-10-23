@@ -3,7 +3,14 @@ import {
   TEMP_DAY_COLOR,
   TEMP_NIGHT_COLOR
  } from '../styles/uiTheme';
-import SC from './SeriesColor';
+import {
+  TEMP_MIN_COLOR,
+  TEMP_MAX_COLOR,
+  SPEED_COLOR,
+  RAIN_COLOR,
+  SNOW_COLOR,
+  PRESSURE_COLOR
+} from './SeriesColor';
 
 const DF_DASH_FILL = '#808080';
 
@@ -81,26 +88,26 @@ export const S_XAXIS = {
     fill: DAY_COLOR
   }
 }
-export const S_YAXIS_SPEED = _crYAxisStyle(SC.SPEED)
-export const S_YAXIS_RAIN = _crYAxisStyle(SC.RAIN)
-export const S_YAXIS_SNOW = _crYAxisStyle(SC.SNOW)
-export const S_YAXIS_PRESSURE = _crYAxisStyle(SC.PRESSURE)
+export const S_YAXIS_SPEED = _crYAxisStyle(SPEED_COLOR)
+export const S_YAXIS_RAIN = _crYAxisStyle(RAIN_COLOR)
+export const S_YAXIS_SNOW = _crYAxisStyle(SNOW_COLOR)
+export const S_YAXIS_PRESSURE = _crYAxisStyle(PRESSURE_COLOR)
 
 export const S_CARTESIAN_GRID = {
   stroke: "#555",
   vertical: false
 }
 
-export const S_LINE_PRESSURE = _crLineDashStyle(SC.PRESSURE)
-export const S_LINE_RAIN = _crLineDashStyle(SC.RAIN)
-export const S_LINE_SPEED = _crLineDashStyle(SC.SPEED, DF_DASH_FILL)
-export const S_LINE_HUMIDITY = _crLineStyle({ stroke: SC.SPEED })
-export const S_LINE_TEMP_MAX = _crLineDashStyle(SC.TEMP_MAX, DF_DASH_FILL)
-export const S_LINE_TEMP_MIN = _crLineDashStyle(SC.TEMP_MIN, DF_DASH_FILL)
+export const S_LINE_PRESSURE = _crLineDashStyle(PRESSURE_COLOR)
+export const S_LINE_RAIN = _crLineDashStyle(RAIN_COLOR)
+export const S_LINE_SPEED = _crLineDashStyle(SPEED_COLOR, DF_DASH_FILL)
+export const S_LINE_HUMIDITY = _crLineStyle({ stroke: SPEED_COLOR })
+export const S_LINE_TEMP_MAX = _crLineDashStyle(TEMP_MAX_COLOR, DF_DASH_FILL)
+export const S_LINE_TEMP_MIN = _crLineDashStyle(TEMP_MIN_COLOR, DF_DASH_FILL)
 export const S_LINE_TEMP_MORNING = _crLineDashStyle(TEMP_DAY_COLOR, DF_DASH_FILL)
 export const S_LINE_TEMP_DAY = _crLineStyle({ stroke: TEMP_DAY_COLOR })
 export const S_LINE_TEMP_EVE = _crLineDashStyle(TEMP_NIGHT_COLOR, DF_DASH_FILL)
 export const S_LINE_TEMP_NIGHT = _crLineStyle({ stroke: TEMP_NIGHT_COLOR })
 
-export const S_BAR_RAIN = _crBarStyle(SC.RAIN)
-export const S_BAR_SNOW = _crBarStyle(SC.SNOW)
+export const S_BAR_RAIN = _crBarStyle(RAIN_COLOR)
+export const S_BAR_SNOW = _crBarStyle(SNOW_COLOR)

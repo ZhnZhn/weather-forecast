@@ -20,7 +20,10 @@ import {
   S_YAXIS_SPEED,
   S_YAXIS_PRESSURE
 } from './Chart.Style';
-import SC from './SeriesColor';
+import {
+  SPEED_COLOR,
+  PRESSURE_COLOR 
+} from './SeriesColor';
 
 const _crLabelColor = color => ({
   stroke: color,
@@ -37,11 +40,11 @@ const LABEL_POSITION = {
 }
 , LABEL_CO = {
   ...LABEL_M3,
-  ..._crLabelColor(SC.PRESSURE)
+  ..._crLabelColor(PRESSURE_COLOR)
 }
 , LABEL_AQI = {
   ...LABEL_POSITION,
-  ..._crLabelColor(SC.SPEED),
+  ..._crLabelColor(SPEED_COLOR),
   value: "AQI"
 };
 

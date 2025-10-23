@@ -1,4 +1,9 @@
-import SC from './SeriesColor';
+import {
+  SPEED_COLOR,
+  RAIN_COLOR,
+  SNOW_COLOR,
+  PRESSURE_COLOR  
+} from './SeriesColor';
 
 const LABEL_POSITION = {
   position: "top",
@@ -17,24 +22,24 @@ export const YAXIS_LABEL_TEMPERATURE = {
 
 export const YAXIS_LABEL_PRESSURE = {
   ...LABEL_POSITION,
-  ..._crLabelColor(SC.PRESSURE),
+  ..._crLabelColor(PRESSURE_COLOR),
   value: "hPa",
   xTopOffset: -10
 };
 
 export const crYAxisLabelWind = (value='m/s') => ({
   ...LABEL_POSITION,
-  ..._crLabelColor(SC.SPEED),
+  ..._crLabelColor(SPEED_COLOR),
   value
 });
 
 export const YAXIS_LABEL_RAIN = {
   ...LABEL_POSITION,
-  ..._crLabelColor(SC.RAIN),
+  ..._crLabelColor(RAIN_COLOR),
   value: "mm"
 };
 
 export const YAXIS_LABEL_SNOW = {
   ...YAXIS_LABEL_RAIN,
-  ..._crLabelColor(SC.SNOW)
+  ..._crLabelColor(SNOW_COLOR)
 };
