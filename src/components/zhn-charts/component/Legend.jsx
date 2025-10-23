@@ -1,7 +1,4 @@
-import {
-  isFn,
-  isNumber
-} from "../../../utils/isTypeFn";
+import { isFn } from "../../../utils/isTypeFn";
 
 import {
   isValidElement,
@@ -15,10 +12,7 @@ import {
   setRefValue
 } from "../../uiApi";
 
-import {
-  isLayoutHorizontal,
-  isLayoutVertical
-} from "../util/ChartUtils";
+import { isLayoutVertical } from "../util/ChartUtils";
 
 import { getUniqPayload } from "./componentFn";
 import { DefaultLegendContent } from "./DefaultLegendContent";
@@ -168,17 +162,3 @@ export const Legend = memo((props) => {
 
 Legend.displayName = "Legend";
 Legend.defaultProps = LEGEND_DF_PROPS
-Legend.getWithHeight = (
-  { props },
-  chartWidth
-) => {
-  const {
-    layout,
-    height
-  } = props;
-  return isLayoutVertical(layout) && isNumber(height)
-    ? { height }
-    : isLayoutHorizontal(layout)
-    ? { width: props.width || chartWidth }
-    : null;
-};

@@ -208,6 +208,22 @@ export const getMainColorOfGraphicItem = (
   return result;
 };
 
+const _getLegendWidthOrHeight = (
+  props,
+  chartWidth
+) => {
+  const {
+    layout,
+    height
+  } = props;
+  return isLayoutVertical(layout) && isNumber(height)
+    ? { height }
+    : isLayoutHorizontal(layout)
+    ? { width: props.width || chartWidth }
+    : null;
+}
+
+
 export const getLegendProps = ({
   children,
   formattedGraphicalItems,
@@ -218,16 +234,17 @@ export const getLegendProps = ({
   if (!legendItem) {
     return null;
   }
+  const legendItemProps = legendItem.props;
   let legendData;
-  if (legendItem.props && legendItem.props.payload) {
-    legendData = legendItem.props && legendItem.props.payload;
+  if (legendItemProps && legendItemProps.payload) {
+    legendData = legendItemProps.payload;
   } else if (legendContent === 'children') {
     legendData = (formattedGraphicalItems || []).reduce((result, { item, props }) => {
       const data = props.sectors || props.data || [];
       return result.concat(data.map((entry) => ({
-        type: legendItem.props.iconType || item.props.legendType,
-        value: entry.name,
+        type: legendItemProps.iconType || item.props.legendType,
         color: entry.fill,
+        value: entry.name,
         payload: entry
       })));
     }, []);
@@ -242,7 +259,7 @@ export const getLegendProps = ({
       return {
         inactive: hide,
         dataKey,
-        type: legendItem.props.iconType || legendType || 'square',
+        type: legendItemProps.iconType || legendType || 'square',
         color: getMainColorOfGraphicItem(item),
         value: name || dataKey,
         payload: item.props
@@ -251,8 +268,8 @@ export const getLegendProps = ({
   }
 
   return {
-    ...legendItem.props,
-    ...Legend.getWithHeight(legendItem, legendWidth),
+    ...legendItemProps,
+    ..._getLegendWidthOrHeight(legendItemProps, legendWidth),
     payload: legendData,
     item: legendItem
   };
@@ -1130,7 +1147,7 @@ export const getTooltipItem = (
     stroke: graphicalItem.stroke,
     strokeWidth: graphicalItem.strokeWidth,
     strokeDasharray: graphicalItem.strokeDasharray,
-  
+
     dataKey,
     unit,
     formatter,

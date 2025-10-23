@@ -44,10 +44,11 @@ const _getMinMax = (a, b) => a > b ? [b, a] : [a, b];
 const _getTickCoordinate = tick => tick.coordinate;
 const _calcAverageTicksCoordinate = (tickA, tickB) => tickA && tickB ? (_getTickCoordinate(tickA) + _getTickCoordinate(tickB)) / 2 : NaN;
 const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axis) {
+  var _ticks$length, _ticks;
   if (ticks === void 0) {
     ticks = [];
   }
-  const len = ticks?.length ?? 0;
+  const len = (_ticks$length = (_ticks = ticks) == null ? void 0 : _ticks.length) != null ? _ticks$length : 0;
   // if there are 1 or less ticks ticks then the active tick is at index 0
   if (len <= 1) {
     return 0;
@@ -130,6 +131,17 @@ const getMainColorOfGraphicItem = item => {
   return result;
 };
 exports.getMainColorOfGraphicItem = getMainColorOfGraphicItem;
+const _getLegendWidthOrHeight = (props, chartWidth) => {
+  const {
+    layout,
+    height
+  } = props;
+  return isLayoutVertical(layout) && (0, _isTypeFn.isNumber)(height) ? {
+    height
+  } : isLayoutHorizontal(layout) ? {
+    width: props.width || chartWidth
+  } : null;
+};
 const getLegendProps = _ref => {
   let {
     children,
@@ -141,9 +153,10 @@ const getLegendProps = _ref => {
   if (!legendItem) {
     return null;
   }
+  const legendItemProps = legendItem.props;
   let legendData;
-  if (legendItem.props && legendItem.props.payload) {
-    legendData = legendItem.props && legendItem.props.payload;
+  if (legendItemProps && legendItemProps.payload) {
+    legendData = legendItemProps.payload;
   } else if (legendContent === 'children') {
     legendData = (formattedGraphicalItems || []).reduce((result, _ref2) => {
       let {
@@ -152,9 +165,9 @@ const getLegendProps = _ref => {
       } = _ref2;
       const data = props.sectors || props.data || [];
       return result.concat(data.map(entry => ({
-        type: legendItem.props.iconType || item.props.legendType,
-        value: entry.name,
+        type: legendItemProps.iconType || item.props.legendType,
         color: entry.fill,
+        value: entry.name,
         payload: entry
       })));
     }, []);
@@ -172,19 +185,17 @@ const getLegendProps = _ref => {
       return {
         inactive: hide,
         dataKey,
-        type: legendItem.props.iconType || legendType || 'square',
+        type: legendItemProps.iconType || legendType || 'square',
         color: getMainColorOfGraphicItem(item),
         value: name || dataKey,
         payload: item.props
       };
     });
   }
-  return {
-    ...legendItem.props,
-    ..._Legend.Legend.getWithHeight(legendItem, legendWidth),
+  return Object.assign({}, legendItemProps, _getLegendWidthOrHeight(legendItemProps, legendWidth), {
     payload: legendData,
     item: legendItem
-  };
+  });
 };
 
 /**
@@ -344,16 +355,14 @@ const appendOffsetOfLegend = (offset, items, props, legendBox) => {
         layout
       } = legendProps;
     if ((isLayoutVertical(layout) || isLayoutHorizontal(layout) && verticalAlign === 'middle') && (0, _isTypeFn.isNumber)(offset[align])) {
-      newOffset = {
-        ...offset,
+      newOffset = Object.assign({}, offset, {
         [align]: newOffset[align] + (box.width || 0)
-      };
+      });
     }
     if ((isLayoutHorizontal(layout) || isLayoutVertical(layout) && align === 'center') && (0, _isTypeFn.isNumber)(offset[verticalAlign])) {
-      newOffset = {
-        ...offset,
+      newOffset = Object.assign({}, offset, {
         [verticalAlign]: newOffset[verticalAlign] + (box.height || 0)
-      };
+      });
     }
   }
   return newOffset;
@@ -445,7 +454,7 @@ const getTicksOfAxis = (axis, isGrid, isAll) => {
     } = axis,
     offsetForBand = axis.realScaleType === 'scaleBand' ? scale.bandwidth() / 2 : 2;
   let offset = (isGrid || isAll) && type === 'category' && scale.bandwidth ? scale.bandwidth() / offsetForBand : 0;
-  offset = axis.axisType === 'angleAxis' && range?.length >= 2 ? (0, _DataUtils.mathSign)(range[0] - range[1]) * 2 * offset : offset;
+  offset = axis.axisType === 'angleAxis' && (range == null ? void 0 : range.length) >= 2 ? (0, _DataUtils.mathSign)(range[0] - range[1]) * 2 * offset : offset;
   // The ticks set by user should only affect the ticks adjacent to axis line
   if (isGrid && (axis.ticks || axis.niceTicks)) {
     const result = (axis.ticks || axis.niceTicks).map(entry => {
@@ -713,31 +722,28 @@ const getStackGroupsByAxisId = (data, _items, numericAxisId, cateAxisId, offsetT
           items: [item]
         };
       }
-      return {
-        ...result,
+      return Object.assign({}, result, {
         [axisId]: parentGroup
-      };
+      });
     }, {});
   return _getObjectKeys(stackGroups).reduce((result, axisId) => {
     const group = stackGroups[axisId];
     if (group.hasStack) {
       group.stackGroups = _getObjectKeys(group.stackGroups).reduce((res, stackId) => {
         const g = group.stackGroups[stackId];
-        return {
-          ...res,
+        return Object.assign({}, res, {
           [stackId]: {
             numericAxisId,
             cateAxisId,
             items: g.items,
             stackedData: getStackedData(data, g.items, offsetType)
           }
-        };
+        });
       }, {});
     }
-    return {
-      ...result,
+    return Object.assign({}, result, {
       [axisId]: group
-    };
+    });
   }, {});
 };
 

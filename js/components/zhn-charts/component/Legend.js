@@ -123,18 +123,4 @@ const Legend = exports.Legend = (0, _uiApi.memo)(props => {
 });
 Legend.displayName = "Legend";
 Legend.defaultProps = LEGEND_DF_PROPS;
-Legend.getWithHeight = (_ref, chartWidth) => {
-  let {
-    props
-  } = _ref;
-  const {
-    layout,
-    height
-  } = props;
-  return (0, _ChartUtils.isLayoutVertical)(layout) && (0, _isTypeFn.isNumber)(height) ? {
-    height
-  } : (0, _ChartUtils.isLayoutHorizontal)(layout) ? {
-    width: props.width || chartWidth
-  } : null;
-};
 //# sourceMappingURL=Legend.js.map
