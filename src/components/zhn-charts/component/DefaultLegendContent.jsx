@@ -1,42 +1,38 @@
-import { memo } from '../../uiApi';
+import {
+  memo,
+  crProps
+} from '../../uiApi';
 
+import { isLayoutHorizontal } from '../util/ChartUtils';
 import { renderItems } from './DefaultLegendContentFn';
 import { CL_DF_LEGEND } from '../CL';
 
-export const DefaultLegendContent = memo((
-  props
-) => {
-  const {
-    payload,
-    layout,
-    align
-  } = props;
-  if (!payload || !payload.length) {
-    return null;
-  }
-
-  const finalStyle = {
-    padding: 0,
-    margin: 0,
-    textAlign: layout === 'horizontal'
-      ? align
-      : 'left'
-  };
-  return (
-    <ul
-      className={CL_DF_LEGEND}
-      style={finalStyle}
-    >
-      {renderItems(props)}
-    </ul>
-  );
-})
-
-DefaultLegendContent.displayName = 'Legend';
-DefaultLegendContent.defaultProps = {
+const DF_PROPS = {
   iconSize: 14,
   layout: 'horizontal',
   align: 'center',
   verticalAlign: 'middle',
   inactiveColor: '#ccc'
 };
+
+export const DefaultLegendContent = memo((
+  props
+) => {
+  const _props = crProps(DF_PROPS, props);
+  return _props.payload && _props.payload.length ? (
+    <ul
+      className={CL_DF_LEGEND}
+      style={{
+        padding: 0,
+        margin: 0,
+        textAlign: isLayoutHorizontal(_props.layout)
+          ? _props.align
+          : 'left'
+      }}
+    >
+      {renderItems(_props)}
+    </ul>
+  ) : null;
+})
+
+DefaultLegendContent.displayName = 'Legend'
