@@ -9,7 +9,8 @@ import {
   useLayoutEffect,
   crProps,
   getRefValue,
-  setRefValue
+  setRefValue,
+  setDisplayNameTo
 } from "../../uiApi";
 
 import { isLayoutVertical } from "../util/ChartUtils";
@@ -32,16 +33,12 @@ const _renderContent = (
   ? createElement(ContentElementOrComp, props)
   : (<DefaultLegendContent {...props} />)
 
-
-const _getBBoxSnapshot = (boundingBox) => {
-  const {
-    width,
-    height
-  } = boundingBox;
-  return width >= 0 && height >= 0
-    ? { width, height }
-    : { width: 0, height: 0};
-};
+const _getBBoxSnapshot = ({
+  width,
+  height
+}) => width >= 0 && height >= 0
+  ? { width, height }
+  : { width: 0, height: 0 };
 
 const _getDefaultPosition = (
   style,
@@ -61,17 +58,17 @@ const _getDefaultPosition = (
 
   if (!style || (style.left == null && style.right == null)) {
     hPos = align === "center" && isLayoutVertical(layout)
-      ? { left: ((chartWidth || 0) - _getBBoxSnapshot(boundingBox).width) / 2 }
+      ? { left: (chartWidth - boundingBox.width) / 2 }
       : align === "right"
-      ? { right: (margin && margin.right) || 0 }
-      : { left: (margin && margin.left) || 0 };
+      ? { right: margin.right || 0 }
+      : { left: margin.left || 0 };
   }
   if (!style || (style.top == null && style.bottom == null)) {
     vPos = verticalAlign === "middle"
-      ? { top: ((chartHeight || 0) - _getBBoxSnapshot(boundingBox).height) / 2}
+      ? { top: (chartHeight - boundingBox.height) / 2}
       : verticalAlign === "bottom"
-      ? { bottom: (margin && margin.bottom) || 0 }
-      : { top: (margin && margin.top) || 0 };
+      ? { bottom: margin.bottom || 0 }
+      : { top: margin.top || 0 };
   }
   return {
     ...hPos,
@@ -91,6 +88,14 @@ const LEGEND_DF_PROPS = {
 
 export const Legend = memo((props) => {
   const _props = crProps(LEGEND_DF_PROPS, props)
+  , {
+    content,
+    width,
+    height,
+    wrapperStyle,
+    payloadUniqBy,
+    payload
+  } = _props
   , _refBoundingBox = useRef({
     width: -1,
     height: -1
@@ -110,15 +115,12 @@ export const Legend = memo((props) => {
     if (_wrapperNode && _wrapperNode.getBoundingClientRect) {
       const box = _wrapperNode.getBoundingClientRect();
       if (_mathAbs(box.width - width) > EPS || _mathAbs(box.height - height) > EPS) {
-        setRefValue(_refBoundingBox, {
-          width: box.width,
-          height: box.height
-        })
+        setRefValue(_refBoundingBox, _getBBoxSnapshot(box))
         if (onBBoxUpdate) {
           onBBoxUpdate(box);
         }
       }
-    } else if (width !== -1 || height !== -1) {
+    } /*else if (width !== -1 || height !== -1) {
       setRefValue(_refBoundingBox, {
         width: -1,
         height: -1
@@ -126,30 +128,20 @@ export const Legend = memo((props) => {
       if (onBBoxUpdate) {
         onBBoxUpdate(null);
       }
-    }
+    }*/
   })
-
-  const {
-    content,
-    width,
-    height,
-    wrapperStyle,
-    payloadUniqBy,
-    payload
-  } = _props
-  , outerStyle = {
-     position: "absolute",
-     width: width || "auto",
-     height: height || "auto",
-     ..._getDefaultPosition(wrapperStyle, _props, getRefValue(_refBoundingBox)),
-     ...wrapperStyle
-  };
 
   return (
     <div
-      className={CL_LEGEND_WRAPPER}
-      style={outerStyle}
       ref={_refWrapperNode}
+      className={CL_LEGEND_WRAPPER}
+      style={{
+         position: "absolute",
+         width: width || "auto",
+         height: height || "auto",
+         ..._getDefaultPosition(wrapperStyle, _props, getRefValue(_refBoundingBox)),
+         ...wrapperStyle
+      }}
     >
       {_renderContent(
          content, {
@@ -160,5 +152,4 @@ export const Legend = memo((props) => {
   );
 })
 
-Legend.displayName = "Legend";
-Legend.defaultProps = LEGEND_DF_PROPS
+setDisplayNameTo(Legend, "Legend", LEGEND_DF_PROPS)

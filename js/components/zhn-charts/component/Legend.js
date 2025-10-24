@@ -11,11 +11,11 @@ var _jsxRuntime = require("react/jsx-runtime");
 const CL_LEGEND_WRAPPER = "recharts-legend-wrapper";
 const _defaultUniqBy = entry => entry.value;
 const _renderContent = (ContentElementOrComp, props) => (0, _uiApi.isValidElement)(ContentElementOrComp) ? (0, _uiApi.cloneUiElement)(ContentElementOrComp, props) : (0, _isTypeFn.isFn)(ContentElementOrComp) ? (0, _uiApi.createElement)(ContentElementOrComp, props) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_DefaultLegendContent.DefaultLegendContent, Object.assign({}, props));
-const _getBBoxSnapshot = boundingBox => {
-  const {
+const _getBBoxSnapshot = _ref => {
+  let {
     width,
     height
-  } = boundingBox;
+  } = _ref;
   return width >= 0 && height >= 0 ? {
     width,
     height
@@ -36,20 +36,20 @@ const _getDefaultPosition = (style, props, boundingBox) => {
   let hPos, vPos;
   if (!style || style.left == null && style.right == null) {
     hPos = align === "center" && (0, _ChartUtils.isLayoutVertical)(layout) ? {
-      left: ((chartWidth || 0) - _getBBoxSnapshot(boundingBox).width) / 2
+      left: (chartWidth - boundingBox.width) / 2
     } : align === "right" ? {
-      right: margin && margin.right || 0
+      right: margin.right || 0
     } : {
-      left: margin && margin.left || 0
+      left: margin.left || 0
     };
   }
   if (!style || style.top == null && style.bottom == null) {
     vPos = verticalAlign === "middle" ? {
-      top: ((chartHeight || 0) - _getBBoxSnapshot(boundingBox).height) / 2
+      top: (chartHeight - boundingBox.height) / 2
     } : verticalAlign === "bottom" ? {
-      bottom: margin && margin.bottom || 0
+      bottom: margin.bottom || 0
     } : {
-      top: margin && margin.top || 0
+      top: margin.top || 0
     };
   }
   return Object.assign({}, hPos, vPos);
@@ -64,6 +64,14 @@ const LEGEND_DF_PROPS = {
 };
 const Legend = exports.Legend = (0, _uiApi.memo)(props => {
   const _props = (0, _uiApi.crProps)(LEGEND_DF_PROPS, props),
+    {
+      content,
+      width,
+      height,
+      wrapperStyle,
+      payloadUniqBy,
+      payload
+    } = _props,
     _refBoundingBox = (0, _uiApi.useRef)({
       width: -1,
       height: -1
@@ -81,46 +89,33 @@ const Legend = exports.Legend = (0, _uiApi.memo)(props => {
     if (_wrapperNode && _wrapperNode.getBoundingClientRect) {
       const box = _wrapperNode.getBoundingClientRect();
       if (_mathAbs(box.width - width) > EPS || _mathAbs(box.height - height) > EPS) {
-        (0, _uiApi.setRefValue)(_refBoundingBox, {
-          width: box.width,
-          height: box.height
-        });
+        (0, _uiApi.setRefValue)(_refBoundingBox, _getBBoxSnapshot(box));
         if (onBBoxUpdate) {
           onBBoxUpdate(box);
         }
       }
-    } else if (width !== -1 || height !== -1) {
-      (0, _uiApi.setRefValue)(_refBoundingBox, {
+    } /*else if (width !== -1 || height !== -1) {
+      setRefValue(_refBoundingBox, {
         width: -1,
         height: -1
-      });
+      })
       if (onBBoxUpdate) {
         onBBoxUpdate(null);
       }
-    }
+      }*/
   });
-  const {
-      content,
-      width,
-      height,
-      wrapperStyle,
-      payloadUniqBy,
-      payload
-    } = _props,
-    outerStyle = Object.assign({
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    ref: _refWrapperNode,
+    className: CL_LEGEND_WRAPPER,
+    style: Object.assign({
       position: "absolute",
       width: width || "auto",
       height: height || "auto"
-    }, _getDefaultPosition(wrapperStyle, _props, (0, _uiApi.getRefValue)(_refBoundingBox)), wrapperStyle);
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    className: CL_LEGEND_WRAPPER,
-    style: outerStyle,
-    ref: _refWrapperNode,
+    }, _getDefaultPosition(wrapperStyle, _props, (0, _uiApi.getRefValue)(_refBoundingBox)), wrapperStyle),
     children: _renderContent(content, Object.assign({}, _props, {
       payload: (0, _componentFn.getUniqPayload)(payloadUniqBy, payload, _defaultUniqBy)
     }))
   });
 });
-Legend.displayName = "Legend";
-Legend.defaultProps = LEGEND_DF_PROPS;
+(0, _uiApi.setDisplayNameTo)(Legend, "Legend", LEGEND_DF_PROPS);
 //# sourceMappingURL=Legend.js.map

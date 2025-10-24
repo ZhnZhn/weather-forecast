@@ -53,8 +53,8 @@ const DF_PROPS = {
 const _crClassName = (coordinate, translateX, translateY) => {
   const _isTranslateCoordinateX = (0, _isTypeFn.isNumber)(translateX) && coordinate && (0, _isTypeFn.isNumber)(coordinate.x),
     _isTranslateCoordinateY = (0, _isTypeFn.isNumber)(translateY) && coordinate && (0, _isTypeFn.isNumber)(coordinate.y),
-    _clX = _isTranslateCoordinateX ? (0, _styleFn.crCn)(translateX >= coordinate.x && `${_CL.CL_TOOLTIP_WRAPPER}-right`, translateX < coordinate.x && `${_CL.CL_TOOLTIP_WRAPPER}-left`) : '',
-    _clY = _isTranslateCoordinateY ? (0, _styleFn.crCn)(translateY >= coordinate.y && `${_CL.CL_TOOLTIP_WRAPPER}-bottom`, translateY < coordinate.y && `${_CL.CL_TOOLTIP_WRAPPER}-top`) : '';
+    _clX = _isTranslateCoordinateX ? (0, _styleFn.crCn)(translateX >= coordinate.x && _CL.CL_TOOLTIP_WRAPPER + "-right", translateX < coordinate.x && _CL.CL_TOOLTIP_WRAPPER + "-left") : '',
+    _clY = _isTranslateCoordinateY ? (0, _styleFn.crCn)(translateY >= coordinate.y && _CL.CL_TOOLTIP_WRAPPER + "-bottom", translateY < coordinate.y && _CL.CL_TOOLTIP_WRAPPER + "-top") : '';
   return (0, _styleFn.crCn)(_CL.CL_TOOLTIP_WRAPPER, (0, _styleFn.crCn)(_clX, _clY));
 };
 const Tooltip = props => {
@@ -78,8 +78,7 @@ const Tooltip = props => {
     handleKeyDown = (0, _uiApi.useCallback)(event => {
       if (event.key === "Escape") {
         setDismissed(true);
-        setDismissedAtCoordinate(prev => ({
-          ...prev,
+        setDismissedAtCoordinate(prev => Object.assign({}, prev, {
           x: coordinate.x,
           y: coordinate.y
         }));
@@ -122,10 +121,10 @@ const Tooltip = props => {
     }
     const negative = coordinate[key] - tooltipDimension - offset,
       positive = coordinate[key] + offset;
-    if (allowEscapeViewBox?.[key]) {
+    if (allowEscapeViewBox != null && allowEscapeViewBox[key]) {
       return reverseDirection[key] ? negative : positive;
     }
-    if (reverseDirection?.[key]) {
+    if (reverseDirection != null && reverseDirection[key]) {
       const tooltipBoundary = negative,
         viewBoxBoundary = viewBox[key];
       return tooltipBoundary < viewBoxBoundary ? Math.max(positive, viewBox[key]) : Math.max(negative, viewBox[key]);
@@ -150,14 +149,13 @@ const Tooltip = props => {
     {
       content
     } = _props;
-  let outerStyle = {
+  let outerStyle = Object.assign({
       pointerEvents: "none",
       visibility: !dismissed && active && hasPayload ? "visible" : "hidden",
       position: "absolute",
       top: 0,
-      left: 0,
-      ...wrapperStyle
-    },
+      left: 0
+    }, wrapperStyle),
     translateX,
     translateY;
   if (position && (0, _isTypeFn.isNumber)(position.x) && (0, _isTypeFn.isNumber)(position.y)) {
@@ -177,19 +175,13 @@ const Tooltip = props => {
   } else {
     outerStyle.visibility = "hidden";
   }
-  outerStyle = {
-    ...{
-      transform: useTranslate3d ? `translate3d(${translateX}px, ${translateY}px, 0)` : `translate(${translateX}px, ${translateY}px)`
-    },
-    ...outerStyle
-  };
+  outerStyle = Object.assign({}, {
+    transform: useTranslate3d ? "translate3d(" + translateX + "px, " + translateY + "px, 0)" : "translate(" + translateX + "px, " + translateY + "px)"
+  }, outerStyle);
   if (isAnimationActive && active) {
-    outerStyle = {
-      ...{
-        transition: `transform ${animationDuration}ms ${animationEasing}`
-      },
-      ...outerStyle
-    };
+    outerStyle = Object.assign({}, {
+      transition: "transform " + animationDuration + "ms " + animationEasing
+    }, outerStyle);
   }
   const _className = _crClassName(coordinate, translateX, translateY);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
@@ -198,16 +190,15 @@ const Tooltip = props => {
     className: _className,
     style: outerStyle,
     ref: wrapperNode,
-    children: _renderContent(content, {
-      ..._props,
+    children: _renderContent(content, Object.assign({}, _props, {
       payload: finalPayload
-    })
+    }))
   });
 };
 
 // needs to be set so that renderByOrder can find the correct handler function
 exports.Tooltip = Tooltip;
-Tooltip.displayName = "Tooltip";
+(0, _uiApi.setDisplayNameTo)(Tooltip, "Tooltip");
 /**
  * needs to be set so that renderByOrder can access an have default values for
  * children.props when there are no props set by the consumer

@@ -12,7 +12,8 @@ import {
   useState,
   useCallback,
   useEffect,
-  crProps
+  crProps,
+  setDisplayNameTo
 } from "../../uiApi";
 
 import { crCn } from "../../styleFn";
@@ -277,7 +278,7 @@ export const Tooltip = (props) => {
 };
 
 // needs to be set so that renderByOrder can find the correct handler function
-Tooltip.displayName = "Tooltip";
+setDisplayNameTo(Tooltip, "Tooltip")
 /**
  * needs to be set so that renderByOrder can access an have default values for
  * children.props when there are no props set by the consumer

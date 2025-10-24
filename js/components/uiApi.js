@@ -1,7 +1,9 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useLayoutEffect = exports.useImperativeHandle = exports.useId = exports.useEffect = exports.useDefaultProps = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.safeMap = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.focusRefElement = exports.focusElementById = exports.createElement = exports.createContext = exports.crProps = exports.cloneUiElement = exports.bindTo = exports.KEY_TAB = exports.KEY_SPACE = exports.KEY_HOME = exports.KEY_ESCAPE = exports.KEY_ENTER = exports.KEY_END = exports.KEY_DELETE = exports.KEY_ARROW_UP = exports.KEY_ARROW_DOWN = exports.Component = exports.Children = void 0;
+exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useLayoutEffect = exports.useImperativeHandle = exports.useId = exports.useEffect = exports.useDefaultProps = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.setDisplayNameTo = exports.safeMap = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.focusRefElement = exports.focusElementById = exports.createElement = exports.createContext = exports.crProps = exports.cloneUiElement = exports.bindTo = exports.KEY_TAB = exports.KEY_SPACE = exports.KEY_HOME = exports.KEY_ESCAPE = exports.KEY_ENTER = exports.KEY_END = exports.KEY_DELETE = exports.KEY_ARROW_UP = exports.KEY_ARROW_DOWN = exports.Component = exports.Children = void 0;
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _isTypeFn = require("../utils/isTypeFn");
 var _react = require("react");
 exports.useMemo = _react.useMemo;
@@ -23,6 +25,7 @@ var _jsxRuntime = require("react/jsx-runtime");
 var _reactRedux = require("react-redux");
 exports.useSelector = _reactRedux.useSelector;
 exports.useStore = _reactRedux.useStore;
+const _excluded = ["key"];
 const KEY_ARROW_DOWN = exports.KEY_ARROW_DOWN = "ArrowDown";
 const KEY_ARROW_UP = exports.KEY_ARROW_UP = "ArrowUp";
 const KEY_ENTER = exports.KEY_ENTER = "Enter";
@@ -43,12 +46,10 @@ const safeMap = (items, crElement) => (0, _isTypeFn.isArr)(items) ? items.map(cr
 exports.safeMap = safeMap;
 const createElement = (Comp, _ref) => {
   let {
-    key,
-    ...restProps
-  } = _ref;
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(Comp, {
-    ...restProps
-  }, key);
+      key
+    } = _ref,
+    restProps = (0, _objectWithoutPropertiesLoose2.default)(_ref, _excluded);
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(Comp, Object.assign({}, restProps), key);
 };
 exports.createElement = createElement;
 const _isElementKey = v => (0, _isTypeFn.isStr)(v) || (0, _isTypeFn.isNumber)(v);
@@ -56,19 +57,20 @@ const cloneUiElement = function (Element, overrideProps, key) {
   if (key === void 0) {
     key = Element.key;
   }
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(Element.type, {
-    ...Element.props,
-    ...overrideProps
-  }, _isElementKey(key) ? key : void 0);
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(Element.type, Object.assign({}, Element.props, overrideProps), _isElementKey(key) ? key : void 0);
 };
 exports.cloneUiElement = cloneUiElement;
-const crProps = (dfProps, props) => ({
-  ...dfProps,
-  ...props
-});
+const crProps = (dfProps, props) => Object.assign({}, dfProps, props);
 exports.crProps = crProps;
 const useDefaultProps = (dfProps, props) => (0, _react.useMemo)(() => crProps(dfProps, props), [props, dfProps]);
 exports.useDefaultProps = useDefaultProps;
+const setDisplayNameTo = (Comp, displayName, defaultProps) => {
+  Comp.displayName = displayName;
+  if (defaultProps) {
+    Comp.defaultProps = defaultProps;
+  }
+};
+exports.setDisplayNameTo = setDisplayNameTo;
 const getRefValue = ref => (ref || {}).current;
 exports.getRefValue = getRefValue;
 const setRefValue = (ref, value) => {

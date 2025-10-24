@@ -85,6 +85,17 @@ export const useDefaultProps = (
   [props, dfProps]
 )
 
+export const setDisplayNameTo = (
+  Comp,
+  displayName,
+  defaultProps
+) => {
+  Comp.displayName = displayName
+  if (defaultProps) {
+    Comp.defaultProps = defaultProps
+  }
+}
+
 export const getRefValue = ref => (ref || {}).current
 
 export const setRefValue = (

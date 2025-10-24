@@ -1,6 +1,7 @@
 import {
   memo,
-  crProps
+  crProps,
+  setDisplayNameTo
 } from '../../uiApi';
 
 import { isLayoutHorizontal } from '../util/ChartUtils';
@@ -35,4 +36,4 @@ export const DefaultLegendContent = memo((
   ) : null;
 })
 
-DefaultLegendContent.displayName = 'Legend'
+setDisplayNameTo(DefaultLegendContent, "Legend")

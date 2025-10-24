@@ -26,5 +26,5 @@ const DefaultLegendContent = exports.DefaultLegendContent = (0, _uiApi.memo)(pro
     children: (0, _DefaultLegendContentFn.renderItems)(_props)
   }) : null;
 });
-DefaultLegendContent.displayName = 'Legend';
+(0, _uiApi.setDisplayNameTo)(DefaultLegendContent, "Legend");
 //# sourceMappingURL=DefaultLegendContent.js.map

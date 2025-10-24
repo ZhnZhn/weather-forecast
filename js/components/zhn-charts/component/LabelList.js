@@ -5,13 +5,14 @@ exports.__esModule = true;
 exports.LabelList = void 0;
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _isTypeFn = require("../../../utils/isTypeFn");
+var _uiApi = require("../../uiApi");
 var _Label = require("./Label");
 var _Layer = require("../container/Layer");
 var _ChartUtils = require("../util/ChartUtils");
 var _jsxRuntime = require("react/jsx-runtime");
 const _excluded = ["data", "valueAccessor", "dataKey", "clockWise", "id", "textBreakAll"];
 const CL_LABEL_LIST = "recharts-label-list";
-const defaultProps = {
+const DF_LABEL_LIST_PROPS = {
   valueAccessor: entry => {
     const {
       value
@@ -49,6 +50,5 @@ const LabelList = props => {
   }) : null;
 };
 exports.LabelList = LabelList;
-LabelList.displayName = 'LabelList';
-LabelList.defaultProps = defaultProps;
+(0, _uiApi.setDisplayNameTo)(LabelList, "LabelList", DF_LABEL_LIST_PROPS);
 //# sourceMappingURL=LabelList.js.map

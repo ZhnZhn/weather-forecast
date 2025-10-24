@@ -3,13 +3,15 @@ import {
   isNullOrUndef,
 } from '../../../utils/isTypeFn';
 
+import { setDisplayNameTo } from '../../uiApi';
+
 import { Label } from './Label';
 import { Layer } from '../container/Layer';
 import { getValueByDataKey } from '../util/ChartUtils';
 
 const CL_LABEL_LIST = "recharts-label-list";
 
-const defaultProps = {
+const DF_LABEL_LIST_PROPS = {
   valueAccessor: (entry) => {
     const { value } = entry || {};
     return isArr(value)
@@ -57,5 +59,8 @@ export const LabelList = (
   ) : null;
 }
 
-LabelList.displayName = 'LabelList';
-LabelList.defaultProps = defaultProps;
+setDisplayNameTo(
+  LabelList,
+  "LabelList",
+  DF_LABEL_LIST_PROPS
+)
