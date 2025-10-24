@@ -73,7 +73,7 @@ export const generateCategoricalChart = ({
   defaultTooltipEventType = 'axis',
   validateTooltipEventTypes = ['axis'],
   axisComponents,
-  legendContent,
+  //legendContent,
   formatAxisMap,
   defaultProps
 }) => {
@@ -482,7 +482,7 @@ export const generateCategoricalChart = ({
                     {renderClipPath(this)}
                     {renderByMap(this, renderMap)}
                   </Surface>
-                  {renderLegend(this, legendContent)}
+                  {renderLegend(this)}
                   {renderTooltip(this)}
                </div>
               );

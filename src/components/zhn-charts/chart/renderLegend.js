@@ -1,9 +1,13 @@
 import { cloneUiElement } from '../../uiApi';
 import { getLegendProps } from '../util/ChartUtils';
 
+const _calcLegendWidth = (
+  width,
+  margin
+) => width - (margin.left || 0) - (margin.right || 0);
+
 export const renderLegend = (
-  chartInst,
-  legendContent
+  chartInst
 ) => {
   const {
     props,
@@ -18,27 +22,20 @@ export const renderLegend = (
     height
   } = props
   , margin = props.margin || {}
-  , legendWidth = width - (margin.left || 0) - (margin.right || 0)
-  , _props = getLegendProps({
-      children,
-      formattedGraphicalItems,
-      legendWidth,
-      legendContent
+  , [
+    _legendProps,
+    _legendItem
+  ] = getLegendProps({
+    children,
+    formattedGraphicalItems,
+    legendWidth: _calcLegendWidth(width, margin)
   });
 
-  if (!_props) {
-    return null;
-  }
-
-  const {
-    item,
-    ...itemProps
-  } = _props;
-  return cloneUiElement(item, {
-     ...itemProps,
-     chartWidth: width,
-     chartHeight: height,
-     margin,     
-     onBBoxUpdate: chartInst.handleLegendBBoxUpdate,
-  });
+  return _legendProps ? cloneUiElement(_legendItem, {
+    ..._legendProps,
+    chartWidth: width || 0,
+    chartHeight: height || 0,
+    margin,
+    onBBoxUpdate: chartInst.handleLegendBBoxUpdate
+  }) : null;
 }

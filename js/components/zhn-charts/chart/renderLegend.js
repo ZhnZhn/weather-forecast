@@ -4,7 +4,8 @@ exports.__esModule = true;
 exports.renderLegend = void 0;
 var _uiApi = require("../../uiApi");
 var _ChartUtils = require("../util/ChartUtils");
-const renderLegend = (chartInst, legendContent) => {
+const _calcLegendWidth = (width, margin) => width - (margin.left || 0) - (margin.right || 0);
+const renderLegend = chartInst => {
   const {
       props,
       state
@@ -18,27 +19,17 @@ const renderLegend = (chartInst, legendContent) => {
       height
     } = props,
     margin = props.margin || {},
-    legendWidth = width - (margin.left || 0) - (margin.right || 0),
-    _props = (0, _ChartUtils.getLegendProps)({
+    [_legendProps, _legendItem] = (0, _ChartUtils.getLegendProps)({
       children,
       formattedGraphicalItems,
-      legendWidth,
-      legendContent
+      legendWidth: _calcLegendWidth(width, margin)
     });
-  if (!_props) {
-    return null;
-  }
-  const {
-    item,
-    ...itemProps
-  } = _props;
-  return (0, _uiApi.cloneUiElement)(item, {
-    ...itemProps,
-    chartWidth: width,
-    chartHeight: height,
+  return _legendProps ? (0, _uiApi.cloneUiElement)(_legendItem, Object.assign({}, _legendProps, {
+    chartWidth: width || 0,
+    chartHeight: height || 0,
     margin,
     onBBoxUpdate: chartInst.handleLegendBBoxUpdate
-  });
+  })) : null;
 };
 exports.renderLegend = renderLegend;
 //# sourceMappingURL=renderLegend.js.map

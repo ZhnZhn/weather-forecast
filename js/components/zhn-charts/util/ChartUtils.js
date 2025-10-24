@@ -146,36 +146,17 @@ const getLegendProps = _ref => {
   let {
     children,
     formattedGraphicalItems,
-    legendWidth,
-    legendContent
+    legendWidth
   } = _ref;
   const legendItem = (0, _ReactUtils.findChildByType)(children, _Legend.Legend);
   if (!legendItem) {
-    return null;
+    return [];
   }
-  const legendItemProps = legendItem.props;
-  let legendData;
-  if (legendItemProps && legendItemProps.payload) {
-    legendData = legendItemProps.payload;
-  } else if (legendContent === 'children') {
-    legendData = (formattedGraphicalItems || []).reduce((result, _ref2) => {
-      let {
-        item,
-        props
-      } = _ref2;
-      const data = props.sectors || props.data || [];
-      return result.concat(data.map(entry => ({
-        type: legendItemProps.iconType || item.props.legendType,
-        color: entry.fill,
-        value: entry.name,
-        payload: entry
-      })));
-    }, []);
-  } else {
-    legendData = (formattedGraphicalItems || []).map(_ref3 => {
+  const legendItemProps = legendItem.props,
+    legendData = legendItemProps && legendItemProps.payload ? legendItemProps.payload : (formattedGraphicalItems || []).map(_ref2 => {
       let {
         item
-      } = _ref3;
+      } = _ref2;
       const {
         dataKey,
         name,
@@ -191,11 +172,9 @@ const getLegendProps = _ref => {
         payload: item.props
       };
     });
-  }
-  return Object.assign({}, legendItemProps, _getLegendWidthOrHeight(legendItemProps, legendWidth), {
-    payload: legendData,
-    item: legendItem
-  });
+  return [Object.assign({}, legendItemProps, _getLegendWidthOrHeight(legendItemProps, legendWidth), {
+    payload: legendData
+  }), legendItem];
 };
 
 /**
@@ -204,11 +183,11 @@ const getLegendProps = _ref => {
  * @return {Object} The size of all groups
  */
 exports.getLegendProps = getLegendProps;
-const getBarSizeList = _ref4 => {
+const getBarSizeList = _ref3 => {
   let {
     barSize: globalSize,
     stackGroups = {}
-  } = _ref4;
+  } = _ref3;
   if (!stackGroups) {
     return {};
   }
@@ -250,14 +229,14 @@ const getBarSizeList = _ref4 => {
  * @return {Number} The size of each bar and the gap between two bars
  */
 exports.getBarSizeList = getBarSizeList;
-const getBarPosition = _ref5 => {
+const getBarPosition = _ref4 => {
   let {
     barGap,
     barCategoryGap,
     bandSize,
     sizeList = [],
     maxBarSize
-  } = _ref5;
+  } = _ref4;
   const len = sizeList.length;
   if (len < 1) {
     return null;
@@ -345,7 +324,7 @@ const appendOffsetOfLegend = (offset, items, props, legendBox) => {
     legendProps = getLegendProps({
       children,
       legendWidth
-    });
+    })[0];
   let newOffset = offset;
   if (legendProps) {
     const box = legendBox || {},
@@ -788,7 +767,7 @@ const getTicksOfScale = (scale, opts) => {
   return null;
 };
 exports.getTicksOfScale = getTicksOfScale;
-const getCateCoordinateOfLine = _ref6 => {
+const getCateCoordinateOfLine = _ref5 => {
   let {
     axis,
     ticks,
@@ -796,7 +775,7 @@ const getCateCoordinateOfLine = _ref6 => {
     entry,
     index,
     dataKey
-  } = _ref6;
+  } = _ref5;
   if (axis.type === 'category') {
     // find coordinate of category axis by the value of category
     if (!axis.allowDuplicatedCategory && axis.dataKey && !(0, _isTypeFn.isNullOrUndef)(entry[axis.dataKey])) {
@@ -811,7 +790,7 @@ const getCateCoordinateOfLine = _ref6 => {
   return !(0, _isTypeFn.isNullOrUndef)(value) ? axis.scale(value) : null;
 };
 exports.getCateCoordinateOfLine = getCateCoordinateOfLine;
-const getCateCoordinateOfBar = _ref7 => {
+const getCateCoordinateOfBar = _ref6 => {
   let {
     axis,
     ticks,
@@ -819,7 +798,7 @@ const getCateCoordinateOfBar = _ref7 => {
     bandSize,
     entry,
     index
-  } = _ref7;
+  } = _ref6;
   if (axis.type === 'category') {
     return ticks[index] ? ticks[index].coordinate + offset : null;
   }
@@ -827,10 +806,10 @@ const getCateCoordinateOfBar = _ref7 => {
   return !(0, _isTypeFn.isNullOrUndef)(value) ? axis.scale(value) - bandSize / 2 + offset : null;
 };
 exports.getCateCoordinateOfBar = getCateCoordinateOfBar;
-const getBaseValueOfBar = _ref8 => {
+const getBaseValueOfBar = _ref7 => {
   let {
     numericAxis
-  } = _ref8;
+  } = _ref7;
   const domain = numericAxis.scale.domain();
   if (numericAxis.type === 'number') {
     const min = Math.min(domain[0], domain[1]),

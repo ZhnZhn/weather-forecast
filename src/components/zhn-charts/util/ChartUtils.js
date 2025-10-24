@@ -227,52 +227,37 @@ const _getLegendWidthOrHeight = (
 export const getLegendProps = ({
   children,
   formattedGraphicalItems,
-  legendWidth,
-  legendContent
+  legendWidth
 }) => {
   const legendItem = findChildByType(children, Legend);
   if (!legendItem) {
-    return null;
+    return [];
   }
-  const legendItemProps = legendItem.props;
-  let legendData;
-  if (legendItemProps && legendItemProps.payload) {
-    legendData = legendItemProps.payload;
-  } else if (legendContent === 'children') {
-    legendData = (formattedGraphicalItems || []).reduce((result, { item, props }) => {
-      const data = props.sectors || props.data || [];
-      return result.concat(data.map((entry) => ({
-        type: legendItemProps.iconType || item.props.legendType,
-        color: entry.fill,
-        value: entry.name,
-        payload: entry
-      })));
-    }, []);
-  } else {
-    legendData = (formattedGraphicalItems || []).map(({ item }) => {
-      const {
-        dataKey,
-        name,
-        legendType,
-        hide
-      } = item.props;
-      return {
-        inactive: hide,
-        dataKey,
-        type: legendItemProps.iconType || legendType || 'square',
-        color: getMainColorOfGraphicItem(item),
-        value: name || dataKey,
-        payload: item.props
-      };
-    });
-  }
+  const legendItemProps = legendItem.props
+  , legendData = legendItemProps && legendItemProps.payload
+    ? legendItemProps.payload
+    : (formattedGraphicalItems || []).map(({ item }) => {
+        const {
+          dataKey,
+          name,
+          legendType,
+          hide
+        } = item.props;
+        return {
+          inactive: hide,
+          dataKey,
+          type: legendItemProps.iconType || legendType || 'square',
+          color: getMainColorOfGraphicItem(item),
+          value: name || dataKey,
+          payload: item.props
+        };
+      });
 
-  return {
+  return [{
     ...legendItemProps,
     ..._getLegendWidthOrHeight(legendItemProps, legendWidth),
     payload: legendData,
-    item: legendItem
-  };
+  }, legendItem];
 };
 
 /**
@@ -416,7 +401,7 @@ export const appendOffsetOfLegend = (
 ) => {
   const { children, width, margin } = props
   , legendWidth = width - (margin.left || 0) - (margin.right || 0)
-  , legendProps = getLegendProps({ children, legendWidth });
+  , legendProps = getLegendProps({ children, legendWidth })[0];
   let newOffset = offset;
   if (legendProps) {
     const box = legendBox || {}

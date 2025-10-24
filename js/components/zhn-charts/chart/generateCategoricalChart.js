@@ -41,227 +41,205 @@ const _inRange = (x, y, props, state) => {
   return null;
 };
 const generateCategoricalChart = _ref => {
+  var _CategoricalChartWrapper;
   let {
     chartName,
     GraphicalChild,
     defaultTooltipEventType = 'axis',
     validateTooltipEventTypes = ['axis'],
     axisComponents,
-    legendContent,
+    //legendContent,
     formatAxisMap,
     defaultProps
   } = _ref;
   const updateStateOfAxisMapsOffsetAndStackGroups = (0, _fUpdateStateOfAxisOffsetAndStackGroups.fUpdateStateOfAxisMapsOffsetAndStackGroups)(chartName, GraphicalChild, axisComponents, formatAxisMap);
-  return class CategoricalChartWrapper extends _uiApi.Component {
-    static displayName = (() => chartName)();
-    // todo join specific chart propTypes
-    static defaultProps = {
-      layout: 'horizontal',
-      stackOffset: 'none',
-      barCategoryGap: '10%',
-      barGap: 4,
-      margin: {
-        top: 5,
-        right: 5,
-        bottom: 5,
-        left: 5
-      },
-      reverseStackOrder: false,
-      syncMethod: 'index',
-      ...defaultProps
-    };
-    static getDerivedStateFromProps = (() => (0, _fGetDerivedStateFromProps.fGetDerivedStateFromProps)(updateStateOfAxisMapsOffsetAndStackGroups))();
-    _chartName = (() => chartName)();
-    accessibilityManager = (() => new _AccessibilityManager.AccessibilityManager())();
+  return _CategoricalChartWrapper = class CategoricalChartWrapper extends _uiApi.Component {
     constructor(props) {
       super(props);
+      this._chartName = chartName;
+      this.accessibilityManager = new _AccessibilityManager.AccessibilityManager();
+      this.handleLegendBBoxUpdate = box => {
+        if (box) {
+          const {
+            dataStartIndex,
+            dataEndIndex,
+            updateId
+          } = this.state;
+          this.setState(Object.assign({
+            legendBBox: box
+          }, updateStateOfAxisMapsOffsetAndStackGroups({
+            props: this.props,
+            dataStartIndex,
+            dataEndIndex,
+            updateId
+          }, Object.assign({}, this.state, {
+            legendBBox: box
+          }))));
+        }
+      };
+      this.handleBrushChange = _ref2 => {
+        let {
+          startIndex,
+          endIndex
+        } = _ref2;
+        // Only trigger changes if the extents of the brush have actually changed
+        if (startIndex !== this.state.dataStartIndex || endIndex !== this.state.dataEndIndex) {
+          const {
+            updateId
+          } = this.state;
+          this.setState(() => Object.assign({
+            dataStartIndex: startIndex,
+            dataEndIndex: endIndex
+          }, updateStateOfAxisMapsOffsetAndStackGroups({
+            props: this.props,
+            dataStartIndex: startIndex,
+            dataEndIndex: endIndex,
+            updateId
+          }, this.state)));
+        }
+      };
+      this.handleMouseEnter = e => {
+        const {
+            onMouseEnter
+          } = this.props,
+          mouse = this.getMouseInfo(e);
+        if (mouse) {
+          const nextState = Object.assign({}, mouse, {
+            isTooltipActive: true
+          });
+          this.setState(nextState);
+          if ((0, _isTypeFn.isFn)(onMouseEnter)) {
+            onMouseEnter(nextState, e);
+          }
+        }
+      };
+      this.triggeredAfterMouseMove = e => {
+        const {
+            onMouseMove
+          } = this.props,
+          mouse = this.getMouseInfo(e),
+          nextState = mouse ? Object.assign({}, mouse, {
+            isTooltipActive: true
+          }) : {
+            isTooltipActive: false
+          };
+        this.setState(nextState);
+        if ((0, _isTypeFn.isFn)(onMouseMove)) {
+          onMouseMove(nextState, e);
+        }
+      };
+      this.handleItemMouseEnter = el => {
+        this.setState(() => ({
+          isTooltipActive: true,
+          activeItem: el,
+          activePayload: el.tooltipPayload,
+          activeCoordinate: el.tooltipPosition || {
+            x: el.cx,
+            y: el.cy
+          }
+        }));
+      };
+      this.handleItemMouseLeave = () => {
+        this.setState(() => ({
+          isTooltipActive: false
+        }));
+      };
+      this.handleMouseMove = e => {
+        if (e && (0, _isTypeFn.isFn)(e.persist)) {
+          e.persist();
+        }
+        this.triggeredAfterMouseMove(e);
+      };
+      this.handleMouseLeave = e => {
+        const {
+            onMouseLeave
+          } = this.props,
+          nextState = {
+            isTooltipActive: false
+          };
+        this.setState(nextState);
+        if ((0, _isTypeFn.isFn)(onMouseLeave)) {
+          onMouseLeave(nextState, e);
+        }
+        this.cancelThrottledTriggerAfterMouseMove();
+      };
+      this.handleOuterEvent = e => {
+        const eventName = (0, _ReactUtils.getReactEventByType)(e),
+          event = (0, _FnUtils._getByPropName)(this.props, "" + eventName);
+        if (eventName && (0, _isTypeFn.isFn)(event)) {
+          const mouse = /.*touch.*/i.test(eventName) ? this.getMouseInfo(e.changedTouches[0]) : this.getMouseInfo(e);
+          // handler event case;
+          event(mouse, e);
+        }
+      };
+      this.handleClick = e => {
+        const {
+            onClick
+          } = this.props,
+          mouse = this.getMouseInfo(e);
+        if (mouse) {
+          const nextState = Object.assign({}, mouse, {
+            isTooltipActive: true
+          });
+          this.setState(nextState);
+          if ((0, _isTypeFn.isFn)(onClick)) {
+            onClick(nextState, e);
+          }
+        }
+      };
+      this.handleMouseDown = e => {
+        const {
+          onMouseDown
+        } = this.props;
+        if ((0, _isTypeFn.isFn)(onMouseDown)) {
+          const nextState = this.getMouseInfo(e);
+          onMouseDown(nextState, e);
+        }
+      };
+      this.handleMouseUp = e => {
+        const {
+          onMouseUp
+        } = this.props;
+        if ((0, _isTypeFn.isFn)(onMouseUp)) {
+          const nextState = this.getMouseInfo(e);
+          onMouseUp(nextState, e);
+        }
+      };
+      this.handleTouchMove = e => {
+        if (e.changedTouches != null && e.changedTouches.length > 0) {
+          this.handleMouseMove(e.changedTouches[0]);
+        }
+      };
+      this.handleTouchStart = e => {
+        if (e.changedTouches != null && e.changedTouches.length > 0) {
+          this.handleMouseDown(e.changedTouches[0]);
+        }
+      };
+      this.handleTouchEnd = e => {
+        if (e.changedTouches != null && e.changedTouches.length > 0) {
+          this.handleMouseUp(e.changedTouches[0]);
+        }
+      };
+      this._refLegend = legend => {
+        this.legendInstance = legend;
+      };
+      this._refContainer = node => {
+        this.container = node;
+      };
       this.uniqueChartId = (0, _isTypeFn.isNullOrUndef)(props.id) ? (0, _DataUtils.uniqueId)('recharts') : props.id;
-      this.clipPathId = `${this.uniqueChartId}-clip`;
+      this.clipPathId = this.uniqueChartId + "-clip";
       if (props.throttleDelay) {
         this.triggeredAfterMouseMove = (0, _FnUtils._throttle)(this.triggeredAfterMouseMove, props.throttleDelay);
       }
       this.state = {};
     }
-    handleLegendBBoxUpdate = box => {
-      if (box) {
-        const {
-          dataStartIndex,
-          dataEndIndex,
-          updateId
-        } = this.state;
-        this.setState({
-          legendBBox: box,
-          ...updateStateOfAxisMapsOffsetAndStackGroups({
-            props: this.props,
-            dataStartIndex,
-            dataEndIndex,
-            updateId
-          }, {
-            ...this.state,
-            legendBBox: box
-          })
-        });
-      }
-    };
-    handleBrushChange = _ref2 => {
-      let {
-        startIndex,
-        endIndex
-      } = _ref2;
-      // Only trigger changes if the extents of the brush have actually changed
-      if (startIndex !== this.state.dataStartIndex || endIndex !== this.state.dataEndIndex) {
-        const {
-          updateId
-        } = this.state;
-        this.setState(() => ({
-          dataStartIndex: startIndex,
-          dataEndIndex: endIndex,
-          ...updateStateOfAxisMapsOffsetAndStackGroups({
-            props: this.props,
-            dataStartIndex: startIndex,
-            dataEndIndex: endIndex,
-            updateId
-          }, this.state)
-        }));
-      }
-    };
-    handleMouseEnter = e => {
-      const {
-          onMouseEnter
-        } = this.props,
-        mouse = this.getMouseInfo(e);
-      if (mouse) {
-        const nextState = {
-          ...mouse,
-          isTooltipActive: true
-        };
-        this.setState(nextState);
-        if ((0, _isTypeFn.isFn)(onMouseEnter)) {
-          onMouseEnter(nextState, e);
-        }
-      }
-    };
-    triggeredAfterMouseMove = e => {
-      const {
-          onMouseMove
-        } = this.props,
-        mouse = this.getMouseInfo(e),
-        nextState = mouse ? {
-          ...mouse,
-          isTooltipActive: true
-        } : {
-          isTooltipActive: false
-        };
-      this.setState(nextState);
-      if ((0, _isTypeFn.isFn)(onMouseMove)) {
-        onMouseMove(nextState, e);
-      }
-    };
-    handleItemMouseEnter = el => {
-      this.setState(() => ({
-        isTooltipActive: true,
-        activeItem: el,
-        activePayload: el.tooltipPayload,
-        activeCoordinate: el.tooltipPosition || {
-          x: el.cx,
-          y: el.cy
-        }
-      }));
-    };
-    handleItemMouseLeave = () => {
-      this.setState(() => ({
-        isTooltipActive: false
-      }));
-    };
-    handleMouseMove = e => {
-      if (e && (0, _isTypeFn.isFn)(e.persist)) {
-        e.persist();
-      }
-      this.triggeredAfterMouseMove(e);
-    };
-    handleMouseLeave = e => {
-      const {
-          onMouseLeave
-        } = this.props,
-        nextState = {
-          isTooltipActive: false
-        };
-      this.setState(nextState);
-      if ((0, _isTypeFn.isFn)(onMouseLeave)) {
-        onMouseLeave(nextState, e);
-      }
-      this.cancelThrottledTriggerAfterMouseMove();
-    };
-    handleOuterEvent = e => {
-      const eventName = (0, _ReactUtils.getReactEventByType)(e),
-        event = (0, _FnUtils._getByPropName)(this.props, `${eventName}`);
-      if (eventName && (0, _isTypeFn.isFn)(event)) {
-        const mouse = /.*touch.*/i.test(eventName) ? this.getMouseInfo(e.changedTouches[0]) : this.getMouseInfo(e);
-        // handler event case;
-        event(mouse, e);
-      }
-    };
-    handleClick = e => {
-      const {
-          onClick
-        } = this.props,
-        mouse = this.getMouseInfo(e);
-      if (mouse) {
-        const nextState = {
-          ...mouse,
-          isTooltipActive: true
-        };
-        this.setState(nextState);
-        if ((0, _isTypeFn.isFn)(onClick)) {
-          onClick(nextState, e);
-        }
-      }
-    };
-    handleMouseDown = e => {
-      const {
-        onMouseDown
-      } = this.props;
-      if ((0, _isTypeFn.isFn)(onMouseDown)) {
-        const nextState = this.getMouseInfo(e);
-        onMouseDown(nextState, e);
-      }
-    };
-    handleMouseUp = e => {
-      const {
-        onMouseUp
-      } = this.props;
-      if ((0, _isTypeFn.isFn)(onMouseUp)) {
-        const nextState = this.getMouseInfo(e);
-        onMouseUp(nextState, e);
-      }
-    };
-    handleTouchMove = e => {
-      if (e.changedTouches != null && e.changedTouches.length > 0) {
-        this.handleMouseMove(e.changedTouches[0]);
-      }
-    };
-    handleTouchStart = e => {
-      if (e.changedTouches != null && e.changedTouches.length > 0) {
-        this.handleMouseDown(e.changedTouches[0]);
-      }
-    };
-    handleTouchEnd = e => {
-      if (e.changedTouches != null && e.changedTouches.length > 0) {
-        this.handleMouseUp(e.changedTouches[0]);
-      }
-    };
-    _refLegend = legend => {
-      this.legendInstance = legend;
-    };
-    _refContainer = node => {
-      this.container = node;
-    };
     componentDidMount() {
+      var _this$props$margin$le, _this$props$margin$to;
       this.accessibilityManager.setDetails({
         container: this.container,
         offset: {
-          left: this.props.margin.left ?? 0,
-          top: this.props.margin.top ?? 0
+          left: (_this$props$margin$le = this.props.margin.left) != null ? _this$props$margin$le : 0,
+          top: (_this$props$margin$to = this.props.margin.top) != null ? _this$props$margin$to : 0
         },
         coordinateList: this.state.tooltipTicks,
         mouseHandlerCallback: this.handleMouseMove,
@@ -283,10 +261,11 @@ const generateCategoricalChart = _ref => {
         });
       }
       if (this.props.margin !== prevProps.margin) {
+        var _this$props$margin$le2, _this$props$margin$to2;
         this.accessibilityManager.setDetails({
           offset: {
-            left: this.props.margin.left ?? 0,
-            top: this.props.margin.top ?? 0
+            left: (_this$props$margin$le2 = this.props.margin.left) != null ? _this$props$margin$le2 : 0,
+            top: (_this$props$margin$to2 = this.props.margin.top) != null ? _this$props$margin$to2 : 0
           }
         });
       }
@@ -338,18 +317,14 @@ const generateCategoricalChart = _ref => {
         const yScale = (0, _DataUtils.getAnyElementOfObject)(yAxisMap).scale;
         const xValue = xScale && xScale.invert ? xScale.invert(e.chartX) : null;
         const yValue = yScale && yScale.invert ? yScale.invert(e.chartY) : null;
-        return {
-          ...e,
+        return Object.assign({}, e, {
           xValue,
           yValue
-        };
+        });
       }
       const toolTipData = (0, _generateCategoricalChartFn.getTooltipData)(this.state, this.props.data, this.props.layout, rangeObj);
       if (toolTipData) {
-        return {
-          ...e,
-          ...toolTipData
-        };
+        return Object.assign({}, e, toolTipData);
       }
       return null;
     }
@@ -399,20 +374,20 @@ const generateCategoricalChart = _ref => {
 
       // The "compact" mode is mainly used as the panorama within Brush
       if (compact) {
-        return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, {
-          ...attrs,
+        return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, attrs, {
           width: width,
           height: height,
           title: title,
           desc: desc,
           children: [(0, _renderClipPath.renderClipPath)(this), (0, _ReactUtils.renderByMap)(this, _renderFn.renderMap)]
-        });
+        }));
       }
       if (this.props.accessibilityLayer) {
+        var _, _img;
         // Set tabIndex to 0 by default (can be overwritten)
-        attrs.tabIndex = 0 ?? this.props.tabIndex;
+        attrs.tabIndex = (_ = 0) != null ? _ : this.props.tabIndex;
         // Set role to img by default (can be overwritten)
-        attrs.role = 'img' ?? this.props.role;
+        attrs.role = (_img = 'img') != null ? _img : this.props.role;
         attrs.onKeyDown = e => {
           this.accessibilityManager.keyboardEvent(e);
           // 'onKeyDown' is not currently a supported prop that can be passed through
@@ -425,29 +400,40 @@ const generateCategoricalChart = _ref => {
         };
       }
       const events = this.parseEventsOfWrapper();
-      return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", Object.assign({
         role: "region",
         ref: this._refContainer,
         className: (0, _styleFn.crCn)(_CL.CL_WRAPPER, className),
-        style: {
+        style: Object.assign({
           position: 'relative',
           cursor: 'default',
           width,
-          height,
-          ...style
-        },
-        ...events,
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, {
-          ...attrs,
+          height
+        }, style)
+      }, events, {
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, attrs, {
           width: width,
           height: height,
           title: title,
           desc: desc,
           children: [(0, _renderClipPath.renderClipPath)(this), (0, _ReactUtils.renderByMap)(this, _renderFn.renderMap)]
-        }), (0, _renderLegend.renderLegend)(this, legendContent), (0, _renderTooltip.renderTooltip)(this)]
-      });
+        })), (0, _renderLegend.renderLegend)(this), (0, _renderTooltip.renderTooltip)(this)]
+      }));
     }
-  };
+  }, _CategoricalChartWrapper.displayName = chartName, _CategoricalChartWrapper.defaultProps = Object.assign({
+    layout: 'horizontal',
+    stackOffset: 'none',
+    barCategoryGap: '10%',
+    barGap: 4,
+    margin: {
+      top: 5,
+      right: 5,
+      bottom: 5,
+      left: 5
+    },
+    reverseStackOrder: false,
+    syncMethod: 'index'
+  }, defaultProps), _CategoricalChartWrapper.getDerivedStateFromProps = (0, _fGetDerivedStateFromProps.fGetDerivedStateFromProps)(updateStateOfAxisMapsOffsetAndStackGroups), _CategoricalChartWrapper;
 };
 exports.generateCategoricalChart = generateCategoricalChart;
 //# sourceMappingURL=generateCategoricalChart.js.map
