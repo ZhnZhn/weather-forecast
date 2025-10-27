@@ -73,7 +73,6 @@ export const generateCategoricalChart = ({
   defaultTooltipEventType = 'axis',
   validateTooltipEventTypes = ['axis'],
   axisComponents,
-  //legendContent,
   formatAxisMap,
   defaultProps
 }) => {
@@ -136,23 +135,6 @@ export const generateCategoricalChart = ({
                     updateId
                   }, { ...this.state, legendBBox: box })
                 });
-              }
-            }
-
-            handleBrushChange = ({ startIndex, endIndex }) => {
-              // Only trigger changes if the extents of the brush have actually changed
-              if (startIndex !== this.state.dataStartIndex || endIndex !== this.state.dataEndIndex) {
-                const { updateId } = this.state;
-                this.setState(() => ({
-                  dataStartIndex: startIndex,
-                  dataEndIndex: endIndex,
-                  ...updateStateOfAxisMapsOffsetAndStackGroups({
-                    props: this.props,
-                    dataStartIndex: startIndex,
-                    dataEndIndex: endIndex,
-                    updateId,
-                  }, this.state)
-                }));
               }
             }
 

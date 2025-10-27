@@ -48,7 +48,6 @@ const generateCategoricalChart = _ref => {
     defaultTooltipEventType = 'axis',
     validateTooltipEventTypes = ['axis'],
     axisComponents,
-    //legendContent,
     formatAxisMap,
     defaultProps
   } = _ref;
@@ -75,27 +74,6 @@ const generateCategoricalChart = _ref => {
           }, Object.assign({}, this.state, {
             legendBBox: box
           }))));
-        }
-      };
-      this.handleBrushChange = _ref2 => {
-        let {
-          startIndex,
-          endIndex
-        } = _ref2;
-        // Only trigger changes if the extents of the brush have actually changed
-        if (startIndex !== this.state.dataStartIndex || endIndex !== this.state.dataEndIndex) {
-          const {
-            updateId
-          } = this.state;
-          this.setState(() => Object.assign({
-            dataStartIndex: startIndex,
-            dataEndIndex: endIndex
-          }, updateStateOfAxisMapsOffsetAndStackGroups({
-            props: this.props,
-            dataStartIndex: startIndex,
-            dataEndIndex: endIndex,
-            updateId
-          }, this.state)));
         }
       };
       this.handleMouseEnter = e => {
