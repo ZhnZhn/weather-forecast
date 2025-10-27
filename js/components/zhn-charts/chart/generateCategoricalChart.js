@@ -12,7 +12,6 @@ var _ReactUtils = require("../util/ReactUtils");
 var _DOMUtils = require("../util/DOMUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ChartUtils = require("../util/ChartUtils");
-var _AccessibilityManager = require("./AccessibilityManager");
 var _fUpdateStateOfAxisOffsetAndStackGroups = require("./fUpdateStateOfAxisOffsetAndStackGroups");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _fGetDerivedStateFromProps = require("./fGetDerivedStateFromProps");
@@ -56,7 +55,6 @@ const generateCategoricalChart = _ref => {
     constructor(props) {
       super(props);
       this._chartName = chartName;
-      this.accessibilityManager = new _AccessibilityManager.AccessibilityManager();
       this.handleLegendBBoxUpdate = box => {
         if (box) {
           const {
@@ -211,48 +209,6 @@ const generateCategoricalChart = _ref => {
       }
       this.state = {};
     }
-    componentDidMount() {
-      var _this$props$margin$le, _this$props$margin$to;
-      this.accessibilityManager.setDetails({
-        container: this.container,
-        offset: {
-          left: (_this$props$margin$le = this.props.margin.left) != null ? _this$props$margin$le : 0,
-          top: (_this$props$margin$to = this.props.margin.top) != null ? _this$props$margin$to : 0
-        },
-        coordinateList: this.state.tooltipTicks,
-        mouseHandlerCallback: this.handleMouseMove,
-        layout: this.props.layout
-      });
-    }
-    getSnapshotBeforeUpdate(prevProps, prevState) {
-      if (!this.props.accessibilityLayer) {
-        return null;
-      }
-      if (this.state.tooltipTicks !== prevState.tooltipTicks) {
-        this.accessibilityManager.setDetails({
-          coordinateList: this.state.tooltipTicks
-        });
-      }
-      if (this.props.layout !== prevProps.layout) {
-        this.accessibilityManager.setDetails({
-          layout: this.props.layout
-        });
-      }
-      if (this.props.margin !== prevProps.margin) {
-        var _this$props$margin$le2, _this$props$margin$to2;
-        this.accessibilityManager.setDetails({
-          offset: {
-            left: (_this$props$margin$le2 = this.props.margin.left) != null ? _this$props$margin$le2 : 0,
-            top: (_this$props$margin$to2 = this.props.margin.top) != null ? _this$props$margin$to2 : 0
-          }
-        });
-      }
-      // Something has to be returned for getSnapshotBeforeUpdate
-      return null;
-    }
-    componentDidUpdate(prevProps) {
-      //required for getShapshotBeforeUpdate
-    }
     componentWillUnmount() {
       this.cancelThrottledTriggerAfterMouseMove();
     }
@@ -366,16 +322,6 @@ const generateCategoricalChart = _ref => {
         attrs.tabIndex = (_ = 0) != null ? _ : this.props.tabIndex;
         // Set role to img by default (can be overwritten)
         attrs.role = (_img = 'img') != null ? _img : this.props.role;
-        attrs.onKeyDown = e => {
-          this.accessibilityManager.keyboardEvent(e);
-          // 'onKeyDown' is not currently a supported prop that can be passed through
-          // if it's added, this should be added: this.props.onKeyDown(e);
-        };
-        attrs.onFocus = () => {
-          this.accessibilityManager.focus();
-          // 'onFocus' is not currently a supported prop that can be passed through
-          // if it's added, the focus event should be forwarded to the prop
-        };
       }
       const events = this.parseEventsOfWrapper();
       return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", Object.assign({
