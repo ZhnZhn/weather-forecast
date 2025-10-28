@@ -142,22 +142,7 @@ export const generateCategoricalChart = (
               if (isFn(onMouseMove)) {
                 onMouseMove(nextState, e);
               }
-            };
-
-            handleItemMouseEnter = (el) => {
-              this.setState(() => ({
-                isTooltipActive: true,
-                activeItem: el,
-                activePayload: el.tooltipPayload,
-                activeCoordinate: el.tooltipPosition || { x: el.cx, y: el.cy }
-              }));
-            }
-
-            handleItemMouseLeave = () => {
-              this.setState(() => ({
-                isTooltipActive: false
-              }));
-            }
+            };                        
 
             handleMouseMove = (e) => {
               if (e && isFn(e.persist)) {

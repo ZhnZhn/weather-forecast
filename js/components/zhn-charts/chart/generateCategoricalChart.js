@@ -97,22 +97,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           onMouseMove(nextState, e);
         }
       };
-      this.handleItemMouseEnter = el => {
-        this.setState(() => ({
-          isTooltipActive: true,
-          activeItem: el,
-          activePayload: el.tooltipPayload,
-          activeCoordinate: el.tooltipPosition || {
-            x: el.cx,
-            y: el.cy
-          }
-        }));
-      };
-      this.handleItemMouseLeave = () => {
-        this.setState(() => ({
-          isTooltipActive: false
-        }));
-      };
       this.handleMouseMove = e => {
         if (e && (0, _isTypeFn.isFn)(e.persist)) {
           e.persist();
