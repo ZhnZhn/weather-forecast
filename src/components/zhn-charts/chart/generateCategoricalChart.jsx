@@ -34,11 +34,6 @@ import {
   isLayoutVertical
 } from '../util/ChartUtils';
 
-//import { adaptEventHandlers } from '../util/types';
-
-import {
-  fUpdateStateOfAxisMapsOffsetAndStackGroups
-} from './fUpdateStateOfAxisOffsetAndStackGroups';
 import { getTooltipData } from './generateCategoricalChartFn';
 
 import { fGetDerivedStateFromProps } from './fGetDerivedStateFromProps';
@@ -66,22 +61,12 @@ const _inRange = (
   return null;
 };
 
-export const generateCategoricalChart = ({
+export const generateCategoricalChart = (
   chartName,
-  GraphicalChild,
+  updateStateOfAxisMapsOffsetAndStackGroups,
   defaultTooltipEventType = 'axis',
-  validateTooltipEventTypes = ['axis'],
-  axisComponents,
-  formatAxisMap,
-  defaultProps
-}) => {
-    const updateStateOfAxisMapsOffsetAndStackGroups = fUpdateStateOfAxisMapsOffsetAndStackGroups(
-      chartName,
-      GraphicalChild,
-      axisComponents,
-      formatAxisMap
-    );
-    return class CategoricalChartWrapper extends Component {
+  validateTooltipEventTypes = ['axis']
+) => class CategoricalChartWrapper extends Component {
 
             static displayName = chartName
             // todo join specific chart propTypes
@@ -92,8 +77,7 @@ export const generateCategoricalChart = ({
               barGap: 4,
               margin: { top: 5, right: 5, bottom: 5, left: 5 },
               reverseStackOrder: false,
-              syncMethod: 'index',
-              ...defaultProps
+              syncMethod: 'index'
             }
             static getDerivedStateFromProps = fGetDerivedStateFromProps(updateStateOfAxisMapsOffsetAndStackGroups)
 
@@ -336,17 +320,6 @@ export const generateCategoricalChart = ({
                          onTouchEnd: this.handleTouchEnd,
                        }
                   : {};
-              /*
-              , outerEvents = adaptEventHandlers(
-                 this.props,
-                 this.handleOuterEvent
-              );
-
-              return {
-                  ...outerEvents,
-                  ...tooltipEvents,
-              };
-              */
               return tooltipEvents;
             }
 
@@ -415,4 +388,3 @@ export const generateCategoricalChart = ({
               );
             }
         };
-};

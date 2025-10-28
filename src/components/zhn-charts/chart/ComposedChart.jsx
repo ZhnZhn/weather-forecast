@@ -7,13 +7,20 @@ import { YAxis } from '../cartesian/YAxis';
 import { formatAxisMap } from '../util/CartesianUtils';
 
 import { crAxisComponent } from './chartFn';
+import {
+  fUpdateStateOfAxisMapsOffsetAndStackGroups
+} from './fUpdateStateOfAxisOffsetAndStackGroups';
 
-export const ComposedChart = generateCategoricalChart({
-  chartName: 'ComposedChart',
-  GraphicalChild: [Line, Bar],
-  axisComponents: [
+const chartName = 'ComposedChart';
+export const ComposedChart = generateCategoricalChart(
+  chartName,
+  fUpdateStateOfAxisMapsOffsetAndStackGroups(
+    chartName,
+    [Line, Bar],
+    [
       crAxisComponent('xAxis', XAxis),
       crAxisComponent('yAxis', YAxis)
-  ],
-  formatAxisMap
-});
+    ],
+    formatAxisMap
+  )
+)

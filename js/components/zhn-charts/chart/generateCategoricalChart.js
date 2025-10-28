@@ -12,7 +12,6 @@ var _ReactUtils = require("../util/ReactUtils");
 var _DOMUtils = require("../util/DOMUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ChartUtils = require("../util/ChartUtils");
-var _fUpdateStateOfAxisOffsetAndStackGroups = require("./fUpdateStateOfAxisOffsetAndStackGroups");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _fGetDerivedStateFromProps = require("./fGetDerivedStateFromProps");
 var _renderFn = require("./renderFn");
@@ -21,8 +20,6 @@ var _renderTooltip = require("./renderTooltip");
 var _renderClipPath = require("./renderClipPath");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-//import { adaptEventHandlers } from '../util/types';
-
 const _inRange = (x, y, props, state) => {
   const {
     layout
@@ -39,18 +36,14 @@ const _inRange = (x, y, props, state) => {
   }
   return null;
 };
-const generateCategoricalChart = _ref => {
+const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffsetAndStackGroups, defaultTooltipEventType, validateTooltipEventTypes) {
   var _CategoricalChartWrapper;
-  let {
-    chartName,
-    GraphicalChild,
-    defaultTooltipEventType = 'axis',
-    validateTooltipEventTypes = ['axis'],
-    axisComponents,
-    formatAxisMap,
-    defaultProps
-  } = _ref;
-  const updateStateOfAxisMapsOffsetAndStackGroups = (0, _fUpdateStateOfAxisOffsetAndStackGroups.fUpdateStateOfAxisMapsOffsetAndStackGroups)(chartName, GraphicalChild, axisComponents, formatAxisMap);
+  if (defaultTooltipEventType === void 0) {
+    defaultTooltipEventType = 'axis';
+  }
+  if (validateTooltipEventTypes === void 0) {
+    validateTooltipEventTypes = ['axis'];
+  }
   return _CategoricalChartWrapper = class CategoricalChartWrapper extends _uiApi.Component {
     constructor(props) {
       super(props);
@@ -278,16 +271,6 @@ const generateCategoricalChart = _ref => {
           onTouchStart: this.handleTouchStart,
           onTouchEnd: this.handleTouchEnd
         } : {};
-      /*
-      , outerEvents = adaptEventHandlers(
-         this.props,
-         this.handleOuterEvent
-      );
-        return {
-          ...outerEvents,
-          ...tooltipEvents,
-      };
-      */
       return tooltipEvents;
     }
     render() {
@@ -344,7 +327,7 @@ const generateCategoricalChart = _ref => {
         })), (0, _renderLegend.renderLegend)(this), (0, _renderTooltip.renderTooltip)(this)]
       }));
     }
-  }, _CategoricalChartWrapper.displayName = chartName, _CategoricalChartWrapper.defaultProps = Object.assign({
+  }, _CategoricalChartWrapper.displayName = chartName, _CategoricalChartWrapper.defaultProps = {
     layout: 'horizontal',
     stackOffset: 'none',
     barCategoryGap: '10%',
@@ -357,7 +340,7 @@ const generateCategoricalChart = _ref => {
     },
     reverseStackOrder: false,
     syncMethod: 'index'
-  }, defaultProps), _CategoricalChartWrapper.getDerivedStateFromProps = (0, _fGetDerivedStateFromProps.fGetDerivedStateFromProps)(updateStateOfAxisMapsOffsetAndStackGroups), _CategoricalChartWrapper;
+  }, _CategoricalChartWrapper.getDerivedStateFromProps = (0, _fGetDerivedStateFromProps.fGetDerivedStateFromProps)(updateStateOfAxisMapsOffsetAndStackGroups), _CategoricalChartWrapper;
 };
 exports.generateCategoricalChart = generateCategoricalChart;
 //# sourceMappingURL=generateCategoricalChart.js.map
