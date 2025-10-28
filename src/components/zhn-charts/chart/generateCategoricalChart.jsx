@@ -7,10 +7,7 @@ import {
 import { Component } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
-import {
-  _throttle,
-  _getByPropName
-} from '../util/FnUtils';
+import { _throttle } from '../util/FnUtils';
 
 import { Surface } from '../container/Surface';
 import { Tooltip } from '../component/Tooltip';
@@ -18,7 +15,6 @@ import { Tooltip } from '../component/Tooltip';
 import {
   validateWidthHeight,
   renderByMap,
-  getReactEventByType,
   findChildByType
 } from '../util/ReactUtils';
 import {
@@ -142,7 +138,7 @@ export const generateCategoricalChart = (
               if (isFn(onMouseMove)) {
                 onMouseMove(nextState, e);
               }
-            };                        
+            };
 
             handleMouseMove = (e) => {
               if (e && isFn(e.persist)) {
@@ -159,18 +155,6 @@ export const generateCategoricalChart = (
                 onMouseLeave(nextState, e);
               }
               this.cancelThrottledTriggerAfterMouseMove();
-            }
-
-            handleOuterEvent = (e) => {
-              const eventName = getReactEventByType(e)
-              , event = _getByPropName(this.props, `${eventName}`);
-              if (eventName && isFn(event)) {
-                const mouse = /.*touch.*/i.test(eventName)
-                  ? this.getMouseInfo(e.changedTouches[0])
-                  : this.getMouseInfo(e);
-                // handler event case;
-                event(mouse, e);
-              }
             }
 
             handleClick = (e) => {

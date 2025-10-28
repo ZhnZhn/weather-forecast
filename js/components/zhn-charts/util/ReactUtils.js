@@ -1,13 +1,17 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.findAllByType = findAllByType;
 exports.findChildByType = findChildByType;
-exports.validateWidthHeight = exports.toArray = exports.renderByMap = exports.parseChildIndex = exports.isValidSpreadableProp = exports.isSingleChildEqual = exports.isChildrenEqual = exports.getReactEventByType = exports.getDisplayName = void 0;
+exports.validateWidthHeight = exports.toArray = exports.renderByMap = exports.parseChildIndex = exports.isValidSpreadableProp = exports.isSingleChildEqual = exports.isChildrenEqual = exports.getDisplayName = void 0;
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _ShallowEqual = require("./ShallowEqual");
 var _types = require("./types");
+const _excluded = ["children"],
+  _excluded2 = ["children"];
 const _getElementType = element => {
   const _elementType = element && element.type;
   return _elementType ? _elementType.displayName || _elementType.name : void 0;
@@ -16,27 +20,13 @@ const REACT_ELEMENT_TYPE = Symbol.for('react.element'),
   REACT_FRAGMENT_TYPE = Symbol.for('react.fragment'),
   typeOf = object => typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE ? object.type : void 0,
   isFragment = object => typeOf(object) === REACT_FRAGMENT_TYPE;
-const REACT_BROWSER_EVENT_MAP = {
-  click: 'onClick',
-  mousedown: 'onMouseDown',
-  mouseup: 'onMouseUp',
-  mouseover: 'onMouseOver',
-  mousemove: 'onMouseMove',
-  mouseout: 'onMouseOut',
-  mouseenter: 'onMouseEnter',
-  mouseleave: 'onMouseLeave',
-  touchcancel: 'onTouchCancel',
-  touchend: 'onTouchEnd',
-  touchmove: 'onTouchMove',
-  touchstart: 'onTouchStart'
-};
 
 /**
  * Get the display name of a component
  * @param  {Object} Comp Specified Component
  * @return {String}      Display name of Component
  */
-const getDisplayName = Comp => typeof Comp === 'string' ? Comp : Comp ? Comp.displayName || Comp.name || 'Component' : '';
+const getDisplayName = Comp => (0, _isTypeFn.isStr)(Comp) ? Comp : Comp ? Comp.displayName || Comp.name || 'Component' : '';
 
 // `toArray` gets called multiple times during the render
 // so we can memoize last invocation (since reference to `children` is the same)
@@ -209,25 +199,28 @@ const isSvgElement = (
  */
 exports.validateWidthHeight = validateWidthHeight;
 const isValidSpreadableProp = (property, key, includeEvents, svgElementType) => {
+  var _FilteredElementKeyMa;
   /**
    * If the svg element type is explicitly included, check against the filtered element key map
    * to determine if there are attributes that should only exist on that element type.
    * @todo Add an internal cjs version of https://github.com/wooorm/svg-element-attributes for full coverage.
    */
-  const matchingElementTypeKeys = _types.FilteredElementKeyMap?.[svgElementType] ?? [];
+  const matchingElementTypeKeys = (_FilteredElementKeyMa = _types.FilteredElementKeyMap == null ? void 0 : _types.FilteredElementKeyMap[svgElementType]) != null ? _FilteredElementKeyMa : [];
   return !!(!(0, _isTypeFn.isFn)(property) && (svgElementType && matchingElementTypeKeys.includes(key) || _types.SVGElementPropKeys.includes(key)) || includeEvents && (0, _types.isLikelyOnEventProperty)(key));
 };
 exports.isValidSpreadableProp = isValidSpreadableProp;
 const isSingleChildEqual = (nextChild, prevChild) => {
   if (!(0, _isTypeFn.isNullOrUndef)(nextChild) && !(0, _isTypeFn.isNullOrUndef)(prevChild)) {
-    const {
-        children: nextChildren,
-        ...nextProps
-      } = nextChild.props || {},
+    const _ref = nextChild.props || {},
       {
-        children: prevChildren,
-        ...prevProps
-      } = prevChild.props || {};
+        children: nextChildren
+      } = _ref,
+      nextProps = (0, _objectWithoutPropertiesLoose2.default)(_ref, _excluded),
+      _ref2 = prevChild.props || {},
+      {
+        children: prevChildren
+      } = _ref2,
+      prevProps = (0, _objectWithoutPropertiesLoose2.default)(_ref2, _excluded2);
     return nextChildren && prevChildren ? (0, _ShallowEqual.shallowEqual)(nextProps, prevProps) && isChildrenEqual(nextChildren, prevChildren) : !nextChildren && !prevChildren ? (0, _ShallowEqual.shallowEqual)(nextProps, prevProps) : false;
   }
   return (0, _isTypeFn.isNullOrUndef)(nextChild) && (0, _isTypeFn.isNullOrUndef)(prevChild);
@@ -301,11 +294,6 @@ const renderByMap = (chartInst, renderMap) => {
   return elements;
 };
 exports.renderByMap = renderByMap;
-const getReactEventByType = e => {
-  const type = e && e.type;
-  return (0, _isTypeFn.isStr)(type) && REACT_BROWSER_EVENT_MAP[type] || null;
-};
-exports.getReactEventByType = getReactEventByType;
 const parseChildIndex = (child, children) => toArray(children).indexOf(child);
 exports.parseChildIndex = parseChildIndex;
 //# sourceMappingURL=ReactUtils.js.map

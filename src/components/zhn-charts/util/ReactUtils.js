@@ -36,23 +36,6 @@ const REACT_ELEMENT_TYPE = Symbol.for('react.element')
   object
 ) => typeOf(object) === REACT_FRAGMENT_TYPE;
 
-
-
-const REACT_BROWSER_EVENT_MAP = {
-  click: 'onClick',
-  mousedown: 'onMouseDown',
-  mouseup: 'onMouseUp',
-  mouseover: 'onMouseOver',
-  mousemove: 'onMouseMove',
-  mouseout: 'onMouseOut',
-  mouseenter: 'onMouseEnter',
-  mouseleave: 'onMouseLeave',
-  touchcancel: 'onTouchCancel',
-  touchend: 'onTouchEnd',
-  touchmove: 'onTouchMove',
-  touchstart: 'onTouchStart'
-};
-
 /**
  * Get the display name of a component
  * @param  {Object} Comp Specified Component
@@ -60,7 +43,7 @@ const REACT_BROWSER_EVENT_MAP = {
  */
 export const getDisplayName = (
   Comp
-) => typeof Comp === 'string'
+) => isStr(Comp)
   ? Comp
   : Comp
       ? Comp.displayName || Comp.name || 'Component'
@@ -363,12 +346,6 @@ export const renderByMap = (
     }
   });
   return elements;
-};
-
-export const getReactEventByType = (e) => {
-  const type = e && e.type;
-  return (isStr(type) && REACT_BROWSER_EVENT_MAP[type])
-    || null;
 };
 
 export const parseChildIndex = (

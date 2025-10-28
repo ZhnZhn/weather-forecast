@@ -116,15 +116,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         }
         this.cancelThrottledTriggerAfterMouseMove();
       };
-      this.handleOuterEvent = e => {
-        const eventName = (0, _ReactUtils.getReactEventByType)(e),
-          event = (0, _FnUtils._getByPropName)(this.props, "" + eventName);
-        if (eventName && (0, _isTypeFn.isFn)(event)) {
-          const mouse = /.*touch.*/i.test(eventName) ? this.getMouseInfo(e.changedTouches[0]) : this.getMouseInfo(e);
-          // handler event case;
-          event(mouse, e);
-        }
-      };
       this.handleClick = e => {
         const {
             onClick
