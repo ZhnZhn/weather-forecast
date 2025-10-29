@@ -18,7 +18,6 @@ import { Curve } from '../shape/Curve';
 import {
   isLayoutHorizontal,
   isLayoutVertical,
-  combineEventHandlers,
   getTicksOfAxis
 } from '../util/ChartUtils';
 
@@ -81,8 +80,6 @@ const renderGrid = ({
     } = state
     , xAxis = getAnyElementOfObject(xAxisMap);
 
-    //const yAxisWithFiniteDomain = _find(yAxisMap, axis => _every(axis.domain, isFinit));
-    //const yAxisWithFiniteDomain = _find(yAxisMap, axis => axis.domain.every(isFinit))
     const yAxisWithFiniteDomain = _crArrFromObjByKeys(yAxisMap)
       .find(axis => axis.domain.every(isFinit))
     , yAxis = yAxisWithFiniteDomain || getAnyElementOfObject(yAxisMap)
@@ -212,43 +209,6 @@ const renderYAxis = ({
   );
 };
 
-const renderBrush = ({
-  chartInst,
-  element
-}) => {
-  const {
-    props,
-    state
-  } = chartInst
-  , {
-    margin,
-    data
-  } = props
-  , {
-    offset,
-    dataStartIndex,
-    dataEndIndex,
-    updateId
-  } = state
-  , {
-    props: elementProps
-  } = element || {};
-  // TODO: update brush when children update
-  return cloneUiElement(element, {
-    onChange: combineEventHandlers(chartInst.handleBrushChange, null, element.props.onChange),
-    data,
-    x: _getNumberValue(elementProps.x, offset.left),
-    y: _getNumberValue(
-      elementProps.y,
-      offset.top + offset.height + offset.brushBottom - (margin.bottom || 0)
-    ),
-    width: _getNumberValue(elementProps.width, offset.width),
-    startIndex: dataStartIndex,
-    endIndex: dataEndIndex,
-    updateId: `brush-${updateId}`
-  }, element.key || '_recharts-brush');
-}
-
 const _filterFormatItem = (
   item,
   displayName,
@@ -311,12 +271,12 @@ const renderGraphicChild = ({
       && activeTooltipIndex >= 0
   , itemEvents = tooltipEventType !== 'axis' && tooltipItem && tooltipItem.props.trigger === 'click'
       ? {
-          onClick: combineEventHandlers(chartInst.handleItemMouseEnter, null, element.props.onCLick)
+          onClick: element.props.onClick
         }
       : tooltipEventType !== 'axis'
           ? {
-              onMouseLeave: combineEventHandlers(chartInst.handleItemMouseLeave, null, element.props.onMouseLeave),
-              onMouseEnter: combineEventHandlers(chartInst.handleItemMouseEnter, null, element.props.onMouseEnter),
+              onMouseLeave: element.props.onMouseLeave,
+              onMouseEnter: element.props.onMouseEnter,
             }
           : {}
   , { key, ...itemProps } = item.props
@@ -451,8 +411,7 @@ export const renderMap = {
   ReferenceLine: { handler: renderReferenceElement },
   ReferenceDot: { handler: renderReferenceElement },
   XAxis: { handler: renderXAxis },
-  YAxis: { handler: renderYAxis },
-  Brush: { handler: renderBrush, once: true },
+  YAxis: { handler: renderYAxis },  
   Bar: { handler: renderGraphicChild },
   Line: { handler: renderGraphicChild },
   Area: { handler: renderGraphicChild },
