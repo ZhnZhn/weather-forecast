@@ -5,7 +5,6 @@ exports.generateCategoricalChart = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
-var _FnUtils = require("../util/FnUtils");
 var _Surface = require("../container/Surface");
 var _ClipPath = require("../container/ClipPath");
 var _Tooltip = require("../component/Tooltip");
@@ -82,7 +81,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           }
         }
       };
-      this.triggeredAfterMouseMove = e => {
+      this.handleMouseMove = e => {
         const {
             onMouseMove
           } = this.props,
@@ -97,12 +96,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           onMouseMove(nextState, e);
         }
       };
-      this.handleMouseMove = e => {
-        if (e && (0, _isTypeFn.isFn)(e.persist)) {
-          e.persist();
-        }
-        this.triggeredAfterMouseMove(e);
-      };
       this.handleMouseLeave = e => {
         const {
             onMouseLeave
@@ -114,7 +107,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         if ((0, _isTypeFn.isFn)(onMouseLeave)) {
           onMouseLeave(nextState, e);
         }
-        this.cancelThrottledTriggerAfterMouseMove();
       };
       this.handleClick = e => {
         const {
@@ -170,20 +162,8 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       this._refContainer = node => {
         this.container = node;
       };
-      this.uniqueChartId = (0, _isTypeFn.isNullOrUndef)(props.id) ? (0, _DataUtils.uniqueId)('recharts') : props.id;
-      this.clipPathId = this.uniqueChartId + "-clip";
-      if (props.throttleDelay) {
-        this.triggeredAfterMouseMove = (0, _FnUtils._throttle)(this.triggeredAfterMouseMove, props.throttleDelay);
-      }
+      this.clipPathId = (props.id || (0, _DataUtils.uniqueId)('recharts')) + "-clip";
       this.state = {};
-    }
-    componentWillUnmount() {
-      this.cancelThrottledTriggerAfterMouseMove();
-    }
-    cancelThrottledTriggerAfterMouseMove() {
-      if (typeof this.triggeredAfterMouseMove.cancel === 'function') {
-        this.triggeredAfterMouseMove.cancel();
-      }
     }
     getTooltipEventType() {
       const tooltipItem = (0, _ReactUtils.findChildByType)(this.props.children, _Tooltip.Tooltip);

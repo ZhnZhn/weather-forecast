@@ -1,13 +1,10 @@
 import {
-  isNullOrUndef,
   isBool,
   isFn
 } from '../../../utils/isTypeFn';
 
 import { Component } from '../../uiApi';
 import { crCn } from '../../styleFn';
-
-import { _throttle } from '../util/FnUtils';
 
 import { Surface } from '../container/Surface';
 import { ClipPath } from '../container/ClipPath';
@@ -82,18 +79,7 @@ export const generateCategoricalChart = (
             constructor(props) {
               super(props);
 
-              this.uniqueChartId = isNullOrUndef(props.id)
-                ? uniqueId('recharts')
-                : props.id;
-              this.clipPathId = `${this.uniqueChartId}-clip`;
-
-              if (props.throttleDelay) {
-                this.triggeredAfterMouseMove = _throttle(
-                  this.triggeredAfterMouseMove,
-                  props.throttleDelay
-                );
-              }
-
+              this.clipPathId = `${props.id || uniqueId('recharts')}-clip`;
               this.state = {};
             }
 
@@ -128,7 +114,7 @@ export const generateCategoricalChart = (
               }
             }
 
-            triggeredAfterMouseMove = (e) => {
+            handleMouseMove = (e) => {
               const { onMouseMove } = this.props
               , mouse = this.getMouseInfo(e)
               , nextState = mouse
@@ -138,13 +124,6 @@ export const generateCategoricalChart = (
               if (isFn(onMouseMove)) {
                 onMouseMove(nextState, e);
               }
-            };
-
-            handleMouseMove = (e) => {
-              if (e && isFn(e.persist)) {
-                e.persist();
-              }
-              this.triggeredAfterMouseMove(e);
             }
 
             handleMouseLeave = (e) => {
@@ -154,7 +133,6 @@ export const generateCategoricalChart = (
               if (isFn(onMouseLeave)) {
                 onMouseLeave(nextState, e);
               }
-              this.cancelThrottledTriggerAfterMouseMove();
             }
 
             handleClick = (e) => {
@@ -214,14 +192,6 @@ export const generateCategoricalChart = (
               this.container = node;
             }
 
-            componentWillUnmount() {
-                this.cancelThrottledTriggerAfterMouseMove();
-            }
-            cancelThrottledTriggerAfterMouseMove() {
-                if (typeof this.triggeredAfterMouseMove.cancel === 'function') {
-                    this.triggeredAfterMouseMove.cancel();
-                }
-            }
             getTooltipEventType() {
                 const tooltipItem = findChildByType(this.props.children, Tooltip);
                 if (tooltipItem && isBool(tooltipItem.props.shared)) {
