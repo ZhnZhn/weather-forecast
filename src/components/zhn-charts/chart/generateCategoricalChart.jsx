@@ -1,9 +1,11 @@
 import {
   isBool,
-  isFn
+  isFn,
+  isNotEmptyArr
 } from '../../../utils/isTypeFn';
 
 import { Component } from '../../uiApi';
+import { HAS_TOUCH_EVENTS } from '../../has';
 import { crCn } from '../../styleFn';
 
 import { Surface } from '../container/Surface';
@@ -36,6 +38,12 @@ import { renderLegend } from './renderLegend';
 import { renderTooltip } from './renderTooltip';
 
 import { CL_WRAPPER } from '../CL';
+
+const _getEvtTouch = ({
+  changedTouches
+}) => isNotEmptyArr(changedTouches)
+  ? changedTouches[0]
+  : void 0
 
 const _inRange = (
   x,
@@ -166,21 +174,24 @@ export const generateCategoricalChart = (
               }
             }
 
-            handleTouchMove = (e) => {
-              if (e.changedTouches != null && e.changedTouches.length > 0) {
-                this.handleMouseMove(e.changedTouches[0]);
+            handleTouchMove = (evt) => {
+              const evtTouch = _getEvtTouch(evt);
+              if (evtTouch) {
+                this.handleMouseMove(evtTouch);
               }
             }
 
-            handleTouchStart = (e) => {
-              if (e.changedTouches != null && e.changedTouches.length > 0) {
-                this.handleMouseDown(e.changedTouches[0]);
+            handleTouchStart = (evt) => {
+              const evtTouch = _getEvtTouch(evt);
+              if (evtTouch) {
+                this.handleMouseDown(evtTouch);
               }
             }
 
-            handleTouchEnd = (e) => {
-              if (e.changedTouches != null && e.changedTouches.length > 0) {
-                this.handleMouseUp(e.changedTouches[0]);
+            handleTouchEnd = (evt) => {
+              const evtTouch = _getEvtTouch(evt);
+              if (evtTouch) {
+                this.handleMouseUp(evtTouch);
               }
             }
 
@@ -254,9 +265,11 @@ export const generateCategoricalChart = (
                          onMouseEnter: this.handleMouseEnter,
                          onMouseMove: this.handleMouseMove,
                          onMouseLeave: this.handleMouseLeave,
-                         onTouchMove: this.handleTouchMove,
-                         onTouchStart: this.handleTouchStart,
-                         onTouchEnd: this.handleTouchEnd,
+                         ...HAS_TOUCH_EVENTS ? {
+                           onTouchMove: this.handleTouchMove,
+                           onTouchStart: this.handleTouchStart,
+                           onTouchEnd: this.handleTouchEnd
+                         } : void 0
                        }
                   : {};
               return tooltipEvents;

@@ -4,6 +4,7 @@ exports.__esModule = true;
 exports.generateCategoricalChart = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
+var _has = require("../../has");
 var _styleFn = require("../../styleFn");
 var _Surface = require("../container/Surface");
 var _ClipPath = require("../container/ClipPath");
@@ -19,6 +20,12 @@ var _renderLegend = require("./renderLegend");
 var _renderTooltip = require("./renderTooltip");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
+const _getEvtTouch = _ref => {
+  let {
+    changedTouches
+  } = _ref;
+  return (0, _isTypeFn.isNotEmptyArr)(changedTouches) ? changedTouches[0] : void 0;
+};
 const _inRange = (x, y, props, state) => {
   const {
     layout
@@ -141,19 +148,22 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           onMouseUp(nextState, e);
         }
       };
-      this.handleTouchMove = e => {
-        if (e.changedTouches != null && e.changedTouches.length > 0) {
-          this.handleMouseMove(e.changedTouches[0]);
+      this.handleTouchMove = evt => {
+        const evtTouch = _getEvtTouch(evt);
+        if (evtTouch) {
+          this.handleMouseMove(evtTouch);
         }
       };
-      this.handleTouchStart = e => {
-        if (e.changedTouches != null && e.changedTouches.length > 0) {
-          this.handleMouseDown(e.changedTouches[0]);
+      this.handleTouchStart = evt => {
+        const evtTouch = _getEvtTouch(evt);
+        if (evtTouch) {
+          this.handleMouseDown(evtTouch);
         }
       };
-      this.handleTouchEnd = e => {
-        if (e.changedTouches != null && e.changedTouches.length > 0) {
-          this.handleMouseUp(e.changedTouches[0]);
+      this.handleTouchEnd = evt => {
+        const evtTouch = _getEvtTouch(evt);
+        if (evtTouch) {
+          this.handleMouseUp(evtTouch);
         }
       };
       this._refLegend = legend => {
@@ -218,14 +228,15 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         tooltipItem = (0, _ReactUtils.findChildByType)(children, _Tooltip.Tooltip),
         tooltipEvents = tooltipItem && tooltipEventType === 'axis' ? tooltipItem.props.trigger === 'click' ? {
           onClick: this.handleClick
-        } : {
+        } : Object.assign({
           onMouseEnter: this.handleMouseEnter,
           onMouseMove: this.handleMouseMove,
-          onMouseLeave: this.handleMouseLeave,
+          onMouseLeave: this.handleMouseLeave
+        }, _has.HAS_TOUCH_EVENTS ? {
           onTouchMove: this.handleTouchMove,
           onTouchStart: this.handleTouchStart,
           onTouchEnd: this.handleTouchEnd
-        } : {};
+        } : void 0) : {};
       return tooltipEvents;
     }
     render() {
