@@ -7,6 +7,7 @@ var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _FnUtils = require("../util/FnUtils");
 var _Surface = require("../container/Surface");
+var _ClipPath = require("../container/ClipPath");
 var _Tooltip = require("../component/Tooltip");
 var _ReactUtils = require("../util/ReactUtils");
 var _DOMUtils = require("../util/DOMUtils");
@@ -17,7 +18,6 @@ var _fGetDerivedStateFromProps = require("./fGetDerivedStateFromProps");
 var _renderFn = require("./renderFn");
 var _renderLegend = require("./renderLegend");
 var _renderTooltip = require("./renderTooltip");
-var _renderClipPath = require("./renderClipPath");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 const _inRange = (x, y, props, state) => {
@@ -262,6 +262,9 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           desc
           //...others
         } = this.props,
+        {
+          offset
+        } = this.state,
         attrs = {};
 
       // The "compact" mode is mainly used as the panorama within Brush
@@ -271,7 +274,10 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           height: height,
           title: title,
           desc: desc,
-          children: [(0, _renderClipPath.renderClipPath)(this), (0, _ReactUtils.renderByMap)(this, _renderFn.renderMap)]
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPath.ClipPath, {
+            id: this.clipPathId,
+            offset: offset
+          }), (0, _ReactUtils.renderByMap)(this, _renderFn.renderMap)]
         }));
       }
       if (this.props.accessibilityLayer) {
@@ -298,7 +304,10 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           height: height,
           title: title,
           desc: desc,
-          children: [(0, _renderClipPath.renderClipPath)(this), (0, _ReactUtils.renderByMap)(this, _renderFn.renderMap)]
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPath.ClipPath, {
+            id: this.clipPathId,
+            offset: offset
+          }), (0, _ReactUtils.renderByMap)(this, _renderFn.renderMap)]
         })), (0, _renderLegend.renderLegend)(this), (0, _renderTooltip.renderTooltip)(this)]
       }));
     }

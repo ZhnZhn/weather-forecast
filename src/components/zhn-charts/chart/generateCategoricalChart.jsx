@@ -10,6 +10,7 @@ import { crCn } from '../../styleFn';
 import { _throttle } from '../util/FnUtils';
 
 import { Surface } from '../container/Surface';
+import { ClipPath } from '../container/ClipPath';
 import { Tooltip } from '../component/Tooltip';
 
 import {
@@ -36,7 +37,6 @@ import { fGetDerivedStateFromProps } from './fGetDerivedStateFromProps';
 import { renderMap } from './renderFn';
 import { renderLegend } from './renderLegend';
 import { renderTooltip } from './renderTooltip';
-import { renderClipPath } from './renderClipPath';
 
 import { CL_WRAPPER } from '../CL';
 
@@ -307,6 +307,7 @@ export const generateCategoricalChart = (
                 desc,
                 //...others
               } = this.props
+              , { offset } = this.state
               , attrs = {};
 
 
@@ -314,7 +315,7 @@ export const generateCategoricalChart = (
               if (compact) {
                 return (
                   <Surface {...attrs} width={width} height={height} title={title} desc={desc}>
-                     {renderClipPath(this)}
+                     <ClipPath id={this.clipPathId} offset={offset} />
                      {renderByMap(this, renderMap)}
                   </Surface>
                 );
@@ -348,7 +349,7 @@ export const generateCategoricalChart = (
                      title={title}
                      desc={desc}
                   >
-                    {renderClipPath(this)}
+                    <ClipPath id={this.clipPathId} offset={offset} />
                     {renderByMap(this, renderMap)}
                   </Surface>
                   {renderLegend(this)}
