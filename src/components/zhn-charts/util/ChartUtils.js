@@ -570,37 +570,6 @@ export const getTicksOfAxis = (
   }));
 };
 
-/**
- * combine the handlers
- * @param  {Function} defaultHandler Internal private handler
- * @param  {Function} parentHandler  Handler function specified in parent component
- * @param  {Function} childHandler   Handler function specified in child component
- * @return {Function}                The combined handler
- */
-export const combineEventHandlers = (
-  defaultHandler,
-  parentHandler,
-  childHandler
-) => {
-  let customizedHandler;
-  if (isFn(childHandler)) {
-    customizedHandler = childHandler;
-  } else if (isFn(parentHandler)) {
-    customizedHandler = parentHandler;
-  }
-  if (isFn(defaultHandler) || customizedHandler) {
-    return (arg1, arg2, arg3, arg4) => {
-      if (isFn(defaultHandler)) {
-        defaultHandler(arg1, arg2, arg3, arg4);
-      }
-      if (isFn(customizedHandler)) {
-        customizedHandler(arg1, arg2, arg3, arg4);
-      }
-    };
-  }
-  return null;
-};
-
 const _crScaleBand = () => ({
   scale: scaleBand(),
   realScaleType: 'band'

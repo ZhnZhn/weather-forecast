@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarSizeList = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.combineEventHandlers = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
+exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarSizeList = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
 exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
@@ -472,35 +472,7 @@ const getTicksOfAxis = (axis, isGrid, isAll) => {
     offset
   }));
 };
-
-/**
- * combine the handlers
- * @param  {Function} defaultHandler Internal private handler
- * @param  {Function} parentHandler  Handler function specified in parent component
- * @param  {Function} childHandler   Handler function specified in child component
- * @return {Function}                The combined handler
- */
 exports.getTicksOfAxis = getTicksOfAxis;
-const combineEventHandlers = (defaultHandler, parentHandler, childHandler) => {
-  let customizedHandler;
-  if ((0, _isTypeFn.isFn)(childHandler)) {
-    customizedHandler = childHandler;
-  } else if ((0, _isTypeFn.isFn)(parentHandler)) {
-    customizedHandler = parentHandler;
-  }
-  if ((0, _isTypeFn.isFn)(defaultHandler) || customizedHandler) {
-    return (arg1, arg2, arg3, arg4) => {
-      if ((0, _isTypeFn.isFn)(defaultHandler)) {
-        defaultHandler(arg1, arg2, arg3, arg4);
-      }
-      if ((0, _isTypeFn.isFn)(customizedHandler)) {
-        customizedHandler(arg1, arg2, arg3, arg4);
-      }
-    };
-  }
-  return null;
-};
-exports.combineEventHandlers = combineEventHandlers;
 const _crScaleBand = () => ({
   scale: (0, _d3Scale.scaleBand)(),
   realScaleType: 'band'
