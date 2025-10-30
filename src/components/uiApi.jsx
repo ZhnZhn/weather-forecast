@@ -144,6 +144,11 @@ export const stopDefaultFor = (evt) => {
   evt.preventDefault()
 }
 
+export const fStopDefaultFor = onEvent => evt => {
+  stopDefaultFor(evt)
+  onEvent()
+}
+
 const _getFirstTouches = (
   touches
 ) => (touches && touches[0]) || {};
