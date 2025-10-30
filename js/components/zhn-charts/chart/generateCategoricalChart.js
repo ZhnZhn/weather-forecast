@@ -179,9 +179,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       return tooltipData ? Object.assign({}, e, tooltipData) : null;
     }
     render() {
-      if (!(0, _ReactUtils.validateWidthHeight)(this)) {
-        return null;
-      }
       const {
           className,
           width,
@@ -199,6 +196,9 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           tabIndex: 0,
           role: 'img'
         };
+      if (!(0, _ReactUtils.validateWidthHeight)(width, height)) {
+        return null;
+      }
 
       // The "compact" mode is mainly used as the panorama within Brush
       if (compact) {

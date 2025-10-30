@@ -46,28 +46,28 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
         dataKey,
         maxBarSize: childMaxBarSize
       } = item.props,
-      numericAxisId = item.props[`${numericAxisName}Id`],
-      cateAxisId = item.props[`${cateAxisName}Id`];
+      numericAxisId = item.props[numericAxisName + "Id"],
+      cateAxisId = item.props[cateAxisName + "Id"];
     const axisObj = axisComponents.reduce((result, entry) => {
-      const axisMap = currentState[`${entry.axisType}Map`],
-        id = item.props[`${entry.axisType}Id`] || DF_AXIS_ID,
+      const axisMap = currentState[entry.axisType + "Map"],
+        id = item.props[entry.axisType + "Id"] || DF_AXIS_ID,
         axis = axisMap && axisMap[id];
-      return {
-        ...result,
+      return Object.assign({}, result, {
         [entry.axisType]: axis,
-        [`${entry.axisType}Ticks`]: (0, _ChartUtils.getTicksOfAxis)(axis)
-      };
+        [entry.axisType + "Ticks"]: (0, _ChartUtils.getTicksOfAxis)(axis)
+      });
     }, {});
     const cateAxis = axisObj[cateAxisName],
-      cateTicks = axisObj[`${cateAxisName}Ticks`],
+      cateTicks = axisObj[cateAxisName + "Ticks"],
       stackedData = stackGroups && stackGroups[numericAxisId] && stackGroups[numericAxisId].hasStack && (0, _ChartUtils.getStackedDataOfItem)(item, stackGroups[numericAxisId].stackGroups),
       itemIsBar = (0, _ReactUtils.getDisplayName)(item.type).indexOf('Bar') >= 0,
       bandSize = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks);
     let barPosition = [];
     if (itemIsBar) {
+      var _ref, _getBandSizeOfAxis;
       // ???bar,??bar???
       const maxBarSize = (0, _isTypeFn.isNullOrUndef)(childMaxBarSize) ? globalMaxBarSize : childMaxBarSize,
-        barBandSize = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks, true) ?? maxBarSize ?? 0;
+        barBandSize = (_ref = (_getBandSizeOfAxis = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks, true)) != null ? _getBandSizeOfAxis : maxBarSize) != null ? _ref : 0;
       barPosition = (0, _ChartUtils.getBarPosition)({
         barGap,
         barCategoryGap,
@@ -76,38 +76,34 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
         maxBarSize
       });
       if (barBandSize !== bandSize) {
-        barPosition = barPosition.map(pos => ({
-          ...pos,
-          position: {
-            ...pos.position,
+        barPosition = barPosition.map(pos => Object.assign({}, pos, {
+          position: Object.assign({}, pos.position, {
             offset: pos.position.offset - barBandSize / 2
-          }
+          })
         }));
       }
     }
     const composedFn = item && item.type && item.type.getComposedData;
     if (composedFn) {
       formattedItems.push({
-        props: {
-          ...composedFn({
-            ...axisObj,
-            displayedData,
-            props,
-            dataKey,
-            item,
-            bandSize,
-            barPosition,
-            offset,
-            stackedData,
-            layout,
-            dataStartIndex,
-            dataEndIndex
-          }),
-          key: item.key || `item-${index}`,
+        props: Object.assign({}, composedFn(Object.assign({}, axisObj, {
+          displayedData,
+          props,
+          dataKey,
+          item,
+          bandSize,
+          barPosition,
+          offset,
+          stackedData,
+          layout,
+          dataStartIndex,
+          dataEndIndex
+        })), {
+          key: item.key || "item-" + index,
           [numericAxisName]: axisObj[numericAxisName],
           [cateAxisName]: axisObj[cateAxisName],
           animationId: updateId
-        },
+        }),
         childIndex: (0, _ReactUtils.parseChildIndex)(item, props.children),
         item
       });
@@ -132,16 +128,14 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
  */
 const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, axisComponents, formatAxisMap) => {
   const getFormatItems = fGetFormatItems(axisComponents);
-  return (_ref, prevState) => {
+  return (_ref2, prevState) => {
     let {
       props,
       dataStartIndex,
       dataEndIndex,
       updateId
-    } = _ref;
-    if (!(0, _ReactUtils.validateWidthHeight)({
-      props
-    })) {
+    } = _ref2;
+    if (!(0, _ReactUtils.validateWidthHeight)(props.width, props.height)) {
       return null;
     }
     const {
@@ -156,47 +150,41 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
         cateAxisName
       } = (0, _generateCategoricalChartFn.getAxisNameByLayout)(layout),
       graphicalItems = (0, _ReactUtils.findAllByType)(children, GraphicalChild),
-      stackGroups = (0, _ChartUtils.getStackGroupsByAxisId)(data, graphicalItems, `${numericAxisName}Id`, `${cateAxisName}Id`, stackOffset, reverseStackOrder),
+      stackGroups = (0, _ChartUtils.getStackGroupsByAxisId)(data, graphicalItems, numericAxisName + "Id", cateAxisName + "Id", stackOffset, reverseStackOrder),
       axisObj = axisComponents.reduce((result, entry) => {
-        const name = `${entry.axisType}Map`;
-        return {
-          ...result,
-          [name]: (0, _getAxisMap.getAxisMap)(props, {
-            ...entry,
+        const name = entry.axisType + "Map";
+        return Object.assign({}, result, {
+          [name]: (0, _getAxisMap.getAxisMap)(props, Object.assign({}, entry, {
             graphicalItems,
             stackGroups: entry.axisType === numericAxisName && stackGroups,
             dataStartIndex,
             dataEndIndex
-          })
-        };
+          }))
+        });
       }, {});
-    const offset = (0, _calculateOffset.calculateOffset)({
-      ...axisObj,
+    const offset = (0, _calculateOffset.calculateOffset)(Object.assign({}, axisObj, {
       props,
       graphicalItems
-    }, prevState?.legendBBox);
+    }), prevState == null ? void 0 : prevState.legendBBox);
     _getObjectKeys(axisObj).forEach(key => {
       axisObj[key] = formatAxisMap(props, axisObj[key], offset, key.replace('Map', ''), chartName);
     });
-    const cateAxisMap = axisObj[`${cateAxisName}Map`],
+    const cateAxisMap = axisObj[cateAxisName + "Map"],
       ticksObj = (0, _generateCategoricalChartFn.tooltipTicksGenerator)(cateAxisMap),
-      formattedGraphicalItems = getFormatItems(props, {
-        ...axisObj,
+      formattedGraphicalItems = getFormatItems(props, Object.assign({}, axisObj, {
         dataStartIndex,
         dataEndIndex,
         updateId,
         graphicalItems,
         stackGroups,
         offset
-      });
-    return {
+      }));
+    return Object.assign({
       formattedGraphicalItems,
       graphicalItems,
       offset,
-      stackGroups,
-      ...ticksObj,
-      ...axisObj
-    };
+      stackGroups
+    }, ticksObj, axisObj);
   };
 };
 exports.fUpdateStateOfAxisMapsOffsetAndStackGroups = fUpdateStateOfAxisMapsOffsetAndStackGroups;

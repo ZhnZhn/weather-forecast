@@ -173,7 +173,7 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
     updateId },
     prevState
   ) => {
-    if (!validateWidthHeight({ props })) {
+    if (!validateWidthHeight(props.width, props.height)) {
       return null;
     }
     const {

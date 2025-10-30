@@ -190,7 +190,7 @@ export const generateCategoricalChart = (
                 this.handleMouseUp(evtTouch);
               }
             }
-            
+
             /**
              * Get the information of mouse in chart, return null when the mouse is not in the chart
              * @param  {Object} evt    The event object
@@ -228,10 +228,6 @@ export const generateCategoricalChart = (
             }
 
             render() {
-              if (!validateWidthHeight(this)) {
-                return null;
-              }
-
               const {
                 className,
                 width,
@@ -248,6 +244,9 @@ export const generateCategoricalChart = (
                 role: 'img'
               };
 
+              if (!validateWidthHeight(width, height)) {
+                return null;
+              }
 
               // The "compact" mode is mainly used as the panorama within Brush
               if (compact) {

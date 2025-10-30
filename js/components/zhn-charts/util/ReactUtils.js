@@ -82,16 +82,7 @@ function findChildByType(children, type) {
  * @param  {Object} el A chart element
  * @return {Boolean}   true If the props width and height are number, and greater than 0
  */
-const validateWidthHeight = el => {
-  if (!el || !el.props) {
-    return false;
-  }
-  const {
-    width,
-    height
-  } = el.props;
-  return !(0, _isTypeFn.isNumber)(width) || width <= 0 || !(0, _isTypeFn.isNumber)(height) || height <= 0 ? false : true;
-};
+const validateWidthHeight = (width, height) => !(0, _isTypeFn.isNumber)(width) || width <= 0 || !(0, _isTypeFn.isNumber)(height) || height <= 0 ? false : true;
 
 /*
 const SVG_TAGS = [
