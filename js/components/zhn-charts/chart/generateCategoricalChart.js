@@ -26,34 +26,18 @@ const _getEvtTouch = _ref => {
   } = _ref;
   return (0, _isTypeFn.isNotEmptyArr)(changedTouches) ? changedTouches[0] : void 0;
 };
-const _inRange = (x, y, props, state) => {
-  const {
-    layout
-  } = props;
-  if ((0, _ChartUtils.isLayoutHorizontal)(layout) || (0, _ChartUtils.isLayoutVertical)(layout)) {
-    const {
-        offset
-      } = state,
-      isInRange = x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height;
-    return isInRange ? {
-      x,
-      y
-    } : null;
-  }
-  return null;
-};
-const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffsetAndStackGroups, defaultTooltipEventType, validateTooltipEventTypes) {
+const _inRange = (x, y, layout, offset) => (0, _ChartUtils.isLayoutHorizontal)(layout) || (0, _ChartUtils.isLayoutVertical)(layout) ? x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height ? {
+  x,
+  y
+} : null : null;
+const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffsetAndStackGroups, validateTooltipEventTypes) {
   var _CategoricalChartWrapper;
-  if (defaultTooltipEventType === void 0) {
-    defaultTooltipEventType = 'axis';
-  }
   if (validateTooltipEventTypes === void 0) {
     validateTooltipEventTypes = ['axis'];
   }
   return _CategoricalChartWrapper = class CategoricalChartWrapper extends _uiApi.Component {
     constructor(props) {
       super(props);
-      this._chartName = chartName;
       this.handleLegendBBoxUpdate = box => {
         if (box) {
           const {
@@ -115,6 +99,11 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           onMouseLeave(nextState, e);
         }
       };
+      this.handleCloseTooltip = () => {
+        this.setState({
+          isTooltipActive: false
+        });
+      };
       this.handleClick = e => {
         const {
             onClick
@@ -175,69 +164,40 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       this.clipPathId = (props.id || (0, _DataUtils.uniqueId)('recharts')) + "-clip";
       this.state = {};
     }
-    getTooltipEventType() {
-      const tooltipItem = (0, _ReactUtils.findChildByType)(this.props.children, _Tooltip.Tooltip);
-      if (tooltipItem && (0, _isTypeFn.isBool)(tooltipItem.props.shared)) {
-        const eventType = tooltipItem.props.shared ? 'axis' : 'item';
-        return validateTooltipEventTypes.indexOf(eventType) >= 0 ? eventType : defaultTooltipEventType;
-      }
-      return defaultTooltipEventType;
-    }
-
     /**
      * Get the information of mouse in chart, return null when the mouse is not in the chart
-     * @param  {Object} event    The event object
+     * @param  {Object} evt    The event object
      * @return {Object}          Mouse data
      */
-    getMouseInfo(event) {
+    getMouseInfo(evt) {
       if (!this.container) {
         return null;
       }
       const containerOffset = (0, _DOMUtils.getOffset)(this.container),
-        e = (0, _DOMUtils.calculateChartCoordinate)(event, containerOffset),
-        rangeObj = _inRange(e.chartX, e.chartY, this.props, this.state);
+        e = (0, _DOMUtils.calculateChartCoordinate)(evt, containerOffset),
+        rangeObj = _inRange(e.chartX, e.chartY, this.props.layout, this.state.offset);
       if (!rangeObj) {
         return null;
       }
-      const {
-        xAxisMap,
-        yAxisMap
-      } = this.state;
-      const tooltipEventType = this.getTooltipEventType();
-      if (tooltipEventType !== 'axis' && xAxisMap && yAxisMap) {
-        const xScale = (0, _DataUtils.getAnyElementOfObject)(xAxisMap).scale;
-        const yScale = (0, _DataUtils.getAnyElementOfObject)(yAxisMap).scale;
-        const xValue = xScale && xScale.invert ? xScale.invert(e.chartX) : null;
-        const yValue = yScale && yScale.invert ? yScale.invert(e.chartY) : null;
-        return Object.assign({}, e, {
-          xValue,
-          yValue
-        });
-      }
-      const toolTipData = (0, _generateCategoricalChartFn.getTooltipData)(this.state, this.props.data, this.props.layout, rangeObj);
-      if (toolTipData) {
-        return Object.assign({}, e, toolTipData);
-      }
-      return null;
+      const tooltipData = (0, _generateCategoricalChartFn.getTooltipData)(this.state, this.props.data, this.props.layout, rangeObj);
+      return tooltipData ? Object.assign({}, e, tooltipData) : null;
     }
     parseEventsOfWrapper() {
       const {
           children
         } = this.props,
-        tooltipEventType = this.getTooltipEventType(),
-        tooltipItem = (0, _ReactUtils.findChildByType)(children, _Tooltip.Tooltip),
-        tooltipEvents = tooltipItem && tooltipEventType === 'axis' ? tooltipItem.props.trigger === 'click' ? {
-          onClick: this.handleClick
-        } : Object.assign({
-          onMouseEnter: this.handleMouseEnter,
-          onMouseMove: this.handleMouseMove,
-          onMouseLeave: this.handleMouseLeave
-        }, _has.HAS_TOUCH_EVENTS ? {
-          onTouchMove: this.handleTouchMove,
-          onTouchStart: this.handleTouchStart,
-          onTouchEnd: this.handleTouchEnd
-        } : void 0) : {};
-      return tooltipEvents;
+        tooltipItem = (0, _ReactUtils.findChildByType)(children, _Tooltip.Tooltip);
+      return tooltipItem ? tooltipItem.props.trigger === 'click' ? {
+        onClick: this.handleClick
+      } : Object.assign({
+        onMouseEnter: this.handleMouseEnter,
+        onMouseMove: this.handleMouseMove,
+        onMouseLeave: this.handleMouseLeave
+      }, _has.HAS_TOUCH_EVENTS ? {
+        onTouchMove: this.handleTouchMove,
+        onTouchStart: this.handleTouchStart,
+        onTouchEnd: this.handleTouchEnd
+      } : void 0) : {};
     }
     render() {
       if (!(0, _ReactUtils.validateWidthHeight)(this)) {

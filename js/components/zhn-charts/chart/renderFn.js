@@ -177,8 +177,7 @@ const renderGraphicChild = _ref5 => {
   if (!item) {
     return null;
   }
-  const tooltipEventType = chartInst.getTooltipEventType(),
-    {
+  const {
       isTooltipActive,
       tooltipAxis,
       activeTooltipIndex,
@@ -198,18 +197,12 @@ const renderGraphicChild = _ref5 => {
       hide
     } = item.item.props,
     hasActive = !hide && isTooltipActive && tooltipItem && activeDot && activeTooltipIndex >= 0,
-    itemEvents = tooltipEventType !== 'axis' && tooltipItem && tooltipItem.props.trigger === 'click' ? {
-      onClick: element.props.onClick
-    } : tooltipEventType !== 'axis' ? {
-      onMouseLeave: element.props.onMouseLeave,
-      onMouseEnter: element.props.onMouseEnter
-    } : {},
     _item$props = item.props,
     {
       key
     } = _item$props,
     itemProps = (0, _objectWithoutPropertiesLoose2.default)(_item$props, _excluded),
-    graphicalItem = (0, _uiApi.cloneUiElement)(element, Object.assign({}, itemProps, itemEvents), key);
+    graphicalItem = (0, _uiApi.cloneUiElement)(element, Object.assign({}, itemProps), key);
   function findWithPayload(entry) {
     return (0, _isTypeFn.isFn)(tooltipAxis.dataKey) ? tooltipAxis.dataKey(entry.payload) : null;
   }
@@ -271,8 +264,7 @@ const renderCursor = _ref6 => {
   } = _ref6;
   const {
       props,
-      state,
-      _chartName
+      state
     } = chartInst,
     {
       isTooltipActive,
@@ -281,9 +273,8 @@ const renderCursor = _ref6 => {
       offset,
       activeTooltipIndex
     } = state,
-    tooltipEventType = chartInst.getTooltipEventType(),
     _elementPropsCursor = ((element || {}).props || {}).cursor;
-  if (!_elementPropsCursor || !isTooltipActive || !activeCoordinate || _chartName !== 'ScatterChart' && tooltipEventType !== 'axis') {
+  if (!_elementPropsCursor || !isTooltipActive || !activeCoordinate) {
     return null;
   }
   const restProps = {

@@ -1,5 +1,4 @@
 import {
-  isBool,
   isFn,
   isNotEmptyArr
 } from '../../../utils/isTypeFn';
@@ -22,8 +21,7 @@ import {
   getOffset
 } from '../util/DOMUtils';
 import {
-  uniqueId,
-  getAnyElementOfObject,
+  uniqueId
 } from '../util/DataUtils';
 import {
   isLayoutHorizontal,
@@ -48,29 +46,20 @@ const _getEvtTouch = ({
 const _inRange = (
   x,
   y,
-  props,
-  state
-) =>  {
-  const { layout } = props;
-  if (isLayoutHorizontal(layout) || isLayoutVertical(layout)) {
-    const { offset } = state
-    , isInRange = x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height;
-    return isInRange
-      ? { x, y }
-      : null;
-  }
-  return null;
-};
+  layout,
+  offset
+) => isLayoutHorizontal(layout) || isLayoutVertical(layout)
+  ? x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height
+    ? { x, y }
+    : null
+  : null;
 
 export const generateCategoricalChart = (
   chartName,
   updateStateOfAxisMapsOffsetAndStackGroups,
-  defaultTooltipEventType = 'axis',
   validateTooltipEventTypes = ['axis']
 ) => class CategoricalChartWrapper extends Component {
-
             static displayName = chartName
-            // todo join specific chart propTypes
             static defaultProps = {
               layout: 'horizontal',
               stackOffset: 'none',
@@ -81,8 +70,6 @@ export const generateCategoricalChart = (
               syncMethod: 'index'
             }
             static getDerivedStateFromProps = fGetDerivedStateFromProps(updateStateOfAxisMapsOffsetAndStackGroups)
-
-            _chartName = chartName;
 
             constructor(props) {
               super(props);
@@ -141,6 +128,10 @@ export const generateCategoricalChart = (
               if (isFn(onMouseLeave)) {
                 onMouseLeave(nextState, e);
               }
+            }
+
+            handleCloseTooltip = () => {
+              this.setState({ isTooltipActive: false });
             }
 
             handleClick = (e) => {
@@ -203,76 +194,60 @@ export const generateCategoricalChart = (
               this.container = node;
             }
 
-            getTooltipEventType() {
-                const tooltipItem = findChildByType(this.props.children, Tooltip);
-                if (tooltipItem && isBool(tooltipItem.props.shared)) {
-                    const eventType = tooltipItem.props.shared ? 'axis' : 'item';
-                    return validateTooltipEventTypes.indexOf(eventType) >= 0 ? eventType : defaultTooltipEventType;
-                }
-                return defaultTooltipEventType;
-            }
-
             /**
              * Get the information of mouse in chart, return null when the mouse is not in the chart
-             * @param  {Object} event    The event object
+             * @param  {Object} evt    The event object
              * @return {Object}          Mouse data
              */
-            getMouseInfo(event) {
+            getMouseInfo(evt) {
                 if (!this.container) {
                   return null;
                 }
                 const containerOffset = getOffset(this.container)
-                , e = calculateChartCoordinate(event, containerOffset)
+                , e = calculateChartCoordinate(evt, containerOffset)
                 , rangeObj = _inRange(
                    e.chartX,
                    e.chartY,
-                   this.props,
-                   this.state
+                   this.props.layout,
+                   this.state.offset
                 );
                 if (!rangeObj) {
-                    return null;
+                  return null;
                 }
 
-                const { xAxisMap, yAxisMap } = this.state;
-                const tooltipEventType = this.getTooltipEventType();
-                if (tooltipEventType !== 'axis' && xAxisMap && yAxisMap) {
-                    const xScale = getAnyElementOfObject(xAxisMap).scale;
-                    const yScale = getAnyElementOfObject(yAxisMap).scale;
-                    const xValue = xScale && xScale.invert ? xScale.invert(e.chartX) : null;
-                    const yValue = yScale && yScale.invert ? yScale.invert(e.chartY) : null;
-                    return { ...e, xValue, yValue };
-                }
-                const toolTipData = getTooltipData(this.state, this.props.data, this.props.layout, rangeObj);
-                if (toolTipData) {
-                    return {
-                        ...e,
-                        ...toolTipData,
-                    };
-                }
-                return null;
+                const tooltipData = getTooltipData(
+                  this.state,
+                  this.props.data,
+                  this.props.layout,
+                  rangeObj
+                );
+                return tooltipData
+                  ? {
+                      ...e,
+                      ...tooltipData
+                    }
+                  : null;
             }
 
             parseEventsOfWrapper() {
               const {
                 children
               } = this.props
-              , tooltipEventType = this.getTooltipEventType()
               , tooltipItem = findChildByType(children, Tooltip)
-              , tooltipEvents = tooltipItem && tooltipEventType === 'axis'
-                 ? tooltipItem.props.trigger === 'click'
-                     ? { onClick: this.handleClick }
-                     : {
-                         onMouseEnter: this.handleMouseEnter,
-                         onMouseMove: this.handleMouseMove,
-                         onMouseLeave: this.handleMouseLeave,
-                         ...HAS_TOUCH_EVENTS ? {
-                           onTouchMove: this.handleTouchMove,
-                           onTouchStart: this.handleTouchStart,
-                           onTouchEnd: this.handleTouchEnd
-                         } : void 0
-                       }
-                  : {};
-              return tooltipEvents;
+              return tooltipItem
+                ? tooltipItem.props.trigger === 'click'
+                   ? { onClick: this.handleClick }
+                   : {
+                       onMouseEnter: this.handleMouseEnter,
+                       onMouseMove: this.handleMouseMove,
+                       onMouseLeave: this.handleMouseLeave,
+                       ...HAS_TOUCH_EVENTS ? {
+                         onTouchMove: this.handleTouchMove,
+                         onTouchStart: this.handleTouchStart,
+                         onTouchEnd: this.handleTouchEnd
+                       } : void 0
+                     }
+                : {};
             }
 
             render() {

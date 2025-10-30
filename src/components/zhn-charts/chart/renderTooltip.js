@@ -25,10 +25,15 @@ export const renderTooltip = (
     offset
   } = state;
   return cloneUiElement(tooltipItem, {
-    viewBox: { ...offset, x: offset.left, y: offset.top },
+    viewBox: {
+      ...offset,
+      x: offset.left,
+      y: offset.top
+    },
     active: isTooltipActive,
     label: activeLabel,
     payload: isTooltipActive ? activePayload : [],
-    coordinate: activeCoordinate
+    coordinate: activeCoordinate,
+    onClose: chartInst.handleCloseTooltip
   });
 }

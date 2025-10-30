@@ -246,8 +246,7 @@ const renderGraphicChild = ({
     return null;
   }
 
-  const tooltipEventType = chartInst.getTooltipEventType()
-  , {
+  const {
     isTooltipActive,
     tooltipAxis,
     activeTooltipIndex,
@@ -269,21 +268,10 @@ const renderGraphicChild = ({
       && tooltipItem
       && activeDot
       && activeTooltipIndex >= 0
-  , itemEvents = tooltipEventType !== 'axis' && tooltipItem && tooltipItem.props.trigger === 'click'
-      ? {
-          onClick: element.props.onClick
-        }
-      : tooltipEventType !== 'axis'
-          ? {
-              onMouseLeave: element.props.onMouseLeave,
-              onMouseEnter: element.props.onMouseEnter,
-            }
-          : {}
   , { key, ...itemProps } = item.props
   , graphicalItem = cloneUiElement(
       element, {
-      ...itemProps,
-      ...itemEvents
+      ...itemProps
     }, key);
 
   function findWithPayload(entry) {
@@ -362,7 +350,6 @@ const renderCursor = ({
   const {
     props,
     state,
-    _chartName
   } = chartInst
   , {
     isTooltipActive,
@@ -371,18 +358,15 @@ const renderCursor = ({
     offset,
     activeTooltipIndex
   } = state
-  , tooltipEventType = chartInst.getTooltipEventType()
   , _elementPropsCursor = ((element || {})
       .props || {})
       .cursor;
 
   if (!_elementPropsCursor
     || !isTooltipActive
-    || !activeCoordinate
-    || (_chartName !== 'ScatterChart' && tooltipEventType !== 'axis')) {
+    || !activeCoordinate) {
     return null;
   }
-
 
   const restProps = {
     points: _getCursorPoints(props, state)
@@ -411,7 +395,7 @@ export const renderMap = {
   ReferenceLine: { handler: renderReferenceElement },
   ReferenceDot: { handler: renderReferenceElement },
   XAxis: { handler: renderXAxis },
-  YAxis: { handler: renderYAxis },  
+  YAxis: { handler: renderYAxis },
   Bar: { handler: renderGraphicChild },
   Line: { handler: renderGraphicChild },
   Area: { handler: renderGraphicChild },
