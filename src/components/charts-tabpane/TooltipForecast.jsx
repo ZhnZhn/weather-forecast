@@ -13,7 +13,10 @@ import {
 } from './Label.Style';
 
 const TooltipForecast = fTooltip((payload, props) => (
-  <TooltipContent caption={props.label}>
+  <TooltipContent
+    caption={props.label}
+    onClose={props.onClose}
+  >
     <TooltipRow2 style1={S_TEMP_DAY}
       t1="Morn" v1={payload.tempMorn}
       t2="Day" v2={payload.tempDay}

@@ -130,6 +130,7 @@ const ChartForecast = () => {
        chartStyle={S_COMPOSED_CHART}
        data={data}
        TooltipComp={TooltipForecast}
+       tooltipTrigger="click"
     >
       <YAxis
          yAxisId={T_Y_ID}

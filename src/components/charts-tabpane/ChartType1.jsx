@@ -1,3 +1,5 @@
+import { useMemo } from '../uiApi';
+
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -13,14 +15,27 @@ import {
   S_CARTESIAN_GRID
 } from './Chart.Style';
 
+const S_POINTER_EVENTS_UNSET = {
+  pointerEvents: 'unset'
+}
+, _crWrapperStyle = (
+  tooltipTrigger
+) => tooltipTrigger === "click"
+  ? S_POINTER_EVENTS_UNSET
+  : void 0;
+
 const ChartType1 = ({
   chartStyle=S_HOURLY_CHART,
   data,
   type,
   TooltipComp,
+  tooltipTrigger,
   children
 }) => {
-  const ChartComp = (type === 'line')
+  const tooltipContent = useMemo(
+    () => <TooltipComp data={data} />
+  , [data])
+  , ChartComp = (type === 'line')
     ? LineChart
     : ComposedChart;
   return (
@@ -30,7 +45,9 @@ const ChartType1 = ({
         <CartesianGrid {...S_CARTESIAN_GRID} />
         <Tooltip
           offset={24}
-          content={<TooltipComp data={data} />}
+          trigger={tooltipTrigger}
+          wrapperStyle={_crWrapperStyle(tooltipTrigger)}
+          content={tooltipContent}
         />
         {children}
       </ChartComp>

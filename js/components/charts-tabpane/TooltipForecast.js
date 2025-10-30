@@ -11,6 +11,7 @@ var _Label = require("./Label.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 const TooltipForecast = (0, _fTooltip.default)((payload, props) => /*#__PURE__*/(0, _jsxRuntime.jsxs)(_TooltipContent.default, {
   caption: props.label,
+  onClose: props.onClose,
   children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_TooltipRow.default, {
     style1: _Label.S_TEMP_DAY,
     t1: "Morn",

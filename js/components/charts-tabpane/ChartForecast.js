@@ -128,6 +128,7 @@ const ChartForecast = () => {
     chartStyle: _Chart2.S_COMPOSED_CHART,
     data: data,
     TooltipComp: _TooltipForecast.default,
+    tooltipTrigger: "click",
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, {
       yAxisId: T_Y_ID,
       label: YAXIS_LABEL_TEMP
