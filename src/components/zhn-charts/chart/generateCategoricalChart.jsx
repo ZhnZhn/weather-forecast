@@ -3,7 +3,11 @@ import {
   isNotEmptyArr
 } from '../../../utils/isTypeFn';
 
-import { Component } from '../../uiApi';
+import {
+  Component,
+  createRef,
+  getRefValue
+} from '../../uiApi';
 import { HAS_TOUCH_EVENTS } from '../../has';
 import { crCn } from '../../styleFn';
 
@@ -75,6 +79,7 @@ export const generateCategoricalChart = (
               super(props);
 
               this.clipPathId = `${props.id || uniqueId('recharts')}-clip`;
+              this._refContainer = createRef()
               this.state = {};
             }
 
@@ -185,25 +190,18 @@ export const generateCategoricalChart = (
                 this.handleMouseUp(evtTouch);
               }
             }
-
-            _refLegend = (legend) => {
-              this.legendInstance = legend;
-            }
-
-            _refContainer = (node) => {
-              this.container = node;
-            }
-
+            
             /**
              * Get the information of mouse in chart, return null when the mouse is not in the chart
              * @param  {Object} evt    The event object
              * @return {Object}          Mouse data
              */
             getMouseInfo(evt) {
-                if (!this.container) {
+                const _containerElement = getRefValue(this._refContainer)
+                if (!_containerElement) {
                   return null;
                 }
-                const containerOffset = getOffset(this.container)
+                const containerOffset = getOffset(_containerElement)
                 , e = calculateChartCoordinate(evt, containerOffset)
                 , rangeObj = _inRange(
                    e.chartX,
@@ -229,27 +227,6 @@ export const generateCategoricalChart = (
                   : null;
             }
 
-            parseEventsOfWrapper() {
-              const {
-                children
-              } = this.props
-              , tooltipItem = findChildByType(children, Tooltip)
-              return tooltipItem
-                ? tooltipItem.props.trigger === 'click'
-                   ? { onClick: this.handleClick }
-                   : {
-                       onMouseEnter: this.handleMouseEnter,
-                       onMouseMove: this.handleMouseMove,
-                       onMouseLeave: this.handleMouseLeave,
-                       ...HAS_TOUCH_EVENTS ? {
-                         onTouchMove: this.handleTouchMove,
-                         onTouchStart: this.handleTouchStart,
-                         onTouchEnd: this.handleTouchEnd
-                       } : void 0
-                     }
-                : {};
-            }
-
             render() {
               if (!validateWidthHeight(this)) {
                 return null;
@@ -263,10 +240,13 @@ export const generateCategoricalChart = (
                 compact,
                 title,
                 desc,
-                //...others
+                children
               } = this.props
               , { offset } = this.state
-              , attrs = {};
+              , attrs = {
+                tabIndex: 0,
+                role: 'img'
+              };
 
 
               // The "compact" mode is mainly used as the panorama within Brush
@@ -279,13 +259,21 @@ export const generateCategoricalChart = (
                 );
               }
 
-              if (this.props.accessibilityLayer) {
-                // Set tabIndex to 0 by default (can be overwritten)
-                attrs.tabIndex = 0 ?? this.props.tabIndex;
-                // Set role to img by default (can be overwritten)
-                attrs.role = 'img' ?? this.props.role;
-              }
-              const events = this.parseEventsOfWrapper();
+              const tooltipItem = findChildByType(children, Tooltip)
+              , events = tooltipItem
+                ? tooltipItem.props.trigger === 'click'
+                   ? { onClick: this.handleClick }
+                   : {
+                       onMouseEnter: this.handleMouseEnter,
+                       onMouseMove: this.handleMouseMove,
+                       onMouseLeave: this.handleMouseLeave,
+                       ...HAS_TOUCH_EVENTS ? {
+                         onTouchMove: this.handleTouchMove,
+                         onTouchStart: this.handleTouchStart,
+                         onTouchEnd: this.handleTouchEnd
+                       } : void 0
+                     }
+                : {};
               return (
                 <div
                    role="region"

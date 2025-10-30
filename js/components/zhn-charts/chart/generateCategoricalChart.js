@@ -155,13 +155,8 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           this.handleMouseUp(evtTouch);
         }
       };
-      this._refLegend = legend => {
-        this.legendInstance = legend;
-      };
-      this._refContainer = node => {
-        this.container = node;
-      };
       this.clipPathId = (props.id || (0, _DataUtils.uniqueId)('recharts')) + "-clip";
+      this._refContainer = (0, _uiApi.createRef)();
       this.state = {};
     }
     /**
@@ -170,10 +165,11 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
      * @return {Object}          Mouse data
      */
     getMouseInfo(evt) {
-      if (!this.container) {
+      const _containerElement = (0, _uiApi.getRefValue)(this._refContainer);
+      if (!_containerElement) {
         return null;
       }
-      const containerOffset = (0, _DOMUtils.getOffset)(this.container),
+      const containerOffset = (0, _DOMUtils.getOffset)(_containerElement),
         e = (0, _DOMUtils.calculateChartCoordinate)(evt, containerOffset),
         rangeObj = _inRange(e.chartX, e.chartY, this.props.layout, this.state.offset);
       if (!rangeObj) {
@@ -181,23 +177,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       }
       const tooltipData = (0, _generateCategoricalChartFn.getTooltipData)(this.state, this.props.data, this.props.layout, rangeObj);
       return tooltipData ? Object.assign({}, e, tooltipData) : null;
-    }
-    parseEventsOfWrapper() {
-      const {
-          children
-        } = this.props,
-        tooltipItem = (0, _ReactUtils.findChildByType)(children, _Tooltip.Tooltip);
-      return tooltipItem ? tooltipItem.props.trigger === 'click' ? {
-        onClick: this.handleClick
-      } : Object.assign({
-        onMouseEnter: this.handleMouseEnter,
-        onMouseMove: this.handleMouseMove,
-        onMouseLeave: this.handleMouseLeave
-      }, _has.HAS_TOUCH_EVENTS ? {
-        onTouchMove: this.handleTouchMove,
-        onTouchStart: this.handleTouchStart,
-        onTouchEnd: this.handleTouchEnd
-      } : void 0) : {};
     }
     render() {
       if (!(0, _ReactUtils.validateWidthHeight)(this)) {
@@ -210,13 +189,16 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           style,
           compact,
           title,
-          desc
-          //...others
+          desc,
+          children
         } = this.props,
         {
           offset
         } = this.state,
-        attrs = {};
+        attrs = {
+          tabIndex: 0,
+          role: 'img'
+        };
 
       // The "compact" mode is mainly used as the panorama within Brush
       if (compact) {
@@ -231,14 +213,18 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           }), (0, _ReactUtils.renderByMap)(this, _renderFn.renderMap)]
         }));
       }
-      if (this.props.accessibilityLayer) {
-        var _, _img;
-        // Set tabIndex to 0 by default (can be overwritten)
-        attrs.tabIndex = (_ = 0) != null ? _ : this.props.tabIndex;
-        // Set role to img by default (can be overwritten)
-        attrs.role = (_img = 'img') != null ? _img : this.props.role;
-      }
-      const events = this.parseEventsOfWrapper();
+      const tooltipItem = (0, _ReactUtils.findChildByType)(children, _Tooltip.Tooltip),
+        events = tooltipItem ? tooltipItem.props.trigger === 'click' ? {
+          onClick: this.handleClick
+        } : Object.assign({
+          onMouseEnter: this.handleMouseEnter,
+          onMouseMove: this.handleMouseMove,
+          onMouseLeave: this.handleMouseLeave
+        }, _has.HAS_TOUCH_EVENTS ? {
+          onTouchMove: this.handleTouchMove,
+          onTouchStart: this.handleTouchStart,
+          onTouchEnd: this.handleTouchEnd
+        } : void 0) : {};
       return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", Object.assign({
         role: "region",
         ref: this._refContainer,
