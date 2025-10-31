@@ -241,7 +241,11 @@ export const generateCategoricalChart = (
               } = this.props
               , {
                 offset,
-                formattedGraphicalItems
+                formattedGraphicalItems,
+                isTooltipActive,
+                activeCoordinate,
+                activePayload,
+                activeLabel
               } = this.state
               , attrs = {
                 tabIndex: 0,
@@ -302,14 +306,22 @@ export const generateCategoricalChart = (
                     {renderByMap(this, renderMap)}
                   </Surface>
                   {renderLegend(
-                    width,
-                    height,
-                    margin,
-                    children,
-                    formattedGraphicalItems,
-                    this.handleLegendBBoxUpdate
+                     width,
+                     height,
+                     margin,
+                     children,
+                     formattedGraphicalItems,
+                     this.handleLegendBBoxUpdate
                   )}
-                  {renderTooltip(this)}
+                  {renderTooltip(
+                     tooltipItem,
+                     isTooltipActive,
+                     activeCoordinate,
+                     activePayload,
+                     activeLabel,
+                     offset,
+                     this.handleCloseTooltip
+                   )}
                </div>
               );
             }
