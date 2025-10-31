@@ -7,22 +7,14 @@ const _calcLegendWidth = (
 ) => width - (margin.left || 0) - (margin.right || 0);
 
 export const renderLegend = (
-  chartInst
+  width,
+  height,
+  margin,
+  children,
+  formattedGraphicalItems,
+  handleLegendBBoxUpdate
 ) => {
-  const {
-    props,
-    state
-  } = chartInst
-  , {
-    formattedGraphicalItems
-  } = state
-  , {
-    children,
-    width,
-    height
-  } = props
-  , margin = props.margin || {}
-  , [
+  const [
     _legendProps,
     _legendItem
   ] = getLegendProps({
@@ -36,6 +28,6 @@ export const renderLegend = (
     chartWidth: width || 0,
     chartHeight: height || 0,
     margin,
-    onBBoxUpdate: chartInst.handleLegendBBoxUpdate
+    onBBoxUpdate: handleLegendBBoxUpdate
   }) : null;
 }

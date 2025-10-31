@@ -232,13 +232,17 @@ export const generateCategoricalChart = (
                 className,
                 width,
                 height,
+                margin,
                 style,
                 compact,
                 title,
                 desc,
                 children
               } = this.props
-              , { offset } = this.state
+              , {
+                offset,
+                formattedGraphicalItems
+              } = this.state
               , attrs = {
                 tabIndex: 0,
                 role: 'img'
@@ -297,7 +301,14 @@ export const generateCategoricalChart = (
                     <ClipPath id={this.clipPathId} offset={offset} />
                     {renderByMap(this, renderMap)}
                   </Surface>
-                  {renderLegend(this)}
+                  {renderLegend(
+                    width,
+                    height,
+                    margin,
+                    children,
+                    formattedGraphicalItems,
+                    this.handleLegendBBoxUpdate
+                  )}
                   {renderTooltip(this)}
                </div>
               );

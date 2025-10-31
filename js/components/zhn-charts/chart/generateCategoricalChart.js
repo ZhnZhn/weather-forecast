@@ -183,6 +183,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           className,
           width,
           height,
+          margin,
           style,
           compact,
           title,
@@ -190,7 +191,8 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           children
         } = this.props,
         {
-          offset
+          offset,
+          formattedGraphicalItems
         } = this.state,
         attrs = {
           tabIndex: 0,
@@ -245,7 +247,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
             id: this.clipPathId,
             offset: offset
           }), (0, _ReactUtils.renderByMap)(this, _renderFn.renderMap)]
-        })), (0, _renderLegend.renderLegend)(this), (0, _renderTooltip.renderTooltip)(this)]
+        })), (0, _renderLegend.renderLegend)(width, height, margin, children, formattedGraphicalItems, this.handleLegendBBoxUpdate), (0, _renderTooltip.renderTooltip)(this)]
       }));
     }
   }, _CategoricalChartWrapper.displayName = chartName, _CategoricalChartWrapper.defaultProps = {
