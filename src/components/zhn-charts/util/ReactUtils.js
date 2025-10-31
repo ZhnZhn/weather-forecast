@@ -310,12 +310,11 @@ export const isChildrenEqual = (
 };
 
 export const renderByMap = (
-  chartInst,
+  children,
+  handlerOptions,
   renderMap,
 ) => {
-  const { props } = chartInst
-  , { children } = props
-  , elements = []
+  const elements = []
   , record = {};
   toArray(children).forEach((child, index) => {
     //if (isSvgElement(child)) {
@@ -329,7 +328,7 @@ export const renderByMap = (
        } = renderMap[displayName] || {};
        if (handler && (!once || !record[displayName])) {
          const results = handler({
-           chartInst,
+           ...handlerOptions,
            element: child,
            displayName,
            index

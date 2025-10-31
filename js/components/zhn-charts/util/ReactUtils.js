@@ -251,14 +251,8 @@ const isChildrenEqual = (nextChildren, prevChildren) => {
   return true;
 };
 exports.isChildrenEqual = isChildrenEqual;
-const renderByMap = (chartInst, renderMap) => {
-  const {
-      props
-    } = chartInst,
-    {
-      children
-    } = props,
-    elements = [],
+const renderByMap = (children, handlerOptions, renderMap) => {
+  const elements = [],
     record = {};
   toArray(children).forEach((child, index) => {
     //if (isSvgElement(child)) {
@@ -271,12 +265,11 @@ const renderByMap = (chartInst, renderMap) => {
           once
         } = renderMap[displayName] || {};
       if (handler && (!once || !record[displayName])) {
-        const results = handler({
-          chartInst,
+        const results = handler(Object.assign({}, handlerOptions, {
           element: child,
           displayName,
           index
-        });
+        }));
         elements.push(results);
         record[displayName] = true;
       }

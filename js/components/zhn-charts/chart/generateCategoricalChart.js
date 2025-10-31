@@ -155,7 +155,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           this.handleMouseUp(evtTouch);
         }
       };
-      this.clipPathId = (props.id || (0, _DataUtils.uniqueId)('recharts')) + "-clip";
+      this._refClipPathId = (0, _uiApi.createRef)((props.id || (0, _DataUtils.uniqueId)('recharts')) + "-clip");
       this._refContainer = (0, _uiApi.createRef)();
       this.state = {};
     }
@@ -188,6 +188,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           compact,
           title,
           desc,
+          layout,
           children
         } = this.props,
         {
@@ -196,7 +197,11 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           isTooltipActive,
           activeCoordinate,
           activePayload,
-          activeLabel
+          activeLabel,
+          tooltipAxis,
+          activeTooltipIndex,
+          xAxisMap,
+          yAxisMap
         } = this.state,
         attrs = {
           tabIndex: 0,
@@ -205,6 +210,24 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       if (!(0, _ReactUtils.validateWidthHeight)(width, height)) {
         return null;
       }
+      const clipPathId = (0, _uiApi.getRefValue)(this._refClipPathId),
+        _graphicItems = (0, _ReactUtils.renderByMap)(children, {
+          clipPathId,
+          width,
+          height,
+          layout,
+          children,
+          offset,
+          xAxisMap,
+          yAxisMap,
+          formattedGraphicalItems,
+          isTooltipActive,
+          tooltipAxis,
+          activeTooltipIndex,
+          activeLabel,
+          activeCoordinate,
+          activePayload
+        }, _renderFn.renderMap);
 
       // The "compact" mode is mainly used as the panorama within Brush
       if (compact) {
@@ -214,9 +237,9 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           title: title,
           desc: desc,
           children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPath.ClipPath, {
-            id: this.clipPathId,
+            id: clipPathId,
             offset: offset
-          }), (0, _ReactUtils.renderByMap)(this, _renderFn.renderMap)]
+          }), _graphicItems]
         }));
       }
       const tooltipItem = (0, _ReactUtils.findChildByType)(children, _Tooltip.Tooltip),
@@ -248,9 +271,9 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           title: title,
           desc: desc,
           children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPath.ClipPath, {
-            id: this.clipPathId,
+            id: clipPathId,
             offset: offset
-          }), (0, _ReactUtils.renderByMap)(this, _renderFn.renderMap)]
+          }), _graphicItems]
         })), (0, _renderLegend.renderLegend)(width, height, margin, children, formattedGraphicalItems, this.handleLegendBBoxUpdate), (0, _renderTooltip.renderTooltip)(tooltipItem, isTooltipActive, activeCoordinate, activePayload, activeLabel, offset, this.handleCloseTooltip)]
       }));
     }

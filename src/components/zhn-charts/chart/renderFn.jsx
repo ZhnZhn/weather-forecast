@@ -62,26 +62,18 @@ const _getNumberValue = (
    : dfValue;
 
 const renderGrid = ({
-  chartInst,
+  width,
+  height,
+
+  xAxisMap,
+  yAxisMap,
+  offset,
+
   element
 }) => {
-    const {
-      props,
-      state
-    } = chartInst
-    , {
-      width,
-      height
-    } = props
-    , {
-      xAxisMap,
-      yAxisMap,
-      offset
-    } = state
-    , xAxis = getAnyElementOfObject(xAxisMap);
-
-    const yAxisWithFiniteDomain = _crArrFromObjByKeys(yAxisMap)
-      .find(axis => axis.domain.every(isFinit))
+    const xAxis = getAnyElementOfObject(xAxisMap)
+    , yAxisWithFiniteDomain = _crArrFromObjByKeys(yAxisMap)
+       .find(axis => axis.domain.every(isFinit))
     , yAxis = yAxisWithFiniteDomain || getAnyElementOfObject(yAxisMap)
     , _props = element.props || {};
 
@@ -101,7 +93,12 @@ const renderGrid = ({
 };
 
 const renderReferenceElement = ({
-  chartInst,
+  clipPathId,
+
+  xAxisMap,
+  yAxisMap,
+  offset,
+
   element,
   displayName,
   index
@@ -109,17 +106,7 @@ const renderReferenceElement = ({
   if (!element) {
     return null;
   }
-
   const {
-    clipPathId,
-    state
-  } = chartInst
-  , {
-    xAxisMap,
-    yAxisMap,
-    offset
-  } = state
-  , {
     xAxisId,
     yAxisId
   } = element.props;
@@ -150,13 +137,10 @@ const _renderAxis = (
   element,
   displayName,
   index,
-  props
+  width,
+  height
 ) => {
   const {
-    width,
-    height
-  } = props
-  , {
     axisType,
     className
   } = axisOptions;
@@ -172,40 +156,40 @@ const _renderAxis = (
 }
 
 const renderXAxis = ({
-  chartInst,
+  width,
+  height,
+  xAxisMap,
   element,
   displayName,
   index
 }) => {
-  const {
-    xAxisMap
-  } = chartInst.state
-  , axisObj = xAxisMap[element.props.xAxisId];
+  const axisObj = xAxisMap[element.props.xAxisId];
   return _renderAxis(
     axisObj,
     element,
     displayName,
     index,
-    chartInst.props
+    width,
+    height
   );
 };
 
 const renderYAxis = ({
-  chartInst,
+  width,
+  height,
+  yAxisMap,
   element,
   displayName,
   index
 }) => {
-  const {
-    yAxisMap
-  } = chartInst.state
-  , axisObj = yAxisMap[element.props.yAxisId];
+  const axisObj = yAxisMap[element.props.yAxisId];
   return _renderAxis(
     axisObj,
     element,
     displayName,
     index,
-    chartInst.props
+    width,
+    height
   );
 };
 
@@ -227,33 +211,29 @@ const _filterFormatItem = (
 };
 
 const renderGraphicChild = ({
-  chartInst,
+  children,
+
+  formattedGraphicalItems,
+  isTooltipActive,
+  tooltipAxis,
+  activeTooltipIndex,
+  activeLabel,
+
   element,
   displayName,
   index
 }) => {
-  const {
-    props,
-    state
-  } = chartInst
-  , item = _filterFormatItem(
+  const item = _filterFormatItem(
     element,
     displayName,
     index,
-    state.formattedGraphicalItems
+    formattedGraphicalItems
   );
   if (!item) {
     return null;
   }
 
-  const {
-    isTooltipActive,
-    tooltipAxis,
-    activeTooltipIndex,
-    activeLabel
-  } = state
-  , { children } = props
-  , tooltipItem = findChildByType(children, Tooltip)
+  const tooltipItem = findChildByType(children, Tooltip)
   , {
     points,
     isRange,
@@ -314,17 +294,10 @@ const renderGraphicChild = ({
 }
 
 const _getCursorPoints = (
-  props,
-  state
+  layout,
+  activeCoordinate,
+  offset
 ) => {
-  const {
-    layout
-  } = props
-  , {
-    activeCoordinate,
-    offset
-  } = state;
-
   let x1, y1, x2, y2;
   if (isLayoutHorizontal(layout)) {
     x1 = activeCoordinate.x;
@@ -344,23 +317,19 @@ const _getCursorPoints = (
 };
 
 const renderCursor = ({
-  chartInst,
+  layout,
+
+  isTooltipActive,
+  activePayload,
+  activeTooltipIndex,
+
+  activeCoordinate,
+  offset,
   element
 }) => {
-  const {
-    props,
-    state,
-  } = chartInst
-  , {
-    isTooltipActive,
-    activeCoordinate,
-    activePayload,
-    offset,
-    activeTooltipIndex
-  } = state
-  , _elementPropsCursor = ((element || {})
-      .props || {})
-      .cursor;
+  const _elementPropsCursor = ((element || {})
+   .props || {})
+   .cursor;
 
   if (!_elementPropsCursor
     || !isTooltipActive
@@ -369,7 +338,11 @@ const renderCursor = ({
   }
 
   const restProps = {
-    points: _getCursorPoints(props, state)
+    points: _getCursorPoints(
+      layout,
+      activeCoordinate,
+      offset
+    )
   }
   , cursorComp = Curve
   , key = element.key || '_recharts-cursor'

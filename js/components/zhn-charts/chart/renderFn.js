@@ -28,24 +28,15 @@ const _crArrFromObjByKeys = obj => obj && typeof obj === 'object' ? _getObjectKe
 const _getNumberValue = (value, dfValue) => (0, _DataUtils.isNumber)(value) ? value : dfValue;
 const renderGrid = _ref => {
   let {
-    chartInst,
+    width,
+    height,
+    xAxisMap,
+    yAxisMap,
+    offset,
     element
   } = _ref;
-  const {
-      props,
-      state
-    } = chartInst,
-    {
-      width,
-      height
-    } = props,
-    {
-      xAxisMap,
-      yAxisMap,
-      offset
-    } = state,
-    xAxis = (0, _DataUtils.getAnyElementOfObject)(xAxisMap);
-  const yAxisWithFiniteDomain = _crArrFromObjByKeys(yAxisMap).find(axis => axis.domain.every(isFinit)),
+  const xAxis = (0, _DataUtils.getAnyElementOfObject)(xAxisMap),
+    yAxisWithFiniteDomain = _crArrFromObjByKeys(yAxisMap).find(axis => axis.domain.every(isFinit)),
     yAxis = yAxisWithFiniteDomain || (0, _DataUtils.getAnyElementOfObject)(yAxisMap),
     _props = element.props || {};
   return (0, _uiApi.cloneUiElement)(element, {
@@ -64,7 +55,10 @@ const renderGrid = _ref => {
 };
 const renderReferenceElement = _ref2 => {
   let {
-    chartInst,
+    clipPathId,
+    xAxisMap,
+    yAxisMap,
+    offset,
     element,
     displayName,
     index
@@ -73,18 +67,9 @@ const renderReferenceElement = _ref2 => {
     return null;
   }
   const {
-      clipPathId,
-      state
-    } = chartInst,
-    {
-      xAxisMap,
-      yAxisMap,
-      offset
-    } = state,
-    {
-      xAxisId,
-      yAxisId
-    } = element.props;
+    xAxisId,
+    yAxisId
+  } = element.props;
   return (0, _uiApi.cloneUiElement)(element, {
     xAxis: xAxisMap[xAxisId],
     yAxis: yAxisMap[yAxisId],
@@ -106,15 +91,11 @@ const _axesTicksGenerator = axis => (0, _ChartUtils.getTicksOfAxis)(axis, true);
  * @param {Number} index        The index of element
  * @return {ReactElement}       The instance of x-axes
  */
-const _renderAxis = (axisOptions, element, displayName, index, props) => {
+const _renderAxis = (axisOptions, element, displayName, index, width, height) => {
   const {
-      width,
-      height
-    } = props,
-    {
-      axisType,
-      className
-    } = axisOptions;
+    axisType,
+    className
+  } = axisOptions;
   return /*#__PURE__*/(0, _react.createElement)(_CartesianAxis.CartesianAxis, Object.assign({}, axisOptions, {
     key: element.key || displayName + "-" + index,
     className: (0, _styleFn.crCn)((0, _CL.crAxisCl)(axisType), className),
@@ -129,29 +110,27 @@ const _renderAxis = (axisOptions, element, displayName, index, props) => {
 };
 const renderXAxis = _ref3 => {
   let {
-    chartInst,
+    width,
+    height,
+    xAxisMap,
     element,
     displayName,
     index
   } = _ref3;
-  const {
-      xAxisMap
-    } = chartInst.state,
-    axisObj = xAxisMap[element.props.xAxisId];
-  return _renderAxis(axisObj, element, displayName, index, chartInst.props);
+  const axisObj = xAxisMap[element.props.xAxisId];
+  return _renderAxis(axisObj, element, displayName, index, width, height);
 };
 const renderYAxis = _ref4 => {
   let {
-    chartInst,
+    width,
+    height,
+    yAxisMap,
     element,
     displayName,
     index
   } = _ref4;
-  const {
-      yAxisMap
-    } = chartInst.state,
-    axisObj = yAxisMap[element.props.yAxisId];
-  return _renderAxis(axisObj, element, displayName, index, chartInst.props);
+  const axisObj = yAxisMap[element.props.yAxisId];
+  return _renderAxis(axisObj, element, displayName, index, width, height);
 };
 const _filterFormatItem = (item, displayName, childIndex, formattedGraphicalItems) => {
   for (let i = 0, len = formattedGraphicalItems.length; i < len; i++) {
@@ -164,29 +143,21 @@ const _filterFormatItem = (item, displayName, childIndex, formattedGraphicalItem
 };
 const renderGraphicChild = _ref5 => {
   let {
-    chartInst,
+    children,
+    formattedGraphicalItems,
+    isTooltipActive,
+    tooltipAxis,
+    activeTooltipIndex,
+    activeLabel,
     element,
     displayName,
     index
   } = _ref5;
-  const {
-      props,
-      state
-    } = chartInst,
-    item = _filterFormatItem(element, displayName, index, state.formattedGraphicalItems);
+  const item = _filterFormatItem(element, displayName, index, formattedGraphicalItems);
   if (!item) {
     return null;
   }
-  const {
-      isTooltipActive,
-      tooltipAxis,
-      activeTooltipIndex,
-      activeLabel
-    } = state,
-    {
-      children
-    } = props,
-    tooltipItem = (0, _ReactUtils.findChildByType)(children, _Tooltip.Tooltip),
+  const tooltipItem = (0, _ReactUtils.findChildByType)(children, _Tooltip.Tooltip),
     {
       points,
       isRange,
@@ -229,14 +200,7 @@ const renderGraphicChild = _ref5 => {
   }
   return isRange ? [graphicalItem, null, null] : [graphicalItem, null];
 };
-const _getCursorPoints = (props, state) => {
-  const {
-      layout
-    } = props,
-    {
-      activeCoordinate,
-      offset
-    } = state;
+const _getCursorPoints = (layout, activeCoordinate, offset) => {
   let x1, y1, x2, y2;
   if ((0, _ChartUtils.isLayoutHorizontal)(layout)) {
     x1 = activeCoordinate.x;
@@ -259,26 +223,20 @@ const _getCursorPoints = (props, state) => {
 };
 const renderCursor = _ref6 => {
   let {
-    chartInst,
+    layout,
+    isTooltipActive,
+    activePayload,
+    activeTooltipIndex,
+    activeCoordinate,
+    offset,
     element
   } = _ref6;
-  const {
-      props,
-      state
-    } = chartInst,
-    {
-      isTooltipActive,
-      activeCoordinate,
-      activePayload,
-      offset,
-      activeTooltipIndex
-    } = state,
-    _elementPropsCursor = ((element || {}).props || {}).cursor;
+  const _elementPropsCursor = ((element || {}).props || {}).cursor;
   if (!_elementPropsCursor || !isTooltipActive || !activeCoordinate) {
     return null;
   }
   const restProps = {
-      points: _getCursorPoints(props, state)
+      points: _getCursorPoints(layout, activeCoordinate, offset)
     },
     cursorComp = _Curve.Curve,
     key = element.key || '_recharts-cursor',

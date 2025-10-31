@@ -78,7 +78,7 @@ export const generateCategoricalChart = (
             constructor(props) {
               super(props);
 
-              this.clipPathId = `${props.id || uniqueId('recharts')}-clip`;
+              this._refClipPathId = createRef(`${props.id || uniqueId('recharts')}-clip`)
               this._refContainer = createRef()
               this.state = {};
             }
@@ -237,15 +237,24 @@ export const generateCategoricalChart = (
                 compact,
                 title,
                 desc,
+                layout,
                 children
               } = this.props
               , {
                 offset,
                 formattedGraphicalItems,
+
                 isTooltipActive,
                 activeCoordinate,
                 activePayload,
-                activeLabel
+                activeLabel,
+
+                tooltipAxis,
+                activeTooltipIndex,
+
+                xAxisMap,
+                yAxisMap
+
               } = this.state
               , attrs = {
                 tabIndex: 0,
@@ -256,12 +265,33 @@ export const generateCategoricalChart = (
                 return null;
               }
 
+              const clipPathId = getRefValue(this._refClipPathId)
+              , _graphicItems = renderByMap(children, {
+                clipPathId,
+                width,
+                height,
+                layout,
+                children,
+
+                offset,
+                xAxisMap,
+                yAxisMap,
+
+                formattedGraphicalItems,
+                isTooltipActive,
+                tooltipAxis,
+                activeTooltipIndex,
+                activeLabel,
+                activeCoordinate,
+                activePayload
+              }, renderMap);
+
               // The "compact" mode is mainly used as the panorama within Brush
               if (compact) {
                 return (
                   <Surface {...attrs} width={width} height={height} title={title} desc={desc}>
-                     <ClipPath id={this.clipPathId} offset={offset} />
-                     {renderByMap(this, renderMap)}
+                     <ClipPath id={clipPathId} offset={offset} />
+                     {_graphicItems}
                   </Surface>
                 );
               }
@@ -302,8 +332,8 @@ export const generateCategoricalChart = (
                      title={title}
                      desc={desc}
                   >
-                    <ClipPath id={this.clipPathId} offset={offset} />
-                    {renderByMap(this, renderMap)}
+                    <ClipPath id={clipPathId} offset={offset} />
+                    {_graphicItems}
                   </Surface>
                   {renderLegend(
                      width,
