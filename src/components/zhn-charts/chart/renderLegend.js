@@ -22,7 +22,7 @@ export const renderLegend = (
     formattedGraphicalItems,
     legendWidth: _calcLegendWidth(width, margin)
   });
-
+  
   return _legendProps ? cloneUiElement(_legendItem, {
     ..._legendProps,
     chartWidth: width || 0,

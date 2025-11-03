@@ -1,27 +1,37 @@
-import { _range } from '../util/FnUtils';
+//import { _range } from '../util/FnUtils';
 
+/*
 import {
   isCategoricalAxis,
   getDomainOfItemsWithSameAxis,
   getDomainOfStackGroups,
   parseSpecifiedDomain
 } from '../util/ChartUtils';
+*/
 import { findAllByType } from '../util/ReactUtils';
+/*
 import {
   detectReferenceElementsDomain
 } from '../util/DetectReferenceElementsDomain';
+*/
 
+/*
 import {
   getDisplayedData,
   getDefaultDomainByAxisType
 } from './chartFn';
+*/
+
 import { getAxisMapByAxes } from './getAxisMapByAxes';
 
+/*
 const ORIENT_MAP = {
   xAxis: ['bottom', 'top'],
   yAxis: ['left', 'right']
 };
+*/
 
+/*
 const _getOrientMapValue = (
   propName,
   index
@@ -31,6 +41,7 @@ const _getOrientMapValue = (
     ? _axis[index] || null
     : null;
 }
+*/
 
 const _isNotEmpty = arr => arr && arr.length;
 
@@ -47,6 +58,7 @@ const _isNotEmpty = arr => arr && arr.length;
  * @param {Number} dataEndIndex   The end index of the data series when a brush is applied
  * @return {Object}               Configuration
  */
+/*
 const getAxisMapByItems = (
   props, {
   graphicalItems,
@@ -68,7 +80,6 @@ const getAxisMapByItems = (
     })
     , len = displayedData.length
     , isCategorical = isCategoricalAxis(layout, axisType);
-
     let index = -1;
     // The default type of x-axis is category axis,
     // The default contents of x-axis is the serial numbers of data
@@ -112,6 +123,7 @@ const getAxisMapByItems = (
     }, {});
     return axisMap;
 };
+*/
 
 /**
  * Get the configuration of all x-axis or y-axis
@@ -147,10 +159,12 @@ export const getAxisMap = (
         ..._axisOptions,
         axes
       })
+    /*
     : _isNotEmpty(graphicalItems)
-       ? getAxisMapByItems(props, {
+    ? getAxisMapByItems(props, {
            ..._axisOptions,
            Axis: AxisComp
          })
-       : {};
+    */
+    : {};
 };

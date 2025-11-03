@@ -128,7 +128,7 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
  */
 const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, axisComponents, formatAxisMap) => {
   const getFormatItems = fGetFormatItems(axisComponents);
-  return (_ref2, prevState) => {
+  return (_ref2, legendBBox) => {
     let {
       props,
       dataStartIndex,
@@ -136,7 +136,7 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
       updateId
     } = _ref2;
     if (!(0, _ReactUtils.validateWidthHeight)(props.width, props.height)) {
-      return null;
+      return {};
     }
     const {
         children,
@@ -165,7 +165,7 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
     const offset = (0, _calculateOffset.calculateOffset)(Object.assign({}, axisObj, {
       props,
       graphicalItems
-    }), prevState == null ? void 0 : prevState.legendBBox);
+    }), legendBBox);
     _getObjectKeys(axisObj).forEach(key => {
       axisObj[key] = formatAxisMap(props, axisObj[key], offset, key.replace('Map', ''), chartName);
     });

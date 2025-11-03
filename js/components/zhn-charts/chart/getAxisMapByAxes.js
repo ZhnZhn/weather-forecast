@@ -63,6 +63,7 @@ const getAxisMapByAxes = (props, _ref) => {
     isCategorical = (0, _ChartUtils.isCategoricalAxis)(layout, axisType);
   // Eliminate duplicated axes
   const axisMap = axes.reduce((result, child) => {
+    var _child$props$domain2;
     const {
         type,
         dataKey,
@@ -107,7 +108,8 @@ const getAxisMapByAxes = (props, _ref) => {
 
     // we didn't create the domain from user's props above, so we need to calculate it
     if (!domain || domain.length === 0) {
-      const childDomain = child.props.domain ?? defaultDomain;
+      var _child$props$domain;
+      const childDomain = (_child$props$domain = child.props.domain) != null ? _child$props$domain : defaultDomain;
       if (dataKey) {
         // has dataKey in <Axis />
         domain = (0, _ChartUtils.getDomainOfDataByKey)(displayedData, dataKey, type);
@@ -159,19 +161,17 @@ const getAxisMapByAxes = (props, _ref) => {
         }
       }
     }
-    return {
-      ...result,
-      [axisId]: {
-        ...child.props,
+    return Object.assign({}, result, {
+      [axisId]: Object.assign({}, child.props, {
         isCategorical,
         axisType,
         domain,
         categoricalDomain,
         duplicateDomain,
         layout,
-        originalDomain: child.props.domain ?? defaultDomain
-      }
-    };
+        originalDomain: (_child$props$domain2 = child.props.domain) != null ? _child$props$domain2 : defaultDomain
+      })
+    });
   }, {});
   return axisMap;
 };

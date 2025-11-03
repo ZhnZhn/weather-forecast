@@ -14,8 +14,6 @@ export {
 
 export {
   isValidElement,
-  Component,
-  createRef,
   Children,
   createContext,
   memo,

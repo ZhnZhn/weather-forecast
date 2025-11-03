@@ -171,10 +171,10 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
     dataStartIndex,
     dataEndIndex,
     updateId },
-    prevState
+    legendBBox
   ) => {
     if (!validateWidthHeight(props.width, props.height)) {
-      return null;
+      return {};
     }
     const {
       children,
@@ -217,7 +217,7 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
       ...axisObj,
       props,
       graphicalItems
-    }, prevState?.legendBBox);
+    }, legendBBox);
 
     _getObjectKeys(axisObj)
        .forEach(key => {
@@ -234,7 +234,7 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
         graphicalItems,
         stackGroups,
         offset,
-    });
+    });    
     return {
       formattedGraphicalItems,
       graphicalItems,

@@ -143,7 +143,7 @@ const _renderAxis = (
   const {
     axisType,
     className
-  } = axisOptions;
+  } = axisOptions || {};
   return (
     <CartesianAxis
        {...axisOptions}

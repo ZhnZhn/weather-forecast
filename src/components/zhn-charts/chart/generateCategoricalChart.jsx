@@ -1,12 +1,17 @@
 import {
   isFn,
-  isNotEmptyArr
+  isNotEmptyArr,
+  isNullOrUndef
 } from '../../../utils/isTypeFn';
 
 import {
-  Component,
-  createRef,
-  getRefValue
+  crProps,
+  useRef,
+  useState,
+  useMemo,
+  useEffect,
+  getRefValue,
+  setRefValue
 } from '../../uiApi';
 import { HAS_TOUCH_EVENTS } from '../../has';
 import { crCn } from '../../styleFn';
@@ -20,6 +25,7 @@ import {
   renderByMap,
   findChildByType
 } from '../util/ReactUtils';
+import { isChildrenEqual } from '../util/ReactUtils';
 import {
   calculateChartCoordinate,
   getOffset
@@ -34,7 +40,6 @@ import {
 
 import { getTooltipData } from './generateCategoricalChartFn';
 
-import { fGetDerivedStateFromProps } from './fGetDerivedStateFromProps';
 import { renderMap } from './renderFn';
 import { renderLegend } from './renderLegend';
 import { renderTooltip } from './renderTooltip';
@@ -52,307 +57,411 @@ const _inRange = (
   y,
   layout,
   offset
-) => isLayoutHorizontal(layout) || isLayoutVertical(layout)
-  ? x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height
-    ? { x, y }
-    : null
+) => (isLayoutHorizontal(layout) || isLayoutVertical(layout))
+  && (x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height)
+  ? { x, y }
   : null;
+
+const DF_PROPS = {
+  layout: 'horizontal',
+  stackOffset: 'none',
+  barCategoryGap: '10%',
+  barGap: 4,
+  margin: { top: 5, right: 5, bottom: 5, left: 5 },
+  reverseStackOrder: false,
+  syncMethod: 'index'
+}
+, _createDefaultState = (
+  props
+) => ({
+  chartX: 0,
+  chartY: 0,
+  dataStartIndex: 0,
+  dataEndIndex: (props.data && props.data.length - 1) || 0,
+  activeTooltipIndex: -1,
+  isTooltipActive: !!props.defaultShowTooltip
+})
+
 
 export const generateCategoricalChart = (
   chartName,
   updateStateOfAxisMapsOffsetAndStackGroups,
   validateTooltipEventTypes = ['axis']
-) => class CategoricalChartWrapper extends Component {
-            static displayName = chartName
-            static defaultProps = {
-              layout: 'horizontal',
-              stackOffset: 'none',
-              barCategoryGap: '10%',
-              barGap: 4,
-              margin: { top: 5, right: 5, bottom: 5, left: 5 },
-              reverseStackOrder: false,
-              syncMethod: 'index'
-            }
-            static getDerivedStateFromProps = fGetDerivedStateFromProps(updateStateOfAxisMapsOffsetAndStackGroups)
+) => {
+  const ChartWrapper = (props) => {
+    const _props = crProps(DF_PROPS, props)
+    , {
+      className,
+      width,
+      height,
+      margin,
+      style,
+      compact,
+      title,
+      desc,
+      layout,
+      data,
+      children,
 
-            constructor(props) {
-              super(props);
+      onMouseEnter,
+      onMouseDown,
+      onMouseUp,
+      onMouseMove,
+      onMouseLeave,
+      onClick
+    } = _props
+    , _refData = useRef(false)
+    , _refClipPathId = useRef(`${_props.id || uniqueId('recharts')}-clip`)
+    , _refContainer = useRef()
+    , [state, setState] = useState(() => ({
+        ..._createDefaultState(_props),
+        updateId: 0,
+        prevData: data,
+        prevWidth: width,
+        prevHeight: height,
+        prevChildren: children
+      }))
+      , {
+        isTooltipActive,
+        activeCoordinate,
+        activePayload,
+        activeLabel,
+        activeTooltipIndex,
 
-              this._refClipPathId = createRef(`${props.id || uniqueId('recharts')}-clip`)
-              this._refContainer = createRef()
-              this.state = {};
-            }
+        dataStartIndex,
+        dataEndIndex,
+        legendBBox,
+        updateId
+      } = state
+      , {
+        offset,
+        formattedGraphicalItems,
 
-            handleLegendBBoxUpdate = (box) => {
-              if (box) {
-                const {
-                  dataStartIndex,
-                  dataEndIndex,
-                  updateId
-                } = this.state;
-                this.setState({
-                  legendBBox: box,
-                  ...updateStateOfAxisMapsOffsetAndStackGroups({
-                    props: this.props,
-                    dataStartIndex,
-                    dataEndIndex,
-                    updateId
-                  }, { ...this.state, legendBBox: box })
-                });
+        tooltipAxis,
+
+        xAxisMap,
+        yAxisMap,
+
+        orderedTooltipTicks,
+        tooltipTicks,
+        graphicalItems
+      } = useMemo(() => updateStateOfAxisMapsOffsetAndStackGroups({
+        props: _props,
+        dataStartIndex,
+        dataEndIndex,
+        updateId
+      }, legendBBox), [
+        _props,
+        dataStartIndex,
+        dataEndIndex,
+        updateId,
+        legendBBox
+      ])
+      , handleLegendBBoxUpdate = (legendBBox) => {
+         if (legendBBox) {
+           setState(prevState => ({
+             ...prevState,
+             legendBBox
+           }));
+        }
+      }
+      , getMouseInfo = (evt) => {
+          const _containerElement = getRefValue(_refContainer)
+          if (!_containerElement) {
+            return null;
+          }
+          const containerOffset = getOffset(_containerElement)
+          , e = calculateChartCoordinate(evt, containerOffset)
+          , rangeObj = _inRange(
+             e.chartX,
+             e.chartY,
+             layout,
+             offset
+          );
+          if (!rangeObj) {
+            return null;
+          }
+
+          const tooltipData = getTooltipData(
+            {
+              orderedTooltipTicks,
+              tooltipAxis,
+              tooltipTicks,
+              graphicalItems,
+
+              dataStartIndex,
+              dataEndIndex
+            },
+            data,
+            layout,
+            rangeObj
+          );
+          return tooltipData
+            ? {
+                ...e,
+                ...tooltipData
               }
-            }
+            : null;
+      }
+      , handleMouseEnter = (evt) => {
+        const mouse = getMouseInfo(evt);
+        if (mouse) {
+          const nextState = {
+            ...mouse,
+            isTooltipActive: true
+          };
+          setState(prevState => ({
+            ...prevState,
+            ...nextState
+          }));
+          if (isFn(onMouseEnter)) {
+            onMouseEnter(nextState, evt);
+          }
+        }
+      }
+      , handleMouseMove = (evt) => {
+        const mouse = getMouseInfo(evt)
+        , nextState = mouse
+           ? { ...mouse, isTooltipActive: true }
+           : { isTooltipActive: false };
+        setState(prevState => ({
+          ...prevState,
+          ...nextState
+        }));
+        if (isFn(onMouseMove)) {
+          onMouseMove(nextState, evt);
+        }
+      }
+      , handleMouseLeave = (evt) => {
+        const nextState = { isTooltipActive: false };
+        setState(prevState => ({
+          ...prevState,
+          ...nextState
+        }));
+        if (isFn(onMouseLeave)) {
+          onMouseLeave(nextState, evt);
+        }
+      }
+      , handleCloseTooltip = () => {
+        setState(prevState => ({
+          ...prevState,
+          isTooltipActive: false
+        }))
+      }
 
-            handleMouseEnter = (e) => {
-              const { onMouseEnter } = this.props
-              , mouse = this.getMouseInfo(e);
-              if (mouse) {
-                const nextState = { ...mouse, isTooltipActive: true };
-                this.setState(nextState);
-                if (isFn(onMouseEnter)) {
-                  onMouseEnter(nextState, e);
-                }
-              }
-            }
+      , handleClick = (evt) => {
+        const mouse = getMouseInfo(evt);
+        if (mouse) {
+          const nextState = {
+            ...mouse,
+            isTooltipActive: true
+          };
+          setState(prevState => ({
+            ...prevState,
+            ...nextState
+          }));
+          if (isFn(onClick)) {
+            onClick(nextState, evt);
+          }
+        }
+      }
 
-            handleMouseMove = (e) => {
-              const { onMouseMove } = this.props
-              , mouse = this.getMouseInfo(e)
-              , nextState = mouse
-                 ? { ...mouse, isTooltipActive: true }
-                 : { isTooltipActive: false };
-              this.setState(nextState);
-              if (isFn(onMouseMove)) {
-                onMouseMove(nextState, e);
-              }
-            }
+      , handleMouseDown = (evt) => {
+        if (isFn(onMouseDown)) {
+          const nextState = getMouseInfo(evt);
+          onMouseDown(nextState, evt);
+        }
+      }
 
-            handleMouseLeave = (e) => {
-              const { onMouseLeave } = this.props
-              , nextState = { isTooltipActive: false };
-              this.setState(nextState);
-              if (isFn(onMouseLeave)) {
-                onMouseLeave(nextState, e);
-              }
-            }
+      , handleMouseUp = (evt) => {
+        if (isFn(onMouseUp)) {
+          const nextState = getMouseInfo(evt);
+          onMouseUp(nextState, evt);
+        }
+      }
+      , handleTouchMove = (evt) => {
+        const evtTouch = _getEvtTouch(evt);
+        if (evtTouch) {
+          handleMouseMove(evtTouch);
+        }
+      }
 
-            handleCloseTooltip = () => {
-              this.setState({ isTooltipActive: false });
-            }
+      , handleTouchStart = (evt) => {
+        const evtTouch = _getEvtTouch(evt);
+        if (evtTouch) {
+          handleMouseDown(evtTouch);
+        }
+      }
 
-            handleClick = (e) => {
-              const { onClick } = this.props
-              , mouse = this.getMouseInfo(e);
-              if (mouse) {
-                const nextState = {
-                  ...mouse,
-                  isTooltipActive: true
-                };
-                this.setState(nextState);
-                if (isFn(onClick)) {
-                  onClick(nextState, e);
-                }
-              }
-            }
+      , handleTouchEnd = (evt) => {
+        const evtTouch = _getEvtTouch(evt);
+        if (evtTouch) {
+          handleMouseUp(evtTouch);
+        }
+      }
 
-            handleMouseDown = (e) => {
-              const { onMouseDown } = this.props;
-              if (isFn(onMouseDown)) {
-                const nextState = this.getMouseInfo(e);
-                onMouseDown(nextState, e);
-              }
-            }
-
-            handleMouseUp = (e) => {
-              const { onMouseUp } = this.props;
-              if (isFn(onMouseUp)) {
-                const nextState = this.getMouseInfo(e);
-                onMouseUp(nextState, e);
-              }
-            }
-
-            handleTouchMove = (evt) => {
-              const evtTouch = _getEvtTouch(evt);
-              if (evtTouch) {
-                this.handleMouseMove(evtTouch);
-              }
-            }
-
-            handleTouchStart = (evt) => {
-              const evtTouch = _getEvtTouch(evt);
-              if (evtTouch) {
-                this.handleMouseDown(evtTouch);
-              }
-            }
-
-            handleTouchEnd = (evt) => {
-              const evtTouch = _getEvtTouch(evt);
-              if (evtTouch) {
-                this.handleMouseUp(evtTouch);
-              }
-            }
-
-            /**
-             * Get the information of mouse in chart, return null when the mouse is not in the chart
-             * @param  {Object} evt    The event object
-             * @return {Object}          Mouse data
-             */
-            getMouseInfo(evt) {
-                const _containerElement = getRefValue(this._refContainer)
-                if (!_containerElement) {
-                  return null;
-                }
-                const containerOffset = getOffset(_containerElement)
-                , e = calculateChartCoordinate(evt, containerOffset)
-                , rangeObj = _inRange(
-                   e.chartX,
-                   e.chartY,
-                   this.props.layout,
-                   this.state.offset
-                );
-                if (!rangeObj) {
-                  return null;
-                }
-
-                const tooltipData = getTooltipData(
-                  this.state,
-                  this.props.data,
-                  this.props.layout,
-                  rangeObj
-                );
-                return tooltipData
-                  ? {
-                      ...e,
-                      ...tooltipData
-                    }
-                  : null;
-            }
-
-            render() {
-              const {
-                className,
-                width,
-                height,
-                margin,
-                style,
-                compact,
-                title,
-                desc,
-                layout,
-                children
-              } = this.props
-              , {
-                offset,
-                formattedGraphicalItems,
-
-                isTooltipActive,
-                activeCoordinate,
-                activePayload,
-                activeLabel,
-
+      /*eslint-disable react-hooks/exhaustive-deps*/
+      useEffect(() => {
+        if (data !== state.prevData
+          || width !== state.prevWidth
+          || height !== state.prevHeight
+          //|| layout !== prevState.prevLayout
+          //|| stackOffset !== prevState.prevStackOffset
+          //|| !shallowEqual(margin, prevState.prevMargin)
+        ) {
+          setRefValue(_refData, true)
+          const defaultState = _createDefaultState(_props)
+          , keepFromPrevState = {
+            chartX: state.chartX,
+            chartY: state.chartY,
+            isTooltipActive: state.isTooltipActive
+          }
+          , updatesToState = {
+            //...getTooltipData(state, _props.data, layout),
+            ...getTooltipData({
+                orderedTooltipTicks,
                 tooltipAxis,
-                activeTooltipIndex,
+                tooltipTicks,
+                graphicalItems,
 
-                xAxisMap,
-                yAxisMap
+                dataStartIndex,
+                dataEndIndex
+            }, _props.data, layout),
+            updateId: state.updateId + 1
+          }
+          , newState = {
+            ...defaultState,
+            ...keepFromPrevState,
+            ...updatesToState
+          };
+          setState(prevState => ({
+            ...prevState,
+            ...newState,
+            prevData: data,
+            prevWidth: width,
+            prevHeight: height,
+            //prevLayout: layout,
+            //prevStackOffset: stackOffset,
+            //prevMargin: margin,
+            prevChildren: children
+          }))
+        } else if (!isChildrenEqual(_props.children, state.prevChildren) && !getRefValue(_refData)) {
+          const hasGlobalData = !isNullOrUndef(_props.data)
+          , newUpdateId = hasGlobalData
+             ? state.updateId
+             : state.updateId + 1;
+          setState(prevState => ({
+            ...prevState,
+            updateId: newUpdateId,
+            prevChildren: children
+          }))
+        } else {
+          setRefValue(_refData, false)
+        }
+      })
+      /*eslint-enable react-hooks/exhaustive-deps*/
 
-              } = this.state
-              , attrs = {
-                tabIndex: 0,
-                role: 'img'
-              };
 
-              if (!validateWidthHeight(width, height)) {
-                return null;
-              }
+      const attrs = {
+        tabIndex: 0,
+        role: 'img'
+      };
 
-              const clipPathId = getRefValue(this._refClipPathId)
-              , _graphicItems = renderByMap(children, {
-                clipPathId,
-                width,
-                height,
-                layout,
-                children,
+      if (!validateWidthHeight(width, height)) {
+        return null;
+      }
 
-                offset,
-                xAxisMap,
-                yAxisMap,
+      const clipPathId = getRefValue(_refClipPathId)
+      , _graphicItems = renderByMap(children, {
+        clipPathId,
+        width,
+        height,
+        layout,
+        children,
 
-                formattedGraphicalItems,
-                isTooltipActive,
-                tooltipAxis,
-                activeTooltipIndex,
-                activeLabel,
-                activeCoordinate,
-                activePayload
-              }, renderMap);
+        offset,
+        xAxisMap,
+        yAxisMap,
 
-              // The "compact" mode is mainly used as the panorama within Brush
-              if (compact) {
-                return (
-                  <Surface {...attrs} width={width} height={height} title={title} desc={desc}>
-                     <ClipPath id={clipPathId} offset={offset} />
-                     {_graphicItems}
-                  </Surface>
-                );
-              }
+        formattedGraphicalItems,
+        isTooltipActive,
+        tooltipAxis,
+        activeTooltipIndex,
+        activeLabel,
+        activeCoordinate,
+        activePayload
+      }, renderMap);
 
-              const tooltipItem = findChildByType(children, Tooltip)
-              , events = tooltipItem
-                ? tooltipItem.props.trigger === 'click'
-                   ? { onClick: this.handleClick }
-                   : {
-                       onMouseEnter: this.handleMouseEnter,
-                       onMouseMove: this.handleMouseMove,
-                       onMouseLeave: this.handleMouseLeave,
-                       ...HAS_TOUCH_EVENTS ? {
-                         onTouchMove: this.handleTouchMove,
-                         onTouchStart: this.handleTouchStart,
-                         onTouchEnd: this.handleTouchEnd
-                       } : void 0
-                     }
-                : {};
-              return (
-                <div
-                   role="region"
-                   ref={this._refContainer}
-                   className={crCn(CL_WRAPPER, className)}
-                   style={{
-                     position: 'relative',
-                     cursor: 'default',
-                     width,
-                     height,
-                     ...style
-                   }}
-                   {...events}
-                >
-                  <Surface
-                     {...attrs}
-                     width={width}
-                     height={height}
-                     title={title}
-                     desc={desc}
-                  >
-                    <ClipPath id={clipPathId} offset={offset} />
-                    {_graphicItems}
-                  </Surface>
-                  {renderLegend(
-                     width,
-                     height,
-                     margin,
-                     children,
-                     formattedGraphicalItems,
-                     this.handleLegendBBoxUpdate
-                  )}
-                  {renderTooltip(
-                     tooltipItem,
-                     isTooltipActive,
-                     activeCoordinate,
-                     activePayload,
-                     activeLabel,
-                     offset,
-                     this.handleCloseTooltip
-                   )}
-               </div>
-              );
-            }
-        };
+      // The "compact" mode is mainly used as the panorama within Brush
+      if (compact) {
+        return (
+          <Surface {...attrs} width={width} height={height} title={title} desc={desc}>
+             <ClipPath id={clipPathId} offset={offset} />
+             {_graphicItems}
+          </Surface>
+        );
+      }
+
+      const tooltipItem = findChildByType(children, Tooltip)
+      , events = tooltipItem
+        ? tooltipItem.props.trigger === 'click'
+           ? { onClick: handleClick }
+           : {
+               onMouseEnter: handleMouseEnter,
+               onMouseMove: handleMouseMove,
+               onMouseLeave: handleMouseLeave,
+               ...HAS_TOUCH_EVENTS ? {
+                 onTouchMove: handleTouchMove,
+                 onTouchStart: handleTouchStart,
+                 onTouchEnd: handleTouchEnd
+               } : void 0
+             }
+        : {};
+        return (
+          <div
+             role="region"
+             ref={_refContainer}
+             className={crCn(CL_WRAPPER, className)}
+             style={{
+               position: 'relative',
+               cursor: 'default',
+               width,
+               height,
+               ...style
+             }}
+             {...events}
+          >
+            <Surface
+               {...attrs}
+               width={width}
+               height={height}
+               title={title}
+               desc={desc}
+            >
+              <ClipPath id={clipPathId} offset={offset} />
+              {_graphicItems}
+            </Surface>
+            {renderLegend(
+               width,
+               height,
+               margin,
+               children,
+               formattedGraphicalItems,
+               handleLegendBBoxUpdate
+            )}
+            {renderTooltip(
+               tooltipItem,
+               isTooltipActive,
+               activeCoordinate,
+               activePayload,
+               activeLabel,
+               offset,
+               handleCloseTooltip
+             )}
+         </div>
+       );
+  };
+
+  ChartWrapper.displayName = chartName
+  return ChartWrapper;
+}
