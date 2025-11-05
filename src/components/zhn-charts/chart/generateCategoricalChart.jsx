@@ -110,7 +110,7 @@ export const generateCategoricalChart = (
       onMouseLeave,
       onClick
     } = _props
-    , _refData = useRef(false)
+    , _refHasDataBeenUpdated = useRef(false)
     , _refClipPathId = useRef(`${_props.id || uniqueId('recharts')}-clip`)
     , _refContainer = useRef()
     , [state, setState] = useState(() => ({
@@ -309,7 +309,7 @@ export const generateCategoricalChart = (
           //|| stackOffset !== prevState.prevStackOffset
           //|| !shallowEqual(margin, prevState.prevMargin)
         ) {
-          setRefValue(_refData, true)
+          setRefValue(_refHasDataBeenUpdated, true)
           const defaultState = _createDefaultState(_props)
           , keepFromPrevState = {
             chartX: state.chartX,
@@ -345,7 +345,7 @@ export const generateCategoricalChart = (
             //prevMargin: margin,
             prevChildren: children
           }))
-        } else if (!isChildrenEqual(_props.children, state.prevChildren) && !getRefValue(_refData)) {
+        } else if (!isChildrenEqual(_props.children, state.prevChildren) && !getRefValue(_refHasDataBeenUpdated)) {
           const hasGlobalData = !isNullOrUndef(_props.data)
           , newUpdateId = hasGlobalData
              ? state.updateId
@@ -356,7 +356,7 @@ export const generateCategoricalChart = (
             prevChildren: children
           }))
         } else {
-          setRefValue(_refData, false)
+          setRefValue(_refHasDataBeenUpdated, false)
         }
       })
       /*eslint-enable react-hooks/exhaustive-deps*/
@@ -387,9 +387,7 @@ export const generateCategoricalChart = (
         isTooltipActive,
         tooltipAxis,
         activeTooltipIndex,
-        activeLabel,
-        activeCoordinate,
-        activePayload
+        activeLabel
       }, renderMap);
 
       // The "compact" mode is mainly used as the panorama within Brush

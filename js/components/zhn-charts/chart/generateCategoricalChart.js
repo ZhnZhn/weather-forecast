@@ -76,7 +76,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         onMouseLeave,
         onClick
       } = _props,
-      _refData = (0, _uiApi.useRef)(false),
+      _refHasDataBeenUpdated = (0, _uiApi.useRef)(false),
       _refClipPathId = (0, _uiApi.useRef)((_props.id || (0, _DataUtils.uniqueId)('recharts')) + "-clip"),
       _refContainer = (0, _uiApi.useRef)(),
       [state, setState] = (0, _uiApi.useState)(() => Object.assign({}, _createDefaultState(_props), {
@@ -228,7 +228,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       //|| stackOffset !== prevState.prevStackOffset
       //|| !shallowEqual(margin, prevState.prevMargin)
       ) {
-        (0, _uiApi.setRefValue)(_refData, true);
+        (0, _uiApi.setRefValue)(_refHasDataBeenUpdated, true);
         const defaultState = _createDefaultState(_props),
           keepFromPrevState = {
             chartX: state.chartX,
@@ -255,7 +255,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           //prevMargin: margin,
           prevChildren: children
         }));
-      } else if (!(0, _ReactUtils.isChildrenEqual)(_props.children, state.prevChildren) && !(0, _uiApi.getRefValue)(_refData)) {
+      } else if (!(0, _ReactUtils.isChildrenEqual)(_props.children, state.prevChildren) && !(0, _uiApi.getRefValue)(_refHasDataBeenUpdated)) {
         const hasGlobalData = !(0, _isTypeFn.isNullOrUndef)(_props.data),
           newUpdateId = hasGlobalData ? state.updateId : state.updateId + 1;
         setState(prevState => Object.assign({}, prevState, {
@@ -263,7 +263,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           prevChildren: children
         }));
       } else {
-        (0, _uiApi.setRefValue)(_refData, false);
+        (0, _uiApi.setRefValue)(_refHasDataBeenUpdated, false);
       }
     });
     /*eslint-enable react-hooks/exhaustive-deps*/
@@ -289,9 +289,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         isTooltipActive,
         tooltipAxis,
         activeTooltipIndex,
-        activeLabel,
-        activeCoordinate,
-        activePayload
+        activeLabel
       }, _renderFn.renderMap);
 
     // The "compact" mode is mainly used as the panorama within Brush

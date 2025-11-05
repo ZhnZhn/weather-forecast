@@ -9,7 +9,6 @@ var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _CartesianAxis = require("../cartesian/CartesianAxis");
 var _Tooltip = require("../component/Tooltip");
-var _Curve = require("../shape/Curve");
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
@@ -18,13 +17,8 @@ var _renderActivePoints = require("./renderActivePoints");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _react = require("react");
 const _excluded = ["key"];
-const CL_TOOLTIP_CURSOR = "recharts-tooltip-cursor";
 const isFinit = Number.isFinite || isFinite;
-const _getObjectKeys = Object.keys;
-const _crArrFromObjByKeys = obj => obj && typeof obj === 'object' ? _getObjectKeys(obj).reduce((arr, key) => {
-  arr.push(obj[key]);
-  return arr;
-}, []) : [];
+const _getSafeValues = obj => (0, _isTypeFn.isObj)(obj) ? Object.values(obj) : [];
 const _getNumberValue = (value, dfValue) => (0, _DataUtils.isNumber)(value) ? value : dfValue;
 const renderGrid = _ref => {
   let {
@@ -36,7 +30,7 @@ const renderGrid = _ref => {
     element
   } = _ref;
   const xAxis = (0, _DataUtils.getAnyElementOfObject)(xAxisMap),
-    yAxisWithFiniteDomain = _crArrFromObjByKeys(yAxisMap).find(axis => axis.domain.every(isFinit)),
+    yAxisWithFiniteDomain = _getSafeValues(yAxisMap).find(axis => axis.domain.every(isFinit)),
     yAxis = yAxisWithFiniteDomain || (0, _DataUtils.getAnyElementOfObject)(yAxisMap),
     _props = element.props || {};
   return (0, _uiApi.cloneUiElement)(element, {
@@ -53,35 +47,6 @@ const renderGrid = _ref => {
     horizontalCoordinatesGenerator: _props.horizontalCoordinatesGenerator || _generateCategoricalChartFn.horizontalCoordinatesGenerator
   }, element.key || 'grid');
 };
-const renderReferenceElement = _ref2 => {
-  let {
-    clipPathId,
-    xAxisMap,
-    yAxisMap,
-    offset,
-    element,
-    displayName,
-    index
-  } = _ref2;
-  if (!element) {
-    return null;
-  }
-  const {
-    xAxisId,
-    yAxisId
-  } = element.props;
-  return (0, _uiApi.cloneUiElement)(element, {
-    xAxis: xAxisMap[xAxisId],
-    yAxis: yAxisMap[yAxisId],
-    viewBox: {
-      x: offset.left,
-      y: offset.top,
-      width: offset.width,
-      height: offset.height
-    },
-    clipPathId
-  }, element.key || displayName + "-" + index);
-};
 const _axesTicksGenerator = axis => (0, _ChartUtils.getTicksOfAxis)(axis, true);
 /**
  * Draw axis
@@ -95,7 +60,7 @@ const _renderAxis = (axisOptions, element, displayName, index, width, height) =>
   const {
     axisType,
     className
-  } = axisOptions;
+  } = axisOptions || {};
   return /*#__PURE__*/(0, _react.createElement)(_CartesianAxis.CartesianAxis, Object.assign({}, axisOptions, {
     key: element.key || displayName + "-" + index,
     className: (0, _styleFn.crCn)((0, _CL.crAxisCl)(axisType), className),
@@ -108,7 +73,7 @@ const _renderAxis = (axisOptions, element, displayName, index, width, height) =>
     ticksGenerator: _axesTicksGenerator
   }));
 };
-const renderXAxis = _ref3 => {
+const renderXAxis = _ref2 => {
   let {
     width,
     height,
@@ -116,11 +81,11 @@ const renderXAxis = _ref3 => {
     element,
     displayName,
     index
-  } = _ref3;
+  } = _ref2;
   const axisObj = xAxisMap[element.props.xAxisId];
   return _renderAxis(axisObj, element, displayName, index, width, height);
 };
-const renderYAxis = _ref4 => {
+const renderYAxis = _ref3 => {
   let {
     width,
     height,
@@ -128,20 +93,31 @@ const renderYAxis = _ref4 => {
     element,
     displayName,
     index
-  } = _ref4;
+  } = _ref3;
   const axisObj = yAxisMap[element.props.yAxisId];
   return _renderAxis(axisObj, element, displayName, index, width, height);
 };
-const _filterFormatItem = (item, displayName, childIndex, formattedGraphicalItems) => {
+
+/*
+const _filterFormatItem = (
+  item,
+  displayName,
+  childIndex,
+  formattedGraphicalItems
+) => {
   for (let i = 0, len = formattedGraphicalItems.length; i < len; i++) {
     const entry = formattedGraphicalItems[i];
-    if (entry.item === item || entry.props.key === item.key || displayName === (0, _ReactUtils.getDisplayName)(entry.item.type) && childIndex === entry.childIndex) {
+    if (entry.item === item ||
+      entry.props.key === item.key ||
+      (displayName === getDisplayName(entry.item.type) && childIndex === entry.childIndex)) {
       return entry;
     }
   }
   return null;
 };
-const renderGraphicChild = _ref5 => {
+*/
+
+const renderGraphicChild = _ref4 => {
   let {
     children,
     formattedGraphicalItems,
@@ -152,16 +128,22 @@ const renderGraphicChild = _ref5 => {
     element,
     displayName,
     index
-  } = _ref5;
-  const item = _filterFormatItem(element, displayName, index, formattedGraphicalItems);
+  } = _ref4;
+  const item = formattedGraphicalItems.find(item => item.childIndex === index);
+  /*
+  const item = _filterFormatItem(
+    element,
+    displayName,
+    index,
+    formattedGraphicalItems
+  );
+  */
   if (!item) {
     return null;
   }
   const tooltipItem = (0, _ReactUtils.findChildByType)(children, _Tooltip.Tooltip),
     {
-      points,
-      isRange,
-      baseLine
+      points
     } = item.props,
     {
       activeDot,
@@ -174,96 +156,22 @@ const renderGraphicChild = _ref5 => {
     } = _item$props,
     itemProps = (0, _objectWithoutPropertiesLoose2.default)(_item$props, _excluded),
     graphicalItem = (0, _uiApi.cloneUiElement)(element, Object.assign({}, itemProps), key);
-  function findWithPayload(entry) {
-    return (0, _isTypeFn.isFn)(tooltipAxis.dataKey) ? tooltipAxis.dataKey(entry.payload) : null;
-  }
   if (hasActive) {
-    let activePoint, basePoint;
-    if (tooltipAxis.dataKey && !tooltipAxis.allowDuplicatedCategory) {
-      // number transform to string
-      const specifiedKey = (0, _isTypeFn.isFn)(tooltipAxis.dataKey) ? findWithPayload : 'payload.'.concat(tooltipAxis.dataKey.toString());
-      activePoint = (0, _DataUtils.findEntryInArray)(points, specifiedKey, activeLabel);
-      basePoint = isRange && baseLine && (0, _DataUtils.findEntryInArray)(baseLine, specifiedKey, activeLabel);
-    } else {
-      activePoint = points[activeTooltipIndex];
-      basePoint = isRange && baseLine && baseLine[activeTooltipIndex];
-    }
+    const activePoint = tooltipAxis.dataKey && !tooltipAxis.allowDuplicatedCategory ? (0, _DataUtils.findEntryInArray)(points, (0, _isTypeFn.isFn)(tooltipAxis.dataKey) ? entry => tooltipAxis.dataKey(entry.payload) : 'payload.'.concat('' + tooltipAxis.dataKey), activeLabel) : points[activeTooltipIndex];
     if (!(0, _isTypeFn.isNullOrUndef)(activePoint)) {
       return [graphicalItem, ...(0, _renderActivePoints.renderActivePoints)({
-        isRange,
         item,
         activePoint,
-        basePoint,
         childIndex: activeTooltipIndex
       })];
     }
   }
-  return isRange ? [graphicalItem, null, null] : [graphicalItem, null];
-};
-const _getCursorPoints = (layout, activeCoordinate, offset) => {
-  let x1, y1, x2, y2;
-  if ((0, _ChartUtils.isLayoutHorizontal)(layout)) {
-    x1 = activeCoordinate.x;
-    x2 = x1;
-    y1 = offset.top;
-    y2 = offset.top + offset.height;
-  } else if ((0, _ChartUtils.isLayoutVertical)(layout)) {
-    y1 = activeCoordinate.y;
-    y2 = y1;
-    x1 = offset.left;
-    x2 = offset.left + offset.width;
-  }
-  return [{
-    x: x1,
-    y: y1
-  }, {
-    x: x2,
-    y: y2
-  }];
-};
-const renderCursor = _ref6 => {
-  let {
-    layout,
-    isTooltipActive,
-    activePayload,
-    activeTooltipIndex,
-    activeCoordinate,
-    offset,
-    element
-  } = _ref6;
-  const _elementPropsCursor = ((element || {}).props || {}).cursor;
-  if (!_elementPropsCursor || !isTooltipActive || !activeCoordinate) {
-    return null;
-  }
-  const restProps = {
-      points: _getCursorPoints(layout, activeCoordinate, offset)
-    },
-    cursorComp = _Curve.Curve,
-    key = element.key || '_recharts-cursor',
-    cursorProps = Object.assign({
-      stroke: '#ccc',
-      pointerEvents: 'none'
-    }, offset, restProps, {
-      key,
-      className: CL_TOOLTIP_CURSOR,
-      payload: activePayload,
-      payloadIndex: activeTooltipIndex
-    });
-  return (0, _uiApi.isValidElement)(_elementPropsCursor) ? (0, _uiApi.cloneUiElement)(_elementPropsCursor, cursorProps) : (0, _uiApi.createElement)(cursorComp, cursorProps);
+  return [graphicalItem, null];
 };
 const renderMap = exports.renderMap = {
   CartesianGrid: {
     handler: renderGrid,
     once: true
-  },
-  ReferenceArea: {
-    handler: renderReferenceElement
-  },
-  ReferenceLine: {
-    handler: renderReferenceElement
-  },
-  ReferenceDot: {
-    handler: renderReferenceElement
   },
   XAxis: {
     handler: renderXAxis
@@ -279,10 +187,6 @@ const renderMap = exports.renderMap = {
   },
   Area: {
     handler: renderGraphicChild
-  },
-  Tooltip: {
-    handler: renderCursor,
-    once: true
   }
 };
 //# sourceMappingURL=renderFn.js.map

@@ -1,25 +1,16 @@
 import {
+  isObj,
   isNullOrUndef,
   isFn
 } from '../../../utils/isTypeFn';
 
-import {
-  isValidElement,
-  cloneUiElement,
-  createElement
-} from '../../uiApi';
-
+import { cloneUiElement } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
 import { CartesianAxis } from '../cartesian/CartesianAxis';
 import { Tooltip } from '../component/Tooltip';
-import { Curve } from '../shape/Curve';
 
-import {
-  isLayoutHorizontal,
-  isLayoutVertical,
-  getTicksOfAxis
-} from '../util/ChartUtils';
+import { getTicksOfAxis } from '../util/ChartUtils';
 
 import {
   isNumber,
@@ -27,10 +18,7 @@ import {
   findEntryInArray
 } from '../util/DataUtils';
 
-import {
-  getDisplayName,
-  findChildByType
-} from '../util/ReactUtils';
+import { findChildByType } from '../util/ReactUtils';
 
 import { crAxisCl } from '../CL';
 
@@ -40,19 +28,12 @@ import {
   horizontalCoordinatesGenerator
 } from './generateCategoricalChartFn';
 
-const CL_TOOLTIP_CURSOR = "recharts-tooltip-cursor"
-
 const isFinit = Number.isFinite || isFinite;
-const _getObjectKeys = Object.keys;
-const _crArrFromObjByKeys = (
+const _getSafeValues = (
   obj
-) => obj && typeof obj === 'object'
-   ? _getObjectKeys(obj)
-       .reduce((arr, key) => {
-          arr.push(obj[key])
-          return arr
-        }, [])
-   : [];
+) => isObj(obj)
+  ? Object.values(obj)
+  : [];
 
 const _getNumberValue = (
   value,
@@ -72,7 +53,7 @@ const renderGrid = ({
   element
 }) => {
     const xAxis = getAnyElementOfObject(xAxisMap)
-    , yAxisWithFiniteDomain = _crArrFromObjByKeys(yAxisMap)
+    , yAxisWithFiniteDomain = _getSafeValues(yAxisMap)
        .find(axis => axis.domain.every(isFinit))
     , yAxis = yAxisWithFiniteDomain || getAnyElementOfObject(yAxisMap)
     , _props = element.props || {};
@@ -91,37 +72,6 @@ const renderGrid = ({
       horizontalCoordinatesGenerator: _props.horizontalCoordinatesGenerator || horizontalCoordinatesGenerator
     }, element.key || 'grid');
 };
-
-const renderReferenceElement = ({
-  clipPathId,
-
-  xAxisMap,
-  yAxisMap,
-  offset,
-
-  element,
-  displayName,
-  index
-}) => {
-  if (!element) {
-    return null;
-  }
-  const {
-    xAxisId,
-    yAxisId
-  } = element.props;
-  return cloneUiElement(element, {
-    xAxis: xAxisMap[xAxisId],
-    yAxis: yAxisMap[yAxisId],
-    viewBox: {
-      x: offset.left,
-      y: offset.top,
-      width: offset.width,
-      height: offset.height
-    },
-    clipPathId
-  }, element.key || `${displayName}-${index}`);
-}
 
 const _axesTicksGenerator = (axis) => getTicksOfAxis(axis, true)
 /**
@@ -193,6 +143,7 @@ const renderYAxis = ({
   );
 };
 
+/*
 const _filterFormatItem = (
   item,
   displayName,
@@ -209,6 +160,7 @@ const _filterFormatItem = (
   }
   return null;
 };
+*/
 
 const renderGraphicChild = ({
   children,
@@ -223,21 +175,23 @@ const renderGraphicChild = ({
   displayName,
   index
 }) => {
+  const item = formattedGraphicalItems
+    .find(item => item.childIndex === index)
+  /*
   const item = _filterFormatItem(
     element,
     displayName,
     index,
     formattedGraphicalItems
   );
+  */
   if (!item) {
     return null;
   }
 
   const tooltipItem = findChildByType(children, Tooltip)
   , {
-    points,
-    isRange,
-    baseLine
+    points
   } = item.props
   , {
     activeDot,
@@ -254,123 +208,37 @@ const renderGraphicChild = ({
       ...itemProps
     }, key);
 
-  function findWithPayload(entry) {
-    return isFn(tooltipAxis.dataKey)
-      ? tooltipAxis.dataKey(entry.payload)
-      : null;
-  }
-
   if (hasActive) {
-    let activePoint, basePoint;
-    if (tooltipAxis.dataKey && !tooltipAxis.allowDuplicatedCategory) {
-      // number transform to string
-      const specifiedKey = isFn(tooltipAxis.dataKey)
-        ? findWithPayload
-        : 'payload.'.concat(tooltipAxis.dataKey.toString());
-      activePoint = findEntryInArray(points, specifiedKey, activeLabel);
-      basePoint = isRange && baseLine && findEntryInArray(baseLine, specifiedKey, activeLabel);
-    } else {
-      activePoint = points[activeTooltipIndex];
-      basePoint = isRange && baseLine && baseLine[activeTooltipIndex];
-    }
+    const activePoint = tooltipAxis.dataKey && !tooltipAxis.allowDuplicatedCategory
+      ? findEntryInArray(
+          points,
+          isFn(tooltipAxis.dataKey)
+            ? (entry) => tooltipAxis.dataKey(entry.payload)
+            : 'payload.'.concat(''+tooltipAxis.dataKey),
+          activeLabel
+        )
+      : points[activeTooltipIndex];
 
     if (!isNullOrUndef(activePoint)) {
       return [
         graphicalItem,
         ...renderActivePoints({
-            isRange,
             item,
             activePoint,
-            basePoint,
             childIndex: activeTooltipIndex
         })
       ];
     }
   }
 
-  return isRange
-    ? [graphicalItem, null, null]
-    : [graphicalItem, null];
+  return [graphicalItem, null];
 }
-
-const _getCursorPoints = (
-  layout,
-  activeCoordinate,
-  offset
-) => {
-  let x1, y1, x2, y2;
-  if (isLayoutHorizontal(layout)) {
-    x1 = activeCoordinate.x;
-    x2 = x1;
-    y1 = offset.top;
-    y2 = offset.top + offset.height;
-  } else if (isLayoutVertical(layout)) {
-    y1 = activeCoordinate.y;
-    y2 = y1;
-    x1 = offset.left;
-    x2 = offset.left + offset.width;
-  }
-  return [
-    { x: x1, y: y1 },
-    { x: x2, y: y2 }
-  ];
-};
-
-const renderCursor = ({
-  layout,
-
-  isTooltipActive,
-  activePayload,
-  activeTooltipIndex,
-
-  activeCoordinate,
-  offset,
-  element
-}) => {
-  const _elementPropsCursor = ((element || {})
-   .props || {})
-   .cursor;
-
-  if (!_elementPropsCursor
-    || !isTooltipActive
-    || !activeCoordinate) {
-    return null;
-  }
-
-  const restProps = {
-    points: _getCursorPoints(
-      layout,
-      activeCoordinate,
-      offset
-    )
-  }
-  , cursorComp = Curve
-  , key = element.key || '_recharts-cursor'
-  , cursorProps = {
-      stroke: '#ccc',
-      pointerEvents: 'none',
-      ...offset,
-      ...restProps,
-      key,
-      className: CL_TOOLTIP_CURSOR,
-      payload: activePayload,
-      payloadIndex: activeTooltipIndex
-  };
-
-  return isValidElement(_elementPropsCursor)
-    ? cloneUiElement(_elementPropsCursor, cursorProps)
-    : createElement(cursorComp, cursorProps);
-};
 
 export const renderMap = {
   CartesianGrid: { handler: renderGrid, once: true },
-  ReferenceArea: { handler: renderReferenceElement },
-  ReferenceLine: { handler: renderReferenceElement },
-  ReferenceDot: { handler: renderReferenceElement },
   XAxis: { handler: renderXAxis },
   YAxis: { handler: renderYAxis },
   Bar: { handler: renderGraphicChild },
   Line: { handler: renderGraphicChild },
-  Area: { handler: renderGraphicChild },
-  Tooltip: { handler: renderCursor, once: true }
+  Area: { handler: renderGraphicChild }  
 }
