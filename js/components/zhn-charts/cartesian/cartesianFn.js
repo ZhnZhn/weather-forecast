@@ -1,11 +1,10 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isNeedClip = exports.isHideOrNoData = exports.fCreateElement = exports.dataPointFormatter = exports.crClipPathIdIf = exports.crClipPath = exports.DF_AXIS_PROPS = void 0;
+exports.isNeedClip = exports.isHideOrNoData = exports.fCreateElement = exports.dataPointFormatter = exports.crClipPath = exports.DF_AXIS_PROPS = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _ChartUtils = require("../util/ChartUtils");
-var _IfOverflowMatches = require("../util/IfOverflowMatches");
 const DF_AXIS_PROPS = exports.DF_AXIS_PROPS = {
   allowDataOverflow: false,
   allowDecimals: true,
@@ -32,8 +31,6 @@ const isNeedClip = _ref2 => {
   return _isAllowDataOverflow(xAxis) || _isAllowDataOverflow(yAxis);
 };
 exports.isNeedClip = isNeedClip;
-const crClipPathIdIf = props => (0, _IfOverflowMatches.ifOverflowMatches)(props, 'hidden') ? "url(#" + props.clipPathId + ")" : void 0;
-exports.crClipPathIdIf = crClipPathIdIf;
 const fCreateElement = crElement => (option, props, value) => (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneUiElement)(option, props) : (0, _isTypeFn.isFn)(option) ? option(props) : crElement(props, option, value);
 exports.fCreateElement = fCreateElement;
 const dataPointFormatter = (dataPoint, dataKey) => ({
