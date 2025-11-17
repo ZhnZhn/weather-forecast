@@ -5,6 +5,7 @@ import {
 
 import { crCn } from '../../styleFn';
 
+import { isLayoutHorizontal } from '../util/ChartUtils';
 import { adaptEventsOfChild } from '../util/types';
 import { Surface } from '../container/Surface';
 
@@ -74,6 +75,12 @@ const _renderIcon = (
   return null;
 }
 
+const S_SURFACE_SVG = {
+  display: 'inline-block',
+  verticalAlign: 'middle',
+  marginRight: 4
+};
+
 export const renderItems = (
   props
 ) => {
@@ -91,39 +98,38 @@ export const renderItems = (
      height: SIZE
   }
   , itemStyle = {
-     display: layout === 'horizontal'
+     display: isLayoutHorizontal(layout)
        ? 'inline-block'
        : 'block',
      marginRight: 10
-  }
-  , svgStyle = {
-     display: 'inline-block',
-     verticalAlign: 'middle',
-     marginRight: 4
-  };
+  };  
   return payload.map((entry, i) => {
     const finalFormatter = entry.formatter || formatter
-    , className = crCn(
-      `${CL_LEGEND_ITEM} legend-item-${i}`,
-      entry.inactive && 'inactive'
-    );
-    if (entry.type === 'none') {
-      return null;
-    }
-    const color = entry.inactive
-      ? inactiveColor
-      : entry.color;
-    return (
+
+    return entry.type === 'none' ? null : (
       <li
-        className={className}
-        style={itemStyle}
         key={`legend-item-${i}`}
+        className={crCn(
+          `${CL_LEGEND_ITEM} legend-item-${i}`,
+          entry.inactive && 'inactive'
+        )}
+        style={itemStyle}
         {...adaptEventsOfChild(props, entry, i)}
       >
-        <Surface width={iconSize} height={iconSize} viewBox={viewBox} style={svgStyle}>
+        <Surface
+           width={iconSize}
+           height={iconSize}
+           viewBox={viewBox}
+           style={S_SURFACE_SVG}
+        >
           {_renderIcon(entry)}
         </Surface>
-        <span className={CL_LEGEND_ITEM_TEXT} style={{ color }}>
+        <span
+          className={CL_LEGEND_ITEM_TEXT}
+          style={{ color: entry.inactive
+            ? inactiveColor
+            : entry.color }}
+        >
         {
           finalFormatter
            ? finalFormatter(entry.value, entry, i)
