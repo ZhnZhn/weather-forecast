@@ -91,7 +91,7 @@ const _crCurrentStrokeDashArray = (
   : `${curLength}px ${totalLength - curLength}px`;
 
 export const LineCurveWithAnimation = ({
-  clipPathProps,
+  clipPath,
   prevPoints,
   totalLength,
   props,
@@ -150,7 +150,7 @@ export const LineCurveWithAnimation = ({
           return (
             <LineCurveStatically
               points={_points}
-              clipPathProps={clipPathProps}
+              clipPath={clipPath}
               props={props}
               refPath={refPath}
               options={options}

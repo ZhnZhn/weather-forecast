@@ -3,7 +3,7 @@ import { CL_LINE_CURVE } from '../CL';
 
 export const LineCurveStatically = ({
   points,
-  clipPathProps,
+  clipPath,
   props,
   refPath,
   options
@@ -26,10 +26,10 @@ export const LineCurveStatically = ({
      radius: restProps.radius,
      width: restProps.width,
      height: restProps.height,
-     
+
      fill: 'none',
      className: CL_LINE_CURVE,
-     ...clipPathProps,
+     clipPath,
      points,
      ...options,
      type,

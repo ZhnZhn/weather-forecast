@@ -5,7 +5,8 @@ import {
   useRef,
   useState,
   useEffect,
-  crProps
+  crProps,
+  setDisplayNameTo
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
@@ -117,9 +118,7 @@ export const Line = memo((props) => {
   const hasSinglePoint = points.length === 1
   , layerClass = crCn(CL_LINE, className)
   , needClip = isNeedClip(_props)
-  , _clipPathProps = {
-      clipPath: crClipPath(needClip, clipPathId)
-  }
+  , _clipPath = crClipPath(needClip, clipPathId)
   , _isAnimationNotActiveOrFinished = !isAnimationActive
     || isAnimationFinished
   , _isLineDots = (hasSinglePoint || dot)
@@ -138,7 +137,7 @@ export const Line = memo((props) => {
       />
       {_isLineCurveWithAnimaton
          ? (<LineCurveWithAnimation
-              clipPathProps={_clipPathProps}
+              clipPath={_clipPath}
               prevPoints={prevPoints}
               totalLength={totalLength}
               props={_props}
@@ -147,21 +146,21 @@ export const Line = memo((props) => {
               handleAnimationEnd={handleAnimationEnd}
           />)
         : (<LineCurveStatically
-              clipPathProps={_clipPathProps}
+              clipPath={_clipPath}
               points={points}
               props={_props}
               refPath={_refPath}
           />)
       }
       {_isLineDots && (<LineDots
-          clipPathProps={_clipPathProps}
+          clipPath={_clipPath}
           props={_props}
       />)}
   </Layer>
  );
 })
 
-Line.displayName = 'Line';
+setDisplayNameTo(Line, 'Line')
 
 /**
  * Compose the data of each group

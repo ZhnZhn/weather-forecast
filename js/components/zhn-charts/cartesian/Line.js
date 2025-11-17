@@ -78,9 +78,7 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
   const hasSinglePoint = points.length === 1,
     layerClass = (0, _styleFn.crCn)(_CL.CL_LINE, className),
     needClip = (0, _cartesianFn.isNeedClip)(_props),
-    _clipPathProps = {
-      clipPath: (0, _cartesianFn.crClipPath)(needClip, clipPathId)
-    },
+    _clipPath = (0, _cartesianFn.crClipPath)(needClip, clipPathId),
     _isAnimationNotActiveOrFinished = !isAnimationActive || isAnimationFinished,
     _isLineDots = (hasSinglePoint || dot) && _isAnimationNotActiveOrFinished,
     _isLineCurveWithAnimaton = !hasSinglePoint && isAnimationActive
@@ -93,7 +91,7 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
       id: clipPathId,
       props: _props
     }), _isLineCurveWithAnimaton ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineCurveWithAnimation.LineCurveWithAnimation, {
-      clipPathProps: _clipPathProps,
+      clipPath: _clipPath,
       prevPoints: prevPoints,
       totalLength: totalLength,
       props: _props,
@@ -101,17 +99,17 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
       handleAnimationStart: handleAnimationStart,
       handleAnimationEnd: handleAnimationEnd
     }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineCurveStatically.LineCurveStatically, {
-      clipPathProps: _clipPathProps,
+      clipPath: _clipPath,
       points: points,
       props: _props,
       refPath: _refPath
     }), _isLineDots && /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineDots.LineDots, {
-      clipPathProps: _clipPathProps,
+      clipPath: _clipPath,
       props: _props
     })]
   });
 });
-Line.displayName = 'Line';
+(0, _uiApi.setDisplayNameTo)(Line, 'Line');
 
 /**
  * Compose the data of each group

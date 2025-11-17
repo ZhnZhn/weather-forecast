@@ -27,7 +27,7 @@ const _crDotItem = (
 const _renderDotItem = fCreateElement(_crDotItem);
 
 export const LineDots = ({
-  clipPathProps,
+  clipPath,
   props
 }) => {
   const {
@@ -37,10 +37,10 @@ export const LineDots = ({
   } = props;
   return (
     <Layer
-       className={CL_LINE_DOTS}
        key="dots"
-       {...clipPathProps}
+       className={CL_LINE_DOTS}
        role="img"
+       clipPath={clipPath}
     >
       {points.map((entry, i) => _renderDotItem(dot, {
          key: `dot-${i}`,
@@ -53,7 +53,7 @@ export const LineDots = ({
          radius: props.radius,
          width: props.width,
          height: props.height,
-         
+
          value: entry.value,
          dataKey,
          cx: entry.x,

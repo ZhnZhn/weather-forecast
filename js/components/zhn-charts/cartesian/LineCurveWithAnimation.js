@@ -27,24 +27,23 @@ const _getStrokeDasharray = (length, totalLength, lines) => {
     }
   }
   const emptyLines = remainLines.length % 2 === 0 ? [0, restLength] : [restLength];
-  return [..._repeat(lines, count), ...remainLines, ...emptyLines].map(line => `${line}px`).join(', ');
+  return [..._repeat(lines, count), ...remainLines, ...emptyLines].map(line => line + "px").join(', ');
 };
 const _mathFloor = Math.floor;
 const _crStepItem = (entry, prev, animateNewValues, width, height, t) => {
   const [x, y] = prev ? [(0, _DataUtils.getInterpolatedNumber)(prev.x, entry.x, t), (0, _DataUtils.getInterpolatedNumber)(prev.y, entry.y, t)]
   // magic number of faking previous x and y location
   : animateNewValues ? [(0, _DataUtils.getInterpolatedNumber)(width * 2, entry.x, t), (0, _DataUtils.getInterpolatedNumber)(height / 2, entry.y, t)] : [entry.x, entry.y];
-  return {
-    ...entry,
+  return Object.assign({}, entry, {
     x,
     y
-  };
+  });
 };
-const _crCurrentStrokeDashArray = (curLength, totalLength, strokeDasharray) => strokeDasharray ? _getStrokeDasharray(curLength, totalLength, `${strokeDasharray}`.split(/[,\s]+/gim).map(num => parseFloat(num)) // lines
-) : `${curLength}px ${totalLength - curLength}px`;
+const _crCurrentStrokeDashArray = (curLength, totalLength, strokeDasharray) => strokeDasharray ? _getStrokeDasharray(curLength, totalLength, ("" + strokeDasharray).split(/[,\s]+/gim).map(num => parseFloat(num)) // lines
+) : curLength + "px " + (totalLength - curLength) + "px";
 const LineCurveWithAnimation = _ref => {
   let {
-    clipPathProps,
+    clipPath,
     prevPoints,
     totalLength,
     props,
@@ -78,13 +77,13 @@ const LineCurveWithAnimation = _ref => {
       }];
       return /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineCurveStatically.LineCurveStatically, {
         points: _points,
-        clipPathProps: clipPathProps,
+        clipPath: clipPath,
         props: props,
         refPath: refPath,
         options: options
       });
     }
-  }, `line-${animationId}`);
+  }, "line-" + animationId);
 };
 exports.LineCurveWithAnimation = LineCurveWithAnimation;
 //# sourceMappingURL=LineCurveWithAnimation.js.map
