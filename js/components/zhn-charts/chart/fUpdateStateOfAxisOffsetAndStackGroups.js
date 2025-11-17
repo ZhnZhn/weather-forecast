@@ -5,6 +5,7 @@ exports.fUpdateStateOfAxisMapsOffsetAndStackGroups = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _ChartUtils = require("../util/ChartUtils");
 var _ReactUtils = require("../util/ReactUtils");
+var _Legend = require("../component/Legend");
 var _chartFn = require("./chartFn");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _calculateOffset = require("./calculateOffset");
@@ -165,7 +166,7 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
     const offset = (0, _calculateOffset.calculateOffset)(Object.assign({}, axisObj, {
       props,
       graphicalItems
-    }), legendBBox);
+    }), legendBBox, (0, _ReactUtils.findChildByType)(children, _Legend.Legend));
     _getObjectKeys(axisObj).forEach(key => {
       axisObj[key] = formatAxisMap(props, axisObj[key], offset, key.replace('Map', ''), chartName);
     });

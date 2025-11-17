@@ -13,8 +13,11 @@ import {
   parseChildIndex,
   validateWidthHeight,
   getDisplayName,
-  findAllByType
+  findAllByType,
+  findChildByType
 } from '../util/ReactUtils';
+
+import { Legend } from '../component/Legend';
 
 import {
   getDisplayedData
@@ -217,7 +220,7 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
       ...axisObj,
       props,
       graphicalItems
-    }, legendBBox);
+    }, legendBBox, findChildByType(children, Legend));
 
     _getObjectKeys(axisObj)
        .forEach(key => {
@@ -234,7 +237,7 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
         graphicalItems,
         stackGroups,
         offset,
-    });    
+    });
     return {
       formattedGraphicalItems,
       graphicalItems,
