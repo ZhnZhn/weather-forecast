@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isNeedClip = exports.isHideOrNoData = exports.fCreateElement = exports.dataPointFormatter = exports.crClipPathProps = exports.crClipPathIdIf = exports.crClipPath = exports.DF_AXIS_PROPS = void 0;
+exports.isNeedClip = exports.isHideOrNoData = exports.fCreateElement = exports.dataPointFormatter = exports.crClipPathIdIf = exports.crClipPath = exports.DF_AXIS_PROPS = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _ChartUtils = require("../util/ChartUtils");
@@ -45,8 +45,4 @@ const dataPointFormatter = (dataPoint, dataKey) => ({
 exports.dataPointFormatter = dataPointFormatter;
 const crClipPath = (needClip, clipPathId) => needClip ? "url(#clipPath-" + clipPathId + ")" : null;
 exports.crClipPath = crClipPath;
-const crClipPathProps = (needClip, clipPathId) => ({
-  clipPath: crClipPath(needClip, clipPathId)
-});
-exports.crClipPathProps = crClipPathProps;
 //# sourceMappingURL=cartesianFn.js.map

@@ -78,7 +78,9 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
   const hasSinglePoint = points.length === 1,
     layerClass = (0, _styleFn.crCn)(_CL.CL_LINE, className),
     needClip = (0, _cartesianFn.isNeedClip)(_props),
-    _clipPathProps = (0, _cartesianFn.crClipPathProps)(needClip, clipPathId),
+    _clipPathProps = {
+      clipPath: (0, _cartesianFn.crClipPath)(needClip, clipPathId)
+    },
     _isAnimationNotActiveOrFinished = !isAnimationActive || isAnimationFinished,
     _isLineDots = (hasSinglePoint || dot) && _isAnimationNotActiveOrFinished,
     _isLineCurveWithAnimaton = !hasSinglePoint && isAnimationActive

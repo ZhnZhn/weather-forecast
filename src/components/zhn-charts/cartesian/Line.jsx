@@ -19,7 +19,7 @@ import {
 import {
   isHideOrNoData,
   isNeedClip,
-  crClipPathProps
+  crClipPath
 } from './cartesianFn';
 
 import useAnimationHandle from './useAnimationHandle';
@@ -117,7 +117,9 @@ export const Line = memo((props) => {
   const hasSinglePoint = points.length === 1
   , layerClass = crCn(CL_LINE, className)
   , needClip = isNeedClip(_props)
-  , _clipPathProps = crClipPathProps(needClip, clipPathId)
+  , _clipPathProps = {
+      clipPath: crClipPath(needClip, clipPathId)
+  }
   , _isAnimationNotActiveOrFinished = !isAnimationActive
     || isAnimationFinished
   , _isLineDots = (hasSinglePoint || dot)

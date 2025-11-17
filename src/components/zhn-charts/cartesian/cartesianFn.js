@@ -33,7 +33,7 @@ export const isNeedClip = ({
  xAxis,
  yAxis
 }) => _isAllowDataOverflow(xAxis)
-  || _isAllowDataOverflow(yAxis) 
+  || _isAllowDataOverflow(yAxis)
 
 export const crClipPathIdIf = (
   props
@@ -71,10 +71,3 @@ export const crClipPath = (
 ) => needClip
   ? `url(#clipPath-${clipPathId})`
   : null
-
-export const crClipPathProps = (
-  needClip,
-  clipPathId
-)=> ({
-  clipPath: crClipPath(needClip, clipPathId)
-})
