@@ -23,15 +23,16 @@ const isHideOrNoData = (_ref, data) => {
   return hide || !data || !data.length;
 };
 exports.isHideOrNoData = isHideOrNoData;
+const _isAllowDataOverflow = axis => axis && axis.allowDataOverflow;
 const isNeedClip = _ref2 => {
   let {
     xAxis,
     yAxis
   } = _ref2;
-  return xAxis && xAxis.allowDataOverflow || yAxis && yAxis.allowDataOverflow;
+  return _isAllowDataOverflow(xAxis) || _isAllowDataOverflow(yAxis);
 };
 exports.isNeedClip = isNeedClip;
-const crClipPathIdIf = props => (0, _IfOverflowMatches.ifOverflowMatches)(props, 'hidden') ? `url(#${props.clipPathId})` : void 0;
+const crClipPathIdIf = props => (0, _IfOverflowMatches.ifOverflowMatches)(props, 'hidden') ? "url(#" + props.clipPathId + ")" : void 0;
 exports.crClipPathIdIf = crClipPathIdIf;
 const fCreateElement = crElement => (option, props, value) => (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneUiElement)(option, props) : (0, _isTypeFn.isFn)(option) ? option(props) : crElement(props, option, value);
 exports.fCreateElement = fCreateElement;
@@ -42,7 +43,7 @@ const dataPointFormatter = (dataPoint, dataKey) => ({
   errorVal: (0, _ChartUtils.getValueByDataKey)(dataPoint, dataKey)
 });
 exports.dataPointFormatter = dataPointFormatter;
-const crClipPath = (needClip, clipPathId) => needClip ? `url(#clipPath-${clipPathId})` : null;
+const crClipPath = (needClip, clipPathId) => needClip ? "url(#clipPath-" + clipPathId + ")" : null;
 exports.crClipPath = crClipPath;
 const crClipPathProps = (needClip, clipPathId) => ({
   clipPath: crClipPath(needClip, clipPathId)

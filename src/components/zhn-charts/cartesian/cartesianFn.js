@@ -27,11 +27,13 @@ export const isHideOrNoData = (
   data
 ) => hide || !data || !data.length
 
+const _isAllowDataOverflow = axis => axis
+  && axis.allowDataOverflow;
 export const isNeedClip = ({
  xAxis,
  yAxis
-}) => (xAxis && xAxis.allowDataOverflow)
-  || (yAxis && yAxis.allowDataOverflow);
+}) => _isAllowDataOverflow(xAxis)
+  || _isAllowDataOverflow(yAxis) 
 
 export const crClipPathIdIf = (
   props
