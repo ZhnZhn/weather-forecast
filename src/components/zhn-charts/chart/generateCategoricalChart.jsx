@@ -62,6 +62,22 @@ const _inRange = (
   ? { x, y }
   : null;
 
+const _crMouseRange = (
+  containerElement,
+  evt,
+  layout,
+  offset
+) => {
+  const _containerOffset = getOffset(containerElement)
+  , _e = calculateChartCoordinate(evt, _containerOffset);
+  return _inRange(
+     _e.chartX,
+     _e.chartY,
+     layout,
+     offset
+  );
+}
+
 const _crNextUpdateId = (
   data,
   updateId
@@ -181,13 +197,12 @@ export const generateCategoricalChart = (
           if (!_containerElement) {
             return null;
           }
-          const containerOffset = getOffset(_containerElement)
-          , e = calculateChartCoordinate(evt, containerOffset)
-          , rangeObj = _inRange(
-             e.chartX,
-             e.chartY,
-             layout,
-             offset
+
+          const rangeObj = _crMouseRange(
+            _containerElement,
+            evt,
+            layout,
+            offset
           );
           if (!rangeObj) {
             return null;
@@ -209,7 +224,8 @@ export const generateCategoricalChart = (
           );
           return tooltipData
             ? {
-                ...e,
+                chartX: rangeObj.x,
+                chartY: rangeObj.y,
                 ...tooltipData
               }
             : null;

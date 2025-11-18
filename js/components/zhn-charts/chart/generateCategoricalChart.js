@@ -29,6 +29,11 @@ const _inRange = (x, y, layout, offset) => ((0, _ChartUtils.isLayoutHorizontal)(
   x,
   y
 } : null;
+const _crMouseRange = (containerElement, evt, layout, offset) => {
+  const _containerOffset = (0, _DOMUtils.getOffset)(containerElement),
+    _e = (0, _DOMUtils.calculateChartCoordinate)(evt, _containerOffset);
+  return _inRange(_e.chartX, _e.chartY, layout, offset);
+};
 const _crNextUpdateId = (data, updateId) => (0, _isTypeFn.isNullOrUndef)(data) ? updateId + 1 : updateId;
 const DF_PROPS = {
     layout: 'horizontal',
@@ -129,9 +134,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         if (!_containerElement) {
           return null;
         }
-        const containerOffset = (0, _DOMUtils.getOffset)(_containerElement),
-          e = (0, _DOMUtils.calculateChartCoordinate)(evt, containerOffset),
-          rangeObj = _inRange(e.chartX, e.chartY, layout, offset);
+        const rangeObj = _crMouseRange(_containerElement, evt, layout, offset);
         if (!rangeObj) {
           return null;
         }
@@ -143,7 +146,10 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           dataStartIndex,
           dataEndIndex
         }, data, layout, rangeObj);
-        return tooltipData ? Object.assign({}, e, tooltipData) : null;
+        return tooltipData ? Object.assign({
+          chartX: rangeObj.x,
+          chartY: rangeObj.y
+        }, tooltipData) : null;
       },
       handleMouseEnter = evt => {
         const mouse = getMouseInfo(evt);
