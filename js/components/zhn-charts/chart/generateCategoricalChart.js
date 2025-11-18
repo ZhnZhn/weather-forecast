@@ -1,5 +1,6 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.generateCategoricalChart = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
@@ -13,6 +14,7 @@ var _ReactUtils = require("../util/ReactUtils");
 var _DOMUtils = require("../util/DOMUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ChartUtils = require("../util/ChartUtils");
+var _useLegendBox = _interopRequireDefault(require("./useLegendBox"));
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _renderFn = require("./renderFn");
 var _renderLegend = require("./renderLegend");
@@ -89,6 +91,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       _refHasDataBeenUpdated = (0, _uiApi.useRef)(false),
       _refClipPathId = (0, _uiApi.useRef)((_props.id || (0, _DataUtils.uniqueId)('recharts')) + "-clip"),
       _refContainer = (0, _uiApi.useRef)(),
+      [legendBBox, handleLegendBBoxUpdate] = (0, _useLegendBox.default)(),
       [state, setState] = (0, _uiApi.useState)(() => Object.assign({}, _createDefaultState(_props), {
         updateId: 0,
         prevData: data,
@@ -104,7 +107,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         activeTooltipIndex,
         dataStartIndex,
         dataEndIndex,
-        legendBBox,
         updateId
       } = state,
       {
@@ -122,13 +124,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         dataEndIndex,
         updateId
       }, legendBBox), [_props, dataStartIndex, dataEndIndex, updateId, legendBBox]),
-      handleLegendBBoxUpdate = legendBBox => {
-        if (legendBBox) {
-          setState(prevState => Object.assign({}, prevState, {
-            legendBBox
-          }));
-        }
-      },
       getMouseInfo = evt => {
         const _containerElement = (0, _uiApi.getRefValue)(_refContainer);
         if (!_containerElement) {

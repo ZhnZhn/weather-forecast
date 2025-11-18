@@ -1,0 +1,21 @@
+{
+ "version": 3,
+ "sources": [
+  "../../../../src/components/zhn-charts/chart/useLegendBox.js"
+ ],
+ "file": "../../../../src/components/zhn-charts/chart/useLegendBox.js",
+ "names": [
+  "_uiApi",
+  "require",
+  "useLegendBox",
+  "legendBBox",
+  "setLegendBBox",
+  "useState",
+  "handleLegendBBoxUpdate",
+  "useCallback",
+  "_default",
+  "exports",
+  "default"
+ ],
+ "mappings": ";;;;AAAA,IAAAA,MAAA,GAAAC,OAAA;AAKA,MAAMC,YAAY,GAAGA,CAAA,KAAM;EACzB,MAAM,CACJC,UAAU,EACVC,aAAa,CACd,GAAG,IAAAC,eAAQ,EAAC,CAAC;IACZC,sBAAsB,GAAG,IAAAC,kBAAW,EAACJ,UAAU,IAAI;MAClD,IAAIA,UAAU,EAAE;QACdC,aAAa,CAACD,UAAU,CAAC;MAC3B;IACH,CAAC,EAAE,EAAE,CAAC;EACN,OAAO,CACLA,UAAU,EACVG,sBAAsB,CACvB;AACH,CAAC;AAAC,IAAAE,QAAA,GAAAC,OAAA,CAAAC,OAAA,GAEaR,YAAY"
+}

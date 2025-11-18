@@ -38,6 +38,8 @@ import {
   isLayoutVertical
 } from '../util/ChartUtils';
 
+import useLegendBox from './useLegendBox';
+
 import { getTooltipData } from './generateCategoricalChartFn';
 
 import { renderMap } from './renderFn';
@@ -140,6 +142,7 @@ export const generateCategoricalChart = (
     , _refHasDataBeenUpdated = useRef(false)
     , _refClipPathId = useRef(`${_props.id || uniqueId('recharts')}-clip`)
     , _refContainer = useRef()
+    , [legendBBox, handleLegendBBoxUpdate] = useLegendBox()
     , [state, setState] = useState(() => ({
         ..._createDefaultState(_props),
         updateId: 0,
@@ -157,7 +160,6 @@ export const generateCategoricalChart = (
 
         dataStartIndex,
         dataEndIndex,
-        legendBBox,
         updateId
       } = state
       , {
@@ -183,15 +185,7 @@ export const generateCategoricalChart = (
         dataEndIndex,
         updateId,
         legendBBox
-      ])
-      , handleLegendBBoxUpdate = (legendBBox) => {
-         if (legendBBox) {
-           setState(prevState => ({
-             ...prevState,
-             legendBBox
-           }));
-        }
-      }
+      ])      
       , getMouseInfo = (evt) => {
           const _containerElement = getRefValue(_refContainer)
           if (!_containerElement) {
