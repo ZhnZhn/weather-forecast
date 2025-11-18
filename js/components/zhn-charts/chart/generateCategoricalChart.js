@@ -29,6 +29,7 @@ const _inRange = (x, y, layout, offset) => ((0, _ChartUtils.isLayoutHorizontal)(
   x,
   y
 } : null;
+const _crNextUpdateId = (data, updateId) => (0, _isTypeFn.isNullOrUndef)(data) ? updateId + 1 : updateId;
 const DF_PROPS = {
     layout: 'horizontal',
     stackOffset: 'none',
@@ -50,7 +51,11 @@ const DF_PROPS = {
     dataEndIndex: props.data && props.data.length - 1 || 0,
     activeTooltipIndex: -1,
     isTooltipActive: !!props.defaultShowTooltip
-  });
+  }),
+  SURFACE_ATTRS = {
+    tabIndex: 0,
+    role: 'img'
+  };
 const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffsetAndStackGroups, validateTooltipEventTypes) {
   if (validateTooltipEventTypes === void 0) {
     validateTooltipEventTypes = ['axis'];
@@ -256,10 +261,8 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           prevChildren: children
         }));
       } else if (!(0, _ReactUtils.isChildrenEqual)(_props.children, state.prevChildren) && !(0, _uiApi.getRefValue)(_refHasDataBeenUpdated)) {
-        const hasGlobalData = !(0, _isTypeFn.isNullOrUndef)(_props.data),
-          newUpdateId = hasGlobalData ? state.updateId : state.updateId + 1;
         setState(prevState => Object.assign({}, prevState, {
-          updateId: newUpdateId,
+          updateId: _crNextUpdateId(_props.data, state.updateId),
           prevChildren: children
         }));
       } else {
@@ -268,10 +271,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
     });
     /*eslint-enable react-hooks/exhaustive-deps*/
 
-    const attrs = {
-      tabIndex: 0,
-      role: 'img'
-    };
     if (!(0, _ReactUtils.validateWidthHeight)(width, height)) {
       return null;
     }
@@ -294,7 +293,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
 
     // The "compact" mode is mainly used as the panorama within Brush
     if (compact) {
-      return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, attrs, {
+      return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, SURFACE_ATTRS, {
         width: width,
         height: height,
         title: title,
@@ -328,7 +327,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         height
       }, style)
     }, events, {
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, attrs, {
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, SURFACE_ATTRS, {
         width: width,
         height: height,
         title: title,

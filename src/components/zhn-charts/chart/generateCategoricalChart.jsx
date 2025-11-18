@@ -62,6 +62,13 @@ const _inRange = (
   ? { x, y }
   : null;
 
+const _crNextUpdateId = (
+  data,
+  updateId
+) => isNullOrUndef(data)
+  ? updateId + 1
+  : updateId;
+
 const DF_PROPS = {
   layout: 'horizontal',
   stackOffset: 'none',
@@ -81,6 +88,10 @@ const DF_PROPS = {
   activeTooltipIndex: -1,
   isTooltipActive: !!props.defaultShowTooltip
 })
+, SURFACE_ATTRS = {
+  tabIndex: 0,
+  role: 'img'
+};
 
 
 export const generateCategoricalChart = (
@@ -346,13 +357,9 @@ export const generateCategoricalChart = (
             prevChildren: children
           }))
         } else if (!isChildrenEqual(_props.children, state.prevChildren) && !getRefValue(_refHasDataBeenUpdated)) {
-          const hasGlobalData = !isNullOrUndef(_props.data)
-          , newUpdateId = hasGlobalData
-             ? state.updateId
-             : state.updateId + 1;
           setState(prevState => ({
             ...prevState,
-            updateId: newUpdateId,
+            updateId: _crNextUpdateId(_props.data, state.updateId),
             prevChildren: children
           }))
         } else {
@@ -360,12 +367,6 @@ export const generateCategoricalChart = (
         }
       })
       /*eslint-enable react-hooks/exhaustive-deps*/
-
-
-      const attrs = {
-        tabIndex: 0,
-        role: 'img'
-      };
 
       if (!validateWidthHeight(width, height)) {
         return null;
@@ -393,7 +394,7 @@ export const generateCategoricalChart = (
       // The "compact" mode is mainly used as the panorama within Brush
       if (compact) {
         return (
-          <Surface {...attrs} width={width} height={height} title={title} desc={desc}>
+          <Surface {...SURFACE_ATTRS} width={width} height={height} title={title} desc={desc}>
              <ClipPath id={clipPathId} offset={offset} />
              {_graphicItems}
           </Surface>
@@ -430,7 +431,7 @@ export const generateCategoricalChart = (
              {...events}
           >
             <Surface
-               {...attrs}
+               {...SURFACE_ATTRS}
                width={width}
                height={height}
                title={title}
