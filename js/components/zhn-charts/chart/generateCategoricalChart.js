@@ -290,11 +290,8 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         tooltipAxis,
         activeTooltipIndex,
         activeLabel
-      }, _renderFn.renderMap);
-
-    // The "compact" mode is mainly used as the panorama within Brush
-    if (compact) {
-      return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, SURFACE_ATTRS, {
+      }, _renderFn.renderMap),
+      _graphicItemsEl = /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, SURFACE_ATTRS, {
         width: width,
         height: height,
         title: title,
@@ -304,6 +301,10 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           offset: offset
         }), _graphicItems]
       }));
+
+    // The "compact" mode is mainly used as the panorama within Brush
+    if (compact) {
+      return _graphicItemsEl;
     }
     const tooltipItem = (0, _ReactUtils.findChildByType)(children, _Tooltip.Tooltip),
       events = tooltipItem ? tooltipItem.props.trigger === 'click' ? {
@@ -328,16 +329,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         height
       }, style)
     }, events, {
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, SURFACE_ATTRS, {
-        width: width,
-        height: height,
-        title: title,
-        desc: desc,
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPath.ClipPath, {
-          id: clipPathId,
-          offset: offset
-        }), _graphicItems]
-      })), (0, _renderLegend.renderLegend)(width, height, margin, children, formattedGraphicalItems, handleLegendBBoxUpdate), (0, _renderTooltip.renderTooltip)(tooltipItem, isTooltipActive, activeCoordinate, activePayload, activeLabel, offset, handleCloseTooltip)]
+      children: [_graphicItemsEl, (0, _renderLegend.renderLegend)(width, height, margin, children, formattedGraphicalItems, handleLegendBBoxUpdate), (0, _renderTooltip.renderTooltip)(tooltipItem, isTooltipActive, activeCoordinate, activePayload, activeLabel, offset, handleCloseTooltip)]
     }));
   };
   ChartWrapper.displayName = chartName;

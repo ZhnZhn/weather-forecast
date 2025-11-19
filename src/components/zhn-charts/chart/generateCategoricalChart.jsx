@@ -185,7 +185,7 @@ export const generateCategoricalChart = (
         dataEndIndex,
         updateId,
         legendBBox
-      ])      
+      ])
       , getMouseInfo = (evt) => {
           const _containerElement = getRefValue(_refContainer)
           if (!_containerElement) {
@@ -399,16 +399,23 @@ export const generateCategoricalChart = (
         tooltipAxis,
         activeTooltipIndex,
         activeLabel
-      }, renderMap);
+      }, renderMap)
+      , _graphicItemsEl = (
+        <Surface
+          {...SURFACE_ATTRS}
+          width={width}
+          height={height}
+          title={title}
+          desc={desc}
+        >
+          <ClipPath id={clipPathId} offset={offset} />
+          {_graphicItems}
+        </Surface>
+      );
 
       // The "compact" mode is mainly used as the panorama within Brush
       if (compact) {
-        return (
-          <Surface {...SURFACE_ATTRS} width={width} height={height} title={title} desc={desc}>
-             <ClipPath id={clipPathId} offset={offset} />
-             {_graphicItems}
-          </Surface>
-        );
+        return _graphicItemsEl;
       }
 
       const tooltipItem = findChildByType(children, Tooltip)
@@ -440,16 +447,7 @@ export const generateCategoricalChart = (
              }}
              {...events}
           >
-            <Surface
-               {...SURFACE_ATTRS}
-               width={width}
-               height={height}
-               title={title}
-               desc={desc}
-            >
-              <ClipPath id={clipPathId} offset={offset} />
-              {_graphicItems}
-            </Surface>
+            {_graphicItemsEl}
             {renderLegend(
                width,
                height,
