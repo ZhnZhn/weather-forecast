@@ -51,11 +51,12 @@ const DF_PROPS = {
     reverseStackOrder: false,
     syncMethod: 'index'
   },
-  _createDefaultState = props => ({
-    dataStartIndex: 0,
-    dataEndIndex: props.data && props.data.length - 1 || 0,
-    activeTooltipIndex: -1,
+  _crDfTooltipState = props => ({
     isTooltipActive: !!props.defaultShowTooltip
+  }),
+  _crDfState = props => ({
+    dataStartIndex: 0,
+    dataEndIndex: props.data && props.data.length - 1 || 0
   }),
   SURFACE_ATTRS = {
     tabIndex: 0,
@@ -90,7 +91,15 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       _refClipPathId = (0, _uiApi.useRef)((_props.id || (0, _DataUtils.uniqueId)('recharts')) + "-clip"),
       _refContainer = (0, _uiApi.useRef)(),
       [legendBBox, handleLegendBBoxUpdate] = (0, _useLegendBox.default)(),
-      [state, setState] = (0, _uiApi.useState)(() => Object.assign({}, _createDefaultState(_props), {
+      [tooltipState, setTooltipState] = (0, _uiApi.useState)(() => _crDfTooltipState(_props)),
+      {
+        isTooltipActive,
+        activeCoordinate,
+        activePayload,
+        activeLabel,
+        activeTooltipIndex
+      } = tooltipState,
+      [state, setState] = (0, _uiApi.useState)(() => Object.assign({}, _crDfState(_props), {
         updateId: 0,
         prevData: data,
         prevWidth: width,
@@ -98,11 +107,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         prevChildren: children
       })),
       {
-        isTooltipActive,
-        activeCoordinate,
-        activePayload,
-        activeLabel,
-        activeTooltipIndex,
         dataStartIndex,
         dataEndIndex,
         updateId
@@ -142,25 +146,25 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         return tooltipData ? tooltipData : null;
       },
       handleMouseEnter = evt => {
-        const mouse = getMouseTooltipData(evt);
-        if (mouse) {
-          const nextState = Object.assign({}, mouse, {
+        const tooltipData = getMouseTooltipData(evt);
+        if (tooltipData) {
+          const nextState = Object.assign({}, tooltipData, {
             isTooltipActive: true
           });
-          setState(prevState => Object.assign({}, prevState, nextState));
+          setTooltipState(nextState);
           if ((0, _isTypeFn.isFn)(onMouseEnter)) {
             onMouseEnter(nextState, evt);
           }
         }
       },
       handleMouseMove = evt => {
-        const mouse = getMouseTooltipData(evt),
-          nextState = mouse ? Object.assign({}, mouse, {
+        const tooltipData = getMouseTooltipData(evt),
+          nextState = tooltipData ? Object.assign({}, tooltipData, {
             isTooltipActive: true
           }) : {
             isTooltipActive: false
           };
-        setState(prevState => Object.assign({}, prevState, nextState));
+        setTooltipState(nextState);
         if ((0, _isTypeFn.isFn)(onMouseMove)) {
           onMouseMove(nextState, evt);
         }
@@ -169,23 +173,23 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         const nextState = {
           isTooltipActive: false
         };
-        setState(prevState => Object.assign({}, prevState, nextState));
+        setTooltipState(nextState);
         if ((0, _isTypeFn.isFn)(onMouseLeave)) {
           onMouseLeave(nextState, evt);
         }
       },
       handleCloseTooltip = () => {
-        setState(prevState => Object.assign({}, prevState, {
+        setTooltipState({
           isTooltipActive: false
-        }));
+        });
       },
       handleClick = evt => {
-        const mouse = getMouseTooltipData(evt);
-        if (mouse) {
-          const nextState = Object.assign({}, mouse, {
+        const tooltipData = getMouseTooltipData(evt);
+        if (tooltipData) {
+          const nextState = Object.assign({}, tooltipData, {
             isTooltipActive: true
           });
-          setState(prevState => Object.assign({}, prevState, nextState));
+          setTooltipState(nextState);
           if ((0, _isTypeFn.isFn)(onClick)) {
             onClick(nextState, evt);
           }
@@ -193,14 +197,14 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       },
       handleMouseDown = evt => {
         if ((0, _isTypeFn.isFn)(onMouseDown)) {
-          const nextState = getMouseTooltipData(evt);
-          onMouseDown(nextState, evt);
+          const tooltipData = getMouseTooltipData(evt);
+          onMouseDown(tooltipData, evt);
         }
       },
       handleMouseUp = evt => {
         if ((0, _isTypeFn.isFn)(onMouseUp)) {
-          const nextState = getMouseTooltipData(evt);
-          onMouseUp(nextState, evt);
+          const tooltipData = getMouseTooltipData(evt);
+          onMouseUp(tooltipData, evt);
         }
       },
       handleTouchMove = evt => {
@@ -230,22 +234,13 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       //|| !shallowEqual(margin, prevState.prevMargin)
       ) {
         (0, _uiApi.setRefValue)(_refHasDataBeenUpdated, true);
-        const defaultState = _createDefaultState(_props),
-          keepFromPrevState = {
-            isTooltipActive: state.isTooltipActive
-          },
-          updatesToState = Object.assign({}, (0, _generateCategoricalChartFn.getTooltipData)({
-            orderedTooltipTicks,
-            tooltipAxis,
-            tooltipTicks,
-            graphicalItems,
-            dataStartIndex,
-            dataEndIndex
-          }, _props.data, layout), {
-            updateId: state.updateId + 1
-          }),
-          newState = Object.assign({}, defaultState, keepFromPrevState, updatesToState);
-        setState(prevState => Object.assign({}, prevState, newState, {
+        const nextState = Object.assign({}, _crDfState(_props), {
+          updateId: state.updateId + 1
+        });
+        setTooltipState({
+          isTooltipActive: false
+        });
+        setState(prevState => Object.assign({}, prevState, nextState, {
           prevData: data,
           prevWidth: width,
           prevHeight: height,

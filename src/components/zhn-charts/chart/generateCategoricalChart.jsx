@@ -96,13 +96,14 @@ const DF_PROPS = {
   reverseStackOrder: false,
   syncMethod: 'index'
 }
-, _createDefaultState = (
+, _crDfTooltipState = (props) => ({
+  isTooltipActive: !!props.defaultShowTooltip
+})
+, _crDfState = (
   props
 ) => ({
   dataStartIndex: 0,
-  dataEndIndex: (props.data && props.data.length - 1) || 0,
-  activeTooltipIndex: -1,
-  isTooltipActive: !!props.defaultShowTooltip
+  dataEndIndex: (props.data && props.data.length - 1) || 0
 })
 , SURFACE_ATTRS = {
   tabIndex: 0,
@@ -140,9 +141,26 @@ export const generateCategoricalChart = (
     , _refHasDataBeenUpdated = useRef(false)
     , _refClipPathId = useRef(`${_props.id || uniqueId('recharts')}-clip`)
     , _refContainer = useRef()
-    , [legendBBox, handleLegendBBoxUpdate] = useLegendBox()
-    , [state, setState] = useState(() => ({
-        ..._createDefaultState(_props),
+    , [
+      legendBBox,
+      handleLegendBBoxUpdate
+    ] = useLegendBox()
+    , [
+      tooltipState,
+      setTooltipState
+    ] = useState(() => _crDfTooltipState(_props))
+    , {
+      isTooltipActive,
+      activeCoordinate,
+      activePayload,
+      activeLabel,
+      activeTooltipIndex
+    } = tooltipState
+    , [
+      state,
+      setState
+    ] = useState(() => ({
+        ..._crDfState(_props),
         updateId: 0,
         prevData: data,
         prevWidth: width,
@@ -150,12 +168,6 @@ export const generateCategoricalChart = (
         prevChildren: children
       }))
       , {
-        isTooltipActive,
-        activeCoordinate,
-        activePayload,
-        activeLabel,
-        activeTooltipIndex,
-
         dataStartIndex,
         dataEndIndex,
         updateId
@@ -219,62 +231,47 @@ export const generateCategoricalChart = (
             : null;
       }
       , handleMouseEnter = (evt) => {
-        const mouse = getMouseTooltipData(evt);
-        if (mouse) {
+        const tooltipData = getMouseTooltipData(evt);
+        if (tooltipData) {
           const nextState = {
-            ...mouse,
+            ...tooltipData,
             isTooltipActive: true
           };
-          setState(prevState => ({
-            ...prevState,
-            ...nextState
-          }));
+          setTooltipState(nextState)
           if (isFn(onMouseEnter)) {
             onMouseEnter(nextState, evt);
           }
         }
       }
       , handleMouseMove = (evt) => {
-        const mouse = getMouseTooltipData(evt)
-        , nextState = mouse
-           ? { ...mouse, isTooltipActive: true }
+        const tooltipData = getMouseTooltipData(evt)
+        , nextState = tooltipData
+           ? { ...tooltipData, isTooltipActive: true }
            : { isTooltipActive: false };
-        setState(prevState => ({
-          ...prevState,
-          ...nextState
-        }));
+        setTooltipState(nextState)
         if (isFn(onMouseMove)) {
           onMouseMove(nextState, evt);
         }
       }
       , handleMouseLeave = (evt) => {
         const nextState = { isTooltipActive: false };
-        setState(prevState => ({
-          ...prevState,
-          ...nextState
-        }));
+        setTooltipState(nextState)
         if (isFn(onMouseLeave)) {
           onMouseLeave(nextState, evt);
         }
       }
       , handleCloseTooltip = () => {
-        setState(prevState => ({
-          ...prevState,
-          isTooltipActive: false
-        }))
+        setTooltipState({ isTooltipActive: false })
       }
 
       , handleClick = (evt) => {
-        const mouse = getMouseTooltipData(evt);
-        if (mouse) {
+        const tooltipData = getMouseTooltipData(evt);
+        if (tooltipData) {
           const nextState = {
-            ...mouse,
+            ...tooltipData,
             isTooltipActive: true
           };
-          setState(prevState => ({
-            ...prevState,
-            ...nextState
-          }));
+          setTooltipState(nextState)
           if (isFn(onClick)) {
             onClick(nextState, evt);
           }
@@ -283,15 +280,15 @@ export const generateCategoricalChart = (
 
       , handleMouseDown = (evt) => {
         if (isFn(onMouseDown)) {
-          const nextState = getMouseTooltipData(evt);
-          onMouseDown(nextState, evt);
+          const tooltipData = getMouseTooltipData(evt);
+          onMouseDown(tooltipData, evt);
         }
       }
 
       , handleMouseUp = (evt) => {
         if (isFn(onMouseUp)) {
-          const nextState = getMouseTooltipData(evt);
-          onMouseUp(nextState, evt);
+          const tooltipData = getMouseTooltipData(evt);
+          onMouseUp(tooltipData, evt);
         }
       }
       , handleTouchMove = (evt) => {
@@ -325,31 +322,14 @@ export const generateCategoricalChart = (
           //|| !shallowEqual(margin, prevState.prevMargin)
         ) {
           setRefValue(_refHasDataBeenUpdated, true)
-          const defaultState = _createDefaultState(_props)
-          , keepFromPrevState = {
-            isTooltipActive: state.isTooltipActive
-          }
-          , updatesToState = {
-            //...getTooltipData(state, _props.data, layout),
-            ...getTooltipData({
-                orderedTooltipTicks,
-                tooltipAxis,
-                tooltipTicks,
-                graphicalItems,
-
-                dataStartIndex,
-                dataEndIndex
-            }, _props.data, layout),
+          const nextState = {
+            ..._crDfState(_props),
             updateId: state.updateId + 1
-          }
-          , newState = {
-            ...defaultState,
-            ...keepFromPrevState,
-            ...updatesToState
           };
+          setTooltipState({ isTooltipActive: false })
           setState(prevState => ({
             ...prevState,
-            ...newState,
+            ...nextState,
             prevData: data,
             prevWidth: width,
             prevHeight: height,
@@ -358,6 +338,7 @@ export const generateCategoricalChart = (
             //prevMargin: margin,
             prevChildren: children
           }))
+
         } else if (!isChildrenEqual(_props.children, state.prevChildren) && !getRefValue(_refHasDataBeenUpdated)) {
           setState(prevState => ({
             ...prevState,
