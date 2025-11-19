@@ -71,10 +71,10 @@ export const getTooltipData = (
   chartData,
   layout,
   rangeObj
-) => {
+) => {  
   const rangeData = rangeObj || {
-    x: state.chartX,
-    y: state.chartY
+    x: 0,
+    y: 0
   }
   , pos = calculateTooltipPos(
       rangeData,

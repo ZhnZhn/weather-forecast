@@ -52,8 +52,6 @@ const DF_PROPS = {
     syncMethod: 'index'
   },
   _createDefaultState = props => ({
-    chartX: 0,
-    chartY: 0,
     dataStartIndex: 0,
     dataEndIndex: props.data && props.data.length - 1 || 0,
     activeTooltipIndex: -1,
@@ -124,7 +122,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         dataEndIndex,
         updateId
       }, legendBBox), [_props, dataStartIndex, dataEndIndex, updateId, legendBBox]),
-      getMouseInfo = evt => {
+      getMouseTooltipData = evt => {
         const _containerElement = (0, _uiApi.getRefValue)(_refContainer);
         if (!_containerElement) {
           return null;
@@ -141,13 +139,10 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
           dataStartIndex,
           dataEndIndex
         }, data, layout, rangeObj);
-        return tooltipData ? Object.assign({
-          chartX: rangeObj.x,
-          chartY: rangeObj.y
-        }, tooltipData) : null;
+        return tooltipData ? tooltipData : null;
       },
       handleMouseEnter = evt => {
-        const mouse = getMouseInfo(evt);
+        const mouse = getMouseTooltipData(evt);
         if (mouse) {
           const nextState = Object.assign({}, mouse, {
             isTooltipActive: true
@@ -159,7 +154,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         }
       },
       handleMouseMove = evt => {
-        const mouse = getMouseInfo(evt),
+        const mouse = getMouseTooltipData(evt),
           nextState = mouse ? Object.assign({}, mouse, {
             isTooltipActive: true
           }) : {
@@ -185,7 +180,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         }));
       },
       handleClick = evt => {
-        const mouse = getMouseInfo(evt);
+        const mouse = getMouseTooltipData(evt);
         if (mouse) {
           const nextState = Object.assign({}, mouse, {
             isTooltipActive: true
@@ -198,13 +193,13 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       },
       handleMouseDown = evt => {
         if ((0, _isTypeFn.isFn)(onMouseDown)) {
-          const nextState = getMouseInfo(evt);
+          const nextState = getMouseTooltipData(evt);
           onMouseDown(nextState, evt);
         }
       },
       handleMouseUp = evt => {
         if ((0, _isTypeFn.isFn)(onMouseUp)) {
-          const nextState = getMouseInfo(evt);
+          const nextState = getMouseTooltipData(evt);
           onMouseUp(nextState, evt);
         }
       },
@@ -237,8 +232,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         (0, _uiApi.setRefValue)(_refHasDataBeenUpdated, true);
         const defaultState = _createDefaultState(_props),
           keepFromPrevState = {
-            chartX: state.chartX,
-            chartY: state.chartY,
             isTooltipActive: state.isTooltipActive
           },
           updatesToState = Object.assign({}, (0, _generateCategoricalChartFn.getTooltipData)({

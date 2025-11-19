@@ -36,8 +36,8 @@ const getActiveCoordinate = (layout, tooltipTicks, activeIndex, rangeObj) => {
  */
 const getTooltipData = (state, chartData, layout, rangeObj) => {
   const rangeData = rangeObj || {
-      x: state.chartX,
-      y: state.chartY
+      x: 0,
+      y: 0
     },
     pos = calculateTooltipPos(rangeData, layout),
     {
@@ -90,9 +90,7 @@ const verticalCoordinatesGenerator = _ref => {
     height,
     offset
   } = _ref;
-  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)({
-    ..._CartesianAxis.CartesianAxis.defaultProps,
-    ...xAxis,
+  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)(Object.assign({}, _CartesianAxis.CartesianAxis.defaultProps, xAxis, {
     ticks: (0, _ChartUtils.getTicksOfAxis)(xAxis, true),
     viewBox: {
       x: 0,
@@ -100,7 +98,7 @@ const verticalCoordinatesGenerator = _ref => {
       width,
       height
     }
-  }), offset.left, offset.left + offset.width);
+  })), offset.left, offset.left + offset.width);
 };
 exports.verticalCoordinatesGenerator = verticalCoordinatesGenerator;
 const horizontalCoordinatesGenerator = _ref2 => {
@@ -110,9 +108,7 @@ const horizontalCoordinatesGenerator = _ref2 => {
     height,
     offset
   } = _ref2;
-  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)({
-    ..._CartesianAxis.CartesianAxis.defaultProps,
-    ...yAxis,
+  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)(Object.assign({}, _CartesianAxis.CartesianAxis.defaultProps, yAxis, {
     ticks: (0, _ChartUtils.getTicksOfAxis)(yAxis, true),
     viewBox: {
       x: 0,
@@ -120,7 +116,7 @@ const horizontalCoordinatesGenerator = _ref2 => {
       width,
       height
     }
-  }), offset.top, offset.top + offset.height);
+  })), offset.top, offset.top + offset.height);
 };
 exports.horizontalCoordinatesGenerator = horizontalCoordinatesGenerator;
 //# sourceMappingURL=generateCategoricalChartFn.js.map

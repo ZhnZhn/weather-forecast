@@ -99,8 +99,6 @@ const DF_PROPS = {
 , _createDefaultState = (
   props
 ) => ({
-  chartX: 0,
-  chartY: 0,
   dataStartIndex: 0,
   dataEndIndex: (props.data && props.data.length - 1) || 0,
   activeTooltipIndex: -1,
@@ -186,7 +184,7 @@ export const generateCategoricalChart = (
         updateId,
         legendBBox
       ])
-      , getMouseInfo = (evt) => {
+      , getMouseTooltipData = (evt) => {
           const _containerElement = getRefValue(_refContainer)
           if (!_containerElement) {
             return null;
@@ -217,15 +215,11 @@ export const generateCategoricalChart = (
             rangeObj
           );
           return tooltipData
-            ? {
-                chartX: rangeObj.x,
-                chartY: rangeObj.y,
-                ...tooltipData
-              }
+            ? tooltipData
             : null;
       }
       , handleMouseEnter = (evt) => {
-        const mouse = getMouseInfo(evt);
+        const mouse = getMouseTooltipData(evt);
         if (mouse) {
           const nextState = {
             ...mouse,
@@ -241,7 +235,7 @@ export const generateCategoricalChart = (
         }
       }
       , handleMouseMove = (evt) => {
-        const mouse = getMouseInfo(evt)
+        const mouse = getMouseTooltipData(evt)
         , nextState = mouse
            ? { ...mouse, isTooltipActive: true }
            : { isTooltipActive: false };
@@ -271,7 +265,7 @@ export const generateCategoricalChart = (
       }
 
       , handleClick = (evt) => {
-        const mouse = getMouseInfo(evt);
+        const mouse = getMouseTooltipData(evt);
         if (mouse) {
           const nextState = {
             ...mouse,
@@ -289,14 +283,14 @@ export const generateCategoricalChart = (
 
       , handleMouseDown = (evt) => {
         if (isFn(onMouseDown)) {
-          const nextState = getMouseInfo(evt);
+          const nextState = getMouseTooltipData(evt);
           onMouseDown(nextState, evt);
         }
       }
 
       , handleMouseUp = (evt) => {
         if (isFn(onMouseUp)) {
-          const nextState = getMouseInfo(evt);
+          const nextState = getMouseTooltipData(evt);
           onMouseUp(nextState, evt);
         }
       }
@@ -333,8 +327,6 @@ export const generateCategoricalChart = (
           setRefValue(_refHasDataBeenUpdated, true)
           const defaultState = _createDefaultState(_props)
           , keepFromPrevState = {
-            chartX: state.chartX,
-            chartY: state.chartY,
             isTooltipActive: state.isTooltipActive
           }
           , updatesToState = {
