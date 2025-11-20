@@ -1,7 +1,7 @@
 import {
   isObj,
   isNullOrUndef,
-  isFn
+  //isFn
 } from '../../../utils/isTypeFn';
 
 import { cloneUiElement } from '../../uiApi';
@@ -15,7 +15,7 @@ import { getTicksOfAxis } from '../util/ChartUtils';
 import {
   isNumber,
   getAnyElementOfObject,
-  findEntryInArray
+  //findEntryInArray
 } from '../util/DataUtils';
 
 import { findChildByType } from '../util/ReactUtils';
@@ -204,34 +204,21 @@ const renderGraphicChild = ({
       && activeTooltipIndex >= 0
   , { key, ...itemProps } = item.props
   , graphicalItem = cloneUiElement(
-      element, {
-      ...itemProps
-    }, key);
+      element, {...itemProps}, key
+    )
+  , activePoint = hasActive
+     ? points[activeTooltipIndex]
+     : void 0;
 
-  if (hasActive) {
-    const activePoint = tooltipAxis.dataKey && !tooltipAxis.allowDuplicatedCategory
-      ? findEntryInArray(
-          points,
-          isFn(tooltipAxis.dataKey)
-            ? (entry) => tooltipAxis.dataKey(entry.payload)
-            : 'payload.'.concat(''+tooltipAxis.dataKey),
-          activeLabel
-        )
-      : points[activeTooltipIndex];
-
-    if (!isNullOrUndef(activePoint)) {
-      return [
-        graphicalItem,
+  return isNullOrUndef(activePoint)
+    ? [graphicalItem, null]
+    : [graphicalItem,
         ...renderActivePoints({
-            item,
-            activePoint,
-            childIndex: activeTooltipIndex
-        })
-      ];
-    }
-  }
-
-  return [graphicalItem, null];
+          item,
+          activePoint,
+          childIndex: activeTooltipIndex
+      })
+    ];
 }
 
 export const renderMap = {
@@ -240,5 +227,5 @@ export const renderMap = {
   YAxis: { handler: renderYAxis },
   Bar: { handler: renderGraphicChild },
   Line: { handler: renderGraphicChild },
-  Area: { handler: renderGraphicChild }  
+  Area: { handler: renderGraphicChild }
 }

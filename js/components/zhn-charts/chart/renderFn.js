@@ -155,18 +155,13 @@ const renderGraphicChild = _ref4 => {
       key
     } = _item$props,
     itemProps = (0, _objectWithoutPropertiesLoose2.default)(_item$props, _excluded),
-    graphicalItem = (0, _uiApi.cloneUiElement)(element, Object.assign({}, itemProps), key);
-  if (hasActive) {
-    const activePoint = tooltipAxis.dataKey && !tooltipAxis.allowDuplicatedCategory ? (0, _DataUtils.findEntryInArray)(points, (0, _isTypeFn.isFn)(tooltipAxis.dataKey) ? entry => tooltipAxis.dataKey(entry.payload) : 'payload.'.concat('' + tooltipAxis.dataKey), activeLabel) : points[activeTooltipIndex];
-    if (!(0, _isTypeFn.isNullOrUndef)(activePoint)) {
-      return [graphicalItem, ...(0, _renderActivePoints.renderActivePoints)({
-        item,
-        activePoint,
-        childIndex: activeTooltipIndex
-      })];
-    }
-  }
-  return [graphicalItem, null];
+    graphicalItem = (0, _uiApi.cloneUiElement)(element, Object.assign({}, itemProps), key),
+    activePoint = hasActive ? points[activeTooltipIndex] : void 0;
+  return (0, _isTypeFn.isNullOrUndef)(activePoint) ? [graphicalItem, null] : [graphicalItem, ...(0, _renderActivePoints.renderActivePoints)({
+    item,
+    activePoint,
+    childIndex: activeTooltipIndex
+  })];
 };
 const renderMap = exports.renderMap = {
   CartesianGrid: {
