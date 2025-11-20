@@ -1,8 +1,4 @@
-import {
-  isFn,
-  isNotEmptyArr,
-  isNullOrUndef
-} from '../../../utils/isTypeFn';
+import { isNullOrUndef } from '../../../utils/isTypeFn';
 
 import {
   crProps,
@@ -13,17 +9,14 @@ import {
   getRefValue,
   setRefValue
 } from '../../uiApi';
-import { HAS_TOUCH_EVENTS } from '../../has';
 import { crCn } from '../../styleFn';
 
 import { Surface } from '../container/Surface';
 import { ClipPath } from '../container/ClipPath';
-import { Tooltip } from '../component/Tooltip';
 
 import {
   validateWidthHeight,
-  renderByMap,
-  findChildByType
+  renderByMap
 } from '../util/ReactUtils';
 import { isChildrenEqual } from '../util/ReactUtils';
 import {
@@ -39,6 +32,7 @@ import {
 } from '../util/ChartUtils';
 
 import useLegendBox from './useLegendBox';
+import useTooltip from './useTooltip';
 
 import { getTooltipData } from './generateCategoricalChartFn';
 
@@ -47,12 +41,6 @@ import { renderLegend } from './renderLegend';
 import { renderTooltip } from './renderTooltip';
 
 import { CL_WRAPPER } from '../CL';
-
-const _getEvtTouch = ({
-  changedTouches
-}) => isNotEmptyArr(changedTouches)
-  ? changedTouches[0]
-  : void 0
 
 const _inRange = (
   x,
@@ -96,9 +84,6 @@ const DF_PROPS = {
   reverseStackOrder: false,
   syncMethod: 'index'
 }
-, _crDfTooltipState = (props) => ({
-  isTooltipActive: !!props.defaultShowTooltip
-})
 , _crDfState = (
   props
 ) => ({
@@ -129,14 +114,7 @@ export const generateCategoricalChart = (
       desc,
       layout,
       data,
-      children,
-
-      onMouseEnter,
-      onMouseDown,
-      onMouseUp,
-      onMouseMove,
-      onMouseLeave,
-      onClick
+      children
     } = _props
     , _refHasDataBeenUpdated = useRef(false)
     , _refClipPathId = useRef(`${_props.id || uniqueId('recharts')}-clip`)
@@ -145,17 +123,6 @@ export const generateCategoricalChart = (
       legendBBox,
       handleLegendBBoxUpdate
     ] = useLegendBox()
-    , [
-      tooltipState,
-      setTooltipState
-    ] = useState(() => _crDfTooltipState(_props))
-    , {
-      isTooltipActive,
-      activeCoordinate,
-      activePayload,
-      activeLabel,
-      activeTooltipIndex
-    } = tooltipState
     , [
       state,
       setState
@@ -230,87 +197,23 @@ export const generateCategoricalChart = (
             ? tooltipData
             : null;
       }
-      , handleMouseEnter = (evt) => {
-        const tooltipData = getMouseTooltipData(evt);
-        if (tooltipData) {
-          const nextState = {
-            ...tooltipData,
-            isTooltipActive: true
-          };
-          setTooltipState(nextState)
-          if (isFn(onMouseEnter)) {
-            onMouseEnter(nextState, evt);
-          }
-        }
-      }
-      , handleMouseMove = (evt) => {
-        const tooltipData = getMouseTooltipData(evt)
-        , nextState = tooltipData
-           ? { ...tooltipData, isTooltipActive: true }
-           : { isTooltipActive: false };
-        setTooltipState(nextState)
-        if (isFn(onMouseMove)) {
-          onMouseMove(nextState, evt);
-        }
-      }
-      , handleMouseLeave = (evt) => {
-        const nextState = { isTooltipActive: false };
-        setTooltipState(nextState)
-        if (isFn(onMouseLeave)) {
-          onMouseLeave(nextState, evt);
-        }
-      }
-      , handleCloseTooltip = () => {
-        setTooltipState({ isTooltipActive: false })
-      }
-
-      , handleClick = (evt) => {
-        const tooltipData = getMouseTooltipData(evt);
-        if (tooltipData) {
-          const nextState = {
-            ...tooltipData,
-            isTooltipActive: true
-          };
-          setTooltipState(nextState)
-          if (isFn(onClick)) {
-            onClick(nextState, evt);
-          }
-        }
-      }
-
-      , handleMouseDown = (evt) => {
-        if (isFn(onMouseDown)) {
-          const tooltipData = getMouseTooltipData(evt);
-          onMouseDown(tooltipData, evt);
-        }
-      }
-
-      , handleMouseUp = (evt) => {
-        if (isFn(onMouseUp)) {
-          const tooltipData = getMouseTooltipData(evt);
-          onMouseUp(tooltipData, evt);
-        }
-      }
-      , handleTouchMove = (evt) => {
-        const evtTouch = _getEvtTouch(evt);
-        if (evtTouch) {
-          handleMouseMove(evtTouch);
-        }
-      }
-
-      , handleTouchStart = (evt) => {
-        const evtTouch = _getEvtTouch(evt);
-        if (evtTouch) {
-          handleMouseDown(evtTouch);
-        }
-      }
-
-      , handleTouchEnd = (evt) => {
-        const evtTouch = _getEvtTouch(evt);
-        if (evtTouch) {
-          handleMouseUp(evtTouch);
-        }
-      }
+      , [
+        tooltipState,
+        setTooltipState,
+        tooltipItem,
+        events,
+        handleCloseTooltip
+      ] = useTooltip(
+        props,
+        getMouseTooltipData
+      )
+      , {
+        isTooltipActive,
+        activeCoordinate,
+        activePayload,
+        activeLabel,
+        activeTooltipIndex
+      } = tooltipState;
 
       /*eslint-disable react-hooks/exhaustive-deps*/
       useEffect(() => {
@@ -387,26 +290,7 @@ export const generateCategoricalChart = (
       );
 
       // The "compact" mode is mainly used as the panorama within Brush
-      if (compact) {
-        return _graphicItemsEl;
-      }
-
-      const tooltipItem = findChildByType(children, Tooltip)
-      , events = tooltipItem
-        ? tooltipItem.props.trigger === 'click'
-           ? { onClick: handleClick }
-           : {
-               onMouseEnter: handleMouseEnter,
-               onMouseMove: handleMouseMove,
-               onMouseLeave: handleMouseLeave,
-               ...HAS_TOUCH_EVENTS ? {
-                 onTouchMove: handleTouchMove,
-                 onTouchStart: handleTouchStart,
-                 onTouchEnd: handleTouchEnd
-               } : void 0
-             }
-        : {};
-        return (
+      return compact ? _graphicItemsEl : (
           <div
              role="region"
              ref={_refContainer}
