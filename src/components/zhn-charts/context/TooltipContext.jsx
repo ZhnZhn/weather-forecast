@@ -6,4 +6,9 @@ import {
 const TooltipContext = createContext();
 
 export const TooltipProvider = TooltipContext.Provider
-export const useTooltip = () => useContext(TooltipContext)()
+
+const DF_USE_TOOLTIP = () => ({});
+export const useTooltip = () => {
+  const _useTooltip = useContext(TooltipContext) || DF_USE_TOOLTIP
+  return _useTooltip();
+}
