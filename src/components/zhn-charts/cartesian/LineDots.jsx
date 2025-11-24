@@ -1,5 +1,7 @@
 import { crCn } from '../../styleFn';
 
+import { useTooltip } from '../context/TooltipContext';
+
 import { Dot } from '../shape/Dot';
 import { Layer } from '../container/Layer';
 
@@ -30,7 +32,8 @@ export const LineDots = ({
   clipPath,
   props
 }) => {
-  const {
+  const { activeTooltipIndex } = useTooltip()
+  , {
     dot,
     points,
     dataKey
@@ -44,7 +47,9 @@ export const LineDots = ({
     >
       {points.map((entry, i) => _renderDotItem(dot, {
          key: `dot-${i}`,
-         r: dot.r || 3,
+         r: i === activeTooltipIndex
+           ? dot.r ? dot.r + 3 : 6
+           : dot.r || 3,
 
          fill: dot.fill || props.fill,
          stroke: dot.stroke || props.stroke,

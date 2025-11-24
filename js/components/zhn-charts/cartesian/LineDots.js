@@ -5,6 +5,7 @@ exports.__esModule = true;
 exports.LineDots = void 0;
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _styleFn = require("../../styleFn");
+var _TooltipContext = require("../context/TooltipContext");
 var _Dot = require("../shape/Dot");
 var _Layer = require("../container/Layer");
 var _cartesianFn = require("./cartesianFn");
@@ -27,17 +28,20 @@ const LineDots = _ref2 => {
     props
   } = _ref2;
   const {
-    dot,
-    points,
-    dataKey
-  } = props;
+      activeTooltipIndex
+    } = (0, _TooltipContext.useTooltip)(),
+    {
+      dot,
+      points,
+      dataKey
+    } = props;
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
     className: _CL.CL_LINE_DOTS,
     role: "img",
     clipPath: clipPath,
     children: points.map((entry, i) => _renderDotItem(dot, {
       key: "dot-" + i,
-      r: dot.r || 3,
+      r: i === activeTooltipIndex ? dot.r ? dot.r + 3 : 6 : dot.r || 3,
       fill: dot.fill || props.fill,
       stroke: dot.stroke || props.stroke,
       strokeWidth: dot.strokeWidth || props.strokeWidth,
