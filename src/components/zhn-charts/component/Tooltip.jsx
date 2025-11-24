@@ -20,6 +20,7 @@ import { crCn } from "../../styleFn";
 
 
 import { IS_SSR } from "../util/Global";
+import { useTooltip } from "../context/TooltipContext";
 
 import { DefaultTooltipContent } from "./DefaultTooltipContent";
 import { getUniqPayload } from "./componentFn";
@@ -104,13 +105,18 @@ export const Tooltip = (props) => {
     setDismissedAtCoordinate
   ] = useState({ x: 0, y: 0 })
   , wrapperNode = useRef()
+  , {
+    isTooltipActive: active,
+    activeLabel: label,
+    activePayload,
+    activeCoordinate: coordinate = DF_PROPS.coordinate,
+  } = useTooltip()
+  , payload = active ? activePayload : []
   , _props = crProps(DF_PROPS, props)
   , {
     allowEscapeViewBox,
     reverseDirection,
-    coordinate = DF_PROPS.coordinate,
     offset,
-    position,
     viewBox
   } = _props
   , handleKeyDown = useCallback((event) => {
@@ -123,6 +129,9 @@ export const Tooltip = (props) => {
         }));
       }
   }, [coordinate.x, coordinate.y]);
+
+  let position = _props.position;
+  position = coordinate
 
   useEffect(() => {
     const updateBBox = () => {
@@ -192,10 +201,8 @@ export const Tooltip = (props) => {
   };
 
   const {
-    payload,
     payloadUniqBy,
     filterNull,
-    active,
     wrapperStyle,
     useTranslate3d,
     isAnimationActive,
@@ -271,6 +278,8 @@ export const Tooltip = (props) => {
     >
       {_renderContent(content, {
           ..._props,
+          active,
+          label,
           payload: finalPayload
       })}
     </div>

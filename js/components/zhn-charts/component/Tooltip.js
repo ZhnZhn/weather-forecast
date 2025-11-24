@@ -6,6 +6,7 @@ var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _Global = require("../util/Global");
+var _TooltipContext = require("../context/TooltipContext");
 var _DefaultTooltipContent = require("./DefaultTooltipContent");
 var _componentFn = require("./componentFn");
 var _CL = require("../CL");
@@ -66,13 +67,18 @@ const Tooltip = props => {
       y: 0
     }),
     wrapperNode = (0, _uiApi.useRef)(),
+    {
+      isTooltipActive: active,
+      activeLabel: label,
+      activePayload,
+      activeCoordinate: coordinate = DF_PROPS.coordinate
+    } = (0, _TooltipContext.useTooltip)(),
+    payload = active ? activePayload : [],
     _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
       allowEscapeViewBox,
       reverseDirection,
-      coordinate = DF_PROPS.coordinate,
       offset,
-      position,
       viewBox
     } = _props,
     handleKeyDown = (0, _uiApi.useCallback)(event => {
@@ -84,6 +90,8 @@ const Tooltip = props => {
         }));
       }
     }, [coordinate.x, coordinate.y]);
+  let position = _props.position;
+  position = coordinate;
   (0, _uiApi.useEffect)(() => {
     const updateBBox = () => {
       if (dismissed) {
@@ -134,10 +142,8 @@ const Tooltip = props => {
     return tooltipBoundary > viewBoxBoundary ? Math.max(negative, viewBox[key]) : Math.max(positive, viewBox[key]);
   };
   const {
-      payload,
       payloadUniqBy,
       filterNull,
-      active,
       wrapperStyle,
       useTranslate3d,
       isAnimationActive,
@@ -191,6 +197,8 @@ const Tooltip = props => {
     style: outerStyle,
     ref: wrapperNode,
     children: _renderContent(content, Object.assign({}, _props, {
+      active,
+      label,
       payload: finalPayload
     }))
   });
