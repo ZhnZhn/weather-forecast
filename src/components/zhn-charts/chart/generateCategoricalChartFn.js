@@ -4,7 +4,6 @@ import {
   isLayoutCentric,
   calculateActiveTickIndex,
   getTicksOfAxis,
-  getBandSizeOfAxis,
   getCoordinatesOfGrid
 } from '../util/ChartUtils';
 
@@ -17,10 +16,11 @@ import {
 } from '../util/ReactUtils';
 
 import { getTicks } from '../cartesian/getTicks';
+import { CARTESIAN_AXIS_DF_PROPS } from '../cartesian/CartesianAxis';
 
 import { originCoordinate } from './chartFn';
 import { getTooltipContent } from './getTooltipContent';
-import { CartesianAxis } from '../cartesian/CartesianAxis';
+
 
 const calculateTooltipPos = (
   rangeObj,
@@ -71,7 +71,7 @@ export const getTooltipData = (
   chartData,
   layout,
   rangeObj
-) => {  
+) => {
   const rangeData = rangeObj || {
     x: 0,
     y: 0
@@ -82,14 +82,11 @@ export const getTooltipData = (
     )
   , {
     orderedTooltipTicks: ticks,
-    tooltipAxis: axis,
     tooltipTicks
   } = state
   , activeIndex = calculateActiveTickIndex(
      pos,
-     ticks,
-     tooltipTicks,
-     axis
+     ticks
   );
   if (activeIndex >= 0 && tooltipTicks) {
     const activeLabel = tooltipTicks[activeIndex] && tooltipTicks[activeIndex].value
@@ -122,10 +119,7 @@ export const tooltipTicksGenerator = (
   , tooltipTicks = getTicksOfAxis(axis, false, true);
   return {
     tooltipTicks,
-    //orderedTooltipTicks: _sortBy(tooltipTicks, o => o.coordinate),
-    orderedTooltipTicks: tooltipTicks.sort(o => o.coordinate),
-    tooltipAxis: axis,
-    tooltipAxisBandSize: getBandSizeOfAxis(axis, tooltipTicks),
+    orderedTooltipTicks: tooltipTicks.sort(o => o.coordinate)
   };
 };
 
@@ -161,7 +155,7 @@ export const verticalCoordinatesGenerator = ({
   height,
   offset
 }) => getCoordinatesOfGrid(getTicks({
-  ...CartesianAxis.defaultProps,
+  ...CARTESIAN_AXIS_DF_PROPS,
   ...xAxis,
   ticks: getTicksOfAxis(xAxis, true),
   viewBox: { x: 0, y: 0, width, height },
@@ -173,7 +167,7 @@ export const horizontalCoordinatesGenerator = ({
   height,
   offset
 }) => getCoordinatesOfGrid(getTicks({
-  ...CartesianAxis.defaultProps,
+  ...CARTESIAN_AXIS_DF_PROPS,
   ...yAxis,
   ticks: getTicksOfAxis(yAxis, true),
   viewBox: { x: 0, y: 0, width, height },

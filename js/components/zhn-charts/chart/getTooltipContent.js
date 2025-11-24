@@ -2,9 +2,10 @@
 
 exports.__esModule = true;
 exports.getTooltipContent = void 0;
-var _DataUtils = require("../util/DataUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _chartFn = require("./chartFn");
+//import { findEntryInArray } from '../util/DataUtils';
+
 /**
  * Get the content to be displayed in the tooltip
  * @param  {Object} state          Current state
@@ -13,22 +14,28 @@ var _chartFn = require("./chartFn");
  * @param  {String} activeLabel    Active label of data
  * @return {Array}                 The content of tooltip
  */
-var getTooltipContent = function getTooltipContent(state, chartData, activeIndex, activeLabel) {
-  var graphicalItems = state.graphicalItems,
-    tooltipAxis = state.tooltipAxis,
+const getTooltipContent = (state, chartData, activeIndex, activeLabel) => {
+  const {
+      graphicalItems
+    } = state,
     displayedData = (0, _chartFn.getDisplayedData)(chartData, state);
   if (activeIndex < 0 || !graphicalItems || !graphicalItems.length || activeIndex >= displayedData.length) {
     return null;
   }
+
   // get data by activeIndex when the axis don't allow duplicated category
-  return graphicalItems.reduce(function (result, child) {
-    var hide = child.props.hide;
+  return graphicalItems.reduce((result, child) => {
+    const {
+      hide
+    } = child.props;
     if (hide) {
       return result;
     }
-    var data = child.props.data,
-      payload = tooltipAxis.dataKey && !tooltipAxis.allowDuplicatedCategory ? (0, _DataUtils.findEntryInArray)(data || displayedData, tooltipAxis.dataKey, activeLabel) : data && data[activeIndex] || displayedData[activeIndex];
-    return payload ? [].concat(result, [(0, _ChartUtils.getTooltipItem)(child, payload)]) : result;
+    const {
+        data
+      } = child.props,
+      payload = data && data[activeIndex] || displayedData[activeIndex];
+    return payload ? [...result, (0, _ChartUtils.getTooltipItem)(child, payload)] : result;
   }, []);
 };
 exports.getTooltipContent = getTooltipContent;

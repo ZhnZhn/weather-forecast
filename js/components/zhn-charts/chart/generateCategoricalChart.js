@@ -94,7 +94,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       {
         offset,
         formattedGraphicalItems,
-        tooltipAxis,
         xAxisMap,
         yAxisMap,
         orderedTooltipTicks,
@@ -117,7 +116,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         }
         const tooltipData = (0, _generateCategoricalChartFn.getTooltipData)({
           orderedTooltipTicks,
-          tooltipAxis,
           tooltipTicks,
           graphicalItems,
           dataStartIndex,

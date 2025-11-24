@@ -148,8 +148,6 @@ export const generateCategoricalChart = (
         offset,
         formattedGraphicalItems,
 
-        tooltipAxis,
-
         xAxisMap,
         yAxisMap,
 
@@ -187,7 +185,6 @@ export const generateCategoricalChart = (
           const tooltipData = getTooltipData(
             {
               orderedTooltipTicks,
-              tooltipAxis,
               tooltipTicks,
               graphicalItems,
 

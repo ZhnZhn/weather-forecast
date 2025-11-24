@@ -40,10 +40,18 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
   const validateData = filterNil ? flattenData.filter(entry => !(0, _isTypeFn.isNullOrUndef)(entry)) : flattenData;
   return validateData.map(entry => (0, _isTypeFn.isNumOrStr)(entry) || entry instanceof Date ? entry : '');
 }
-const _getMinMax = (a, b) => a > b ? [b, a] : [a, b];
+
+/*
+const _getMinMax = (a, b) => a > b
+  ? [b, a]
+  : [a, b];
+*/
 const _getTickCoordinate = tick => tick.coordinate;
 const _calcAverageTicksCoordinate = (tickA, tickB) => tickA && tickB ? (_getTickCoordinate(tickA) + _getTickCoordinate(tickB)) / 2 : NaN;
-const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axis) {
+const calculateActiveTickIndex = function (coordinate, ticks
+//unsortedTicks,
+//axis
+) {
   var _ticks$length, _ticks;
   if (ticks === void 0) {
     ticks = [];
@@ -54,41 +62,6 @@ const calculateActiveTickIndex = function (coordinate, ticks, unsortedTicks, axi
     return 0;
   }
   const endIndex = len - 1;
-  if (axis && axis.axisType === 'angleAxis' && Math.abs(Math.abs(axis.range[1] - axis.range[0]) - 360) <= 1e-6) {
-    const {
-      range
-    } = axis;
-    // ticks are distributed in a circle
-    for (let i = 0; i < len; i++) {
-      const beforeTick = i > 0 ? unsortedTicks[i - 1] : unsortedTicks[endIndex],
-        before = _getTickCoordinate(beforeTick),
-        cur = _getTickCoordinate(unsortedTicks[i]),
-        afterTick = i >= len - 1 ? unsortedTicks[0] : unsortedTicks[i + 1],
-        after = _getTickCoordinate(afterTick);
-      let sameDirectionCoord;
-      if ((0, _DataUtils.mathSign)(cur - before) !== (0, _DataUtils.mathSign)(after - cur)) {
-        let diffInterval = [];
-        if ((0, _DataUtils.mathSign)(after - cur) === (0, _DataUtils.mathSign)(range[1] - range[0])) {
-          sameDirectionCoord = after;
-          const curInRange = cur + range[1] - range[0];
-          diffInterval = _getMinMax(curInRange, (curInRange + before) / 2);
-        } else {
-          sameDirectionCoord = before;
-          const afterInRange = after + range[1] - range[0];
-          diffInterval = _getMinMax(cur, (afterInRange + cur) / 2);
-        }
-        const sameInterval = _getMinMax(cur, (sameDirectionCoord + cur) / 2);
-        if (coordinate > sameInterval[0] && coordinate <= sameInterval[1] || coordinate >= diffInterval[0] && coordinate <= diffInterval[1]) {
-          return unsortedTicks[i].index;
-        }
-      } else {
-        const [min, max] = _getMinMax(before, after);
-        if (coordinate > (min + cur) / 2 && coordinate <= (max + cur) / 2) {
-          return unsortedTicks[i].index;
-        }
-      }
-    }
-  }
   for (let i = 0; i < len; i++) {
     const _averageUp = _calcAverageTicksCoordinate(ticks[i], ticks[i + 1]),
       _averageDown = _calcAverageTicksCoordinate(ticks[i], ticks[i - 1]);
@@ -115,20 +88,7 @@ const getMainColorOfGraphicItem = item => {
       stroke,
       fill
     } = item.props;
-  let result;
-  switch (displayName) {
-    case 'Line':
-      result = stroke;
-      break;
-    case 'Area':
-    case 'Radar':
-      result = stroke && stroke !== 'none' ? stroke : fill;
-      break;
-    default:
-      result = fill;
-      break;
-  }
-  return result;
+  return displayName === 'Line' ? stroke : displayName === 'Area' ? stroke && stroke !== 'none' ? stroke : fill : fill;
 };
 exports.getMainColorOfGraphicItem = getMainColorOfGraphicItem;
 const _getLegendWidthOrHeight = (props, chartWidth) => {
@@ -428,12 +388,11 @@ const getTicksOfAxis = (axis, isGrid, isAll) => {
     } = axis,
     {
       duplicateDomain,
-      type,
-      range
+      type
     } = axis,
-    offsetForBand = axis.realScaleType === 'scaleBand' ? scale.bandwidth() / 2 : 2;
-  let offset = (isGrid || isAll) && type === 'category' && scale.bandwidth ? scale.bandwidth() / offsetForBand : 0;
-  offset = axis.axisType === 'angleAxis' && (range == null ? void 0 : range.length) >= 2 ? (0, _DataUtils.mathSign)(range[0] - range[1]) * 2 * offset : offset;
+    offsetForBand = axis.realScaleType === 'scaleBand' ? scale.bandwidth() / 2 : 2,
+    offset = (isGrid || isAll) && type === 'category' && scale.bandwidth ? scale.bandwidth() / offsetForBand : 0;
+
   // The ticks set by user should only affect the ticks adjacent to axis line
   if (isGrid && (axis.ticks || axis.niceTicks)) {
     const result = (axis.ticks || axis.niceTicks).map(entry => {

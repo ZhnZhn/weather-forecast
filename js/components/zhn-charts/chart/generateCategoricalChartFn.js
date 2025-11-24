@@ -6,9 +6,9 @@ var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _getTicks = require("../cartesian/getTicks");
+var _CartesianAxis = require("../cartesian/CartesianAxis");
 var _chartFn = require("./chartFn");
 var _getTooltipContent = require("./getTooltipContent");
-var _CartesianAxis = require("../cartesian/CartesianAxis");
 const calculateTooltipPos = (rangeObj, layout) => (0, _ChartUtils.isLayoutHorizontal)(layout) ? rangeObj.x : (0, _ChartUtils.isLayoutVertical)(layout) ? rangeObj.y : (0, _ChartUtils.isLayoutCentric)(layout) ? rangeObj.angle : rangeObj.radius;
 const getActiveCoordinate = (layout, tooltipTicks, activeIndex, rangeObj) => {
   const entry = tooltipTicks.find(tick => tick && tick.index === activeIndex);
@@ -42,10 +42,9 @@ const getTooltipData = (state, chartData, layout, rangeObj) => {
     pos = calculateTooltipPos(rangeData, layout),
     {
       orderedTooltipTicks: ticks,
-      tooltipAxis: axis,
       tooltipTicks
     } = state,
-    activeIndex = (0, _ChartUtils.calculateActiveTickIndex)(pos, ticks, tooltipTicks, axis);
+    activeIndex = (0, _ChartUtils.calculateActiveTickIndex)(pos, ticks);
   if (activeIndex >= 0 && tooltipTicks) {
     const activeLabel = tooltipTicks[activeIndex] && tooltipTicks[activeIndex].value,
       activePayload = (0, _getTooltipContent.getTooltipContent)(state, chartData, activeIndex, activeLabel),
@@ -65,10 +64,7 @@ const tooltipTicksGenerator = axisMap => {
     tooltipTicks = (0, _ChartUtils.getTicksOfAxis)(axis, false, true);
   return {
     tooltipTicks,
-    //orderedTooltipTicks: _sortBy(tooltipTicks, o => o.coordinate),
-    orderedTooltipTicks: tooltipTicks.sort(o => o.coordinate),
-    tooltipAxis: axis,
-    tooltipAxisBandSize: (0, _ChartUtils.getBandSizeOfAxis)(axis, tooltipTicks)
+    orderedTooltipTicks: tooltipTicks.sort(o => o.coordinate)
   };
 };
 exports.tooltipTicksGenerator = tooltipTicksGenerator;
@@ -90,7 +86,7 @@ const verticalCoordinatesGenerator = _ref => {
     height,
     offset
   } = _ref;
-  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)(Object.assign({}, _CartesianAxis.CartesianAxis.defaultProps, xAxis, {
+  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)(Object.assign({}, _CartesianAxis.CARTESIAN_AXIS_DF_PROPS, xAxis, {
     ticks: (0, _ChartUtils.getTicksOfAxis)(xAxis, true),
     viewBox: {
       x: 0,
@@ -108,7 +104,7 @@ const horizontalCoordinatesGenerator = _ref2 => {
     height,
     offset
   } = _ref2;
-  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)(Object.assign({}, _CartesianAxis.CartesianAxis.defaultProps, yAxis, {
+  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)(Object.assign({}, _CartesianAxis.CARTESIAN_AXIS_DF_PROPS, yAxis, {
     ticks: (0, _ChartUtils.getTicksOfAxis)(yAxis, true),
     viewBox: {
       x: 0,

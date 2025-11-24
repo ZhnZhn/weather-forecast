@@ -38,7 +38,7 @@ import { Legend } from '../component/Legend';
 import {
   findEntryInArray,
   getPercentValue,
-  mathSign,
+  //mathSign,
   uniqueId
 } from './DataUtils';
 import {
@@ -99,9 +99,11 @@ export function getDomainOfDataByKey(
    .map(entry => (isNumOrStr(entry) || entry instanceof Date ? entry : ''));
 }
 
+/*
 const _getMinMax = (a, b) => a > b
   ? [b, a]
   : [a, b];
+*/
 const _getTickCoordinate = tick => tick.coordinate;
 const _calcAverageTicksCoordinate = (
   tickA,
@@ -113,8 +115,8 @@ const _calcAverageTicksCoordinate = (
 export const calculateActiveTickIndex = (
   coordinate,
   ticks = [],
-  unsortedTicks,
-  axis
+  //unsortedTicks,
+  //axis
 ) => {
   const len = ticks?.length ?? 0;
   // if there are 1 or less ticks ticks then the active tick is at index 0
@@ -122,45 +124,7 @@ export const calculateActiveTickIndex = (
     return 0;
   }
   const endIndex = len - 1;
-  if (axis && axis.axisType === 'angleAxis' && Math.abs(Math.abs(axis.range[1] - axis.range[0]) - 360) <= 1e-6) {
-    const { range } = axis;
-    // ticks are distributed in a circle
-    for (let i = 0; i < len; i++) {
-      const beforeTick = i > 0
-        ? unsortedTicks[i - 1]
-        : unsortedTicks[endIndex]
-      , before = _getTickCoordinate(beforeTick)
-      , cur = _getTickCoordinate(unsortedTicks[i])
-      , afterTick = i >= len - 1
-        ? unsortedTicks[0]
-        : unsortedTicks[i + 1]
-      , after = _getTickCoordinate(afterTick);
-      let sameDirectionCoord;
-      if (mathSign(cur - before) !== mathSign(after - cur)) {
-        let diffInterval = [];
-        if (mathSign(after - cur) === mathSign(range[1] - range[0])) {
-          sameDirectionCoord = after;
-          const curInRange = cur + range[1] - range[0];
-          diffInterval = _getMinMax(curInRange, (curInRange + before) / 2);
-        } else {
-          sameDirectionCoord = before;
-          const afterInRange = after + range[1] - range[0];
-          diffInterval = _getMinMax(cur, (afterInRange + cur) / 2)
-        }
-        const sameInterval = _getMinMax(cur, (sameDirectionCoord + cur) / 2)
-        if ((coordinate > sameInterval[0] && coordinate <= sameInterval[1]) ||
-            (coordinate >= diffInterval[0] && coordinate <= diffInterval[1])
-        ) {
-          return unsortedTicks[i].index;
-        }
-      } else {
-        const [min, max] = _getMinMax(before, after);
-        if (coordinate > (min + cur) / 2 && coordinate <= (max + cur) / 2) {
-          return unsortedTicks[i].index;
-        }
-      }
-    }
-  }
+
   for (let i = 0; i < len; i++) {
     const _averageUp = _calcAverageTicksCoordinate(ticks[i], ticks[i + 1])
     , _averageDown = _calcAverageTicksCoordinate(ticks[i], ticks[i - 1]);
@@ -190,22 +154,11 @@ export const getMainColorOfGraphicItem = (
     fill
   } = item.props;
 
-  let result;
-  switch (displayName) {
-    case 'Line':
-      result = stroke;
-      break;
-    case 'Area':
-    case 'Radar':
-      result = stroke && stroke !== 'none'
-        ? stroke
-        : fill;
-      break;
-    default:
-      result = fill;
-      break;
-  }
-  return result;
+  return  displayName === 'Line'
+    ? stroke
+    : displayName === 'Area'
+    ? stroke && stroke !== 'none' ? stroke : fill
+    : fill;
 };
 
 const _getLegendWidthOrHeight = (
@@ -518,23 +471,23 @@ export const getTicksOfAxis = (
     return null;
   }
   const { scale } = axis
-  , { duplicateDomain, type, range } = axis
+  , {
+    duplicateDomain,
+    type
+  } = axis
   , offsetForBand = axis.realScaleType === 'scaleBand'
      ? scale.bandwidth() / 2
-     : 2;
-  let offset = (isGrid || isAll)
-   && type === 'category'
-   && scale.bandwidth
-       ? scale.bandwidth() / offsetForBand
-       : 0;
-  offset = axis.axisType === 'angleAxis'
-    && range?.length >= 2
-         ? mathSign(range[0] - range[1]) * 2 * offset
-         : offset;
+     : 2
+  , offset = (isGrid || isAll) && type === 'category' && scale.bandwidth
+     ? scale.bandwidth() / offsetForBand
+     : 0;
+
   // The ticks set by user should only affect the ticks adjacent to axis line
   if (isGrid && (axis.ticks || axis.niceTicks)) {
     const result = (axis.ticks || axis.niceTicks).map((entry) => {
-      const scaleContent = duplicateDomain ? duplicateDomain.indexOf(entry) : entry;
+      const scaleContent = duplicateDomain
+        ? duplicateDomain.indexOf(entry)
+        : entry;
       return {
         // If the scaleContent is not a number, the coordinate will be NaN.
         // That could be the case for example with a PointScale and a string as domain.
