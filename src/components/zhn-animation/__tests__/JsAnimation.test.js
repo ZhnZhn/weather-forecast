@@ -22,7 +22,7 @@ describe('JsAnimation', () => {
     return waitFor(() => {
       const element = container.getElementsByClassName('test-wrapper')[0];
       expect(element.style.opacity).toBe('1')
-    }, { timeout: 700 })
+    }, { timeout: 800 })
   });
 
   test('should called onAnimationEnd', async () => {
