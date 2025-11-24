@@ -3,7 +3,6 @@ import {
   isNotEmptyArr
 } from '../../../utils/isTypeFn';
 
-import { useState } from '../../uiApi';
 import { HAS_TOUCH_EVENTS } from '../../has';
 
 import { Tooltip } from '../component/Tooltip';
@@ -13,25 +12,26 @@ const _getEvtTouch = ({
   changedTouches
 }) => isNotEmptyArr(changedTouches)
   ? changedTouches[0]
-  : void 0
+  : void 0;
 
 const _fHandleTouch = (handleMouse) => (evt) => {
   const evtTouch = _getEvtTouch(evt);
   if (evtTouch) {
     handleMouse(evtTouch);
   }
-}
+};
 
-const useTooltip = (
+const CLOSE_TOOLTIP_STATE = {
+  isTooltipActive: false,
+  activeTooltipIndex: null
+};
+
+const useTooltipEvents = (
   props,
-  getMouseTooltipData
+  getMouseTooltipData,
+  _setTooltipState
 ) => {
-  const [
-    tooltipState,
-    setTooltipState
-  ] = useState({ isTooltipActive: false })
-
-  , {
+  const {
     onMouseEnter,
     onMouseDown,
     onMouseUp,
@@ -47,7 +47,7 @@ const useTooltip = (
           ...tooltipData,
           isTooltipActive: true
         };
-        setTooltipState(nextState)
+        _setTooltipState(nextState)
         if (isFn(onMouseEnter)) {
           onMouseEnter(nextState, evt);
         }
@@ -58,20 +58,22 @@ const useTooltip = (
       , nextState = tooltipData
          ? { ...tooltipData, isTooltipActive: true }
          : { isTooltipActive: false };
-      setTooltipState(nextState)
+      _setTooltipState(nextState)
       if (isFn(onMouseMove)) {
         onMouseMove(nextState, evt);
       }
   }
   , handleMouseLeave = (evt) => {
-      const nextState = { isTooltipActive: false };
-      setTooltipState(nextState)
+      const nextState = {...CLOSE_TOOLTIP_STATE};
+      _setTooltipState(nextState)
       if (isFn(onMouseLeave)) {
         onMouseLeave(nextState, evt);
       }
   }
   , handleCloseTooltip = () => {
-      setTooltipState({ isTooltipActive: false })
+      _setTooltipState({
+        ...CLOSE_TOOLTIP_STATE
+      })
   }
 
   , handleClick = (evt) => {
@@ -81,7 +83,7 @@ const useTooltip = (
           ...tooltipData,
           isTooltipActive: true
         };
-        setTooltipState(nextState)
+        _setTooltipState(nextState)
         if (isFn(onClick)) {
           onClick(nextState, evt);
         }
@@ -119,12 +121,10 @@ const useTooltip = (
      : {};
 
   return [
-    tooltipState,
-    setTooltipState,
     tooltipItem,
     events,
     handleCloseTooltip
   ];
 };
 
-export default useTooltip
+export default useTooltipEvents

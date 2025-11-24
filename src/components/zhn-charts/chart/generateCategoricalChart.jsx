@@ -11,6 +11,9 @@ import {
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
+import { useLocalStateTuple } from '../context/localState';
+import { TooltipProvider } from '../context/TooltipContext';
+
 import { Surface } from '../container/Surface';
 import { ClipPath } from '../container/ClipPath';
 
@@ -32,7 +35,7 @@ import {
 } from '../util/ChartUtils';
 
 import useLegendBox from './useLegendBox';
-import useTooltip from './useTooltip';
+import useTooltipEvents from './useTooltipEvents';
 
 import { getTooltipData } from './generateCategoricalChartFn';
 
@@ -116,6 +119,10 @@ export const generateCategoricalChart = (
       data,
       children
     } = _props
+    , [
+      _useTooltipState,
+      _setTooltipState
+    ] = useLocalStateTuple({ isTooltipActive: false })
     , _refHasDataBeenUpdated = useRef(false)
     , _refClipPathId = useRef(`${_props.id || uniqueId('recharts')}-clip`)
     , _refContainer = useRef()
@@ -198,22 +205,14 @@ export const generateCategoricalChart = (
             : null;
       }
       , [
-        tooltipState,
-        setTooltipState,
         tooltipItem,
         events,
         handleCloseTooltip
-      ] = useTooltip(
-        props,
-        getMouseTooltipData
-      )
-      , {
-        isTooltipActive,
-        activeCoordinate,
-        activePayload,
-        activeLabel,
-        activeTooltipIndex
-      } = tooltipState;
+      ] = useTooltipEvents(
+        _props,
+        getMouseTooltipData,
+        _setTooltipState
+      );
 
       /*eslint-disable react-hooks/exhaustive-deps*/
       useEffect(() => {
@@ -229,7 +228,7 @@ export const generateCategoricalChart = (
             ..._crDfState(_props),
             updateId: state.updateId + 1
           };
-          setTooltipState({ isTooltipActive: false })
+          handleCloseTooltip()
           setState(prevState => ({
             ...prevState,
             ...nextState,
@@ -269,12 +268,7 @@ export const generateCategoricalChart = (
         offset,
         xAxisMap,
         yAxisMap,
-
-        formattedGraphicalItems,
-        isTooltipActive,
-        tooltipAxis,
-        activeTooltipIndex,
-        activeLabel
+        formattedGraphicalItems
       }, renderMap)
       , _graphicItemsEl = (
         <Surface
@@ -304,24 +298,22 @@ export const generateCategoricalChart = (
              }}
              {...events}
           >
-            {_graphicItemsEl}
-            {renderLegend(
-               width,
-               height,
-               margin,
-               children,
-               formattedGraphicalItems,
-               handleLegendBBoxUpdate
-            )}
-            {renderTooltip(
-               tooltipItem,
-               isTooltipActive,
-               activeCoordinate,
-               activePayload,
-               activeLabel,
-               offset,
-               handleCloseTooltip
-             )}
+            <TooltipProvider value={_useTooltipState}>
+              {_graphicItemsEl}
+              {renderLegend(
+                 width,
+                 height,
+                 margin,
+                 children,
+                 formattedGraphicalItems,
+                 handleLegendBBoxUpdate
+              )}
+              {renderTooltip(
+                 tooltipItem,
+                 offset,
+                 handleCloseTooltip
+               )}
+             </TooltipProvider>
          </div>
        );
   };

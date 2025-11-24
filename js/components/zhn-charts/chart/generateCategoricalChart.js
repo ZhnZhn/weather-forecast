@@ -6,6 +6,8 @@ exports.generateCategoricalChart = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
+var _localState = require("../context/localState");
+var _TooltipContext = require("../context/TooltipContext");
 var _Surface = require("../container/Surface");
 var _ClipPath = require("../container/ClipPath");
 var _ReactUtils = require("../util/ReactUtils");
@@ -13,7 +15,7 @@ var _DOMUtils = require("../util/DOMUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _useLegendBox = _interopRequireDefault(require("./useLegendBox"));
-var _useTooltip = _interopRequireDefault(require("./useTooltip"));
+var _useTooltipEvents = _interopRequireDefault(require("./useTooltipEvents"));
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _renderFn = require("./renderFn");
 var _renderLegend = require("./renderLegend");
@@ -71,6 +73,9 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         data,
         children
       } = _props,
+      [_useTooltipState, _setTooltipState] = (0, _localState.useLocalStateTuple)({
+        isTooltipActive: false
+      }),
       _refHasDataBeenUpdated = (0, _uiApi.useRef)(false),
       _refClipPathId = (0, _uiApi.useRef)((_props.id || (0, _DataUtils.uniqueId)('recharts')) + "-clip"),
       _refContainer = (0, _uiApi.useRef)(),
@@ -121,14 +126,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         }, data, layout, rangeObj);
         return tooltipData ? tooltipData : null;
       },
-      [tooltipState, setTooltipState, tooltipItem, events, handleCloseTooltip] = (0, _useTooltip.default)(props, getMouseTooltipData),
-      {
-        isTooltipActive,
-        activeCoordinate,
-        activePayload,
-        activeLabel,
-        activeTooltipIndex
-      } = tooltipState;
+      [tooltipItem, events, handleCloseTooltip] = (0, _useTooltipEvents.default)(_props, getMouseTooltipData, _setTooltipState);
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     (0, _uiApi.useEffect)(() => {
@@ -141,9 +139,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         const nextState = Object.assign({}, _crDfState(_props), {
           updateId: state.updateId + 1
         });
-        setTooltipState({
-          isTooltipActive: false
-        });
+        handleCloseTooltip();
         setState(prevState => Object.assign({}, prevState, nextState, {
           prevData: data,
           prevWidth: width,
@@ -177,11 +173,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         offset,
         xAxisMap,
         yAxisMap,
-        formattedGraphicalItems,
-        isTooltipActive,
-        tooltipAxis,
-        activeTooltipIndex,
-        activeLabel
+        formattedGraphicalItems
       }, _renderFn.renderMap),
       _graphicItemsEl = /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, SURFACE_ATTRS, {
         width: width,
@@ -195,7 +187,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       }));
 
     // The "compact" mode is mainly used as the panorama within Brush
-    return compact ? _graphicItemsEl : /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", Object.assign({
+    return compact ? _graphicItemsEl : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", Object.assign({
       role: "region",
       ref: _refContainer,
       className: (0, _styleFn.crCn)(_CL.CL_WRAPPER, className),
@@ -206,7 +198,10 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         height
       }, style)
     }, events, {
-      children: [_graphicItemsEl, (0, _renderLegend.renderLegend)(width, height, margin, children, formattedGraphicalItems, handleLegendBBoxUpdate), (0, _renderTooltip.renderTooltip)(tooltipItem, isTooltipActive, activeCoordinate, activePayload, activeLabel, offset, handleCloseTooltip)]
+      children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_TooltipContext.TooltipProvider, {
+        value: _useTooltipState,
+        children: [_graphicItemsEl, (0, _renderLegend.renderLegend)(width, height, margin, children, formattedGraphicalItems, handleLegendBBoxUpdate), (0, _renderTooltip.renderTooltip)(tooltipItem, offset, handleCloseTooltip)]
+      })
     }));
   };
   ChartWrapper.displayName = chartName;

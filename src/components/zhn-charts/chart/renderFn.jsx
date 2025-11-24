@@ -1,28 +1,18 @@
-import {
-  isObj,
-  isNullOrUndef,
-  //isFn
-} from '../../../utils/isTypeFn';
+import { isObj } from '../../../utils/isTypeFn';
 
 import { cloneUiElement } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
 import { CartesianAxis } from '../cartesian/CartesianAxis';
-import { Tooltip } from '../component/Tooltip';
 
 import { getTicksOfAxis } from '../util/ChartUtils';
-
 import {
   isNumber,
   getAnyElementOfObject,
-  //findEntryInArray
 } from '../util/DataUtils';
-
-import { findChildByType } from '../util/ReactUtils';
 
 import { crAxisCl } from '../CL';
 
-import { renderActivePoints } from './renderActivePoints';
 import {
   verticalCoordinatesGenerator,
   horizontalCoordinatesGenerator
@@ -143,83 +133,24 @@ const renderYAxis = ({
   );
 };
 
-/*
-const _filterFormatItem = (
-  item,
-  displayName,
-  childIndex,
-  formattedGraphicalItems
-) => {
-  for (let i = 0, len = formattedGraphicalItems.length; i < len; i++) {
-    const entry = formattedGraphicalItems[i];
-    if (entry.item === item ||
-      entry.props.key === item.key ||
-      (displayName === getDisplayName(entry.item.type) && childIndex === entry.childIndex)) {
-      return entry;
-    }
-  }
-  return null;
-};
-*/
-
 const renderGraphicChild = ({
-  children,
-
   formattedGraphicalItems,
-  isTooltipActive,
-  tooltipAxis,
-  activeTooltipIndex,
-  activeLabel,
-
-  element,
-  displayName,
-  index
+  index,
+  element
 }) => {
   const item = formattedGraphicalItems
     .find(item => item.childIndex === index)
-  /*
-  const item = _filterFormatItem(
-    element,
-    displayName,
-    index,
-    formattedGraphicalItems
-  );
-  */
   if (!item) {
     return null;
   }
 
-  const tooltipItem = findChildByType(children, Tooltip)
-  , {
-    points
-  } = item.props
-  , {
-    activeDot,
-    hide
-  } = item.item.props
-  , hasActive = !hide
-      && isTooltipActive
-      && tooltipItem
-      && activeDot
-      && activeTooltipIndex >= 0
-  , { key, ...itemProps } = item.props
+  const { key, ...itemProps } = item.props
   , graphicalItem = cloneUiElement(
-      element, {...itemProps}, key
-    )
-  , activePoint = hasActive
-     ? points[activeTooltipIndex]
-     : void 0;
+    element, {...itemProps}, key
+  );
 
-  return isNullOrUndef(activePoint)
-    ? [graphicalItem, null]
-    : [graphicalItem,
-        ...renderActivePoints({
-          item,
-          activePoint,
-          childIndex: activeTooltipIndex
-      })
-    ];
-}
+  return [graphicalItem, null];
+};
 
 export const renderMap = {
   CartesianGrid: { handler: renderGrid, once: true },

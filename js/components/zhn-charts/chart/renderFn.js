@@ -8,12 +8,9 @@ var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _CartesianAxis = require("../cartesian/CartesianAxis");
-var _Tooltip = require("../component/Tooltip");
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
-var _ReactUtils = require("../util/ReactUtils");
 var _CL = require("../CL");
-var _renderActivePoints = require("./renderActivePoints");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _react = require("react");
 const _excluded = ["key"];
@@ -97,71 +94,23 @@ const renderYAxis = _ref3 => {
   const axisObj = yAxisMap[element.props.yAxisId];
   return _renderAxis(axisObj, element, displayName, index, width, height);
 };
-
-/*
-const _filterFormatItem = (
-  item,
-  displayName,
-  childIndex,
-  formattedGraphicalItems
-) => {
-  for (let i = 0, len = formattedGraphicalItems.length; i < len; i++) {
-    const entry = formattedGraphicalItems[i];
-    if (entry.item === item ||
-      entry.props.key === item.key ||
-      (displayName === getDisplayName(entry.item.type) && childIndex === entry.childIndex)) {
-      return entry;
-    }
-  }
-  return null;
-};
-*/
-
 const renderGraphicChild = _ref4 => {
   let {
-    children,
     formattedGraphicalItems,
-    isTooltipActive,
-    tooltipAxis,
-    activeTooltipIndex,
-    activeLabel,
-    element,
-    displayName,
-    index
+    index,
+    element
   } = _ref4;
   const item = formattedGraphicalItems.find(item => item.childIndex === index);
-  /*
-  const item = _filterFormatItem(
-    element,
-    displayName,
-    index,
-    formattedGraphicalItems
-  );
-  */
   if (!item) {
     return null;
   }
-  const tooltipItem = (0, _ReactUtils.findChildByType)(children, _Tooltip.Tooltip),
-    {
-      points
-    } = item.props,
-    {
-      activeDot,
-      hide
-    } = item.item.props,
-    hasActive = !hide && isTooltipActive && tooltipItem && activeDot && activeTooltipIndex >= 0,
-    _item$props = item.props,
+  const _item$props = item.props,
     {
       key
     } = _item$props,
     itemProps = (0, _objectWithoutPropertiesLoose2.default)(_item$props, _excluded),
-    graphicalItem = (0, _uiApi.cloneUiElement)(element, Object.assign({}, itemProps), key),
-    activePoint = hasActive ? points[activeTooltipIndex] : void 0;
-  return (0, _isTypeFn.isNullOrUndef)(activePoint) ? [graphicalItem, null] : [graphicalItem, ...(0, _renderActivePoints.renderActivePoints)({
-    item,
-    activePoint,
-    childIndex: activeTooltipIndex
-  })];
+    graphicalItem = (0, _uiApi.cloneUiElement)(element, Object.assign({}, itemProps), key);
+  return [graphicalItem, null];
 };
 const renderMap = exports.renderMap = {
   CartesianGrid: {
