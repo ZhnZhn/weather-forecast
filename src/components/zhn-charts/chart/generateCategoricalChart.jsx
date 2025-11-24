@@ -1,5 +1,3 @@
-import { isNullOrUndef } from '../../../utils/isTypeFn';
-
 import {
   crProps,
   useRef,
@@ -74,7 +72,7 @@ const _crMouseRange = (
 const _crNextUpdateId = (
   data,
   updateId
-) => isNullOrUndef(data)
+) => data == null
   ? updateId + 1
   : updateId;
 

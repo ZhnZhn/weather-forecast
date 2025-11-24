@@ -3,7 +3,6 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.generateCategoricalChart = void 0;
-var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _localState = require("../context/localState");
@@ -31,7 +30,7 @@ const _crMouseRange = (containerElement, evt, layout, offset) => {
     _e = (0, _DOMUtils.calculateChartCoordinate)(evt, _containerOffset);
   return _inRange(_e.chartX, _e.chartY, layout, offset);
 };
-const _crNextUpdateId = (data, updateId) => (0, _isTypeFn.isNullOrUndef)(data) ? updateId + 1 : updateId;
+const _crNextUpdateId = (data, updateId) => data == null ? updateId + 1 : updateId;
 const DF_PROPS = {
     layout: 'horizontal',
     stackOffset: 'none',
