@@ -2,7 +2,7 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.CartesianAxis = void 0;
+exports.CartesianAxis = exports.CARTESIAN_AXIS_DF_PROPS = void 0;
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
@@ -17,7 +17,7 @@ var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 const _excluded = ["viewBox"],
   _excluded2 = ["viewBox"];
-const CARTESIAN_AXIS_DF_PROPS = {
+const CARTESIAN_AXIS_DF_PROPS = exports.CARTESIAN_AXIS_DF_PROPS = {
   x: 0,
   y: 0,
   width: 0,
@@ -89,6 +89,5 @@ const CartesianAxis = exports.CartesianAxis = (0, _uiApi.memo)(props => {
     }), (0, _Label.renderLabelByParentProps)(_props)]
   });
 }, _arePropsEqual);
-CartesianAxis.displayName = 'CartesianAxis';
-CartesianAxis.defaultProps = CARTESIAN_AXIS_DF_PROPS;
+(0, _uiApi.setDisplayNameTo)(CartesianAxis, 'CartesianAxis');
 //# sourceMappingURL=CartesianAxis.js.map

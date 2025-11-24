@@ -2,7 +2,8 @@ import {
   memo,
   useRef,
   crProps,
-  useDefaultProps
+  useDefaultProps,
+  setDisplayNameTo
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
@@ -23,7 +24,7 @@ import {
   CL_AXIS_LINE
 } from '../CL';
 
-const CARTESIAN_AXIS_DF_PROPS = {
+export const CARTESIAN_AXIS_DF_PROPS = {
   x: 0,
   y: 0,
   width: 0,
@@ -115,5 +116,4 @@ export const CartesianAxis = memo(props => {
   );
 }, _arePropsEqual)
 
-CartesianAxis.displayName = 'CartesianAxis';
-CartesianAxis.defaultProps = CARTESIAN_AXIS_DF_PROPS
+setDisplayNameTo(CartesianAxis, 'CartesianAxis')
