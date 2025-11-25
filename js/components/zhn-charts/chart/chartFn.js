@@ -2,41 +2,29 @@
 
 exports.__esModule = true;
 exports.originCoordinate = exports.getDisplayedData = exports.getDefaultDomainByAxisType = exports.crAxisComponent = void 0;
-var _DataUtils = require("../util/DataUtils");
-var originCoordinate = {
+var _isTypeFn = require("../../../utils/isTypeFn");
+const originCoordinate = exports.originCoordinate = {
   x: 0,
   y: 0
 };
-exports.originCoordinate = originCoordinate;
-var crAxisComponent = function crAxisComponent(axisType, AxisComp) {
-  return {
-    axisType: axisType,
-    AxisComp: AxisComp
-  };
-};
+const crAxisComponent = (axisType, AxisComp) => ({
+  axisType,
+  AxisComp
+});
 exports.crAxisComponent = crAxisComponent;
-var getDisplayedData = function getDisplayedData(data, _ref, item) {
-  var graphicalItems = _ref.graphicalItems,
-    dataStartIndex = _ref.dataStartIndex,
-    dataEndIndex = _ref.dataEndIndex;
-  var itemsData = (graphicalItems || []).reduce(function (result, child) {
-    var itemData = child.props.data;
-    return itemData && itemData.length ? [].concat(result, itemData) : result;
+const getDisplayedData = (data, _ref, item) => {
+  let {
+    graphicalItems,
+    dataStartIndex,
+    dataEndIndex
+  } = _ref;
+  const itemsData = (graphicalItems || []).reduce((result, child) => {
+    const itemData = child.props.data;
+    return (0, _isTypeFn.isNotEmptyArr)(itemData) ? [...result, ...itemData] : result;
   }, []);
-  if (itemsData && itemsData.length > 0) {
-    return itemsData;
-  }
-  if (item && item.props && item.props.data && item.props.data.length > 0) {
-    return item.props.data;
-  }
-  if (data && data.length && (0, _DataUtils.isNumber)(dataStartIndex) && (0, _DataUtils.isNumber)(dataEndIndex)) {
-    return data.slice(dataStartIndex, dataEndIndex + 1);
-  }
-  return [];
+  return (0, _isTypeFn.isNotEmptyArr)(itemsData) ? itemsData : item && item.props && (0, _isTypeFn.isNotEmptyArr)(item.props.data) ? item.props.data : (0, _isTypeFn.isNotEmptyArr)(data) && (0, _isTypeFn.isNumber)(dataStartIndex) && (0, _isTypeFn.isNumber)(dataEndIndex) ? data.slice(dataStartIndex, dataEndIndex + 1) : [];
 };
 exports.getDisplayedData = getDisplayedData;
-var getDefaultDomainByAxisType = function getDefaultDomainByAxisType(axisType) {
-  return axisType === 'number' ? [0, 'auto'] : void 0;
-};
+const getDefaultDomainByAxisType = axisType => axisType === 'number' ? [0, 'auto'] : void 0;
 exports.getDefaultDomainByAxisType = getDefaultDomainByAxisType;
 //# sourceMappingURL=chartFn.js.map

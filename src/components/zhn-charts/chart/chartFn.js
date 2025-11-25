@@ -1,4 +1,7 @@
-import { isNumber } from '../util/DataUtils';
+import {
+  isNotEmptyArr,
+  isNumber
+} from '../../../utils/isTypeFn';
 
 export const originCoordinate = { x: 0, y: 0 };
 
@@ -20,20 +23,17 @@ export const getDisplayedData = (
   const itemsData = (graphicalItems || [])
     .reduce((result, child) => {
       const itemData = child.props.data;
-      return itemData && itemData.length
+      return isNotEmptyArr(itemData)
         ? [...result, ...itemData]
         : result;
   }, []);
-  if (itemsData && itemsData.length > 0) {
-    return itemsData;
-  }
-  if (item && item.props && item.props.data && item.props.data.length > 0) {
-    return item.props.data;
-  }
-  if (data && data.length && isNumber(dataStartIndex) && isNumber(dataEndIndex)) {
-    return data.slice(dataStartIndex, dataEndIndex + 1);
-  }
-  return [];
+  return isNotEmptyArr(itemsData)
+    ? itemsData
+    : item && item.props && isNotEmptyArr(item.props.data)
+    ? item.props.data
+    : isNotEmptyArr(data) && isNumber(dataStartIndex) && isNumber(dataEndIndex)
+    ? data.slice(dataStartIndex, dataEndIndex + 1)
+    : [];
 };
 
 export const getDefaultDomainByAxisType = (
