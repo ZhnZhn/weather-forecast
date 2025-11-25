@@ -97,7 +97,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         xAxisMap,
         yAxisMap,
         orderedTooltipTicks,
-        tooltipTicks,
         graphicalItems
       } = (0, _uiApi.useMemo)(() => updateStateOfAxisMapsOffsetAndStackGroups({
         props: _props,
@@ -116,7 +115,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         }
         const tooltipData = (0, _generateCategoricalChartFn.getTooltipData)({
           orderedTooltipTicks,
-          tooltipTicks,
           graphicalItems,
           dataStartIndex,
           dataEndIndex

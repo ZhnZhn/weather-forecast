@@ -152,7 +152,6 @@ export const generateCategoricalChart = (
         yAxisMap,
 
         orderedTooltipTicks,
-        tooltipTicks,
         graphicalItems
       } = useMemo(() => updateStateOfAxisMapsOffsetAndStackGroups({
         props: _props,
@@ -185,7 +184,6 @@ export const generateCategoricalChart = (
           const tooltipData = getTooltipData(
             {
               orderedTooltipTicks,
-              tooltipTicks,
               graphicalItems,
 
               dataStartIndex,

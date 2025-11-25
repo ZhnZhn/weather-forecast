@@ -41,14 +41,13 @@ const getTooltipData = (state, chartData, layout, rangeObj) => {
     },
     pos = calculateTooltipPos(rangeData, layout),
     {
-      orderedTooltipTicks: ticks,
-      tooltipTicks
+      orderedTooltipTicks
     } = state,
-    activeIndex = (0, _ChartUtils.calculateActiveTickIndex)(pos, ticks);
-  if (activeIndex >= 0 && tooltipTicks) {
-    const activeLabel = tooltipTicks[activeIndex] && tooltipTicks[activeIndex].value,
+    activeIndex = (0, _ChartUtils.calculateActiveTickIndex)(pos, orderedTooltipTicks);
+  if (activeIndex >= 0 && orderedTooltipTicks) {
+    const activeLabel = orderedTooltipTicks[activeIndex] && orderedTooltipTicks[activeIndex].value,
       activePayload = (0, _getTooltipContent.getTooltipContent)(state, chartData, activeIndex, activeLabel),
-      activeCoordinate = getActiveCoordinate(layout, ticks, activeIndex, rangeData);
+      activeCoordinate = getActiveCoordinate(layout, orderedTooltipTicks, activeIndex, rangeData);
     return {
       activeTooltipIndex: activeIndex,
       activeLabel,
@@ -63,7 +62,6 @@ const tooltipTicksGenerator = axisMap => {
   const axis = (0, _DataUtils.getAnyElementOfObject)(axisMap),
     tooltipTicks = (0, _ChartUtils.getTicksOfAxis)(axis, false, true);
   return {
-    tooltipTicks,
     orderedTooltipTicks: tooltipTicks.sort(o => o.coordinate)
   };
 };

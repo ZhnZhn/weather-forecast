@@ -81,15 +81,14 @@ export const getTooltipData = (
       layout
     )
   , {
-    orderedTooltipTicks: ticks,
-    tooltipTicks
+    orderedTooltipTicks
   } = state
   , activeIndex = calculateActiveTickIndex(
      pos,
-     ticks
+     orderedTooltipTicks
   );
-  if (activeIndex >= 0 && tooltipTicks) {
-    const activeLabel = tooltipTicks[activeIndex] && tooltipTicks[activeIndex].value
+  if (activeIndex >= 0 && orderedTooltipTicks) {
+    const activeLabel = orderedTooltipTicks[activeIndex] && orderedTooltipTicks[activeIndex].value
     , activePayload = getTooltipContent(
         state,
         chartData,
@@ -98,7 +97,7 @@ export const getTooltipData = (
       )
     , activeCoordinate = getActiveCoordinate(
         layout,
-        ticks,
+        orderedTooltipTicks,
         activeIndex,
         rangeData
       );
@@ -118,7 +117,6 @@ export const tooltipTicksGenerator = (
   const axis = getAnyElementOfObject(axisMap)
   , tooltipTicks = getTicksOfAxis(axis, false, true);
   return {
-    tooltipTicks,
     orderedTooltipTicks: tooltipTicks.sort(o => o.coordinate)
   };
 };
