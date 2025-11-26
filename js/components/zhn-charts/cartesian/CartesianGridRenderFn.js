@@ -5,29 +5,11 @@ exports.getStripeLineDimension = exports.crStripeRectProps = exports.crRoundedSo
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _CL = require("../CL");
 const _crPoints = (points, pointsGenerator, generatorOptions) => !(0, _isTypeFn.isNotEmptyArr)(points) && (0, _isTypeFn.isFn)(pointsGenerator) ? pointsGenerator(generatorOptions) : points;
-const crGridPoints = props => {
-  const {
-      horizontalCoordinatesGenerator,
-      verticalCoordinatesGenerator,
-      xAxis,
-      yAxis,
-      offset,
-      chartWidth,
-      chartHeight
-    } = props,
-    _generatorOptions = {
-      width: chartWidth,
-      height: chartHeight,
-      offset
-    };
-  return [_crPoints(props.horizontalPoints, horizontalCoordinatesGenerator, {
-    ..._generatorOptions,
-    yAxis
-  }), _crPoints(props.verticalPoints, verticalCoordinatesGenerator, {
-    ..._generatorOptions,
-    xAxis
-  })];
-};
+const crGridPoints = (horizontalCoordinatesGenerator, verticalCoordinatesGenerator, xAxis, yAxis, horizontalPoints, verticalPoints, generatorOptions) => [_crPoints(horizontalPoints, horizontalCoordinatesGenerator, Object.assign({}, generatorOptions, {
+  yAxis
+})), _crPoints(verticalPoints, verticalCoordinatesGenerator, Object.assign({}, generatorOptions, {
+  xAxis
+}))];
 exports.crGridPoints = crGridPoints;
 const _mathRound = Math.round;
 const crRoundedSortedPoints = (points, x) => {

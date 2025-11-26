@@ -14,36 +14,25 @@ const _crPoints = (
   : points;
 
 export const crGridPoints = (
-  props
-) => {
-  const {
-    horizontalCoordinatesGenerator,
-    verticalCoordinatesGenerator,
-    xAxis,
-    yAxis,
-    offset,
-    chartWidth,
-    chartHeight
-  } = props
-  , _generatorOptions = {
-     width: chartWidth,
-     height: chartHeight,
-     offset
-  };
-
-  return [
-    _crPoints(
-        props.horizontalPoints,
-        horizontalCoordinatesGenerator,
-        {..._generatorOptions, yAxis}
-    ),
-    _crPoints(
-        props.verticalPoints,
-        verticalCoordinatesGenerator,
-        {..._generatorOptions, xAxis}
-    )
-  ];
-}
+  horizontalCoordinatesGenerator,
+  verticalCoordinatesGenerator,
+  xAxis,
+  yAxis,
+  horizontalPoints,
+  verticalPoints,
+  generatorOptions
+) => [
+  _crPoints(
+     horizontalPoints,
+     horizontalCoordinatesGenerator,
+     {...generatorOptions, yAxis}
+  ),
+  _crPoints(
+     verticalPoints,
+     verticalCoordinatesGenerator,
+     {...generatorOptions, xAxis}
+  )
+]
 
 const _mathRound = Math.round;
 export const crRoundedSortedPoints = (

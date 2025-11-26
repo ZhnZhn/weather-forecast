@@ -1,8 +1,15 @@
-import { isNotEmptyArr } from '../../../utils/isTypeFn';
+import {
+  isNotEmptyArr
+} from '../../../utils/isTypeFn';
 import {
   memo,
   crProps
 } from '../../uiApi';
+
+import {
+  getTicksOfAxis,
+  getCoordinatesOfGrid
+} from '../util/ChartUtils';
 
 import {
   isNumber,
@@ -14,6 +21,8 @@ import {
   crRoundedSortedPoints
 } from './CartesianGridRenderFn';
 
+import { getTicks } from './getTicks';
+import { CARTESIAN_AXIS_DF_PROPS } from './CartesianAxis';
 import CartesianGridBackground from './CartesianGridBackground';
 import {
   CartesianGridHorizontalLines,
@@ -38,6 +47,30 @@ const _isPoints = (
   points
 ) => is && isNotEmptyArr(points);
 
+const verticalCoordinatesGenerator = ({
+  xAxis,
+  width,
+  height,
+  offset
+}) => getCoordinatesOfGrid(getTicks({
+  ...CARTESIAN_AXIS_DF_PROPS,
+  ...xAxis,
+  ticks: getTicksOfAxis(xAxis, true),
+  viewBox: { x: 0, y: 0, width, height },
+}), offset.left, offset.left + offset.width)
+
+const horizontalCoordinatesGenerator = ({
+  yAxis,
+  width,
+  height,
+  offset
+}) => getCoordinatesOfGrid(getTicks({
+  ...CARTESIAN_AXIS_DF_PROPS,
+  ...yAxis,
+  ticks: getTicksOfAxis(yAxis, true),
+  viewBox: { x: 0, y: 0, width, height },
+}), offset.top, offset.top + offset.height)
+
 const DF_PROPS = {
   horizontal: true,
   vertical: true,
@@ -49,27 +82,50 @@ const DF_PROPS = {
   fill: 'none',
   // The fill of colors of grid lines
   verticalFill: [],
-  horizontalFill: []
+  horizontalFill: [],
+  verticalCoordinatesGenerator: verticalCoordinatesGenerator,
+  horizontalCoordinatesGenerator: horizontalCoordinatesGenerator
 };
+
+const _getNumber = (
+  value,
+  dfValue
+) => isNumber(value)
+  ? value
+  : dfValue
 
 export const CartesianGrid = memo((
   props
 ) => {
   const _props = crProps(DF_PROPS, props)
   , {
-    x,
-    y,
+    offset = {},
+    stroke,
     ry,
-    width,
-    height,
     fill,
     fillOpacity,
     horizontal,
     vertical,
     horizontalFill,
     verticalFill,
-    ...restProps
+    xAxis,
+    yAxis,
+    chartWidth,
+    chartHeight,
+    horizontalPoints,
+    verticalPoints
   } = _props;
+
+  let {
+    x,
+    y,
+    width,
+    height
+  } = _props;
+  x = _getNumber(x, offset.left)
+  y = _getNumber(y, offset.top)
+  width = _getNumber(width, offset.width)
+  height = _getNumber(height, offset.height)
 
   if (!(isPositiveNumber(width)
     && isPositiveNumber(height)
@@ -80,12 +136,24 @@ export const CartesianGrid = memo((
   }
 
   const [
+    _horizontalPoints,
+    _verticalPoints
+  ] = crGridPoints(
+    horizontalCoordinatesGenerator,
+    verticalCoordinatesGenerator,
+    xAxis,
+    yAxis,
     horizontalPoints,
-    verticalPoints
-  ] = crGridPoints(_props)  
+    verticalPoints,
+    {
+       width: chartWidth,
+       height: chartHeight,
+       offset
+    }
+  )
   , _lineProps = {
-    offset: restProps.offset,
-    stroke: restProps.stroke
+    offset,
+    stroke
   }
   , x2 = x + width
   , y2 = y + height;
@@ -101,18 +169,18 @@ export const CartesianGrid = memo((
          width={width}
          height={height}
       />
-      {_isPoints(horizontal, horizontalPoints) && <CartesianGridHorizontalLines
+      {_isPoints(horizontal, _horizontalPoints) && <CartesianGridHorizontalLines
          className={CL_GRID_HORIZONTAL}
          x1={x}
          x2={x2}
-         points={horizontalPoints}
+         points={_horizontalPoints}
          props={_lineProps}
       />}
-      {_isPoints(vertical, verticalPoints) && <CartesianGridVerticalLines
+      {_isPoints(vertical, _verticalPoints) && <CartesianGridVerticalLines
          className={CL_GRID_VERTICAL}
          y1={y}
          y2={y2}
-         points={verticalPoints}
+         points={_verticalPoints}
          props={_lineProps}
       />}
       {_isPoints(horizontal, horizontalFill) && <CartesianGridHorizontalStripes
@@ -122,7 +190,7 @@ export const CartesianGrid = memo((
          y0={y2}
          arrFill={horizontalFill}
          fillOpacity={fillOpacity}
-         points={crRoundedSortedPoints(horizontalPoints, y)}
+         points={crRoundedSortedPoints(_horizontalPoints, y)}
       />}
       {_isPoints(vertical, verticalFill) && <CartesianGridVerticalStripes
          className={CL_STRIPES_VERTICAL}
@@ -131,7 +199,7 @@ export const CartesianGrid = memo((
          x0={x2}
          arrFill={verticalFill}
          fillOpacity={fillOpacity}
-         points={crRoundedSortedPoints(verticalPoints, x)}
+         points={crRoundedSortedPoints(_verticalPoints, x)}
       />}
    </g>
   );
