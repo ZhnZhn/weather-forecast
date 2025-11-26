@@ -5,7 +5,8 @@ import {
   useMemo,
   useEffect,
   getRefValue,
-  setRefValue
+  setRefValue,
+  cloneUiElement
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
@@ -39,7 +40,6 @@ import { getTooltipData } from './generateCategoricalChartFn';
 
 import { renderMap } from './renderFn';
 import { renderLegend } from './renderLegend';
-import { renderTooltip } from './renderTooltip';
 
 import { CL_WRAPPER } from '../CL';
 
@@ -275,7 +275,7 @@ export const generateCategoricalChart = (
           {_graphicItems}
         </Surface>
       );
-
+      
       // The "compact" mode is mainly used as the panorama within Brush
       return compact ? _graphicItemsEl : (
           <div
@@ -301,11 +301,14 @@ export const generateCategoricalChart = (
                  formattedGraphicalItems,
                  handleLegendBBoxUpdate
               )}
-              {renderTooltip(
-                 tooltipItem,
-                 offset,
-                 handleCloseTooltip
-               )}
+              {tooltipItem ? cloneUiElement(tooltipItem, {
+                viewBox: {
+                  ...offset,
+                  x: offset.left,
+                  y: offset.top
+                },
+                onClose: handleCloseTooltip
+              }) : null}
              </TooltipProvider>
          </div>
        );

@@ -18,7 +18,6 @@ var _useTooltipEvents = _interopRequireDefault(require("./useTooltipEvents"));
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _renderFn = require("./renderFn");
 var _renderLegend = require("./renderLegend");
-var _renderTooltip = require("./renderTooltip");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 const _inRange = (x, y, layout, offset) => ((0, _ChartUtils.isLayoutHorizontal)(layout) || (0, _ChartUtils.isLayoutVertical)(layout)) && x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height ? {
@@ -195,7 +194,13 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
     }, events, {
       children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_TooltipContext.TooltipProvider, {
         value: _useTooltipState,
-        children: [_graphicItemsEl, (0, _renderLegend.renderLegend)(width, height, margin, children, formattedGraphicalItems, handleLegendBBoxUpdate), (0, _renderTooltip.renderTooltip)(tooltipItem, offset, handleCloseTooltip)]
+        children: [_graphicItemsEl, (0, _renderLegend.renderLegend)(width, height, margin, children, formattedGraphicalItems, handleLegendBBoxUpdate), tooltipItem ? (0, _uiApi.cloneUiElement)(tooltipItem, {
+          viewBox: Object.assign({}, offset, {
+            x: offset.left,
+            y: offset.top
+          }),
+          onClose: handleCloseTooltip
+        }) : null]
       })
     }));
   };
