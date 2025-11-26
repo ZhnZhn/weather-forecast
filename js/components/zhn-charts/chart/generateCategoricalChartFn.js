@@ -1,12 +1,10 @@
 "use strict";
 
 exports.__esModule = true;
-exports.verticalCoordinatesGenerator = exports.tooltipTicksGenerator = exports.horizontalCoordinatesGenerator = exports.hasGraphicalBarItem = exports.getTooltipData = exports.getAxisNameByLayout = void 0;
+exports.tooltipTicksGenerator = exports.hasGraphicalBarItem = exports.getTooltipData = exports.getAxisNameByLayout = void 0;
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
-var _getTicks = require("../cartesian/getTicks");
-var _CartesianAxis = require("../cartesian/CartesianAxis");
 var _chartFn = require("./chartFn");
 var _getTooltipContent = require("./getTooltipContent");
 const calculateTooltipPos = (rangeObj, layout) => (0, _ChartUtils.isLayoutHorizontal)(layout) ? rangeObj.x : (0, _ChartUtils.isLayoutVertical)(layout) ? rangeObj.y : (0, _ChartUtils.isLayoutCentric)(layout) ? rangeObj.angle : rangeObj.radius;
@@ -77,40 +75,4 @@ const _crAxisName = (numericAxisName, cateAxisName) => ({
 });
 const getAxisNameByLayout = layout => (0, _ChartUtils.isLayoutHorizontal)(layout) ? _crAxisName('yAxis', 'xAxis') : (0, _ChartUtils.isLayoutVertical)(layout) ? _crAxisName('xAxis', 'yAxis') : (0, _ChartUtils.isLayoutCentric)(layout) ? _crAxisName('radiusAxis', 'angleAxis') : _crAxisName('angleAxis', 'radiusAxis');
 exports.getAxisNameByLayout = getAxisNameByLayout;
-const verticalCoordinatesGenerator = _ref => {
-  let {
-    xAxis,
-    width,
-    height,
-    offset
-  } = _ref;
-  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)(Object.assign({}, _CartesianAxis.CARTESIAN_AXIS_DF_PROPS, xAxis, {
-    ticks: (0, _ChartUtils.getTicksOfAxis)(xAxis, true),
-    viewBox: {
-      x: 0,
-      y: 0,
-      width,
-      height
-    }
-  })), offset.left, offset.left + offset.width);
-};
-exports.verticalCoordinatesGenerator = verticalCoordinatesGenerator;
-const horizontalCoordinatesGenerator = _ref2 => {
-  let {
-    yAxis,
-    width,
-    height,
-    offset
-  } = _ref2;
-  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)(Object.assign({}, _CartesianAxis.CARTESIAN_AXIS_DF_PROPS, yAxis, {
-    ticks: (0, _ChartUtils.getTicksOfAxis)(yAxis, true),
-    viewBox: {
-      x: 0,
-      y: 0,
-      width,
-      height
-    }
-  })), offset.top, offset.top + offset.height);
-};
-exports.horizontalCoordinatesGenerator = horizontalCoordinatesGenerator;
 //# sourceMappingURL=generateCategoricalChartFn.js.map
