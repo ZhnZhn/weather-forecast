@@ -2,7 +2,6 @@
 
 exports.__esModule = true;
 exports.fUpdateStateOfAxisMapsOffsetAndStackGroups = void 0;
-var _isTypeFn = require("../../../utils/isTypeFn");
 var _ChartUtils = require("../util/ChartUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _Legend = require("../component/Legend");
@@ -10,6 +9,7 @@ var _chartFn = require("./chartFn");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _calculateOffset = require("./calculateOffset");
 var _getAxisMap = require("./getAxisMap");
+var _renderFn = require("./renderFn");
 const DF_AXIS_ID = 0;
 const _getObjectKeys = Object.keys;
 const fGetFormatItems = axisComponents => (props, currentState) => {
@@ -67,7 +67,7 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
     if (itemIsBar) {
       var _ref, _getBandSizeOfAxis;
       // ???bar,??bar???
-      const maxBarSize = (0, _isTypeFn.isNullOrUndef)(childMaxBarSize) ? globalMaxBarSize : childMaxBarSize,
+      const maxBarSize = childMaxBarSize == null ? globalMaxBarSize : childMaxBarSize,
         barBandSize = (_ref = (_getBandSizeOfAxis = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks, true)) != null ? _getBandSizeOfAxis : maxBarSize) != null ? _ref : 0;
       barPosition = (0, _ChartUtils.getBarPosition)({
         barGap,
@@ -129,7 +129,7 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
  */
 const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, axisComponents, formatAxisMap) => {
   const getFormatItems = fGetFormatItems(axisComponents);
-  return (_ref2, legendBBox) => {
+  return (_ref2, legendBBox, clipPathId) => {
     let {
       props,
       dataStartIndex,
@@ -137,14 +137,16 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
       updateId
     } = _ref2;
     if (!(0, _ReactUtils.validateWidthHeight)(props.width, props.height)) {
-      return {};
+      return [];
     }
     const {
         children,
         layout,
         stackOffset,
         data,
-        reverseStackOrder
+        reverseStackOrder,
+        width,
+        height
       } = props,
       {
         numericAxisName,
@@ -170,22 +172,25 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
     _getObjectKeys(axisObj).forEach(key => {
       axisObj[key] = formatAxisMap(props, axisObj[key], offset, key.replace('Map', ''), chartName);
     });
-    const cateAxisMap = axisObj[cateAxisName + "Map"],
-      ticksObj = (0, _generateCategoricalChartFn.tooltipTicksGenerator)(cateAxisMap),
-      formattedGraphicalItems = getFormatItems(props, Object.assign({}, axisObj, {
-        dataStartIndex,
-        dataEndIndex,
-        updateId,
-        graphicalItems,
-        stackGroups,
-        offset
-      }));
-    return Object.assign({
-      formattedGraphicalItems,
+    const formattedGraphicalItems = getFormatItems(props, Object.assign({}, axisObj, {
+      dataStartIndex,
+      dataEndIndex,
+      updateId,
       graphicalItems,
+      stackGroups,
+      offset
+    }));
+    return [offset, formattedGraphicalItems, (0, _generateCategoricalChartFn.getOrderedTooltipTicks)(axisObj[cateAxisName + "Map"]), graphicalItems, (0, _ReactUtils.renderByMap)(children, {
+      clipPathId,
+      width,
+      height,
+      layout,
+      children,
       offset,
-      stackGroups
-    }, ticksObj, axisObj);
+      xAxisMap: axisObj.xAxisMap,
+      yAxisMap: axisObj.yAxisMap,
+      formattedGraphicalItems
+    }, _renderFn.renderMap)];
   };
 };
 exports.fUpdateStateOfAxisMapsOffsetAndStackGroups = fUpdateStateOfAxisMapsOffsetAndStackGroups;

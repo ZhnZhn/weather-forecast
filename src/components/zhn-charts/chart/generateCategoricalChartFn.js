@@ -104,15 +104,13 @@ export const getTooltipData = (
   return null;
 };
 
-export const tooltipTicksGenerator = (
+export const getOrderedTooltipTicks = (
   axisMap
-) => {
-  const axis = getAnyElementOfObject(axisMap)
-  , tooltipTicks = getTicksOfAxis(axis, false, true);
-  return {
-    orderedTooltipTicks: tooltipTicks.sort(o => o.coordinate)
-  };
-};
+) => getTicksOfAxis(
+  getAnyElementOfObject(axisMap),
+  false,
+  true
+).sort(o => o.coordinate)
 
 export const hasGraphicalBarItem = (
   graphicalItems

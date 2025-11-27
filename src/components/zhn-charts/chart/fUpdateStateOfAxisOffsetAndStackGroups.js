@@ -1,5 +1,3 @@
-import { isNullOrUndef } from '../../../utils/isTypeFn';
-
 import {
   getBarSizeList,
   getBarPosition,
@@ -14,7 +12,9 @@ import {
   validateWidthHeight,
   getDisplayName,
   findAllByType,
-  findChildByType
+  findChildByType,
+
+  renderByMap
 } from '../util/ReactUtils';
 
 import { Legend } from '../component/Legend';
@@ -24,13 +24,16 @@ import {
 } from './chartFn';
 
 import {
-  tooltipTicksGenerator,
+  getOrderedTooltipTicks,
   hasGraphicalBarItem,
   getAxisNameByLayout
 } from './generateCategoricalChartFn';
 
 import { calculateOffset } from './calculateOffset';
 import { getAxisMap } from './getAxisMap';
+
+import { renderMap } from './renderFn';
+
 
 const DF_AXIS_ID = 0;
 const _getObjectKeys = Object.keys;
@@ -95,7 +98,7 @@ const fGetFormatItems = (
     let barPosition = [];
     if (itemIsBar) {
       // ???bar,??bar???
-      const maxBarSize = isNullOrUndef(childMaxBarSize)
+      const maxBarSize = childMaxBarSize == null
         ? globalMaxBarSize
         : childMaxBarSize
       , barBandSize = getBandSizeOfAxis(
@@ -174,17 +177,22 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
     dataStartIndex,
     dataEndIndex,
     updateId },
-    legendBBox
+    legendBBox,
+    clipPathId
   ) => {
     if (!validateWidthHeight(props.width, props.height)) {
-      return {};
+      return [];
     }
+    
     const {
       children,
       layout,
       stackOffset,
       data,
-      reverseStackOrder
+      reverseStackOrder,
+
+      width,
+      height
     } = props
     , {
       numericAxisName,
@@ -227,24 +235,33 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
          axisObj[key] = formatAxisMap(props, axisObj[key], offset, key.replace('Map', ''), chartName);
        });
 
-    const cateAxisMap = axisObj[`${cateAxisName}Map`]
-    , ticksObj = tooltipTicksGenerator(cateAxisMap)
-    , formattedGraphicalItems = getFormatItems(props, {
-        ...axisObj,
-        dataStartIndex,
-        dataEndIndex,
-        updateId,
-        graphicalItems,
-        stackGroups,
-        offset,
-    });
-    return {
-      formattedGraphicalItems,
-      graphicalItems,
-      offset,
-      stackGroups,
-      ...ticksObj,
+    const formattedGraphicalItems = getFormatItems(props, {
       ...axisObj,
-    };
+      dataStartIndex,
+      dataEndIndex,
+      updateId,
+      graphicalItems,
+      stackGroups,
+      offset
+    });
+
+    return [
+      offset,
+      formattedGraphicalItems,
+      getOrderedTooltipTicks(axisObj[`${cateAxisName}Map`]),
+      graphicalItems,
+      renderByMap(children, {
+        clipPathId,
+        width,
+        height,
+        layout,
+        children,
+
+        offset,
+        xAxisMap: axisObj.xAxisMap,
+        yAxisMap: axisObj.yAxisMap,
+        formattedGraphicalItems
+      }, renderMap)
+    ];
   };
 }

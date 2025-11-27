@@ -18,7 +18,7 @@ import { ClipPath } from '../container/ClipPath';
 
 import {
   validateWidthHeight,
-  renderByMap
+  //renderByMap
 } from '../util/ReactUtils';
 import { isChildrenEqual } from '../util/ReactUtils';
 import {
@@ -38,7 +38,7 @@ import useTooltipEvents from './useTooltipEvents';
 
 import { getTooltipData } from './generateCategoricalChartFn';
 
-import { renderMap } from './renderFn';
+//import { renderMap } from './renderFn';
 import { renderLegend } from './renderLegend';
 
 import { CL_WRAPPER } from '../CL';
@@ -144,27 +144,26 @@ export const generateCategoricalChart = (
         dataEndIndex,
         updateId
       } = state
-      , {
+      , clipPathId = getRefValue(_refClipPathId)
+      , [
         offset,
         formattedGraphicalItems,
-
-        xAxisMap,
-        yAxisMap,
-
         orderedTooltipTicks,
-        graphicalItems
-      } = useMemo(() => updateStateOfAxisMapsOffsetAndStackGroups({
+        graphicalItems,
+        _graphicItems
+      ] = useMemo(() => updateStateOfAxisMapsOffsetAndStackGroups({
         props: _props,
         dataStartIndex,
         dataEndIndex,
         updateId
-      }, legendBBox), [
+      }, legendBBox, clipPathId), [
         _props,
         dataStartIndex,
         dataEndIndex,
         updateId,
-        legendBBox
-      ])
+        legendBBox,
+        clipPathId
+      ])      
       , getMouseTooltipData = (evt) => {
           const _containerElement = getRefValue(_refContainer)
           if (!_containerElement) {
@@ -250,20 +249,7 @@ export const generateCategoricalChart = (
         return null;
       }
 
-      const clipPathId = getRefValue(_refClipPathId)
-      , _graphicItems = renderByMap(children, {
-        clipPathId,
-        width,
-        height,
-        layout,
-        children,
-
-        offset,
-        xAxisMap,
-        yAxisMap,
-        formattedGraphicalItems
-      }, renderMap)
-      , _graphicItemsEl = (
+      const _graphicItemsEl = (
         <Surface
           {...SURFACE_ATTRS}
           width={width}
@@ -275,7 +261,7 @@ export const generateCategoricalChart = (
           {_graphicItems}
         </Surface>
       );
-      
+
       // The "compact" mode is mainly used as the panorama within Brush
       return compact ? _graphicItemsEl : (
           <div

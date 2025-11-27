@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.tooltipTicksGenerator = exports.hasGraphicalBarItem = exports.getTooltipData = exports.getAxisNameByLayout = void 0;
+exports.hasGraphicalBarItem = exports.getTooltipData = exports.getOrderedTooltipTicks = exports.getAxisNameByLayout = void 0;
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
@@ -56,14 +56,8 @@ const getTooltipData = (state, chartData, layout, rangeObj) => {
   return null;
 };
 exports.getTooltipData = getTooltipData;
-const tooltipTicksGenerator = axisMap => {
-  const axis = (0, _DataUtils.getAnyElementOfObject)(axisMap),
-    tooltipTicks = (0, _ChartUtils.getTicksOfAxis)(axis, false, true);
-  return {
-    orderedTooltipTicks: tooltipTicks.sort(o => o.coordinate)
-  };
-};
-exports.tooltipTicksGenerator = tooltipTicksGenerator;
+const getOrderedTooltipTicks = axisMap => (0, _ChartUtils.getTicksOfAxis)((0, _DataUtils.getAnyElementOfObject)(axisMap), false, true).sort(o => o.coordinate);
+exports.getOrderedTooltipTicks = getOrderedTooltipTicks;
 const hasGraphicalBarItem = graphicalItems => !graphicalItems || !graphicalItems.length ? false : graphicalItems.some(item => {
   const name = (0, _ReactUtils.getDisplayName)(item && item.type);
   return name && name.indexOf('Bar') >= 0;

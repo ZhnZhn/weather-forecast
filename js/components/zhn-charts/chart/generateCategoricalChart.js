@@ -16,10 +16,11 @@ var _ChartUtils = require("../util/ChartUtils");
 var _useLegendBox = _interopRequireDefault(require("./useLegendBox"));
 var _useTooltipEvents = _interopRequireDefault(require("./useTooltipEvents"));
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
-var _renderFn = require("./renderFn");
 var _renderLegend = require("./renderLegend");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
+//import { renderMap } from './renderFn';
+
 const _inRange = (x, y, layout, offset) => ((0, _ChartUtils.isLayoutHorizontal)(layout) || (0, _ChartUtils.isLayoutVertical)(layout)) && x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height ? {
   x,
   y
@@ -90,19 +91,13 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         dataEndIndex,
         updateId
       } = state,
-      {
-        offset,
-        formattedGraphicalItems,
-        xAxisMap,
-        yAxisMap,
-        orderedTooltipTicks,
-        graphicalItems
-      } = (0, _uiApi.useMemo)(() => updateStateOfAxisMapsOffsetAndStackGroups({
+      clipPathId = (0, _uiApi.getRefValue)(_refClipPathId),
+      [offset, formattedGraphicalItems, orderedTooltipTicks, graphicalItems, _graphicItems] = (0, _uiApi.useMemo)(() => updateStateOfAxisMapsOffsetAndStackGroups({
         props: _props,
         dataStartIndex,
         dataEndIndex,
         updateId
-      }, legendBBox), [_props, dataStartIndex, dataEndIndex, updateId, legendBBox]),
+      }, legendBBox, clipPathId), [_props, dataStartIndex, dataEndIndex, updateId, legendBBox, clipPathId]),
       getMouseTooltipData = evt => {
         const _containerElement = (0, _uiApi.getRefValue)(_refContainer);
         if (!_containerElement) {
@@ -157,28 +152,16 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
     if (!(0, _ReactUtils.validateWidthHeight)(width, height)) {
       return null;
     }
-    const clipPathId = (0, _uiApi.getRefValue)(_refClipPathId),
-      _graphicItems = (0, _ReactUtils.renderByMap)(children, {
-        clipPathId,
-        width,
-        height,
-        layout,
-        children,
-        offset,
-        xAxisMap,
-        yAxisMap,
-        formattedGraphicalItems
-      }, _renderFn.renderMap),
-      _graphicItemsEl = /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, SURFACE_ATTRS, {
-        width: width,
-        height: height,
-        title: title,
-        desc: desc,
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPath.ClipPath, {
-          id: clipPathId,
-          offset: offset
-        }), _graphicItems]
-      }));
+    const _graphicItemsEl = /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, SURFACE_ATTRS, {
+      width: width,
+      height: height,
+      title: title,
+      desc: desc,
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPath.ClipPath, {
+        id: clipPathId,
+        offset: offset
+      }), _graphicItems]
+    }));
 
     // The "compact" mode is mainly used as the panorama within Brush
     return compact ? _graphicItemsEl : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", Object.assign({
