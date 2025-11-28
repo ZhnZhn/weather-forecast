@@ -53,12 +53,11 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
       points,
       className,
       isAnimationActive,
-      id,
-      animationId
+      id
     } = _props,
     _refPath = (0, _uiApi.useRef)(),
     [isAnimationFinished, handleAnimationStart, handleAnimationEnd] = (0, _useAnimationHandle.default)(_props),
-    [prevPoints] = (0, _usePrevCurData.default)(points, animationId),
+    [prevPoints] = (0, _usePrevCurData.default)(points),
     clipPathId = (0, _useClipPathId.default)(_CL.CL_LINE, id),
     [totalLength, setTotalLength] = (0, _uiApi.useState)(0);
 

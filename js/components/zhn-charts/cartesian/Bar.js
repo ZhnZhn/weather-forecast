@@ -37,22 +37,22 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
     {
       data,
       className,
-      id,
-      animationId
+      id
     } = _props
     /*eslint-disable no-unused-vars*/,
     [isAnimationFinished, handleAnimationStart, handleAnimationEnd] = (0, _useAnimationHandle.default)(_props)
     //isAnimationFinished
+    ,
+    [prevData, _, animationId] = (0, _usePrevCurData.default)(data)
+    // _
     /*eslint-enable no-unused-vars*/,
-    [prevData] = (0, _usePrevCurData.default)(data, animationId),
     clipPathId = (0, _useClipPathId.default)(_CL.CL_BAR, id);
   if ((0, _cartesianFn.isHideOrNoData)(_props, data)) {
     return null;
   }
-  const layerClass = (0, _styleFn.crCn)(_CL.CL_BAR, className),
-    needClip = (0, _cartesianFn.isNeedClip)(_props);
+  const needClip = (0, _cartesianFn.isNeedClip)(_props);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
-    className: layerClass,
+    className: (0, _styleFn.crCn)(_CL.CL_BAR, className),
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPathRect.default, {
       is: needClip,
       id: clipPathId,
@@ -60,7 +60,7 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
       className: _CL.CL_BAR_RECTANGLES,
       clipPath: (0, _cartesianFn.crClipPath)(needClip, clipPathId),
-      children: [(0, _BarRenderFn.renderBackground)(_props), (0, _BarRenderFn.renderRectangles)(_props, prevData, handleAnimationStart, handleAnimationEnd)]
+      children: [(0, _BarRenderFn.renderBackground)(_props), (0, _BarRenderFn.renderRectangles)(_props, prevData, handleAnimationStart, handleAnimationEnd, animationId)]
     })]
   });
 });

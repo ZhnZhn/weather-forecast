@@ -1,5 +1,6 @@
 import { JsAnimation } from '../../zhn-animation/JsAnimation';
 
+import useAnimationId from '../util/useAnimationId'
 import { getInterpolatedNumber } from '../util/DataUtils';
 
 import { LineCurveStatically } from './LineCurveStatically';
@@ -90,27 +91,28 @@ const _crCurrentStrokeDashArray = (
      )
   : `${curLength}px ${totalLength - curLength}px`;
 
-export const LineCurveWithAnimation = ({
-  clipPath,
-  prevPoints,
-  totalLength,
-  props,
-  refPath,
-  handleAnimationStart,
-  handleAnimationEnd
-}) => {
+export const LineCurveWithAnimation = (lineProps) => {
   const {
+    clipPath,
+    prevPoints,
+    totalLength,
+    props,
+    refPath,
+    handleAnimationStart,
+    handleAnimationEnd,
+ } = lineProps
+ , {
     points,
     strokeDasharray,
     isAnimationActive,
     animationBegin,
     animationDuration,
     animationEasing,
-    animationId,
     animateNewValues,
     width,
     height
-  } = props;
+  } = props
+  , animationId = useAnimationId(points)
   return (
     <JsAnimation
        key={`line-${animationId}`}

@@ -120,7 +120,8 @@ const _renderRectanglesWithAnimation = (
   props,
   prevData,
   handleAnimationStart,
-  handleAnimationEnd
+  handleAnimationEnd,
+  animationId
 ) => {
     const {
       data,
@@ -128,8 +129,7 @@ const _renderRectanglesWithAnimation = (
       isAnimationActive,
       animationBegin,
       animationDuration,
-      animationEasing,
-      animationId
+      animationEasing
     } = props;
     return (
       <JsAnimation
@@ -157,7 +157,8 @@ export const renderRectangles = (
   props,
   prevData,
   handleAnimationStart,
-  handleAnimationEnd
+  handleAnimationEnd,
+  animationId
 ) => {
   const {
     data,
@@ -166,8 +167,7 @@ export const renderRectangles = (
   return isAnimationActive
    && data
    && data.length
-   //&& (!prevData || !_isEqual(prevData, data))
    && (!prevData || prevData !== data)
-    ? _renderRectanglesWithAnimation(props, prevData, handleAnimationStart, handleAnimationEnd)
+    ? _renderRectanglesWithAnimation(props, prevData, handleAnimationStart, handleAnimationEnd, animationId)
     : _renderRectanglesStatically(props, data);
 }

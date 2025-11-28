@@ -67,8 +67,7 @@ export const Bar = memo((props) => {
   , {
     data,
     className,
-    id,
-    animationId
+    id
   } = _props
   /*eslint-disable no-unused-vars*/
   , [
@@ -77,13 +76,13 @@ export const Bar = memo((props) => {
     handleAnimationEnd
   ] = useAnimationHandle(_props)
   //isAnimationFinished
-  /*eslint-enable no-unused-vars*/
   , [
-    prevData
-  ] = usePrevCurData(
-     data,
-     animationId
-   )
+    prevData,
+    _,
+    animationId
+  ] = usePrevCurData(data)
+   // _
+   /*eslint-enable no-unused-vars*/
   , clipPathId = useClipPathId(
      CL_BAR,
      id
@@ -93,11 +92,10 @@ export const Bar = memo((props) => {
     return null;
   }
 
-  const layerClass = crCn(CL_BAR, className)
-  , needClip = isNeedClip(_props);
+  const needClip = isNeedClip(_props);
 
   return (
-    <Layer className={layerClass}>
+    <Layer className={crCn(CL_BAR, className)}>
       <ClipPathRect
          is={needClip}
          id={clipPathId}
@@ -112,7 +110,8 @@ export const Bar = memo((props) => {
            _props,
            prevData,
            handleAnimationStart,
-           handleAnimationEnd
+           handleAnimationEnd,
+           animationId
         )}
       </Layer>
   </Layer>
@@ -196,7 +195,7 @@ Bar.getComposedData = ({
     layout
   } = props
   , {
-    dataKey,    
+    dataKey,
     minPointSize
   } = item.props
   , numericAxis = isLayoutHorizontal(layout)

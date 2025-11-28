@@ -76,8 +76,7 @@ export const Line = memo((props) => {
     points,
     className,
     isAnimationActive,
-    id,
-    animationId
+    id
   } = _props
   , _refPath = useRef()
   , [
@@ -87,10 +86,7 @@ export const Line = memo((props) => {
   ] = useAnimationHandle(_props)
   , [
     prevPoints
-  ] = usePrevCurData(
-     points,
-     animationId
-   )
+  ] = usePrevCurData(points)
   , clipPathId = useClipPathId(
      CL_LINE,
      id

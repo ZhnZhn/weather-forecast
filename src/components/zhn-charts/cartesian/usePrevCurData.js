@@ -3,10 +3,12 @@ import {
   useEffect
 } from '../../uiApi';
 
+import useAnimationId from '../util/useAnimationId';
+
 const usePrevCurData = (
-  data,
-  animationId
+  data
 ) => {
+  const animationId = useAnimationId(data)
   const [
     curData,
     setCurData
@@ -30,7 +32,8 @@ const usePrevCurData = (
 
   return [
     prevData,
-    curData
+    curData,
+    animationId
   ];
 };
 

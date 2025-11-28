@@ -1,8 +1,10 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.LineCurveWithAnimation = void 0;
 var _JsAnimation = require("../../zhn-animation/JsAnimation");
+var _useAnimationId = _interopRequireDefault(require("../util/useAnimationId"));
 var _DataUtils = require("../util/DataUtils");
 var _LineCurveStatically = require("./LineCurveStatically");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -41,28 +43,28 @@ const _crStepItem = (entry, prev, animateNewValues, width, height, t) => {
 };
 const _crCurrentStrokeDashArray = (curLength, totalLength, strokeDasharray) => strokeDasharray ? _getStrokeDasharray(curLength, totalLength, ("" + strokeDasharray).split(/[,\s]+/gim).map(num => parseFloat(num)) // lines
 ) : curLength + "px " + (totalLength - curLength) + "px";
-const LineCurveWithAnimation = _ref => {
-  let {
-    clipPath,
-    prevPoints,
-    totalLength,
-    props,
-    refPath,
-    handleAnimationStart,
-    handleAnimationEnd
-  } = _ref;
+const LineCurveWithAnimation = lineProps => {
   const {
-    points,
-    strokeDasharray,
-    isAnimationActive,
-    animationBegin,
-    animationDuration,
-    animationEasing,
-    animationId,
-    animateNewValues,
-    width,
-    height
-  } = props;
+      clipPath,
+      prevPoints,
+      totalLength,
+      props,
+      refPath,
+      handleAnimationStart,
+      handleAnimationEnd
+    } = lineProps,
+    {
+      points,
+      strokeDasharray,
+      isAnimationActive,
+      animationBegin,
+      animationDuration,
+      animationEasing,
+      animateNewValues,
+      width,
+      height
+    } = props,
+    animationId = (0, _useAnimationId.default)(points);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_JsAnimation.JsAnimation, {
     isActive: isAnimationActive,
     begin: animationBegin,
