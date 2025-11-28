@@ -12,12 +12,12 @@ var _getAxisMap = require("./getAxisMap");
 var _renderFn = require("./renderFn");
 const DF_AXIS_ID = 0;
 const _getObjectKeys = Object.keys;
+const _calcLegendWidth = (width, margin) => width - (margin.left || 0) - (margin.right || 0);
 const fGetFormatItems = axisComponents => (props, currentState) => {
   const {
       graphicalItems,
       stackGroups,
       offset,
-      updateId,
       dataStartIndex,
       dataEndIndex
     } = currentState,
@@ -102,8 +102,7 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
         })), {
           key: item.key || "item-" + index,
           [numericAxisName]: axisObj[numericAxisName],
-          [cateAxisName]: axisObj[cateAxisName],
-          animationId: updateId
+          [cateAxisName]: axisObj[cateAxisName]
         }),
         childIndex: (0, _ReactUtils.parseChildIndex)(item, props.children),
         item
@@ -133,8 +132,7 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
     let {
       props,
       dataStartIndex,
-      dataEndIndex,
-      updateId
+      dataEndIndex
     } = _ref2;
     if (!(0, _ReactUtils.validateWidthHeight)(props.width, props.height)) {
       return [];
@@ -146,7 +144,8 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
         data,
         reverseStackOrder,
         width,
-        height
+        height,
+        margin
       } = props,
       {
         numericAxisName,
@@ -155,15 +154,13 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
       graphicalItems = (0, _ReactUtils.findAllByType)(children, GraphicalChild),
       stackGroups = (0, _ChartUtils.getStackGroupsByAxisId)(data, graphicalItems, numericAxisName + "Id", cateAxisName + "Id", stackOffset, reverseStackOrder),
       axisObj = axisComponents.reduce((result, entry) => {
-        const name = entry.axisType + "Map";
-        return Object.assign({}, result, {
-          [name]: (0, _getAxisMap.getAxisMap)(props, Object.assign({}, entry, {
-            graphicalItems,
-            stackGroups: entry.axisType === numericAxisName && stackGroups,
-            dataStartIndex,
-            dataEndIndex
-          }))
-        });
+        result[entry.axisType + "Map"] = (0, _getAxisMap.getAxisMap)(props, Object.assign({}, entry, {
+          graphicalItems,
+          stackGroups: entry.axisType === numericAxisName && stackGroups,
+          dataStartIndex,
+          dataEndIndex
+        }));
+        return result;
       }, {});
     const offset = (0, _calculateOffset.calculateOffset)(Object.assign({}, axisObj, {
       props,
@@ -175,12 +172,16 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
     const formattedGraphicalItems = getFormatItems(props, Object.assign({}, axisObj, {
       dataStartIndex,
       dataEndIndex,
-      updateId,
       graphicalItems,
       stackGroups,
       offset
     }));
-    return [offset, formattedGraphicalItems, (0, _generateCategoricalChartFn.getOrderedTooltipTicks)(axisObj[cateAxisName + "Map"]), graphicalItems, (0, _ReactUtils.renderByMap)(children, {
+    const [_legendProps, _legendItem] = (0, _ChartUtils.getLegendProps)({
+      children,
+      formattedGraphicalItems,
+      legendWidth: _calcLegendWidth(width, margin)
+    });
+    return [offset, (0, _generateCategoricalChartFn.getOrderedTooltipTicks)(axisObj[cateAxisName + "Map"]), graphicalItems, (0, _ReactUtils.renderByMap)(children, {
       clipPathId,
       width,
       height,
@@ -190,7 +191,7 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
       xAxisMap: axisObj.xAxisMap,
       yAxisMap: axisObj.yAxisMap,
       formattedGraphicalItems
-    }, _renderFn.renderMap)];
+    }, _renderFn.renderMap), _legendProps, _legendItem];
   };
 };
 exports.fUpdateStateOfAxisMapsOffsetAndStackGroups = fUpdateStateOfAxisMapsOffsetAndStackGroups;

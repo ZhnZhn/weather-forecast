@@ -16,11 +16,8 @@ var _ChartUtils = require("../util/ChartUtils");
 var _useLegendBox = _interopRequireDefault(require("./useLegendBox"));
 var _useTooltipEvents = _interopRequireDefault(require("./useTooltipEvents"));
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
-var _renderLegend = require("./renderLegend");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-//import { renderMap } from './renderFn';
-
 const _inRange = (x, y, layout, offset) => ((0, _ChartUtils.isLayoutHorizontal)(layout) || (0, _ChartUtils.isLayoutVertical)(layout)) && x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height ? {
   x,
   y
@@ -30,7 +27,6 @@ const _crMouseRange = (containerElement, evt, layout, offset) => {
     _e = (0, _DOMUtils.calculateChartCoordinate)(evt, _containerOffset);
   return _inRange(_e.chartX, _e.chartY, layout, offset);
 };
-const _crNextUpdateId = (data, updateId) => data == null ? updateId + 1 : updateId;
 const DF_PROPS = {
     layout: 'horizontal',
     stackOffset: 'none',
@@ -80,7 +76,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       _refContainer = (0, _uiApi.useRef)(),
       [legendBBox, handleLegendBBoxUpdate] = (0, _useLegendBox.default)(),
       [state, setState] = (0, _uiApi.useState)(() => Object.assign({}, _crDfState(_props), {
-        updateId: 0,
         prevData: data,
         prevWidth: width,
         prevHeight: height,
@@ -88,16 +83,14 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       })),
       {
         dataStartIndex,
-        dataEndIndex,
-        updateId
+        dataEndIndex
       } = state,
       clipPathId = (0, _uiApi.getRefValue)(_refClipPathId),
-      [offset, formattedGraphicalItems, orderedTooltipTicks, graphicalItems, _graphicItems] = (0, _uiApi.useMemo)(() => updateStateOfAxisMapsOffsetAndStackGroups({
+      [offset, orderedTooltipTicks, graphicalItems, _graphicItems, _legendProps, _legendItem] = (0, _uiApi.useMemo)(() => updateStateOfAxisMapsOffsetAndStackGroups({
         props: _props,
         dataStartIndex,
-        dataEndIndex,
-        updateId
-      }, legendBBox, clipPathId), [_props, dataStartIndex, dataEndIndex, updateId, legendBBox, clipPathId]),
+        dataEndIndex
+      }, legendBBox, clipPathId), [_props, dataStartIndex, dataEndIndex, legendBBox, clipPathId]),
       getMouseTooltipData = evt => {
         const _containerElement = (0, _uiApi.getRefValue)(_refContainer);
         if (!_containerElement) {
@@ -125,9 +118,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       //|| !shallowEqual(margin, prevState.prevMargin)
       ) {
         (0, _uiApi.setRefValue)(_refHasDataBeenUpdated, true);
-        const nextState = Object.assign({}, _crDfState(_props), {
-          updateId: state.updateId + 1
-        });
+        const nextState = _crDfState(_props);
         handleCloseTooltip();
         setState(prevState => Object.assign({}, prevState, nextState, {
           prevData: data,
@@ -140,7 +131,6 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         }));
       } else if (!(0, _ReactUtils.isChildrenEqual)(_props.children, state.prevChildren) && !(0, _uiApi.getRefValue)(_refHasDataBeenUpdated)) {
         setState(prevState => Object.assign({}, prevState, {
-          updateId: _crNextUpdateId(_props.data, state.updateId),
           prevChildren: children
         }));
       } else {
@@ -177,7 +167,12 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
     }, events, {
       children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_TooltipContext.TooltipProvider, {
         value: _useTooltipState,
-        children: [_graphicItemsEl, (0, _renderLegend.renderLegend)(width, height, margin, children, formattedGraphicalItems, handleLegendBBoxUpdate), tooltipItem ? (0, _uiApi.cloneUiElement)(tooltipItem, {
+        children: [_graphicItemsEl, _legendProps ? (0, _uiApi.cloneUiElement)(_legendItem, Object.assign({}, _legendProps, {
+          chartWidth: width || 0,
+          chartHeight: height || 0,
+          margin,
+          onBBoxUpdate: handleLegendBBoxUpdate
+        })) : null, tooltipItem ? (0, _uiApi.cloneUiElement)(tooltipItem, {
           viewBox: Object.assign({}, offset, {
             x: offset.left,
             y: offset.top

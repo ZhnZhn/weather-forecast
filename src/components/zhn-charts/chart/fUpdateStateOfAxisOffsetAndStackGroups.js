@@ -4,7 +4,8 @@ import {
   getTicksOfAxis,
   getStackedDataOfItem,
   getBandSizeOfAxis,
-  getStackGroupsByAxisId
+  getStackGroupsByAxisId,
+  getLegendProps
 } from '../util/ChartUtils';
 
 import {
@@ -34,9 +35,13 @@ import { getAxisMap } from './getAxisMap';
 
 import { renderMap } from './renderFn';
 
-
 const DF_AXIS_ID = 0;
 const _getObjectKeys = Object.keys;
+
+const _calcLegendWidth = (
+  width,
+  margin
+) => width - (margin.left || 0) - (margin.right || 0);
 
 const fGetFormatItems = (
   axisComponents
@@ -45,7 +50,6 @@ const fGetFormatItems = (
     graphicalItems,
     stackGroups,
     offset,
-    updateId,
     dataStartIndex,
     dataEndIndex
   } = currentState
@@ -140,8 +144,7 @@ const fGetFormatItems = (
           }),
           key: item.key || `item-${index}`,
           [numericAxisName]: axisObj[numericAxisName],
-          [cateAxisName]: axisObj[cateAxisName],
-          animationId: updateId,
+          [cateAxisName]: axisObj[cateAxisName]
         },
         childIndex: parseChildIndex(item, props.children),
         item
@@ -175,15 +178,15 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
   return ({
     props,
     dataStartIndex,
-    dataEndIndex,
-    updateId },
+    dataEndIndex
+  },
     legendBBox,
     clipPathId
   ) => {
     if (!validateWidthHeight(props.width, props.height)) {
       return [];
     }
-    
+
     const {
       children,
       layout,
@@ -192,7 +195,8 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
       reverseStackOrder,
 
       width,
-      height
+      height,
+      margin
     } = props
     , {
       numericAxisName,
@@ -211,17 +215,14 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
         reverseStackOrder
       )
     , axisObj = axisComponents.reduce((result, entry) => {
-        const name = `${entry.axisType}Map`;
-        return {
-          ...result,
-          [name]: getAxisMap(props, {
-             ...entry,
-             graphicalItems,
-             stackGroups: entry.axisType === numericAxisName && stackGroups,
-             dataStartIndex,
-             dataEndIndex
-          })
-        };
+        result[`${entry.axisType}Map`] = getAxisMap(props, {
+           ...entry,
+           graphicalItems,
+           stackGroups: entry.axisType === numericAxisName && stackGroups,
+           dataStartIndex,
+           dataEndIndex
+        })
+        return result;
     }, {});
 
     const offset = calculateOffset({
@@ -239,15 +240,22 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
       ...axisObj,
       dataStartIndex,
       dataEndIndex,
-      updateId,
       graphicalItems,
       stackGroups,
       offset
     });
 
+    const [
+      _legendProps,
+      _legendItem
+    ] = getLegendProps({
+      children,
+      formattedGraphicalItems,
+      legendWidth: _calcLegendWidth(width, margin)
+    });
+
     return [
       offset,
-      formattedGraphicalItems,
       getOrderedTooltipTicks(axisObj[`${cateAxisName}Map`]),
       graphicalItems,
       renderByMap(children, {
@@ -261,7 +269,9 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
         xAxisMap: axisObj.xAxisMap,
         yAxisMap: axisObj.yAxisMap,
         formattedGraphicalItems
-      }, renderMap)
+      }, renderMap),
+      _legendProps,
+      _legendItem
     ];
   };
 }
