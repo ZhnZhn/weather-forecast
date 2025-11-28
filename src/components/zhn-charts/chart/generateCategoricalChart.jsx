@@ -166,13 +166,12 @@ export const generateCategoricalChart = (
           }
 
           const tooltipData = getTooltipData(
-            {
-              orderedTooltipTicks,
-              graphicalItems,
 
-              dataStartIndex,
-              dataEndIndex
-            },
+            orderedTooltipTicks,
+            graphicalItems,
+            dataStartIndex,
+            dataEndIndex,
+
             data,
             layout,
             rangeObj

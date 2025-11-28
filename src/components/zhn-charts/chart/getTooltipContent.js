@@ -11,17 +11,18 @@ import { getDisplayedData } from './chartFn';
  * @return {Array}                 The content of tooltip
  */
 export const getTooltipContent = (
-  state,
+  graphicalItems,
+  dataStartIndex,
+  dataEndIndex,
   chartData,
   activeIndex,
   activeLabel
 ) => {
-  const {
-    graphicalItems
-  } = state
-  , displayedData = getDisplayedData(
+  const displayedData = getDisplayedData(
     chartData,
-    state
+    {graphicalItems,
+    dataStartIndex,
+    dataEndIndex}
   );
 
   if (activeIndex < 0

@@ -32,19 +32,16 @@ const getActiveCoordinate = (layout, tooltipTicks, activeIndex, rangeObj) => {
  * @param  {Object} rangeObj  { x, y } coordinates
  * @return {Object}           Tooltip data data
  */
-const getTooltipData = (state, chartData, layout, rangeObj) => {
+const getTooltipData = (orderedTooltipTicks, graphicalItems, dataStartIndex, dataEndIndex, chartData, layout, rangeObj) => {
   const rangeData = rangeObj || {
       x: 0,
       y: 0
     },
     pos = calculateTooltipPos(rangeData, layout),
-    {
-      orderedTooltipTicks
-    } = state,
     activeIndex = (0, _ChartUtils.calculateActiveTickIndex)(pos, orderedTooltipTicks);
   if (activeIndex >= 0 && orderedTooltipTicks) {
     const activeLabel = orderedTooltipTicks[activeIndex] && orderedTooltipTicks[activeIndex].value,
-      activePayload = (0, _getTooltipContent.getTooltipContent)(state, chartData, activeIndex, activeLabel),
+      activePayload = (0, _getTooltipContent.getTooltipContent)(graphicalItems, dataStartIndex, dataEndIndex, chartData, activeIndex, activeLabel),
       activeCoordinate = getActiveCoordinate(layout, orderedTooltipTicks, activeIndex, rangeData);
     return {
       activeTooltipIndex: activeIndex,

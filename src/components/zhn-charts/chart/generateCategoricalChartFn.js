@@ -60,7 +60,10 @@ const getActiveCoordinate = (
  * @return {Object}           Tooltip data data
  */
 export const getTooltipData = (
-  state,
+  orderedTooltipTicks,
+  graphicalItems,
+  dataStartIndex,
+  dataEndIndex,
   chartData,
   layout,
   rangeObj
@@ -73,9 +76,6 @@ export const getTooltipData = (
       rangeData,
       layout
     )
-  , {
-    orderedTooltipTicks
-  } = state
   , activeIndex = calculateActiveTickIndex(
      pos,
      orderedTooltipTicks
@@ -83,7 +83,9 @@ export const getTooltipData = (
   if (activeIndex >= 0 && orderedTooltipTicks) {
     const activeLabel = orderedTooltipTicks[activeIndex] && orderedTooltipTicks[activeIndex].value
     , activePayload = getTooltipContent(
-        state,
+        graphicalItems,
+        dataStartIndex,
+        dataEndIndex,
         chartData,
         activeIndex,
         activeLabel

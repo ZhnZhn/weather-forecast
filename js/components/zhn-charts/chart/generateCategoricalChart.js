@@ -100,12 +100,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         if (!rangeObj) {
           return null;
         }
-        const tooltipData = (0, _generateCategoricalChartFn.getTooltipData)({
-          orderedTooltipTicks,
-          graphicalItems,
-          dataStartIndex,
-          dataEndIndex
-        }, data, layout, rangeObj);
+        const tooltipData = (0, _generateCategoricalChartFn.getTooltipData)(orderedTooltipTicks, graphicalItems, dataStartIndex, dataEndIndex, data, layout, rangeObj);
         return tooltipData ? tooltipData : null;
       },
       [tooltipItem, events, handleCloseTooltip] = (0, _useTooltipEvents.default)(_props, getMouseTooltipData, _setTooltipState);

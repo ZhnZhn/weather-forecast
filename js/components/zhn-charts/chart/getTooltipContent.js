@@ -14,11 +14,12 @@ var _chartFn = require("./chartFn");
  * @param  {String} activeLabel    Active label of data
  * @return {Array}                 The content of tooltip
  */
-const getTooltipContent = (state, chartData, activeIndex, activeLabel) => {
-  const {
-      graphicalItems
-    } = state,
-    displayedData = (0, _chartFn.getDisplayedData)(chartData, state);
+const getTooltipContent = (graphicalItems, dataStartIndex, dataEndIndex, chartData, activeIndex, activeLabel) => {
+  const displayedData = (0, _chartFn.getDisplayedData)(chartData, {
+    graphicalItems,
+    dataStartIndex,
+    dataEndIndex
+  });
   if (activeIndex < 0 || !graphicalItems || !graphicalItems.length || activeIndex >= displayedData.length) {
     return null;
   }
