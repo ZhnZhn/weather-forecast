@@ -1,7 +1,7 @@
 "use strict";
 
-var _ShallowEqual = require("../ShallowEqual");
-var ARR_VALUE = [1],
+var _shallowEqual = require("../shallowEqual");
+const ARR_VALUE = [1],
   OBJ_VALUE = {
     foo: 'bar'
   },
@@ -100,15 +100,17 @@ var ARR_VALUE = [1],
     b: [OBJ_VALUE, OBJ_VALUE],
     result: true
   }];
-describe('shallowEqual', function () {
-  TEST_CONFIGS.forEach(function (_ref) {
-    var should = _ref.should,
-      a = _ref.a,
-      b = _ref.b,
-      result = _ref.result;
-    it(should, function () {
-      expect((0, _ShallowEqual.shallowEqual)(a, b)).toBe(result);
+describe('shallowEqual', () => {
+  TEST_CONFIGS.forEach(_ref => {
+    let {
+      should,
+      a,
+      b,
+      result
+    } = _ref;
+    it(should, () => {
+      expect((0, _shallowEqual.shallowEqual)(a, b)).toBe(result);
     });
   });
 });
-//# sourceMappingURL=ShallowEqual.test.js.map
+//# sourceMappingURL=shallowEqual.test.js.map

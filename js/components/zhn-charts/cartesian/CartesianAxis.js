@@ -4,9 +4,9 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.CartesianAxis = exports.CARTESIAN_AXIS_DF_PROPS = void 0;
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+var _shallowEqual = require("../../../utils/shallowEqual");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
-var _ShallowEqual = require("../util/ShallowEqual");
 var _Layer = require("../container/Layer");
 var _Label = require("../component/Label");
 var _useFontSizeByClassName = _interopRequireDefault(require("./useFontSizeByClassName"));
@@ -54,7 +54,7 @@ const _arePropsEqual = (prevProps, nextProps) => {
       viewBox: viewBoxPrev
     } = _prevProps,
     restPropsPrev = (0, _objectWithoutPropertiesLoose2.default)(_prevProps, _excluded2);
-  return (0, _ShallowEqual.shallowEqual)(viewBox, viewBoxPrev) && (0, _ShallowEqual.shallowEqual)(restProps, restPropsPrev);
+  return (0, _shallowEqual.shallowEqual)(viewBox, viewBoxPrev) && (0, _shallowEqual.shallowEqual)(restProps, restPropsPrev);
 };
 const CartesianAxis = exports.CartesianAxis = (0, _uiApi.memo)(props => {
   const _props = (0, _uiApi.useDefaultProps)(CARTESIAN_AXIS_DF_PROPS, props),

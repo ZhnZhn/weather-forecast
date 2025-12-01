@@ -1,4 +1,4 @@
-import { shallowEqual } from '../ShallowEqual';
+import { shallowEqual } from '../shallowEqual';
 
 const ARR_VALUE = [1]
 , OBJ_VALUE = { foo: 'bar' }

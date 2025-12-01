@@ -1,3 +1,5 @@
+import { shallowEqual } from '../../../utils/shallowEqual';
+
 import {
   memo,
   useRef,
@@ -6,8 +8,6 @@ import {
   setDisplayNameTo
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
-
-import { shallowEqual } from '../util/ShallowEqual';
 
 import { Layer } from '../container/Layer';
 import { renderLabelByParentProps } from '../component/Label';
