@@ -17,9 +17,7 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
   const {
       graphicalItems,
       stackGroups,
-      offset,
-      dataStartIndex,
-      dataEndIndex
+      offset
     } = currentState,
     {
       barSize,
@@ -39,10 +37,7 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
     }),
     formattedItems = [];
   graphicalItems.forEach((item, index) => {
-    const displayedData = (0, _chartFn.getDisplayedData)(props.data, {
-        dataStartIndex,
-        dataEndIndex
-      }, item),
+    const displayedData = (0, _chartFn.getDisplayedData)(props.data, {}, item),
       {
         dataKey,
         maxBarSize: childMaxBarSize
@@ -96,9 +91,7 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
           barPosition,
           offset,
           stackedData,
-          layout,
-          dataStartIndex,
-          dataEndIndex
+          layout
         })), {
           key: item.key || "item-" + index,
           [numericAxisName]: axisObj[numericAxisName],
@@ -130,9 +123,7 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
   const getFormatItems = fGetFormatItems(axisComponents);
   return (_ref2, legendBBox, clipPathId) => {
     let {
-      props,
-      dataStartIndex,
-      dataEndIndex
+      props
     } = _ref2;
     if (!(0, _ReactUtils.validateWidthHeight)(props.width, props.height)) {
       return [];
@@ -156,9 +147,7 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
       axisObj = axisComponents.reduce((result, entry) => {
         result[entry.axisType + "Map"] = (0, _getAxisMap.getAxisMap)(props, Object.assign({}, entry, {
           graphicalItems,
-          stackGroups: entry.axisType === numericAxisName && stackGroups,
-          dataStartIndex,
-          dataEndIndex
+          stackGroups: entry.axisType === numericAxisName && stackGroups
         }));
         return result;
       }, {});
@@ -170,8 +159,6 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
       axisObj[key] = formatAxisMap(props, axisObj[key], offset, key.replace('Map', ''), chartName);
     });
     const formattedGraphicalItems = getFormatItems(props, Object.assign({}, axisObj, {
-      dataStartIndex,
-      dataEndIndex,
       graphicalItems,
       stackGroups,
       offset

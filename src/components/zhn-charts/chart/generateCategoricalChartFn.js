@@ -62,8 +62,6 @@ const getActiveCoordinate = (
 export const getTooltipData = (
   orderedTooltipTicks,
   graphicalItems,
-  dataStartIndex,
-  dataEndIndex,
   chartData,
   layout,
   rangeObj
@@ -84,8 +82,6 @@ export const getTooltipData = (
     const activeLabel = orderedTooltipTicks[activeIndex] && orderedTooltipTicks[activeIndex].value
     , activePayload = getTooltipContent(
         graphicalItems,
-        dataStartIndex,
-        dataEndIndex,
         chartData,
         activeIndex,
         activeLabel

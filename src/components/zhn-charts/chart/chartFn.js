@@ -1,9 +1,6 @@
-import {
-  isNotEmptyArr,
-  isNumber
-} from '../../../utils/isTypeFn';
+import { isNotEmptyArr } from '../../../utils/isTypeFn';
 
-export const originCoordinate = { x: 0, y: 0 };
+export const originCoordinate = { x: 0, y: 0 }
 
 export const crAxisComponent = (
   axisType,
@@ -11,13 +8,11 @@ export const crAxisComponent = (
 ) => ({
   axisType,
   AxisComp
-});
+})
 
 export const getDisplayedData = (
-  data, {
-  graphicalItems,
-  dataStartIndex,
-  dataEndIndex },
+  data,
+  { graphicalItems },
   item
 ) => {
   const itemsData = (graphicalItems || [])
@@ -31,13 +26,13 @@ export const getDisplayedData = (
     ? itemsData
     : item && item.props && isNotEmptyArr(item.props.data)
     ? item.props.data
-    : isNotEmptyArr(data) && isNumber(dataStartIndex) && isNumber(dataEndIndex)
-    ? data.slice(dataStartIndex, dataEndIndex + 1)
+    : isNotEmptyArr(data)
+    ? data
     : [];
-};
+}
 
 export const getDefaultDomainByAxisType = (
   axisType
 ) => axisType === 'number'
   ? [0, 'auto']
-  : void 0;
+  : void 0

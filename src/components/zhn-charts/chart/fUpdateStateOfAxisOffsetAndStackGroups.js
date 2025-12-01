@@ -49,9 +49,7 @@ const fGetFormatItems = (
   const {
     graphicalItems,
     stackGroups,
-    offset,
-    dataStartIndex,
-    dataEndIndex
+    offset
   } = currentState
   , {
     barSize,
@@ -69,9 +67,9 @@ const fGetFormatItems = (
   , formattedItems = [];
   graphicalItems.forEach((item, index) => {
     const displayedData = getDisplayedData(
-      props.data, {
-      dataStartIndex,
-      dataEndIndex }, item
+      props.data,
+      {},
+      item
     )
     , {
       dataKey,
@@ -138,9 +136,7 @@ const fGetFormatItems = (
             barPosition,
             offset,
             stackedData,
-            layout,
-            dataStartIndex,
-            dataEndIndex
+            layout
           }),
           key: item.key || `item-${index}`,
           [numericAxisName]: axisObj[numericAxisName],
@@ -175,11 +171,8 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
   formatAxisMap
 ) => {
   const getFormatItems = fGetFormatItems(axisComponents);
-  return ({
-    props,
-    dataStartIndex,
-    dataEndIndex
-  },
+  return (
+    {props},
     legendBBox,
     clipPathId
   ) => {
@@ -218,9 +211,7 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
         result[`${entry.axisType}Map`] = getAxisMap(props, {
            ...entry,
            graphicalItems,
-           stackGroups: entry.axisType === numericAxisName && stackGroups,
-           dataStartIndex,
-           dataEndIndex
+           stackGroups: entry.axisType === numericAxisName && stackGroups
         })
         return result;
     }, {});
@@ -238,8 +229,6 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
 
     const formattedGraphicalItems = getFormatItems(props, {
       ...axisObj,
-      dataStartIndex,
-      dataEndIndex,
       graphicalItems,
       stackGroups,
       offset

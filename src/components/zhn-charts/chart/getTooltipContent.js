@@ -1,4 +1,3 @@
-//import { findEntryInArray } from '../util/DataUtils';
 import { getTooltipItem } from '../util/ChartUtils';
 import { getDisplayedData } from './chartFn';
 
@@ -12,17 +11,13 @@ import { getDisplayedData } from './chartFn';
  */
 export const getTooltipContent = (
   graphicalItems,
-  dataStartIndex,
-  dataEndIndex,
   chartData,
   activeIndex,
   activeLabel
 ) => {
   const displayedData = getDisplayedData(
     chartData,
-    {graphicalItems,
-    dataStartIndex,
-    dataEndIndex}
+    { graphicalItems }
   );
 
   if (activeIndex < 0

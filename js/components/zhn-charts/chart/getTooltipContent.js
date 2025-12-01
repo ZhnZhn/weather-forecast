@@ -4,8 +4,6 @@ exports.__esModule = true;
 exports.getTooltipContent = void 0;
 var _ChartUtils = require("../util/ChartUtils");
 var _chartFn = require("./chartFn");
-//import { findEntryInArray } from '../util/DataUtils';
-
 /**
  * Get the content to be displayed in the tooltip
  * @param  {Object} state          Current state
@@ -14,11 +12,9 @@ var _chartFn = require("./chartFn");
  * @param  {String} activeLabel    Active label of data
  * @return {Array}                 The content of tooltip
  */
-const getTooltipContent = (graphicalItems, dataStartIndex, dataEndIndex, chartData, activeIndex, activeLabel) => {
+const getTooltipContent = (graphicalItems, chartData, activeIndex, activeLabel) => {
   const displayedData = (0, _chartFn.getDisplayedData)(chartData, {
-    graphicalItems,
-    dataStartIndex,
-    dataEndIndex
+    graphicalItems
   });
   if (activeIndex < 0 || !graphicalItems || !graphicalItems.length || activeIndex >= displayedData.length) {
     return null;
