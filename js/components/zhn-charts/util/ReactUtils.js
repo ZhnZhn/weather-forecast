@@ -1,17 +1,12 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.findAllByType = findAllByType;
 exports.findChildByType = findChildByType;
-exports.validateWidthHeight = exports.toArray = exports.renderByMap = exports.parseChildIndex = exports.isValidSpreadableProp = exports.isSingleChildEqual = exports.isChildrenEqual = exports.getDisplayName = void 0;
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+exports.validateWidthHeight = exports.toArray = exports.renderByMap = exports.parseChildIndex = exports.isValidSpreadableProp = exports.getDisplayName = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
-var _ShallowEqual = require("./ShallowEqual");
 var _types = require("./types");
-const _excluded = ["children"],
-  _excluded2 = ["children"];
 const _getElementType = element => {
   const _elementType = element && element.type;
   return _elementType ? _elementType.displayName || _elementType.name : void 0;
@@ -200,57 +195,6 @@ const isValidSpreadableProp = (property, key, includeEvents, svgElementType) => 
   return !!(!(0, _isTypeFn.isFn)(property) && (svgElementType && matchingElementTypeKeys.includes(key) || _types.SVGElementPropKeys.includes(key)) || includeEvents && (0, _types.isLikelyOnEventProperty)(key));
 };
 exports.isValidSpreadableProp = isValidSpreadableProp;
-const isSingleChildEqual = (nextChild, prevChild) => {
-  if (!(0, _isTypeFn.isNullOrUndef)(nextChild) && !(0, _isTypeFn.isNullOrUndef)(prevChild)) {
-    const _ref = nextChild.props || {},
-      {
-        children: nextChildren
-      } = _ref,
-      nextProps = (0, _objectWithoutPropertiesLoose2.default)(_ref, _excluded),
-      _ref2 = prevChild.props || {},
-      {
-        children: prevChildren
-      } = _ref2,
-      prevProps = (0, _objectWithoutPropertiesLoose2.default)(_ref2, _excluded2);
-    return nextChildren && prevChildren ? (0, _ShallowEqual.shallowEqual)(nextProps, prevProps) && isChildrenEqual(nextChildren, prevChildren) : !nextChildren && !prevChildren ? (0, _ShallowEqual.shallowEqual)(nextProps, prevProps) : false;
-  }
-  return (0, _isTypeFn.isNullOrUndef)(nextChild) && (0, _isTypeFn.isNullOrUndef)(prevChild);
-};
-exports.isSingleChildEqual = isSingleChildEqual;
-const _getElementFromChildren = children => (0, _isTypeFn.isArr)(children) ? children[0] : children;
-
-/**
- * Wether props of children changed
- * @param  {Object} nextChildren The latest children
- * @param  {Object} prevChildren The prev children
- * @return {Boolean}             equal or not
- */
-const isChildrenEqual = (nextChildren, prevChildren) => {
-  if (nextChildren === prevChildren) {
-    return true;
-  }
-  const count = _uiApi.Children.count(nextChildren);
-  if (count !== _uiApi.Children.count(prevChildren)) {
-    return false;
-  }
-  if (count === 0) {
-    return true;
-  }
-  if (count === 1) {
-    return isSingleChildEqual(_getElementFromChildren(nextChildren), _getElementFromChildren(prevChildren));
-  }
-  for (let i = 0; i < count; i++) {
-    const nextChild = nextChildren[i],
-      prevChild = prevChildren[i];
-    if (((0, _isTypeFn.isArr)(nextChild) || (0, _isTypeFn.isArr)(prevChild)) && !isChildrenEqual(nextChild, prevChild)) {
-      return false;
-    } else if (!isSingleChildEqual(nextChild, prevChild)) {
-      return false;
-    }
-  }
-  return true;
-};
-exports.isChildrenEqual = isChildrenEqual;
 const renderByMap = (children, handlerOptions, renderMap) => {
   const elements = [],
     record = {};

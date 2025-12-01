@@ -6,18 +6,13 @@ import {
   LineChart
 } from '../../index';
 import {
-  //filterProps,
-  //filterSvgElements,
   findAllByType,
   getDisplayName,
-  isChildrenEqual,
   isValidSpreadableProp,
   toArray,
-  validateWidthHeight,
-  //withoutType,
+  validateWidthHeight
 } from '../ReactUtils';
 import {
-  //adaptEventHandlers,
   adaptEventsOfChild
 } from '../types';
 
@@ -26,90 +21,6 @@ const _crElementKeys = (
 ) => elements.map(el => el.key);
 
 describe('ReactUtils', () => {
-  /*
-  describe('filterProps', () => {
-    test('should call filterProps wtesth any boolean and return a null result', () => {
-      expect(filterProps(true)).toBe(null);
-      expect(filterProps(false)).toBe(null);
-    });
-
-    test('should call filterProps wtesth a non-object and return null', () => {
-      expect(filterProps(125)).toBe(null);
-    });
-
-    test('should call filterProps wtesth a react element extract properties and filter out non-svg properties', () => {
-      expect(
-        filterProps(<input id="test" value={1} />)
-      )
-      .toEqual({ id: 'test' });
-    });
-
-    test('should pass props and filter out non wanted properties', () => {
-      expect(
-        filterProps({
-          test: '1234',
-          helloWorld: 1234,
-          viewBox: '0 0 0 0',
-          dx: 1,
-          dy: 1
-        }))
-      .toEqual({
-          dx: 1,
-          dy: 1,
-      });
-    });
-
-    test('should expect viewBox on type "svg"', () => {
-      expect(
-        filterProps({
-          test: '1234',
-          helloWorld: 1234,
-          viewBox: '0 0 0 0'
-        }, false, 'svg'))
-      .toEqual({
-          viewBox: '0 0 0 0',
-      });
-    });
-
-    test('should include events when includeEvents is true', () => {
-      expect(
-        filterProps({
-          test: '1234',
-          helloWorld: 1234,
-          viewBox: '0 0 0 0',
-          onClick: jest.fn()
-        }, true, 'svg'),
-      ).toEqual({
-          viewBox: '0 0 0 0',
-          onClick: expect.any(Function)
-      });
-    });
-
-    test('should filter out "points" attribute when included without an svg type that explicitly uses "points"', () => {
-      expect(
-        filterProps({
-          test: '1234',
-          points: '1234',
-          onClick: jest.fn()
-        }, true))
-      .toEqual({
-          onClick: expect.any(Function)
-      });
-    });
-
-    test('filterProps return presentation attributes', () => {
-      const resultKeys = Object.keys(filterProps({
-        stroke: '#000',
-        fill: '#000',
-        r: 6
-      }));
-
-      expect(resultKeys).toContain('stroke');
-      expect(resultKeys).toContain('fill');
-      expect(resultKeys).toContain('r');
-    });
-  });
-  */
 
   describe('isValidSpreadableProp', () => {
     test('return true for valid SVG element attribute', () => {
@@ -154,26 +65,7 @@ describe('ReactUtils', () => {
       expect(result).toBe('Component');
     });
   });
-
-  /*
-  describe('adaptEventHandlers', () => {
-    test('adaptEventHandlers return event attributes', () => {
-      const resultKeys = Object.keys(adaptEventHandlers({
-        a: 1,
-        onMouseEnter: jest.fn(),
-      }));
-      expect(resultKeys).toContain('onMouseEnter');
-      expect(resultKeys).not.toContain('a');
-    });
-
-    test('adaptEventHandlers return null when input is not a react element', () => {
-      expect(adaptEventHandlers(null)).toBe(null);
-      expect(adaptEventHandlers(jest.fn())).toBe(null);
-      expect(adaptEventHandlers(1)).toBe(null);
-    });
-  });
-  */
-
+  
   describe('adaptEventsOfChild', () => {
     test('adaptEventsOfChild return null when input is not a props', () => {
       expect(adaptEventsOfChild(null, undefined, 0)).toBe(null);
@@ -195,111 +87,6 @@ describe('ReactUtils', () => {
     test('validateWidthHeight return false when input is not a react element', () => {
       expect(validateWidthHeight({ a: 1 })).toBe(false);
       expect(validateWidthHeight(jest.fn())).toBe(false);
-    });
-  });
-
-
-  describe('isChildrenEqual', () => {
-    test('isChildrenEqual when children has no null children', () => {
-      const children = [
-        <>
-          <Line dataKey="a" />
-          <Line dataKey="b" />
-          <rect x="0" y="0" width="20" height="20" />
-          <text x="0" y="0">
-            12
-          </text>
-        </>,
-      ];
-
-      expect(
-        isChildrenEqual(children, children)
-      ).toBe(true);
-    });
-
-    test('isChildrenEqual when children has null children', () => {
-      const children = [
-        <>
-          <Line dataKey="a" />
-          <Line dataKey="b" />
-          <rect x="0" y="0" width="20" height="20" />
-          <text x="0" y="0">
-            12
-          </text>
-          {null}
-        </>,
-      ];
-
-      expect(
-        isChildrenEqual(children, children)
-      ).toBe(true);
-    });
-
-    test('isChildrenEqual false when children are not equal', () => {
-      const childrenOne = [
-        <>
-          <Line dataKey="a" />
-          <Line dataKey="b" />
-          <rect x="0" y="0" width="20" height="20" />
-          <text x="0" y="0">
-            12
-          </text>
-        </>,
-      ];
-      const childrenTwo = [
-        <>
-          <Line dataKey="a" />
-          <Line dataKey="b" />
-          <rect x="0" y="0" width="20" height="20" />
-        </>,
-      ];
-
-      expect(
-        isChildrenEqual(childrenOne, childrenTwo)
-      ).toBe(false);
-    });
-
-    test('isChildrenEqual return false when single child are not equal', () => {
-      const childrenOne = [<Line dataKey="a" />];
-      const childrenTwo = [<Line dataKey="b" />];
-
-      expect(
-        isChildrenEqual(childrenOne, childrenTwo)
-      ).toBe(false);
-    });
-
-    test("isChildrenEqual return false when one has child and another don't has child", () => {
-      const childrenOne = [<>{null}</>];
-      const childrenTwo = [
-        <>
-          <Line dataKey="b" />
-        </>,
-      ];
-
-      expect(
-        isChildrenEqual(childrenOne, childrenTwo)
-      ).toBe(false);
-    });
-
-    test('isChildrenEqual return true when only has a child in an array', () => {
-      const childrenOne = [
-        <>
-          {['A'].map(value => {
-            return <Line key={value} dataKey={value} />;
-          })}
-        </>,
-      ];
-      const childrenTwo = [
-        <>
-          {['B'].map(value => {
-            return <Line key={value} dataKey={value} />;
-          })}
-        </>,
-      ];
-
-      expect(
-        isChildrenEqual(childrenOne, childrenTwo)
-      ).toBe(false);
     });
   });
 

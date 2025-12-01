@@ -8,7 +8,6 @@ import {
 
 import { Children } from '../../uiApi';
 
-import { shallowEqual } from './ShallowEqual';
 import {
   FilteredElementKeyMap,
   SVGElementPropKeys,
@@ -236,77 +235,6 @@ export const isValidSpreadableProp = (
   const matchingElementTypeKeys = FilteredElementKeyMap?.[svgElementType] ?? [];
   return !!(( !isFn(property) && ((svgElementType && matchingElementTypeKeys.includes(key)) || SVGElementPropKeys.includes(key)) )
     || (includeEvents && isLikelyOnEventProperty(key)));
-};
-
-export const isSingleChildEqual = (
-  nextChild,
-  prevChild
-) => {
-  if (!isNullOrUndef(nextChild) && !isNullOrUndef(prevChild)) {
-    const {
-      children: nextChildren,
-      ...nextProps
-    } = nextChild.props || {}
-    , {
-      children: prevChildren,
-      ...prevProps
-    } = prevChild.props || {};
-    return nextChildren && prevChildren
-      ? shallowEqual(nextProps, prevProps) && isChildrenEqual(nextChildren, prevChildren)
-      : !nextChildren && !prevChildren
-          ? shallowEqual(nextProps, prevProps)
-          : false;
-  }
-
-  return isNullOrUndef(nextChild) && isNullOrUndef(prevChild);
-}
-
-const _getElementFromChildren = (
-  children
-) => isArr(children)
-  ? children[0]
-  : children;
-
-/**
- * Wether props of children changed
- * @param  {Object} nextChildren The latest children
- * @param  {Object} prevChildren The prev children
- * @return {Boolean}             equal or not
- */
-export const isChildrenEqual = (
-  nextChildren,
-  prevChildren
-) => {
-  if (nextChildren === prevChildren) {
-    return true;
-  }
-  const count = Children.count(nextChildren);
-  if (count !== Children.count(prevChildren)) {
-    return false;
-  }
-  if (count === 0) {
-    return true;
-  }
-  if (count === 1) {
-    return isSingleChildEqual(
-      _getElementFromChildren(nextChildren),
-      _getElementFromChildren(prevChildren)
-    );
-  }
-
-  for (let i = 0; i < count; i++) {
-    const nextChild = nextChildren[i]
-    , prevChild = prevChildren[i];
-    if ((isArr(nextChild) || isArr(prevChild))
-       && !isChildrenEqual(nextChild, prevChild)
-    ) {
-      return false;
-    } else if (!isSingleChildEqual(nextChild, prevChild)) {
-      return false;
-    }
-  }
-
-  return true;
 };
 
 export const renderByMap = (
