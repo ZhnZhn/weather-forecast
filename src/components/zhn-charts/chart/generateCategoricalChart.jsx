@@ -1,11 +1,8 @@
 import {
   crProps,
   useRef,
-  useState,
   useMemo,
-  useEffect,
   getRefValue,
-  setRefValue,
   cloneUiElement
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
@@ -17,7 +14,6 @@ import { Surface } from '../container/Surface';
 import { ClipPath } from '../container/ClipPath';
 
 import {
-  isChildrenEqual,
   validateWidthHeight
 } from '../util/ReactUtils';
 import {
@@ -73,17 +69,10 @@ const DF_PROPS = {
   reverseStackOrder: false,
   syncMethod: 'index'
 }
-, _crDfState = (
-  props
-) => ({
-  dataStartIndex: 0,
-  dataEndIndex: (props.data && props.data.length - 1) || 0
-})
 , SURFACE_ATTRS = {
   tabIndex: 0,
   role: 'img'
 };
-
 
 export const generateCategoricalChart = (
   chartName,
@@ -102,34 +91,18 @@ export const generateCategoricalChart = (
       title,
       desc,
       layout,
-      data,
-      children
+      data
     } = _props
     , [
       _useTooltipState,
       _setTooltipState
     ] = useLocalStateTuple({ isTooltipActive: false })
-    , _refHasDataBeenUpdated = useRef(false)
     , _refClipPathId = useRef(`${_props.id || uniqueId('recharts')}-clip`)
     , _refContainer = useRef()
     , [
       legendBBox,
       handleLegendBBoxUpdate
     ] = useLegendBox()
-    , [
-      state,
-      setState
-    ] = useState(() => ({
-        ..._crDfState(_props),
-        prevData: data,
-        prevWidth: width,
-        prevHeight: height,
-        prevChildren: children
-      }))
-      , {
-        dataStartIndex,
-        dataEndIndex
-      } = state
       , clipPathId = getRefValue(_refClipPathId)
       , [
         offset,
@@ -139,13 +112,9 @@ export const generateCategoricalChart = (
         _legendProps,
         _legendItem
       ] = useMemo(() => updateStateOfAxisMapsOffsetAndStackGroups({
-        props: _props,
-        dataStartIndex,
-        dataEndIndex
+        props: _props
       }, legendBBox, clipPathId), [
         _props,
-        dataStartIndex,
-        dataEndIndex,
         legendBBox,
         clipPathId
       ])
@@ -166,11 +135,8 @@ export const generateCategoricalChart = (
           }
 
           const tooltipData = getTooltipData(
-
             orderedTooltipTicks,
             graphicalItems,
-            dataStartIndex,
-            dataEndIndex,
 
             data,
             layout,
@@ -189,41 +155,6 @@ export const generateCategoricalChart = (
         getMouseTooltipData,
         _setTooltipState
       );
-
-      /*eslint-disable react-hooks/exhaustive-deps*/
-      useEffect(() => {
-        if (data !== state.prevData
-          || width !== state.prevWidth
-          || height !== state.prevHeight
-          //|| layout !== prevState.prevLayout
-          //|| stackOffset !== prevState.prevStackOffset
-          //|| !shallowEqual(margin, prevState.prevMargin)
-        ) {
-          setRefValue(_refHasDataBeenUpdated, true)
-          const nextState = _crDfState(_props);
-          handleCloseTooltip()
-          setState(prevState => ({
-            ...prevState,
-            ...nextState,
-            prevData: data,
-            prevWidth: width,
-            prevHeight: height,
-            //prevLayout: layout,
-            //prevStackOffset: stackOffset,
-            //prevMargin: margin,
-            prevChildren: children
-          }))
-
-        } else if (!isChildrenEqual(_props.children, state.prevChildren) && !getRefValue(_refHasDataBeenUpdated)) {
-          setState(prevState => ({
-            ...prevState,
-            prevChildren: children
-          }))
-        } else {
-          setRefValue(_refHasDataBeenUpdated, false)
-        }
-      })
-      /*eslint-enable react-hooks/exhaustive-deps*/
 
       if (!validateWidthHeight(width, height)) {
         return null;

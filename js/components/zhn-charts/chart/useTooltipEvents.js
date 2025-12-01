@@ -3,6 +3,7 @@
 exports.__esModule = true;
 exports.default = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
+var _uiApi = require("../../uiApi");
 var _has = require("../../has");
 var _Tooltip = require("../component/Tooltip");
 var _ReactUtils = require("../util/ReactUtils");
@@ -24,6 +25,10 @@ const CLOSE_TOOLTIP_STATE = {
 };
 const useTooltipEvents = (props, getMouseTooltipData, _setTooltipState) => {
   const {
+      data,
+      children,
+      width,
+      height,
       onMouseEnter,
       onMouseDown,
       onMouseUp,
@@ -62,9 +67,9 @@ const useTooltipEvents = (props, getMouseTooltipData, _setTooltipState) => {
         onMouseLeave(nextState, evt);
       }
     },
-    handleCloseTooltip = () => {
+    handleCloseTooltip = (0, _uiApi.useCallback)(() => {
       _setTooltipState(Object.assign({}, CLOSE_TOOLTIP_STATE));
-    },
+    }, [_setTooltipState]),
     handleClick = evt => {
       const tooltipData = getMouseTooltipData(evt);
       if (tooltipData) {
@@ -101,6 +106,13 @@ const useTooltipEvents = (props, getMouseTooltipData, _setTooltipState) => {
       onTouchStart: _fHandleTouch(handleMouseDown),
       onTouchEnd: _fHandleTouch(handleMouseUp)
     } : void 0) : {};
+
+  /*eslint-disable react-hooks/exhaustive-deps*/
+  (0, _uiApi.useEffect)(() => {
+    handleCloseTooltip();
+  }, [data, children, width, height]);
+  /*eslint-enable react-hooks/exhaustive-deps*/
+
   return [tooltipItem, events, handleCloseTooltip];
 };
 var _default = exports.default = useTooltipEvents;

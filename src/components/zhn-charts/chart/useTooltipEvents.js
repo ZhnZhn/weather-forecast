@@ -3,6 +3,10 @@ import {
   isNotEmptyArr
 } from '../../../utils/isTypeFn';
 
+import {
+  useEffect,
+  useCallback
+} from '../../uiApi';
 import { HAS_TOUCH_EVENTS } from '../../has';
 
 import { Tooltip } from '../component/Tooltip';
@@ -32,6 +36,11 @@ const useTooltipEvents = (
   _setTooltipState
 ) => {
   const {
+    data,
+    children,
+    width,
+    height,
+
     onMouseEnter,
     onMouseDown,
     onMouseUp,
@@ -70,11 +79,12 @@ const useTooltipEvents = (
         onMouseLeave(nextState, evt);
       }
   }
-  , handleCloseTooltip = () => {
+  , handleCloseTooltip = useCallback(() => {
       _setTooltipState({
         ...CLOSE_TOOLTIP_STATE
       })
-  }
+  }, [_setTooltipState])
+
 
   , handleClick = (evt) => {
       const tooltipData = getMouseTooltipData(evt);
@@ -119,6 +129,12 @@ const useTooltipEvents = (
            } : void 0
          }
      : {};
+
+  /*eslint-disable react-hooks/exhaustive-deps*/
+  useEffect(() => {
+    handleCloseTooltip()
+  }, [data, children, width, height])
+  /*eslint-enable react-hooks/exhaustive-deps*/
 
   return [
     tooltipItem,

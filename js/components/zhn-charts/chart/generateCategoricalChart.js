@@ -41,10 +41,6 @@ const DF_PROPS = {
     reverseStackOrder: false,
     syncMethod: 'index'
   },
-  _crDfState = props => ({
-    dataStartIndex: 0,
-    dataEndIndex: props.data && props.data.length - 1 || 0
-  }),
   SURFACE_ATTRS = {
     tabIndex: 0,
     role: 'img'
@@ -65,32 +61,18 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         title,
         desc,
         layout,
-        data,
-        children
+        data
       } = _props,
       [_useTooltipState, _setTooltipState] = (0, _localState.useLocalStateTuple)({
         isTooltipActive: false
       }),
-      _refHasDataBeenUpdated = (0, _uiApi.useRef)(false),
       _refClipPathId = (0, _uiApi.useRef)((_props.id || (0, _DataUtils.uniqueId)('recharts')) + "-clip"),
       _refContainer = (0, _uiApi.useRef)(),
       [legendBBox, handleLegendBBoxUpdate] = (0, _useLegendBox.default)(),
-      [state, setState] = (0, _uiApi.useState)(() => Object.assign({}, _crDfState(_props), {
-        prevData: data,
-        prevWidth: width,
-        prevHeight: height,
-        prevChildren: children
-      })),
-      {
-        dataStartIndex,
-        dataEndIndex
-      } = state,
       clipPathId = (0, _uiApi.getRefValue)(_refClipPathId),
       [offset, orderedTooltipTicks, graphicalItems, _graphicItems, _legendProps, _legendItem] = (0, _uiApi.useMemo)(() => updateStateOfAxisMapsOffsetAndStackGroups({
-        props: _props,
-        dataStartIndex,
-        dataEndIndex
-      }, legendBBox, clipPathId), [_props, dataStartIndex, dataEndIndex, legendBBox, clipPathId]),
+        props: _props
+      }, legendBBox, clipPathId), [_props, legendBBox, clipPathId]),
       getMouseTooltipData = evt => {
         const _containerElement = (0, _uiApi.getRefValue)(_refContainer);
         if (!_containerElement) {
@@ -100,40 +82,10 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         if (!rangeObj) {
           return null;
         }
-        const tooltipData = (0, _generateCategoricalChartFn.getTooltipData)(orderedTooltipTicks, graphicalItems, dataStartIndex, dataEndIndex, data, layout, rangeObj);
+        const tooltipData = (0, _generateCategoricalChartFn.getTooltipData)(orderedTooltipTicks, graphicalItems, data, layout, rangeObj);
         return tooltipData ? tooltipData : null;
       },
       [tooltipItem, events, handleCloseTooltip] = (0, _useTooltipEvents.default)(_props, getMouseTooltipData, _setTooltipState);
-
-    /*eslint-disable react-hooks/exhaustive-deps*/
-    (0, _uiApi.useEffect)(() => {
-      if (data !== state.prevData || width !== state.prevWidth || height !== state.prevHeight
-      //|| layout !== prevState.prevLayout
-      //|| stackOffset !== prevState.prevStackOffset
-      //|| !shallowEqual(margin, prevState.prevMargin)
-      ) {
-        (0, _uiApi.setRefValue)(_refHasDataBeenUpdated, true);
-        const nextState = _crDfState(_props);
-        handleCloseTooltip();
-        setState(prevState => Object.assign({}, prevState, nextState, {
-          prevData: data,
-          prevWidth: width,
-          prevHeight: height,
-          //prevLayout: layout,
-          //prevStackOffset: stackOffset,
-          //prevMargin: margin,
-          prevChildren: children
-        }));
-      } else if (!(0, _ReactUtils.isChildrenEqual)(_props.children, state.prevChildren) && !(0, _uiApi.getRefValue)(_refHasDataBeenUpdated)) {
-        setState(prevState => Object.assign({}, prevState, {
-          prevChildren: children
-        }));
-      } else {
-        (0, _uiApi.setRefValue)(_refHasDataBeenUpdated, false);
-      }
-    });
-    /*eslint-enable react-hooks/exhaustive-deps*/
-
     if (!(0, _ReactUtils.validateWidthHeight)(width, height)) {
       return null;
     }
