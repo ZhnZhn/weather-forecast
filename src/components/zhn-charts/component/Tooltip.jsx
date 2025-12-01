@@ -8,8 +8,6 @@ import {
   isValidElement,
   cloneUiElement,
   createElement,
-  useRef,
-  useState,
   useCallback,
   useEffect,
   crProps,
@@ -28,7 +26,6 @@ import { getUniqPayload } from "./componentFn";
 import { CL_TOOLTIP_WRAPPER } from "../CL";
 
 //const CLS_PREFIX = 'recharts-tooltip-wrapper';
-const EPS = 1;
 const _defaultUniqBy = (
   entry
 ) => entry.dataKey;
@@ -85,27 +82,10 @@ const _crClassName = (
     translateY < coordinate.y && `${CL_TOOLTIP_WRAPPER}-top`
   ) : ''
   return crCn(CL_TOOLTIP_WRAPPER, crCn(_clX, _clY));
-}
+};
 
 export const Tooltip = (props) => {
-  const [
-    boxWidth,
-    setBoxWidth
-  ] = useState(-1)
-  , [
-    boxHeight,
-    setBoxHeight
-  ] = useState(-1)
-  , [
-    dismissed,
-    setDismissed
-  ] = useState(false)
-  , [
-    dismissedAtCoordinate,
-    setDismissedAtCoordinate
-  ] = useState({ x: 0, y: 0 })
-  , wrapperNode = useRef()
-  , {
+  const {
     isTooltipActive: active,
     activeLabel: label,
     activePayload,
@@ -114,91 +94,28 @@ export const Tooltip = (props) => {
   , payload = active ? activePayload : []
   , _props = crProps(DF_PROPS, props)
   , {
-    allowEscapeViewBox,
-    reverseDirection,
-    offset,
-    viewBox
+    onClose
   } = _props
-  , handleKeyDown = useCallback((event) => {
-      if (event.key === "Escape") {
-        setDismissed(true);
-        setDismissedAtCoordinate(prev => ({
-          ...prev,
-          x: coordinate.x,
-          y: coordinate.y
-        }));
+  , handleKeyDown = useCallback((evt) => {
+      if (evt.key === "Escape") {
+        onClose()
       }
-  }, [coordinate.x, coordinate.y]);
+  }, [onClose]);
 
   let position = _props.position;
   position = coordinate
 
   useEffect(() => {
-    const updateBBox = () => {
-      if (dismissed) {
-        document.removeEventListener("keydown", handleKeyDown);
-        if (coordinate.x !== dismissedAtCoordinate.x || coordinate.y !== dismissedAtCoordinate.y) {
-          setDismissed(false);
-        }
-      } else {
-        document.addEventListener("keydown", handleKeyDown);
-      }
-
-      if (wrapperNode.current && wrapperNode.current.getBoundingClientRect) {
-        const box = wrapperNode.current.getBoundingClientRect();
-        if (Math.abs(box.width - boxWidth) > EPS || Math.abs(box.height - boxHeight) > EPS) {
-          setBoxWidth(box.width);
-          setBoxHeight(box.height);
-        }
-      } else if (boxWidth !== -1 || boxHeight !== -1) {
-        setBoxWidth(-1);
-        setBoxHeight(-1);
-      }
-    };
-
-    updateBBox();
+    if (active) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [
-    boxHeight,
-    boxWidth,
-    coordinate.x,
-    coordinate.y,
-    dismissed,
-    dismissedAtCoordinate.x,
-    dismissedAtCoordinate.y,
+    active,
     handleKeyDown
   ]);
-
-  const getTranslate = ({
-    key,
-    tooltipDimension,
-    viewBoxDimension
-  }) => {
-    if (position && isNumber(position[key])) {
-      return position[key];
-    }
-    const negative = coordinate[key] - tooltipDimension - offset
-    , positive = coordinate[key] + offset;
-    if (allowEscapeViewBox?.[key]) {
-      return reverseDirection[key]
-        ? negative
-        : positive;
-    }
-    if (reverseDirection?.[key]) {
-      const tooltipBoundary = negative
-      , viewBoxBoundary = viewBox[key];
-      return tooltipBoundary < viewBoxBoundary
-        ? Math.max(positive, viewBox[key])
-        : Math.max(negative, viewBox[key]);
-    }
-    const tooltipBoundary = positive + tooltipDimension
-    , viewBoxBoundary = viewBox[key] + viewBoxDimension;
-    return tooltipBoundary > viewBoxBoundary
-      ? Math.max(negative, viewBox[key])
-      : Math.max(positive, viewBox[key]);
-  };
 
   const {
     payloadUniqBy,
@@ -220,7 +137,7 @@ export const Tooltip = (props) => {
   , { content } = _props;
   let outerStyle = {
     pointerEvents: "none",
-    visibility: !dismissed && active && hasPayload ? "visible" : "hidden",
+    visibility: active && hasPayload ? "visible" : "hidden",
     position: "absolute",
     top: 0,
     left: 0,
@@ -232,17 +149,6 @@ export const Tooltip = (props) => {
   if (position && isNumber(position.x) && isNumber(position.y)) {
     translateX = position.x;
     translateY = position.y;
-  } else if (boxWidth > 0 && boxHeight > 0 && coordinate) {
-    translateX = getTranslate({
-      key: "x",
-      tooltipDimension: boxWidth,
-      viewBoxDimension: viewBox.width,
-    });
-    translateY = getTranslate({
-      key: "y",
-      tooltipDimension: boxHeight,
-      viewBoxDimension: viewBox.height,
-    });
   } else {
     outerStyle.visibility = "hidden";
   }
@@ -262,19 +168,17 @@ export const Tooltip = (props) => {
       ...outerStyle
     };
   }
-  const _className = _crClassName(
-    coordinate,
-    translateX,
-    translateY
-  );
 
   return (
     <div
+      className={_crClassName(
+        coordinate,
+        translateX,
+        translateY
+      )}
+      style={outerStyle}
       tabIndex={-1}
       role="dialog"
-      className={_className}
-      style={outerStyle}
-      ref={wrapperNode}
     >
       {_renderContent(content, {
           ..._props,
@@ -288,9 +192,3 @@ export const Tooltip = (props) => {
 
 // needs to be set so that renderByOrder can find the correct handler function
 setDisplayNameTo(Tooltip, "Tooltip")
-/**
- * needs to be set so that renderByOrder can access an have default values for
- * children.props when there are no props set by the consumer
- * doesn't work if using default parameters
- */
-//Tooltip.defaultProps = DF_PROPS;
