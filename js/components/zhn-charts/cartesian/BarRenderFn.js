@@ -4,8 +4,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.renderRectangles = exports.renderBackground = void 0;
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
-var _JsAnimation = require("../../zhn-animation/JsAnimation");
-var _DataUtils = require("../util/DataUtils");
 var _types = require("../util/types");
 var _Rectangle = require("../shape/Rectangle");
 var _Layer = require("../container/Layer");
@@ -13,7 +11,8 @@ var _cartesianFn = require("./cartesianFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 const _excluded = ["key"],
-  _excluded2 = ["value", "background"]; //import { filterProps } from '../util/ReactUtils';
+  _excluded2 = ["value", "background"]; //import { JsAnimation } from '../../zhn-animation/JsAnimation';
+//import { interpolateNumber } from '../util/DataUtils';
 const _crElementRectangle = _ref => {
   let {
       key
@@ -67,55 +66,102 @@ const renderBackground = props => {
     return _renderRectangle(props.background, _props);
   });
 };
-exports.renderBackground = renderBackground;
-const _crStepData = (data, prevData, layout, t) => data.map((entry, index) => {
-  const prev = prevData && prevData[index];
-  if (prev) {
-    return Object.assign({}, entry, {
-      x: (0, _DataUtils.interpolateNumber)(prev.x, entry.x)(t),
-      y: (0, _DataUtils.interpolateNumber)(prev.y, entry.y)(t),
-      width: (0, _DataUtils.interpolateNumber)(prev.width, entry.width)(t),
-      height: (0, _DataUtils.interpolateNumber)(prev.height, entry.height)(t)
-    });
-  }
-  if (layout === 'horizontal') {
-    const h = (0, _DataUtils.interpolateNumber)(0, entry.height)(t);
-    return Object.assign({}, entry, {
-      y: entry.y + entry.height - h,
-      height: h
-    });
-  }
-  return Object.assign({}, entry, {
-    width: (0, _DataUtils.interpolateNumber)(0, entry.width)(t)
-  });
+
+/*
+const _crStepData = (
+  data,
+  prevData,
+  layout,
+  t
+) => {
+  return t === 1 ? data : data.map((entry, index) => {
+   const prev = prevData && prevData[index];
+   if (prev) {
+     return {
+       ...entry,
+       x: interpolateNumber(prev.x, entry.x)(t),
+       y: interpolateNumber(prev.y, entry.y)(t),
+       width: interpolateNumber(prev.width, entry.width)(t),
+       height: interpolateNumber(prev.height, entry.height)(t)
+     };
+   }
+   if (layout === 'horizontal') {
+     const h = interpolateNumber(0, entry.height)(t);
+     return {
+       ...entry,
+       y: entry.y + entry.height - h,
+       height: h
+     };
+   }
+   return {
+     ...entry,
+     width: interpolateNumber(0, entry.width)(t)
+   };
 });
-const _renderRectanglesWithAnimation = (props, prevData, handleAnimationStart, handleAnimationEnd, animationId) => {
-  const {
-    data,
-    layout,
-    isAnimationActive,
-    animationBegin,
-    animationDuration,
-    animationEasing
-  } = props;
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_JsAnimation.JsAnimation, {
-    isActive: isAnimationActive,
-    begin: animationBegin,
-    duration: animationDuration,
-    easing: animationEasing,
-    onAnimationEnd: handleAnimationEnd,
-    onAnimationStart: handleAnimationStart,
-    children: t => /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
-      children: _renderRectanglesStatically(props, _crStepData(data, prevData, layout, t))
-    })
-  }, "bar-" + animationId);
-};
-const renderRectangles = (props, prevData, handleAnimationStart, handleAnimationEnd, animationId) => {
+}
+*/
+
+/*
+const _renderRectanglesWithAnimation = (
+  props,
+  prevData,
+  handleAnimationStart,
+  handleAnimationEnd,
+  animationId
+) => {
+    const {
+      data,
+      layout,
+      isAnimationActive,
+      animationBegin,
+      animationDuration,
+      animationEasing
+    } = props;
+    return (
+      <JsAnimation
+         key={`bar-${animationId}`}
+         isActive={isAnimationActive}
+         begin={animationBegin}
+         duration={animationDuration}
+         easing={animationEasing}
+         onAnimationEnd={handleAnimationEnd}
+         onAnimationStart={handleAnimationStart}
+      >
+       {(t) => (
+          <Layer>
+           {_renderRectanglesStatically(
+              props,
+              _crStepData(data, prevData, layout, t)
+            )}
+          </Layer>
+        )}
+     </JsAnimation>
+   );
+}
+*/
+
+/*
+export const renderRectangles = (
+  props,
+  prevData,
+  handleAnimationStart,
+  handleAnimationEnd,
+  animationId,
+  isAnimationFinished
+) => {
   const {
     data,
     isAnimationActive
   } = props;
-  return isAnimationActive && data && data.length && (!prevData || prevData !== data) ? _renderRectanglesWithAnimation(props, prevData, handleAnimationStart, handleAnimationEnd, animationId) : _renderRectanglesStatically(props, data);
-};
+  return !isAnimationFinished && isAnimationActive
+   && data
+   && data.length
+   && (!prevData || prevData !== data)
+    ? _renderRectanglesWithAnimation(props, prevData, handleAnimationStart, handleAnimationEnd, animationId)
+    : _renderRectanglesStatically(props, data);
+}
+*/
+exports.renderBackground = renderBackground;
+const renderRectangles = props => _renderRectanglesStatically(props, props.data);
 exports.renderRectangles = renderRectangles;
 //# sourceMappingURL=BarRenderFn.js.map

@@ -1,7 +1,6 @@
-import { JsAnimation } from '../../zhn-animation/JsAnimation';
+//import { JsAnimation } from '../../zhn-animation/JsAnimation';
 
-//import { filterProps } from '../util/ReactUtils';
-import { interpolateNumber } from '../util/DataUtils';
+//import { interpolateNumber } from '../util/DataUtils';
 import { adaptEventsOfChild } from '../util/types';
 
 import { Rectangle } from '../shape/Rectangle';
@@ -86,12 +85,14 @@ export const renderBackground = (
   });
 }
 
+/*
 const _crStepData = (
   data,
   prevData,
   layout,
   t
-) => data.map((entry, index) => {
+) => {
+  return t === 1 ? data : data.map((entry, index) => {
    const prev = prevData && prevData[index];
    if (prev) {
      return {
@@ -115,7 +116,10 @@ const _crStepData = (
      width: interpolateNumber(0, entry.width)(t)
    };
 });
+}
+*/
 
+/*
 const _renderRectanglesWithAnimation = (
   props,
   prevData,
@@ -152,22 +156,30 @@ const _renderRectanglesWithAnimation = (
      </JsAnimation>
    );
 }
+*/
 
+/*
 export const renderRectangles = (
   props,
   prevData,
   handleAnimationStart,
   handleAnimationEnd,
-  animationId
+  animationId,
+  isAnimationFinished
 ) => {
   const {
     data,
     isAnimationActive
   } = props;
-  return isAnimationActive
+  return !isAnimationFinished && isAnimationActive
    && data
    && data.length
    && (!prevData || prevData !== data)
     ? _renderRectanglesWithAnimation(props, prevData, handleAnimationStart, handleAnimationEnd, animationId)
     : _renderRectanglesStatically(props, data);
 }
+*/
+
+export const renderRectangles = (
+  props
+) => _renderRectanglesStatically(props, props.data)

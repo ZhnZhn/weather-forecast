@@ -12,12 +12,13 @@ var _ChartUtils = require("../util/ChartUtils");
 var _Layer = require("../container/Layer");
 var _BarRenderFn = require("./BarRenderFn");
 var _cartesianFn = require("./cartesianFn");
-var _useAnimationHandle = _interopRequireDefault(require("./useAnimationHandle"));
-var _usePrevCurData = _interopRequireDefault(require("./usePrevCurData"));
 var _useClipPathId = _interopRequireDefault(require("./useClipPathId"));
 var _ClipPathRect = _interopRequireDefault(require("./ClipPathRect"));
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
+//import useAnimationHandle from './useAnimationHandle';
+//import usePrevCurData from './usePrevCurData';
+
 const DF_PROPS = {
   xAxisId: 0,
   yAxisId: 0,
@@ -39,11 +40,21 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
       className,
       id
     } = _props
-    /*eslint-disable no-unused-vars*/,
-    [isAnimationFinished, handleAnimationStart, handleAnimationEnd] = (0, _useAnimationHandle.default)(_props)
-    //isAnimationFinished
-    ,
-    [prevData, _, animationId] = (0, _usePrevCurData.default)(data)
+    /*
+    , [
+      isAnimationFinished,
+      handleAnimationStart,
+      handleAnimationEnd
+    ] = useAnimationHandle(_props)
+    */
+    /*eslint-disable no-unused-vars*/
+    /*
+    , [
+      prevData,
+      _,
+      animationId
+    ] = usePrevCurData(data)
+    */
     // _
     /*eslint-enable no-unused-vars*/,
     clipPathId = (0, _useClipPathId.default)(_CL.CL_BAR, id);
@@ -60,7 +71,13 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
       className: _CL.CL_BAR_RECTANGLES,
       clipPath: (0, _cartesianFn.crClipPath)(needClip, clipPathId),
-      children: [(0, _BarRenderFn.renderBackground)(_props), (0, _BarRenderFn.renderRectangles)(_props, prevData, handleAnimationStart, handleAnimationEnd, animationId)]
+      children: [(0, _BarRenderFn.renderBackground)(_props), (0, _BarRenderFn.renderRectangles)(_props
+      //prevData,
+      //handleAnimationStart,
+      //handleAnimationEnd,
+      //animationId,
+      //isAnimationFinished
+      )]
     })]
   });
 });
@@ -92,7 +109,7 @@ Bar.getComposedData = _ref => {
     xAxisTicks,
     yAxisTicks,
     stackedData,
-    dataStartIndex,
+    dataStartIndex = 0,
     displayedData,
     offset
   } = _ref;

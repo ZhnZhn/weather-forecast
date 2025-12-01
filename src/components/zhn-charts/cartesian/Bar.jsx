@@ -37,8 +37,8 @@ import {
   crClipPath
 } from './cartesianFn';
 
-import useAnimationHandle from './useAnimationHandle';
-import usePrevCurData from './usePrevCurData';
+//import useAnimationHandle from './useAnimationHandle';
+//import usePrevCurData from './usePrevCurData';
 import useClipPathId from './useClipPathId';
 
 import ClipPathRect  from './ClipPathRect';
@@ -69,18 +69,21 @@ export const Bar = memo((props) => {
     className,
     id
   } = _props
-  /*eslint-disable no-unused-vars*/
+  /*
   , [
     isAnimationFinished,
     handleAnimationStart,
     handleAnimationEnd
   ] = useAnimationHandle(_props)
-  //isAnimationFinished
+  */
+  /*eslint-disable no-unused-vars*/
+  /*
   , [
     prevData,
     _,
     animationId
   ] = usePrevCurData(data)
+  */
    // _
    /*eslint-enable no-unused-vars*/
   , clipPathId = useClipPathId(
@@ -108,10 +111,11 @@ export const Bar = memo((props) => {
         {renderBackground(_props)}
         {renderRectangles(
            _props,
-           prevData,
-           handleAnimationStart,
-           handleAnimationEnd,
-           animationId
+           //prevData,
+           //handleAnimationStart,
+           //handleAnimationEnd,
+           //animationId,
+           //isAnimationFinished
         )}
       </Layer>
   </Layer>
@@ -182,7 +186,7 @@ Bar.getComposedData = ({
   xAxisTicks,
   yAxisTicks,
   stackedData,
-  dataStartIndex,
+  dataStartIndex = 0,
   displayedData,
   offset
 }) => {
