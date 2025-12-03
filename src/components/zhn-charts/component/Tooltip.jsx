@@ -1,7 +1,7 @@
 import {
   isNumber,
   isFn,
-  isNullOrUndef
+  isNotEmptyArr
 } from "../../../utils/isTypeFn";
 
 import {
@@ -89,21 +89,71 @@ export const Tooltip = (props) => {
     isTooltipActive: active,
     activeLabel: label,
     activePayload,
-    activeCoordinate: coordinate = DF_PROPS.coordinate,
+    activeCoordinate: coordinate = DF_PROPS.coordinate
   } = useTooltip()
-  , payload = active ? activePayload : []
+  , payload = active
+     ? activePayload
+     : []
   , _props = crProps(DF_PROPS, props)
   , {
+    payloadUniqBy,
+    filterNull,
+
+    wrapperStyle,
+    useTranslate3d,
+    isAnimationActive,
+    animationDuration,
+    animationEasing,
+
+    content,
     onClose
   } = _props
-  , handleKeyDown = useCallback((evt) => {
+  , handleKeyDown = useCallback(evt => {
       if (evt.key === "Escape") {
         onClose()
       }
-  }, [onClose]);
+  }, [onClose])
 
-  let position = _props.position;
-  position = coordinate
+  , finalPayload = getUniqPayload(
+     payloadUniqBy,
+     filterNull && isNotEmptyArr(payload)
+       ? payload.filter(entry => entry.value != null)
+       : payload,
+     _defaultUniqBy
+  )
+  , _isTranslate = coordinate
+    && isNumber(coordinate.x)
+    && isNumber(coordinate.y)
+  , [
+    _translateX,
+    _translateY
+  ] = _isTranslate
+    ? [
+      coordinate.x,
+      coordinate.y
+    ]
+    : []
+
+  , outerStyle = {
+     position: "absolute",
+     top: 0,
+     left: 0,
+     pointerEvents: "none",
+     visibility: active && isNotEmptyArr(finalPayload)
+       ? "visible"
+       : "hidden",
+     ...wrapperStyle,
+     ...(_isTranslate ? {
+       transform: useTranslate3d
+         ? `translate3d(${_translateX}px, ${_translateY}px, 0)`
+         : `translate(${_translateX}px, ${_translateY}px)`,
+     } : {
+       visibility: "hidden"
+     }),
+     ...(_isTranslate && isAnimationActive && active ? {
+       transition: `transform ${animationDuration}ms ${animationEasing}`
+     } : void 0)
+  };
 
   useEffect(() => {
     if (active) {
@@ -117,64 +167,12 @@ export const Tooltip = (props) => {
     handleKeyDown
   ]);
 
-  const {
-    payloadUniqBy,
-    filterNull,
-    wrapperStyle,
-    useTranslate3d,
-    isAnimationActive,
-    animationDuration,
-    animationEasing
-  } = _props
-  , finalPayload = getUniqPayload(
-      payloadUniqBy,
-      filterNull && payload && payload.length
-         ? payload.filter(entry => !isNullOrUndef(entry.value))
-         : payload,
-      _defaultUniqBy
-  )
-  , hasPayload = finalPayload && finalPayload.length
-  , { content } = _props;
-  let outerStyle = {
-    pointerEvents: "none",
-    visibility: active && hasPayload ? "visible" : "hidden",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    ...wrapperStyle
-  }
-  , translateX
-  , translateY;
-
-  if (position && isNumber(position.x) && isNumber(position.y)) {
-    translateX = position.x;
-    translateY = position.y;
-  } else {
-    outerStyle.visibility = "hidden";
-  }
-  outerStyle = {
-    ...{
-      transform: useTranslate3d
-        ? `translate3d(${translateX}px, ${translateY}px, 0)`
-        : `translate(${translateX}px, ${translateY}px)`,
-    },
-    ...outerStyle
-  };
-  if (isAnimationActive && active) {
-    outerStyle = {
-      ...{
-        transition: `transform ${animationDuration}ms ${animationEasing}`,
-      },
-      ...outerStyle
-    };
-  }
-
   return (
     <div
       className={_crClassName(
         coordinate,
-        translateX,
-        translateY
+        _translateX,
+        _translateY
       )}
       style={outerStyle}
       tabIndex={-1}

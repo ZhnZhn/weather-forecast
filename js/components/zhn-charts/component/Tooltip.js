@@ -67,15 +67,37 @@ const Tooltip = props => {
     payload = active ? activePayload : [],
     _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
+      payloadUniqBy,
+      filterNull,
+      wrapperStyle,
+      useTranslate3d,
+      isAnimationActive,
+      animationDuration,
+      animationEasing,
+      content,
       onClose
     } = _props,
     handleKeyDown = (0, _uiApi.useCallback)(evt => {
       if (evt.key === "Escape") {
         onClose();
       }
-    }, [onClose]);
-  let position = _props.position;
-  position = coordinate;
+    }, [onClose]),
+    finalPayload = (0, _componentFn.getUniqPayload)(payloadUniqBy, filterNull && (0, _isTypeFn.isNotEmptyArr)(payload) ? payload.filter(entry => entry.value != null) : payload, _defaultUniqBy),
+    _isTranslate = coordinate && (0, _isTypeFn.isNumber)(coordinate.x) && (0, _isTypeFn.isNumber)(coordinate.y),
+    [_translateX, _translateY] = _isTranslate ? [coordinate.x, coordinate.y] : [],
+    outerStyle = Object.assign({
+      position: "absolute",
+      top: 0,
+      left: 0,
+      pointerEvents: "none",
+      visibility: active && (0, _isTypeFn.isNotEmptyArr)(finalPayload) ? "visible" : "hidden"
+    }, wrapperStyle, _isTranslate ? {
+      transform: useTranslate3d ? "translate3d(" + _translateX + "px, " + _translateY + "px, 0)" : "translate(" + _translateX + "px, " + _translateY + "px)"
+    } : {
+      visibility: "hidden"
+    }, _isTranslate && isAnimationActive && active ? {
+      transition: "transform " + animationDuration + "ms " + animationEasing
+    } : void 0);
   (0, _uiApi.useEffect)(() => {
     if (active) {
       document.addEventListener("keydown", handleKeyDown);
@@ -84,45 +106,8 @@ const Tooltip = props => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [active, handleKeyDown]);
-  const {
-      payloadUniqBy,
-      filterNull,
-      wrapperStyle,
-      useTranslate3d,
-      isAnimationActive,
-      animationDuration,
-      animationEasing
-    } = _props,
-    finalPayload = (0, _componentFn.getUniqPayload)(payloadUniqBy, filterNull && payload && payload.length ? payload.filter(entry => !(0, _isTypeFn.isNullOrUndef)(entry.value)) : payload, _defaultUniqBy),
-    hasPayload = finalPayload && finalPayload.length,
-    {
-      content
-    } = _props;
-  let outerStyle = Object.assign({
-      pointerEvents: "none",
-      visibility: active && hasPayload ? "visible" : "hidden",
-      position: "absolute",
-      top: 0,
-      left: 0
-    }, wrapperStyle),
-    translateX,
-    translateY;
-  if (position && (0, _isTypeFn.isNumber)(position.x) && (0, _isTypeFn.isNumber)(position.y)) {
-    translateX = position.x;
-    translateY = position.y;
-  } else {
-    outerStyle.visibility = "hidden";
-  }
-  outerStyle = Object.assign({}, {
-    transform: useTranslate3d ? "translate3d(" + translateX + "px, " + translateY + "px, 0)" : "translate(" + translateX + "px, " + translateY + "px)"
-  }, outerStyle);
-  if (isAnimationActive && active) {
-    outerStyle = Object.assign({}, {
-      transition: "transform " + animationDuration + "ms " + animationEasing
-    }, outerStyle);
-  }
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    className: _crClassName(coordinate, translateX, translateY),
+    className: _crClassName(coordinate, _translateX, _translateY),
     style: outerStyle,
     tabIndex: -1,
     role: "dialog",
