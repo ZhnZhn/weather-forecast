@@ -11,31 +11,17 @@ import useWordsByLine from './useWordsByLine';
 
 const _crStartDy = (
   verticalAnchor
-) => {
-let startDy;
-switch (verticalAnchor) {
-  case 'start':
-    startDy = '0.71em'
-    //startDy = reduceCSSCalc(`calc(${capHeight})`);
-    break;
-  case 'middle':
-    startDy = '0.355em'
-    //startDy = reduceCSSCalc(`calc(${(wordsByLines.length - 1) / 2} * -${lineHeight} + (${capHeight} / 2))`);
-    break;
-  default:
-    startDy = '0em'
-    //startDy = reduceCSSCalc(`calc(${wordsByLines.length - 1} * -${lineHeight})`);
-    break;
-  }
-  return startDy;
-};
+) => verticalAnchor === 'start'
+  ? '0.71em'
+  : verticalAnchor === 'middle'
+  ? '0.355em'
+  : '0em';
 
 const DF_PROPS = {
   x: 0,
   y: 0,
   lineHeight: '1em',
   capHeight: '0.71em',
-  scaleToFit: false,
   textAnchor: 'start',
   verticalAnchor: 'end',
   fill: '#808080'
@@ -49,42 +35,35 @@ export const Text = (props) => {
     dy,
     textAnchor,
     verticalAnchor,
-    scaleToFit,
-    angle,
-    lineHeight,  
+    lineHeight,
     className,
     breakAll,
     fill,
-    ...textProps
+
+    x,
+    y,
+    capHeight,
+    offset,
+    stroke,
+    orientation
   } = _props;
 
-  if (!isNumOrStr(textProps.x) || !isNumOrStr(textProps.y)) {
+  if (!isNumOrStr(x) || !isNumOrStr(y)) {
     return null;
   }
-  const x = textProps.x + (isNumber(dx) ? dx : 0)
-  , y = textProps.y + (isNumber(dy) ? dy : 0)
-  , transforms = [];
-  let startDy = _crStartDy(verticalAnchor);
-  if (scaleToFit) {
-    const lineWidth = wordsByLines[0].width
-    , { width } = _props;
-    transforms.push(`scale(${(isNumber(width) ? width / lineWidth : 1) / lineWidth})`);
-  }
-  if (angle) {
-    transforms.push(`rotate(${angle}, ${x}, ${y})`);
-  }
-  if (transforms.length) {
-    textProps.transform = transforms.join(' ');
-  }
+
+  const _x = x + (isNumber(dx) ? dx : 0)
+  , _y = y + (isNumber(dy) ? dy : 0)
+  , startDy = _crStartDy(verticalAnchor);
 
   return (
     <text
-      capHeight={textProps.capHeight}
-      offset={textProps.offset}
-      stroke={textProps.stroke}
-      orientation={textProps.orientation}
+      capHeight={capHeight}
+      offset={offset}
+      stroke={stroke}
+      orientation={orientation}
 
-      x={x} y={y}
+      x={_x} y={_y}
       className={crCn(CL_TEXT, className)}
       textAnchor={textAnchor}
       fill={fill && fill.includes('url')
@@ -93,7 +72,7 @@ export const Text = (props) => {
       }
     >
       {wordsByLines.map((line, index) => (
-         <tspan x={x} dy={index === 0 ? startDy : lineHeight} key={index}>
+         <tspan x={_x} dy={index === 0 ? startDy : lineHeight} key={index}>
            {line.words.join(breakAll ? '' : ' ')}
          </tspan>
       ))}
