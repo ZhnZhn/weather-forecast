@@ -1,6 +1,6 @@
 import {
   isArr,
-  isNullOrUndef,
+  isNotEmptyArr
 } from '../../../utils/isTypeFn';
 
 import { setDisplayNameTo } from '../../uiApi';
@@ -33,25 +33,25 @@ export const LabelList = (
     ...restProps
   } = props;
 
-  return data && data.length ? (
+  return isNotEmptyArr(data) ? (
     <Layer className={CL_LABEL_LIST}>
       {data.map((entry, index) => {
-          const value = isNullOrUndef(dataKey)
+          const value = dataKey == null
             ? valueAccessor(entry, index)
-            : getValueByDataKey(entry && entry.payload, dataKey)
-          , idProps = isNullOrUndef(id)
-            ? {}
-            : { id: `${id}-${index}` };
+            : getValueByDataKey(entry && entry.payload, dataKey);
           return (
             <Label
               key={`label-${index}`}
               {...restProps}
-              {...idProps}
+              id={id == null ? void 0: `${id}-${index}`}
               parentViewBox={entry.parentViewBox}
               index={index}
               value={value}
               textBreakAll={textBreakAll}
-              viewBox={Label.parseViewBox(isNullOrUndef(clockWise) ? entry : { ...entry, clockWise })}
+              viewBox={Label.parseViewBox(clockWise == null
+                 ? entry
+                 : { ...entry, clockWise }
+              )}
             />
           );
       })}

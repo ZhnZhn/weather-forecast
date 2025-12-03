@@ -30,19 +30,17 @@ const LabelList = props => {
       textBreakAll
     } = props,
     restProps = (0, _objectWithoutPropertiesLoose2.default)(props, _excluded);
-  return data && data.length ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
+  return (0, _isTypeFn.isNotEmptyArr)(data) ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
     className: CL_LABEL_LIST,
     children: data.map((entry, index) => {
-      const value = (0, _isTypeFn.isNullOrUndef)(dataKey) ? valueAccessor(entry, index) : (0, _ChartUtils.getValueByDataKey)(entry && entry.payload, dataKey),
-        idProps = (0, _isTypeFn.isNullOrUndef)(id) ? {} : {
-          id: id + "-" + index
-        };
-      return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Label.Label, Object.assign({}, restProps, idProps, {
+      const value = dataKey == null ? valueAccessor(entry, index) : (0, _ChartUtils.getValueByDataKey)(entry && entry.payload, dataKey);
+      return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Label.Label, Object.assign({}, restProps, {
+        id: id == null ? void 0 : id + "-" + index,
         parentViewBox: entry.parentViewBox,
         index: index,
         value: value,
         textBreakAll: textBreakAll,
-        viewBox: _Label.Label.parseViewBox((0, _isTypeFn.isNullOrUndef)(clockWise) ? entry : Object.assign({}, entry, {
+        viewBox: _Label.Label.parseViewBox(clockWise == null ? entry : Object.assign({}, entry, {
           clockWise
         }))
       }), "label-" + index);
