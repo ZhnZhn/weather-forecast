@@ -1,7 +1,7 @@
 import {
   isArr,
-  isNumber,
-  isFn
+  isNotEmptyArr,
+  isNumber
 } from '../../../utils/isTypeFn';
 
 import { crProps } from '../../uiApi';
@@ -10,63 +10,19 @@ import { crCn } from '../../styleFn';
 import {
   line as shapeLine,
   area as shapeArea,
-  curveBasisClosed,
-  curveBasisOpen,
-  curveBasis,
-  curveLinearClosed,
-  curveLinear,
+
   curveMonotoneX,
-  curveMonotoneY,
-  curveNatural,
-  curveStep,
-  curveStepAfter,
-  curveStepBefore
+  curveMonotoneY
 } from '../d3Shape';
 
-import {
-  _upperFirst
-} from '../util/FnUtils';
-
-//import { adaptEventHandlers } from '../util/types';
-
+import { isLayoutVertical } from '../util/ChartUtils';
 import { CL_CURVE } from '../CL';
-
-const CURVE_FACTORIES = {
-  curveBasisClosed,
-  curveBasisOpen,
-  curveBasis,
-  curveLinearClosed,
-  curveLinear,
-  curveMonotoneX,
-  curveMonotoneY,
-  curveNatural,
-  curveStep,
-  curveStepAfter,
-  curveStepBefore
-};
-
-const _isLayoutVertical = (
-  layout
-) => layout === 'vertical';
 
 const defined = (
   p
 ) => p.x === +p.x && p.y === +p.y
 , getX = (p) => p.x
 , getY = (p) => p.y;
-
-const getCurveFactory = (
-  type,
-  layout
-) => {
-  if (isFn(type)) {
-    return type;
-  }
-  const name = `curve${_upperFirst(type)}`;
-  return name === 'curveMonotone' && layout
-    ? CURVE_FACTORIES[`${name}${_isLayoutVertical(layout) ? 'Y' : 'X'}`]
-    : CURVE_FACTORIES[name] || curveLinear;
-};
 
 /**
  * Calculate the path of curve
@@ -79,7 +35,10 @@ const getPath = ({
   layout,
   connectNulls
 }) => {
-    const curveFactory = getCurveFactory(type, layout)
+    const _isLayoutVertical = isLayoutVertical(layout)
+    , curveFactory = type || (_isLayoutVertical
+        ? curveMonotoneY
+        : curveMonotoneX)
     , formatPoints = connectNulls
         ? points.filter(entry => defined(entry))
         : points;
@@ -95,8 +54,8 @@ const getPath = ({
              })
            );
 
-        lineFunction = _isLayoutVertical(layout)
-          ?  shapeArea()
+        lineFunction = _isLayoutVertical
+          ? shapeArea()
               .y(getY)
               .x1(getX)
               .x0(d => d.base.x)
@@ -111,7 +70,7 @@ const getPath = ({
         return lineFunction(areaPoints);
     }
 
-    if (_isLayoutVertical(layout) && isNumber(baseLine)) {
+    if (_isLayoutVertical && isNumber(baseLine)) {
       lineFunction = shapeArea()
         .y(getY)
         .x1(getX)
@@ -142,25 +101,21 @@ export const Curve = props => {
   const _props = crProps(DF_PROPS, props)
   , {
     points,
-    path,
-    pathRef
-  } = _props;
+    path
+  } = _props
+  , _d = isNotEmptyArr(points)
+    ? getPath(props)
+    : path;
 
-  return (!points || !points.length) && !path
-    ? null
-    : (
-       <path
+  return _d
+    ? (<path
+         ref={_props.pathRef}
          fill={_props.fill}
          stroke={_props.stroke}
          strokeWidth={_props.strokeWidth}
          strokeDasharray={_props.strokeDasharray}
-         //{...adaptEventHandlers(_props)}
          className={crCn(CL_CURVE, _props.className)}
-         d={points && points.length
-             ? getPath(props)
-             : path
-           }
-         ref={pathRef}
+         d={_d}
        />
-     );
+     ) : null;
 }

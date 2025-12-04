@@ -32,7 +32,6 @@ const _crLineStyle = ({
   fill=stroke,
   dash=null
 }) => ({
-  type: "monotone",
   stroke: stroke,
   strokeWidth: 2,
   strokeDasharray: dash,

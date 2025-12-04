@@ -24,7 +24,6 @@ const _crLineStyle = _ref => {
     dash = null
   } = _ref;
   return {
-    type: "monotone",
     stroke: stroke,
     strokeWidth: 2,
     strokeDasharray: dash,
