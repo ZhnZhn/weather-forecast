@@ -11,17 +11,6 @@ var _scale = require("../scale");
 var _Legend = require("../component/Legend");
 var _DataUtils = require("./DataUtils");
 var _ReactUtils = require("./ReactUtils");
-/*
-import {
-  stack as shapeStack,
-  stackOffsetExpand,
-  stackOffsetNone,
-  stackOffsetSilhouette,
-  stackOffsetWiggle,
-  stackOrderNone
-} from '../d3Shape';
-*/
-
 const _getObjectKeys = Object.keys;
 const _getAxisDomain = axis => (((axis || {}).type || {}).defaultProps || {}).domain;
 const _fIs = str => v => v === str;
@@ -341,7 +330,9 @@ const getDomainOfItemsWithSameAxis = (data, items, type, layout, filterNil) => {
   }, []);
 };
 exports.getDomainOfItemsWithSameAxis = getDomainOfItemsWithSameAxis;
-const isCategoricalAxis = (layout, axisType) => isLayoutHorizontal(layout) && axisType === 'xAxis' || isLayoutVertical(layout) && axisType === 'yAxis' || isLayoutCentric(layout) && axisType === 'angleAxis' || layout === 'radial' && axisType === 'radiusAxis';
+const isCategoricalAxis = (layout, axisType) => isLayoutHorizontal(layout) && axisType === 'xAxis' || isLayoutVertical(layout) && axisType === 'yAxis';
+//|| (isLayoutCentric(layout) && axisType === 'angleAxis')
+//|| (layout === 'radial' && axisType === 'radiusAxis');
 
 /**
  * Calculate the Coordinates of grid
@@ -432,18 +423,13 @@ const getTicksOfAxis = (axis, isGrid, isAll) => {
   }));
 };
 exports.getTicksOfAxis = getTicksOfAxis;
-const _crScaleBand = () => ({
-  scale: (0, _d3Scale.scaleBand)(),
-  realScaleType: 'band'
-});
-const _crScaleLinear = () => ({
-  scale: (0, _d3Scale.scaleLinear)(),
-  realScaleType: 'linear'
-});
-const _crScalePoint = () => ({
-  scale: (0, _d3Scale.scalePoint)(),
-  realScaleType: 'point'
-});
+const _crScale = (scale, realScaleType) => ({
+    scale: scale(),
+    realScaleType
+  }),
+  _crScaleBand = () => _crScale(_d3Scale.scaleBand, 'band'),
+  _crScaleLinear = () => _crScale(_d3Scale.scaleLinear, 'linear'),
+  _crScalePoint = () => _crScale(_d3Scale.scalePoint, 'point');
 
 /**
  * Parse the scale function of axis
@@ -455,34 +441,14 @@ const _crScalePoint = () => ({
 const parseScale = (axis, chartType, hasBar) => {
   const {
     scale,
-    type,
-    layout,
-    axisType
+    type
   } = axis;
   if (scale === 'auto') {
-    if (layout === 'radial' && axisType === 'radiusAxis') {
-      return _crScaleBand();
-    }
-    if (layout === 'radial' && axisType === 'angleAxis') {
-      return _crScaleLinear();
-    }
     if (type === 'category' && chartType && (chartType.indexOf('LineChart') >= 0 || chartType.indexOf('AreaChart') >= 0 || chartType.indexOf('ComposedChart') >= 0 && !hasBar)) {
       return _crScalePoint();
     }
-    if (type === 'category') {
-      return _crScaleBand();
-    }
-    return _crScaleLinear();
+    return type === 'category' ? _crScaleBand() : _crScaleLinear();
   }
-  /*
-  if (_isStr(scale)) {
-    const name = `scale${_upperFirst(scale)}`;
-    return {
-      scale: (d3Scales[name] || d3Scales.scalePoint)(),
-      realScaleType: d3Scales[name] ? name : 'point',
-    };
-  }
-  */
   return (0, _isTypeFn.isFn)(scale) ? {
     scale
   } : _crScalePoint();

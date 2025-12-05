@@ -13,17 +13,6 @@ import {
   scaleLinear
 } from '../d3Scale';
 
-/*
-import {
-  stack as shapeStack,
-  stackOffsetExpand,
-  stackOffsetNone,
-  stackOffsetSilhouette,
-  stackOffsetWiggle,
-  stackOrderNone
-} from '../d3Shape';
-*/
-
 import {
   _getByPropName,
   _min,
@@ -415,8 +404,8 @@ export const isCategoricalAxis = (
   axisType
 ) => (isLayoutHorizontal(layout) && axisType === 'xAxis')
   || (isLayoutVertical(layout) && axisType === 'yAxis')
-  || (isLayoutCentric(layout) && axisType === 'angleAxis')
-  || (layout === 'radial' && axisType === 'radiusAxis');
+  //|| (isLayoutCentric(layout) && axisType === 'angleAxis')
+  //|| (layout === 'radial' && axisType === 'radiusAxis');
 
 /**
  * Calculate the Coordinates of grid
@@ -517,18 +506,16 @@ export const getTicksOfAxis = (
   }));
 };
 
-const _crScaleBand = () => ({
-  scale: scaleBand(),
-  realScaleType: 'band'
-});
-const _crScaleLinear = () => ({
-  scale: scaleLinear(),
-  realScaleType: 'linear'
-});
-const _crScalePoint = () => ({
-  scale: scalePoint(),
-  realScaleType: 'point'
-});
+const _crScale = (
+  scale,
+  realScaleType
+) => ({
+  scale: scale(),
+  realScaleType
+})
+, _crScaleBand = () => _crScale(scaleBand, 'band')
+, _crScaleLinear = () => _crScale(scaleLinear, 'linear')
+, _crScalePoint = () => _crScale(scalePoint, 'point')
 
 /**
  * Parse the scale function of axis
@@ -544,17 +531,9 @@ export const parseScale = (
 ) => {
   const {
     scale,
-    type,
-    layout,
-    axisType
+    type
   } = axis;
   if (scale === 'auto') {
-    if (layout === 'radial' && axisType === 'radiusAxis') {
-      return _crScaleBand()
-    }
-    if (layout === 'radial' && axisType === 'angleAxis') {
-      return _crScaleLinear();
-    }
     if (type === 'category'
        && chartType
        && (chartType.indexOf('LineChart') >= 0
@@ -563,20 +542,10 @@ export const parseScale = (
     ) {
       return _crScalePoint();
     }
-    if (type === 'category') {
-      return _crScaleBand()
-    }
-    return _crScaleLinear();
+    return type === 'category'
+      ? _crScaleBand()
+      : _crScaleLinear();
   }
-  /*
-  if (_isStr(scale)) {
-    const name = `scale${_upperFirst(scale)}`;
-    return {
-      scale: (d3Scales[name] || d3Scales.scalePoint)(),
-      realScaleType: d3Scales[name] ? name : 'point',
-    };
-  }
-  */
   return isFn(scale)
     ? { scale }
     : _crScalePoint();
