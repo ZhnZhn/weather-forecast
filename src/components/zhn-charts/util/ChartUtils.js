@@ -13,6 +13,7 @@ import {
   scaleLinear
 } from '../d3Scale';
 
+/*
 import {
   stack as shapeStack,
   stackOffsetExpand,
@@ -21,6 +22,7 @@ import {
   stackOffsetWiggle,
   stackOrderNone
 } from '../d3Shape';
+*/
 
 import {
   _getByPropName,
@@ -38,7 +40,6 @@ import { Legend } from '../component/Legend';
 import {
   findEntryInArray,
   getPercentValue,
-  //mathSign,
   uniqueId
 } from './DataUtils';
 import {
@@ -99,11 +100,6 @@ export function getDomainOfDataByKey(
    .map(entry => (isNumOrStr(entry) || entry instanceof Date ? entry : ''));
 }
 
-/*
-const _getMinMax = (a, b) => a > b
-  ? [b, a]
-  : [a, b];
-*/
 const _getTickCoordinate = tick => tick.coordinate;
 const _calcAverageTicksCoordinate = (
   tickA,
@@ -114,9 +110,7 @@ const _calcAverageTicksCoordinate = (
 
 export const calculateActiveTickIndex = (
   coordinate,
-  ticks = [],
-  //unsortedTicks,
-  //axis
+  ticks = []
 ) => {
   const len = ticks?.length ?? 0;
   // if there are 1 or less ticks ticks then the active tick is at index 0
@@ -143,7 +137,7 @@ export const calculateActiveTickIndex = (
  * @param  {ReactElement} item A graphic item
  * @return {String}            Color
  */
-export const getMainColorOfGraphicItem = (
+const getMainColorOfGraphicItem = (
   item
 ) => {
   const {
@@ -695,6 +689,7 @@ export const offsetPositive = (
   }
 };
 
+/*
 const STACK_OFFSET_MAP = {
     sign: offsetSign,
     expand: stackOffsetExpand,
@@ -703,21 +698,7 @@ const STACK_OFFSET_MAP = {
     wiggle: stackOffsetWiggle,
     positive: offsetPositive
 };
-
-export const getStackedData = (
-  data,
-  stackItems,
-  offsetType
-) => {
-  const dataKeys = stackItems
-    .map((item) => item.props.dataKey)
-  , stack = shapeStack()
-     .keys(dataKeys)
-     .value((d, key) => +getValueByDataKey(d, key, 0))
-     .order(stackOrderNone)
-     .offset(STACK_OFFSET_MAP[offsetType]);
-  return stack(data);
-};
+*/
 
 export const getStackGroupsByAxisId = (
   data,
@@ -734,53 +715,23 @@ export const getStackGroupsByAxisId = (
   const items = reverseStackOrder
     ? _items.reverse()
     : _items
-  , stackGroups = items.reduce((result, item) => {
-      const { stackId, hide } = item.props;
-      if (hide) {
-        return result;
-      }
-      const axisId = item.props[numericAxisId];
-      const parentGroup = result[axisId] || { hasStack: false, stackGroups: {} };
-      if (isNumOrStr(stackId)) {
-        const childGroup = parentGroup.stackGroups[stackId] || {
-          numericAxisId,
-          cateAxisId,
-          items: [],
-        };
-        childGroup.items.push(item);
-        parentGroup.hasStack = true;
-        parentGroup.stackGroups[stackId] = childGroup;
-      } else {
-          parentGroup.stackGroups[uniqueId('_stackId_')] = {
-            numericAxisId,
-            cateAxisId,
-            items: [item]
-          };
-      }
-      return {
-        ...result,
-        [axisId]: parentGroup
-      };
-  }, {});
-  return _getObjectKeys(stackGroups).reduce((result, axisId) => {
-    const group = stackGroups[axisId];
-    if (group.hasStack) {
-      group.stackGroups = _getObjectKeys(group.stackGroups).reduce((res, stackId) => {
-        const g = group.stackGroups[stackId];
-        return {
-          ...res,
-          [stackId]: {
-              numericAxisId,
-              cateAxisId,
-              items: g.items,
-              stackedData: getStackedData(data, g.items, offsetType),
-          }
-        };
-      }, {});
+  return items.reduce((result, item) => {
+    if (item.props.hide) {
+      return result;
+    }
+    const axisId = item.props[numericAxisId]
+    , parentGroup = result[axisId] || {
+      hasStack: false,
+      stackGroups: {}
+    };
+    parentGroup.stackGroups[uniqueId('_stackId_')] = {
+      numericAxisId,
+      cateAxisId,
+      items: [item]
     }
     return {
       ...result,
-      [axisId]: group
+      [axisId]: parentGroup
     };
   }, {});
 };

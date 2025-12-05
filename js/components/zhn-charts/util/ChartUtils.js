@@ -3,15 +3,25 @@
 exports.__esModule = true;
 exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarSizeList = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
-exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackedData = exports.getStackGroupsByAxisId = exports.getMainColorOfGraphicItem = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = void 0;
+exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackGroupsByAxisId = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _d3Scale = require("../d3Scale");
-var _d3Shape = require("../d3Shape");
 var _FnUtils = require("./FnUtils");
 var _scale = require("../scale");
 var _Legend = require("../component/Legend");
 var _DataUtils = require("./DataUtils");
 var _ReactUtils = require("./ReactUtils");
+/*
+import {
+  stack as shapeStack,
+  stackOffsetExpand,
+  stackOffsetNone,
+  stackOffsetSilhouette,
+  stackOffsetWiggle,
+  stackOrderNone
+} from '../d3Shape';
+*/
+
 const _getObjectKeys = Object.keys;
 const _getAxisDomain = axis => (((axis || {}).type || {}).defaultProps || {}).domain;
 const _fIs = str => v => v === str;
@@ -40,18 +50,9 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
   const validateData = filterNil ? flattenData.filter(entry => !(0, _isTypeFn.isNullOrUndef)(entry)) : flattenData;
   return validateData.map(entry => (0, _isTypeFn.isNumOrStr)(entry) || entry instanceof Date ? entry : '');
 }
-
-/*
-const _getMinMax = (a, b) => a > b
-  ? [b, a]
-  : [a, b];
-*/
 const _getTickCoordinate = tick => tick.coordinate;
 const _calcAverageTicksCoordinate = (tickA, tickB) => tickA && tickB ? (_getTickCoordinate(tickA) + _getTickCoordinate(tickB)) / 2 : NaN;
-const calculateActiveTickIndex = function (coordinate, ticks
-//unsortedTicks,
-//axis
-) {
+const calculateActiveTickIndex = function (coordinate, ticks) {
   var _ticks$length, _ticks;
   if (ticks === void 0) {
     ticks = [];
@@ -90,7 +91,6 @@ const getMainColorOfGraphicItem = item => {
     } = item.props;
   return displayName === 'Line' ? stroke : displayName === 'Area' ? stroke && stroke !== 'none' ? stroke : fill : fill;
 };
-exports.getMainColorOfGraphicItem = getMainColorOfGraphicItem;
 const _getLegendWidthOrHeight = (props, chartWidth) => {
   const {
     layout,
@@ -582,77 +582,40 @@ const offsetPositive = series => {
     }
   }
 };
-exports.offsetPositive = offsetPositive;
+
+/*
 const STACK_OFFSET_MAP = {
-  sign: offsetSign,
-  expand: _d3Shape.stackOffsetExpand,
-  none: _d3Shape.stackOffsetNone,
-  silhouette: _d3Shape.stackOffsetSilhouette,
-  wiggle: _d3Shape.stackOffsetWiggle,
-  positive: offsetPositive
+    sign: offsetSign,
+    expand: stackOffsetExpand,
+    none: stackOffsetNone,
+    silhouette: stackOffsetSilhouette,
+    wiggle: stackOffsetWiggle,
+    positive: offsetPositive
 };
-const getStackedData = (data, stackItems, offsetType) => {
-  const dataKeys = stackItems.map(item => item.props.dataKey),
-    stack = (0, _d3Shape.stack)().keys(dataKeys).value((d, key) => +getValueByDataKey(d, key, 0)).order(_d3Shape.stackOrderNone).offset(STACK_OFFSET_MAP[offsetType]);
-  return stack(data);
-};
-exports.getStackedData = getStackedData;
+*/
+exports.offsetPositive = offsetPositive;
 const getStackGroupsByAxisId = (data, _items, numericAxisId, cateAxisId, offsetType, reverseStackOrder) => {
   if (!data) {
     return null;
   }
   // reversing items to affect render order (for layering)
-  const items = reverseStackOrder ? _items.reverse() : _items,
-    stackGroups = items.reduce((result, item) => {
-      const {
-        stackId,
-        hide
-      } = item.props;
-      if (hide) {
-        return result;
-      }
-      const axisId = item.props[numericAxisId];
-      const parentGroup = result[axisId] || {
+  const items = reverseStackOrder ? _items.reverse() : _items;
+  return items.reduce((result, item) => {
+    if (item.props.hide) {
+      return result;
+    }
+    const axisId = item.props[numericAxisId],
+      parentGroup = result[axisId] || {
         hasStack: false,
         stackGroups: {}
       };
-      if ((0, _isTypeFn.isNumOrStr)(stackId)) {
-        const childGroup = parentGroup.stackGroups[stackId] || {
-          numericAxisId,
-          cateAxisId,
-          items: []
-        };
-        childGroup.items.push(item);
-        parentGroup.hasStack = true;
-        parentGroup.stackGroups[stackId] = childGroup;
-      } else {
-        parentGroup.stackGroups[(0, _DataUtils.uniqueId)('_stackId_')] = {
-          numericAxisId,
-          cateAxisId,
-          items: [item]
-        };
-      }
-      return Object.assign({}, result, {
-        [axisId]: parentGroup
-      });
-    }, {});
-  return _getObjectKeys(stackGroups).reduce((result, axisId) => {
-    const group = stackGroups[axisId];
-    if (group.hasStack) {
-      group.stackGroups = _getObjectKeys(group.stackGroups).reduce((res, stackId) => {
-        const g = group.stackGroups[stackId];
-        return Object.assign({}, res, {
-          [stackId]: {
-            numericAxisId,
-            cateAxisId,
-            items: g.items,
-            stackedData: getStackedData(data, g.items, offsetType)
-          }
-        });
-      }, {});
-    }
+    parentGroup.stackGroups[(0, _DataUtils.uniqueId)('_stackId_')] = {
+      numericAxisId,
+      cateAxisId,
+      items: [item]
+    };
     return Object.assign({}, result, {
-      [axisId]: group
+      [axisId]: parentGroup
     });
   }, {});
 };
