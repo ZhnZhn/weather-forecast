@@ -16,11 +16,11 @@ import { Bar } from '../cartesian/Bar';
 
 const _getObjectKeys = Object.keys
 , _mathMin = Math.min
-, _mathAbs = Math.abs;
+//, _mathAbs = Math.abs;
 
 const _calcSmallestDistanceBetweenValues = (
-  axis
-) => axis.categoricalDomain
+  categoricalDomain
+) => categoricalDomain
   .sort()
   .reduce((smallestDistance, value, index, sortedValues) => {
     if (index > 0) {
@@ -33,20 +33,30 @@ const _calcSmallestDistanceBetweenValues = (
   }, Infinity);
 
 const _getCalculatedPadding = (
-  axis,
+  type,
+  padding,
+  domain,
+  categoricalDomain,
+  layout,
   offset,
   props
 ) => {
-  const diff = axis.domain[1] - axis.domain[0]
-  , smallestDistanceBetweenValues = _calcSmallestDistanceBetweenValues(axis)
+  if ( !(type === 'number' && (padding === 'gap' || padding === 'no-gap')) ) {
+    return 0;
+  }
+
+  const diff = domain[1] - domain[0]
+  , smallestDistanceBetweenValues = _calcSmallestDistanceBetweenValues(categoricalDomain)
   , smallestDistanceInPercent = smallestDistanceBetweenValues / diff
-  , rangeWidth = isLayoutVertical(axis.layout)
+  , rangeWidth = isLayoutVertical(layout)
      ? offset.height
      : offset.width;
-  if (axis.padding === 'gap') {
+
+  if (padding === 'gap') {
     return (smallestDistanceInPercent * rangeWidth) / 2;
   }
-  if (axis.padding === 'no-gap') {
+
+  if (padding === 'no-gap') {
     const gap = getPercentValue(props.barCategoryGap, smallestDistanceInPercent * rangeWidth)
     , halfBand = (smallestDistanceInPercent * rangeWidth) / 2;
     return halfBand - gap - ((halfBand - gap) / rangeWidth) * gap;
@@ -58,33 +68,22 @@ const _getRange = (
   offset,
   padding,
   calculatedPadding,
-  layout,
-  axis,
-  reversed
+  layout
 ) => {
-  let range;
   if (isAxisTypeX(axisType)) {
-    range = [
+    return [
       offset.left + (padding.left || 0) + calculatedPadding,
       offset.left + offset.width - (padding.right || 0) - calculatedPadding,
     ];
-  } else if (isAxisTypeY(axisType)) {
-    range = isLayoutHorizontal(layout)
-      ? [
-          offset.top + offset.height - (padding.bottom || 0),
-          offset.top + (padding.top || 0)
-        ]
-      : [
-          offset.top + (padding.top || 0) + calculatedPadding,
-          offset.top + offset.height - (padding.bottom || 0) - calculatedPadding,
-        ];
-  } else {
-    ({ range } = axis);
   }
-  if (reversed) {
-    range = [range[1], range[0]];
+
+  if (isAxisTypeY(axisType)) {
+    const _range1 = offset.top + offset.height - (padding.bottom || 0)
+    , _range2 = offset.top + (padding.top || 0)
+    return isLayoutHorizontal(layout)
+      ? [_range1, _range2]
+      : [_range2 + calculatedPadding, _range1 - calculatedPadding]
   }
-  return range;
 };
 
 /**
@@ -127,27 +126,33 @@ export const formatAxisMap = (
       orientation,
       domain,
       padding = {},
-      mirror,
-      reversed
+      mirror
     } = axis
     , offsetKey = `${orientation}${mirror ? 'Mirror' : ''}`
-    , calculatedPadding = axis.type === 'number'
-        && (axis.padding === 'gap' || axis.padding === 'no-gap')
-        ? _getCalculatedPadding(axis, offset, props) || 0
-        : 0
-    , range = _getRange(
+    , calculatedPadding = _getCalculatedPadding(
+        axis.type,
+        padding,
+        domain,
+        axis.categoricalDomain,
+        layout,
+        offset,
+        props
+      ) || 0
+    , _range = _getRange(
        axisType,
        offset,
        padding,
        calculatedPadding,
-       layout,
-       axis,
-       reversed
-    )
+       layout
+    ) || axis.range
+    , range = axis.reversed
+       ? [_range[1], _range[0]]
+       : _range
     , {
       scale,
       realScaleType
     } = parseScale(axis, chartName, hasBar);
+
     scale.domain(domain).range(range);
     checkDomainOfScale(scale);
 
@@ -190,110 +195,4 @@ export const formatAxisMap = (
       [id]: finalAxis
     };
   }, {});
-};
-
-export const rectWithPoints = (
-  { x: x1, y: y1 },
-  { x: x2, y: y2 }
-) => ({
-  x: _mathMin(x1, x2),
-  y: _mathMin(y1, y2),
-  width: _mathAbs(x2 - x1),
-  height: _mathAbs(y2 - y1)
-});
-
-/**
- * Compute the x, y, width, and height of a box from two reference points.
- * @param  {Object} coords     x1, x2, y1, and y2
- * @return {Object} object
- */
-export const rectWithCoords = ({
-  x1,
-  y1,
-  x2,
-  y2
-}) => rectWithPoints({ x: x1, y: y1 }, { x: x2, y: y2 });
-
-export class ScaleHelper {
-  static create(obj) {
-    return new ScaleHelper(obj);
-  }
-  constructor(scale) {
-    this.scale = scale;
-  }
-  get domain() {
-    return this.scale.domain;
-  }
-  get range() {
-    return this.scale.range;
-  }
-  get rangeMin() {
-    return this.range()[0];
-  }
-  get rangeMax() {
-    return this.range()[1];
-  }
-  get bandwidth() {
-    return this.scale.bandwidth;
-  }
-  apply(value, { bandAware, position } = {}) {
-    if (value === undefined) {
-      return;
-    }
-    if (position) {
-      switch (position) {
-        case 'start': {
-          return this.scale(value);
-        }
-        case 'middle': {
-          const offset = this.bandwidth
-            ? this.bandwidth() / 2
-            : 0;
-          return this.scale(value) + offset;
-        }
-        case 'end': {
-          const offset = this.bandwidth
-            ? this.bandwidth()
-            : 0;
-          return this.scale(value) + offset;
-        }
-        default: {
-          return this.scale(value);
-        }
-      }
-    }
-    if (bandAware) {
-      const offset = this.bandwidth ? this.bandwidth() / 2 : 0;
-      return this.scale(value) + offset;
-    }
-    return this.scale(value);
-  }
-  isInRange(value) {
-    const range = this.range()
-    , first = range[0]
-    , last = range[range.length - 1];
-    return first <= last
-      ? value >= first && value <= last
-      : value >= last && value <= first;
-  }
 }
-
-ScaleHelper.EPS = 1e-4;
-
-export const createLabeledScales = (options) => {
-  const scales = _getObjectKeys(options).
-    reduce((res, key) => ({
-      ...res,
-      [key]: ScaleHelper.create(options[key])
-    }), {});
-  return {
-    ...scales,
-    apply(coord, { bandAware, position } = {}) {
-      //return _mapValues(coord, (value, label) => scales[label].apply(value, { bandAware, position }));
-      return coord.map((value, label) => scales[label].apply(value, { bandAware, position }));
-    },
-    isInRange(coord) {
-      return coord.every((value, label) => scales[label].isInRange(value));
-    }
-  };
-};
