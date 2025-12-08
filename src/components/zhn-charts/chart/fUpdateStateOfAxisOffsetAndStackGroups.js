@@ -1,4 +1,8 @@
 import {
+  formatAxisMap
+} from '../util/CartesianUtils';
+
+import {
   getBarSizeList,
   getBarPosition,
   getTicksOfAxis,
@@ -167,8 +171,7 @@ const fGetFormatItems = (
 export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
   chartName,
   GraphicalChild,
-  axisComponents,
-  formatAxisMap
+  axisComponents
 ) => {
   const getFormatItems = fGetFormatItems(axisComponents);
   return (
@@ -224,7 +227,13 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
 
     _getObjectKeys(axisObj)
        .forEach(key => {
-         axisObj[key] = formatAxisMap(props, axisObj[key], offset, key.replace('Map', ''), chartName);
+          axisObj[key] = formatAxisMap(
+            props,
+            axisObj[key],
+            offset,
+            key.replace('Map', ''),
+            chartName
+          );
        });
 
     const formattedGraphicalItems = getFormatItems(props, {

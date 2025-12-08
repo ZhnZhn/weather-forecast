@@ -2,6 +2,7 @@
 
 exports.__esModule = true;
 exports.fUpdateStateOfAxisMapsOffsetAndStackGroups = void 0;
+var _CartesianUtils = require("../util/CartesianUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _ReactUtils = require("../util/ReactUtils");
 var _Legend = require("../component/Legend");
@@ -119,7 +120,7 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
  * @param {Object} prevState      Prev state
  * @return {Object} state New state to set
  */
-const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, axisComponents, formatAxisMap) => {
+const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, axisComponents) => {
   const getFormatItems = fGetFormatItems(axisComponents);
   return (_ref2, legendBBox, clipPathId) => {
     let {
@@ -156,7 +157,7 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, a
       graphicalItems
     }), legendBBox, (0, _ReactUtils.findChildByType)(children, _Legend.Legend));
     _getObjectKeys(axisObj).forEach(key => {
-      axisObj[key] = formatAxisMap(props, axisObj[key], offset, key.replace('Map', ''), chartName);
+      axisObj[key] = (0, _CartesianUtils.formatAxisMap)(props, axisObj[key], offset, key.replace('Map', ''), chartName);
     });
     const formattedGraphicalItems = getFormatItems(props, Object.assign({}, axisObj, {
       graphicalItems,
