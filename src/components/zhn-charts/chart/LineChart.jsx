@@ -1,9 +1,6 @@
 import { generateCategoricalChart } from './generateCategoricalChart';
 
 import { Line } from '../cartesian/Line';
-import { XAxis } from '../cartesian/XAxis';
-import { YAxis } from '../cartesian/YAxis';
-import { crAxisComponent } from './chartFn';
 import {
   fUpdateStateOfAxisMapsOffsetAndStackGroups
 } from './fUpdateStateOfAxisOffsetAndStackGroups';
@@ -13,10 +10,6 @@ export const LineChart = generateCategoricalChart(
   chartName,
   fUpdateStateOfAxisMapsOffsetAndStackGroups(
     chartName,
-    Line,
-    [
-      crAxisComponent('xAxis', XAxis),
-      crAxisComponent('yAxis', YAxis)
-    ]
+    Line
   )
 )

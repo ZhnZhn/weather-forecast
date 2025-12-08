@@ -5,8 +5,10 @@ exports.fUpdateStateOfAxisMapsOffsetAndStackGroups = void 0;
 var _CartesianUtils = require("../util/CartesianUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _ReactUtils = require("../util/ReactUtils");
-var _Legend = require("../component/Legend");
 var _chartFn = require("./chartFn");
+var _XAxis = require("../cartesian/XAxis");
+var _YAxis = require("../cartesian/YAxis");
+var _Legend = require("../component/Legend");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _calculateOffset = require("./calculateOffset");
 var _getAxisMap = require("./getAxisMap");
@@ -105,6 +107,7 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
   });
   return formattedItems;
 };
+const axisComponents = [(0, _chartFn.crAxisComponent)('xAxis', _XAxis.XAxis), (0, _chartFn.crAxisComponent)('yAxis', _YAxis.YAxis)];
 
 /**
  * The AxisMaps are expensive to render on large data sets
@@ -120,7 +123,7 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
  * @param {Object} prevState      Prev state
  * @return {Object} state New state to set
  */
-const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild, axisComponents) => {
+const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild) => {
   const getFormatItems = fGetFormatItems(axisComponents);
   return (_ref2, legendBBox, clipPathId) => {
     let {

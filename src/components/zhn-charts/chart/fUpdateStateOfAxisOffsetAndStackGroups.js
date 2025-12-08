@@ -22,11 +22,15 @@ import {
   renderByMap
 } from '../util/ReactUtils';
 
-import { Legend } from '../component/Legend';
-
 import {
-  getDisplayedData
+  getDisplayedData,
+  crAxisComponent
 } from './chartFn';
+
+import { XAxis } from '../cartesian/XAxis';
+import { YAxis } from '../cartesian/YAxis';
+
+import { Legend } from '../component/Legend';
 
 import {
   getOrderedTooltipTicks,
@@ -154,6 +158,11 @@ const fGetFormatItems = (
   return formattedItems;
 };
 
+const axisComponents = [
+  crAxisComponent('xAxis', XAxis),
+  crAxisComponent('yAxis', YAxis)
+];
+
 /**
  * The AxisMaps are expensive to render on large data sets
  * so provide the ability to store them in state and only update them when necessary
@@ -170,8 +179,7 @@ const fGetFormatItems = (
  */
 export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
   chartName,
-  GraphicalChild,
-  axisComponents
+  GraphicalChild
 ) => {
   const getFormatItems = fGetFormatItems(axisComponents);
   return (
