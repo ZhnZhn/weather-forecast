@@ -8,8 +8,6 @@ var _DataUtils = require("./DataUtils");
 var _Bar = require("../cartesian/Bar");
 const _getObjectKeys = Object.keys,
   _mathMin = Math.min;
-//, _mathAbs = Math.abs;
-
 const _calcSmallestDistanceBetweenValues = categoricalDomain => categoricalDomain.sort().reduce((smallestDistance, value, index, sortedValues) => {
   if (index > 0) {
     smallestDistance = _mathMin((value || 0) - (sortedValues[index - 1] || 0), smallestDistance);

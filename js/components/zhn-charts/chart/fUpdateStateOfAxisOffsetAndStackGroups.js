@@ -107,7 +107,8 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
   });
   return formattedItems;
 };
-const axisComponents = [(0, _chartFn.crAxisComponent)('xAxis', _XAxis.XAxis), (0, _chartFn.crAxisComponent)('yAxis', _YAxis.YAxis)];
+const axisComponents = [(0, _chartFn.crAxisComponent)('xAxis', _XAxis.XAxis), (0, _chartFn.crAxisComponent)('yAxis', _YAxis.YAxis)],
+  getFormatItems = fGetFormatItems(axisComponents);
 
 /**
  * The AxisMaps are expensive to render on large data sets
@@ -123,67 +124,64 @@ const axisComponents = [(0, _chartFn.crAxisComponent)('xAxis', _XAxis.XAxis), (0
  * @param {Object} prevState      Prev state
  * @return {Object} state New state to set
  */
-const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild) => {
-  const getFormatItems = fGetFormatItems(axisComponents);
-  return (_ref2, legendBBox, clipPathId) => {
-    let {
-      props
-    } = _ref2;
-    if (!(0, _ReactUtils.validateWidthHeight)(props.width, props.height)) {
-      return [];
-    }
-    const {
-        children,
-        layout,
-        stackOffset,
-        data,
-        reverseStackOrder,
-        width,
-        height,
-        margin
-      } = props,
-      {
-        numericAxisName,
-        cateAxisName
-      } = (0, _generateCategoricalChartFn.getAxisNameByLayout)(layout),
-      graphicalItems = (0, _ReactUtils.findAllByType)(children, GraphicalChild),
-      stackGroups = (0, _ChartUtils.getStackGroupsByAxisId)(data, graphicalItems, numericAxisName + "Id", cateAxisName + "Id", stackOffset, reverseStackOrder),
-      axisObj = axisComponents.reduce((result, entry) => {
-        result[entry.axisType + "Map"] = (0, _getAxisMap.getAxisMap)(props, Object.assign({}, entry, {
-          graphicalItems,
-          stackGroups: entry.axisType === numericAxisName && stackGroups
-        }));
-        return result;
-      }, {});
-    const offset = (0, _calculateOffset.calculateOffset)(Object.assign({}, axisObj, {
-      props,
-      graphicalItems
-    }), legendBBox, (0, _ReactUtils.findChildByType)(children, _Legend.Legend));
-    _getObjectKeys(axisObj).forEach(key => {
-      axisObj[key] = (0, _CartesianUtils.formatAxisMap)(props, axisObj[key], offset, key.replace('Map', ''), chartName);
-    });
-    const formattedGraphicalItems = getFormatItems(props, Object.assign({}, axisObj, {
-      graphicalItems,
-      stackGroups,
-      offset
-    }));
-    const [_legendProps, _legendItem] = (0, _ChartUtils.getLegendProps)({
+const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild) => (_ref2, legendBBox, clipPathId) => {
+  let {
+    props
+  } = _ref2;
+  if (!(0, _ReactUtils.validateWidthHeight)(props.width, props.height)) {
+    return [];
+  }
+  const {
       children,
-      formattedGraphicalItems,
-      legendWidth: _calcLegendWidth(width, margin)
-    });
-    return [offset, (0, _generateCategoricalChartFn.getOrderedTooltipTicks)(axisObj[cateAxisName + "Map"]), graphicalItems, (0, _ReactUtils.renderByMap)(children, {
-      clipPathId,
+      layout,
+      stackOffset,
+      data,
+      reverseStackOrder,
       width,
       height,
-      layout,
-      children,
-      offset,
-      xAxisMap: axisObj.xAxisMap,
-      yAxisMap: axisObj.yAxisMap,
-      formattedGraphicalItems
-    }, _renderFn.renderMap), _legendProps, _legendItem];
-  };
+      margin
+    } = props,
+    {
+      numericAxisName,
+      cateAxisName
+    } = (0, _generateCategoricalChartFn.getAxisNameByLayout)(layout),
+    graphicalItems = (0, _ReactUtils.findAllByType)(children, GraphicalChild),
+    stackGroups = (0, _ChartUtils.getStackGroupsByAxisId)(data, graphicalItems, numericAxisName + "Id", cateAxisName + "Id", stackOffset, reverseStackOrder),
+    axisObj = axisComponents.reduce((result, entry) => {
+      result[entry.axisType + "Map"] = (0, _getAxisMap.getAxisMap)(props, Object.assign({}, entry, {
+        graphicalItems,
+        stackGroups: entry.axisType === numericAxisName && stackGroups
+      }));
+      return result;
+    }, {});
+  const offset = (0, _calculateOffset.calculateOffset)(Object.assign({}, axisObj, {
+    props,
+    graphicalItems
+  }), legendBBox, (0, _ReactUtils.findChildByType)(children, _Legend.Legend));
+  _getObjectKeys(axisObj).forEach(key => {
+    axisObj[key] = (0, _CartesianUtils.formatAxisMap)(props, axisObj[key], offset, key.replace('Map', ''), chartName);
+  });
+  const formattedGraphicalItems = getFormatItems(props, Object.assign({}, axisObj, {
+    graphicalItems,
+    stackGroups,
+    offset
+  }));
+  const [_legendProps, _legendItem] = (0, _ChartUtils.getLegendProps)({
+    children,
+    formattedGraphicalItems,
+    legendWidth: _calcLegendWidth(width, margin)
+  });
+  return [offset, (0, _generateCategoricalChartFn.getOrderedTooltipTicks)(axisObj[cateAxisName + "Map"]), graphicalItems, (0, _ReactUtils.renderByMap)(children, {
+    clipPathId,
+    width,
+    height,
+    layout,
+    children,
+    offset,
+    xAxisMap: axisObj.xAxisMap,
+    yAxisMap: axisObj.yAxisMap,
+    formattedGraphicalItems
+  }, _renderFn.renderMap), _legendProps, _legendItem];
 };
 exports.fUpdateStateOfAxisMapsOffsetAndStackGroups = fUpdateStateOfAxisMapsOffsetAndStackGroups;
 //# sourceMappingURL=fUpdateStateOfAxisOffsetAndStackGroups.js.map

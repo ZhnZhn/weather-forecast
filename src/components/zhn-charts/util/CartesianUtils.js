@@ -15,8 +15,7 @@ import { getPercentValue } from './DataUtils';
 import { Bar } from '../cartesian/Bar';
 
 const _getObjectKeys = Object.keys
-, _mathMin = Math.min
-//, _mathAbs = Math.abs;
+, _mathMin = Math.min;
 
 const _calcSmallestDistanceBetweenValues = (
   categoricalDomain

@@ -161,7 +161,8 @@ const fGetFormatItems = (
 const axisComponents = [
   crAxisComponent('xAxis', XAxis),
   crAxisComponent('yAxis', YAxis)
-];
+]
+, getFormatItems = fGetFormatItems(axisComponents);
 
 /**
  * The AxisMaps are expensive to render on large data sets
@@ -180,104 +181,102 @@ const axisComponents = [
 export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
   chartName,
   GraphicalChild
+) => (
+  {props},
+  legendBBox,
+  clipPathId
 ) => {
-  const getFormatItems = fGetFormatItems(axisComponents);
-  return (
-    {props},
-    legendBBox,
-    clipPathId
-  ) => {
-    if (!validateWidthHeight(props.width, props.height)) {
-      return [];
-    }
 
-    const {
+  if (!validateWidthHeight(props.width, props.height)) {
+    return [];
+  }
+
+  const {
+    children,
+    layout,
+    stackOffset,
+    data,
+    reverseStackOrder,
+
+    width,
+    height,
+    margin
+  } = props
+  , {
+    numericAxisName,
+    cateAxisName
+  } = getAxisNameByLayout(layout)
+  , graphicalItems = findAllByType(
       children,
-      layout,
-      stackOffset,
+      GraphicalChild
+    )
+  , stackGroups = getStackGroupsByAxisId(
       data,
-      reverseStackOrder,
+      graphicalItems,
+      `${numericAxisName}Id`,
+      `${cateAxisName}Id`,
+      stackOffset,
+      reverseStackOrder
+    )
+  , axisObj = axisComponents.reduce((result, entry) => {
+      result[`${entry.axisType}Map`] = getAxisMap(props, {
+         ...entry,
+         graphicalItems,
+         stackGroups: entry.axisType === numericAxisName && stackGroups
+      })
+      return result;
+  }, {});
 
+  const offset = calculateOffset({
+    ...axisObj,
+    props,
+    graphicalItems
+  }, legendBBox, findChildByType(children, Legend));
+
+  _getObjectKeys(axisObj)
+     .forEach(key => {
+        axisObj[key] = formatAxisMap(
+          props,
+          axisObj[key],
+          offset,
+          key.replace('Map', ''),
+          chartName
+        );
+     });
+
+  const formattedGraphicalItems = getFormatItems(props, {
+    ...axisObj,
+    graphicalItems,
+    stackGroups,
+    offset
+  });
+
+  const [
+    _legendProps,
+    _legendItem
+  ] = getLegendProps({
+    children,
+    formattedGraphicalItems,
+    legendWidth: _calcLegendWidth(width, margin)
+  });
+
+  return [
+    offset,
+    getOrderedTooltipTicks(axisObj[`${cateAxisName}Map`]),
+    graphicalItems,
+    renderByMap(children, {
+      clipPathId,
       width,
       height,
-      margin
-    } = props
-    , {
-      numericAxisName,
-      cateAxisName
-    } = getAxisNameByLayout(layout)
-    , graphicalItems = findAllByType(
-        children,
-        GraphicalChild
-      )
-    , stackGroups = getStackGroupsByAxisId(
-        data,
-        graphicalItems,
-        `${numericAxisName}Id`,
-        `${cateAxisName}Id`,
-        stackOffset,
-        reverseStackOrder
-      )
-    , axisObj = axisComponents.reduce((result, entry) => {
-        result[`${entry.axisType}Map`] = getAxisMap(props, {
-           ...entry,
-           graphicalItems,
-           stackGroups: entry.axisType === numericAxisName && stackGroups
-        })
-        return result;
-    }, {});
-
-    const offset = calculateOffset({
-      ...axisObj,
-      props,
-      graphicalItems
-    }, legendBBox, findChildByType(children, Legend));
-
-    _getObjectKeys(axisObj)
-       .forEach(key => {
-          axisObj[key] = formatAxisMap(
-            props,
-            axisObj[key],
-            offset,
-            key.replace('Map', ''),
-            chartName
-          );
-       });
-
-    const formattedGraphicalItems = getFormatItems(props, {
-      ...axisObj,
-      graphicalItems,
-      stackGroups,
-      offset
-    });
-
-    const [
-      _legendProps,
-      _legendItem
-    ] = getLegendProps({
+      layout,
       children,
-      formattedGraphicalItems,
-      legendWidth: _calcLegendWidth(width, margin)
-    });
 
-    return [
       offset,
-      getOrderedTooltipTicks(axisObj[`${cateAxisName}Map`]),
-      graphicalItems,
-      renderByMap(children, {
-        clipPathId,
-        width,
-        height,
-        layout,
-        children,
-
-        offset,
-        xAxisMap: axisObj.xAxisMap,
-        yAxisMap: axisObj.yAxisMap,
-        formattedGraphicalItems
-      }, renderMap),
-      _legendProps,
-      _legendItem
-    ];
-  };
+      xAxisMap: axisObj.xAxisMap,
+      yAxisMap: axisObj.yAxisMap,
+      formattedGraphicalItems
+    }, renderMap),
+    _legendProps,
+    _legendItem
+  ];
 }
