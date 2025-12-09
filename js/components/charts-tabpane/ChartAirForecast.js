@@ -121,10 +121,9 @@ const ChartAirForecast = () => {
       dataKey: "co",
       hide: filtered.co
     }, _Chart2.S_YAXIS_PRESSURE)), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.Legend, {
-      content: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LegendAirForecast.default, {
-        filtered: filtered,
-        onFilter: _hFilter
-      })
+      content: _LegendAirForecast.default,
+      filtered: filtered,
+      onFilter: _hFilter
     }), (0, _crListSeries.default)(LINE_CONFIGS, filtered)]
   });
 };

@@ -25,10 +25,11 @@ import {
 } from './Chart.Style';
 
 const INITIAL_FILTERED = {
-  temp: false,
-  pressure: true,
   rain: true,
-  speed: true
+  snow: false,
+  speed: true,
+  pressure: true,
+  temp: false
 }
 , _get3h = data => (data || {})['3h'] || null
 , _transformHourly = (
@@ -55,20 +56,13 @@ const INITIAL_FILTERED = {
       snow: _get3h(snow)
     };
 })
-, TEMP_ID = 1
-, PRESSURE_ID = 2
-, RAIN_ID = 3
-, SNOW_ID = 4
-, SPEED_ID = 5
+, RAIN_ID = 1
+, SNOW_ID = 2
+, SPEED_ID = 3
+, PRESSURE_ID = 4
+, TEMP_ID = 5
 , SERIA_CONFIGS = [
   {
-    id: 'temp',
-    yId: TEMP_ID
-  },{
-    id: 'pressure',
-    yId: PRESSURE_ID,
-    style: S_LINE_PRESSURE
-  },{
     id: 'rain',
     type: 'bar',
     yId: RAIN_ID,
@@ -82,6 +76,13 @@ const INITIAL_FILTERED = {
     id: 'speed',
     yId: SPEED_ID,
     style: S_LINE_SPEED
+  },{
+    id: 'pressure',
+    yId: PRESSURE_ID,
+    style: S_LINE_PRESSURE
+  },{
+    id: 'temp',
+    yId: TEMP_ID
   }
 ];
 
@@ -104,13 +105,10 @@ const ChartHourly = () => {
       {!isNot.snow && crYAxisSnow(SNOW_ID, filtered)}
       {crYAxisWindSpeed(SPEED_ID, filtered)}
       <Legend
-         content={
-           <LegendHourly
-             isNot={isNot}
-             filtered={filtered}
-             onFilter={_hFilter}
-           />
-        }
+         content={LegendHourly}
+         isNot={isNot}
+         filtered={filtered}
+         onFilter={_hFilter}
       />
       {crListSeries(SERIA_CONFIGS, filtered, isNot)}
     </ChartType1>

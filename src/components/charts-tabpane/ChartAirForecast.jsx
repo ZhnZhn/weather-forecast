@@ -22,7 +22,7 @@ import {
 } from './Chart.Style';
 import {
   SPEED_COLOR,
-  PRESSURE_COLOR 
+  PRESSURE_COLOR
 } from './SeriesColor';
 
 const _crLabelColor = color => ({
@@ -143,12 +143,9 @@ const ChartAirForecast = () => {
            {...S_YAXIS_PRESSURE}
         />
         <Legend
-           content={
-               <LegendAirForecast
-                  filtered={filtered}
-                  onFilter={_hFilter}
-               />
-            }
+           content={LegendAirForecast}
+           filtered={filtered}
+           onFilter={_hFilter}
         />
         {crListSeries(LINE_CONFIGS, filtered)}
       </ChartType1>
