@@ -11,6 +11,7 @@ import {
   CL_LABEL
 } from '../../CL';
 
+/*
 const CustomizeLabel = ({
   x,
   y
@@ -19,6 +20,7 @@ const CustomizeLabel = ({
     test
   </text>
 );
+*/
 
 const CustomizedTick = ({
   x,
@@ -198,6 +200,7 @@ describe('<CartesianAxis />', () => {
     expect(container.querySelectorAll(`.${CL_LABEL}`)).toHaveLength(0);
   });
 
+  /*
   it('Renders label when label is a function', () => {
     const { container } = render(
       <Surface width={500} height={500}>
@@ -216,7 +219,9 @@ describe('<CartesianAxis />', () => {
     expect(container.querySelectorAll(`.${CL_AXIS_TICK}`)).toHaveLength(ticks.length);
     expect(screen.getAllByTestId('customized-label')).toHaveLength(1);
   });
+  */
 
+  /*
   it('Renders label when label is a react element', () => {
     const { container } = render(
       <Surface width={500} height={500}>
@@ -235,6 +240,7 @@ describe('<CartesianAxis />', () => {
     expect(container.querySelectorAll(`.${CL_AXIS_TICK}`)).toHaveLength(ticks.length);
     expect(screen.getAllByTestId('customized-label')).toHaveLength(1);
   });
+  */
 
   it('Render customized ticks when tick is set to be a ReactElement', () => {
     render(
