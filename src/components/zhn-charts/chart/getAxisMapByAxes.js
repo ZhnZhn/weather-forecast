@@ -10,7 +10,6 @@ import { hasDuplicate } from '../util/DataUtils';
 import {
   isCategoricalAxis,
   getDomainOfItemsWithSameAxis,
-  getDomainOfStackGroups,
   getDomainOfDataByKey,
   parseSpecifiedDomain,
   parseDomainOfCategoryAxis
@@ -47,14 +46,12 @@ export const getAxisMapByAxes = (
   graphicalItems,
   axisType,
   axisIdKey,
-  stackGroups,
   dataStartIndex,
   dataEndIndex
 }) => {
   const {
     layout,
-    children,
-    stackOffset
+    children
   } = props
   , isCategorical = isCategoricalAxis(
     layout,
@@ -121,11 +118,6 @@ export const getAxisMapByAxes = (
       } else if (isCategorical) {
           // the axis is a categorical axis
           domain = _range(0, len);
-      } else if (stackGroups && stackGroups[axisId] && stackGroups[axisId].hasStack && _isValueNumber(type)) {
-          // when stackOffset is 'expand', the domain may be calculated as [0, 1.000000000002]
-          domain = stackOffset === 'expand'
-            ? [0, 1]
-            : getDomainOfStackGroups(stackGroups[axisId].stackGroups, dataStartIndex, dataEndIndex);
       } else {
           domain = getDomainOfItemsWithSameAxis(displayedData, graphicalItems.filter((item) => item.props[axisIdKey] === axisId && (includeHidden || !item.props.hide)), type, layout, true);
       }

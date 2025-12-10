@@ -149,8 +149,7 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild) =
     stackGroups = (0, _ChartUtils.getStackGroupsByAxisId)(data, graphicalItems, numericAxisName + "Id", cateAxisName + "Id", stackOffset, reverseStackOrder),
     axisObj = axisComponents.reduce((result, entry) => {
       result[entry.axisType + "Map"] = (0, _getAxisMap.getAxisMap)(props, Object.assign({}, entry, {
-        graphicalItems,
-        stackGroups: entry.axisType === numericAxisName && stackGroups
+        graphicalItems
       }));
       return result;
     }, {});

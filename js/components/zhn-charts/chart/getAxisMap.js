@@ -19,14 +19,12 @@ const getAxisMap = (props, _ref) => {
   let {
     axisType = 'xAxis',
     AxisComp,
-    graphicalItems,
-    stackGroups
+    graphicalItems
   } = _ref;
   const _axisOptions = {
       axisIdKey: axisType + "Id",
       graphicalItems,
-      axisType,
-      stackGroups
+      axisType
     }
     // Get all the instance of Axis
     ,

@@ -3,7 +3,7 @@
 exports.__esModule = true;
 exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarSizeList = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
-exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackGroupsByAxisId = exports.getLegendProps = exports.getDomainOfStackGroups = exports.getDomainOfItemsWithSameAxis = void 0;
+exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackGroupsByAxisId = exports.getLegendProps = exports.getDomainOfItemsWithSameAxis = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _d3Scale = require("../d3Scale");
 var _FnUtils = require("./FnUtils");
@@ -704,20 +704,39 @@ const getStackedDataOfItem = (item, stackGroups) => {
   }
   return null;
 };
+
+/*
+const getDomainOfSingle = (
+  data
+) => data.reduce((result, entry) => [
+    _min(entry.concat([result[0]]).filter(isNumber)),
+    _max(entry.concat([result[1]]).filter(isNumber)),
+], [Infinity, -Infinity]);
+
+
+export const getDomainOfStackGroups = (
+  stackGroups,
+  startIndex,
+  endIndex
+) => _getObjectKeys(stackGroups)
+  .reduce((result, stackId) => {
+      const group = stackGroups[stackId]
+      , { stackedData } = group
+      , domain = stackedData.reduce((res, entry) => {
+          const s = getDomainOfSingle(entry.slice(startIndex, endIndex + 1));
+          return [
+            Math.min(res[0], s[0]),
+            Math.max(res[1], s[1])
+          ];
+      }, [Infinity, -Infinity]);
+      return [
+        Math.min(domain[0], result[0]),
+        Math.max(domain[1], result[1])
+      ];
+   }, [Infinity, -Infinity])
+   .map(result => (result === Infinity || result === -Infinity ? 0 : result));
+*/
 exports.getStackedDataOfItem = getStackedDataOfItem;
-const getDomainOfSingle = data => data.reduce((result, entry) => [(0, _FnUtils._min)(entry.concat([result[0]]).filter(_isTypeFn.isNumber)), (0, _FnUtils._max)(entry.concat([result[1]]).filter(_isTypeFn.isNumber))], [Infinity, -Infinity]);
-const getDomainOfStackGroups = (stackGroups, startIndex, endIndex) => _getObjectKeys(stackGroups).reduce((result, stackId) => {
-  const group = stackGroups[stackId],
-    {
-      stackedData
-    } = group,
-    domain = stackedData.reduce((res, entry) => {
-      const s = getDomainOfSingle(entry.slice(startIndex, endIndex + 1));
-      return [Math.min(res[0], s[0]), Math.max(res[1], s[1])];
-    }, [Infinity, -Infinity]);
-  return [Math.min(domain[0], result[0]), Math.max(domain[1], result[1])];
-}, [Infinity, -Infinity]).map(result => result === Infinity || result === -Infinity ? 0 : result);
-exports.getDomainOfStackGroups = getDomainOfStackGroups;
 const MIN_VALUE_REG = exports.MIN_VALUE_REG = /^dataMin[\s]*-[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
 const MAX_VALUE_REG = exports.MAX_VALUE_REG = /^dataMax[\s]*\+[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
 const parseSpecifiedDomain = (specifiedDomain, dataDomain, allowDataOverflow) => {

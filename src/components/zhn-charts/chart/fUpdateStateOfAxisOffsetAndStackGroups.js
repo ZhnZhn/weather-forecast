@@ -221,8 +221,7 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
   , axisObj = axisComponents.reduce((result, entry) => {
       result[`${entry.axisType}Map`] = getAxisMap(props, {
          ...entry,
-         graphicalItems,
-         stackGroups: entry.axisType === numericAxisName && stackGroups
+         graphicalItems         
       })
       return result;
   }, {});

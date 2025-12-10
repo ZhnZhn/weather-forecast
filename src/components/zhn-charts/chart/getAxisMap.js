@@ -17,14 +17,12 @@ export const getAxisMap = (
   props, {
   axisType = 'xAxis',
   AxisComp,
-  graphicalItems,
-  stackGroups
+  graphicalItems
 }) => {
   const _axisOptions = {
     axisIdKey: `${axisType}Id`,
     graphicalItems,
-    axisType,
-    stackGroups
+    axisType
   }
   // Get all the instance of Axis
   , axes = findAllByType(props.children, AxisComp);

@@ -838,12 +838,14 @@ export const getStackedDataOfItem = (
   return null;
 };
 
+/*
 const getDomainOfSingle = (
   data
 ) => data.reduce((result, entry) => [
     _min(entry.concat([result[0]]).filter(isNumber)),
     _max(entry.concat([result[1]]).filter(isNumber)),
 ], [Infinity, -Infinity]);
+
 
 export const getDomainOfStackGroups = (
   stackGroups,
@@ -866,6 +868,7 @@ export const getDomainOfStackGroups = (
       ];
    }, [Infinity, -Infinity])
    .map(result => (result === Infinity || result === -Infinity ? 0 : result));
+*/
 
 export const MIN_VALUE_REG = /^dataMin[\s]*-[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
 export const MAX_VALUE_REG = /^dataMax[\s]*\+[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;

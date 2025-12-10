@@ -30,14 +30,12 @@ const getAxisMapByAxes = (props, _ref) => {
     graphicalItems,
     axisType,
     axisIdKey,
-    stackGroups,
     dataStartIndex,
     dataEndIndex
   } = _ref;
   const {
       layout,
-      children,
-      stackOffset
+      children
     } = props,
     isCategorical = (0, _ChartUtils.isCategoricalAxis)(layout, axisType);
   // Eliminate duplicated axes
@@ -96,9 +94,6 @@ const getAxisMapByAxes = (props, _ref) => {
     } else if (isCategorical) {
       // the axis is a categorical axis
       domain = (0, _FnUtils._range)(0, len);
-    } else if (stackGroups && stackGroups[axisId] && stackGroups[axisId].hasStack && _isValueNumber(type)) {
-      // when stackOffset is 'expand', the domain may be calculated as [0, 1.000000000002]
-      domain = stackOffset === 'expand' ? [0, 1] : (0, _ChartUtils.getDomainOfStackGroups)(stackGroups[axisId].stackGroups, dataStartIndex, dataEndIndex);
     } else {
       domain = (0, _ChartUtils.getDomainOfItemsWithSameAxis)(displayedData, graphicalItems.filter(item => item.props[axisIdKey] === axisId && (includeHidden || !item.props.hide)), type, layout, true);
     }
