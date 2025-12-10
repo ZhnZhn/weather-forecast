@@ -3,10 +3,9 @@
 exports.__esModule = true;
 exports.findAllByType = findAllByType;
 exports.findChildByType = findChildByType;
-exports.validateWidthHeight = exports.toArray = exports.renderByMap = exports.parseChildIndex = exports.isValidSpreadableProp = exports.getDisplayName = void 0;
+exports.validateWidthHeight = exports.toArray = exports.renderByMap = exports.parseChildIndex = exports.getDisplayName = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
-var _types = require("./types");
 const _getElementType = element => {
   const _elementType = element && element.type;
   return _elementType ? _elementType.displayName || _elementType.name : void 0;
@@ -71,137 +70,12 @@ function findChildByType(children, type) {
   const result = findAllByType(children, type);
   return result && result[0];
 }
-
-/**
- * validate the width and height props of a chart element
- * @param  {Object} el A chart element
- * @return {Boolean}   true If the props width and height are number, and greater than 0
- */
-const validateWidthHeight = (width, height) => !(0, _isTypeFn.isNumber)(width) || width <= 0 || !(0, _isTypeFn.isNumber)(height) || height <= 0 ? false : true;
-
-/*
-const SVG_TAGS = [
-  'a',
-  'altGlyph',
-  'altGlyphDef',
-  'altGlyphItem',
-  'animate',
-  'animateColor',
-  'animateMotion',
-  'animateTransform',
-  'circle',
-  'clipPath',
-  'color-profile',
-  'cursor',
-  'defs',
-  'desc',
-  'ellipse',
-
-  'feBlend',
-  'feColormatrix',
-  'feComponentTransfer',
-  'feComposite',
-  'feConvolveMatrix',
-  'feDiffuseLighting',
-  'feDisplacementMap',
-  'feDistantLight',
-  'feFlood',
-  'feFuncA',
-  'feFuncB',
-  'feFuncG',
-  'feFuncR',
-  'feGaussianBlur',
-  'feImage',
-  'feMerge',
-  'feMergeNode',
-  'feMorphology',
-  'feOffset',
-  'fePointLight',
-  'feSpecularLighting',
-  'feSpotLight',
-  'feTile',
-  'feTurbulence',
-
-
-  'filter',
-  'font',
-  'font-face',
-  'font-face-format',
-  'font-face-name',
-  'font-face-url',
-  'foreignObject',
-
-  'g',
-  'glyph',
-  'glyphRef',
-  'hkern',
-  'image',
-  'line',
-  'lineGradient',
-  'marker',
-  'mask',
-  'metadata',
-  'missing-glyph',
-  'mpath',
-  'path',
-  'pattern',
-  'polygon',
-  'polyline',
-  'radialGradient',
-  'rect',
-  'script',
-  'set',
-  'stop',
-  'style',
-  'svg',
-  'switch',
-  'symbol',
-  'text',
-  'textPath',
-  'title',
-  'tref',
-  'tspan',
-  'use',
-  'view',
-  'vkern'
-];
-*/
-
-/*
-const isSvgElement = (
-  child
-) => child
-  && isStr(child.type)
-  && SVG_TAGS.indexOf(child.type) >= 0;
-*/
-
-/**
- * Checks if the property is valid to spread onto an SVG element or onto a specific component
- * @param {unknown} property property value currently being compared
- * @param {string} key property key currently being compared
- * @param {boolean} includeEvents if events are included in spreadable props
- * @param {boolean} svgElementType checks against map of SVG element types to attributes
- * @returns {boolean} is prop valid
- */
+const validateWidthHeight = (width, height) => (0, _isTypeFn.isNumber)(width) && (0, _isTypeFn.isNumber)(height) && width > 0 && height > 0;
 exports.validateWidthHeight = validateWidthHeight;
-const isValidSpreadableProp = (property, key, includeEvents, svgElementType) => {
-  var _FilteredElementKeyMa;
-  /**
-   * If the svg element type is explicitly included, check against the filtered element key map
-   * to determine if there are attributes that should only exist on that element type.
-   * @todo Add an internal cjs version of https://github.com/wooorm/svg-element-attributes for full coverage.
-   */
-  const matchingElementTypeKeys = (_FilteredElementKeyMa = _types.FilteredElementKeyMap == null ? void 0 : _types.FilteredElementKeyMap[svgElementType]) != null ? _FilteredElementKeyMa : [];
-  return !!(!(0, _isTypeFn.isFn)(property) && (svgElementType && matchingElementTypeKeys.includes(key) || _types.SVGElementPropKeys.includes(key)) || includeEvents && (0, _types.isLikelyOnEventProperty)(key));
-};
-exports.isValidSpreadableProp = isValidSpreadableProp;
 const renderByMap = (children, handlerOptions, renderMap) => {
   const elements = [],
     record = {};
   toArray(children).forEach((child, index) => {
-    //if (isSvgElement(child)) {
-    //  elements.push(child);
-    //} else if (child) {
     if (child) {
       const displayName = getDisplayName(child.type),
         {

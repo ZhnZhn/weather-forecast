@@ -7,24 +7,6 @@ var _types = require("../types");
 var _jsxRuntime = require("react/jsx-runtime");
 const _crElementKeys = elements => elements.map(el => el.key);
 describe('ReactUtils', () => {
-  describe('isValidSpreadableProp', () => {
-    test('return true for valid SVG element attribute', () => {
-      const isValid = (0, _ReactUtils.isValidSpreadableProp)(42, 'height');
-      expect(isValid).toBe(true);
-    });
-    test('return false for invalid SVG element attribute', () => {
-      const isValid = (0, _ReactUtils.isValidSpreadableProp)(42, 'type');
-      expect(isValid).toBe(false);
-    });
-    test('return true for event when includeEvents is true', () => {
-      const isValid = (0, _ReactUtils.isValidSpreadableProp)(() => true, 'onClick', true);
-      expect(isValid).toBe(true);
-    });
-    test('return true for valid SVGElementType', () => {
-      const isValid = (0, _ReactUtils.isValidSpreadableProp)('00 00 00 00', 'points', false, 'polyline');
-      expect(isValid).toBe(true);
-    });
-  });
   describe('getDisplayName', () => {
     test('getDisplayName return empty string when has a null as input', () => {
       // added never casting to test runtime value

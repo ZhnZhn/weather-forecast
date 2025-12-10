@@ -8,7 +8,6 @@ import {
 import {
   findAllByType,
   getDisplayName,
-  isValidSpreadableProp,
   toArray,
   validateWidthHeight
 } from '../ReactUtils';
@@ -21,29 +20,7 @@ const _crElementKeys = (
 ) => elements.map(el => el.key);
 
 describe('ReactUtils', () => {
-
-  describe('isValidSpreadableProp', () => {
-    test('return true for valid SVG element attribute', () => {
-      const isValid = isValidSpreadableProp(42, 'height');
-      expect(isValid).toBe(true);
-    });
-
-    test('return false for invalid SVG element attribute', () => {
-      const isValid = isValidSpreadableProp(42, 'type');
-      expect(isValid).toBe(false);
-    });
-
-    test('return true for event when includeEvents is true', () => {
-      const isValid = isValidSpreadableProp(() => true, 'onClick', true);
-      expect(isValid).toBe(true);
-    });
-
-    test('return true for valid SVGElementType', () => {
-      const isValid = isValidSpreadableProp('00 00 00 00', 'points', false, 'polyline');
-      expect(isValid).toBe(true);
-    });
-  });
-
+  
   describe('getDisplayName', () => {
     test('getDisplayName return empty string when has a null as input', () => {
       // added never casting to test runtime value
@@ -65,7 +42,7 @@ describe('ReactUtils', () => {
       expect(result).toBe('Component');
     });
   });
-  
+
   describe('adaptEventsOfChild', () => {
     test('adaptEventsOfChild return null when input is not a props', () => {
       expect(adaptEventsOfChild(null, undefined, 0)).toBe(null);
