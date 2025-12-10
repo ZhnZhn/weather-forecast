@@ -4,6 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.CartesianAxis = exports.CARTESIAN_AXIS_DF_PROPS = void 0;
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+var _isTypeFn = require("../../../utils/isTypeFn");
 var _shallowEqual = require("../../../utils/shallowEqual");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
@@ -58,36 +59,39 @@ const _arePropsEqual = (prevProps, nextProps) => {
 };
 const CartesianAxis = exports.CartesianAxis = (0, _uiApi.memo)(props => {
   const _props = (0, _uiApi.useDefaultProps)(CARTESIAN_AXIS_DF_PROPS, props),
+    {
+      x,
+      y,
+      width,
+      height
+    } = _props,
     _refLayer = (0, _uiApi.useRef)(),
     {
       fontSize,
       letterSpacing
     } = (0, _useFontSizeByClassName.default)(_refLayer, _CL.CL_AXIS_TICK_VALUE);
-  const {
-    axisLine,
-    className,
-    width,
-    height,
-    hide
-  } = _props;
-  if (hide || width <= 0 || height <= 0) {
+  if (_props.hide || width <= 0 || height <= 0) {
     return null;
   }
   const _ticks = (0, _CartesianAxisRenderFn.getCartesianAxisTicks)(_props, fontSize, letterSpacing);
-  if (!_ticks) {
-    return null;
-  }
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
+  return _ticks ? /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
     refEl: _refLayer,
-    className: (0, _styleFn.crCn)(_CL.CL_AXIS, className),
-    children: [axisLine && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianAxisLine.CartesianAxisLine, {
+    className: (0, _styleFn.crCn)(_CL.CL_AXIS, _props.className),
+    children: [_props.axisLine && /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianAxisLine.CartesianAxisLine, {
       className: _CL.CL_AXIS_LINE,
       props: _props
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_CartesianAxisTicks.CartesianAxisTicks, {
       props: _props,
       ticks: _ticks
-    }), (0, _Label.renderLabelByParentProps)(_props)]
-  });
+    }), (0, _isTypeFn.isObj)(_props.label) && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Label.Label, Object.assign({
+      viewBox: {
+        x,
+        y,
+        width,
+        height
+      }
+    }, _props.label))]
+  }) : null;
 }, _arePropsEqual);
 (0, _uiApi.setDisplayNameTo)(CartesianAxis, 'CartesianAxis');
 //# sourceMappingURL=CartesianAxis.js.map

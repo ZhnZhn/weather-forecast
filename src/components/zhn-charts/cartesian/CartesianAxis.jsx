@@ -1,3 +1,4 @@
+import { isObj } from '../../../utils/isTypeFn';
 import { shallowEqual } from '../../../utils/shallowEqual';
 
 import {
@@ -10,7 +11,7 @@ import {
 import { crCn } from '../../styleFn';
 
 import { Layer } from '../container/Layer';
-import { renderLabelByParentProps } from '../component/Label';
+import { Label } from '../component/Label';
 
 import useFontSizeByClassName from './useFontSizeByClassName';
 import { getCartesianAxisTicks } from './CartesianAxisRenderFn';
@@ -69,6 +70,12 @@ export const CartesianAxis = memo(props => {
     CARTESIAN_AXIS_DF_PROPS,
     props
   )
+  , {
+    x,
+    y,
+    width,
+    height
+  } = _props
   , _refLayer = useRef()
   , {
     fontSize,
@@ -78,14 +85,8 @@ export const CartesianAxis = memo(props => {
     CL_AXIS_TICK_VALUE
   );
 
-  const {
-    axisLine,
-    className,
-    width,
-    height,
-    hide
-  } = _props;
-  if (hide || width <= 0 || height <= 0) {
+
+  if (_props.hide || width <= 0 || height <= 0) {
     return null;
   }
 
@@ -94,16 +95,12 @@ export const CartesianAxis = memo(props => {
     fontSize,
     letterSpacing
   );
-  if (!_ticks) {
-    return null;
-  }
-
-  return (
+  return _ticks ? (
     <Layer
        refEl={_refLayer}
-       className={crCn(CL_AXIS, className)}
+       className={crCn(CL_AXIS, _props.className)}
     >
-       {axisLine && <CartesianAxisLine
+       {_props.axisLine && <CartesianAxisLine
           className={CL_AXIS_LINE}
           props={_props}
        />}
@@ -111,9 +108,12 @@ export const CartesianAxis = memo(props => {
           props={_props}
           ticks={_ticks}
        />
-       {renderLabelByParentProps(_props)}
+       {isObj(_props.label) && <Label
+          viewBox={{x, y, width, height}}
+          {..._props.label}
+        />}
     </Layer>
-  );
+  ) : null;
 }, _arePropsEqual)
 
 setDisplayNameTo(CartesianAxis, 'CartesianAxis')
