@@ -1,7 +1,6 @@
 import {
   isFn,
-  isNullOrUndef,
-  isObj
+  isNullOrUndef
 } from '../../../utils/isTypeFn';
 
 import {
@@ -11,11 +10,8 @@ import {
   crProps
 } from "../../uiApi";
 
+import { isNumber } from "../util/DataUtils";
 import { Text } from "./Text";
-import {
-  isNumOrStr,
-  isNumber
-} from "../util/DataUtils";
 
 import {
   getAttrsOfCartesianLabel,
@@ -73,24 +69,24 @@ export const Label = (
   );
 }
 
-const parseViewBox = (props) => {
+export const parseViewBox = (props) => {
   const {
-    cx,
-    cy,
-    angle,
-    startAngle,
-    endAngle,
-    r,
-    radius,
-    innerRadius,
-    outerRadius,
+    //cx,
+    //cy,
+    //angle,
+    //startAngle,
+    //endAngle,
+    //r,
+    //radius,
+    //innerRadius,
+    //outerRadius,
     x,
     y,
     top,
     left,
     width,
     height,
-    clockWise,
+    //clockWise,
     labelViewBox
   } = props;
 
@@ -105,9 +101,12 @@ const parseViewBox = (props) => {
       return { x: top, y: left, width, height };
     }
   }
+
   if (isNumber(x) && isNumber(y)) {
     return { x, y, width: 0, height: 0 };
   }
+
+  /*
   if (isNumber(cx) && isNumber(cy)) {
     return {
       cx,
@@ -119,51 +118,11 @@ const parseViewBox = (props) => {
       clockWise
     };
   }
+  */
   if (props.viewBox) {
     return props.viewBox;
   }
   return {};
-};
-
-const KEY_LABEL_IMPLICIT = "label-implicit";
-const parseLabel = (
-  label,
-  viewBox
-) => {
-  if (!label) {
-    return null;
-  }
-  if (label === true) {
-    return <Label key={KEY_LABEL_IMPLICIT} viewBox={viewBox}/>;
-  }
-  if (isNumOrStr(label)) {
-    return <Label key={KEY_LABEL_IMPLICIT} viewBox={viewBox} value={label}/>;
-  }
-  if (isValidElement(label)) {
-    if (label.type === Label) {
-      return cloneUiElement(label, { viewBox }, KEY_LABEL_IMPLICIT);
-    }
-    return <Label key={KEY_LABEL_IMPLICIT} content={label} viewBox={viewBox}/>;
-  }
-  if (isFn(label)) {
-    return <Label key={KEY_LABEL_IMPLICIT} content={label} viewBox={viewBox}/>;
-  }
-  if (isObj(label)) {
-    return <Label key={KEY_LABEL_IMPLICIT} viewBox={viewBox} {...label} />;
-  }
-  return null;
-};
-
-export const renderLabelByParentProps = (
-  parentProps
-) => parentProps
-  ? [
-      parseLabel(
-        parentProps.label,
-        parseViewBox(parentProps)
-      )
-    ]
-  : null
+}
 
 Label.displayName = "Label";
-Label.parseViewBox = parseViewBox;

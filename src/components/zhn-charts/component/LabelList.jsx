@@ -5,7 +5,11 @@ import {
 
 import { setDisplayNameTo } from '../../uiApi';
 
-import { Label } from './Label';
+import {
+  Label,
+  parseViewBox
+} from './Label';
+
 import { Layer } from '../container/Layer';
 import { getValueByDataKey } from '../util/ChartUtils';
 
@@ -48,7 +52,7 @@ export const LabelList = (
               index={index}
               value={value}
               textBreakAll={textBreakAll}
-              viewBox={Label.parseViewBox(clockWise == null
+              viewBox={parseViewBox(clockWise == null
                  ? entry
                  : { ...entry, clockWise }
               )}

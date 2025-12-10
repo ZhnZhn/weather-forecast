@@ -1,11 +1,11 @@
 "use strict";
 
 exports.__esModule = true;
-exports.renderLabelByParentProps = exports.Label = void 0;
+exports.parseViewBox = exports.Label = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
-var _Text = require("./Text");
 var _DataUtils = require("../util/DataUtils");
+var _Text = require("./Text");
 var _LabelFn = require("./LabelFn");
 var _jsxRuntime = require("react/jsx-runtime");
 const DF_PROPS = {
@@ -54,22 +54,22 @@ const Label = props => {
 exports.Label = Label;
 const parseViewBox = props => {
   const {
-    cx,
-    cy,
-    angle,
-    startAngle,
-    endAngle,
-    r,
-    radius,
-    innerRadius,
-    outerRadius,
+    //cx,
+    //cy,
+    //angle,
+    //startAngle,
+    //endAngle,
+    //r,
+    //radius,
+    //innerRadius,
+    //outerRadius,
     x,
     y,
     top,
     left,
     width,
     height,
-    clockWise,
+    //clockWise,
     labelViewBox
   } = props;
   if (labelViewBox) {
@@ -101,7 +101,9 @@ const parseViewBox = props => {
       height: 0
     };
   }
-  if ((0, _DataUtils.isNumber)(cx) && (0, _DataUtils.isNumber)(cy)) {
+
+  /*
+  if (isNumber(cx) && isNumber(cy)) {
     return {
       cx,
       cy,
@@ -112,53 +114,12 @@ const parseViewBox = props => {
       clockWise
     };
   }
+  */
   if (props.viewBox) {
     return props.viewBox;
   }
   return {};
 };
-const KEY_LABEL_IMPLICIT = "label-implicit";
-const parseLabel = (label, viewBox) => {
-  if (!label) {
-    return null;
-  }
-  if (label === true) {
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)(Label, {
-      viewBox: viewBox
-    }, KEY_LABEL_IMPLICIT);
-  }
-  if ((0, _DataUtils.isNumOrStr)(label)) {
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)(Label, {
-      viewBox: viewBox,
-      value: label
-    }, KEY_LABEL_IMPLICIT);
-  }
-  if ((0, _uiApi.isValidElement)(label)) {
-    if (label.type === Label) {
-      return (0, _uiApi.cloneUiElement)(label, {
-        viewBox
-      }, KEY_LABEL_IMPLICIT);
-    }
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)(Label, {
-      content: label,
-      viewBox: viewBox
-    }, KEY_LABEL_IMPLICIT);
-  }
-  if ((0, _isTypeFn.isFn)(label)) {
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)(Label, {
-      content: label,
-      viewBox: viewBox
-    }, KEY_LABEL_IMPLICIT);
-  }
-  if ((0, _isTypeFn.isObj)(label)) {
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)(Label, Object.assign({
-      viewBox: viewBox
-    }, label), KEY_LABEL_IMPLICIT);
-  }
-  return null;
-};
-const renderLabelByParentProps = parentProps => parentProps ? [parseLabel(parentProps.label, parseViewBox(parentProps))] : null;
-exports.renderLabelByParentProps = renderLabelByParentProps;
+exports.parseViewBox = parseViewBox;
 Label.displayName = "Label";
-Label.parseViewBox = parseViewBox;
 //# sourceMappingURL=Label.js.map

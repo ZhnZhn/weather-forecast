@@ -40,7 +40,7 @@ const LabelList = props => {
         index: index,
         value: value,
         textBreakAll: textBreakAll,
-        viewBox: _Label.Label.parseViewBox(clockWise == null ? entry : Object.assign({}, entry, {
+        viewBox: (0, _Label.parseViewBox)(clockWise == null ? entry : Object.assign({}, entry, {
           clockWise
         }))
       }), "label-" + index);
