@@ -11,24 +11,14 @@ const CartesianAxisLine = _ref => {
     props
   } = _ref;
   const {
-      x,
-      y,
-      width,
-      height,
-      orientation,
-      mirror,
-      axisLine
-    } = props,
-    _props = {
-      className: props.className,
-      orientation: props.orientation,
-      stroke: axisLine ? axisLine.stroke || props.stroke : props.stroke,
-      x: props.x,
-      y: props.y,
-      width: props.width,
-      height: props.height,
-      fill: 'none'
-    };
+    x,
+    y,
+    width,
+    height,
+    orientation,
+    mirror,
+    axisLine
+  } = props;
   let needHeight, needWidth;
   const _lineProps = orientation === 'top' || orientation === 'bottom' ? (needHeight = +(orientation === 'top' && !mirror || orientation === 'bottom' && mirror), {
     x1: x,
@@ -41,11 +31,12 @@ const CartesianAxisLine = _ref => {
     x2: x + needWidth * width,
     y2: y + height
   });
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("line", {
-    ..._props,
-    ..._lineProps,
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("line", Object.assign({
+    stroke: axisLine ? axisLine.stroke || props.stroke : props.stroke,
+    fill: "none"
+  }, _lineProps, {
     className: (0, _styleFn.crCn)(className, (0, _CartesianAxisRenderFn.getClassName)(axisLine))
-  });
+  }));
 };
 exports.CartesianAxisLine = CartesianAxisLine;
 //# sourceMappingURL=CartesianAxisLine.js.map

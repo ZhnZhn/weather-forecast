@@ -14,20 +14,8 @@ export const CartesianAxisLine = ({
     orientation,
     mirror,
     axisLine
-  } = props
-  , _props = {
-    className: props.className,
-    orientation: props.orientation,
-    stroke: axisLine
-      ? axisLine.stroke || props.stroke
-      : props.stroke,
-    x: props.x,
-    y: props.y,
-    width: props.width,
-    height: props.height,
-    
-    fill: 'none'
-  };
+  } = props;
+
   let needHeight, needWidth;
   const _lineProps = orientation === 'top' || orientation === 'bottom'
     ? (needHeight = +((orientation === 'top' && !mirror) || (orientation === 'bottom' && mirror)), {
@@ -44,7 +32,11 @@ export const CartesianAxisLine = ({
       });
   return (
     <line
-      {..._props}
+      stroke={axisLine
+        ? axisLine.stroke || props.stroke
+        : props.stroke
+      }
+      fill="none"
       {..._lineProps}
       className={crCn(className, getClassName(axisLine))}
     />

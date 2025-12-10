@@ -73,45 +73,53 @@ export const getTickLineCoord = (
     y,
     width,
     height,
-    orientation,
-    tickSize,
-    mirror,
+    //mirror,
     tickMargin
   } = props
-  , sign = mirror ? -1 : 1
-  , finalTickSize = data.tickSize || tickSize
-  , tickCoord = isNumber(data.tickCoord)
-     ? data.tickCoord
-     : data.coordinate;
+  , [
+    sign,
+    notMirrorNumber,
+    mirrorNumber
+  ] = props.mirror
+    ? [-1, 0, 1]
+    : [1, 1, 0]  
+  , _tickSize = data.tickSize || props.tickSize
+  , {
+    tickCoord,
+    coordinate
+  } = data
+  , _tickCoord = isNumber(tickCoord)
+     ? tickCoord
+     : coordinate;
   let x1, x2, y1, y2, tx, ty;
-  switch (orientation) {
+  switch (props.orientation) {
     case 'top':
-      x1 = x2 = data.coordinate;
-      y2 = y + +!mirror * height;
-      y1 = y2 - sign * finalTickSize;
+      x1 = x2 = coordinate;
+      y2 = y + notMirrorNumber * height;
+      y1 = y2 - sign * _tickSize;
       ty = y1 - sign * tickMargin;
-      tx = tickCoord;
+      tx = _tickCoord;
       break;
     case 'left':
-      y1 = y2 = data.coordinate;
-      x2 = x + +!mirror * width;
-      x1 = x2 - sign * finalTickSize;
+      y1 = y2 = coordinate;
+      x2 = x + notMirrorNumber * width;
+      x1 = x2 - sign * _tickSize;
       tx = x1 - sign * tickMargin;
-      ty = tickCoord;
+      ty = _tickCoord;
       break;
     case 'right':
-      y1 = y2 = data.coordinate;
-      x2 = x + +mirror * width;
-      x1 = x2 + sign * finalTickSize;
+      y1 = y2 = coordinate;
+      x2 = x + mirrorNumber * width;
+      x1 = x2 + sign * _tickSize;
       tx = x1 + sign * tickMargin;
-      ty = tickCoord;
+      ty = _tickCoord;
       break;
     default:
-      x1 = x2 = data.coordinate;
-      y2 = y + +mirror * height;
-      y1 = y2 + sign * finalTickSize;
+      x1 = x2 = coordinate;
+      y2 = y + mirrorNumber * height;
+      y1 = y2 + sign * _tickSize;
       ty = y1 + sign * tickMargin;
-      tx = tickCoord;
+      tx = _tickCoord;
       break;
   }
   return {

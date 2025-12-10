@@ -1,25 +1,27 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.getTickLineCoord = exports.getTickAnchors = exports.getClassName = exports.getCartesianAxisTicks = void 0;
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _getTicks = require("./getTicks");
+const _excluded = ["ticks", "ticksGenerator"];
 const getClassName = obj => obj ? obj.className : void 0;
 exports.getClassName = getClassName;
 const _crFinalTicks = props => {
   const {
-    ticks,
-    ticksGenerator,
-    ...noTicksProps
-  } = props;
+      ticks,
+      ticksGenerator
+    } = props,
+    noTicksProps = (0, _objectWithoutPropertiesLoose2.default)(props, _excluded);
   return (0, _isTypeFn.isFn)(ticksGenerator) ? ticks && ticks.length > 0 ? ticksGenerator(props) : ticksGenerator(noTicksProps) : ticks;
 };
 const getCartesianAxisTicks = (props, fontSize, letterSpacing) => {
   const finalTicks = _crFinalTicks(props);
-  return (0, _isTypeFn.isNotEmptyArr)(finalTicks) ? (0, _getTicks.getTicks)({
-    ...props,
+  return (0, _isTypeFn.isNotEmptyArr)(finalTicks) ? (0, _getTicks.getTicks)(Object.assign({}, props, {
     ticks: finalTicks
-  }, fontSize, letterSpacing) : void 0;
+  }), fontSize, letterSpacing) : void 0;
 };
 
 //[textAnchor, verticalAnchor]
@@ -39,43 +41,45 @@ const getTickLineCoord = (props, data) => {
       y,
       width,
       height,
-      orientation,
-      tickSize,
-      mirror,
+      //mirror,
       tickMargin
     } = props,
-    sign = mirror ? -1 : 1,
-    finalTickSize = data.tickSize || tickSize,
-    tickCoord = (0, _isTypeFn.isNumber)(data.tickCoord) ? data.tickCoord : data.coordinate;
+    [sign, notMirrorNumber, mirrorNumber] = props.mirror ? [-1, 0, 1] : [1, 1, 0],
+    _tickSize = data.tickSize || props.tickSize,
+    {
+      tickCoord,
+      coordinate
+    } = data,
+    _tickCoord = (0, _isTypeFn.isNumber)(tickCoord) ? tickCoord : coordinate;
   let x1, x2, y1, y2, tx, ty;
-  switch (orientation) {
+  switch (props.orientation) {
     case 'top':
-      x1 = x2 = data.coordinate;
-      y2 = y + +!mirror * height;
-      y1 = y2 - sign * finalTickSize;
+      x1 = x2 = coordinate;
+      y2 = y + notMirrorNumber * height;
+      y1 = y2 - sign * _tickSize;
       ty = y1 - sign * tickMargin;
-      tx = tickCoord;
+      tx = _tickCoord;
       break;
     case 'left':
-      y1 = y2 = data.coordinate;
-      x2 = x + +!mirror * width;
-      x1 = x2 - sign * finalTickSize;
+      y1 = y2 = coordinate;
+      x2 = x + notMirrorNumber * width;
+      x1 = x2 - sign * _tickSize;
       tx = x1 - sign * tickMargin;
-      ty = tickCoord;
+      ty = _tickCoord;
       break;
     case 'right':
-      y1 = y2 = data.coordinate;
-      x2 = x + +mirror * width;
-      x1 = x2 + sign * finalTickSize;
+      y1 = y2 = coordinate;
+      x2 = x + mirrorNumber * width;
+      x1 = x2 + sign * _tickSize;
       tx = x1 + sign * tickMargin;
-      ty = tickCoord;
+      ty = _tickCoord;
       break;
     default:
-      x1 = x2 = data.coordinate;
-      y2 = y + +mirror * height;
-      y1 = y2 + sign * finalTickSize;
+      x1 = x2 = coordinate;
+      y2 = y + mirrorNumber * height;
+      y1 = y2 + sign * _tickSize;
       ty = y1 + sign * tickMargin;
-      tx = tickCoord;
+      tx = _tickCoord;
       break;
   }
   return {

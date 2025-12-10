@@ -39,8 +39,8 @@ export const CartesianAxisTick = ({
     tickLine,
     tickFormatter,
     unit
-  } = props
-  , _tickLineClassName = getClassName(tickLine);
+  } = props;
+
   return (
     <Layer
        className={CL_AXIS_TICK}
@@ -50,10 +50,14 @@ export const CartesianAxisTick = ({
          <line
             {...tickLineProps}
             {...lineCoord}
-            className={crCn(CL_AXIS_TICK_LINE, _tickLineClassName)}
+            className={crCn(CL_AXIS_TICK_LINE, getClassName(tickLine))}
          />
        )}
-      {tick && _renderTickItem(tick, tickProps, `${isFn(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`)}
+      {tick && _renderTickItem(
+         tick,
+         tickProps,
+         `${isFn(tickFormatter) ? tickFormatter(entry.value, i) : entry.value}${unit || ''}`
+       )}
     </Layer>
   );
 }
