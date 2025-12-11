@@ -1,9 +1,9 @@
 "use strict";
 
 exports.__esModule = true;
-exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarSizeList = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
+exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
-exports.truncateByDomain = exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.offsetSign = exports.offsetPositive = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getStackedDataOfItem = exports.getStackGroupsByAxisId = exports.getLegendProps = exports.getDomainOfItemsWithSameAxis = void 0;
+exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getLegendProps = exports.getDomainOfItemsWithSameAxis = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _d3Scale = require("../d3Scale");
 var _FnUtils = require("./FnUtils");
@@ -11,7 +11,6 @@ var _scale = require("../scale");
 var _Legend = require("../component/Legend");
 var _DataUtils = require("./DataUtils");
 var _ReactUtils = require("./ReactUtils");
-const _getObjectKeys = Object.keys;
 const _getAxisDomain = axis => (((axis || {}).type || {}).defaultProps || {}).domain;
 const _fIs = str => v => v === str;
 const isLayoutHorizontal = exports.isLayoutHorizontal = _fIs("horizontal");
@@ -127,65 +126,21 @@ const getLegendProps = _ref => {
 };
 
 /**
- * Calculate the size of all groups for stacked bar graph
- * @param  {Object} stackGroups The items grouped by axisId and stackId
- * @return {Object} The size of all groups
- */
-exports.getLegendProps = getLegendProps;
-const getBarSizeList = _ref3 => {
-  let {
-    barSize: globalSize,
-    stackGroups = {}
-  } = _ref3;
-  if (!stackGroups) {
-    return {};
-  }
-  const result = {},
-    numericAxisIds = _getObjectKeys(stackGroups);
-  for (let i = 0, len = numericAxisIds.length; i < len; i++) {
-    const sgs = stackGroups[numericAxisIds[i]].stackGroups,
-      stackIds = _getObjectKeys(sgs);
-    for (let j = 0, sLen = stackIds.length; j < sLen; j++) {
-      const {
-          items,
-          cateAxisId
-        } = sgs[stackIds[j]],
-        barItems = items.filter(item => (0, _ReactUtils.getDisplayName)(item.type).indexOf('Bar') >= 0);
-      if (barItems && barItems.length) {
-        const {
-            barSize: selfSize
-          } = barItems[0].props,
-          cateId = barItems[0].props[cateAxisId];
-        if (!result[cateId]) {
-          result[cateId] = [];
-        }
-        result[cateId].push({
-          item: barItems[0],
-          stackList: barItems.slice(1),
-          barSize: (0, _isTypeFn.isNullOrUndef)(selfSize) ? globalSize : selfSize
-        });
-      }
-    }
-  }
-  return result;
-};
-
-/**
  * Calculate the size of each bar and the gap between two bars
  * @param  {Number} bandSize  The size of each category
  * @param  {sizeList} sizeList  The size of all groups
  * @param  {maxBarSize} maxBarSize The maximum size of bar
  * @return {Number} The size of each bar and the gap between two bars
  */
-exports.getBarSizeList = getBarSizeList;
-const getBarPosition = _ref4 => {
+exports.getLegendProps = getLegendProps;
+const getBarPosition = _ref3 => {
   let {
     barGap,
     barCategoryGap,
     bandSize,
     sizeList = [],
     maxBarSize
-  } = _ref4;
+  } = _ref3;
   const len = sizeList.length;
   if (len < 1) {
     return null;
@@ -193,46 +148,48 @@ const getBarPosition = _ref4 => {
   let realBarGap = (0, _DataUtils.getPercentValue)(barGap, bandSize, 0, true);
   let result;
   // whether or not is barSize setted by user
-  if (sizeList[0].barSize === +sizeList[0].barSize) {
-    let useFull = false;
-    let fullBarSize = bandSize / len;
-    let sum = sizeList.reduce((res, entry) => res + entry.barSize || 0, 0);
-    sum += (len - 1) * realBarGap;
-    if (sum >= bandSize) {
-      sum -= (len - 1) * realBarGap;
-      realBarGap = 0;
-    }
-    if (sum >= bandSize && fullBarSize > 0) {
-      useFull = true;
-      fullBarSize *= 0.9;
-      sum = len * fullBarSize;
-    }
-    const offset = (bandSize - sum) / 2 >> 0;
-    let prev = {
-      offset: offset - realBarGap,
-      size: 0
-    };
-    result = sizeList.reduce((res, entry) => {
-      const newRes = [...res, {
-        item: entry.item,
-        position: {
-          offset: prev.offset + prev.size + realBarGap,
-          size: useFull ? fullBarSize : entry.barSize
-        }
-      }];
-      prev = newRes[newRes.length - 1].position;
-      if (entry.stackList && entry.stackList.length) {
-        entry.stackList.forEach(item => {
-          newRes.push({
-            item,
-            position: prev
-          });
-        });
+
+  //if (sizeList[0].barSize === +sizeList[0].barSize) {
+  let useFull = false;
+  let fullBarSize = bandSize / len;
+  let sum = sizeList.reduce((res, entry) => res + entry.barSize || 0, 0);
+  sum += (len - 1) * realBarGap;
+  if (sum >= bandSize) {
+    sum -= (len - 1) * realBarGap;
+    realBarGap = 0;
+  }
+  if (sum >= bandSize && fullBarSize > 0) {
+    useFull = true;
+    fullBarSize *= 0.9;
+    sum = len * fullBarSize;
+  }
+  const offset = (bandSize - sum) / 2 >> 0;
+  let prev = {
+    offset: offset - realBarGap,
+    size: 0
+  };
+  result = sizeList.reduce((res, entry) => {
+    const newRes = [...res, {
+      item: entry.item,
+      position: {
+        offset: prev.offset + prev.size + realBarGap,
+        size: useFull ? fullBarSize : entry.barSize
       }
-      return newRes;
-    }, []);
+    }];
+    prev = newRes[newRes.length - 1].position;
+    if (entry.stackList && entry.stackList.length) {
+      entry.stackList.forEach(item => {
+        newRes.push({
+          item,
+          position: prev
+        });
+      });
+    }
+    return newRes;
+  }, []);
+  /*
   } else {
-    const offset = (0, _DataUtils.getPercentValue)(barCategoryGap, bandSize, 0, true);
+    const offset = getPercentValue(barCategoryGap, bandSize, 0, true);
     if (bandSize - 2 * offset - (len - 1) * realBarGap <= 0) {
       realBarGap = 0;
     }
@@ -240,26 +197,29 @@ const getBarPosition = _ref4 => {
     if (originalSize > 1) {
       originalSize >>= 0;
     }
-    const size = maxBarSize === +maxBarSize ? Math.min(originalSize, maxBarSize) : originalSize;
+    const size = maxBarSize === +maxBarSize
+      ? Math.min(originalSize, maxBarSize)
+      : originalSize;
     result = sizeList.reduce((res, entry, i) => {
-      const newRes = [...res, {
-        item: entry.item,
-        position: {
-          offset: offset + (originalSize + realBarGap) * i + (originalSize - size) / 2,
-          size
+      const newRes = [
+        ...res,
+        {
+          item: entry.item,
+          position: {
+            offset: offset + (originalSize + realBarGap) * i + (originalSize - size) / 2,
+            size
+          }
         }
-      }];
+      ];
       if (entry.stackList && entry.stackList.length) {
-        entry.stackList.forEach(item => {
-          newRes.push({
-            item,
-            position: newRes[newRes.length - 1].position
-          });
+        entry.stackList.forEach((item) => {
+          newRes.push({ item, position: newRes[newRes.length - 1].position });
         });
       }
       return newRes;
     }, []);
   }
+  */
   return result;
 };
 exports.getBarPosition = getBarPosition;
@@ -331,8 +291,6 @@ const getDomainOfItemsWithSameAxis = (data, items, type, layout, filterNil) => {
 };
 exports.getDomainOfItemsWithSameAxis = getDomainOfItemsWithSameAxis;
 const isCategoricalAxis = (layout, axisType) => isLayoutHorizontal(layout) && axisType === 'xAxis' || isLayoutVertical(layout) && axisType === 'yAxis';
-//|| (isLayoutCentric(layout) && axisType === 'angleAxis')
-//|| (layout === 'radial' && axisType === 'radiusAxis');
 
 /**
  * Calculate the Coordinates of grid
@@ -475,25 +433,36 @@ const findPositionOfBar = (barPosition, child) => {
   if (!barPosition) {
     return null;
   }
+  for (let barConfig of barPosition) {
+    if (barConfig.item === child) {
+      return barConfig.position;
+    }
+  }
+  /*
   for (let i = 0, len = barPosition.length; i < len; i++) {
     if (barPosition[i].item === child) {
       return barPosition[i].position;
     }
   }
+  */
   return null;
 };
-exports.findPositionOfBar = findPositionOfBar;
-const truncateByDomain = (value, domain) => {
-  if (!domain || domain.length !== 2 || !(0, _isTypeFn.isNumber)(domain[0]) || !(0, _isTypeFn.isNumber)(domain[1])) {
+
+/*
+export const truncateByDomain = (
+  value,
+  domain
+) => {
+  if (!domain || domain.length !== 2 || !isNumber(domain[0]) || !isNumber(domain[1])) {
     return value;
   }
-  const min = Math.min(domain[0], domain[1]),
-    max = Math.max(domain[0], domain[1]),
-    result = [value[0], value[1]];
-  if (!(0, _isTypeFn.isNumber)(value[0]) || value[0] < min) {
+  const min = Math.min(domain[0], domain[1])
+  , max = Math.max(domain[0], domain[1])
+  , result = [value[0], value[1]];
+  if (!isNumber(value[0]) || value[0] < min) {
     result[0] = min;
   }
-  if (!(0, _isTypeFn.isNumber)(value[1]) || value[1] > max) {
+  if (!isNumber(value[1]) || value[1] > max) {
     result[1] = max;
   }
   if (result[0] > max) {
@@ -504,87 +473,7 @@ const truncateByDomain = (value, domain) => {
   }
   return result;
 };
-exports.truncateByDomain = truncateByDomain;
-const offsetSign = series => {
-  const n = series.length;
-  if (n <= 0) {
-    return;
-  }
-  for (let j = 0, m = series[0].length; j < m; ++j) {
-    let positive = 0;
-    let negative = 0;
-    for (let i = 0; i < n; ++i) {
-      const value = (0, _isTypeFn.isNaN)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
-      if (value >= 0) {
-        series[i][j][0] = positive;
-        series[i][j][1] = positive + value;
-        positive = series[i][j][1];
-      } else {
-        series[i][j][0] = negative;
-        series[i][j][1] = negative + value;
-        negative = series[i][j][1];
-      }
-    }
-  }
-};
-exports.offsetSign = offsetSign;
-const offsetPositive = series => {
-  const n = series.length;
-  if (n <= 0) {
-    return;
-  }
-  for (let j = 0, m = series[0].length; j < m; ++j) {
-    let positive = 0;
-    for (let i = 0; i < n; ++i) {
-      const value = (0, _isTypeFn.isNaN)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
-      if (value >= 0) {
-        series[i][j][0] = positive;
-        series[i][j][1] = positive + value;
-        positive = series[i][j][1];
-      } else {
-        series[i][j][0] = 0;
-        series[i][j][1] = 0;
-      }
-    }
-  }
-};
-
-/*
-const STACK_OFFSET_MAP = {
-    sign: offsetSign,
-    expand: stackOffsetExpand,
-    none: stackOffsetNone,
-    silhouette: stackOffsetSilhouette,
-    wiggle: stackOffsetWiggle,
-    positive: offsetPositive
-};
 */
-exports.offsetPositive = offsetPositive;
-const getStackGroupsByAxisId = (data, _items, numericAxisId, cateAxisId, offsetType, reverseStackOrder) => {
-  if (!data) {
-    return null;
-  }
-  // reversing items to affect render order (for layering)
-  const items = reverseStackOrder ? _items.reverse() : _items;
-  return items.reduce((result, item) => {
-    if (item.props.hide) {
-      return result;
-    }
-    const axisId = item.props[numericAxisId],
-      parentGroup = result[axisId] || {
-        hasStack: false,
-        stackGroups: {}
-      };
-    parentGroup.stackGroups[(0, _DataUtils.uniqueId)('_stackId_')] = {
-      numericAxisId,
-      cateAxisId,
-      items: [item]
-    };
-    return Object.assign({}, result, {
-      [axisId]: parentGroup
-    });
-  }, {});
-};
 
 /**
  * Configure the scale function of axis
@@ -592,16 +481,15 @@ const getStackGroupsByAxisId = (data, _items, numericAxisId, cateAxisId, offsetT
  * @param {Object} opts  The configuration of axis
  * @return {Object}      null
  */
-exports.getStackGroupsByAxisId = getStackGroupsByAxisId;
-const getTicksOfScale = (scale, opts) => {
+exports.findPositionOfBar = findPositionOfBar;
+const getTicksOfScale = (scale, options) => {
   const {
-      realScaleType,
       type,
       tickCount,
       originalDomain,
       allowDecimals
-    } = opts,
-    scaleType = realScaleType || opts.scale;
+    } = options,
+    scaleType = options.realScaleType || options.scale;
   if (scaleType !== 'auto' && scaleType !== 'linear') {
     return null;
   }
@@ -627,7 +515,7 @@ const getTicksOfScale = (scale, opts) => {
   return null;
 };
 exports.getTicksOfScale = getTicksOfScale;
-const getCateCoordinateOfLine = _ref5 => {
+const getCateCoordinateOfLine = _ref4 => {
   let {
     axis,
     ticks,
@@ -635,7 +523,7 @@ const getCateCoordinateOfLine = _ref5 => {
     entry,
     index,
     dataKey
-  } = _ref5;
+  } = _ref4;
   if (axis.type === 'category') {
     // find coordinate of category axis by the value of category
     if (!axis.allowDuplicatedCategory && axis.dataKey && !(0, _isTypeFn.isNullOrUndef)(entry[axis.dataKey])) {
@@ -650,7 +538,7 @@ const getCateCoordinateOfLine = _ref5 => {
   return !(0, _isTypeFn.isNullOrUndef)(value) ? axis.scale(value) : null;
 };
 exports.getCateCoordinateOfLine = getCateCoordinateOfLine;
-const getCateCoordinateOfBar = _ref6 => {
+const getCateCoordinateOfBar = _ref5 => {
   let {
     axis,
     ticks,
@@ -658,7 +546,7 @@ const getCateCoordinateOfBar = _ref6 => {
     bandSize,
     entry,
     index
-  } = _ref6;
+  } = _ref5;
   if (axis.type === 'category') {
     return ticks[index] ? ticks[index].coordinate + offset : null;
   }
@@ -666,10 +554,10 @@ const getCateCoordinateOfBar = _ref6 => {
   return !(0, _isTypeFn.isNullOrUndef)(value) ? axis.scale(value) - bandSize / 2 + offset : null;
 };
 exports.getCateCoordinateOfBar = getCateCoordinateOfBar;
-const getBaseValueOfBar = _ref7 => {
+const getBaseValueOfBar = _ref6 => {
   let {
     numericAxis
-  } = _ref7;
+  } = _ref6;
   const domain = numericAxis.scale.domain();
   if (numericAxis.type === 'number') {
     const min = Math.min(domain[0], domain[1]),
@@ -685,58 +573,6 @@ const getBaseValueOfBar = _ref7 => {
   return domain[0];
 };
 exports.getBaseValueOfBar = getBaseValueOfBar;
-const getStackedDataOfItem = (item, stackGroups) => {
-  const {
-    stackId
-  } = item.props;
-  if ((0, _isTypeFn.isNumOrStr)(stackId)) {
-    const group = stackGroups[stackId];
-    if (group && group.items.length) {
-      let itemIndex = -1;
-      for (let i = 0, len = group.items.length; i < len; i++) {
-        if (group.items[i] === item) {
-          itemIndex = i;
-          break;
-        }
-      }
-      return itemIndex >= 0 ? group.stackedData[itemIndex] : null;
-    }
-  }
-  return null;
-};
-
-/*
-const getDomainOfSingle = (
-  data
-) => data.reduce((result, entry) => [
-    _min(entry.concat([result[0]]).filter(isNumber)),
-    _max(entry.concat([result[1]]).filter(isNumber)),
-], [Infinity, -Infinity]);
-
-
-export const getDomainOfStackGroups = (
-  stackGroups,
-  startIndex,
-  endIndex
-) => _getObjectKeys(stackGroups)
-  .reduce((result, stackId) => {
-      const group = stackGroups[stackId]
-      , { stackedData } = group
-      , domain = stackedData.reduce((res, entry) => {
-          const s = getDomainOfSingle(entry.slice(startIndex, endIndex + 1));
-          return [
-            Math.min(res[0], s[0]),
-            Math.max(res[1], s[1])
-          ];
-      }, [Infinity, -Infinity]);
-      return [
-        Math.min(domain[0], result[0]),
-        Math.max(domain[1], result[1])
-      ];
-   }, [Infinity, -Infinity])
-   .map(result => (result === Infinity || result === -Infinity ? 0 : result));
-*/
-exports.getStackedDataOfItem = getStackedDataOfItem;
 const MIN_VALUE_REG = exports.MIN_VALUE_REG = /^dataMin[\s]*-[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
 const MAX_VALUE_REG = exports.MAX_VALUE_REG = /^dataMax[\s]*\+[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
 const parseSpecifiedDomain = (specifiedDomain, dataDomain, allowDataOverflow) => {

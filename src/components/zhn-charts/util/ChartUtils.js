@@ -28,15 +28,11 @@ import {
 import { Legend } from '../component/Legend';
 import {
   findEntryInArray,
-  getPercentValue,
-  uniqueId
+  getPercentValue
 } from './DataUtils';
 import {
-  findChildByType,
-  getDisplayName
+  findChildByType
 } from './ReactUtils';
-
-const _getObjectKeys = Object.keys;
 
 const _getAxisDomain = (
   axis
@@ -196,48 +192,7 @@ export const getLegendProps = ({
   }, legendItem];
 };
 
-/**
- * Calculate the size of all groups for stacked bar graph
- * @param  {Object} stackGroups The items grouped by axisId and stackId
- * @return {Object} The size of all groups
- */
-export const getBarSizeList = ({
-  barSize: globalSize,
-  stackGroups = {}
-}) => {
-  if (!stackGroups) {
-    return {};
-  }
-  const result = {}
-  , numericAxisIds = _getObjectKeys(stackGroups)
-  for (let i = 0, len = numericAxisIds.length; i < len; i++) {
-    const sgs = stackGroups[numericAxisIds[i]].stackGroups
-    , stackIds = _getObjectKeys(sgs);
-    for (let j = 0, sLen = stackIds.length; j < sLen; j++) {
-      const {
-        items,
-        cateAxisId
-      } = sgs[stackIds[j]]
-      , barItems = items
-         .filter((item) => getDisplayName(item.type).indexOf('Bar') >= 0);
-      if (barItems && barItems.length) {
-        const {
-          barSize: selfSize
-        } = barItems[0].props
-        , cateId = barItems[0].props[cateAxisId];
-        if (!result[cateId]) {
-          result[cateId] = [];
-        }
-        result[cateId].push({
-          item: barItems[0],
-          stackList: barItems.slice(1),
-          barSize: isNullOrUndef(selfSize) ? globalSize : selfSize,
-        });
-      }
-    }
-  }
-  return result;
-};
+
 
 /**
  * Calculate the size of each bar and the gap between two bars
@@ -260,10 +215,12 @@ export const getBarPosition = ({
   let realBarGap = getPercentValue(barGap, bandSize, 0, true);
   let result;
   // whether or not is barSize setted by user
-  if (sizeList[0].barSize === +sizeList[0].barSize) {
+
+  //if (sizeList[0].barSize === +sizeList[0].barSize) {
     let useFull = false;
     let fullBarSize = bandSize / len;
-    let sum = sizeList.reduce((res, entry) => res + entry.barSize || 0, 0);
+    let sum = sizeList
+      .reduce((res, entry) => res + entry.barSize || 0, 0);
     sum += (len - 1) * realBarGap;
     if (sum >= bandSize) {
       sum -= (len - 1) * realBarGap;
@@ -295,6 +252,7 @@ export const getBarPosition = ({
       }
       return newRes;
     }, []);
+  /*
   } else {
     const offset = getPercentValue(barCategoryGap, bandSize, 0, true);
     if (bandSize - 2 * offset - (len - 1) * realBarGap <= 0) {
@@ -326,6 +284,7 @@ export const getBarPosition = ({
       return newRes;
     }, []);
   }
+  */
   return result;
 };
 
@@ -404,8 +363,6 @@ export const isCategoricalAxis = (
   axisType
 ) => (isLayoutHorizontal(layout) && axisType === 'xAxis')
   || (isLayoutVertical(layout) && axisType === 'yAxis')
-  //|| (isLayoutCentric(layout) && axisType === 'angleAxis')
-  //|| (layout === 'radial' && axisType === 'radiusAxis');
 
 /**
  * Calculate the Coordinates of grid
@@ -577,14 +534,22 @@ export const findPositionOfBar = (
   if (!barPosition) {
     return null;
   }
+  for (let barConfig of barPosition) {
+    if (barConfig.item === child) {
+      return barConfig.position;
+    }
+  }
+  /*
   for (let i = 0, len = barPosition.length; i < len; i++) {
     if (barPosition[i].item === child) {
       return barPosition[i].position;
     }
   }
+  */
   return null;
 };
 
+/*
 export const truncateByDomain = (
   value,
   domain
@@ -609,101 +574,7 @@ export const truncateByDomain = (
   }
   return result;
 };
-
-export const offsetSign = (
-  series
-) => {
-  const n = series.length;
-  if (n <= 0) {
-      return;
-  }
-  for (let j = 0, m = series[0].length; j < m; ++j) {
-    let positive = 0;
-    let negative = 0;
-    for (let i = 0; i < n; ++i) {
-      const value = isNaN(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
-      if (value >= 0) {
-        series[i][j][0] = positive;
-        series[i][j][1] = positive + value;
-        positive = series[i][j][1];
-      } else {
-        series[i][j][0] = negative;
-        series[i][j][1] = negative + value;
-        negative = series[i][j][1];
-      }
-    }
-  }
-};
-
-export const offsetPositive = (
-  series
-) => {
-  const n = series.length;
-  if (n <= 0) {
-    return;
-  }
-  for (let j = 0, m = series[0].length; j < m; ++j) {
-    let positive = 0;
-    for (let i = 0; i < n; ++i) {
-      const value = isNaN(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
-      if (value >= 0) {
-        series[i][j][0] = positive;
-        series[i][j][1] = positive + value;
-        positive = series[i][j][1];
-      } else {
-        series[i][j][0] = 0;
-        series[i][j][1] = 0;
-      }
-    }
-  }
-};
-
-/*
-const STACK_OFFSET_MAP = {
-    sign: offsetSign,
-    expand: stackOffsetExpand,
-    none: stackOffsetNone,
-    silhouette: stackOffsetSilhouette,
-    wiggle: stackOffsetWiggle,
-    positive: offsetPositive
-};
 */
-
-export const getStackGroupsByAxisId = (
-  data,
-  _items,
-  numericAxisId,
-  cateAxisId,
-  offsetType,
-  reverseStackOrder
-) => {
-  if (!data) {
-    return null;
-  }
-  // reversing items to affect render order (for layering)
-  const items = reverseStackOrder
-    ? _items.reverse()
-    : _items
-  return items.reduce((result, item) => {
-    if (item.props.hide) {
-      return result;
-    }
-    const axisId = item.props[numericAxisId]
-    , parentGroup = result[axisId] || {
-      hasStack: false,
-      stackGroups: {}
-    };
-    parentGroup.stackGroups[uniqueId('_stackId_')] = {
-      numericAxisId,
-      cateAxisId,
-      items: [item]
-    }
-    return {
-      ...result,
-      [axisId]: parentGroup
-    };
-  }, {});
-};
 
 /**
  * Configure the scale function of axis
@@ -713,19 +584,21 @@ export const getStackGroupsByAxisId = (
  */
 export const getTicksOfScale = (
   scale,
-  opts
+  options
 ) => {
   const {
-    realScaleType,
     type,
     tickCount,
     originalDomain,
     allowDecimals
-  } = opts
-  , scaleType = realScaleType || opts.scale;
+  } = options
+  , scaleType = options.realScaleType
+    || options.scale;
+
   if (scaleType !== 'auto' && scaleType !== 'linear') {
     return null;
   }
+
   if (tickCount
     && type === 'number'
     && originalDomain
@@ -740,6 +613,7 @@ export const getTicksOfScale = (
     scale.domain([_min(tickValues), _max(tickValues)]);
     return { niceTicks: tickValues };
   }
+
   if (tickCount && type === 'number') {
     const domain = scale.domain()
     , tickValues = getTickValuesFixedDomain(domain, tickCount, allowDecimals);
@@ -812,63 +686,6 @@ export const getBaseValueOfBar = ({
   }
   return domain[0];
 };
-
-export const getStackedDataOfItem = (
-  item,
-  stackGroups
-) => {
-  const {
-    stackId
-  } = item.props;
-  if (isNumOrStr(stackId)) {
-    const group = stackGroups[stackId];
-    if (group && group.items.length) {
-      let itemIndex = -1;
-      for (let i = 0, len = group.items.length; i < len; i++) {
-        if (group.items[i] === item) {
-          itemIndex = i;
-          break;
-        }
-      }
-      return itemIndex >= 0
-        ? group.stackedData[itemIndex]
-        : null;
-    }
-  }
-  return null;
-};
-
-/*
-const getDomainOfSingle = (
-  data
-) => data.reduce((result, entry) => [
-    _min(entry.concat([result[0]]).filter(isNumber)),
-    _max(entry.concat([result[1]]).filter(isNumber)),
-], [Infinity, -Infinity]);
-
-
-export const getDomainOfStackGroups = (
-  stackGroups,
-  startIndex,
-  endIndex
-) => _getObjectKeys(stackGroups)
-  .reduce((result, stackId) => {
-      const group = stackGroups[stackId]
-      , { stackedData } = group
-      , domain = stackedData.reduce((res, entry) => {
-          const s = getDomainOfSingle(entry.slice(startIndex, endIndex + 1));
-          return [
-            Math.min(res[0], s[0]),
-            Math.max(res[1], s[1])
-          ];
-      }, [Infinity, -Infinity]);
-      return [
-        Math.min(domain[0], result[0]),
-        Math.max(domain[1], result[1])
-      ];
-   }, [Infinity, -Infinity])
-   .map(result => (result === Infinity || result === -Infinity ? 0 : result));
-*/
 
 export const MIN_VALUE_REG = /^dataMin[\s]*-[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
 export const MAX_VALUE_REG = /^dataMax[\s]*\+[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
