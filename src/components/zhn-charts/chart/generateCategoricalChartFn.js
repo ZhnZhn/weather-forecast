@@ -110,14 +110,21 @@ export const getOrderedTooltipTicks = (
   true
 ).sort(o => o.coordinate)
 
-export const hasGraphicalBarItem = (
+const _getGraphicalBarItems = (
   graphicalItems
-) => !graphicalItems || !graphicalItems.length
-  ? false
-  : graphicalItems.some(item => {
-      const name = getDisplayName(item && item.type);
-      return name && name.indexOf('Bar') >= 0;
-    });
+) => (graphicalItems || [])
+.filter(item => (getDisplayName(item && item.type) || '')
+  .indexOf('Bar') >= 0);
+
+export const getBarSizeList = (
+  graphicalItems,
+  barSize
+) => _getGraphicalBarItems(graphicalItems)
+ .map(item => ({
+   barSize: item.props.barSize ?? barSize,
+   item,
+   stackList: []
+ }))
 
 const _crAxisName = (
   numericAxisName,
