@@ -83,7 +83,6 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
 });
 Bar.displayName = 'Bar';
 const _getValueArr = (arrOrValue, baseValue) => (0, _isTypeFn.isArr)(arrOrValue) ? arrOrValue : [baseValue, arrOrValue];
-const _fCrDisplayedDataValue = (stackedData, dataStartIndex, stackedDomain, dataKey, baseValue) => stackedData ? (entry, index) => (0, _ChartUtils.truncateByDomain)(stackedData[dataStartIndex + index], stackedDomain) : (entry, index) => _getValueArr((0, _ChartUtils.getValueByDataKey)(entry, dataKey), baseValue);
 const _isMinPointSizeCase = (minPointSize, value) => (0, _DataUtils.mathAbs)(minPointSize) > 0 && (0, _DataUtils.mathAbs)(value) < (0, _DataUtils.mathAbs)(minPointSize),
   _calcMinPointSizeDelta = (minPointSize, value) => (0, _DataUtils.mathSign)(value || minPointSize) * ((0, _DataUtils.mathAbs)(minPointSize) - (0, _DataUtils.mathAbs)(value)),
   _crValueScaleTuple = (xyAxis, value) => [xyAxis.scale(value[0]), xyAxis.scale(value[1])];
@@ -125,11 +124,10 @@ Bar.getComposedData = _ref => {
       minPointSize
     } = item.props,
     numericAxis = (0, _ChartUtils.isLayoutHorizontal)(layout) ? yAxis : xAxis,
-    stackedDomain = stackedData ? numericAxis.scale.domain() : null,
     baseValue = (0, _ChartUtils.getBaseValueOfBar)({
       numericAxis
     }),
-    _crDisplayedDataValue = _fCrDisplayedDataValue(stackedData, dataStartIndex, stackedDomain, dataKey, baseValue);
+    _crDisplayedDataValue = (entry, index) => _getValueArr((0, _ChartUtils.getValueByDataKey)(entry, dataKey), baseValue);
   const rects = displayedData.map((entry, index) => {
     let value = _crDisplayedDataValue(entry, index),
       x,

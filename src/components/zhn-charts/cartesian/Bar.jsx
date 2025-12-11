@@ -18,7 +18,6 @@ import {
   isLayoutHorizontal,
   getCateCoordinateOfBar,
   getValueByDataKey,
-  truncateByDomain,
   getBaseValueOfBar,
   findPositionOfBar,
   getTooltipItem
@@ -132,22 +131,6 @@ const _getValueArr = (
   ? arrOrValue
   : [baseValue, arrOrValue];
 
-const _fCrDisplayedDataValue = (
-  stackedData,
-  dataStartIndex,
-  stackedDomain,
-  dataKey,
-  baseValue
-) => stackedData
-  ? (entry, index) => truncateByDomain(
-      stackedData[dataStartIndex + index],
-      stackedDomain
-    )
-  : (entry, index) => _getValueArr(
-      getValueByDataKey(entry, dataKey),
-      baseValue
-    )
-
 const _isMinPointSizeCase = (
   minPointSize,
   value
@@ -205,17 +188,12 @@ Bar.getComposedData = ({
   , numericAxis = isLayoutHorizontal(layout)
      ? yAxis
      : xAxis
-  , stackedDomain = stackedData
-     ? numericAxis.scale.domain()
-     : null
   , baseValue = getBaseValueOfBar({ numericAxis })
-  , _crDisplayedDataValue = _fCrDisplayedDataValue(
-     stackedData,
-     dataStartIndex,
-     stackedDomain,
-     dataKey,
-     baseValue
+  , _crDisplayedDataValue = (entry, index) => _getValueArr(
+      getValueByDataKey(entry, dataKey),
+      baseValue
   );
+
   const rects = displayedData.map((entry, index) => {
 
     let value = _crDisplayedDataValue(entry, index)
