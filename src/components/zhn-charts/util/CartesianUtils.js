@@ -85,6 +85,27 @@ const _getRange = (
   }
 };
 
+const _crSteps = (
+  offset,
+  width,
+  height
+) => {
+  const left = offset.left
+  , right = width - offset.right
+  , top = offset.top
+  , bottom = height - offset.bottom
+  return {
+     left,
+     leftMirror: left,
+     right,
+     rightMirror: right,
+     top,
+     topMirror: top,
+     bottom,
+     bottomMirror: bottom
+  };
+};
+
 /**
  * Calculate the scale function, position, width, height of axes
  * @param  {Object} props     Latest props
@@ -102,23 +123,12 @@ export const formatAxisMap = (
   chartName
 ) => {
   const {
-    width,
-    height,
-    layout,
-    children
+    layout
   } = props
-  , ids = _getObjectKeys(axisMap)
-  , steps = {
-     left: offset.left,
-     leftMirror: offset.left,
-     right: width - offset.right,
-     rightMirror: width - offset.right,
-     top: offset.top,
-     topMirror: offset.top,
-     bottom: height - offset.bottom,
-     bottomMirror: height - offset.bottom
-  }
-  , hasBar = !!findChildByType(children, Bar);
+  , hasBar = !!findChildByType(props.children, Bar)
+  , steps = _crSteps(offset, props.width, props.height)
+  , ids = _getObjectKeys(axisMap);
+
   return ids.reduce((result, id) => {
     const axis = axisMap[id]
     , {
