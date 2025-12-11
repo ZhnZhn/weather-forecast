@@ -16,6 +16,32 @@ var _renderFn = require("./renderFn");
 const DF_AXIS_ID = 0;
 const _getObjectKeys = Object.keys;
 const _calcLegendWidth = (width, margin) => width - (margin.left || 0) - (margin.right || 0);
+const _crBarPosition = (item, cateAxis, cateTicks, bandSize, childMaxBarSize, globalMaxBarSize, barGap, barCategoryGap, sizeList) => {
+  const itemIsBar = (0, _ReactUtils.getDisplayName)(item.type).indexOf('Bar') >= 0;
+  let barPosition = [];
+  if (itemIsBar) {
+    var _ref, _getBandSizeOfAxis;
+    // ???bar,??bar???
+    const maxBarSize = childMaxBarSize == null ? globalMaxBarSize : childMaxBarSize,
+      barBandSize = (_ref = (_getBandSizeOfAxis = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks, true)) != null ? _getBandSizeOfAxis : maxBarSize) != null ? _ref : 0,
+      isBarBandSize = barBandSize !== bandSize;
+    barPosition = (0, _ChartUtils.getBarPosition)({
+      barGap,
+      barCategoryGap,
+      bandSize: isBarBandSize ? barBandSize : bandSize,
+      sizeList,
+      maxBarSize
+    });
+    if (isBarBandSize) {
+      barPosition = barPosition.map(pos => Object.assign({}, pos, {
+        position: Object.assign({}, pos.position, {
+          offset: pos.position.offset - barBandSize / 2
+        })
+      }));
+    }
+  }
+  return barPosition;
+};
 const fGetFormatItems = axisComponents => (props, currentState) => {
   const {
       graphicalItems,
@@ -51,31 +77,9 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
     }, {});
     const cateAxis = axisObj[cateAxisName],
       cateTicks = axisObj[cateAxisName + "Ticks"],
-      itemIsBar = (0, _ReactUtils.getDisplayName)(item.type).indexOf('Bar') >= 0,
-      bandSize = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks);
-    let barPosition = [];
-    if (itemIsBar) {
-      var _ref, _getBandSizeOfAxis;
-      // ???bar,??bar???
-      const maxBarSize = childMaxBarSize == null ? globalMaxBarSize : childMaxBarSize,
-        barBandSize = (_ref = (_getBandSizeOfAxis = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks, true)) != null ? _getBandSizeOfAxis : maxBarSize) != null ? _ref : 0,
-        isBarBandSize = barBandSize !== bandSize;
-      barPosition = (0, _ChartUtils.getBarPosition)({
-        barGap,
-        barCategoryGap,
-        bandSize: isBarBandSize ? barBandSize : bandSize,
-        sizeList,
-        maxBarSize
-      });
-      if (isBarBandSize) {
-        barPosition = barPosition.map(pos => Object.assign({}, pos, {
-          position: Object.assign({}, pos.position, {
-            offset: pos.position.offset - barBandSize / 2
-          })
-        }));
-      }
-    }
-    const composedFn = item && item.type && item.type.getComposedData;
+      bandSize = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks),
+      barPosition = _crBarPosition(item, cateAxis, cateTicks, bandSize, childMaxBarSize, globalMaxBarSize, barGap, barCategoryGap, sizeList),
+      composedFn = item && item.type && item.type.getComposedData;
     if (composedFn) {
       formattedItems.push({
         props: Object.assign({}, composedFn(Object.assign({}, axisObj, {

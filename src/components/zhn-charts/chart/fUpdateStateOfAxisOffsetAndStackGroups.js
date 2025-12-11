@@ -48,6 +48,56 @@ const _calcLegendWidth = (
   margin
 ) => width - (margin.left || 0) - (margin.right || 0);
 
+const _crBarPosition = (
+  item,
+  cateAxis,
+  cateTicks,
+  bandSize,
+  childMaxBarSize,
+  globalMaxBarSize,
+  barGap,
+  barCategoryGap,
+  sizeList
+) => {
+  const itemIsBar = getDisplayName(item.type)
+    .indexOf('Bar') >= 0
+
+  let barPosition = [];
+  if (itemIsBar) {
+    // ???bar,??bar???
+    const maxBarSize = childMaxBarSize == null
+      ? globalMaxBarSize
+      : childMaxBarSize
+    , barBandSize = getBandSizeOfAxis(
+        cateAxis,
+        cateTicks,
+        true
+      ) ?? maxBarSize ?? 0
+    , isBarBandSize = barBandSize !== bandSize;
+
+    barPosition = getBarPosition({
+      barGap,
+      barCategoryGap,
+      bandSize: isBarBandSize
+        ? barBandSize
+        : bandSize,
+      sizeList,
+      maxBarSize,
+    });
+
+    if (isBarBandSize) {
+      barPosition = barPosition.map((pos) => ({
+        ...pos,
+        position: {
+          ...pos.position,
+          offset: pos.position.offset - barBandSize / 2
+        }
+      }));
+    }
+  }
+  return barPosition;
+}
+
 const fGetFormatItems = (
   axisComponents
 ) => (props, currentState) => {
@@ -96,41 +146,22 @@ const fGetFormatItems = (
 
     const cateAxis = axisObj[cateAxisName]
     , cateTicks = axisObj[`${cateAxisName}Ticks`]
-    , itemIsBar = getDisplayName(item.type).indexOf('Bar') >= 0
-    , bandSize = getBandSizeOfAxis(cateAxis, cateTicks);
-
-    let barPosition = [];
-    if (itemIsBar) {
-      // ???bar,??bar???
-      const maxBarSize = childMaxBarSize == null
-        ? globalMaxBarSize
-        : childMaxBarSize
-      , barBandSize = getBandSizeOfAxis(
-          cateAxis,
-          cateTicks,
-          true
-        ) ?? maxBarSize ?? 0
-      , isBarBandSize = barBandSize !== bandSize;
-      barPosition = getBarPosition({
-        barGap,
-        barCategoryGap,
-        bandSize: isBarBandSize
-          ? barBandSize
-          : bandSize,
-        sizeList,
-        maxBarSize,
-      });
-      if (isBarBandSize) {
-        barPosition = barPosition.map((pos) => ({
-          ...pos,
-          position: {
-            ...pos.position,
-            offset: pos.position.offset - barBandSize / 2
-          }
-        }));
-      }
-    }
-    const composedFn = item && item.type && item.type.getComposedData;
+    , bandSize = getBandSizeOfAxis(cateAxis, cateTicks)
+    , barPosition = _crBarPosition(
+       item,
+       cateAxis,
+       cateTicks,
+       bandSize,
+       childMaxBarSize,
+       globalMaxBarSize,
+       barGap,
+       barCategoryGap,
+       sizeList
+    )
+    , composedFn = item
+       && item.type
+       && item.type.getComposedData;
+       
     if (composedFn) {
       formattedItems.push({
         props: {
