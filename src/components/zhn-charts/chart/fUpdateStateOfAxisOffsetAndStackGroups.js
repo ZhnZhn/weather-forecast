@@ -3,12 +3,9 @@ import {
 } from '../util/CartesianUtils';
 
 import {
-  getBarSizeList,
   getBarPosition,
   getTicksOfAxis,
-  getStackedDataOfItem,
   getBandSizeOfAxis,
-  getStackGroupsByAxisId,
   getLegendProps
 } from '../util/ChartUtils';
 
@@ -34,7 +31,7 @@ import { Legend } from '../component/Legend';
 
 import {
   getOrderedTooltipTicks,
-  hasGraphicalBarItem,
+  getBarSizeList,
   getAxisNameByLayout
 } from './generateCategoricalChartFn';
 
@@ -56,7 +53,6 @@ const fGetFormatItems = (
 ) => (props, currentState) => {
   const {
     graphicalItems,
-    stackGroups,
     offset
   } = currentState
   , {
@@ -70,9 +66,12 @@ const fGetFormatItems = (
     numericAxisName,
     cateAxisName
   } = getAxisNameByLayout(layout)
-  , hasBar = hasGraphicalBarItem(graphicalItems)
-  , sizeList = hasBar && getBarSizeList({ barSize, stackGroups })
-  , formattedItems = [];
+  , formattedItems = []
+  , sizeList = getBarSizeList(
+      graphicalItems,
+      barSize
+  );
+
   graphicalItems.forEach((item, index) => {
     const displayedData = getDisplayedData(
       props.data,
@@ -83,8 +82,7 @@ const fGetFormatItems = (
       dataKey,
       maxBarSize: childMaxBarSize
     } = item.props
-    , numericAxisId = item.props[`${numericAxisName}Id`]
-    , cateAxisId = item.props[`${cateAxisName}Id`];
+
     const axisObj = axisComponents.reduce((result, entry) => {
       const axisMap = currentState[`${entry.axisType}Map`]
       , id = item.props[`${entry.axisType}Id`] || DF_AXIS_ID
@@ -98,10 +96,6 @@ const fGetFormatItems = (
 
     const cateAxis = axisObj[cateAxisName]
     , cateTicks = axisObj[`${cateAxisName}Ticks`]
-    , stackedData = stackGroups
-        && stackGroups[numericAxisId]
-        && stackGroups[numericAxisId].hasStack
-        && getStackedDataOfItem(item, stackGroups[numericAxisId].stackGroups)
     , itemIsBar = getDisplayName(item.type).indexOf('Bar') >= 0
     , bandSize = getBandSizeOfAxis(cateAxis, cateTicks);
 
@@ -115,18 +109,24 @@ const fGetFormatItems = (
           cateAxis,
           cateTicks,
           true
-        ) ?? maxBarSize ?? 0;
+        ) ?? maxBarSize ?? 0
+      , isBarBandSize = barBandSize !== bandSize;
       barPosition = getBarPosition({
         barGap,
         barCategoryGap,
-        bandSize: barBandSize !== bandSize ? barBandSize : bandSize,
-        sizeList: sizeList[cateAxisId],
+        bandSize: isBarBandSize
+          ? barBandSize
+          : bandSize,
+        sizeList,
         maxBarSize,
       });
-      if (barBandSize !== bandSize) {
+      if (isBarBandSize) {
         barPosition = barPosition.map((pos) => ({
           ...pos,
-          position: { ...pos.position, offset: pos.position.offset - barBandSize / 2 },
+          position: {
+            ...pos.position,
+            offset: pos.position.offset - barBandSize / 2
+          }
         }));
       }
     }
@@ -143,7 +143,6 @@ const fGetFormatItems = (
             bandSize,
             barPosition,
             offset,
-            stackedData,
             layout
           }),
           key: item.key || `item-${index}`,
@@ -194,34 +193,22 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
   const {
     children,
     layout,
-    stackOffset,
-    data,
-    reverseStackOrder,
 
     width,
     height,
     margin
   } = props
   , {
-    numericAxisName,
     cateAxisName
   } = getAxisNameByLayout(layout)
   , graphicalItems = findAllByType(
       children,
       GraphicalChild
     )
-  , stackGroups = getStackGroupsByAxisId(
-      data,
-      graphicalItems,
-      `${numericAxisName}Id`,
-      `${cateAxisName}Id`,
-      stackOffset,
-      reverseStackOrder
-    )
   , axisObj = axisComponents.reduce((result, entry) => {
       result[`${entry.axisType}Map`] = getAxisMap(props, {
          ...entry,
-         graphicalItems         
+         graphicalItems
       })
       return result;
   }, {});
@@ -246,7 +233,6 @@ export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
   const formattedGraphicalItems = getFormatItems(props, {
     ...axisObj,
     graphicalItems,
-    stackGroups,
     offset
   });
 

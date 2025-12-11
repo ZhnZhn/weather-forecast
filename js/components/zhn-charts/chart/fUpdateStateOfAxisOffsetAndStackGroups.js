@@ -19,7 +19,6 @@ const _calcLegendWidth = (width, margin) => width - (margin.left || 0) - (margin
 const fGetFormatItems = axisComponents => (props, currentState) => {
   const {
       graphicalItems,
-      stackGroups,
       offset
     } = currentState,
     {
@@ -33,20 +32,14 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
       numericAxisName,
       cateAxisName
     } = (0, _generateCategoricalChartFn.getAxisNameByLayout)(layout),
-    hasBar = (0, _generateCategoricalChartFn.hasGraphicalBarItem)(graphicalItems),
-    sizeList = hasBar && (0, _ChartUtils.getBarSizeList)({
-      barSize,
-      stackGroups
-    }),
-    formattedItems = [];
+    formattedItems = [],
+    sizeList = (0, _generateCategoricalChartFn.getBarSizeList)(graphicalItems, barSize);
   graphicalItems.forEach((item, index) => {
     const displayedData = (0, _chartFn.getDisplayedData)(props.data, {}, item),
       {
         dataKey,
         maxBarSize: childMaxBarSize
-      } = item.props,
-      numericAxisId = item.props[numericAxisName + "Id"],
-      cateAxisId = item.props[cateAxisName + "Id"];
+      } = item.props;
     const axisObj = axisComponents.reduce((result, entry) => {
       const axisMap = currentState[entry.axisType + "Map"],
         id = item.props[entry.axisType + "Id"] || DF_AXIS_ID,
@@ -58,7 +51,6 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
     }, {});
     const cateAxis = axisObj[cateAxisName],
       cateTicks = axisObj[cateAxisName + "Ticks"],
-      stackedData = stackGroups && stackGroups[numericAxisId] && stackGroups[numericAxisId].hasStack && (0, _ChartUtils.getStackedDataOfItem)(item, stackGroups[numericAxisId].stackGroups),
       itemIsBar = (0, _ReactUtils.getDisplayName)(item.type).indexOf('Bar') >= 0,
       bandSize = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks);
     let barPosition = [];
@@ -66,15 +58,16 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
       var _ref, _getBandSizeOfAxis;
       // ???bar,??bar???
       const maxBarSize = childMaxBarSize == null ? globalMaxBarSize : childMaxBarSize,
-        barBandSize = (_ref = (_getBandSizeOfAxis = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks, true)) != null ? _getBandSizeOfAxis : maxBarSize) != null ? _ref : 0;
+        barBandSize = (_ref = (_getBandSizeOfAxis = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks, true)) != null ? _getBandSizeOfAxis : maxBarSize) != null ? _ref : 0,
+        isBarBandSize = barBandSize !== bandSize;
       barPosition = (0, _ChartUtils.getBarPosition)({
         barGap,
         barCategoryGap,
-        bandSize: barBandSize !== bandSize ? barBandSize : bandSize,
-        sizeList: sizeList[cateAxisId],
+        bandSize: isBarBandSize ? barBandSize : bandSize,
+        sizeList,
         maxBarSize
       });
-      if (barBandSize !== bandSize) {
+      if (isBarBandSize) {
         barPosition = barPosition.map(pos => Object.assign({}, pos, {
           position: Object.assign({}, pos.position, {
             offset: pos.position.offset - barBandSize / 2
@@ -93,7 +86,6 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
           bandSize,
           barPosition,
           offset,
-          stackedData,
           layout
         })), {
           key: item.key || "item-" + index,
@@ -134,19 +126,14 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild) =
   const {
       children,
       layout,
-      stackOffset,
-      data,
-      reverseStackOrder,
       width,
       height,
       margin
     } = props,
     {
-      numericAxisName,
       cateAxisName
     } = (0, _generateCategoricalChartFn.getAxisNameByLayout)(layout),
     graphicalItems = (0, _ReactUtils.findAllByType)(children, GraphicalChild),
-    stackGroups = (0, _ChartUtils.getStackGroupsByAxisId)(data, graphicalItems, numericAxisName + "Id", cateAxisName + "Id", stackOffset, reverseStackOrder),
     axisObj = axisComponents.reduce((result, entry) => {
       result[entry.axisType + "Map"] = (0, _getAxisMap.getAxisMap)(props, Object.assign({}, entry, {
         graphicalItems
@@ -162,7 +149,6 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild) =
   });
   const formattedGraphicalItems = getFormatItems(props, Object.assign({}, axisObj, {
     graphicalItems,
-    stackGroups,
     offset
   }));
   const [_legendProps, _legendItem] = (0, _ChartUtils.getLegendProps)({
