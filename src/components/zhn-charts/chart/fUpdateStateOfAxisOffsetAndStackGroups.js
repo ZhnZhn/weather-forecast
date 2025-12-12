@@ -31,6 +31,7 @@ import {
   getOrderedTooltipTicks,
   getBarSizeList,
   isItemTypeBar,
+  getComposedDataFn,
   getAxisNameByLayout
 } from './generateCategoricalChartFn';
 
@@ -82,6 +83,22 @@ const _crBarPosition = (
     })) : barPosition;
 };
 
+const _crAxisObj = (
+  axisComponents,
+  currentState,
+  item
+) => axisComponents.reduce((result, entry) => {
+  const axisMap = currentState[`${entry.axisType}Map`]
+  , id = item.props[`${entry.axisType}Id`] || DF_AXIS_ID
+  , axis = axisMap && axisMap[id];
+  return {
+    ...result,
+    [entry.axisType]: axis,
+    [`${entry.axisType}Ticks`]: getTicksOfAxis(axis)
+  };
+}, {});
+
+
 const fGetFormatItems = (
   axisComponents
 ) => (props, currentState) => {
@@ -116,19 +133,12 @@ const fGetFormatItems = (
       dataKey,
       maxBarSize: childMaxBarSize
     } = item.props
-
-    const axisObj = axisComponents.reduce((result, entry) => {
-      const axisMap = currentState[`${entry.axisType}Map`]
-      , id = item.props[`${entry.axisType}Id`] || DF_AXIS_ID
-      , axis = axisMap && axisMap[id];
-      return {
-        ...result,
-        [entry.axisType]: axis,
-        [`${entry.axisType}Ticks`]: getTicksOfAxis(axis),
-      };
-    }, {});
-
-    const cateAxis = axisObj[cateAxisName]
+    , axisObj = _crAxisObj(
+      axisComponents,
+      currentState,
+      item
+    )
+    , cateAxis = axisObj[cateAxisName]
     , cateTicks = axisObj[`${cateAxisName}Ticks`]
     , bandSize = getBandSizeOfAxis(cateAxis, cateTicks)
     , barPosition = isItemTypeBar(item) ? _crBarPosition(
@@ -142,9 +152,12 @@ const fGetFormatItems = (
        barCategoryGap,
        sizeList
     ) : void 0
+    , composedFn = getComposedDataFn(item)
+    /*
     , composedFn = item
        && item.type
        && item.type.getComposedData;
+    */
 
     if (composedFn) {
       formattedItems.push({

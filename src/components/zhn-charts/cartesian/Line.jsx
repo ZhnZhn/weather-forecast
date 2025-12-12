@@ -166,7 +166,7 @@ setDisplayNameTo(Line, 'Line')
  * @param  {String} dataKey The unique key of a group
  * @return {Array}  Composed data
  */
-Line.getComposedData = ({
+export const getLineComposedData = ({
   props,
   xAxis,
   yAxis,

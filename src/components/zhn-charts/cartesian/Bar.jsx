@@ -159,7 +159,7 @@ const _isMinPointSizeCase = (
  * @param {Array} stackedData  The stacked data of a bar item
  * @return{Array} Composed data
  */
-Bar.getComposedData = ({
+export const getBarComposedData = ({
   props,
   item,
   barPosition,
@@ -281,4 +281,4 @@ Bar.getComposedData = ({
     layout,
     ...offset
   };
-};
+}

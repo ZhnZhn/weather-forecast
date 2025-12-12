@@ -1,14 +1,16 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isItemTypeBar = exports.getTooltipData = exports.getOrderedTooltipTicks = exports.getBarSizeList = exports.getAxisNameByLayout = void 0;
+exports.isItemTypeBar = exports.getTooltipData = exports.getOrderedTooltipTicks = exports.getComposedDataFn = exports.getBarSizeList = exports.getAxisNameByLayout = void 0;
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
+var _Bar = require("../cartesian/Bar");
+var _Line = require("../cartesian/Line");
 var _chartFn = require("./chartFn");
 var _getTooltipContent = require("./getTooltipContent");
-const calculateTooltipPos = (rangeObj, layout) => (0, _ChartUtils.isLayoutHorizontal)(layout) ? rangeObj.x : (0, _ChartUtils.isLayoutVertical)(layout) ? rangeObj.y : (0, _ChartUtils.isLayoutCentric)(layout) ? rangeObj.angle : rangeObj.radius;
-const getActiveCoordinate = (layout, tooltipTicks, activeIndex, rangeObj) => {
+const _calculateTooltipPos = (rangeObj, layout) => (0, _ChartUtils.isLayoutHorizontal)(layout) ? rangeObj.x : rangeObj.y;
+const _getActiveCoordinate = (layout, tooltipTicks, activeIndex, rangeObj) => {
   const entry = tooltipTicks.find(tick => tick && tick.index === activeIndex);
   if (!entry) {
     return _chartFn.originCoordinate;
@@ -37,12 +39,12 @@ const getTooltipData = (orderedTooltipTicks, graphicalItems, chartData, layout, 
       x: 0,
       y: 0
     },
-    pos = calculateTooltipPos(rangeData, layout),
+    pos = _calculateTooltipPos(rangeData, layout),
     activeIndex = (0, _ChartUtils.calculateActiveTickIndex)(pos, orderedTooltipTicks);
   if (activeIndex >= 0 && orderedTooltipTicks) {
     const activeLabel = orderedTooltipTicks[activeIndex] && orderedTooltipTicks[activeIndex].value,
       activePayload = (0, _getTooltipContent.getTooltipContent)(graphicalItems, chartData, activeIndex, activeLabel),
-      activeCoordinate = getActiveCoordinate(layout, orderedTooltipTicks, activeIndex, rangeData);
+      activeCoordinate = _getActiveCoordinate(layout, orderedTooltipTicks, activeIndex, rangeData);
     return {
       activeTooltipIndex: activeIndex,
       activeLabel,
@@ -55,8 +57,9 @@ const getTooltipData = (orderedTooltipTicks, graphicalItems, chartData, layout, 
 exports.getTooltipData = getTooltipData;
 const getOrderedTooltipTicks = axisMap => (0, _ChartUtils.getTicksOfAxis)((0, _DataUtils.getAnyElementOfObject)(axisMap), false, true).sort(o => o.coordinate);
 exports.getOrderedTooltipTicks = getOrderedTooltipTicks;
-const isItemTypeBar = item => ((0, _ReactUtils.getDisplayName)(item && item.type) || '').indexOf('Bar') >= 0;
-exports.isItemTypeBar = isItemTypeBar;
+const _fIsItemType = strType => item => ((0, _ReactUtils.getDisplayName)(item && item.type) || '').indexOf(strType) >= 0;
+const isItemTypeBar = exports.isItemTypeBar = _fIsItemType('Bar');
+const _isItemTypeLine = _fIsItemType('Line');
 const getBarSizeList = (graphicalItems, barSize) => (graphicalItems || []).filter(isItemTypeBar).map(item => {
   var _item$props$barSize;
   return {
@@ -66,10 +69,12 @@ const getBarSizeList = (graphicalItems, barSize) => (graphicalItems || []).filte
   };
 });
 exports.getBarSizeList = getBarSizeList;
+const getComposedDataFn = item => isItemTypeBar(item) ? _Bar.getBarComposedData : _isItemTypeLine(item) ? _Line.getLineComposedData : void 0;
+exports.getComposedDataFn = getComposedDataFn;
 const _crAxisName = (numericAxisName, cateAxisName) => ({
   numericAxisName,
   cateAxisName
 });
-const getAxisNameByLayout = layout => (0, _ChartUtils.isLayoutHorizontal)(layout) ? _crAxisName('yAxis', 'xAxis') : (0, _ChartUtils.isLayoutVertical)(layout) ? _crAxisName('xAxis', 'yAxis') : (0, _ChartUtils.isLayoutCentric)(layout) ? _crAxisName('radiusAxis', 'angleAxis') : _crAxisName('angleAxis', 'radiusAxis');
+const getAxisNameByLayout = layout => (0, _ChartUtils.isLayoutHorizontal)(layout) ? _crAxisName('yAxis', 'xAxis') : _crAxisName('xAxis', 'yAxis');
 exports.getAxisNameByLayout = getAxisNameByLayout;
 //# sourceMappingURL=generateCategoricalChartFn.js.map

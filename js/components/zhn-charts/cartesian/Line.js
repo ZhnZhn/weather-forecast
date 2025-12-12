@@ -2,7 +2,7 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.Line = void 0;
+exports.getLineComposedData = exports.Line = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
@@ -118,7 +118,7 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
  * @param  {String} dataKey The unique key of a group
  * @return {Array}  Composed data
  */
-Line.getComposedData = _ref => {
+const getLineComposedData = _ref => {
   let {
     props,
     xAxis,
@@ -164,4 +164,5 @@ Line.getComposedData = _ref => {
     layout
   }, offset);
 };
+exports.getLineComposedData = getLineComposedData;
 //# sourceMappingURL=Line.js.map

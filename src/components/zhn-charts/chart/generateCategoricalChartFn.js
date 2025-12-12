@@ -1,7 +1,5 @@
 import {
   isLayoutHorizontal,
-  isLayoutVertical,
-  isLayoutCentric,
   calculateActiveTickIndex,
   getTicksOfAxis
 } from '../util/ChartUtils';
@@ -12,21 +10,20 @@ import {
 
 import { getDisplayName } from '../util/ReactUtils';
 
+import { getBarComposedData } from '../cartesian/Bar';
+import { getLineComposedData } from '../cartesian/Line';
+
 import { originCoordinate } from './chartFn';
 import { getTooltipContent } from './getTooltipContent';
 
-const calculateTooltipPos = (
+const _calculateTooltipPos = (
   rangeObj,
   layout
 ) => isLayoutHorizontal(layout)
   ? rangeObj.x
-  : isLayoutVertical(layout)
-      ? rangeObj.y
-      : isLayoutCentric(layout)
-          ? rangeObj.angle
-          : rangeObj.radius;
+  : rangeObj.y;
 
-const getActiveCoordinate = (
+const _getActiveCoordinate = (
   layout,
   tooltipTicks,
   activeIndex,
@@ -70,7 +67,7 @@ export const getTooltipData = (
     x: 0,
     y: 0
   }
-  , pos = calculateTooltipPos(
+  , pos = _calculateTooltipPos(
       rangeData,
       layout
     )
@@ -86,7 +83,7 @@ export const getTooltipData = (
         activeIndex,
         activeLabel
       )
-    , activeCoordinate = getActiveCoordinate(
+    , activeCoordinate = _getActiveCoordinate(
         layout,
         orderedTooltipTicks,
         activeIndex,
@@ -110,10 +107,15 @@ export const getOrderedTooltipTicks = (
   true
 ).sort(o => o.coordinate)
 
-export const isItemTypeBar = (
+const _fIsItemType = (
+  strType
+) => (
   item
 ) => (getDisplayName(item && item.type) || '')
-  .indexOf('Bar') >= 0
+  .indexOf(strType) >= 0
+
+export const isItemTypeBar = _fIsItemType('Bar')
+const _isItemTypeLine = _fIsItemType('Line');
 
 export const getBarSizeList = (
   graphicalItems,
@@ -126,6 +128,14 @@ export const getBarSizeList = (
    stackList: []
  }))
 
+export const getComposedDataFn = (
+  item
+) => isItemTypeBar(item)
+  ? getBarComposedData
+  : _isItemTypeLine(item)
+  ? getLineComposedData
+  : void 0
+
 const _crAxisName = (
   numericAxisName,
   cateAxisName
@@ -133,12 +143,9 @@ const _crAxisName = (
   numericAxisName,
   cateAxisName
 });
+
 export const getAxisNameByLayout = (
   layout
 ) => isLayoutHorizontal(layout)
   ? _crAxisName('yAxis','xAxis')
-  : isLayoutVertical(layout)
-  ? _crAxisName('xAxis', 'yAxis')
-  : isLayoutCentric(layout)
-  ? _crAxisName('radiusAxis', 'angleAxis')
-  : _crAxisName('angleAxis', 'radiusAxis')
+  : _crAxisName('xAxis','yAxis')

@@ -2,7 +2,7 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.Bar = void 0;
+exports.getBarComposedData = exports.Bar = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
@@ -97,7 +97,7 @@ const _isMinPointSizeCase = (minPointSize, value) => (0, _DataUtils.mathAbs)(min
  * @param {Array} stackedData  The stacked data of a bar item
  * @return{Array} Composed data
  */
-Bar.getComposedData = _ref => {
+const getBarComposedData = _ref => {
   let {
     props,
     item,
@@ -204,4 +204,5 @@ Bar.getComposedData = _ref => {
     layout
   }, offset);
 };
+exports.getBarComposedData = getBarComposedData;
 //# sourceMappingURL=Bar.js.map

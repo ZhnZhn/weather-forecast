@@ -33,6 +33,15 @@ const _crBarPosition = (cateAxis, cateTicks, bandSize, maxBarSize, barGap, barCa
     })
   })) : barPosition;
 };
+const _crAxisObj = (axisComponents, currentState, item) => axisComponents.reduce((result, entry) => {
+  const axisMap = currentState[entry.axisType + "Map"],
+    id = item.props[entry.axisType + "Id"] || DF_AXIS_ID,
+    axis = axisMap && axisMap[id];
+  return Object.assign({}, result, {
+    [entry.axisType]: axis,
+    [entry.axisType + "Ticks"]: (0, _ChartUtils.getTicksOfAxis)(axis)
+  });
+}, {});
 const fGetFormatItems = axisComponents => (props, currentState) => {
   const {
       graphicalItems,
@@ -56,21 +65,19 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
       {
         dataKey,
         maxBarSize: childMaxBarSize
-      } = item.props;
-    const axisObj = axisComponents.reduce((result, entry) => {
-      const axisMap = currentState[entry.axisType + "Map"],
-        id = item.props[entry.axisType + "Id"] || DF_AXIS_ID,
-        axis = axisMap && axisMap[id];
-      return Object.assign({}, result, {
-        [entry.axisType]: axis,
-        [entry.axisType + "Ticks"]: (0, _ChartUtils.getTicksOfAxis)(axis)
-      });
-    }, {});
-    const cateAxis = axisObj[cateAxisName],
+      } = item.props,
+      axisObj = _crAxisObj(axisComponents, currentState, item),
+      cateAxis = axisObj[cateAxisName],
       cateTicks = axisObj[cateAxisName + "Ticks"],
       bandSize = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks),
       barPosition = (0, _generateCategoricalChartFn.isItemTypeBar)(item) ? _crBarPosition(cateAxis, cateTicks, bandSize, childMaxBarSize == null ? globalMaxBarSize : childMaxBarSize, barGap, barCategoryGap, sizeList) : void 0,
-      composedFn = item && item.type && item.type.getComposedData;
+      composedFn = (0, _generateCategoricalChartFn.getComposedDataFn)(item);
+    /*
+    , composedFn = item
+       && item.type
+       && item.type.getComposedData;
+    */
+
     if (composedFn) {
       formattedItems.push({
         props: Object.assign({}, composedFn(Object.assign({}, axisObj, {
