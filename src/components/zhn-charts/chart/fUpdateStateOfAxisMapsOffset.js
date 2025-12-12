@@ -205,7 +205,7 @@ const axisComponents = [
  * @param {Object} prevState      Prev state
  * @return {Object} state New state to set
  */
-export const fUpdateStateOfAxisMapsOffsetAndStackGroups = (
+export const fUpdateStateOfAxisMapsOffset = (
   chartName,
   GraphicalChild
 ) => (

@@ -8,13 +8,13 @@
   "_generateCategoricalChart",
   "require",
   "_Line",
-  "_fUpdateStateOfAxisOffsetAndStackGroups",
+  "_fUpdateStateOfAxisMapsOffset",
   "chartName",
   "LineChart",
   "exports",
   "generateCategoricalChart",
-  "fUpdateStateOfAxisMapsOffsetAndStackGroups",
+  "fUpdateStateOfAxisMapsOffset",
   "Line"
  ],
- "mappings": ";;;;AAAA,IAAAA,yBAAA,GAAAC,OAAA;AAEA,IAAAC,KAAA,GAAAD,OAAA;AACA,IAAAE,uCAAA,GAAAF,OAAA;AAIA,MAAMG,SAAS,GAAG,WAAW;AACtB,MAAMC,SAAS,GAAAC,OAAA,CAAAD,SAAA,GAAG,IAAAE,kDAAwB,EAC/CH,SAAS,EACT,IAAAI,kFAA0C,EACxCJ,SAAS,EACTK,UACF,CACF,CAAC"
+ "mappings": ";;;;AAAA,IAAAA,yBAAA,GAAAC,OAAA;AAEA,IAAAC,KAAA,GAAAD,OAAA;AACA,IAAAE,6BAAA,GAAAF,OAAA;AAIA,MAAMG,SAAS,GAAG,WAAW;AACtB,MAAMC,SAAS,GAAAC,OAAA,CAAAD,SAAA,GAAG,IAAAE,kDAAwB,EAC/CH,SAAS,EACT,IAAAI,0DAA4B,EAC1BJ,SAAS,EACTK,UACF,CACF,CAAC"
 }

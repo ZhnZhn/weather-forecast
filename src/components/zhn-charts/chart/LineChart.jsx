@@ -2,13 +2,13 @@ import { generateCategoricalChart } from './generateCategoricalChart';
 
 import { Line } from '../cartesian/Line';
 import {
-  fUpdateStateOfAxisMapsOffsetAndStackGroups
-} from './fUpdateStateOfAxisOffsetAndStackGroups';
+  fUpdateStateOfAxisMapsOffset
+} from './fUpdateStateOfAxisMapsOffset';
 
 const chartName = 'LineChart';
 export const LineChart = generateCategoricalChart(
   chartName,
-  fUpdateStateOfAxisMapsOffsetAndStackGroups(
+  fUpdateStateOfAxisMapsOffset(
     chartName,
     Line
   )

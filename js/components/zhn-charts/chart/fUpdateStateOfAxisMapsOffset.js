@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.fUpdateStateOfAxisMapsOffsetAndStackGroups = void 0;
+exports.fUpdateStateOfAxisMapsOffset = void 0;
 var _CartesianUtils = require("../util/CartesianUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _ReactUtils = require("../util/ReactUtils");
@@ -118,7 +118,7 @@ const axisComponents = [(0, _chartFn.crAxisComponent)('xAxis', _XAxis.XAxis), (0
  * @param {Object} prevState      Prev state
  * @return {Object} state New state to set
  */
-const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild) => (_ref2, legendBBox, clipPathId) => {
+const fUpdateStateOfAxisMapsOffset = (chartName, GraphicalChild) => (_ref2, legendBBox, clipPathId) => {
   let {
     props
   } = _ref2;
@@ -170,5 +170,5 @@ const fUpdateStateOfAxisMapsOffsetAndStackGroups = (chartName, GraphicalChild) =
     formattedGraphicalItems
   }, _renderFn.renderMap), _legendProps, _legendItem];
 };
-exports.fUpdateStateOfAxisMapsOffsetAndStackGroups = fUpdateStateOfAxisMapsOffsetAndStackGroups;
-//# sourceMappingURL=fUpdateStateOfAxisOffsetAndStackGroups.js.map
+exports.fUpdateStateOfAxisMapsOffset = fUpdateStateOfAxisMapsOffset;
+//# sourceMappingURL=fUpdateStateOfAxisMapsOffset.js.map

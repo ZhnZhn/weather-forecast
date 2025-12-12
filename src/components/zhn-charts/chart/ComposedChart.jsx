@@ -4,13 +4,13 @@ import { Bar } from '../cartesian/Bar';
 import { Line } from '../cartesian/Line';
 
 import {
-  fUpdateStateOfAxisMapsOffsetAndStackGroups
-} from './fUpdateStateOfAxisOffsetAndStackGroups';
+  fUpdateStateOfAxisMapsOffset
+} from './fUpdateStateOfAxisMapsOffset';
 
 const chartName = 'ComposedChart';
 export const ComposedChart = generateCategoricalChart(
   chartName,
-  fUpdateStateOfAxisMapsOffsetAndStackGroups(
+  fUpdateStateOfAxisMapsOffset(
     chartName,
     [Line, Bar]
   )
