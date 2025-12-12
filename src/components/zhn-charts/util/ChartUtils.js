@@ -26,13 +26,8 @@ import {
 } from '../scale';
 
 import { Legend } from '../component/Legend';
-import {
-  findEntryInArray,
-  getPercentValue
-} from './DataUtils';
-import {
-  findChildByType
-} from './ReactUtils';
+import { getPercentValue } from './DataUtils';
+import { findChildByType } from './ReactUtils';
 
 const _getAxisDomain = (
   axis
@@ -549,33 +544,6 @@ export const findPositionOfBar = (
   return null;
 };
 
-/*
-export const truncateByDomain = (
-  value,
-  domain
-) => {
-  if (!domain || domain.length !== 2 || !isNumber(domain[0]) || !isNumber(domain[1])) {
-    return value;
-  }
-  const min = Math.min(domain[0], domain[1])
-  , max = Math.max(domain[0], domain[1])
-  , result = [value[0], value[1]];
-  if (!isNumber(value[0]) || value[0] < min) {
-    result[0] = min;
-  }
-  if (!isNumber(value[1]) || value[1] > max) {
-    result[1] = max;
-  }
-  if (result[0] > max) {
-    result[0] = max;
-  }
-  if (result[1] < min) {
-    result[1] = min;
-  }
-  return result;
-};
-*/
-
 /**
  * Configure the scale function of axis
  * @param {Object} scale The scale function
@@ -622,33 +590,6 @@ export const getTicksOfScale = (
   return null;
 };
 
-export const getCateCoordinateOfLine = ({
-  axis,
-  ticks,
-  bandSize,
-  entry,
-  index,
-  dataKey
-}) => {
-  if (axis.type === 'category') {
-    // find coordinate of category axis by the value of category
-    if (!axis.allowDuplicatedCategory && axis.dataKey && !isNullOrUndef(entry[axis.dataKey])) {
-      const matchedTick = findEntryInArray(ticks, 'value', entry[axis.dataKey]);
-      if (matchedTick) {
-        return matchedTick.coordinate + bandSize / 2;
-      }
-    }
-    return ticks[index]
-      ? ticks[index].coordinate + bandSize / 2
-      : null;
-  }
-  const value = getValueByDataKey(entry, !isNullOrUndef(dataKey)
-    ? dataKey
-    : axis.dataKey);
-  return !isNullOrUndef(value)
-    ? axis.scale(value)
-    : null;
-};
 
 export const getCateCoordinateOfBar = ({
   axis,

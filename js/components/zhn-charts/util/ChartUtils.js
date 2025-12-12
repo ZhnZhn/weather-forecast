@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.getCoordinatesOfGrid = exports.getCateCoordinateOfLine = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
+exports.getCoordinatesOfGrid = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
 exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getLegendProps = exports.getDomainOfItemsWithSameAxis = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
@@ -448,33 +448,6 @@ const findPositionOfBar = (barPosition, child) => {
   return null;
 };
 
-/*
-export const truncateByDomain = (
-  value,
-  domain
-) => {
-  if (!domain || domain.length !== 2 || !isNumber(domain[0]) || !isNumber(domain[1])) {
-    return value;
-  }
-  const min = Math.min(domain[0], domain[1])
-  , max = Math.max(domain[0], domain[1])
-  , result = [value[0], value[1]];
-  if (!isNumber(value[0]) || value[0] < min) {
-    result[0] = min;
-  }
-  if (!isNumber(value[1]) || value[1] > max) {
-    result[1] = max;
-  }
-  if (result[0] > max) {
-    result[0] = max;
-  }
-  if (result[1] < min) {
-    result[1] = min;
-  }
-  return result;
-};
-*/
-
 /**
  * Configure the scale function of axis
  * @param {Object} scale The scale function
@@ -515,30 +488,7 @@ const getTicksOfScale = (scale, options) => {
   return null;
 };
 exports.getTicksOfScale = getTicksOfScale;
-const getCateCoordinateOfLine = _ref4 => {
-  let {
-    axis,
-    ticks,
-    bandSize,
-    entry,
-    index,
-    dataKey
-  } = _ref4;
-  if (axis.type === 'category') {
-    // find coordinate of category axis by the value of category
-    if (!axis.allowDuplicatedCategory && axis.dataKey && !(0, _isTypeFn.isNullOrUndef)(entry[axis.dataKey])) {
-      const matchedTick = (0, _DataUtils.findEntryInArray)(ticks, 'value', entry[axis.dataKey]);
-      if (matchedTick) {
-        return matchedTick.coordinate + bandSize / 2;
-      }
-    }
-    return ticks[index] ? ticks[index].coordinate + bandSize / 2 : null;
-  }
-  const value = getValueByDataKey(entry, !(0, _isTypeFn.isNullOrUndef)(dataKey) ? dataKey : axis.dataKey);
-  return !(0, _isTypeFn.isNullOrUndef)(value) ? axis.scale(value) : null;
-};
-exports.getCateCoordinateOfLine = getCateCoordinateOfLine;
-const getCateCoordinateOfBar = _ref5 => {
+const getCateCoordinateOfBar = _ref4 => {
   let {
     axis,
     ticks,
@@ -546,7 +496,7 @@ const getCateCoordinateOfBar = _ref5 => {
     bandSize,
     entry,
     index
-  } = _ref5;
+  } = _ref4;
   if (axis.type === 'category') {
     return ticks[index] ? ticks[index].coordinate + offset : null;
   }
@@ -554,10 +504,10 @@ const getCateCoordinateOfBar = _ref5 => {
   return !(0, _isTypeFn.isNullOrUndef)(value) ? axis.scale(value) - bandSize / 2 + offset : null;
 };
 exports.getCateCoordinateOfBar = getCateCoordinateOfBar;
-const getBaseValueOfBar = _ref6 => {
+const getBaseValueOfBar = _ref5 => {
   let {
     numericAxis
-  } = _ref6;
+  } = _ref5;
   const domain = numericAxis.scale.domain();
   if (numericAxis.type === 'number') {
     const min = Math.min(domain[0], domain[1]),

@@ -1,5 +1,3 @@
-import { isNullOrUndef } from '../../../utils/isTypeFn';
-
 import {
   memo,
   useRef,
@@ -13,9 +11,12 @@ import { crCn } from '../../styleFn';
 import { Layer } from '../container/Layer';
 import { IS_SSR } from '../util/Global';
 import {
-  getCateCoordinateOfLine,
+  isLayoutHorizontal,
   getValueByDataKey
 } from '../util/ChartUtils';
+import {
+  findEntryInArray
+} from '../util/DataUtils';
 
 import {
   isHideOrNoData,
@@ -38,15 +39,16 @@ const DF_TOTAL_LENGTH = 0;
 const _getTotalLength = (
   curveDom
 ) => {
+  let _totalLength;
   try {
-    return (curveDom
+   _totalLength = (curveDom
       && curveDom.getTotalLength
-      && curveDom.getTotalLength()
-    ) || DF_TOTAL_LENGTH;
+      && curveDom.getTotalLength())
+      || DF_TOTAL_LENGTH
+  } catch (err) {
+    _totalLength = DF_TOTAL_LENGTH
   }
-  catch (err) {
-    return DF_TOTAL_LENGTH;
-  }
+  return _totalLength;
 };
 
 const DF_PROPS = {
@@ -158,6 +160,43 @@ export const Line = memo((props) => {
 
 setDisplayNameTo(Line, 'Line')
 
+const _getAxisScaleValue = (
+  axis,
+  value
+) => value == null
+  ? value
+  : axis.scale(value);
+
+const _getCateCoordinateOfLine = ({
+  axis,
+  ticks,
+  bandSize,
+  entry,
+  index,
+  dataKey
+}) => {
+  if (axis.type === 'category') {
+    // find coordinate of category axis by the value of category
+    if (!axis.allowDuplicatedCategory && axis.dataKey && !(entry[axis.dataKey] == null) ) {
+      const matchedTick = findEntryInArray(ticks, 'value', entry[axis.dataKey]);
+      if (matchedTick) {
+        return matchedTick.coordinate + bandSize / 2;
+      }
+    }
+    return ticks[index]
+      ? ticks[index].coordinate + bandSize / 2
+      : null;
+  }
+
+  const value = getValueByDataKey(
+    entry,
+    dataKey == null
+      ? axis.dataKey
+      : dataKey
+  );
+  return _getAxisScaleValue(axis, value);
+};
+
 /**
  * Compose the data of each group
  * @param {Object} props The props from the component
@@ -167,38 +206,40 @@ setDisplayNameTo(Line, 'Line')
  * @return {Array}  Composed data
  */
 export const getLineComposedData = ({
-  props,
+  layout,
   xAxis,
   yAxis,
   xAxisTicks,
   yAxisTicks,
-  dataKey,
   bandSize,
+  dataKey,
   displayedData,
   offset
 }) => {
-  const { layout } = props
-  , points = displayedData.map((entry, index) => {
-      const value = getValueByDataKey(
-        entry,
-        dataKey
-      );
-      return layout === 'horizontal'
-        ? {
-            x: getCateCoordinateOfLine({ axis: xAxis, ticks: xAxisTicks, bandSize, entry, index }),
-            y: isNullOrUndef(value) ? null : yAxis.scale(value),
-            value,
-            payload: entry
-          }
-        : {
-            x: isNullOrUndef(value) ? null : xAxis.scale(value),
-            y: getCateCoordinateOfLine({ axis: yAxis, ticks: yAxisTicks, bandSize, entry, index }),
-            value,
-            payload: entry
-         };
-  });
+  const [
+    _crX,
+    _crY
+  ] = isLayoutHorizontal(layout)
+    ? [
+      (value, entry, index) => _getCateCoordinateOfLine({ axis: xAxis, ticks: xAxisTicks, bandSize, entry, index }),
+      (value) => _getAxisScaleValue(yAxis, value)
+    ] : [
+      (value) => _getAxisScaleValue(xAxis, value),
+      (value, entry, index) => _getCateCoordinateOfLine({ axis: yAxis, ticks: yAxisTicks, bandSize, entry, index })
+    ];
   return {
-    points,
+    points: displayedData.map((entry, index) => {
+        const value = getValueByDataKey(
+          entry,
+          dataKey
+        );
+        return {
+          x: _crX(value, entry, index),
+          y: _crY(value, entry, index),
+          value,
+          payload: entry
+        };
+    }),
     layout,
     ...offset
   };

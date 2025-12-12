@@ -3,12 +3,12 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.getLineComposedData = exports.Line = void 0;
-var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _Layer = require("../container/Layer");
 var _Global = require("../util/Global");
 var _ChartUtils = require("../util/ChartUtils");
+var _DataUtils = require("../util/DataUtils");
 var _cartesianFn = require("./cartesianFn");
 var _useAnimationHandle = _interopRequireDefault(require("./useAnimationHandle"));
 var _usePrevCurData = _interopRequireDefault(require("./usePrevCurData"));
@@ -21,11 +21,13 @@ var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 const DF_TOTAL_LENGTH = 0;
 const _getTotalLength = curveDom => {
+  let _totalLength;
   try {
-    return curveDom && curveDom.getTotalLength && curveDom.getTotalLength() || DF_TOTAL_LENGTH;
+    _totalLength = curveDom && curveDom.getTotalLength && curveDom.getTotalLength() || DF_TOTAL_LENGTH;
   } catch (err) {
-    return DF_TOTAL_LENGTH;
+    _totalLength = DF_TOTAL_LENGTH;
   }
+  return _totalLength;
 };
 const DF_PROPS = {
   xAxisId: 0,
@@ -109,6 +111,29 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
   });
 });
 (0, _uiApi.setDisplayNameTo)(Line, 'Line');
+const _getAxisScaleValue = (axis, value) => value == null ? value : axis.scale(value);
+const _getCateCoordinateOfLine = _ref => {
+  let {
+    axis,
+    ticks,
+    bandSize,
+    entry,
+    index,
+    dataKey
+  } = _ref;
+  if (axis.type === 'category') {
+    // find coordinate of category axis by the value of category
+    if (!axis.allowDuplicatedCategory && axis.dataKey && !(entry[axis.dataKey] == null)) {
+      const matchedTick = (0, _DataUtils.findEntryInArray)(ticks, 'value', entry[axis.dataKey]);
+      if (matchedTick) {
+        return matchedTick.coordinate + bandSize / 2;
+      }
+    }
+    return ticks[index] ? ticks[index].coordinate + bandSize / 2 : null;
+  }
+  const value = (0, _ChartUtils.getValueByDataKey)(entry, dataKey == null ? axis.dataKey : dataKey);
+  return _getAxisScaleValue(axis, value);
+};
 
 /**
  * Compose the data of each group
@@ -118,49 +143,41 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
  * @param  {String} dataKey The unique key of a group
  * @return {Array}  Composed data
  */
-const getLineComposedData = _ref => {
+const getLineComposedData = _ref2 => {
   let {
-    props,
+    layout,
     xAxis,
     yAxis,
     xAxisTicks,
     yAxisTicks,
-    dataKey,
     bandSize,
+    dataKey,
     displayedData,
     offset
-  } = _ref;
-  const {
-      layout
-    } = props,
-    points = displayedData.map((entry, index) => {
+  } = _ref2;
+  const [_crX, _crY] = (0, _ChartUtils.isLayoutHorizontal)(layout) ? [(value, entry, index) => _getCateCoordinateOfLine({
+    axis: xAxis,
+    ticks: xAxisTicks,
+    bandSize,
+    entry,
+    index
+  }), value => _getAxisScaleValue(yAxis, value)] : [value => _getAxisScaleValue(xAxis, value), (value, entry, index) => _getCateCoordinateOfLine({
+    axis: yAxis,
+    ticks: yAxisTicks,
+    bandSize,
+    entry,
+    index
+  })];
+  return Object.assign({
+    points: displayedData.map((entry, index) => {
       const value = (0, _ChartUtils.getValueByDataKey)(entry, dataKey);
-      return layout === 'horizontal' ? {
-        x: (0, _ChartUtils.getCateCoordinateOfLine)({
-          axis: xAxis,
-          ticks: xAxisTicks,
-          bandSize,
-          entry,
-          index
-        }),
-        y: (0, _isTypeFn.isNullOrUndef)(value) ? null : yAxis.scale(value),
-        value,
-        payload: entry
-      } : {
-        x: (0, _isTypeFn.isNullOrUndef)(value) ? null : xAxis.scale(value),
-        y: (0, _ChartUtils.getCateCoordinateOfLine)({
-          axis: yAxis,
-          ticks: yAxisTicks,
-          bandSize,
-          entry,
-          index
-        }),
+      return {
+        x: _crX(value, entry, index),
+        y: _crY(value, entry, index),
         value,
         payload: entry
       };
-    });
-  return Object.assign({
-    points,
+    }),
     layout
   }, offset);
 };
