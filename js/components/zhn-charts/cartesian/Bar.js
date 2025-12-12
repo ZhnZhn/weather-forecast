@@ -81,11 +81,17 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
     })]
   });
 });
-Bar.displayName = 'Bar';
+(0, _uiApi.setDisplayNameTo)(Bar, 'Bar');
 const _getValueArr = (arrOrValue, baseValue) => (0, _isTypeFn.isArr)(arrOrValue) ? arrOrValue : [baseValue, arrOrValue];
 const _isMinPointSizeCase = (minPointSize, value) => (0, _DataUtils.mathAbs)(minPointSize) > 0 && (0, _DataUtils.mathAbs)(value) < (0, _DataUtils.mathAbs)(minPointSize),
   _calcMinPointSizeDelta = (minPointSize, value) => (0, _DataUtils.mathSign)(value || minPointSize) * ((0, _DataUtils.mathAbs)(minPointSize) - (0, _DataUtils.mathAbs)(value)),
-  _crValueScaleTuple = (xyAxis, value) => [xyAxis.scale(value[0]), xyAxis.scale(value[1])];
+  _crValueScaleTuple = (xyAxis, value) => [xyAxis.scale(value[0]), xyAxis.scale(value[1])],
+  _crBackground = (x, y, width, height) => ({
+    x,
+    y,
+    width,
+    height
+  });
 
 /**
  * Compose the data of each group
@@ -99,7 +105,7 @@ const _isMinPointSizeCase = (minPointSize, value) => (0, _DataUtils.mathAbs)(min
  */
 const getBarComposedData = _ref => {
   let {
-    props,
+    layout,
     item,
     barPosition,
     bandSize,
@@ -107,7 +113,7 @@ const getBarComposedData = _ref => {
     yAxis,
     xAxisTicks,
     yAxisTicks,
-    stackedData,
+    //stackedData,
     dataStartIndex = 0,
     displayedData,
     offset
@@ -117,9 +123,6 @@ const getBarComposedData = _ref => {
     return null;
   }
   const {
-      layout
-    } = props,
-    {
       dataKey,
       minPointSize
     } = item.props,
@@ -146,16 +149,11 @@ const getBarComposedData = _ref => {
         entry,
         index
       });
-      y = (_ref2 = currentValueScale != null ? currentValueScale : baseValueScale) != null ? _ref2 : void 0;
       width = pos.size;
+      background = _crBackground(x, yAxis.y, width, yAxis.height);
+      y = (_ref2 = currentValueScale != null ? currentValueScale : baseValueScale) != null ? _ref2 : void 0;
       const computedHeight = baseValueScale - currentValueScale;
       height = (0, _isTypeFn.isNaN)(computedHeight) ? 0 : computedHeight;
-      background = {
-        y: yAxis.y,
-        height: yAxis.height,
-        x,
-        width
-      };
       if (_isMinPointSizeCase(minPointSize, height)) {
         const delta = _calcMinPointSizeDelta(minPointSize, height);
         y -= delta;
@@ -163,7 +161,6 @@ const getBarComposedData = _ref => {
       }
     } else {
       const [baseValueScale, currentValueScale] = _crValueScaleTuple(xAxis, value);
-      x = baseValueScale;
       y = (0, _ChartUtils.getCateCoordinateOfBar)({
         axis: yAxis,
         ticks: yAxisTicks,
@@ -172,14 +169,10 @@ const getBarComposedData = _ref => {
         entry,
         index
       });
-      width = currentValueScale - baseValueScale;
       height = pos.size;
-      background = {
-        x: xAxis.x,
-        width: xAxis.width,
-        y,
-        height
-      };
+      background = _crBackground(xAxis.x, y, xAxis.width, height);
+      x = baseValueScale;
+      width = currentValueScale - baseValueScale;
       if (_isMinPointSizeCase(minPointSize, width)) {
         width += _calcMinPointSizeDelta(minPointSize, width);
       }
@@ -189,9 +182,10 @@ const getBarComposedData = _ref => {
       y,
       width,
       height,
-      value: stackedData ? value : value[1],
-      payload: entry,
       background,
+      //value: stackedData ? value : value[1],
+      value: value[1],
+      payload: entry,
       tooltipPayload: [(0, _ChartUtils.getTooltipItem)(item, entry)],
       tooltipPosition: {
         x: x + width / 2,
