@@ -12,10 +12,8 @@ import {
 import {
   parseChildIndex,
   validateWidthHeight,
-  getDisplayName,
   findAllByType,
   findChildByType,
-
   renderByMap
 } from '../util/ReactUtils';
 
@@ -32,6 +30,7 @@ import { Legend } from '../component/Legend';
 import {
   getOrderedTooltipTicks,
   getBarSizeList,
+  isItemTypeBar,
   getAxisNameByLayout
 } from './generateCategoricalChartFn';
 
@@ -49,54 +48,39 @@ const _calcLegendWidth = (
 ) => width - (margin.left || 0) - (margin.right || 0);
 
 const _crBarPosition = (
-  item,
   cateAxis,
   cateTicks,
   bandSize,
-  childMaxBarSize,
-  globalMaxBarSize,
+  maxBarSize,
   barGap,
   barCategoryGap,
   sizeList
 ) => {
-  const itemIsBar = getDisplayName(item.type)
-    .indexOf('Bar') >= 0
+  const barBandSize = getBandSizeOfAxis(
+     cateAxis,
+     cateTicks,
+     true
+  ) ?? maxBarSize ?? 0
+  , isBarBandSize = barBandSize !== bandSize
+  , barPosition = getBarPosition({
+     barGap,
+     barCategoryGap,
+     bandSize: isBarBandSize
+       ? barBandSize
+       : bandSize,
+     sizeList,
+     maxBarSize
+  });
 
-  let barPosition = [];
-  if (itemIsBar) {
-    // ???bar,??bar???
-    const maxBarSize = childMaxBarSize == null
-      ? globalMaxBarSize
-      : childMaxBarSize
-    , barBandSize = getBandSizeOfAxis(
-        cateAxis,
-        cateTicks,
-        true
-      ) ?? maxBarSize ?? 0
-    , isBarBandSize = barBandSize !== bandSize;
-
-    barPosition = getBarPosition({
-      barGap,
-      barCategoryGap,
-      bandSize: isBarBandSize
-        ? barBandSize
-        : bandSize,
-      sizeList,
-      maxBarSize,
-    });
-
-    if (isBarBandSize) {
-      barPosition = barPosition.map((pos) => ({
-        ...pos,
-        position: {
-          ...pos.position,
-          offset: pos.position.offset - barBandSize / 2
-        }
-      }));
-    }
-  }
-  return barPosition;
-}
+  return isBarBandSize
+    ? barPosition.map(pos => ({
+      ...pos,
+      position: {
+        ...pos.position,
+        offset: pos.position.offset - barBandSize / 2
+      }
+    })) : barPosition;
+};
 
 const fGetFormatItems = (
   axisComponents
@@ -147,21 +131,21 @@ const fGetFormatItems = (
     const cateAxis = axisObj[cateAxisName]
     , cateTicks = axisObj[`${cateAxisName}Ticks`]
     , bandSize = getBandSizeOfAxis(cateAxis, cateTicks)
-    , barPosition = _crBarPosition(
-       item,
+    , barPosition = isItemTypeBar(item) ? _crBarPosition(
        cateAxis,
        cateTicks,
        bandSize,
-       childMaxBarSize,
-       globalMaxBarSize,
+       childMaxBarSize == null
+         ? globalMaxBarSize
+         : childMaxBarSize,
        barGap,
        barCategoryGap,
        sizeList
-    )
+    ) : void 0
     , composedFn = item
        && item.type
        && item.type.getComposedData;
-       
+
     if (composedFn) {
       formattedItems.push({
         props: {

@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.getTooltipData = exports.getOrderedTooltipTicks = exports.getBarSizeList = exports.getAxisNameByLayout = void 0;
+exports.isItemTypeBar = exports.getTooltipData = exports.getOrderedTooltipTicks = exports.getBarSizeList = exports.getAxisNameByLayout = void 0;
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
@@ -55,12 +55,13 @@ const getTooltipData = (orderedTooltipTicks, graphicalItems, chartData, layout, 
 exports.getTooltipData = getTooltipData;
 const getOrderedTooltipTicks = axisMap => (0, _ChartUtils.getTicksOfAxis)((0, _DataUtils.getAnyElementOfObject)(axisMap), false, true).sort(o => o.coordinate);
 exports.getOrderedTooltipTicks = getOrderedTooltipTicks;
-const _getGraphicalBarItems = graphicalItems => (graphicalItems || []).filter(item => ((0, _ReactUtils.getDisplayName)(item && item.type) || '').indexOf('Bar') >= 0);
-const getBarSizeList = (graphicalItems, barSize) => _getGraphicalBarItems(graphicalItems).map(item => {
+const isItemTypeBar = item => ((0, _ReactUtils.getDisplayName)(item && item.type) || '').indexOf('Bar') >= 0;
+exports.isItemTypeBar = isItemTypeBar;
+const getBarSizeList = (graphicalItems, barSize) => (graphicalItems || []).filter(isItemTypeBar).map(item => {
   var _item$props$barSize;
   return {
-    barSize: (_item$props$barSize = item.props.barSize) != null ? _item$props$barSize : barSize,
     item,
+    barSize: (_item$props$barSize = item.props.barSize) != null ? _item$props$barSize : barSize,
     stackList: []
   };
 });
