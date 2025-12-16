@@ -8,7 +8,6 @@ var _ReactUtils = require("../util/ReactUtils");
 var _chartFn = require("./chartFn");
 var _XAxis = require("../cartesian/XAxis");
 var _YAxis = require("../cartesian/YAxis");
-var _Legend = require("../component/Legend");
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _calculateOffset = require("./calculateOffset");
 var _getAxisMap = require("./getAxisMap");
@@ -48,8 +47,8 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
       offset
     } = currentState,
     {
-      barSize,
       layout,
+      barSize,
       barGap,
       barCategoryGap,
       maxBarSize: globalMaxBarSize
@@ -72,17 +71,10 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
       bandSize = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks),
       barPosition = (0, _generateCategoricalChartFn.isItemTypeBar)(item) ? _crBarPosition(cateAxis, cateTicks, bandSize, childMaxBarSize == null ? globalMaxBarSize : childMaxBarSize, barGap, barCategoryGap, sizeList) : void 0,
       composedFn = (0, _generateCategoricalChartFn.getComposedDataFn)(item);
-    /*
-    , composedFn = item
-       && item.type
-       && item.type.getComposedData;
-    */
-
     if (composedFn) {
       formattedItems.push({
         props: Object.assign({}, composedFn(Object.assign({}, axisObj, {
           displayedData,
-          props,
           dataKey,
           item,
           bandSize,
@@ -141,23 +133,25 @@ const fUpdateStateOfAxisMapsOffset = (chartName, GraphicalChild) => (_ref2, lege
         graphicalItems
       }));
       return result;
-    }, {});
-  const offset = (0, _calculateOffset.calculateOffset)(Object.assign({}, axisObj, {
-    props,
-    graphicalItems
-  }), legendBBox, (0, _ReactUtils.findChildByType)(children, _Legend.Legend));
+    }, {}),
+    legendItem = (0, _ChartUtils.findChildTypeLegend)(children),
+    offset = (0, _calculateOffset.calculateOffset)(Object.assign({}, axisObj, {
+      width,
+      height,
+      margin
+    }), legendBBox, legendItem);
   _getObjectKeys(axisObj).forEach(key => {
     axisObj[key] = (0, _CartesianUtils.formatAxisMap)(props, axisObj[key], offset, key.replace('Map', ''), chartName);
   });
   const formattedGraphicalItems = getFormatItems(props, Object.assign({}, axisObj, {
-    graphicalItems,
-    offset
-  }));
-  const [_legendProps, _legendItem] = (0, _ChartUtils.getLegendProps)({
-    children,
-    formattedGraphicalItems,
-    legendWidth: _calcLegendWidth(width, margin)
-  });
+      graphicalItems,
+      offset
+    })),
+    [_legendProps, _legendItem] = (0, _ChartUtils.getLegendProps)({
+      legendItem,
+      formattedGraphicalItems,
+      legendWidth: _calcLegendWidth(width, margin)
+    });
   return [offset, (0, _generateCategoricalChartFn.getOrderedTooltipTicks)(axisObj[cateAxisName + "Map"]), graphicalItems, (0, _ReactUtils.renderByMap)(children, {
     clipPathId,
     width,

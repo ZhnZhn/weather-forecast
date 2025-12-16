@@ -9,9 +9,10 @@ const _calcOffset = (axisMap, getEntryValue, initialValue) => _getObjectKeys(axi
     {
       orientation
     } = entry;
-  return !entry.mirror && !entry.hide ? Object.assign({}, result, {
-    [orientation]: (orientation && result[orientation] || 0) + getEntryValue(entry)
-  }) : result;
+  if (!entry.mirror && !entry.hide) {
+    result[orientation] = (orientation && result[orientation] || 0) + getEntryValue(entry);
+  }
+  return result;
 }, initialValue);
 
 /**
@@ -26,13 +27,13 @@ const _calcOffset = (axisMap, getEntryValue, initialValue) => _getObjectKeys(axi
  */
 const calculateOffset = (_ref, prevLegendBBox, legendItem) => {
   let {
-    props,
-    graphicalItems,
     xAxisMap = {},
-    yAxisMap = {}
+    yAxisMap = {},
+    width,
+    height,
+    margin
   } = _ref;
-  const margin = props.margin || {},
-    offsetH = _calcOffset(yAxisMap, entry => entry.width, {
+  const offsetH = _calcOffset(yAxisMap, entry => entry.width, {
       left: margin.left || 0,
       right: margin.right || 0
     }),
@@ -41,15 +42,14 @@ const calculateOffset = (_ref, prevLegendBBox, legendItem) => {
       bottom: margin.bottom || 0
     });
   let offset = Object.assign({}, offsetV, offsetH);
-  const brushBottom = offset.bottom;
   if (legendItem && prevLegendBBox) {
-    offset = (0, _ChartUtils.appendOffsetOfLegend)(offset, graphicalItems, props, prevLegendBBox);
+    offset = (0, _ChartUtils.appendOffsetOfLegend)(offset, margin, width, prevLegendBBox, legendItem);
   }
   return Object.assign({
-    brushBottom
+    brushBottom: offset.bottom
   }, offset, {
-    width: props.width - offset.left - offset.right,
-    height: props.height - offset.top - offset.bottom
+    width: width - offset.left - offset.right,
+    height: height - offset.top - offset.bottom
   });
 };
 exports.calculateOffset = calculateOffset;

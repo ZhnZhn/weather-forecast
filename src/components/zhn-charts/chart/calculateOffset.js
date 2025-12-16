@@ -9,12 +9,10 @@ const _calcOffset = (
   .reduce((result, id) => {
      const entry = axisMap[id]
      , { orientation } = entry;
-     return !entry.mirror && !entry.hide
-       ? {
-           ...result,
-           [orientation]: ((orientation && result[orientation]) || 0) + getEntryValue(entry)
-         }
-       : result;
+     if (!entry.mirror && !entry.hide) {
+       result[orientation] = ((orientation && result[orientation]) || 0) + getEntryValue(entry)
+     }
+     return result;
   }, initialValue);
 
 /**
@@ -28,13 +26,13 @@ const _calcOffset = (
  * @return {Object} The offset of main part in the svg element
  */
 export const calculateOffset = ({
-  props,
-  graphicalItems,
   xAxisMap = {},
-  yAxisMap = {}
+  yAxisMap = {},
+  width,
+  height,
+  margin
 }, prevLegendBBox, legendItem) => {
-    const margin = props.margin || {}
-    , offsetH = _calcOffset(
+    const offsetH = _calcOffset(
        yAxisMap,
        (entry) => entry.width,
        {
@@ -52,16 +50,21 @@ export const calculateOffset = ({
     )
 
     let offset = { ...offsetV, ...offsetH };
-    const brushBottom = offset.bottom;
 
     if (legendItem && prevLegendBBox) {
-      offset = appendOffsetOfLegend(offset, graphicalItems, props, prevLegendBBox);
+      offset = appendOffsetOfLegend(
+        offset,
+        margin,
+        width,
+        prevLegendBBox,
+        legendItem
+      );
     }
 
     return {
-      brushBottom,
+      brushBottom: offset.bottom,
       ...offset,
-      width: props.width - offset.left - offset.right,
-      height: props.height - offset.top - offset.bottom
+      width: width - offset.left - offset.right,
+      height: height - offset.top - offset.bottom
     };
 }

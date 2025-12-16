@@ -6,14 +6,14 @@ import {
   getBarPosition,
   getTicksOfAxis,
   getBandSizeOfAxis,
-  getLegendProps
+  getLegendProps,
+  findChildTypeLegend
 } from '../util/ChartUtils';
 
 import {
   parseChildIndex,
   validateWidthHeight,
   findAllByType,
-  findChildByType,
   renderByMap
 } from '../util/ReactUtils';
 
@@ -24,8 +24,6 @@ import {
 
 import { XAxis } from '../cartesian/XAxis';
 import { YAxis } from '../cartesian/YAxis';
-
-import { Legend } from '../component/Legend';
 
 import {
   getOrderedTooltipTicks,
@@ -107,8 +105,8 @@ const fGetFormatItems = (
     offset
   } = currentState
   , {
-    barSize,
     layout,
+    barSize,
     barGap,
     barCategoryGap,
     maxBarSize: globalMaxBarSize
@@ -152,12 +150,7 @@ const fGetFormatItems = (
        barCategoryGap,
        sizeList
     ) : void 0
-    , composedFn = getComposedDataFn(item)
-    /*
-    , composedFn = item
-       && item.type
-       && item.type.getComposedData;
-    */
+    , composedFn = getComposedDataFn(item);
 
     if (composedFn) {
       formattedItems.push({
@@ -165,7 +158,6 @@ const fGetFormatItems = (
           ...composedFn({
             ...axisObj,
             displayedData,
-            props,
             dataKey,
             item,
             bandSize,
@@ -233,19 +225,22 @@ export const fUpdateStateOfAxisMapsOffset = (
       children,
       GraphicalChild
     )
+
   , axisObj = axisComponents.reduce((result, entry) => {
       result[`${entry.axisType}Map`] = getAxisMap(props, {
          ...entry,
          graphicalItems
       })
       return result;
-  }, {});
+  }, {})
 
-  const offset = calculateOffset({
+  , legendItem = findChildTypeLegend(children)
+  , offset = calculateOffset({
     ...axisObj,
-    props,
-    graphicalItems
-  }, legendBBox, findChildByType(children, Legend));
+    width,
+    height,
+    margin
+  }, legendBBox, legendItem);
 
   _getObjectKeys(axisObj)
      .forEach(key => {
@@ -262,13 +257,13 @@ export const fUpdateStateOfAxisMapsOffset = (
     ...axisObj,
     graphicalItems,
     offset
-  });
+  })
 
-  const [
+  , [
     _legendProps,
     _legendItem
   ] = getLegendProps({
-    children,
+    legendItem,
     formattedGraphicalItems,
     legendWidth: _calcLegendWidth(width, margin)
   });
