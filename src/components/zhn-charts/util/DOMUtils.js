@@ -1,78 +1,54 @@
 import { IS_SSR } from './Global';
+import { crLRUCache } from './LRUCache';
 
-const _getObjectKeys = Object.keys;
+const _assign = Object.assign
+, _mathRandom = Math.round;
 
-const stringCache = {
-  widthCache: {},
-  cacheCount: 0
-};
-const MAX_CACHE_NUM = 2000;
-const SPAN_STYLE = {
+const defaultConfig = {
+  cacheSize: 2000,
+  enableCache: true
+}
+, currentConfig = {
+  ...defaultConfig
+}
+, stringCache = crLRUCache(currentConfig.cacheSize)
+
+, SPAN_STYLE = {
   position: 'absolute',
   top: '-20000px',
   left: 0,
   padding: 0,
   margin: 0,
   border: 'none',
-  whiteSpace: 'pre'
-};
-const STYLE_LIST = [
-  'minWidth',
-  'maxWidth',
-  'width',
-  'minHeight',
-  'maxHeight',
-  'height',
-  'top',
-  'left',
-  'fontSize',
-  'lineHeight',
-  'padding',
-  'margin',
-  'paddingLeft',
-  'paddingRight',
-  'paddingTop',
-  'paddingBottom',
-  'marginLeft',
-  'marginRight',
-  'marginTop',
-  'marginBottom'
-];
-const MEASUREMENT_SPAN_ID = 'recharts_measurement_span';
-
-function autoCompleteStyle(name, value) {
-  if (STYLE_LIST.indexOf(name) >= 0 && value === +value) {
-    return `${value}px`;
-  }
-  return value;
+  whiteSpace: 'pre',
 }
+, MEASUREMENT_SPAN_ID = 'recharts_measurement_span';
 
-function camelToMiddleLine(text) {
-  const strs = text.split('');
-  const formatStrs = strs.reduce((result, entry) => {
-      if (entry === entry.toUpperCase()) {
-          return [...result, '-', entry.toLowerCase()];
-      }
-      return [...result, entry];
-  }, []);
-  return formatStrs.join('');
-}
-
-export const getStyleString = (
+const _crCacheKey = (
+  text,
   style
-) => _getObjectKeys(style)
-  .reduce((result, s) => `${result}${camelToMiddleLine(s)}:${autoCompleteStyle(s, style[s])};`, '');
+) => [
+  text,
+  style.fontSize || '',
+  style.fontFamily || '',
+  style.fontWeight || '',
+  style.fontStyle || '',
+  style.letterSpacing || '',
+  style.textTransform || ''
+].join('|');
 
-export const getStringSize = (text, style = {}) => {
-  if (text === undefined || text === null || IS_SSR) {
-    return { width: 0, height: 0 };
-  }
-  const str = `${text}`
-  , styleString = getStyleString(style)
-  , cacheKey = `${str}-${styleString}`;
-  if (stringCache.widthCache[cacheKey]) {
-    return stringCache.widthCache[cacheKey];
-  }
+const _crWidthHeightSize = (width, height) => ({
+  width,
+  height
+})
+
+/**
+ * Measure text using DOM (accurate but slower)
+ * @param text - The text to measure
+ * @param style - CSS style properties to apply
+ * @returns The size of the text
+ */
+const _measureTextWithDOM = (text, style) => {
   try {
     let measurementSpan = document.getElementById(MEASUREMENT_SPAN_ID);
     if (!measurementSpan) {
@@ -81,44 +57,57 @@ export const getStringSize = (text, style = {}) => {
       measurementSpan.setAttribute('aria-hidden', 'true');
       document.body.appendChild(measurementSpan);
     }
-    // Need to use CSS Object Model (CSSOM) to be able to comply with Content Security Policy (CSP)
-    // https://en.wikipedia.org/wiki/Content_Security_Policy
-    const measurementSpanStyle = { ...SPAN_STYLE, ...style };
-    _getObjectKeys(measurementSpanStyle).map(styleKey => {
-      measurementSpan.style[styleKey] = measurementSpanStyle[styleKey];
-      return styleKey;
-    });
-    measurementSpan.textContent = str;
-    const rect = measurementSpan.getBoundingClientRect()
-    , result = {
-      width: rect.width,
-      height: rect.height
-    };
-    stringCache.widthCache[cacheKey] = result;
-    if (++stringCache.cacheCount > MAX_CACHE_NUM) {
-      stringCache.cacheCount = 0;
-      stringCache.widthCache = {};
-    }
-    return result;
-  }
-  catch (e) {
-    return { width: 0, height: 0 };
+
+    // Apply styles directly without unnecessary object creation
+    _assign(measurementSpan.style, SPAN_STYLE, style);
+    measurementSpan.textContent = `${text}`;
+
+    const rect = measurementSpan.getBoundingClientRect();
+    return _crWidthHeightSize(rect.width, rect.height);
+  } catch {
+    return _crWidthHeightSize(0, 0);
   }
 };
 
+export const getStringSize = (text, style = {}) => {
+  if (text == null || IS_SSR) {
+    return _crWidthHeightSize(0, 0);
+  }
+
+  // If caching is disabled, measure directly
+  if (!currentConfig.enableCache) {
+    return _measureTextWithDOM(text, style);
+  }
+
+  const cacheKey = _crCacheKey(text, style)
+  , cachedResult = stringCache.get(cacheKey);
+
+  if (cachedResult) {
+    return cachedResult;
+  }
+
+  // Measure using DOM
+  const result = _measureTextWithDOM(text, style);
+
+  // Store in LRU cache
+  stringCache.set(cacheKey, result);
+
+  return result;
+};
+
+
 export const getOffset = (el) => {
-  const html = el.ownerDocument.documentElement;
-  let box = { top: 0, left: 0 };
+  const html = el.ownerDocument.documentElement
   // If we don't have gBCR, just use 0,0 rather than error
   // BlackBerry 5, iOS 3 (original iPhone)
-  if (typeof el.getBoundingClientRect !== 'undefined') {
-    box = el.getBoundingClientRect();
-  }
+  , box = typeof el.getBoundingClientRect === 'undefined'
+     ? { top: 0, left: 0 }
+     : el.getBoundingClientRect();
   return {
     top: box.top + window.pageYOffset - html.clientTop,
     left: box.left + window.pageXOffset - html.clientLeft
   };
-};
+}
 
 /**
  * Calculate coordinate of cursor in chart
@@ -130,6 +119,6 @@ export const calculateChartCoordinate = (
   event,
   offset
 ) => ({
-  chartX: Math.round(event.pageX - offset.left),
-  chartY: Math.round(event.pageY - offset.top)
-});
+  chartX: _mathRandom(event.pageX - offset.left),
+  chartY: _mathRandom(event.pageY - offset.top)
+})
