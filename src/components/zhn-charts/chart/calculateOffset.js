@@ -1,4 +1,11 @@
-import { appendOffsetOfLegend } from '../util/ChartUtils';
+import {
+  isNumber
+} from '../../../utils/isTypeFn';
+
+import {
+  isLayoutHorizontal,
+  isLayoutVertical
+} from '../util/ChartUtils';
 
 const _getObjectKeys = Object.keys;
 const _calcOffset = (
@@ -14,6 +21,29 @@ const _calcOffset = (
      }
      return result;
   }, initialValue);
+
+const _appendOffsetOfLegend = (
+  offset,
+  legendBox,
+  legendProps
+) => {
+  const {
+    align,
+    verticalAlign,
+    layout
+  } = legendProps;
+  if (isLayoutVertical(layout)
+    || (isLayoutHorizontal(layout) && verticalAlign === 'middle')
+    && isNumber(offset[align])) {
+    offset[align] += legendBox.width || 0
+  }
+  if (isLayoutHorizontal(layout)
+    || (isLayoutVertical(layout) && align === 'center')
+    && isNumber(offset[verticalAlign])) {
+    offset[verticalAlign] += legendBox.height || 0
+  }
+  return offset;
+};
 
 /**
  * Calculate the offset of main part in the svg element
@@ -52,19 +82,15 @@ export const calculateOffset = ({
     let offset = { ...offsetV, ...offsetH };
 
     if (legendItem && prevLegendBBox) {
-      offset = appendOffsetOfLegend(
+      offset = _appendOffsetOfLegend(
         offset,
-        margin,
-        width,
         prevLegendBBox,
-        legendItem
+        legendItem.props
       );
     }
 
-    return {
-      brushBottom: offset.bottom,
-      ...offset,
-      width: width - offset.left - offset.right,
-      height: height - offset.top - offset.bottom
-    };
+    offset.width = width - offset.left - offset.right
+    offset.height = height - offset.top - offset.bottom
+
+    return offset;
 }

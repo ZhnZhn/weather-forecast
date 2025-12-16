@@ -285,43 +285,6 @@ export const getBarPosition = ({
   return result;
 };
 
-export const appendOffsetOfLegend = (
-  offset,
-  margin,
-  width,
-  legendBox,
-  legendItem
-) => {
-  const legendWidth = width - (margin.left || 0) - (margin.right || 0)
-  , legendProps = getLegendProps({
-     legendItem,
-     legendWidth
-  })[0];
-
-  let newOffset = offset;
-  if (legendProps) {
-    const box = legendBox || {}
-    , { align, verticalAlign, layout } = legendProps;
-    if ((isLayoutVertical(layout) || (isLayoutHorizontal(layout) && verticalAlign === 'middle'))
-      && isNumber(offset[align])
-    ) {
-      newOffset = {
-        ...offset,
-        [align]: newOffset[align] + (box.width || 0)
-      };
-    }
-    if ((isLayoutHorizontal(layout) || (isLayoutVertical(layout) && align === 'center'))
-       && isNumber(offset[verticalAlign])
-     ) {
-      newOffset = {
-        ...offset,
-        [verticalAlign]: newOffset[verticalAlign] + (box.height || 0)
-      };
-    }
-  }
-  return newOffset;
-};
-
 /**
  * Get domain of data by the configuration of item element
  * @param  {Array}   data      The data displayed in the chart

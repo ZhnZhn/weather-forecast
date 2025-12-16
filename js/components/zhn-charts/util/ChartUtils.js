@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.getCoordinatesOfGrid = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.findChildTypeLegend = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
+exports.getCoordinatesOfGrid = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.findChildTypeLegend = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
 exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getLegendProps = exports.getDomainOfItemsWithSameAxis = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
@@ -223,34 +223,6 @@ const getBarPosition = _ref3 => {
   */
   return result;
 };
-exports.getBarPosition = getBarPosition;
-const appendOffsetOfLegend = (offset, margin, width, legendBox, legendItem) => {
-  const legendWidth = width - (margin.left || 0) - (margin.right || 0),
-    legendProps = getLegendProps({
-      legendItem,
-      legendWidth
-    })[0];
-  let newOffset = offset;
-  if (legendProps) {
-    const box = legendBox || {},
-      {
-        align,
-        verticalAlign,
-        layout
-      } = legendProps;
-    if ((isLayoutVertical(layout) || isLayoutHorizontal(layout) && verticalAlign === 'middle') && (0, _isTypeFn.isNumber)(offset[align])) {
-      newOffset = Object.assign({}, offset, {
-        [align]: newOffset[align] + (box.width || 0)
-      });
-    }
-    if ((isLayoutHorizontal(layout) || isLayoutVertical(layout) && align === 'center') && (0, _isTypeFn.isNumber)(offset[verticalAlign])) {
-      newOffset = Object.assign({}, offset, {
-        [verticalAlign]: newOffset[verticalAlign] + (box.height || 0)
-      });
-    }
-  }
-  return newOffset;
-};
 
 /**
  * Get domain of data by the configuration of item element
@@ -261,7 +233,7 @@ const appendOffsetOfLegend = (offset, margin, width, legendBox, legendItem) => {
  * @param  {Boolean} filterNil Whether or not filter nil values
  * @return {Array}        Domain
  */
-exports.appendOffsetOfLegend = appendOffsetOfLegend;
+exports.getBarPosition = getBarPosition;
 const getDomainOfItemsWithSameAxis = (data, items, type, layout, filterNil) => {
   const domains = items.map(item => {
     const {
