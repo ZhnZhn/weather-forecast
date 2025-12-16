@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.getCoordinatesOfGrid = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
+exports.getCoordinatesOfGrid = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.findChildTypeLegend = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.appendOffsetOfLegend = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
 exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getLegendProps = exports.getDomainOfItemsWithSameAxis = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
@@ -90,13 +90,14 @@ const _getLegendWidthOrHeight = (props, chartWidth) => {
     width: props.width || chartWidth
   } : null;
 };
+const findChildTypeLegend = children => (0, _ReactUtils.findChildByType)(children, _Legend.Legend);
+exports.findChildTypeLegend = findChildTypeLegend;
 const getLegendProps = _ref => {
   let {
-    children,
+    legendItem,
     formattedGraphicalItems,
     legendWidth
   } = _ref;
-  const legendItem = (0, _ReactUtils.findChildByType)(children, _Legend.Legend);
   if (!legendItem) {
     return [];
   }
@@ -223,15 +224,10 @@ const getBarPosition = _ref3 => {
   return result;
 };
 exports.getBarPosition = getBarPosition;
-const appendOffsetOfLegend = (offset, items, props, legendBox) => {
-  const {
-      children,
-      width,
-      margin
-    } = props,
-    legendWidth = width - (margin.left || 0) - (margin.right || 0),
+const appendOffsetOfLegend = (offset, margin, width, legendBox, legendItem) => {
+  const legendWidth = width - (margin.left || 0) - (margin.right || 0),
     legendProps = getLegendProps({
-      children,
+      legendItem,
       legendWidth
     })[0];
   let newOffset = offset;

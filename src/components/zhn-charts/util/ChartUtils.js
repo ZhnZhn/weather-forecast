@@ -150,13 +150,15 @@ const _getLegendWidthOrHeight = (
     : null;
 }
 
+export const findChildTypeLegend = (
+  children
+) => findChildByType(children, Legend)
 
 export const getLegendProps = ({
-  children,
+  legendItem,
   formattedGraphicalItems,
   legendWidth
 }) => {
-  const legendItem = findChildByType(children, Legend);
   if (!legendItem) {
     return [];
   }
@@ -285,13 +287,17 @@ export const getBarPosition = ({
 
 export const appendOffsetOfLegend = (
   offset,
-  items,
-  props,
-  legendBox
+  margin,
+  width,
+  legendBox,
+  legendItem
 ) => {
-  const { children, width, margin } = props
-  , legendWidth = width - (margin.left || 0) - (margin.right || 0)
-  , legendProps = getLegendProps({ children, legendWidth })[0];
+  const legendWidth = width - (margin.left || 0) - (margin.right || 0)
+  , legendProps = getLegendProps({
+     legendItem,
+     legendWidth
+  })[0];
+
   let newOffset = offset;
   if (legendProps) {
     const box = legendBox || {}
