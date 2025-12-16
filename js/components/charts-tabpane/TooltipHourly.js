@@ -24,11 +24,11 @@ const TooltipHourly = (0, _fTooltip.default)(payload => /*#__PURE__*/(0, _jsxRun
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TooltipRow.default, {
     t: "Rain",
     v: payload.rain,
-    s: _Label.S_RAIN
+    style: _Label.S_RAIN
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TooltipRow.default, {
     t: "Snow",
     v: payload.snow,
-    s: _Label.S_RAIN
+    style: _Label.S_SNOW
   })]
 }));
 var _default = exports.default = TooltipHourly;
