@@ -85,13 +85,17 @@ const Bar = exports.Bar = (0, _uiApi.memo)(props => {
 const _getValueArr = (arrOrValue, baseValue) => (0, _isTypeFn.isArr)(arrOrValue) ? arrOrValue : [baseValue, arrOrValue];
 const _isMinPointSizeCase = (minPointSize, value) => (0, _DataUtils.mathAbs)(minPointSize) > 0 && (0, _DataUtils.mathAbs)(value) < (0, _DataUtils.mathAbs)(minPointSize),
   _calcMinPointSizeDelta = (minPointSize, value) => (0, _DataUtils.mathSign)(value || minPointSize) * ((0, _DataUtils.mathAbs)(minPointSize) - (0, _DataUtils.mathAbs)(value)),
-  _crValueScaleTuple = (xyAxis, value) => [xyAxis.scale(value[0]), xyAxis.scale(value[1])],
+  _crValueScaleTuple = (axis, value) => [axis.scale(value[0]), axis.scale(value[1])],
   _crBackground = (x, y, width, height) => ({
     x,
     y,
     width,
     height
-  });
+  }),
+  _calcHorizontalCaseHeight = (baseValueScale, currentValueScale) => {
+    const computedHeight = baseValueScale - currentValueScale;
+    return (0, _isTypeFn.isNaN)(computedHeight) ? 0 : computedHeight;
+  };
 
 /**
  * Compose the data of each group
@@ -113,7 +117,6 @@ const getBarComposedData = _ref => {
     yAxis,
     xAxisTicks,
     yAxisTicks,
-    //stackedData,
     dataStartIndex = 0,
     displayedData,
     offset
@@ -152,8 +155,7 @@ const getBarComposedData = _ref => {
       width = pos.size;
       background = _crBackground(x, yAxis.y, width, yAxis.height);
       y = (_ref2 = currentValueScale != null ? currentValueScale : baseValueScale) != null ? _ref2 : void 0;
-      const computedHeight = baseValueScale - currentValueScale;
-      height = (0, _isTypeFn.isNaN)(computedHeight) ? 0 : computedHeight;
+      height = _calcHorizontalCaseHeight(baseValueScale, currentValueScale);
       if (_isMinPointSizeCase(minPointSize, height)) {
         const delta = _calcMinPointSizeDelta(minPointSize, height);
         y -= delta;
@@ -183,14 +185,8 @@ const getBarComposedData = _ref => {
       width,
       height,
       background,
-      //value: stackedData ? value : value[1],
       value: value[1],
-      payload: entry,
-      tooltipPayload: [(0, _ChartUtils.getTooltipItem)(item, entry)],
-      tooltipPosition: {
-        x: x + width / 2,
-        y: y + height / 2
-      }
+      payload: entry
     });
   });
   return Object.assign({

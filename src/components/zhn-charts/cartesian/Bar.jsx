@@ -20,8 +20,7 @@ import {
   getCateCoordinateOfBar,
   getValueByDataKey,
   getBaseValueOfBar,
-  findPositionOfBar,
-  getTooltipItem
+  findPositionOfBar
 } from '../util/ChartUtils';
 
 import { Layer } from '../container/Layer';
@@ -142,11 +141,11 @@ const _isMinPointSizeCase = (
 ) => mathSign(value || minPointSize) * (mathAbs(minPointSize) - mathAbs(value))
 
 , _crValueScaleTuple = (
-  xyAxis,
+  axis,
   value
 ) => [
-  xyAxis.scale(value[0]),
-  xyAxis.scale(value[1])
+  axis.scale(value[0]),
+  axis.scale(value[1])
 ]
 , _crBackground = (x, y, width, height) => ({
   x,
@@ -154,6 +153,15 @@ const _isMinPointSizeCase = (
   width,
   height
 })
+, _calcHorizontalCaseHeight = (
+  baseValueScale,
+  currentValueScale
+) => {
+  const computedHeight = baseValueScale - currentValueScale;
+  return isNaN(computedHeight)
+    ? 0
+    : computedHeight;
+};
 
 /**
  * Compose the data of each group
@@ -174,7 +182,6 @@ export const getBarComposedData = ({
   yAxis,
   xAxisTicks,
   yAxisTicks,
-  //stackedData,
   dataStartIndex = 0,
   displayedData,
   offset
@@ -221,15 +228,20 @@ export const getBarComposedData = ({
         index,
       });
       width = pos.size;
-      background = _crBackground(x, yAxis.y, width, yAxis.height)
+      background = _crBackground(
+        x,
+        yAxis.y,
+        width,
+        yAxis.height
+      )
 
       y = currentValueScale
         ?? baseValueScale
         ?? void 0;
-      const computedHeight = baseValueScale - currentValueScale;
-      height = isNaN(computedHeight)
-        ? 0
-        : computedHeight;
+      height = _calcHorizontalCaseHeight(
+        baseValueScale,
+        currentValueScale
+      )
       if (_isMinPointSizeCase(minPointSize, height)) {
         const delta = _calcMinPointSizeDelta(minPointSize, height);
         y -= delta;
@@ -249,7 +261,12 @@ export const getBarComposedData = ({
         index
       });
       height = pos.size;
-      background = _crBackground(xAxis.x, y, xAxis.width, height);
+      background = _crBackground(
+        xAxis.x,
+        y,
+        xAxis.width,
+        height
+      );
       x = baseValueScale;
 
       width = currentValueScale - baseValueScale;
@@ -257,6 +274,7 @@ export const getBarComposedData = ({
         width += _calcMinPointSizeDelta(minPointSize, width);
       }
     }
+
     return {
       ...entry,
       x,
@@ -264,14 +282,8 @@ export const getBarComposedData = ({
       width,
       height,
       background,
-      //value: stackedData ? value : value[1],
       value: value[1],
-      payload: entry,
-      tooltipPayload: [getTooltipItem(item, entry)],
-      tooltipPosition: {
-        x: x + width / 2,
-        y: y + height / 2
-      }
+      payload: entry
     };
   });
   return {
