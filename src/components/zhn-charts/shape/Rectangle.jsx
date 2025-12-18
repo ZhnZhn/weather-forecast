@@ -1,25 +1,11 @@
 import {
-  isFn,
-  isStr
-} from '../../../utils/isTypeFn';
-
-import {
   memo,
-  useRef,
-  useState,
-  useEffect,
-  crProps,
-  getRefValue,
-  setRefValue
+  crProps
 } from '../../uiApi';
 
 import { crCn } from '../../styleFn';
-import { JsAnimation } from '../../zhn-animation/JsAnimation';
-import { getTransitionVal } from '../../zhn-animation/utils';
 
-import { getInterpolatedNumber as interpolate } from '../util/DataUtils';
 import { CL_RECTANGLE } from '../CL';
-
 import { getRectanglePath } from './RectangleFn';
 
 const DF_PROPS = {
@@ -30,51 +16,12 @@ const DF_PROPS = {
   // The radius of border
   // The radius of four corners when radius is a number
   // The radius of left-top, right-top, right-bottom, left-bottom when radius is an array
-  radius: 0,
-  isAnimationActive: !1,
-  isUpdateAnimationActive: !1,
-
-  animationBegin: 0,
-  animationDuration: 1500,
-  animationEasing: 'ease'
+  radius: 0
 }
 , _isNotNumber = v => v !== +v
 
-const _crAnimationStyle = (
-  isAnimationActive,
-  to,
-  t,
-  transition,
-  from
-) => !isAnimationActive
-  ? { strokeDasharray: to }
-  : t > 0
-  ? { strokeDasharray: to, transition }
-  : { strokeDasharray: from }
-
 
 export const Rectangle = memo((props) => {
-  const _refNode = useRef()
-  , [
-    totalLength,
-    setTotalLength
-  ] = useState(-1)
-
-  useEffect(() => {
-    const _el = getRefValue(_refNode);
-    if (_el && isFn(_el.getTotalLength)) {
-      try {
-        const totalLength = _el.getTotalLength();
-        if (totalLength) {
-          setTotalLength(totalLength)
-        }
-      }
-      catch (err) {
-        // calculate total length error
-      }
-    }
-  }, [])
-
   const _props = crProps(DF_PROPS, props)
   , {
     x,
@@ -82,19 +29,8 @@ export const Rectangle = memo((props) => {
     width,
     height,
     radius,
-    className,
-
-    animationEasing,
-    animationDuration,
-    animationBegin,
-    isAnimationActive,
-    isUpdateAnimationActive
+    className
   } = _props
-
-  , prevWidthRef = useRef(width)
-  , prevHeightRef = useRef(height)
-  , prevXRef = useRef(x)
-  , prevYRef = useRef(y);
 
   if (_isNotNumber(x)
       || _isNotNumber(y)
@@ -105,65 +41,11 @@ export const Rectangle = memo((props) => {
     return null;
   }
 
-  const layerClass = crCn(CL_RECTANGLE, className)
-  , _canBegin = totalLength > 0   
-  , from = `0px ${totalLength === -1 ? 1 : totalLength}px`
-  , to = `${totalLength}px 0px`
-  , transition = getTransitionVal(
-    ['strokeDasharray'],
-    animationDuration,
-    isStr(animationEasing) ? animationEasing : void 0
+  return (
+    <path
+      fill={_props.fill}
+      className={crCn(CL_RECTANGLE, className)}
+      d={getRectanglePath(x, y, width, height, radius)}
+    />
   );
-
-  return isUpdateAnimationActive
-   ? (
-      <JsAnimation
-        isActive={isUpdateAnimationActive}
-        canBegin={_canBegin}
-        duration={animationDuration}
-        easing={animationEasing}
-        begin={animationBegin}
-      >
-       {(t) => {
-         const currWidth = interpolate(getRefValue(prevWidthRef), width, t)
-         , currHeight = interpolate(getRefValue(prevHeightRef), height, t)
-         , currX = interpolate(getRefValue(prevXRef), x, t)
-         , currY = interpolate(getRefValue(prevYRef), y, t);
-
-         if (getRefValue(_refNode)) {
-           setRefValue(prevWidthRef, currWidth);
-           setRefValue(prevHeightRef, currHeight);
-           setRefValue(prevXRef, currX);
-           setRefValue(prevYRef, currY);
-         }
-
-         const animationStyle = _crAnimationStyle(
-           isAnimationActive,
-           to,
-           t,
-           transition,
-           from
-         );
-
-         return (
-           <path
-             fill={_props.fill}
-             className={layerClass}
-             d={getRectanglePath(currX, currY, currWidth, currHeight, radius)}
-             ref={_refNode}
-             style={{
-               ...animationStyle,
-               ...props.style,
-             }}
-           />
-        )}}
-      </JsAnimation>
-    )
-  : (
-      <path
-        fill={_props.fill}
-        className={layerClass}
-        d={getRectanglePath(x, y, width, height, radius)}
-      />
-    );
 })

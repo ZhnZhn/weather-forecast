@@ -6,29 +6,15 @@ exports.getLineComposedData = exports.Line = void 0;
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _Layer = require("../container/Layer");
-var _Global = require("../util/Global");
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _cartesianFn = require("./cartesianFn");
-var _useAnimationHandle = _interopRequireDefault(require("./useAnimationHandle"));
-var _usePrevCurData = _interopRequireDefault(require("./usePrevCurData"));
 var _useClipPathId = _interopRequireDefault(require("./useClipPathId"));
 var _ClipPathRect = _interopRequireDefault(require("./ClipPathRect"));
 var _LineDots = require("./LineDots");
 var _LineCurveStatically = require("./LineCurveStatically");
-var _LineCurveWithAnimation = require("./LineCurveWithAnimation");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-const DF_TOTAL_LENGTH = 0;
-const _getTotalLength = curveDom => {
-  let _totalLength;
-  try {
-    _totalLength = curveDom && curveDom.getTotalLength && curveDom.getTotalLength() || DF_TOTAL_LENGTH;
-  } catch (err) {
-    _totalLength = DF_TOTAL_LENGTH;
-  }
-  return _totalLength;
-};
 const DF_PROPS = {
   xAxisId: 0,
   yAxisId: 0,
@@ -40,11 +26,6 @@ const DF_PROPS = {
   strokeWidth: 1,
   fill: '#fff',
   points: [],
-  isAnimationActive: !_Global.IS_SSR,
-  animateNewValues: true,
-  animationBegin: 0,
-  animationDuration: 1500,
-  animationEasing: 'ease',
   hide: false,
   label: false
 };
@@ -54,57 +35,28 @@ const Line = exports.Line = (0, _uiApi.memo)(props => {
       dot,
       points,
       className,
-      isAnimationActive,
       id
     } = _props,
     _refPath = (0, _uiApi.useRef)(),
-    [isAnimationFinished, handleAnimationStart, handleAnimationEnd] = (0, _useAnimationHandle.default)(_props),
-    [prevPoints] = (0, _usePrevCurData.default)(points),
-    clipPathId = (0, _useClipPathId.default)(_CL.CL_LINE, id),
-    [totalLength, setTotalLength] = (0, _uiApi.useState)(0);
-
-  /*eslint-disable react-hooks/exhaustive-deps */
-  (0, _uiApi.useEffect)(() => {
-    if (!isAnimationActive) {
-      return;
-    }
-    setTotalLength(_getTotalLength(_refPath.current));
-  }, []);
-  //isAnimationActive
-  /*eslint-enable react-hooks/exhaustive-deps */
-
+    clipPathId = (0, _useClipPathId.default)(_CL.CL_LINE, id);
   if ((0, _cartesianFn.isHideOrNoData)(_props, points)) {
     return null;
   }
-  const hasSinglePoint = points.length === 1,
-    layerClass = (0, _styleFn.crCn)(_CL.CL_LINE, className),
-    needClip = (0, _cartesianFn.isNeedClip)(_props),
-    _clipPath = (0, _cartesianFn.crClipPath)(needClip, clipPathId),
-    _isAnimationNotActiveOrFinished = !isAnimationActive || isAnimationFinished,
-    _isLineDots = (hasSinglePoint || dot) && _isAnimationNotActiveOrFinished,
-    _isLineCurveWithAnimaton = !hasSinglePoint && isAnimationActive
-    //&& ((!prevPoints && totalLength > 0) || !_isEqual(prevPoints, points))
-    && (!prevPoints && totalLength > 0 || prevPoints !== points);
+  const _needClip = (0, _cartesianFn.isNeedClip)(_props),
+    _clipPath = (0, _cartesianFn.crClipPath)(_needClip, clipPathId),
+    _isLineDots = points.length === 1 || dot;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Layer.Layer, {
-    className: layerClass,
+    className: (0, _styleFn.crCn)(_CL.CL_LINE, className),
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_ClipPathRect.default, {
-      is: needClip,
+      is: _needClip,
       id: clipPathId,
       props: _props
-    }), _isLineCurveWithAnimaton ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineCurveWithAnimation.LineCurveWithAnimation, {
-      clipPath: _clipPath,
-      prevPoints: prevPoints,
-      totalLength: totalLength,
-      props: _props,
-      refPath: _refPath,
-      handleAnimationStart: handleAnimationStart,
-      handleAnimationEnd: handleAnimationEnd
-    }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineCurveStatically.LineCurveStatically, {
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineCurveStatically.LineCurveStatically, {
       clipPath: _clipPath,
       points: points,
       props: _props,
       refPath: _refPath
-    }), _isLineDots && /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineDots.LineDots, {
+    }), ")", _isLineDots && /*#__PURE__*/(0, _jsxRuntime.jsx)(_LineDots.LineDots, {
       clipPath: _clipPath,
       props: _props
     })]

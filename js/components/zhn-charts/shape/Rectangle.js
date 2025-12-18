@@ -2,12 +2,8 @@
 
 exports.__esModule = true;
 exports.Rectangle = void 0;
-var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
-var _JsAnimation = require("../../zhn-animation/JsAnimation");
-var _utils = require("../../zhn-animation/utils");
-var _DataUtils = require("../util/DataUtils");
 var _CL = require("../CL");
 var _RectangleFn = require("./RectangleFn");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -19,38 +15,10 @@ const DF_PROPS = {
     // The radius of border
     // The radius of four corners when radius is a number
     // The radius of left-top, right-top, right-bottom, left-bottom when radius is an array
-    radius: 0,
-    isAnimationActive: !1,
-    isUpdateAnimationActive: !1,
-    animationBegin: 0,
-    animationDuration: 1500,
-    animationEasing: 'ease'
+    radius: 0
   },
   _isNotNumber = v => v !== +v;
-const _crAnimationStyle = (isAnimationActive, to, t, transition, from) => !isAnimationActive ? {
-  strokeDasharray: to
-} : t > 0 ? {
-  strokeDasharray: to,
-  transition
-} : {
-  strokeDasharray: from
-};
 const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
-  const _refNode = (0, _uiApi.useRef)(),
-    [totalLength, setTotalLength] = (0, _uiApi.useState)(-1);
-  (0, _uiApi.useEffect)(() => {
-    const _el = (0, _uiApi.getRefValue)(_refNode);
-    if (_el && (0, _isTypeFn.isFn)(_el.getTotalLength)) {
-      try {
-        const totalLength = _el.getTotalLength();
-        if (totalLength) {
-          setTotalLength(totalLength);
-        }
-      } catch (err) {
-        // calculate total length error
-      }
-    }
-  }, []);
   const _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
       x,
@@ -58,54 +26,14 @@ const Rectangle = exports.Rectangle = (0, _uiApi.memo)(props => {
       width,
       height,
       radius,
-      className,
-      animationEasing,
-      animationDuration,
-      animationBegin,
-      isAnimationActive,
-      isUpdateAnimationActive
-    } = _props,
-    prevWidthRef = (0, _uiApi.useRef)(width),
-    prevHeightRef = (0, _uiApi.useRef)(height),
-    prevXRef = (0, _uiApi.useRef)(x),
-    prevYRef = (0, _uiApi.useRef)(y);
+      className
+    } = _props;
   if (_isNotNumber(x) || _isNotNumber(y) || _isNotNumber(width) || _isNotNumber(height) || width === 0 || height === 0) {
     return null;
   }
-  const layerClass = (0, _styleFn.crCn)(_CL.CL_RECTANGLE, className),
-    _canBegin = totalLength > 0,
-    from = "0px " + (totalLength === -1 ? 1 : totalLength) + "px",
-    to = totalLength + "px 0px",
-    transition = (0, _utils.getTransitionVal)(['strokeDasharray'], animationDuration, (0, _isTypeFn.isStr)(animationEasing) ? animationEasing : void 0);
-  return isUpdateAnimationActive ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_JsAnimation.JsAnimation, {
-    isActive: isUpdateAnimationActive,
-    canBegin: _canBegin,
-    duration: animationDuration,
-    easing: animationEasing,
-    begin: animationBegin,
-    children: t => {
-      const currWidth = (0, _DataUtils.getInterpolatedNumber)((0, _uiApi.getRefValue)(prevWidthRef), width, t),
-        currHeight = (0, _DataUtils.getInterpolatedNumber)((0, _uiApi.getRefValue)(prevHeightRef), height, t),
-        currX = (0, _DataUtils.getInterpolatedNumber)((0, _uiApi.getRefValue)(prevXRef), x, t),
-        currY = (0, _DataUtils.getInterpolatedNumber)((0, _uiApi.getRefValue)(prevYRef), y, t);
-      if ((0, _uiApi.getRefValue)(_refNode)) {
-        (0, _uiApi.setRefValue)(prevWidthRef, currWidth);
-        (0, _uiApi.setRefValue)(prevHeightRef, currHeight);
-        (0, _uiApi.setRefValue)(prevXRef, currX);
-        (0, _uiApi.setRefValue)(prevYRef, currY);
-      }
-      const animationStyle = _crAnimationStyle(isAnimationActive, to, t, transition, from);
-      return /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
-        fill: _props.fill,
-        className: layerClass,
-        d: (0, _RectangleFn.getRectanglePath)(currX, currY, currWidth, currHeight, radius),
-        ref: _refNode,
-        style: Object.assign({}, animationStyle, props.style)
-      });
-    }
-  }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
     fill: _props.fill,
-    className: layerClass,
+    className: (0, _styleFn.crCn)(_CL.CL_RECTANGLE, className),
     d: (0, _RectangleFn.getRectanglePath)(x, y, width, height, radius)
   });
 });

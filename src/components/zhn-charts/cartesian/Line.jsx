@@ -1,15 +1,12 @@
 import {
   memo,
   useRef,
-  useState,
-  useEffect,
   crProps,
   setDisplayNameTo
 } from '../../uiApi';
 import { crCn } from '../../styleFn';
 
 import { Layer } from '../container/Layer';
-import { IS_SSR } from '../util/Global';
 import {
   isLayoutHorizontal,
   getValueByDataKey
@@ -24,32 +21,14 @@ import {
   crClipPath
 } from './cartesianFn';
 
-import useAnimationHandle from './useAnimationHandle';
-import usePrevCurData from './usePrevCurData';
 import useClipPathId from './useClipPathId';
 
 import ClipPathRect  from './ClipPathRect';
 import { LineDots } from './LineDots';
 import { LineCurveStatically } from './LineCurveStatically';
-import { LineCurveWithAnimation } from './LineCurveWithAnimation';
+
 
 import { CL_LINE } from '../CL';
-
-const DF_TOTAL_LENGTH = 0;
-const _getTotalLength = (
-  curveDom
-) => {
-  let _totalLength;
-  try {
-   _totalLength = (curveDom
-      && curveDom.getTotalLength
-      && curveDom.getTotalLength())
-      || DF_TOTAL_LENGTH
-  } catch (err) {
-    _totalLength = DF_TOTAL_LENGTH
-  }
-  return _totalLength;
-};
 
 const DF_PROPS = {
   xAxisId: 0,
@@ -62,11 +41,6 @@ const DF_PROPS = {
   strokeWidth: 1,
   fill: '#fff',
   points: [],
-  isAnimationActive: !IS_SSR,
-  animateNewValues: true,
-  animationBegin: 0,
-  animationDuration: 1500,
-  animationEasing: 'ease',
   hide: false,
   label: false
 }
@@ -77,79 +51,35 @@ export const Line = memo((props) => {
     dot,
     points,
     className,
-    isAnimationActive,
     id
   } = _props
   , _refPath = useRef()
-  , [
-    isAnimationFinished,
-    handleAnimationStart,
-    handleAnimationEnd
-  ] = useAnimationHandle(_props)
-  , [
-    prevPoints
-  ] = usePrevCurData(points)
   , clipPathId = useClipPathId(
      CL_LINE,
      id
    )
-  , [
-    totalLength,
-    setTotalLength
-  ] = useState(0)
-
-  /*eslint-disable react-hooks/exhaustive-deps */
-  useEffect(() => {
-    if (!isAnimationActive) {
-      return;
-    }
-    setTotalLength(_getTotalLength(_refPath.current))
-  }, [])
-  //isAnimationActive
-  /*eslint-enable react-hooks/exhaustive-deps */
-
 
   if (isHideOrNoData(_props, points)) {
     return null;
   }
 
-  const hasSinglePoint = points.length === 1
-  , layerClass = crCn(CL_LINE, className)
-  , needClip = isNeedClip(_props)
-  , _clipPath = crClipPath(needClip, clipPathId)
-  , _isAnimationNotActiveOrFinished = !isAnimationActive
-    || isAnimationFinished
-  , _isLineDots = (hasSinglePoint || dot)
-     && _isAnimationNotActiveOrFinished
-  , _isLineCurveWithAnimaton = !hasSinglePoint
-     && isAnimationActive
-     //&& ((!prevPoints && totalLength > 0) || !_isEqual(prevPoints, points))
-     && ((!prevPoints && totalLength > 0) || prevPoints !== points);
+  const _needClip = isNeedClip(_props)
+  , _clipPath = crClipPath(_needClip, clipPathId)
+  , _isLineDots = (points.length === 1 || dot);
 
   return (
-    <Layer className={layerClass}>
+    <Layer className={crCn(CL_LINE, className)}>
       <ClipPathRect
-         is={needClip}
+         is={_needClip}
          id={clipPathId}
          props={_props}
       />
-      {_isLineCurveWithAnimaton
-         ? (<LineCurveWithAnimation
-              clipPath={_clipPath}
-              prevPoints={prevPoints}
-              totalLength={totalLength}
-              props={_props}
-              refPath={_refPath}
-              handleAnimationStart={handleAnimationStart}
-              handleAnimationEnd={handleAnimationEnd}
-          />)
-        : (<LineCurveStatically
-              clipPath={_clipPath}
-              points={points}
-              props={_props}
-              refPath={_refPath}
-          />)
-      }
+      <LineCurveStatically
+        clipPath={_clipPath}
+        points={points}
+        props={_props}
+        refPath={_refPath}
+      />)
       {_isLineDots && (<LineDots
           clipPath={_clipPath}
           props={_props}
