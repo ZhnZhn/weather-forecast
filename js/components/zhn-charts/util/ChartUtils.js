@@ -3,10 +3,9 @@
 exports.__esModule = true;
 exports.getCoordinatesOfGrid = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.findChildTypeLegend = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
-exports.parseSpecifiedDomain = exports.parseScale = exports.parseDomainOfCategoryAxis = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isLayoutCentric = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getLegendProps = exports.getDomainOfItemsWithSameAxis = void 0;
+exports.parseSpecifiedDomain = exports.parseScale = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getLegendProps = exports.getDomainOfItemsWithSameAxis = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _d3Scale = require("../d3Scale");
-var _FnUtils = require("./FnUtils");
 var _scale = require("../scale");
 var _Legend = require("../component/Legend");
 var _DataUtils = require("./DataUtils");
@@ -14,14 +13,12 @@ var _ReactUtils = require("./ReactUtils");
 const _fSafeSpreadArrToFn = mathFn => arrOr => (0, _isTypeFn.isNotEmptyArr)(arrOr) ? mathFn(...arrOr) : void 0,
   _min = _fSafeSpreadArrToFn(Math.min),
   _max = _fSafeSpreadArrToFn(Math.max);
-const _getAxisDomain = axis => (((axis || {}).type || {}).defaultProps || {}).domain;
 const _fIs = str => v => v === str;
 const isLayoutHorizontal = exports.isLayoutHorizontal = _fIs("horizontal");
 const isLayoutVertical = exports.isLayoutVertical = _fIs("vertical");
-const isLayoutCentric = exports.isLayoutCentric = _fIs("centric");
 const isAxisTypeX = exports.isAxisTypeX = _fIs("xAxis");
 const isAxisTypeY = exports.isAxisTypeY = _fIs("yAxis");
-const getValueByDataKey = (obj, dataKey, defaultValue) => (0, _isTypeFn.isNullOrUndef)(obj) || (0, _isTypeFn.isNullOrUndef)(dataKey) ? defaultValue : (0, _isTypeFn.isNumOrStr)(dataKey) ? (0, _FnUtils._getByPropName)(obj, dataKey, defaultValue) : (0, _isTypeFn.isFn)(dataKey) ? dataKey(obj) : defaultValue;
+const getValueByDataKey = (obj, dataKey, defaultValue) => obj == null || dataKey == null ? defaultValue : (0, _isTypeFn.isNumOrStr)(dataKey) ? obj[dataKey] || defaultValue : (0, _isTypeFn.isFn)(dataKey) ? dataKey(obj) : defaultValue;
 /**
  * Get domain of data by key
  * @param  {Array}   data      The data displayed in the chart
@@ -38,7 +35,7 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
     const domain = flattenData.filter(entry => (0, _isTypeFn.isNumber)(entry) || parseFloat(entry));
     return domain.length ? [_min(domain), _max(domain)] : [Infinity, -Infinity];
   }
-  const validateData = filterNil ? flattenData.filter(entry => !(0, _isTypeFn.isNullOrUndef)(entry)) : flattenData;
+  const validateData = filterNil ? flattenData.filter(entry => entry != null) : flattenData;
   return validateData.map(entry => (0, _isTypeFn.isNumOrStr)(entry) || entry instanceof Date ? entry : '');
 }
 const _getTickCoordinate = tick => tick.coordinate;
@@ -409,13 +406,6 @@ const findPositionOfBar = (barPosition, child) => {
       return barConfig.position;
     }
   }
-  /*
-  for (let i = 0, len = barPosition.length; i < len; i++) {
-    if (barPosition[i].item === child) {
-      return barPosition[i].position;
-    }
-  }
-  */
   return null;
 };
 
@@ -472,7 +462,7 @@ const getCateCoordinateOfBar = _ref4 => {
     return ticks[index] ? ticks[index].coordinate + offset : null;
   }
   const value = getValueByDataKey(entry, axis.dataKey, axis.domain[index]);
-  return !(0, _isTypeFn.isNullOrUndef)(value) ? axis.scale(value) - bandSize / 2 + offset : null;
+  return value == null ? null : axis.scale(value) - bandSize / 2 + offset;
 };
 exports.getCateCoordinateOfBar = getCateCoordinateOfBar;
 const getBaseValueOfBar = _ref5 => {
@@ -555,17 +545,7 @@ const getBandSizeOfAxis = (axis, ticks, isBar) => {
   }
   return isBar ? undefined : 0;
 };
-
-/**
- * parse the domain of a category axis when a domain is specified
- * @param   {Array}        specifiedDomain  The domain specified by users
- * @param   {Array}        calculatedDomain The domain calculated by dateKey
- * @param   {ReactElement} axisChild        The axis element
- * @returns {Array}        domains
- */
 exports.getBandSizeOfAxis = getBandSizeOfAxis;
-const parseDomainOfCategoryAxis = (specifiedDomain, calculatedDomain, axisChild) => !specifiedDomain || !specifiedDomain.length ? calculatedDomain : (0, _FnUtils._isEqual)(specifiedDomain, _getAxisDomain(axisChild)) ? calculatedDomain : specifiedDomain;
-exports.parseDomainOfCategoryAxis = parseDomainOfCategoryAxis;
 const getTooltipItem = (graphicalItem, payload) => {
   const {
     dataKey,

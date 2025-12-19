@@ -8,7 +8,6 @@ var _ChartUtils = require("../util/ChartUtils");
 const DF_AXIS_PROPS = exports.DF_AXIS_PROPS = {
   allowDataOverflow: false,
   allowDecimals: true,
-  allowDuplicatedCategory: true,
   hide: false,
   mirror: false,
   tickCount: 5,

@@ -1,13 +1,9 @@
 import {
   isArr,
-  isNotEmptyArr,
   isNaN,
   isStr,
-  isNumber,
-  isFn
+  isNumber
 } from '../../../utils/isTypeFn';
-
-import { _getByPropName } from './FnUtils';
 
 export {
   isNumber,
@@ -123,15 +119,3 @@ export const getInterpolatedNumber = (
 ) => isNumber(fromNumber) && isNumber(toNumber)
   ? interpolateNumber(fromNumber, toNumber)(t)
   : toNumber
-
-export const findEntryInArray = (
-  arr,
-  specifiedKey,
-  specifiedValue
-) => isNotEmptyArr(arr) ? arr.find(
-  entry => entry
-    && (isFn(specifiedKey)
-         ? specifiedKey(entry)
-         : _getByPropName(entry, specifiedKey)
-       ) === specifiedValue
-) : void 0

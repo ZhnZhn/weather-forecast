@@ -11,9 +11,6 @@ import {
   isLayoutHorizontal,
   getValueByDataKey
 } from '../util/ChartUtils';
-import {
-  findEntryInArray
-} from '../util/DataUtils';
 
 import {
   isHideOrNoData,
@@ -105,14 +102,7 @@ const _getCateCoordinateOfLine = ({
   index,
   dataKey
 }) => {
-  if (axis.type === 'category') {
-    // find coordinate of category axis by the value of category
-    if (!axis.allowDuplicatedCategory && axis.dataKey && !(entry[axis.dataKey] == null) ) {
-      const matchedTick = findEntryInArray(ticks, 'value', entry[axis.dataKey]);
-      if (matchedTick) {
-        return matchedTick.coordinate + bandSize / 2;
-      }
-    }
+  if (axis.type === 'category') {    
     return ticks[index]
       ? ticks[index].coordinate + bandSize / 2
       : null;

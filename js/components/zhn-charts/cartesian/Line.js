@@ -7,7 +7,6 @@ var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _Layer = require("../container/Layer");
 var _ChartUtils = require("../util/ChartUtils");
-var _DataUtils = require("../util/DataUtils");
 var _cartesianFn = require("./cartesianFn");
 var _useClipPathId = _interopRequireDefault(require("./useClipPathId"));
 var _ClipPathRect = _interopRequireDefault(require("./ClipPathRect"));
@@ -74,13 +73,6 @@ const _getCateCoordinateOfLine = _ref => {
     dataKey
   } = _ref;
   if (axis.type === 'category') {
-    // find coordinate of category axis by the value of category
-    if (!axis.allowDuplicatedCategory && axis.dataKey && !(entry[axis.dataKey] == null)) {
-      const matchedTick = (0, _DataUtils.findEntryInArray)(ticks, 'value', entry[axis.dataKey]);
-      if (matchedTick) {
-        return matchedTick.coordinate + bandSize / 2;
-      }
-    }
     return ticks[index] ? ticks[index].coordinate + bandSize / 2 : null;
   }
   const value = (0, _ChartUtils.getValueByDataKey)(entry, dataKey == null ? axis.dataKey : dataKey);

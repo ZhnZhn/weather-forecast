@@ -13,7 +13,6 @@ import { getValueByDataKey } from '../util/ChartUtils';
 export const DF_AXIS_PROPS = {
   allowDataOverflow: false,
   allowDecimals: true,
-  allowDuplicatedCategory: true,
   hide: false,
   mirror: false,
   tickCount: 5,

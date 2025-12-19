@@ -1,7 +1,5 @@
 import {
-  //isArr,
-  isNullOrUndef,
-  //isNumber
+  isNullOrUndef
 } from '../../../utils/isTypeFn';
 
 import { _range } from '../util/FnUtils';
@@ -11,8 +9,7 @@ import {
   isCategoricalAxis,
   getDomainOfItemsWithSameAxis,
   getDomainOfDataByKey,
-  parseSpecifiedDomain,
-  parseDomainOfCategoryAxis
+  parseSpecifiedDomain
 } from '../util/ChartUtils';
 
 import {
@@ -63,7 +60,6 @@ export const getAxisMapByAxes = (
         type,
         dataKey,
         allowDataOverflow,
-        allowDuplicatedCategory,
         scale,
         ticks,
         includeHidden
@@ -92,25 +88,15 @@ export const getAxisMapByAxes = (
           domain = getDomainOfDataByKey(displayedData, dataKey, type);
           if (_isValueCategory(type) && isCategorical) {
             // the field type is category data and this axis is categorical axis
-            const duplicate = hasDuplicate(domain);
-            if (allowDuplicatedCategory && duplicate) {
+            if (hasDuplicate(domain)) {
               duplicateDomain = domain;
               // When category axis has duplicated text, serial numbers are used to generate scale
               domain = _range(0, len);
-            } else if (!allowDuplicatedCategory) {
-              // remove duplicated category
-              domain = parseDomainOfCategoryAxis(childDomain, domain, child).reduce((finalDomain, entry) => finalDomain.indexOf(entry) >= 0 ? finalDomain : [...finalDomain, entry], []);
             }
           } else if (_isValueCategory(type)) {
               // the field type is category data and this axis is numerical axis
-              if (!allowDuplicatedCategory) {
-                domain = parseDomainOfCategoryAxis(childDomain, domain, child).reduce((finalDomain, entry) => finalDomain.indexOf(entry) >= 0 || entry === '' || isNullOrUndef(entry)
-                  ? finalDomain
-                  : [...finalDomain, entry], []);
-              } else {
-                // eliminate undefined or null or empty string
-                domain = domain.filter((entry) => entry !== '' && !isNullOrUndef(entry));
-              }
+              domain = domain
+                .filter((entry) => entry !== '' && !isNullOrUndef(entry));
           }
           if (isCategorical && (_isValueNumber(type) || scale !== 'auto')) {
               categoricalDomain = getDomainOfDataByKey(displayedData, dataKey, 'category');

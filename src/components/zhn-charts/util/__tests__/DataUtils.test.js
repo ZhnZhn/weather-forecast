@@ -5,8 +5,7 @@ import {
   getPercentValue,
   hasDuplicate,
   interpolateNumber,
-  getInterpolatedNumber,
-  findEntryInArray
+  getInterpolatedNumber
 } from '../DataUtils';
 
 describe('mathSign', () => {
@@ -125,32 +124,5 @@ describe('getInterpolatedNumber', () => {
   it('should return null if second number is null', () => {
     expect(fn(10, null, 0.5)).toBeNull();
     expect(fn(null, null, 0.5)).toBeNull();
-  });
-});
-
-describe('findEntryInArray', () => {
-  const fn = findEntryInArray
-  , dataList = [
-    { name: 'a', a: { b: '0' } },
-    { name: 'b', a: { b: '1' } },
-    { name: 'c', a: { b: '2' } }
-  ];
-
-  it('should work with string key', () => {
-    expect(fn(dataList, 'name', 'a')).toStrictEqual(dataList[0]);
-  });
-
-  it('should work with string keypath', () => {
-    expect(fn(dataList, 'a.b', '1')).toStrictEqual(dataList[1]);
-  });
-
-  it('should work with simple function', () => {
-    expect(fn(dataList, v => v.a.b, '2')).toStrictEqual(dataList[2]);
-  });
-
-  it('should return undefined if first argument is null or undefined or empty array', () => {
-    expect(fn(null, 0, '0')).toEqual();
-    expect(fn(void 0, 0, '0')).toEqual();
-    expect(fn([], 0, '0')).toEqual();
   });
 });

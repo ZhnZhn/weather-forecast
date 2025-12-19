@@ -2,7 +2,6 @@ import {
   isArr,
   isNotEmptyArr,
   isNaN,
-  isNullOrUndef,
   isFn,
   isNumber,
   isNumOrStr
@@ -13,11 +12,6 @@ import {
   scalePoint,
   scaleLinear
 } from '../d3Scale';
-
-import {
-  _getByPropName,
-  _isEqual
-} from './FnUtils';
 
 import {
   getNiceTickValues,
@@ -34,17 +28,9 @@ const _fSafeSpreadArrToFn = mathFn => arrOr => isNotEmptyArr(arrOr)
 , _min = _fSafeSpreadArrToFn(Math.min)
 , _max = _fSafeSpreadArrToFn(Math.max);
 
-const _getAxisDomain = (
-  axis
-) => (((axis || {})
-  .type || {})
-  .defaultProps || {})
-  .domain;
-
 const _fIs = (str) => v => v === str;
 export const isLayoutHorizontal = _fIs("horizontal")
 export const isLayoutVertical = _fIs("vertical")
-export const isLayoutCentric = _fIs("centric")
 
 export const isAxisTypeX = _fIs("xAxis")
 export const isAxisTypeY = _fIs("yAxis")
@@ -53,13 +39,13 @@ export const getValueByDataKey = (
   obj,
   dataKey,
   defaultValue
-) => isNullOrUndef(obj) || isNullOrUndef(dataKey)
+) => obj == null || dataKey == null
   ? defaultValue
   : isNumOrStr(dataKey)
-      ? _getByPropName(obj, dataKey, defaultValue)
-      : isFn(dataKey)
-          ? dataKey(obj)
-          : defaultValue;
+     ? obj[dataKey] || defaultValue
+     : isFn(dataKey)
+        ? dataKey(obj)
+        : defaultValue
 /**
  * Get domain of data by key
  * @param  {Array}   data      The data displayed in the chart
@@ -85,7 +71,7 @@ export function getDomainOfDataByKey(
       : [Infinity, -Infinity];
   }
   const validateData = filterNil
-    ? flattenData.filter(entry => !isNullOrUndef(entry))
+    ? flattenData.filter(entry => entry != null)
     : flattenData;
   return validateData
    .map(entry => (isNumOrStr(entry) || entry instanceof Date ? entry : ''));
@@ -514,13 +500,6 @@ export const findPositionOfBar = (
       return barConfig.position;
     }
   }
-  /*
-  for (let i = 0, len = barPosition.length; i < len; i++) {
-    if (barPosition[i].item === child) {
-      return barPosition[i].position;
-    }
-  }
-  */
   return null;
 };
 
@@ -585,9 +564,9 @@ export const getCateCoordinateOfBar = ({
       : null;
   }
   const value = getValueByDataKey(entry, axis.dataKey, axis.domain[index]);
-  return !isNullOrUndef(value)
-    ? axis.scale(value) - bandSize / 2 + offset
-    : null;
+  return value == null
+    ? null
+    : axis.scale(value) - bandSize / 2 + offset;
 };
 
 export const getBaseValueOfBar = ({
@@ -680,23 +659,6 @@ export const getBandSizeOfAxis = (
   return isBar ? undefined : 0;
 };
 
-/**
- * parse the domain of a category axis when a domain is specified
- * @param   {Array}        specifiedDomain  The domain specified by users
- * @param   {Array}        calculatedDomain The domain calculated by dateKey
- * @param   {ReactElement} axisChild        The axis element
- * @returns {Array}        domains
- */
-export const parseDomainOfCategoryAxis = (
-  specifiedDomain,
-  calculatedDomain,
-  axisChild
-) => !specifiedDomain || !specifiedDomain.length
-  ? calculatedDomain
-  : _isEqual(specifiedDomain, _getAxisDomain(axisChild))
-     ? calculatedDomain
-     : specifiedDomain
-
 export const getTooltipItem = (
   graphicalItem,
   payload
@@ -726,4 +688,4 @@ export const getTooltipItem = (
     payload,
     chartType
   };
-};
+}
