@@ -1,5 +1,22 @@
-import { isFn } from '../../../utils/isTypeFn';
-import { _uniqBy } from '../util/FnUtils';
+import { 
+  isStr,
+  isFn
+} from '../../../utils/isTypeFn';
+
+const _uniqBy = (
+  arr,
+  iteratee
+) => {
+  if (isStr(iteratee)) {
+    const prop = iteratee
+    iteratee = item => item[prop]
+  }
+
+  return arr.filter(
+    (x, i, arrSelf) => i === arrSelf
+      .findIndex(y => iteratee(x) === iteratee(y))
+  )
+};
 
 export const getUniqPayload = (
   option,
