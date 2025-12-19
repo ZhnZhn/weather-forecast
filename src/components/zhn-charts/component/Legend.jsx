@@ -15,15 +15,9 @@ import {
 
 import { isLayoutVertical } from "../util/ChartUtils";
 
-import { getUniqPayload } from "./componentFn";
 import { DefaultLegendContent } from "./DefaultLegendContent";
 
-const CL_LEGEND_WRAPPER = "recharts-legend-wrapper" ;
-
-const _defaultUniqBy = (
-  entry
-) => entry.value;
-
+const CL_LEGEND_WRAPPER = "recharts-legend-wrapper";
 const _renderContent = (
   ContentElementOrComp,
   props
@@ -93,7 +87,6 @@ export const Legend = memo((props) => {
     width,
     height,
     wrapperStyle,
-    payloadUniqBy,
     payload
   } = _props
   , _refBoundingBox = useRef({
@@ -120,15 +113,7 @@ export const Legend = memo((props) => {
           onBBoxUpdate(box);
         }
       }
-    } /*else if (width !== -1 || height !== -1) {
-      setRefValue(_refBoundingBox, {
-        width: -1,
-        height: -1
-      })
-      if (onBBoxUpdate) {
-        onBBoxUpdate(null);
-      }
-    }*/
+    }
   })
 
   return (
@@ -146,7 +131,7 @@ export const Legend = memo((props) => {
       {_renderContent(
          content, {
          ..._props,
-         payload: getUniqPayload(payloadUniqBy, payload, _defaultUniqBy)
+         payload         
       })}
     </div>
   );

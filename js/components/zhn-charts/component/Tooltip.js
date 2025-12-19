@@ -8,11 +8,9 @@ var _styleFn = require("../../styleFn");
 var _Global = require("../util/Global");
 var _TooltipContext = require("../context/TooltipContext");
 var _DefaultTooltipContent = require("./DefaultTooltipContent");
-var _componentFn = require("./componentFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
 //const CLS_PREFIX = 'recharts-tooltip-wrapper';
-const _defaultUniqBy = entry => entry.dataKey;
 const _renderContent = (ContentElementOrComp, props) => (0, _uiApi.isValidElement)(ContentElementOrComp) ? (0, _uiApi.cloneUiElement)(ContentElementOrComp, props) : (0, _isTypeFn.isFn)(ContentElementOrComp) ? (0, _uiApi.createElement)(ContentElementOrComp, props) : (0, _uiApi.createElement)(_DefaultTooltipContent.DefaultTooltipContent, props);
 const DF_PROPS = {
   active: false,
@@ -67,7 +65,6 @@ const Tooltip = props => {
     payload = active ? activePayload : [],
     _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
-      payloadUniqBy,
       filterNull,
       wrapperStyle,
       useTranslate3d,
@@ -82,7 +79,7 @@ const Tooltip = props => {
         onClose();
       }
     }, [onClose]),
-    finalPayload = (0, _componentFn.getUniqPayload)(payloadUniqBy, filterNull && (0, _isTypeFn.isNotEmptyArr)(payload) ? payload.filter(entry => entry.value != null) : payload, _defaultUniqBy),
+    finalPayload = filterNull && (0, _isTypeFn.isNotEmptyArr)(payload) ? payload.filter(entry => entry.value != null) : payload,
     _isTranslate = coordinate && (0, _isTypeFn.isNumber)(coordinate.x) && (0, _isTypeFn.isNumber)(coordinate.y),
     [_translateX, _translateY] = _isTranslate ? [coordinate.x, coordinate.y] : [],
     outerStyle = Object.assign({

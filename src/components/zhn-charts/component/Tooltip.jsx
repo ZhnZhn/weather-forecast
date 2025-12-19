@@ -16,19 +16,13 @@ import {
 
 import { crCn } from "../../styleFn";
 
-
 import { IS_SSR } from "../util/Global";
 import { useTooltip } from "../context/TooltipContext";
 
 import { DefaultTooltipContent } from "./DefaultTooltipContent";
-import { getUniqPayload } from "./componentFn";
-
 import { CL_TOOLTIP_WRAPPER } from "../CL";
 
 //const CLS_PREFIX = 'recharts-tooltip-wrapper';
-const _defaultUniqBy = (
-  entry
-) => entry.dataKey;
 
 const _renderContent = (
   ContentElementOrComp,
@@ -96,7 +90,6 @@ export const Tooltip = (props) => {
      : []
   , _props = crProps(DF_PROPS, props)
   , {
-    payloadUniqBy,
     filterNull,
 
     wrapperStyle,
@@ -113,14 +106,9 @@ export const Tooltip = (props) => {
         onClose()
       }
   }, [onClose])
-
-  , finalPayload = getUniqPayload(
-     payloadUniqBy,
-     filterNull && isNotEmptyArr(payload)
-       ? payload.filter(entry => entry.value != null)
-       : payload,
-     _defaultUniqBy
-  )
+  , finalPayload = filterNull && isNotEmptyArr(payload)
+    ? payload.filter(entry => entry.value != null)
+    : payload
   , _isTranslate = coordinate
     && isNumber(coordinate.x)
     && isNumber(coordinate.y)

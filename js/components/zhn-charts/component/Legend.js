@@ -5,11 +5,9 @@ exports.Legend = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _ChartUtils = require("../util/ChartUtils");
-var _componentFn = require("./componentFn");
 var _DefaultLegendContent = require("./DefaultLegendContent");
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_LEGEND_WRAPPER = "recharts-legend-wrapper";
-const _defaultUniqBy = entry => entry.value;
 const _renderContent = (ContentElementOrComp, props) => (0, _uiApi.isValidElement)(ContentElementOrComp) ? (0, _uiApi.cloneUiElement)(ContentElementOrComp, props) : (0, _isTypeFn.isFn)(ContentElementOrComp) ? (0, _uiApi.createElement)(ContentElementOrComp, props) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_DefaultLegendContent.DefaultLegendContent, Object.assign({}, props));
 const _getBBoxSnapshot = _ref => {
   let {
@@ -69,7 +67,6 @@ const Legend = exports.Legend = (0, _uiApi.memo)(props => {
       width,
       height,
       wrapperStyle,
-      payloadUniqBy,
       payload
     } = _props,
     _refBoundingBox = (0, _uiApi.useRef)({
@@ -94,15 +91,7 @@ const Legend = exports.Legend = (0, _uiApi.memo)(props => {
           onBBoxUpdate(box);
         }
       }
-    } /*else if (width !== -1 || height !== -1) {
-      setRefValue(_refBoundingBox, {
-        width: -1,
-        height: -1
-      })
-      if (onBBoxUpdate) {
-        onBBoxUpdate(null);
-      }
-      }*/
+    }
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     ref: _refWrapperNode,
@@ -113,7 +102,7 @@ const Legend = exports.Legend = (0, _uiApi.memo)(props => {
       height: height || "auto"
     }, _getDefaultPosition(wrapperStyle, _props, (0, _uiApi.getRefValue)(_refBoundingBox)), wrapperStyle),
     children: _renderContent(content, Object.assign({}, _props, {
-      payload: (0, _componentFn.getUniqPayload)(payloadUniqBy, payload, _defaultUniqBy)
+      payload
     }))
   });
 });
