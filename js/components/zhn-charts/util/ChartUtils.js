@@ -11,6 +11,9 @@ var _scale = require("../scale");
 var _Legend = require("../component/Legend");
 var _DataUtils = require("./DataUtils");
 var _ReactUtils = require("./ReactUtils");
+const _fSafeSpreadArrToFn = mathFn => arrOr => (0, _isTypeFn.isNotEmptyArr)(arrOr) ? mathFn(...arrOr) : void 0,
+  _min = _fSafeSpreadArrToFn(Math.min),
+  _max = _fSafeSpreadArrToFn(Math.max);
 const _getAxisDomain = axis => (((axis || {}).type || {}).defaultProps || {}).domain;
 const _fIs = str => v => v === str;
 const isLayoutHorizontal = exports.isLayoutHorizontal = _fIs("horizontal");
@@ -33,7 +36,7 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
   const flattenData = data.flatMap(entry => getValueByDataKey(entry, key));
   if (type === 'number') {
     const domain = flattenData.filter(entry => (0, _isTypeFn.isNumber)(entry) || parseFloat(entry));
-    return domain.length ? [(0, _FnUtils._min)(domain), (0, _FnUtils._max)(domain)] : [Infinity, -Infinity];
+    return domain.length ? [_min(domain), _max(domain)] : [Infinity, -Infinity];
   }
   const validateData = filterNil ? flattenData.filter(entry => !(0, _isTypeFn.isNullOrUndef)(entry)) : flattenData;
   return validateData.map(entry => (0, _isTypeFn.isNumOrStr)(entry) || entry instanceof Date ? entry : '');
@@ -441,7 +444,7 @@ const getTicksOfScale = (scale, options) => {
       return null;
     }
     const tickValues = (0, _scale.getNiceTickValues)(domain, tickCount, allowDecimals);
-    scale.domain([(0, _FnUtils._min)(tickValues), (0, _FnUtils._max)(tickValues)]);
+    scale.domain([_min(tickValues), _max(tickValues)]);
     return {
       niceTicks: tickValues
     };

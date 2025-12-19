@@ -54,18 +54,6 @@ export const _range = (
   return result;
 }
 
-export const _min = (
-  arr
-) => arr && arr.length
-  ? Math.min(...arr)
-  : void 0;
-
-export const _max = (
-  arr
-) => arr && arr.length
-  ? Math.max(...arr)
-  : void 0;
-
 export const _uniqBy = (
   arr,
   iteratee

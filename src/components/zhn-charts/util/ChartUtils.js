@@ -1,5 +1,6 @@
 import {
   isArr,
+  isNotEmptyArr,
   isNaN,
   isNullOrUndef,
   isFn,
@@ -15,8 +16,6 @@ import {
 
 import {
   _getByPropName,
-  _min,
-  _max,
   _isEqual
 } from './FnUtils';
 
@@ -28,6 +27,12 @@ import {
 import { Legend } from '../component/Legend';
 import { getPercentValue } from './DataUtils';
 import { findChildByType } from './ReactUtils';
+
+const _fSafeSpreadArrToFn = mathFn => arrOr => isNotEmptyArr(arrOr)
+  ? mathFn(...arrOr)
+  : void 0
+, _min = _fSafeSpreadArrToFn(Math.min)
+, _max = _fSafeSpreadArrToFn(Math.max);
 
 const _getAxisDomain = (
   axis
@@ -70,12 +75,18 @@ export function getDomainOfDataByKey(
   filterNil
 ) {
   //const flattenData = _flatMap(data, entry => getValueByDataKey(entry, key));
-  const flattenData = data.flatMap(entry => getValueByDataKey(entry, key));
+  const flattenData = data
+    .flatMap(entry => getValueByDataKey(entry, key));
   if (type === 'number') {
-    const domain = flattenData.filter(entry => isNumber(entry) || parseFloat(entry));
-    return domain.length ? [_min(domain), _max(domain)] : [Infinity, -Infinity];
+    const domain = flattenData
+      .filter(entry => isNumber(entry) || parseFloat(entry));
+    return domain.length
+      ? [_min(domain), _max(domain)]
+      : [Infinity, -Infinity];
   }
-  const validateData = filterNil ? flattenData.filter(entry => !isNullOrUndef(entry)) : flattenData;
+  const validateData = filterNil
+    ? flattenData.filter(entry => !isNullOrUndef(entry))
+    : flattenData;
   return validateData
    .map(entry => (isNumOrStr(entry) || entry instanceof Date ? entry : ''));
 }

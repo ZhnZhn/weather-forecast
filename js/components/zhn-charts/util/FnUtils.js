@@ -2,7 +2,7 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports._upperFirst = exports._uniqBy = exports._throttle = exports._range = exports._min = exports._max = exports._isEqual = exports._getByPropName = void 0;
+exports._upperFirst = exports._uniqBy = exports._throttle = exports._range = exports._isEqual = exports._getByPropName = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _throttleFn = _interopRequireDefault(require("../../../utils/throttleFn"));
 const _throttle = exports._throttle = _throttleFn.default;
@@ -40,10 +40,6 @@ const _range = (startValue, endValue, increment) => {
   return result;
 };
 exports._range = _range;
-const _min = arr => arr && arr.length ? Math.min(...arr) : void 0;
-exports._min = _min;
-const _max = arr => arr && arr.length ? Math.max(...arr) : void 0;
-exports._max = _max;
 const _uniqBy = (arr, iteratee) => {
   if ((0, _isTypeFn.isStr)(iteratee)) {
     const prop = iteratee;
@@ -60,8 +56,8 @@ const _isEqual = (first, second) => {
   if ((first === undefined || second === undefined || first === null || second === null) && (first || second)) {
     return false;
   }
-  const firstType = first?.constructor.name;
-  const secondType = second?.constructor.name;
+  const firstType = first == null ? void 0 : first.constructor.name;
+  const secondType = second == null ? void 0 : second.constructor.name;
   if (firstType !== secondType) {
     return false;
   }
