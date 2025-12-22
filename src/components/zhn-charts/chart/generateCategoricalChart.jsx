@@ -13,52 +13,18 @@ import { TooltipProvider } from '../context/TooltipContext';
 import { Surface } from '../container/Surface';
 import { ClipPath } from '../container/ClipPath';
 
-import {
-  validateWidthHeight
-} from '../util/ReactUtils';
-import {
-  calculateChartCoordinate,
-  getOffset
-} from '../util/DOMUtils';
-import {
-  uniqueId
-} from '../util/DataUtils';
-import {
-  isLayoutHorizontal,
-  isLayoutVertical
-} from '../util/ChartUtils';
+import { validateWidthHeight } from '../util/ReactUtils';
+import { uniqueId } from '../util/DataUtils';
 
 import useLegendBox from './useLegendBox';
 import useTooltipEvents from './useTooltipEvents';
 
-import { getTooltipData } from './generateCategoricalChartFn';
+import {
+  crMouseRange,
+  getTooltipData
+} from './generateCategoricalChartFn';
 import { CL_WRAPPER } from '../CL';
 
-const _inRange = (
-  x,
-  y,
-  layout,
-  offset
-) => (isLayoutHorizontal(layout) || isLayoutVertical(layout))
-  && (x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height)
-  ? { x, y }
-  : null;
-
-const _crMouseRange = (
-  containerElement,
-  evt,
-  layout,
-  offset
-) => {
-  const _containerOffset = getOffset(containerElement)
-  , _e = calculateChartCoordinate(evt, _containerOffset);
-  return _inRange(
-     _e.chartX,
-     _e.chartY,
-     layout,
-     offset
-  );
-}
 
 const DF_PROPS = {
   layout: 'horizontal',
@@ -124,13 +90,12 @@ export const generateCategoricalChart = (
             return null;
           }
 
-          const rangeObj = _crMouseRange(
+          const _mouseRange = crMouseRange(
             _containerElement,
             evt,
-            layout,
             offset
           );
-          if (!rangeObj) {
+          if (!_mouseRange) {
             return null;
           }
 
@@ -140,7 +105,7 @@ export const generateCategoricalChart = (
 
             data,
             layout,
-            rangeObj
+            _mouseRange
           );
           return tooltipData
             ? tooltipData

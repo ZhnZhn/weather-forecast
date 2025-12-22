@@ -10,23 +10,12 @@ var _TooltipContext = require("../context/TooltipContext");
 var _Surface = require("../container/Surface");
 var _ClipPath = require("../container/ClipPath");
 var _ReactUtils = require("../util/ReactUtils");
-var _DOMUtils = require("../util/DOMUtils");
 var _DataUtils = require("../util/DataUtils");
-var _ChartUtils = require("../util/ChartUtils");
 var _useLegendBox = _interopRequireDefault(require("./useLegendBox"));
 var _useTooltipEvents = _interopRequireDefault(require("./useTooltipEvents"));
 var _generateCategoricalChartFn = require("./generateCategoricalChartFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-const _inRange = (x, y, layout, offset) => ((0, _ChartUtils.isLayoutHorizontal)(layout) || (0, _ChartUtils.isLayoutVertical)(layout)) && x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height ? {
-  x,
-  y
-} : null;
-const _crMouseRange = (containerElement, evt, layout, offset) => {
-  const _containerOffset = (0, _DOMUtils.getOffset)(containerElement),
-    _e = (0, _DOMUtils.calculateChartCoordinate)(evt, _containerOffset);
-  return _inRange(_e.chartX, _e.chartY, layout, offset);
-};
 const DF_PROPS = {
     layout: 'horizontal',
     stackOffset: 'none',
@@ -78,11 +67,11 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         if (!_containerElement) {
           return null;
         }
-        const rangeObj = _crMouseRange(_containerElement, evt, layout, offset);
-        if (!rangeObj) {
+        const _mouseRange = (0, _generateCategoricalChartFn.crMouseRange)(_containerElement, evt, offset);
+        if (!_mouseRange) {
           return null;
         }
-        const tooltipData = (0, _generateCategoricalChartFn.getTooltipData)(orderedTooltipTicks, graphicalItems, data, layout, rangeObj);
+        const tooltipData = (0, _generateCategoricalChartFn.getTooltipData)(orderedTooltipTicks, graphicalItems, data, layout, _mouseRange);
         return tooltipData ? tooltipData : null;
       },
       [tooltipItem, events, handleCloseTooltip] = (0, _useTooltipEvents.default)(_props, getMouseTooltipData, _setTooltipState);

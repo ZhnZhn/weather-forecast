@@ -1,8 +1,7 @@
 import { IS_SSR } from './Global';
 import { crLRUCache } from './LRUCache';
 
-const _assign = Object.assign
-, _mathRandom = Math.round;
+const _assign = Object.assign;
 
 const defaultConfig = {
   cacheSize: 2000,
@@ -93,32 +92,4 @@ export const getStringSize = (text, style = {}) => {
   stringCache.set(cacheKey, result);
 
   return result;
-};
-
-
-export const getOffset = (el) => {
-  const html = el.ownerDocument.documentElement
-  // If we don't have gBCR, just use 0,0 rather than error
-  // BlackBerry 5, iOS 3 (original iPhone)
-  , box = typeof el.getBoundingClientRect === 'undefined'
-     ? { top: 0, left: 0 }
-     : el.getBoundingClientRect();
-  return {
-    top: box.top + window.pageYOffset - html.clientTop,
-    left: box.left + window.pageXOffset - html.clientLeft
-  };
 }
-
-/**
- * Calculate coordinate of cursor in chart
- * @param  {Object} event  Event object
- * @param  {Object} offset The offset of main part in the svg element
- * @return {Object}        {chartX, chartY}
- */
-export const calculateChartCoordinate = (
-  event,
-  offset
-) => ({
-  chartX: _mathRandom(event.pageX - offset.left),
-  chartY: _mathRandom(event.pageY - offset.top)
-})

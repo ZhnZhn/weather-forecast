@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isItemTypeBar = exports.getTooltipData = exports.getOrderedTooltipTicks = exports.getComposedDataFn = exports.getBarSizeList = exports.getAxisNameByLayout = void 0;
+exports.isItemTypeBar = exports.getTooltipData = exports.getOrderedTooltipTicks = exports.getComposedDataFn = exports.getBarSizeList = exports.getAxisNameByLayout = exports.crMouseRange = void 0;
 var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _ReactUtils = require("../util/ReactUtils");
@@ -77,4 +77,25 @@ const _crAxisName = (numericAxisName, cateAxisName) => ({
 });
 const getAxisNameByLayout = layout => (0, _ChartUtils.isLayoutHorizontal)(layout) ? _crAxisName('yAxis', 'xAxis') : _crAxisName('xAxis', 'yAxis');
 exports.getAxisNameByLayout = getAxisNameByLayout;
+const _crMouseRange = (x, y, offset) => x >= offset.left && x <= offset.left + offset.width && y >= offset.top && y <= offset.top + offset.height ? {
+  x,
+  y
+} : null;
+const _getOffset = el => {
+  const html = el.ownerDocument.documentElement
+    // If we don't have gBCR, just use 0,0 rather than error
+    // BlackBerry 5, iOS 3 (original iPhone)
+    ,
+    box = typeof el.getBoundingClientRect === 'undefined' ? {
+      top: 0,
+      left: 0
+    } : el.getBoundingClientRect();
+  return [box.left + window.pageXOffset - html.clientLeft, box.top + window.pageYOffset - html.clientTop];
+};
+const _mathRound = Math.round;
+const crMouseRange = (containerElement, evt, offset) => {
+  const [_containerOffsetLeft, _containerOffsetTop] = _getOffset(containerElement);
+  return _crMouseRange(_mathRound(evt.pageX - _containerOffsetLeft), _mathRound(evt.pageY - _containerOffsetTop), offset);
+};
+exports.crMouseRange = crMouseRange;
 //# sourceMappingURL=generateCategoricalChartFn.js.map
