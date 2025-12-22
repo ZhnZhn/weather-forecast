@@ -14,6 +14,7 @@ export {
 
 export {
   isValidElement,
+  Fragment,
   Children,
   createContext,
   memo,

@@ -1,11 +1,14 @@
 import {
-  isNullOrUndef,
   isArr,
   isNumber,
   isStr
 } from '../../../utils/isTypeFn';
 
-import { Children } from '../../uiApi';
+import {
+  isValidElement,
+  Fragment,
+  Children
+} from '../../uiApi';
 
 const _getElementType = (
   element
@@ -16,17 +19,10 @@ const _getElementType = (
    : void 0
 };
 
-const REACT_ELEMENT_TYPE = Symbol.for('react.element')
-, REACT_FRAGMENT_TYPE = Symbol.for('react.fragment')
-, typeOf = (
+const _isFragment = (
   object
-) => typeof object === 'object' && object !== null
-  && object.$$typeof === REACT_ELEMENT_TYPE
-  ? object.type
-  : void 0
-, isFragment = (
-  object
-) => typeOf(object) === REACT_FRAGMENT_TYPE;
+) => isValidElement(object)
+  && object.type === Fragment;
 
 /**
  * Get the display name of a component
@@ -45,7 +41,7 @@ export const getDisplayName = (
 // so we can memoize last invocation (since reference to `children` is the same)
 let lastChildren = null;
 let lastResult = null;
-export const toArray = (
+const _toArray = (
   children
 ) => {
   if (children === lastChildren && isArr(lastResult)) {
@@ -53,10 +49,10 @@ export const toArray = (
   }
   let result = [];
   Children.forEach(children, child => {
-    if (isNullOrUndef(child))
+    if (child == null)
       return;
-    if (isFragment(child)) {
-      result = result.concat(toArray(child.props.children));
+    if (_isFragment(child)) {
+      result = result.concat(_toArray(child.props.children));
     } else {
       result.push(child);
     }
@@ -76,7 +72,7 @@ export function findAllByType(children, type) {
      ? type.map(t => getDisplayName(t))
      : [getDisplayName(type)];
 
-  toArray(children).forEach(child => {
+  _toArray(children).forEach(child => {
     const childType = _getElementType(child);
     if (types.indexOf(childType) !== -1) {
       result.push(child);
@@ -110,7 +106,7 @@ export const renderByMap = (
 ) => {
   const elements = []
   , record = {};
-  toArray(children).forEach((child, index) => {
+  _toArray(children).forEach((child, index) => {
     if (child) {
        const displayName = getDisplayName(child.type)
        , {
@@ -135,4 +131,4 @@ export const renderByMap = (
 export const parseChildIndex = (
   child,
   children
-) => toArray(children).indexOf(child);
+) => _toArray(children).indexOf(child);

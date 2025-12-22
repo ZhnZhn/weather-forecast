@@ -3,17 +3,14 @@
 exports.__esModule = true;
 exports.findAllByType = findAllByType;
 exports.findChildByType = findChildByType;
-exports.validateWidthHeight = exports.toArray = exports.renderByMap = exports.parseChildIndex = exports.getDisplayName = void 0;
+exports.validateWidthHeight = exports.renderByMap = exports.parseChildIndex = exports.getDisplayName = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 const _getElementType = element => {
   const _elementType = element && element.type;
   return _elementType ? _elementType.displayName || _elementType.name : void 0;
 };
-const REACT_ELEMENT_TYPE = Symbol.for('react.element'),
-  REACT_FRAGMENT_TYPE = Symbol.for('react.fragment'),
-  typeOf = object => typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE ? object.type : void 0,
-  isFragment = object => typeOf(object) === REACT_FRAGMENT_TYPE;
+const _isFragment = object => (0, _uiApi.isValidElement)(object) && object.type === _uiApi.Fragment;
 
 /**
  * Get the display name of a component
@@ -27,15 +24,15 @@ const getDisplayName = Comp => (0, _isTypeFn.isStr)(Comp) ? Comp : Comp ? Comp.d
 exports.getDisplayName = getDisplayName;
 let lastChildren = null;
 let lastResult = null;
-const toArray = children => {
+const _toArray = children => {
   if (children === lastChildren && (0, _isTypeFn.isArr)(lastResult)) {
     return lastResult;
   }
   let result = [];
   _uiApi.Children.forEach(children, child => {
-    if ((0, _isTypeFn.isNullOrUndef)(child)) return;
-    if (isFragment(child)) {
-      result = result.concat(toArray(child.props.children));
+    if (child == null) return;
+    if (_isFragment(child)) {
+      result = result.concat(_toArray(child.props.children));
     } else {
       result.push(child);
     }
@@ -49,11 +46,10 @@ const toArray = children => {
  * Find and return all matched children by type.
  * `type` must be a React.ComponentType
  */
-exports.toArray = toArray;
 function findAllByType(children, type) {
   const result = [],
     types = (0, _isTypeFn.isArr)(type) ? type.map(t => getDisplayName(t)) : [getDisplayName(type)];
-  toArray(children).forEach(child => {
+  _toArray(children).forEach(child => {
     const childType = _getElementType(child);
     if (types.indexOf(childType) !== -1) {
       result.push(child);
@@ -75,7 +71,7 @@ exports.validateWidthHeight = validateWidthHeight;
 const renderByMap = (children, handlerOptions, renderMap) => {
   const elements = [],
     record = {};
-  toArray(children).forEach((child, index) => {
+  _toArray(children).forEach((child, index) => {
     if (child) {
       const displayName = getDisplayName(child.type),
         {
@@ -96,6 +92,6 @@ const renderByMap = (children, handlerOptions, renderMap) => {
   return elements;
 };
 exports.renderByMap = renderByMap;
-const parseChildIndex = (child, children) => toArray(children).indexOf(child);
+const parseChildIndex = (child, children) => _toArray(children).indexOf(child);
 exports.parseChildIndex = parseChildIndex;
 //# sourceMappingURL=ReactUtils.js.map

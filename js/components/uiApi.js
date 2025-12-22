@@ -2,12 +2,13 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useLayoutEffect = exports.useImperativeHandle = exports.useId = exports.useEffect = exports.useDefaultProps = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.setDisplayNameTo = exports.safeMap = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.focusRefElement = exports.focusElementById = exports.fStopDefaultFor = exports.createElement = exports.createContext = exports.crProps = exports.cloneUiElement = exports.bindTo = exports.KEY_TAB = exports.KEY_SPACE = exports.KEY_HOME = exports.KEY_ESCAPE = exports.KEY_ENTER = exports.KEY_END = exports.KEY_DELETE = exports.KEY_ARROW_UP = exports.KEY_ARROW_DOWN = exports.Children = void 0;
+exports.useStore = exports.useState = exports.useSelector = exports.useRef = exports.useReducer = exports.useLayoutEffect = exports.useImperativeHandle = exports.useId = exports.useEffect = exports.useDefaultProps = exports.useContext = exports.useCallback = exports.stopDefaultFor = exports.setRefValue = exports.setDisplayNameTo = exports.safeMap = exports.memo = exports.isValidElement = exports.getRefValue = exports.getClientY = exports.getClientX = exports.focusRefElement = exports.focusElementById = exports.fStopDefaultFor = exports.createElement = exports.createContext = exports.crProps = exports.cloneUiElement = exports.bindTo = exports.KEY_TAB = exports.KEY_SPACE = exports.KEY_HOME = exports.KEY_ESCAPE = exports.KEY_ENTER = exports.KEY_END = exports.KEY_DELETE = exports.KEY_ARROW_UP = exports.KEY_ARROW_DOWN = exports.Fragment = exports.Children = void 0;
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _isTypeFn = require("../utils/isTypeFn");
 var _react = require("react");
 exports.useMemo = _react.useMemo;
 exports.isValidElement = _react.isValidElement;
+exports.Fragment = _react.Fragment;
 exports.Children = _react.Children;
 exports.createContext = _react.createContext;
 exports.memo = _react.memo;
