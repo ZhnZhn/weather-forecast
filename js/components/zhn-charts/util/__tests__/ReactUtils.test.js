@@ -52,6 +52,7 @@ describe('ReactUtils', () => {
     });
   });
   describe('toArray', () => {
+    const fn = _ReactUtils._toArray;
     test('basic', () => {
       const children = [/*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
           children: "1"
@@ -60,7 +61,7 @@ describe('ReactUtils', () => {
         }, "2"), /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
           children: "3"
         }, "3")],
-        result = (0, _ReactUtils.toArray)(children);
+        result = fn(children);
       expect(result.length).toBe(3);
       expect(_crElementKeys(result)).toEqual(['1', '2', '3']);
     });
@@ -74,7 +75,7 @@ describe('ReactUtils', () => {
             children: "3"
           }, "3")]
         })],
-        result = (0, _ReactUtils.toArray)(children);
+        result = fn(children);
       expect(result.length).toBe(3);
       expect(_crElementKeys(result)).toEqual(['1', '2', '3']);
     });
@@ -82,7 +83,7 @@ describe('ReactUtils', () => {
       const children = [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
           children: [null, /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {}, "1"), null, undefined, /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {}, "2"), undefined, /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {}, "3")]
         })],
-        result = (0, _ReactUtils.toArray)(children);
+        result = fn(children);
       expect(result.length).toBe(3);
       expect(_crElementKeys(result)).toEqual(['1', '2', '3']);
     });
@@ -109,7 +110,7 @@ describe('ReactUtils', () => {
             children: "4"
           }, "4")]), iterable]
         })],
-        result = (0, _ReactUtils.toArray)(children);
+        result = fn(children);
       expect(result.length).toBe(6);
       expect(_crElementKeys(result)).toEqual(['1', '2', '3', '4', '5', '6']);
     });
@@ -133,7 +134,7 @@ describe('ReactUtils', () => {
             })
           })]
         })],
-        result = (0, _ReactUtils.toArray)(children);
+        result = fn(children);
       expect(result.length).toBe(5);
       expect(_crElementKeys(result)).toEqual(['1', '2', '3', '4', '5']);
     });

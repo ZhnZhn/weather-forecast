@@ -8,7 +8,7 @@ import {
 import {
   findAllByType,
   getDisplayName,
-  toArray,
+  _toArray,
   validateWidthHeight
 } from '../ReactUtils';
 import {
@@ -20,7 +20,7 @@ const _crElementKeys = (
 ) => elements.map(el => el.key);
 
 describe('ReactUtils', () => {
-  
+
   describe('getDisplayName', () => {
     test('getDisplayName return empty string when has a null as input', () => {
       // added never casting to test runtime value
@@ -68,13 +68,14 @@ describe('ReactUtils', () => {
   });
 
   describe('toArray', () => {
+    const fn = _toArray;
     test('basic', () => {
       const children = [
         <li key="1">1</li>,
         <li key="2">2</li>,
         <li key="3">3</li>
       ]
-      , result = toArray(children);
+      , result = fn(children);
 
       expect(result.length).toBe(3);
       expect(
@@ -90,7 +91,7 @@ describe('ReactUtils', () => {
            <li key="3">3</li>
         ]}</>
       ]
-      , result = toArray(children);
+      , result = fn(children);
 
       expect(result.length).toBe(3);
       expect(
@@ -110,7 +111,7 @@ describe('ReactUtils', () => {
           <li key="3" />
         </>,
       ]
-      , result = toArray(children);
+      , result = fn(children);
 
       expect(result.length).toBe(3);
       expect(
@@ -136,7 +137,7 @@ describe('ReactUtils', () => {
           {iterable}
         </>,
       ]
-      , result = toArray(children);
+      , result = fn(children);
 
       expect(result.length).toBe(6);
       expect(
@@ -160,7 +161,7 @@ describe('ReactUtils', () => {
           </>
         </>,
       ]
-      , result = toArray(children);
+      , result = fn(children);
 
       expect(result.length).toBe(5);
       expect(

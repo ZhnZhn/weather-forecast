@@ -1,6 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
+exports._toArray = void 0;
 exports.findAllByType = findAllByType;
 exports.findChildByType = findChildByType;
 exports.validateWidthHeight = exports.renderByMap = exports.parseChildIndex = exports.getDisplayName = void 0;
@@ -46,6 +47,7 @@ const _toArray = children => {
  * Find and return all matched children by type.
  * `type` must be a React.ComponentType
  */
+exports._toArray = _toArray;
 function findAllByType(children, type) {
   const result = [],
     types = (0, _isTypeFn.isArr)(type) ? type.map(t => getDisplayName(t)) : [getDisplayName(type)];
@@ -79,11 +81,12 @@ const renderByMap = (children, handlerOptions, renderMap) => {
           once
         } = renderMap[displayName] || {};
       if (handler && (!once || !record[displayName])) {
-        const results = handler(Object.assign({}, handlerOptions, {
+        const results = handler({
+          ...handlerOptions,
           element: child,
           displayName,
           index
-        }));
+        });
         elements.push(results);
         record[displayName] = true;
       }

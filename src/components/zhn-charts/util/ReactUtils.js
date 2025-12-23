@@ -41,7 +41,7 @@ export const getDisplayName = (
 // so we can memoize last invocation (since reference to `children` is the same)
 let lastChildren = null;
 let lastResult = null;
-const _toArray = (
+export const _toArray = (
   children
 ) => {
   if (children === lastChildren && isArr(lastResult)) {
