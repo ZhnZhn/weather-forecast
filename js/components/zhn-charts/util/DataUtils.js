@@ -15,7 +15,7 @@ exports.isPercent = isPercent;
 let idCounter = 0;
 const uniqueId = prefix => {
   const id = ++idCounter;
-  return "" + (prefix || '') + id;
+  return `${prefix || ''}${id}`;
 };
 
 /**
@@ -37,44 +37,28 @@ const getPercentValue = function (percent, totalValue, defaultValue, validate) {
   if (!(0, _isTypeFn.isNumber)(percent) && !(0, _isTypeFn.isStr)(percent)) {
     return defaultValue;
   }
-  let value;
-  if (isPercent(percent)) {
-    const index = percent.indexOf('%');
-    value = totalValue * parseFloat(percent.slice(0, index)) / 100;
-  } else {
-    value = +percent;
-  }
-  if ((0, _isTypeFn.isNaN)(value)) {
-    value = defaultValue;
-  }
-  if (validate && value > totalValue) {
-    value = totalValue;
-  }
-  return value;
+  const value = isPercent(percent) ? totalValue * parseFloat(percent.slice(0, percent.indexOf('%'))) / 100 : +percent;
+  return (0, _isTypeFn.isNaN)(value) ? defaultValue : validate && value > totalValue ? totalValue : value;
 };
 exports.getPercentValue = getPercentValue;
 const getAnyElementOfObject = obj => {
-  if (!obj) {
+  if (!(0, _isTypeFn.isObj)(obj)) {
     return null;
   }
   const keys = _getObjectKeys(obj);
-  if (keys && keys.length) {
-    return obj[keys[0]];
-  }
-  return null;
+  return keys.length ? obj[keys[0]] : null;
 };
 exports.getAnyElementOfObject = getAnyElementOfObject;
-const hasDuplicate = ary => {
-  if (!(0, _isTypeFn.isArr)(ary)) {
+const hasDuplicate = arr => {
+  if (!(0, _isTypeFn.isArr)(arr)) {
     return !1;
   }
-  const len = ary.length,
-    cache = {};
-  for (let i = 0; i < len; i++) {
-    if (!cache[ary[i]]) {
-      cache[ary[i]] = !0;
-    } else {
+  const cache = Object.create(null);
+  for (let token of arr) {
+    if (cache[token]) {
       return !0;
+    } else {
+      cache[token] = !0;
     }
   }
   return !1;

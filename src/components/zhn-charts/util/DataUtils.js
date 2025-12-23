@@ -2,7 +2,8 @@ import {
   isArr,
   isNaN,
   isStr,
-  isNumber
+  isNumber,
+  isObj
 } from '../../../utils/isTypeFn';
 
 export {
@@ -20,12 +21,13 @@ export const mathSign = (
 ) => value === 0
   ? 0
   : value > 0
-     ? 1
-     : -1
+  ? 1
+  : -1
 
 export const isPercent = (
   value
-) => isStr(value) && value.indexOf('%') === value.length - 1
+) => isStr(value)
+  && value.indexOf('%') === value.length - 1
 
 let idCounter = 0;
 export const uniqueId = (
@@ -53,52 +55,39 @@ export const getPercentValue = (
     return defaultValue;
   }
 
-  let value;
+  const value = isPercent(percent)
+    ? (totalValue * parseFloat(percent.slice(0, percent.indexOf('%')))) / 100
+    : +percent;
 
-  if (isPercent(percent)) {
-    const index = percent.indexOf('%');
-    value = (totalValue * parseFloat((percent).slice(0, index))) / 100;
-  } else {
-    value = +percent;
-  }
-
-  if (isNaN(value)) {
-    value = defaultValue;
-  }
-
-  if (validate && value > totalValue) {
-    value = totalValue;
-  }
-
-  return value;
+  return isNaN(value)
+    ? defaultValue
+    : validate && value > totalValue
+    ? totalValue
+    : value;
 }
 
 export const getAnyElementOfObject = (obj) => {
-  if (!obj) {
+  if (!isObj(obj)) {
     return null;
   }
 
   const keys = _getObjectKeys(obj);
-  if (keys && keys.length) {
-    return obj[keys[0]];
-  }
-
-  return null;
+  return keys.length
+    ? obj[keys[0]]
+    : null;
 }
 
-export const hasDuplicate = (ary) => {
-  if (!isArr(ary)) {
+export const hasDuplicate = (arr) => {
+  if (!isArr(arr)) {
     return !1;
   }
 
-  const len = ary.length
-  , cache = {};
-
-  for (let i = 0; i < len; i++) {
-    if (!cache[ary[i]]) {
-      cache[ary[i]] = !0;
-    } else {
+  const cache = Object.create(null);
+  for (let token of arr) {
+    if (cache[token]) {
       return !0;
+    } else {
+      cache[token] = !0;
     }
   }
 
