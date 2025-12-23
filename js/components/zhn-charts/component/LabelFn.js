@@ -4,12 +4,14 @@ exports.__esModule = true;
 exports.getLabel = exports.getAttrsOfCartesianLabel = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _DataUtils = require("../util/DataUtils");
+const _mathMax = Math.max,
+  _isNumberOrPercent = value => (0, _isTypeFn.isNumber)(value) || (0, _DataUtils.isPercent)(value);
 const getLabel = props => {
   const {
       value,
       formatter
     } = props,
-    label = (0, _isTypeFn.isNullOrUndef)(props.children) ? value : props.children;
+    label = props.children == null ? value : props.children;
   return (0, _isTypeFn.isFn)(formatter) ? formatter(label) : label;
 };
 exports.getLabel = getLabel;
@@ -19,6 +21,21 @@ const _crAttrs = (x, y, textAnchor, verticalAnchor) => ({
   textAnchor,
   verticalAnchor
 });
+
+/*
+const _crSign = (
+  value
+) => value >= 0 ? 1 : -1;
+const _crAnchorEndStart = (sign) => [
+  sign > 0 ? 'end' : 'start',
+  sign > 0 ? 'start' : 'end'
+];
+*/
+
+const _crLabelConfig = (value, offset) => {
+  const sign = value >= 0 ? 1 : -1;
+  return [sign * offset, sign > 0 ? 'end' : 'start', sign > 0 ? 'start' : 'end', sign];
+};
 const getAttrsOfCartesianLabel = props => {
   const {
       viewBox,
@@ -35,74 +52,110 @@ const getAttrsOfCartesianLabel = props => {
     } = viewBox
     // Define vertical offsets and position inverts based on the value being positive or negative
     ,
-    verticalSign = height >= 0 ? 1 : -1,
-    verticalOffset = verticalSign * offset,
-    verticalEnd = verticalSign > 0 ? 'end' : 'start',
-    verticalStart = verticalSign > 0 ? 'start' : 'end'
+    [verticalOffset, verticalEnd, verticalStart, verticalSign] = _crLabelConfig(height, offset)
     // Define horizontal offsets and position inverts based on the value being positive or negative
     ,
-    horizontalSign = width >= 0 ? 1 : -1,
-    horizontalOffset = horizontalSign * offset,
-    horizontalEnd = horizontalSign > 0 ? 'end' : 'start',
-    horizontalStart = horizontalSign > 0 ? 'start' : 'end';
+    [horizontalOffset, horizontalEnd, horizontalStart] = _crLabelConfig(width, offset);
   if (position === 'top') {
-    return Object.assign({}, _crAttrs(x + width / 2 + xTopOffset, y - verticalSign * offset, 'middle', verticalEnd), parentViewBox ? {
-      height: Math.max(y - parentViewBox.y, 0),
-      width
-    } : {});
+    return {
+      ..._crAttrs(x + width / 2 + xTopOffset, y - verticalSign * offset, 'middle', verticalEnd),
+      ...(parentViewBox ? {
+        height: _mathMax(y - parentViewBox.y, 0),
+        width
+      } : void 0)
+    };
   }
   if (position === 'bottom') {
-    return Object.assign({}, _crAttrs(x + width / 2, y + height + verticalOffset, 'middle', verticalStart), parentViewBox ? {
-      height: Math.max(parentViewBox.y + parentViewBox.height - (y + height), 0),
-      width
-    } : {});
+    return {
+      ..._crAttrs(x + width / 2, y + height + verticalOffset, 'middle', verticalStart),
+      ...(parentViewBox ? {
+        height: _mathMax(parentViewBox.y + parentViewBox.height - (y + height), 0),
+        width
+      } : void 0)
+    };
   }
   if (position === 'left') {
     const attrs = _crAttrs(x - horizontalOffset, y + height / 2, horizontalEnd, 'middle');
-    return Object.assign({}, attrs, parentViewBox ? {
-      width: Math.max(attrs.x - parentViewBox.x, 0),
-      height
-    } : {});
+    return {
+      ...attrs,
+      ...(parentViewBox ? {
+        width: _mathMax(attrs.x - parentViewBox.x, 0),
+        height
+      } : void 0)
+    };
   }
   if (position === 'right') {
     const attrs = _crAttrs(x + width + horizontalOffset, y + height / 2, horizontalStart, 'middle');
-    return Object.assign({}, attrs, parentViewBox ? {
-      width: Math.max(parentViewBox.x + parentViewBox.width - attrs.x, 0),
-      height
-    } : {});
+    return {
+      ...attrs,
+      ...(parentViewBox ? {
+        width: _mathMax(parentViewBox.x + parentViewBox.width - attrs.x, 0),
+        height
+      } : void 0)
+    };
   }
   const sizeAttrs = parentViewBox ? {
     width,
     height
-  } : {};
+  } : void 0;
   if (position === 'insideLeft') {
-    return Object.assign({}, _crAttrs(x + horizontalOffset, y + height / 2, horizontalStart, 'middle'), sizeAttrs);
+    return {
+      ..._crAttrs(x + horizontalOffset, y + height / 2, horizontalStart, 'middle'),
+      ...sizeAttrs
+    };
   }
   if (position === 'insideRight') {
-    return Object.assign({}, _crAttrs(x + width - horizontalOffset, y + height / 2, horizontalEnd, 'middle'), sizeAttrs);
+    return {
+      ..._crAttrs(x + width - horizontalOffset, y + height / 2, horizontalEnd, 'middle'),
+      ...sizeAttrs
+    };
   }
   if (position === 'insideTop') {
-    return Object.assign({}, _crAttrs(x + width / 2, y + verticalOffset, 'middle', verticalStart), sizeAttrs);
+    return {
+      ..._crAttrs(x + width / 2, y + verticalOffset, 'middle', verticalStart),
+      ...sizeAttrs
+    };
   }
   if (position === 'insideBottom') {
-    return Object.assign({}, _crAttrs(x + width / 2, y + height - verticalOffset, 'middle', verticalEnd), sizeAttrs);
+    return {
+      ..._crAttrs(x + width / 2, y + height - verticalOffset, 'middle', verticalEnd),
+      ...sizeAttrs
+    };
   }
   if (position === 'insideTopLeft') {
-    return Object.assign({}, _crAttrs(x + horizontalOffset, y + verticalOffset, horizontalStart, verticalStart), sizeAttrs);
+    return {
+      ..._crAttrs(x + horizontalOffset, y + verticalOffset, horizontalStart, verticalStart),
+      ...sizeAttrs
+    };
   }
   if (position === 'insideTopRight') {
-    return Object.assign({}, _crAttrs(x + width - horizontalOffset, y + verticalOffset, horizontalEnd, verticalStart), sizeAttrs);
+    return {
+      ..._crAttrs(x + width - horizontalOffset, y + verticalOffset, horizontalEnd, verticalStart),
+      ...sizeAttrs
+    };
   }
   if (position === 'insideBottomLeft') {
-    return Object.assign({}, _crAttrs(x + horizontalOffset, y + height - verticalOffset, horizontalStart, verticalEnd), sizeAttrs);
+    return {
+      ..._crAttrs(x + horizontalOffset, y + height - verticalOffset, horizontalStart, verticalEnd),
+      ...sizeAttrs
+    };
   }
   if (position === 'insideBottomRight') {
-    return Object.assign({}, _crAttrs(x + width - horizontalOffset, y + height - verticalOffset, horizontalEnd, verticalEnd), sizeAttrs);
+    return {
+      ..._crAttrs(x + width - horizontalOffset, y + height - verticalOffset, horizontalEnd, verticalEnd),
+      ...sizeAttrs
+    };
   }
-  if ((0, _isTypeFn.isObj)(position) && ((0, _DataUtils.isNumber)(position.x) || (0, _DataUtils.isPercent)(position.x)) && ((0, _DataUtils.isNumber)(position.y) || (0, _DataUtils.isPercent)(position.y))) {
-    return Object.assign({}, _crAttrs(x + (0, _DataUtils.getPercentValue)(position.x, width), y + (0, _DataUtils.getPercentValue)(position.y, height), 'end', 'end'), sizeAttrs);
+  if ((0, _isTypeFn.isObj)(position) && _isNumberOrPercent(position.x) && _isNumberOrPercent(position.y)) {
+    return {
+      ..._crAttrs(x + (0, _DataUtils.getPercentValue)(position.x, width), y + (0, _DataUtils.getPercentValue)(position.y, height), 'end', 'end'),
+      ...sizeAttrs
+    };
   }
-  return Object.assign({}, _crAttrs(x + width / 2, y + height / 2, 'middle', 'middle'), sizeAttrs);
+  return {
+    ..._crAttrs(x + width / 2, y + height / 2, 'middle', 'middle'),
+    ...sizeAttrs
+  };
 };
 exports.getAttrsOfCartesianLabel = getAttrsOfCartesianLabel;
 //# sourceMappingURL=LabelFn.js.map

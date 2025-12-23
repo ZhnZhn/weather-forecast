@@ -1,14 +1,19 @@
 import {
   isFn,
-  isNullOrUndef,
-  isObj
+  isObj,
+  isNumber
 } from '../../../utils/isTypeFn';
 
 import {
-  isNumber,
   isPercent,
   getPercentValue
 } from '../util/DataUtils';
+
+const _mathMax = Math.max
+, _isNumberOrPercent = (
+  value
+) => isNumber(value)
+  || isPercent(value);
 
 export const getLabel = (
   props
@@ -17,7 +22,7 @@ export const getLabel = (
     value,
     formatter
   } = props
-  , label = isNullOrUndef(props.children)
+  , label = props.children == null
     ? value
     : props.children;
   return isFn(formatter)
@@ -37,6 +42,29 @@ const _crAttrs = (
   verticalAnchor
 });
 
+/*
+const _crSign = (
+  value
+) => value >= 0 ? 1 : -1;
+const _crAnchorEndStart = (sign) => [
+  sign > 0 ? 'end' : 'start',
+  sign > 0 ? 'start' : 'end'
+];
+*/
+
+const _crLabelConfig = (
+  value,
+  offset
+) => {
+  const sign = value >= 0 ? 1 : -1;
+  return [
+    sign * offset,
+    sign > 0 ? 'end' : 'start',
+    sign > 0 ? 'start' : 'end',
+    sign
+  ];
+}
+
 export const getAttrsOfCartesianLabel = (
   props
 ) => {
@@ -54,15 +82,19 @@ export const getAttrsOfCartesianLabel = (
     height
   } = viewBox
   // Define vertical offsets and position inverts based on the value being positive or negative
-  , verticalSign = height >= 0 ? 1 : -1
-  , verticalOffset = verticalSign * offset
-  , verticalEnd = verticalSign > 0 ? 'end' : 'start'
-  , verticalStart = verticalSign > 0 ? 'start' : 'end'
+  , [
+    verticalOffset,
+    verticalEnd,
+    verticalStart,
+    verticalSign
+  ] = _crLabelConfig(height, offset)
   // Define horizontal offsets and position inverts based on the value being positive or negative
-  , horizontalSign = width >= 0 ? 1 : -1
-  , horizontalOffset = horizontalSign * offset
-  , horizontalEnd = horizontalSign > 0 ? 'end' : 'start'
-  , horizontalStart = horizontalSign > 0 ? 'start' : 'end';
+  , [
+    horizontalOffset,
+    horizontalEnd,
+    horizontalStart
+  ] = _crLabelConfig(width, offset);
+
   if (position === 'top') {
     return {
       ..._crAttrs(
@@ -73,12 +105,13 @@ export const getAttrsOfCartesianLabel = (
       ),
       ...(parentViewBox
         ? {
-            height: Math.max(y - parentViewBox.y, 0),
+            height: _mathMax(y - parentViewBox.y, 0),
             width,
         }
-        : {}),
+        : void 0)
     };
   }
+
   if (position === 'bottom') {
     return {
       ..._crAttrs(
@@ -89,12 +122,13 @@ export const getAttrsOfCartesianLabel = (
       ),
       ...(parentViewBox
         ? {
-            height: Math.max(parentViewBox.y + parentViewBox.height - (y + height), 0),
+            height: _mathMax(parentViewBox.y + parentViewBox.height - (y + height), 0),
             width
         }
-        : {}),
+        : void 0)
     };
   }
+
   if (position === 'left') {
     const attrs = _crAttrs(
       x - horizontalOffset,
@@ -106,12 +140,13 @@ export const getAttrsOfCartesianLabel = (
       ...attrs,
       ...(parentViewBox
         ? {
-            width: Math.max(attrs.x - parentViewBox.x, 0),
+            width: _mathMax(attrs.x - parentViewBox.x, 0),
             height
         }
-        : {}),
+        : void 0)
     };
   }
+
   if (position === 'right') {
     const attrs = _crAttrs(
       x + width + horizontalOffset,
@@ -123,15 +158,16 @@ export const getAttrsOfCartesianLabel = (
       ...attrs,
       ...(parentViewBox
         ? {
-            width: Math.max(parentViewBox.x + parentViewBox.width - attrs.x, 0),
+            width: _mathMax(parentViewBox.x + parentViewBox.width - attrs.x, 0),
             height
           }
-        : {})
+        : void 0)
     };
   }
+
   const sizeAttrs = parentViewBox
     ? { width, height }
-    : {};
+    : void 0;
   if (position === 'insideLeft') {
     return {
       ..._crAttrs(
@@ -143,6 +179,7 @@ export const getAttrsOfCartesianLabel = (
       ...sizeAttrs
     };
   }
+
   if (position === 'insideRight') {
     return {
       ..._crAttrs(
@@ -154,6 +191,7 @@ export const getAttrsOfCartesianLabel = (
       ...sizeAttrs
     };
   }
+
   if (position === 'insideTop') {
     return {
       ..._crAttrs(
@@ -165,6 +203,7 @@ export const getAttrsOfCartesianLabel = (
       ...sizeAttrs
     };
   }
+
   if (position === 'insideBottom') {
     return {
       ..._crAttrs(
@@ -176,6 +215,7 @@ export const getAttrsOfCartesianLabel = (
       ...sizeAttrs
     };
   }
+
   if (position === 'insideTopLeft') {
     return {
       ..._crAttrs(
@@ -187,6 +227,7 @@ export const getAttrsOfCartesianLabel = (
       ...sizeAttrs
     };
   }
+
   if (position === 'insideTopRight') {
     return {
       ..._crAttrs(
@@ -198,6 +239,7 @@ export const getAttrsOfCartesianLabel = (
       ...sizeAttrs
     };
   }
+
   if (position === 'insideBottomLeft') {
     return {
       ..._crAttrs(
@@ -209,6 +251,7 @@ export const getAttrsOfCartesianLabel = (
       ...sizeAttrs
     };
   }
+
   if (position === 'insideBottomRight') {
     return {
       ..._crAttrs(
@@ -220,9 +263,10 @@ export const getAttrsOfCartesianLabel = (
       ...sizeAttrs
     };
   }
+
   if (isObj(position)
-    && (isNumber(position.x) || isPercent(position.x))
-    && (isNumber(position.y) || isPercent(position.y))
+    && _isNumberOrPercent(position.x)
+    && _isNumberOrPercent(position.y)
   ) {
     return {
       ..._crAttrs(
@@ -234,6 +278,7 @@ export const getAttrsOfCartesianLabel = (
       ...sizeAttrs
     };
   }
+
   return {
     ..._crAttrs(
       x + width / 2,
