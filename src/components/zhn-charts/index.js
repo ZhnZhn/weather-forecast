@@ -8,6 +8,11 @@ export { XAxis } from "./cartesian/XAxis";
 export { ResponsiveContainer } from "./component/ResponsiveContainer";
 export { Tooltip } from "./component/Tooltip";
 export { Legend } from "./component/Legend";
+export {
+  labelTopFn,
+  labelBottomFn,
+  labelLeftFn
+} from "./component/LabelPositionFn";
 
 export { Surface } from "./container/Surface";
 

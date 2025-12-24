@@ -13,14 +13,12 @@ import {
 import { isNumber } from "../util/DataUtils";
 import { Text } from "./Text";
 
-import {
-  getAttrsOfCartesianLabel,
-  getLabel
-} from "./LabelFn";
+import { getLabel } from "./LabelFn";
+import { labelPositionFn } from "./LabelPositionFn";
 
 const DF_PROPS = {
-  offset: 5,
-  className: ""
+  position: labelPositionFn,
+  offset: 5
 };
 
 export const Label = (
@@ -32,7 +30,6 @@ export const Label = (
     value,
     children,
     content:ContentElementOrComp,
-    //className,
     textBreakAll
   } = _props;
   if (!viewBox || (isNullOrUndef(value) && isNullOrUndef(children) && !isValidElement(ContentElementOrComp) && !isFn(ContentElementOrComp))) {
@@ -54,14 +51,11 @@ export const Label = (
   }
   return (
     <Text
-      //className={crCn(CL_LABEL, className)}
       offset={_props.offset}
       fill={_props.fill}
       stroke={_props.stroke}
       className={_props.className}
-      // attrs
-      // positionAttrs
-      {...getAttrsOfCartesianLabel(_props)}
+      {..._props.position(_props)}
       breakAll={textBreakAll}
     >
       {label}

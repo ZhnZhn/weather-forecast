@@ -67,7 +67,7 @@ const _crLabelConfig = (
 
 export const getAttrsOfCartesianLabel = (
   props
-) => {
+) => {  
   const {
     viewBox,
     parentViewBox,

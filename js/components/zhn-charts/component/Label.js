@@ -7,10 +7,11 @@ var _uiApi = require("../../uiApi");
 var _DataUtils = require("../util/DataUtils");
 var _Text = require("./Text");
 var _LabelFn = require("./LabelFn");
+var _LabelPositionFn = require("./LabelPositionFn");
 var _jsxRuntime = require("react/jsx-runtime");
 const DF_PROPS = {
-  offset: 5,
-  className: ""
+  position: _LabelPositionFn.labelPositionFn,
+  offset: 5
 };
 const Label = props => {
   const _props = (0, _uiApi.crProps)(DF_PROPS, props),
@@ -19,7 +20,6 @@ const Label = props => {
       value,
       children,
       content: ContentElementOrComp,
-      //className,
       textBreakAll
     } = _props;
   if (!viewBox || (0, _isTypeFn.isNullOrUndef)(value) && (0, _isTypeFn.isNullOrUndef)(children) && !(0, _uiApi.isValidElement)(ContentElementOrComp) && !(0, _isTypeFn.isFn)(ContentElementOrComp)) {
@@ -37,19 +37,15 @@ const Label = props => {
   } else {
     label = (0, _LabelFn.getLabel)(_props);
   }
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text
-  //className={crCn(CL_LABEL, className)}
-  , Object.assign({
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, {
     offset: _props.offset,
     fill: _props.fill,
     stroke: _props.stroke,
-    className: _props.className
-    // attrs
-    // positionAttrs
-  }, (0, _LabelFn.getAttrsOfCartesianLabel)(_props), {
+    className: _props.className,
+    ..._props.position(_props),
     breakAll: textBreakAll,
     children: label
-  }));
+  });
 };
 exports.Label = Label;
 const parseViewBox = props => {

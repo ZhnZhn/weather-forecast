@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.YAxis = exports.XAxis = exports.Tooltip = exports.Surface = exports.ResponsiveContainer = exports.LineChart = exports.Line = exports.Legend = exports.ComposedChart = exports.CartesianGrid = exports.CartesianAxis = exports.Bar = void 0;
+exports.labelTopFn = exports.labelLeftFn = exports.labelBottomFn = exports.YAxis = exports.XAxis = exports.Tooltip = exports.Surface = exports.ResponsiveContainer = exports.LineChart = exports.Line = exports.Legend = exports.ComposedChart = exports.CartesianGrid = exports.CartesianAxis = exports.Bar = void 0;
 var _CartesianAxis = require("./cartesian/CartesianAxis");
 exports.CartesianAxis = _CartesianAxis.CartesianAxis;
 var _CartesianGrid = require("./cartesian/CartesianGrid");
@@ -20,6 +20,10 @@ var _Tooltip = require("./component/Tooltip");
 exports.Tooltip = _Tooltip.Tooltip;
 var _Legend = require("./component/Legend");
 exports.Legend = _Legend.Legend;
+var _LabelPositionFn = require("./component/LabelPositionFn");
+exports.labelTopFn = _LabelPositionFn.labelTopFn;
+exports.labelBottomFn = _LabelPositionFn.labelBottomFn;
+exports.labelLeftFn = _LabelPositionFn.labelLeftFn;
 var _Surface = require("./container/Surface");
 exports.Surface = _Surface.Surface;
 var _ComposedChart = require("./chart/ComposedChart");
