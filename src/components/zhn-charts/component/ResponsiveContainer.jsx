@@ -1,5 +1,4 @@
 import {
-  isValidElement,
   Children,
   cloneUiElement,
   useRef,
@@ -9,16 +8,12 @@ import {
 } from '../../uiApi';
 
 import { crCn } from '../../styleFn';
-
 import throttle from '../../../utils/throttleFn';
 
 import { isPercent } from '../util/DataUtils';
-import { getDisplayName } from '../util/ReactUtils';
-
 import { useContainerSizes } from './useContainerSizes';
 
-const _isArr = Array.isArray
-, FN_NOOP = () => {}
+const FN_NOOP = () => {}
 , _getContainerDimension = (
   value,
   containerValue
@@ -56,7 +51,6 @@ export const ResponsiveContainer = ({
     setContainerSize
   ] = useContainerSizes(initialDimension)
 
-  /*eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     let _onResizeContainer = (entries) => {
       const {
@@ -121,34 +115,26 @@ export const ResponsiveContainer = ({
       }
     }
 
-    const isCharts = !_isArr(children)
-      && getDisplayName(children.type).endsWith('Chart');
-
     return Children.map(children, child => {
-      if (isValidElement(child)) {
         return cloneUiElement(child, {
           width: calculatedWidth,
           height: calculatedHeight,
           // calculate the actual size and override it.
-          ...(isCharts
-            ? {
-                style: {
-                  height: '100%',
-                  width: '100%',
-                  maxHeight: calculatedHeight,
-                  maxWidth: calculatedWidth,
-                  // keep components style
-                  ...child.props.style
-                }
-              }
-            : void 0)
+          style: {
+            width: calculatedWidth,
+            height: calculatedHeight,
+            ...child.props.style
+          }
         });
-      }
-      return child;
     });
-  }, [aspect, children, height, maxHeight, minHeight, minWidth, sizes, width]);
-  // minHeight, minWidth
-  /*eslint-enable react-hooks/exhaustive-deps */
+  }, [
+    aspect,
+    children,
+    height,
+    maxHeight,
+    sizes,
+    width
+  ]);
 
   return (
     <div

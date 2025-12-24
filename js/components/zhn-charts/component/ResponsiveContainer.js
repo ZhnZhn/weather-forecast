@@ -7,11 +7,9 @@ var _uiApi = require("../../uiApi");
 var _styleFn = require("../../styleFn");
 var _throttleFn = _interopRequireDefault(require("../../../utils/throttleFn"));
 var _DataUtils = require("../util/DataUtils");
-var _ReactUtils = require("../util/ReactUtils");
 var _useContainerSizes = require("./useContainerSizes");
 var _jsxRuntime = require("react/jsx-runtime");
-const _isArr = Array.isArray,
-  FN_NOOP = () => {},
+const FN_NOOP = () => {},
   _getContainerDimension = (value, containerValue) => (0, _DataUtils.isPercent)(value) ? containerValue : value;
 const ResponsiveContainer = _ref => {
   let {
@@ -39,8 +37,6 @@ const ResponsiveContainer = _ref => {
   const _refContainer = (0, _uiApi.useRef)(null),
     _refOnResize = (0, _uiApi.useRef)(onResize),
     [sizes, setContainerSize] = (0, _useContainerSizes.useContainerSizes)(initialDimension);
-
-  /*eslint-disable react-hooks/exhaustive-deps */
   (0, _uiApi.useEffect)(() => {
     let _onResizeContainer = entries => {
       const {
@@ -90,31 +86,19 @@ const ResponsiveContainer = _ref => {
         calculatedHeight = maxHeight;
       }
     }
-    const isCharts = !_isArr(children) && (0, _ReactUtils.getDisplayName)(children.type).endsWith('Chart');
     return _uiApi.Children.map(children, child => {
-      if ((0, _uiApi.isValidElement)(child)) {
-        return (0, _uiApi.cloneUiElement)(child, {
+      return (0, _uiApi.cloneUiElement)(child, {
+        width: calculatedWidth,
+        height: calculatedHeight,
+        // calculate the actual size and override it.
+        style: {
           width: calculatedWidth,
           height: calculatedHeight,
-          // calculate the actual size and override it.
-          ...(isCharts ? {
-            style: {
-              height: '100%',
-              width: '100%',
-              maxHeight: calculatedHeight,
-              maxWidth: calculatedWidth,
-              // keep components style
-              ...child.props.style
-            }
-          } : void 0)
-        });
-      }
-      return child;
+          ...child.props.style
+        }
+      });
     });
-  }, [aspect, children, height, maxHeight, minHeight, minWidth, sizes, width]);
-  // minHeight, minWidth
-  /*eslint-enable react-hooks/exhaustive-deps */
-
+  }, [aspect, children, height, maxHeight, sizes, width]);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     ref: _refContainer,
     id: id ? id : void 0,
