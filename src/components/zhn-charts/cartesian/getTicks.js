@@ -1,9 +1,11 @@
-import { isFn } from '../../../utils/isTypeFn';
+import {
+  isFn,
+  isNotEmptyArr
+} from '../../../utils/isTypeFn';
 
 import { mathSign, isNumber } from '../util/DataUtils';
 import { getStringSize } from '../util/DOMUtils';
 import { IS_SSR } from '../util/Global';
-import { getEveryNthWithCondition } from '../util/getEveryNthWithCondition';
 
 const _crSizeKey = (
   orientation
@@ -35,7 +37,7 @@ const _crStartEnd = (
     : _interval.reverse();
 }
 
-function getTicksEnd({
+const _getTicksEnd = (
   ticks,
   tickFormatter,
   viewBox,
@@ -44,7 +46,7 @@ function getTicksEnd({
   unit,
   fontSize,
   letterSpacing
-}) {
+) => {
   const {
     x,
     y,
@@ -108,6 +110,23 @@ function getTicksEnd({
   return result;
 }
 
+const _getEveryNthTick = (
+  arr,
+  n
+) => {
+  if (n < 1) {
+    return [];
+  }
+  if (n === 1) {
+    return arr;
+  }
+  const result = [];
+  for (let i = 0; i < arr.length; i += n) {
+    result.push(arr[i]);
+  }
+  return result;
+}
+
 export function getTicks(
   props,
   fontSize,
@@ -124,20 +143,20 @@ export function getTicks(
     unit
   } = props;
 
-  if (!ticks || !ticks.length || !tick) {
+  if (!isNotEmptyArr(ticks) || !tick) {
     return [];
   }
 
   if (isNumber(interval) || IS_SSR) {
-    return getEveryNthWithCondition(
+    return _getEveryNthTick(
       ticks,
-      typeof interval === 'number' && isNumber(interval)
+      isNumber(interval)
         ? interval + 1
         : 1
     );
   }
 
-  const _tickOptions = {
+  return _getTicksEnd(
     ticks,
     tickFormatter,
     viewBox,
@@ -146,9 +165,5 @@ export function getTicks(
     unit,
     fontSize,
     letterSpacing
-  };
-
-  
-  return getTicksEnd(_tickOptions)
-    .filter(entry => entry.isShow);
+  ).filter(entry => entry.isShow);
 }
