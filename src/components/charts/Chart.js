@@ -7,6 +7,7 @@ export {
   ResponsiveContainer,
   Tooltip,
   Legend,
+  labelTopFn,
   ComposedChart,
   LineChart
 } from "../zhn-charts";

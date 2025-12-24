@@ -21,6 +21,9 @@ import {
   S_YAXIS_PRESSURE
 } from './Chart.Style';
 import {
+  YAXIS_LABEL_POSITION
+} from './YAxisLabel.Style';
+import {
   SPEED_COLOR,
   PRESSURE_COLOR
 } from './SeriesColor';
@@ -28,14 +31,10 @@ import {
 const _crLabelColor = color => ({
   stroke: color,
   fill: color
-});
+})
 
-const LABEL_POSITION = {
-  position: "top",
-  offset: 10
-}
 , LABEL_M3 = {
-  ...LABEL_POSITION,
+  ...YAXIS_LABEL_POSITION,
   value: "μg/m3"
 }
 , LABEL_CO = {
@@ -43,7 +42,7 @@ const LABEL_POSITION = {
   ..._crLabelColor(PRESSURE_COLOR)
 }
 , LABEL_AQI = {
-  ...LABEL_POSITION,
+  ...YAXIS_LABEL_POSITION,
   ..._crLabelColor(SPEED_COLOR),
   value: "AQI"
 };

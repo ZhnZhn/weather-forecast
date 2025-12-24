@@ -14,23 +14,26 @@ var _TooltipAirForecast = _interopRequireDefault(require("./TooltipAirForecast")
 var _LegendAirForecast = _interopRequireDefault(require("./LegendAirForecast"));
 var _crListSeries = _interopRequireDefault(require("./crListSeries"));
 var _Chart2 = require("./Chart.Style");
+var _YAxisLabel = require("./YAxisLabel.Style");
 var _SeriesColor = require("./SeriesColor");
 var _jsxRuntime = require("react/jsx-runtime");
 const _crLabelColor = color => ({
-  stroke: color,
-  fill: color
-});
-const LABEL_POSITION = {
-    position: "top",
-    offset: 10
-  },
-  LABEL_M3 = Object.assign({}, LABEL_POSITION, {
-    value: "μg/m3"
+    stroke: color,
+    fill: color
   }),
-  LABEL_CO = Object.assign({}, LABEL_M3, _crLabelColor(_SeriesColor.PRESSURE_COLOR)),
-  LABEL_AQI = Object.assign({}, LABEL_POSITION, _crLabelColor(_SeriesColor.SPEED_COLOR), {
+  LABEL_M3 = {
+    ..._YAxisLabel.YAXIS_LABEL_POSITION,
+    value: "μg/m3"
+  },
+  LABEL_CO = {
+    ...LABEL_M3,
+    ..._crLabelColor(_SeriesColor.PRESSURE_COLOR)
+  },
+  LABEL_AQI = {
+    ..._YAxisLabel.YAXIS_LABEL_POSITION,
+    ..._crLabelColor(_SeriesColor.SPEED_COLOR),
     value: "AQI"
-  });
+  };
 const INITIAL_FILTERED = {
   aqi: false,
   co: false,
@@ -64,11 +67,12 @@ const _transformAirForecast = arr => (arr || []).map(_ref => {
     {
       aqi
     } = main || {};
-  return Object.assign({}, components, {
+  return {
+    ...components,
     day: _dh,
-    dt_text: _dh + ":00",
+    dt_text: `${_dh}:00`,
     aqi
-  });
+  };
 });
 const LINE_CONFIGS = [{
   id: 'aqi',
@@ -106,21 +110,23 @@ const ChartAirForecast = () => {
       width: 45,
       label: LABEL_M3,
       hide: _isHideYAxis1
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, Object.assign({
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, {
       yAxisId: 2,
       orientation: "right",
       width: 45,
       label: LABEL_AQI,
       dataKey: "aqi",
-      hide: filtered.aqi
-    }, _Chart2.S_YAXIS_SPEED)), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, Object.assign({
+      hide: filtered.aqi,
+      ..._Chart2.S_YAXIS_SPEED
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.YAxis, {
       yAxisId: 3,
       orientation: "right",
       width: 45,
       label: LABEL_CO,
       dataKey: "co",
-      hide: filtered.co
-    }, _Chart2.S_YAXIS_PRESSURE)), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.Legend, {
+      hide: filtered.co,
+      ..._Chart2.S_YAXIS_PRESSURE
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Chart.Legend, {
       content: _LegendAirForecast.default,
       filtered: filtered,
       onFilter: _hFilter

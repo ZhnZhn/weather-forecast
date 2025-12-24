@@ -16,10 +16,10 @@ var _crListSeries = _interopRequireDefault(require("./crListSeries"));
 var _TooltipForecast = _interopRequireDefault(require("./TooltipForecast"));
 var _LegendForecast = _interopRequireDefault(require("./LegendForecast"));
 var _Chart2 = require("./Chart.Style");
+var _YAxisLabel = require("./YAxisLabel.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 const YAXIS_LABEL_TEMP = {
-  value: "°C",
-  position: "top",
+  ..._YAxisLabel.YAXIS_LABEL_TEMPERATURE,
   offset: 8,
   xTopOffset: 28
 };

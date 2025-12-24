@@ -35,10 +35,12 @@ import {
   S_LINE_TEMP_EVE,
   S_LINE_TEMP_NIGHT
 } from './Chart.Style';
+import {
+  YAXIS_LABEL_TEMPERATURE
+} from './YAxisLabel.Style';
 
 const YAXIS_LABEL_TEMP = {
-  value: "°C",
-  position: "top",
+  ...YAXIS_LABEL_TEMPERATURE,    
   offset: 8,
   xTopOffset: 28
 };
