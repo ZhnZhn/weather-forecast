@@ -16,8 +16,7 @@ const DF_AXIS_ID = 0;
 const _getObjectKeys = Object.keys;
 const _calcLegendWidth = (width, margin) => width - (margin.left || 0) - (margin.right || 0);
 const _crBarPosition = (cateAxis, cateTicks, bandSize, maxBarSize, barGap, barCategoryGap, sizeList) => {
-  var _ref, _getBandSizeOfAxis;
-  const barBandSize = (_ref = (_getBandSizeOfAxis = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks, true)) != null ? _getBandSizeOfAxis : maxBarSize) != null ? _ref : 0,
+  const barBandSize = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks, true) ?? maxBarSize ?? 0,
     isBarBandSize = barBandSize !== bandSize,
     barPosition = (0, _ChartUtils.getBarPosition)({
       barGap,
@@ -26,20 +25,23 @@ const _crBarPosition = (cateAxis, cateTicks, bandSize, maxBarSize, barGap, barCa
       sizeList,
       maxBarSize
     });
-  return isBarBandSize ? barPosition.map(pos => Object.assign({}, pos, {
-    position: Object.assign({}, pos.position, {
+  return isBarBandSize ? barPosition.map(pos => ({
+    ...pos,
+    position: {
+      ...pos.position,
       offset: pos.position.offset - barBandSize / 2
-    })
+    }
   })) : barPosition;
 };
 const _crAxisObj = (axisComponents, currentState, item) => axisComponents.reduce((result, entry) => {
-  const axisMap = currentState[entry.axisType + "Map"],
-    id = item.props[entry.axisType + "Id"] || DF_AXIS_ID,
+  const axisMap = currentState[`${entry.axisType}Map`],
+    id = item.props[`${entry.axisType}Id`] || DF_AXIS_ID,
     axis = axisMap && axisMap[id];
-  return Object.assign({}, result, {
+  return {
+    ...result,
     [entry.axisType]: axis,
-    [entry.axisType + "Ticks"]: (0, _ChartUtils.getTicksOfAxis)(axis)
-  });
+    [`${entry.axisType}Ticks`]: (0, _ChartUtils.getTicksOfAxis)(axis)
+  };
 }, {});
 const fGetFormatItems = axisComponents => (props, currentState) => {
   const {
@@ -67,25 +69,27 @@ const fGetFormatItems = axisComponents => (props, currentState) => {
       } = item.props,
       axisObj = _crAxisObj(axisComponents, currentState, item),
       cateAxis = axisObj[cateAxisName],
-      cateTicks = axisObj[cateAxisName + "Ticks"],
+      cateTicks = axisObj[`${cateAxisName}Ticks`],
       bandSize = (0, _ChartUtils.getBandSizeOfAxis)(cateAxis, cateTicks),
       barPosition = (0, _generateCategoricalChartFn.isItemTypeBar)(item) ? _crBarPosition(cateAxis, cateTicks, bandSize, childMaxBarSize == null ? globalMaxBarSize : childMaxBarSize, barGap, barCategoryGap, sizeList) : void 0,
       composedFn = (0, _generateCategoricalChartFn.getComposedDataFn)(item);
     if (composedFn) {
       formattedItems.push({
-        props: Object.assign({}, composedFn(Object.assign({}, axisObj, {
-          displayedData,
-          dataKey,
-          item,
-          bandSize,
-          barPosition,
-          offset,
-          layout
-        })), {
-          key: item.key || "item-" + index,
+        props: {
+          ...composedFn({
+            ...axisObj,
+            displayedData,
+            dataKey,
+            item,
+            bandSize,
+            barPosition,
+            offset,
+            layout
+          }),
+          key: item.key || `item-${index}`,
           [numericAxisName]: axisObj[numericAxisName],
           [cateAxisName]: axisObj[cateAxisName]
-        }),
+        },
         childIndex: (0, _ReactUtils.parseChildIndex)(item, props.children),
         item
       });
@@ -110,11 +114,11 @@ const axisComponents = [(0, _chartFn.crAxisComponent)('xAxis', _XAxis.XAxis), (0
  * @param {Object} prevState      Prev state
  * @return {Object} state New state to set
  */
-const fUpdateStateOfAxisMapsOffset = (chartName, GraphicalChild) => (_ref2, legendBBox, clipPathId) => {
+const fUpdateStateOfAxisMapsOffset = (chartName, GraphicalChild) => (_ref, legendBBox, clipPathId) => {
   let {
     props
-  } = _ref2;
-  if (!(0, _ReactUtils.validateWidthHeight)(props.width, props.height)) {
+  } = _ref;
+  if (!(0, _ChartUtils.validateWidthHeight)(props.width, props.height)) {
     return [];
   }
   const {
@@ -129,30 +133,33 @@ const fUpdateStateOfAxisMapsOffset = (chartName, GraphicalChild) => (_ref2, lege
     } = (0, _generateCategoricalChartFn.getAxisNameByLayout)(layout),
     graphicalItems = (0, _ReactUtils.findAllByType)(children, GraphicalChild),
     axisObj = axisComponents.reduce((result, entry) => {
-      result[entry.axisType + "Map"] = (0, _getAxisMap.getAxisMap)(props, Object.assign({}, entry, {
+      result[`${entry.axisType}Map`] = (0, _getAxisMap.getAxisMap)(props, {
+        ...entry,
         graphicalItems
-      }));
+      });
       return result;
     }, {}),
     legendItem = (0, _ChartUtils.findChildTypeLegend)(children),
-    offset = (0, _calculateOffset.calculateOffset)(Object.assign({}, axisObj, {
+    offset = (0, _calculateOffset.calculateOffset)({
+      ...axisObj,
       width,
       height,
       margin
-    }), legendBBox, legendItem);
+    }, legendBBox, legendItem);
   _getObjectKeys(axisObj).forEach(key => {
     axisObj[key] = (0, _CartesianUtils.formatAxisMap)(props, axisObj[key], offset, key.replace('Map', ''), chartName);
   });
-  const formattedGraphicalItems = getFormatItems(props, Object.assign({}, axisObj, {
+  const formattedGraphicalItems = getFormatItems(props, {
+      ...axisObj,
       graphicalItems,
       offset
-    })),
+    }),
     [_legendProps, _legendItem] = (0, _ChartUtils.getLegendProps)({
       legendItem,
       formattedGraphicalItems,
       legendWidth: _calcLegendWidth(width, margin)
     });
-  return [offset, (0, _generateCategoricalChartFn.getOrderedTooltipTicks)(axisObj[cateAxisName + "Map"]), graphicalItems, (0, _ReactUtils.renderByMap)(children, {
+  return [offset, (0, _generateCategoricalChartFn.getOrderedTooltipTicks)(axisObj[`${cateAxisName}Map`]), graphicalItems, (0, _ReactUtils.renderByMap)(children, {
     clipPathId,
     width,
     height,

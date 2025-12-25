@@ -9,7 +9,7 @@ var _localState = require("../context/localState");
 var _TooltipContext = require("../context/TooltipContext");
 var _Surface = require("../container/Surface");
 var _ClipPath = require("../container/ClipPath");
-var _ReactUtils = require("../util/ReactUtils");
+var _ChartUtils = require("../util/ChartUtils");
 var _DataUtils = require("../util/DataUtils");
 var _useLegendBox = _interopRequireDefault(require("./useLegendBox"));
 var _useTooltipEvents = _interopRequireDefault(require("./useTooltipEvents"));
@@ -55,7 +55,7 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
       [_useTooltipState, _setTooltipState] = (0, _localState.useLocalStateTuple)({
         isTooltipActive: false
       }),
-      _refClipPathId = (0, _uiApi.useRef)((_props.id || (0, _DataUtils.uniqueId)('recharts')) + "-clip"),
+      _refClipPathId = (0, _uiApi.useRef)(`${_props.id || (0, _DataUtils.uniqueId)('recharts')}-clip`),
       _refContainer = (0, _uiApi.useRef)(),
       [legendBBox, handleLegendBBoxUpdate] = (0, _useLegendBox.default)(),
       clipPathId = (0, _uiApi.getRefValue)(_refClipPathId),
@@ -75,10 +75,11 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         return tooltipData ? tooltipData : null;
       },
       [tooltipItem, events, handleCloseTooltip] = (0, _useTooltipEvents.default)(_props, getMouseTooltipData, _setTooltipState);
-    if (!(0, _ReactUtils.validateWidthHeight)(width, height)) {
+    if (!(0, _ChartUtils.validateWidthHeight)(width, height)) {
       return null;
     }
-    const _graphicItemsEl = /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, Object.assign({}, SURFACE_ATTRS, {
+    const _graphicItemsEl = /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Surface.Surface, {
+      ...SURFACE_ATTRS,
       width: width,
       height: height,
       title: title,
@@ -87,36 +88,39 @@ const generateCategoricalChart = function (chartName, updateStateOfAxisMapsOffse
         id: clipPathId,
         offset: offset
       }), _graphicItems]
-    }));
+    });
 
     // The "compact" mode is mainly used as the panorama within Brush
-    return compact ? _graphicItemsEl : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", Object.assign({
+    return compact ? _graphicItemsEl : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       role: "region",
       ref: _refContainer,
       className: (0, _styleFn.crCn)(_CL.CL_WRAPPER, className),
-      style: Object.assign({
+      style: {
         position: 'relative',
         cursor: 'default',
         width,
-        height
-      }, style)
-    }, events, {
+        height,
+        ...style
+      },
+      ...events,
       children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_TooltipContext.TooltipProvider, {
         value: _useTooltipState,
-        children: [_graphicItemsEl, _legendProps ? (0, _uiApi.cloneUiElement)(_legendItem, Object.assign({}, _legendProps, {
+        children: [_graphicItemsEl, _legendProps ? (0, _uiApi.cloneUiElement)(_legendItem, {
+          ..._legendProps,
           chartWidth: width || 0,
           chartHeight: height || 0,
           margin,
           onBBoxUpdate: handleLegendBBoxUpdate
-        })) : null, tooltipItem ? (0, _uiApi.cloneUiElement)(tooltipItem, {
-          viewBox: Object.assign({}, offset, {
+        }) : null, tooltipItem ? (0, _uiApi.cloneUiElement)(tooltipItem, {
+          viewBox: {
+            ...offset,
             x: offset.left,
             y: offset.top
-          }),
+          },
           onClose: handleCloseTooltip
         }) : null]
       })
-    }));
+    });
   };
   ChartWrapper.displayName = chartName;
   return ChartWrapper;

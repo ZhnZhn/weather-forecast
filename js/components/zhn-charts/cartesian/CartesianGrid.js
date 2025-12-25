@@ -6,7 +6,6 @@ exports.CartesianGrid = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _ChartUtils = require("../util/ChartUtils");
-var _DataUtils = require("../util/DataUtils");
 var _CartesianGridRenderFn = require("./CartesianGridRenderFn");
 var _getTicks = require("./getTicks");
 var _CartesianAxis = require("./CartesianAxis");
@@ -23,7 +22,9 @@ const verticalCoordinatesGenerator = _ref => {
     height,
     offset
   } = _ref;
-  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)(Object.assign({}, _CartesianAxis.CARTESIAN_AXIS_DF_PROPS, xAxis, {
+  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)({
+    ..._CartesianAxis.CARTESIAN_AXIS_DF_PROPS,
+    ...xAxis,
     ticks: (0, _ChartUtils.getTicksOfAxis)(xAxis, true),
     viewBox: {
       x: 0,
@@ -31,7 +32,7 @@ const verticalCoordinatesGenerator = _ref => {
       width,
       height
     }
-  })), offset.left, offset.left + offset.width);
+  }), offset.left, offset.left + offset.width);
 };
 const horizontalCoordinatesGenerator = _ref2 => {
   let {
@@ -40,7 +41,9 @@ const horizontalCoordinatesGenerator = _ref2 => {
     height,
     offset
   } = _ref2;
-  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)(Object.assign({}, _CartesianAxis.CARTESIAN_AXIS_DF_PROPS, yAxis, {
+  return (0, _ChartUtils.getCoordinatesOfGrid)((0, _getTicks.getTicks)({
+    ..._CartesianAxis.CARTESIAN_AXIS_DF_PROPS,
+    ...yAxis,
     ticks: (0, _ChartUtils.getTicksOfAxis)(yAxis, true),
     viewBox: {
       x: 0,
@@ -48,7 +51,7 @@ const horizontalCoordinatesGenerator = _ref2 => {
       width,
       height
     }
-  })), offset.top, offset.top + offset.height);
+  }), offset.top, offset.top + offset.height);
 };
 const DF_PROPS = {
   horizontal: true,
@@ -65,7 +68,7 @@ const DF_PROPS = {
   verticalCoordinatesGenerator: verticalCoordinatesGenerator,
   horizontalCoordinatesGenerator: horizontalCoordinatesGenerator
 };
-const _getNumber = (value, dfValue) => (0, _DataUtils.isNumber)(value) ? value : dfValue;
+const _getNumber = (value, dfValue) => (0, _isTypeFn.isNumber)(value) ? value : dfValue;
 const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
   const _props = (0, _uiApi.crProps)(DF_PROPS, props),
     {
@@ -95,7 +98,7 @@ const CartesianGrid = exports.CartesianGrid = (0, _uiApi.memo)(props => {
   y = _getNumber(y, offset.top);
   width = _getNumber(width, offset.width);
   height = _getNumber(height, offset.height);
-  if (!((0, _DataUtils.isPositiveNumber)(width) && (0, _DataUtils.isPositiveNumber)(height) && (0, _DataUtils.isNumber)(x) && (0, _DataUtils.isNumber)(y))) {
+  if (!((0, _ChartUtils.validateWidthHeight)(width, height) && (0, _isTypeFn.isNumber)(x) && (0, _isTypeFn.isNumber)(y))) {
     return null;
   }
   const [_horizontalPoints, _verticalPoints] = (0, _CartesianGridRenderFn.crGridPoints)(horizontalCoordinatesGenerator, verticalCoordinatesGenerator, xAxis, yAxis, horizontalPoints, verticalPoints, {

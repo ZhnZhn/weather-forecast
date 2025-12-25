@@ -35,6 +35,14 @@ export const isLayoutVertical = _fIs("vertical")
 export const isAxisTypeX = _fIs("xAxis")
 export const isAxisTypeY = _fIs("yAxis")
 
+export const validateWidthHeight = (
+  width,
+  height
+) => isNumber(width)
+  && isNumber(height)
+  && width > 0
+  && height > 0
+
 export const getValueByDataKey = (
   obj,
   dataKey,

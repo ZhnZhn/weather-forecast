@@ -1,5 +1,6 @@
 import {
-  isNotEmptyArr
+  isNotEmptyArr,
+  isNumber
 } from '../../../utils/isTypeFn';
 import {
   memo,
@@ -7,14 +8,10 @@ import {
 } from '../../uiApi';
 
 import {
+  validateWidthHeight,
   getTicksOfAxis,
   getCoordinatesOfGrid
 } from '../util/ChartUtils';
-
-import {
-  isNumber,
-  isPositiveNumber
-} from '../util/DataUtils';
 
 import {
   crGridPoints,
@@ -127,8 +124,7 @@ export const CartesianGrid = memo((
   width = _getNumber(width, offset.width)
   height = _getNumber(height, offset.height)
 
-  if (!(isPositiveNumber(width)
-    && isPositiveNumber(height)
+  if (!(validateWidthHeight(width, height)
     && isNumber(x)
     && isNumber(y)
   )) {

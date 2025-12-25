@@ -3,6 +3,7 @@ import {
 } from '../util/CartesianUtils';
 
 import {
+  validateWidthHeight,
   getBarPosition,
   getTicksOfAxis,
   getBandSizeOfAxis,
@@ -12,7 +13,6 @@ import {
 
 import {
   parseChildIndex,
-  validateWidthHeight,
   findAllByType,
   renderByMap
 } from '../util/ReactUtils';

@@ -13,7 +13,7 @@ import { TooltipProvider } from '../context/TooltipContext';
 import { Surface } from '../container/Surface';
 import { ClipPath } from '../container/ClipPath';
 
-import { validateWidthHeight } from '../util/ReactUtils';
+import { validateWidthHeight } from '../util/ChartUtils';
 import { uniqueId } from '../util/DataUtils';
 
 import useLegendBox from './useLegendBox';

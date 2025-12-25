@@ -3,7 +3,7 @@
 exports.__esModule = true;
 exports.getCoordinatesOfGrid = exports.getCateCoordinateOfBar = exports.getBaseValueOfBar = exports.getBarPosition = exports.getBandSizeOfAxis = exports.findPositionOfBar = exports.findChildTypeLegend = exports.checkDomainOfScale = exports.calculateActiveTickIndex = exports.MIN_VALUE_REG = exports.MAX_VALUE_REG = void 0;
 exports.getDomainOfDataByKey = getDomainOfDataByKey;
-exports.parseSpecifiedDomain = exports.parseScale = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getLegendProps = exports.getDomainOfItemsWithSameAxis = void 0;
+exports.validateWidthHeight = exports.parseSpecifiedDomain = exports.parseScale = exports.isLayoutVertical = exports.isLayoutHorizontal = exports.isCategoricalAxis = exports.isAxisTypeY = exports.isAxisTypeX = exports.getValueByDataKey = exports.getTooltipItem = exports.getTicksOfScale = exports.getTicksOfAxis = exports.getLegendProps = exports.getDomainOfItemsWithSameAxis = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _d3Scale = require("../d3Scale");
 var _scale = require("../scale");
@@ -18,6 +18,8 @@ const isLayoutHorizontal = exports.isLayoutHorizontal = _fIs("horizontal");
 const isLayoutVertical = exports.isLayoutVertical = _fIs("vertical");
 const isAxisTypeX = exports.isAxisTypeX = _fIs("xAxis");
 const isAxisTypeY = exports.isAxisTypeY = _fIs("yAxis");
+const validateWidthHeight = (width, height) => (0, _isTypeFn.isNumber)(width) && (0, _isTypeFn.isNumber)(height) && width > 0 && height > 0;
+exports.validateWidthHeight = validateWidthHeight;
 const getValueByDataKey = (obj, dataKey, defaultValue) => obj == null || dataKey == null ? defaultValue : (0, _isTypeFn.isNumOrStr)(dataKey) ? obj[dataKey] || defaultValue : (0, _isTypeFn.isFn)(dataKey) ? dataKey(obj) : defaultValue;
 /**
  * Get domain of data by key
@@ -41,11 +43,10 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
 const _getTickCoordinate = tick => tick.coordinate;
 const _calcAverageTicksCoordinate = (tickA, tickB) => tickA && tickB ? (_getTickCoordinate(tickA) + _getTickCoordinate(tickB)) / 2 : NaN;
 const calculateActiveTickIndex = function (coordinate, ticks) {
-  var _ticks$length, _ticks;
   if (ticks === void 0) {
     ticks = [];
   }
-  const len = (_ticks$length = (_ticks = ticks) == null ? void 0 : _ticks.length) != null ? _ticks$length : 0;
+  const len = ticks?.length ?? 0;
   // if there are 1 or less ticks ticks then the active tick is at index 0
   if (len <= 1) {
     return 0;
@@ -121,9 +122,11 @@ const getLegendProps = _ref => {
         payload: item.props
       };
     });
-  return [Object.assign({}, legendItemProps, _getLegendWidthOrHeight(legendItemProps, legendWidth), {
+  return [{
+    ...legendItemProps,
+    ..._getLegendWidthOrHeight(legendItemProps, legendWidth),
     payload: legendData
-  }), legendItem];
+  }, legendItem];
 };
 
 /**

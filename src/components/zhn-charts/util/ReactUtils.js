@@ -1,6 +1,5 @@
 import {
   isArr,
-  isNumber,
   isStr,
   isFn
 } from '../../../utils/isTypeFn';
@@ -103,15 +102,6 @@ export function findChildByType(children, type) {
   const result = findAllByType(children, type);
   return result && result[0];
 }
-
-export const validateWidthHeight = (
-  width,
-  height
-) => isNumber(width)
-  && isNumber(height)
-  && width > 0
-  && height > 0
-
 
 export const renderByMap = (
   children,

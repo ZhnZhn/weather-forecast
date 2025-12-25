@@ -4,7 +4,7 @@ exports.__esModule = true;
 exports.fCreateElement = exports._toArray = void 0;
 exports.findAllByType = findAllByType;
 exports.findChildByType = findChildByType;
-exports.validateWidthHeight = exports.renderByMap = exports.parseChildIndex = exports.getDisplayName = void 0;
+exports.renderByMap = exports.parseChildIndex = exports.getDisplayName = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 const fCreateElement = crElement => (option, props, value) => (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneUiElement)(option, props) : (0, _isTypeFn.isFn)(option) ? option(props) : crElement(props, option, value);
@@ -70,8 +70,6 @@ function findChildByType(children, type) {
   const result = findAllByType(children, type);
   return result && result[0];
 }
-const validateWidthHeight = (width, height) => (0, _isTypeFn.isNumber)(width) && (0, _isTypeFn.isNumber)(height) && width > 0 && height > 0;
-exports.validateWidthHeight = validateWidthHeight;
 const renderByMap = (children, handlerOptions, renderMap) => {
   const elements = [],
     record = {};
