@@ -1,7 +1,4 @@
-import {
-  isFn,
-  isNullOrUndef
-} from '../../../utils/isTypeFn';
+import { isFn } from '../../../utils/isTypeFn';
 
 import {
   isValidElement,
@@ -11,10 +8,22 @@ import {
 } from "../../uiApi";
 
 import { isNumber } from "../util/DataUtils";
-import { Text } from "./Text";
 
-import { getLabel } from "./LabelFn";
+import { Text } from "./Text";
 import { labelPositionFn } from "./LabelPositionFn";
+
+const _getLabel = (
+  children,
+  value,
+  formatter
+) => {
+  const label = children == null
+    ? value
+    : children;
+  return isFn(formatter)
+    ? formatter(label)
+    : label;
+}
 
 const DF_PROPS = {
   position: labelPositionFn,
@@ -29,25 +38,28 @@ export const Label = (
     viewBox,
     value,
     children,
-    content:ContentElementOrComp,
+    content,
     textBreakAll
-  } = _props;
-  if (!viewBox || (isNullOrUndef(value) && isNullOrUndef(children) && !isValidElement(ContentElementOrComp) && !isFn(ContentElementOrComp))) {
+  } = _props
+  , _isValidElementContent = isValidElement(content)
+  , _isFnContent = isFn(content);
+  if (!viewBox
+    || (value == null && children == null && !_isValidElementContent && !_isFnContent)) {
     return null;
   }
 
-  if (isValidElement(ContentElementOrComp)) {
-    return cloneUiElement(ContentElementOrComp, _props);
+  if (_isValidElementContent) {
+    return cloneUiElement(content, _props);
   }
 
   let label;
-  if (isFn(ContentElementOrComp)) {
-    label = createElement(ContentElementOrComp, props);
+  if (_isFnContent) {
+    label = createElement(content, _props);
     if (isValidElement(label)) {
       return label;
     }
   } else {
-    label = getLabel(_props);
+    label = _getLabel(children, value, _props.formatter);
   }
   return (
     <Text

@@ -6,9 +6,12 @@ var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
 var _DataUtils = require("../util/DataUtils");
 var _Text = require("./Text");
-var _LabelFn = require("./LabelFn");
 var _LabelPositionFn = require("./LabelPositionFn");
 var _jsxRuntime = require("react/jsx-runtime");
+const _getLabel = (children, value, formatter) => {
+  const label = children == null ? value : children;
+  return (0, _isTypeFn.isFn)(formatter) ? formatter(label) : label;
+};
 const DF_PROPS = {
   position: _LabelPositionFn.labelPositionFn,
   offset: 5
@@ -19,23 +22,25 @@ const Label = props => {
       viewBox,
       value,
       children,
-      content: ContentElementOrComp,
+      content,
       textBreakAll
-    } = _props;
-  if (!viewBox || (0, _isTypeFn.isNullOrUndef)(value) && (0, _isTypeFn.isNullOrUndef)(children) && !(0, _uiApi.isValidElement)(ContentElementOrComp) && !(0, _isTypeFn.isFn)(ContentElementOrComp)) {
+    } = _props,
+    _isValidElementContent = (0, _uiApi.isValidElement)(content),
+    _isFnContent = (0, _isTypeFn.isFn)(content);
+  if (!viewBox || value == null && children == null && !_isValidElementContent && !_isFnContent) {
     return null;
   }
-  if ((0, _uiApi.isValidElement)(ContentElementOrComp)) {
-    return (0, _uiApi.cloneUiElement)(ContentElementOrComp, _props);
+  if (_isValidElementContent) {
+    return (0, _uiApi.cloneUiElement)(content, _props);
   }
   let label;
-  if ((0, _isTypeFn.isFn)(ContentElementOrComp)) {
-    label = (0, _uiApi.createElement)(ContentElementOrComp, props);
+  if (_isFnContent) {
+    label = (0, _uiApi.createElement)(content, _props);
     if ((0, _uiApi.isValidElement)(label)) {
       return label;
     }
   } else {
-    label = (0, _LabelFn.getLabel)(_props);
+    label = _getLabel(children, value, _props.formatter);
   }
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Text.Text, {
     offset: _props.offset,

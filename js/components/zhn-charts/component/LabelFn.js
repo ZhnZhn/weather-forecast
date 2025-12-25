@@ -1,20 +1,11 @@
 "use strict";
 
 exports.__esModule = true;
-exports.getLabel = exports.getAttrsOfCartesianLabel = void 0;
+exports.getAttrsOfCartesianLabel = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _DataUtils = require("../util/DataUtils");
 const _mathMax = Math.max,
   _isNumberOrPercent = value => (0, _isTypeFn.isNumber)(value) || (0, _DataUtils.isPercent)(value);
-const getLabel = props => {
-  const {
-      value,
-      formatter
-    } = props,
-    label = props.children == null ? value : props.children;
-  return (0, _isTypeFn.isFn)(formatter) ? formatter(label) : label;
-};
-exports.getLabel = getLabel;
 const _crAttrs = (x, y, textAnchor, verticalAnchor) => ({
   x,
   y,

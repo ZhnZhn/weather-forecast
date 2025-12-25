@@ -1,5 +1,4 @@
 import {
-  isFn,
   isObj,
   isNumber
 } from '../../../utils/isTypeFn';
@@ -14,21 +13,6 @@ const _mathMax = Math.max
   value
 ) => isNumber(value)
   || isPercent(value);
-
-export const getLabel = (
-  props
-) => {
-  const {
-    value,
-    formatter
-  } = props
-  , label = props.children == null
-    ? value
-    : props.children;
-  return isFn(formatter)
-    ? formatter(label)
-    : label;
-};
 
 const _crAttrs = (
   x,
@@ -67,7 +51,7 @@ const _crLabelConfig = (
 
 export const getAttrsOfCartesianLabel = (
   props
-) => {  
+) => {
   const {
     viewBox,
     parentViewBox,
