@@ -1,39 +1,43 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.renderRectangles = exports.renderBackground = void 0;
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+var _ReactUtils = require("../util/ReactUtils");
 var _types = require("../util/types");
 var _Rectangle = require("../shape/Rectangle");
 var _Layer = require("../container/Layer");
-var _cartesianFn = require("./cartesianFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-const _excluded = ["key"],
-  _excluded2 = ["value", "background"]; //import { JsAnimation } from '../../zhn-animation/JsAnimation';
+//import { JsAnimation } from '../../zhn-animation/JsAnimation';
 //import { interpolateNumber } from '../util/DataUtils';
+
 const _crElementRectangle = _ref => {
   let {
-      key
-    } = _ref,
-    restProps = (0, _objectWithoutPropertiesLoose2.default)(_ref, _excluded);
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Rectangle.Rectangle, Object.assign({}, restProps), key);
+    key,
+    ...restProps
+  } = _ref;
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Rectangle.Rectangle, {
+    ...restProps
+  }, key);
 };
-const _renderRectangle = (0, _cartesianFn.fCreateElement)(_crElementRectangle);
+const _renderRectangle = (0, _ReactUtils.fCreateElement)(_crElementRectangle);
 const _renderRectanglesStatically = (props, data) => {
   const {
     shape
   } = props;
   //, baseProps = filterProps(props);
   return data && data.map((entry, i) => {
-    const rectangleProps = Object.assign({}, props, entry, {
+    const rectangleProps = {
+      ...props,
+      //...baseProps,
+      ...entry,
       index: i
-    });
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, Object.assign({}, (0, _types.adaptEventsOfChild)(rectangleProps, entry, i), {
+    };
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Layer.Layer, {
+      ...(0, _types.adaptEventsOfChild)(rectangleProps, entry, i),
       className: _CL.CL_BAR_RECTANGLE,
       children: _renderRectangle(shape, rectangleProps)
-    }), "rectangle-" + i);
+    }, `rectangle-${i}`);
   });
 };
 const renderBackground = props => {
@@ -48,21 +52,26 @@ const renderBackground = props => {
   return data.map((entry, i) => {
     /*eslint-disable no-unused-vars*/
     const {
-        background
-      } = entry,
-      rest = (0, _objectWithoutPropertiesLoose2.default)(entry, _excluded2);
+      value,
+      background,
+      ...rest
+    } = entry;
     //value
     /*eslint-enable no-unused-vars*/
     if (!background) {
       return null;
     }
-    const _props = Object.assign({}, rest, {
-      fill: '#eee'
-    }, background, propsBackground, (0, _types.adaptEventsOfChild)(props, entry, i), {
+    const _props = {
+      ...rest,
+      fill: '#eee',
+      ...background,
+      //...backgroundProps,
+      ...propsBackground,
+      ...(0, _types.adaptEventsOfChild)(props, entry, i),
       index: i,
-      key: "background-bar-" + i,
+      key: `background-bar-${i}`,
       className: _CL.CL_BAR_BACKGROUND_RECTANGLE
-    });
+    };
     return _renderRectangle(props.background, _props);
   });
 };

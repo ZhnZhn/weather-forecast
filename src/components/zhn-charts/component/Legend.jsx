@@ -1,9 +1,4 @@
-import { isFn } from "../../../utils/isTypeFn";
-
 import {
-  isValidElement,
-  cloneUiElement,
-  createElement,
   memo,
   useRef,
   useLayoutEffect,
@@ -13,19 +8,16 @@ import {
   setDisplayNameTo
 } from "../../uiApi";
 
+import { fCreateElement } from '../util/ReactUtils';
 import { isLayoutVertical } from "../util/ChartUtils";
 
 import { DefaultLegendContent } from "./DefaultLegendContent";
 
 const CL_LEGEND_WRAPPER = "recharts-legend-wrapper";
-const _renderContent = (
-  ContentElementOrComp,
+const _crElementDefaultLegendContent = (
   props
-) => isValidElement(ContentElementOrComp)
-  ? cloneUiElement(ContentElementOrComp, props)
-  : isFn(ContentElementOrComp)
-  ? createElement(ContentElementOrComp, props)
-  : (<DefaultLegendContent {...props} />)
+) => (<DefaultLegendContent {...props} />)
+, _renderContent = fCreateElement(_crElementDefaultLegendContent);
 
 const _getBBoxSnapshot = ({
   width,
@@ -131,7 +123,7 @@ export const Legend = memo((props) => {
       {_renderContent(
          content, {
          ..._props,
-         payload         
+         payload
       })}
     </div>
   );

@@ -1,12 +1,14 @@
 "use strict";
 
 exports.__esModule = true;
-exports._toArray = void 0;
+exports.fCreateElement = exports._toArray = void 0;
 exports.findAllByType = findAllByType;
 exports.findChildByType = findChildByType;
 exports.validateWidthHeight = exports.renderByMap = exports.parseChildIndex = exports.getDisplayName = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
+const fCreateElement = crElement => (option, props, value) => (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneUiElement)(option, props) : (0, _isTypeFn.isFn)(option) ? option(props) : crElement(props, option, value);
+exports.fCreateElement = fCreateElement;
 const _getElementType = element => {
   const _elementType = element && element.type;
   return _elementType ? _elementType.displayName || _elementType.name : void 0;

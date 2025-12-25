@@ -1,11 +1,10 @@
 import { crCn } from '../../styleFn';
 
+import { fCreateElement } from '../util/ReactUtils';
 import { useTooltip } from '../context/TooltipContext';
 
 import { Dot } from '../shape/Dot';
 import { Layer } from '../container/Layer';
-
-import { fCreateElement } from './cartesianFn';
 
 import {
   CL_LINE_DOT,

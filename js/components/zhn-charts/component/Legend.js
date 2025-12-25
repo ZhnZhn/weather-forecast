@@ -2,13 +2,16 @@
 
 exports.__esModule = true;
 exports.Legend = void 0;
-var _isTypeFn = require("../../../utils/isTypeFn");
 var _uiApi = require("../../uiApi");
+var _ReactUtils = require("../util/ReactUtils");
 var _ChartUtils = require("../util/ChartUtils");
 var _DefaultLegendContent = require("./DefaultLegendContent");
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_LEGEND_WRAPPER = "recharts-legend-wrapper";
-const _renderContent = (ContentElementOrComp, props) => (0, _uiApi.isValidElement)(ContentElementOrComp) ? (0, _uiApi.cloneUiElement)(ContentElementOrComp, props) : (0, _isTypeFn.isFn)(ContentElementOrComp) ? (0, _uiApi.createElement)(ContentElementOrComp, props) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_DefaultLegendContent.DefaultLegendContent, Object.assign({}, props));
+const _crElementDefaultLegendContent = props => /*#__PURE__*/(0, _jsxRuntime.jsx)(_DefaultLegendContent.DefaultLegendContent, {
+    ...props
+  }),
+  _renderContent = (0, _ReactUtils.fCreateElement)(_crElementDefaultLegendContent);
 const _getBBoxSnapshot = _ref => {
   let {
     width,
@@ -50,7 +53,10 @@ const _getDefaultPosition = (style, props, boundingBox) => {
       top: margin.top || 0
     };
   }
-  return Object.assign({}, hPos, vPos);
+  return {
+    ...hPos,
+    ...vPos
+  };
 };
 const EPS = 1;
 const _mathAbs = Math.abs;
@@ -96,14 +102,17 @@ const Legend = exports.Legend = (0, _uiApi.memo)(props => {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     ref: _refWrapperNode,
     className: CL_LEGEND_WRAPPER,
-    style: Object.assign({
+    style: {
       position: "absolute",
       width: width || "auto",
-      height: height || "auto"
-    }, _getDefaultPosition(wrapperStyle, _props, (0, _uiApi.getRefValue)(_refBoundingBox)), wrapperStyle),
-    children: _renderContent(content, Object.assign({}, _props, {
+      height: height || "auto",
+      ..._getDefaultPosition(wrapperStyle, _props, (0, _uiApi.getRefValue)(_refBoundingBox)),
+      ...wrapperStyle
+    },
+    children: _renderContent(content, {
+      ..._props,
       payload
-    }))
+    })
   });
 });
 (0, _uiApi.setDisplayNameTo)(Legend, "Legend", LEGEND_DF_PROPS);

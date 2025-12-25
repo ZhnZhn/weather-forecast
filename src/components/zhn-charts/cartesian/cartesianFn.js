@@ -1,12 +1,4 @@
-import {
-  isArr,
-  isFn
-} from '../../../utils/isTypeFn';
-
-import {
-  isValidElement,
-  cloneUiElement
-} from '../../uiApi';
+import { isArr } from '../../../utils/isTypeFn';
 
 import { getValueByDataKey } from '../util/ChartUtils';
 
@@ -32,18 +24,6 @@ export const isNeedClip = ({
  yAxis
 }) => _isAllowDataOverflow(xAxis)
   || _isAllowDataOverflow(yAxis)
-
-export const fCreateElement = (
-  crElement
-) => (
-  option,
-  props,
-  value
-) => isValidElement(option)
-  ? cloneUiElement(option, props)
-  : isFn(option)
-     ? option(props)
-     : crElement(props, option, value)
 
 export const dataPointFormatter = (
   dataPoint,

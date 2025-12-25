@@ -1,27 +1,25 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.LineDots = void 0;
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _styleFn = require("../../styleFn");
+var _ReactUtils = require("../util/ReactUtils");
 var _TooltipContext = require("../context/TooltipContext");
 var _Dot = require("../shape/Dot");
 var _Layer = require("../container/Layer");
-var _cartesianFn = require("./cartesianFn");
 var _CL = require("../CL");
 var _jsxRuntime = require("react/jsx-runtime");
-const _excluded = ["key"];
 const _crDotItem = (_ref, option) => {
   let {
-      key
-    } = _ref,
-    restProps = (0, _objectWithoutPropertiesLoose2.default)(_ref, _excluded);
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Dot.Dot, Object.assign({}, restProps, {
+    key,
+    ...restProps
+  } = _ref;
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Dot.Dot, {
+    ...restProps,
     className: (0, _styleFn.crCn)(_CL.CL_LINE_DOT, option && option.className)
-  }), key);
+  }, key);
 };
-const _renderDotItem = (0, _cartesianFn.fCreateElement)(_crDotItem);
+const _renderDotItem = (0, _ReactUtils.fCreateElement)(_crDotItem);
 const LineDots = _ref2 => {
   let {
     clipPath,
@@ -40,7 +38,7 @@ const LineDots = _ref2 => {
     role: "img",
     clipPath: clipPath,
     children: points.map((entry, i) => _renderDotItem(dot, {
-      key: "dot-" + i,
+      key: `dot-${i}`,
       r: i === activeTooltipIndex ? dot.r ? dot.r + 3 : 6 : dot.r || 3,
       fill: dot.fill || props.fill,
       stroke: dot.stroke || props.stroke,

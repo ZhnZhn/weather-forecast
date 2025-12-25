@@ -1,14 +1,28 @@
 import {
   isArr,
   isNumber,
-  isStr
+  isStr,
+  isFn
 } from '../../../utils/isTypeFn';
 
 import {
   isValidElement,
+  cloneUiElement,
   Fragment,
   Children
 } from '../../uiApi';
+
+export const fCreateElement = (
+  crElement
+) => (
+  option,
+  props,
+  value
+) => isValidElement(option)
+  ? cloneUiElement(option, props)
+  : isFn(option)
+  ? option(props)
+  : crElement(props, option, value)
 
 const _getElementType = (
   element

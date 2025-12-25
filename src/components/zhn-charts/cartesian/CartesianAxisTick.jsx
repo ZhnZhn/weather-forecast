@@ -1,12 +1,12 @@
 import { isFn } from '../../../utils/isTypeFn';
 import { crCn } from '../../styleFn';
 
+import { fCreateElement } from '../util/ReactUtils';
 import { adaptEventsOfChild } from '../util/types';
 
 import { Layer } from '../container/Layer';
 import { Text } from '../component/Text';
 
-import { fCreateElement } from './cartesianFn';
 import { getClassName } from './CartesianAxisRenderFn';
 
 import {

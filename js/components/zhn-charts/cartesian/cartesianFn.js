@@ -1,9 +1,8 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isNeedClip = exports.isHideOrNoData = exports.fCreateElement = exports.dataPointFormatter = exports.crClipPath = exports.DF_AXIS_PROPS = void 0;
+exports.isNeedClip = exports.isHideOrNoData = exports.dataPointFormatter = exports.crClipPath = exports.DF_AXIS_PROPS = void 0;
 var _isTypeFn = require("../../../utils/isTypeFn");
-var _uiApi = require("../../uiApi");
 var _ChartUtils = require("../util/ChartUtils");
 const DF_AXIS_PROPS = exports.DF_AXIS_PROPS = {
   allowDataOverflow: false,
@@ -30,8 +29,6 @@ const isNeedClip = _ref2 => {
   return _isAllowDataOverflow(xAxis) || _isAllowDataOverflow(yAxis);
 };
 exports.isNeedClip = isNeedClip;
-const fCreateElement = crElement => (option, props, value) => (0, _uiApi.isValidElement)(option) ? (0, _uiApi.cloneUiElement)(option, props) : (0, _isTypeFn.isFn)(option) ? option(props) : crElement(props, option, value);
-exports.fCreateElement = fCreateElement;
 const dataPointFormatter = (dataPoint, dataKey) => ({
   x: dataPoint.x,
   y: dataPoint.y,
@@ -39,6 +36,6 @@ const dataPointFormatter = (dataPoint, dataKey) => ({
   errorVal: (0, _ChartUtils.getValueByDataKey)(dataPoint, dataKey)
 });
 exports.dataPointFormatter = dataPointFormatter;
-const crClipPath = (needClip, clipPathId) => needClip ? "url(#clipPath-" + clipPathId + ")" : null;
+const crClipPath = (needClip, clipPathId) => needClip ? `url(#clipPath-${clipPathId})` : null;
 exports.crClipPath = crClipPath;
 //# sourceMappingURL=cartesianFn.js.map

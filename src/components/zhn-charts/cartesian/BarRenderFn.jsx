@@ -1,12 +1,11 @@
 //import { JsAnimation } from '../../zhn-animation/JsAnimation';
-
 //import { interpolateNumber } from '../util/DataUtils';
+
+import { fCreateElement } from '../util/ReactUtils';
 import { adaptEventsOfChild } from '../util/types';
 
 import { Rectangle } from '../shape/Rectangle';
 import { Layer } from '../container/Layer';
-
-import { fCreateElement } from './cartesianFn';
 
 import {
   CL_BAR_RECTANGLE,
