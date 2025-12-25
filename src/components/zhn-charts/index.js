@@ -11,7 +11,8 @@ export { Legend } from "./component/Legend";
 export {
   labelTopFn,
   labelBottomFn,
-  labelLeftFn
+  labelLeftFn,
+  labelRightFn  
 } from "./component/LabelPositionFn";
 
 export { Surface } from "./container/Surface";

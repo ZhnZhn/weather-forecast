@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.labelTopFn = exports.labelPositionFn = exports.labelLeftFn = exports.labelBottomFn = void 0;
+exports.labelTopFn = exports.labelRightFn = exports.labelPositionFn = exports.labelLeftFn = exports.labelBottomFn = void 0;
 const _mathMax = Math.max;
 const _crSign = value => value >= 0 ? 1 : -1;
 const _crAnchorEnd = sign => sign > 0 ? 'end' : 'start';
@@ -12,12 +12,8 @@ const _crAttrs = (x, y, textAnchor, verticalAnchor) => ({
   textAnchor,
   verticalAnchor
 });
-const labelPositionFn = props => {
+const labelPositionFn = (viewBox, parentViewBox) => {
   const {
-      viewBox,
-      parentViewBox
-    } = props,
-    {
       x,
       y,
       width,
@@ -33,14 +29,8 @@ const labelPositionFn = props => {
   };
 };
 exports.labelPositionFn = labelPositionFn;
-const labelTopFn = props => {
+const labelTopFn = (viewBox, parentViewBox, offset, xTopOffset) => {
   const {
-      viewBox,
-      parentViewBox,
-      offset,
-      xTopOffset = 0
-    } = props,
-    {
       x,
       y,
       width,
@@ -56,13 +46,8 @@ const labelTopFn = props => {
   };
 };
 exports.labelTopFn = labelTopFn;
-const labelBottomFn = props => {
+const labelBottomFn = (viewBox, parentViewBox, offset) => {
   const {
-      viewBox,
-      parentViewBox,
-      offset
-    } = props,
-    {
       x,
       y,
       width,
@@ -79,13 +64,8 @@ const labelBottomFn = props => {
   };
 };
 exports.labelBottomFn = labelBottomFn;
-const labelLeftFn = props => {
+const labelLeftFn = (viewBox, parentViewBox, offset) => {
   const {
-      viewBox,
-      parentViewBox,
-      offset
-    } = props,
-    {
       x,
       y,
       width,
@@ -103,4 +83,23 @@ const labelLeftFn = props => {
   };
 };
 exports.labelLeftFn = labelLeftFn;
+const labelRightFn = (viewBox, parentViewBox, offset) => {
+  const {
+      x,
+      y,
+      width,
+      height
+    } = viewBox,
+    horizontalSign = _crSign(width),
+    horizontalOffset = horizontalSign * offset,
+    attrs = _crAttrs(x + width + horizontalOffset, y + height / 2, _crAnchorStart(horizontalSign), 'middle');
+  return {
+    ...attrs,
+    ...(parentViewBox ? {
+      width: _mathMax(parentViewBox.x + parentViewBox.width - attrs.x, 0),
+      height
+    } : void 0)
+  };
+};
+exports.labelRightFn = labelRightFn;
 //# sourceMappingURL=LabelPositionFn.js.map

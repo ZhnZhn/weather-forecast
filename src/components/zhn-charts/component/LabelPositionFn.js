@@ -22,12 +22,11 @@ const _crAttrs = (
   verticalAnchor
 });
 
-export const labelPositionFn = props => {
+export const labelPositionFn = (
+  viewBox,
+  parentViewBox
+) => {
   const {
-    viewBox,
-    parentViewBox
-  } = props
-  , {
     x,
     y,
     width,
@@ -47,14 +46,13 @@ export const labelPositionFn = props => {
   }
 }
 
-export const labelTopFn = (props) => {
+export const labelTopFn = (
+  viewBox,
+  parentViewBox,
+  offset,
+  xTopOffset
+) => {
   const {
-    viewBox,
-    parentViewBox,
-    offset,
-    xTopOffset=0
-  } = props
-  , {
     x,
     y,
     width,
@@ -77,13 +75,12 @@ export const labelTopFn = (props) => {
   }
 }
 
-export const labelBottomFn = (props) => {
+export const labelBottomFn = (
+  viewBox,
+  parentViewBox,
+  offset
+) => {
   const {
-    viewBox,
-    parentViewBox,
-    offset
-  } = props
-  , {
     x,
     y,
     width,
@@ -107,13 +104,12 @@ export const labelBottomFn = (props) => {
   }
 }
 
-export const labelLeftFn = props => {
+export const labelLeftFn = (
+  viewBox,
+  parentViewBox,
+  offset
+) => {
   const {
-    viewBox,
-    parentViewBox,
-    offset
-  } = props
-  , {
     x,
     y,
     width,
@@ -122,11 +118,11 @@ export const labelLeftFn = props => {
   , horizontalSign = _crSign(width)
   , horizontalOffset = horizontalSign * offset
   , attrs = _crAttrs(
-    x - horizontalOffset,
-    y + height / 2,
-    _crAnchorEnd(horizontalSign),
-    'middle'
-  )
+     x - horizontalOffset,
+     y + height / 2,
+     _crAnchorEnd(horizontalSign),
+     'middle'
+  );
   return {
     ...attrs,
     ...(parentViewBox
@@ -134,6 +130,36 @@ export const labelLeftFn = props => {
           width: _mathMax(attrs.x - parentViewBox.x, 0),
           height
       }
+      : void 0)
+  };
+}
+
+export const labelRightFn = (
+  viewBox,
+  parentViewBox,
+  offset
+) => {
+  const {
+    x,
+    y,
+    width,
+    height
+  } = viewBox
+  , horizontalSign = _crSign(width)
+  , horizontalOffset = horizontalSign * offset
+  , attrs = _crAttrs(
+     x + width + horizontalOffset,
+     y + height / 2,
+     _crAnchorStart(horizontalSign),
+     'middle'
+  );
+  return {
+    ...attrs,
+    ...(parentViewBox
+      ? {
+          width: _mathMax(parentViewBox.x + parentViewBox.width - attrs.x, 0),
+          height
+        }
       : void 0)
   };
 }

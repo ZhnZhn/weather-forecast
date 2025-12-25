@@ -47,7 +47,7 @@ const Label = props => {
     fill: _props.fill,
     stroke: _props.stroke,
     className: _props.className,
-    ..._props.position(_props),
+    ..._props.position(viewBox, _props.parentViewBox, _props.offset, _props.xTopOffset),
     breakAll: textBreakAll,
     children: label
   });
