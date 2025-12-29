@@ -3,13 +3,17 @@ import {
   isNotEmptyArr
 } from '../../../utils/isTypeFn';
 
+import {
+  isOrientationTop,
+  isOrientationBottom
+} from '../util/CartesianUtils';
 import { mathSign, isNumber } from '../util/DataUtils';
 import { getStringSize } from '../util/DOMUtils';
 import { IS_SSR } from '../util/Global';
 
 const _crSizeKey = (
   orientation
-) => orientation === 'top' || orientation === 'bottom'
+) => isOrientationTop(orientation) || isOrientationBottom(orientation)
   ? 'width'
   : 'height';
 

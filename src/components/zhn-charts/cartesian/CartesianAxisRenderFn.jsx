@@ -4,6 +4,12 @@ import {
   isNotEmptyArr
 } from '../../../utils/isTypeFn';
 
+import {
+  isOrientationLeft,
+  isOrientationRight,
+  isOrientationTop
+} from '../util/CartesianUtils';
+
 import { getTicks } from './getTicks';
 
 export const getClassName = (
@@ -22,7 +28,7 @@ const _crFinalTicks = (
   } = props;
 
   return isFn(ticksGenerator)
-    ? ticks && ticks.length > 0
+    ? isNotEmptyArr(ticks)
        ? ticksGenerator(props)
        : ticksGenerator(noTicksProps)
     : ticks;
@@ -41,22 +47,30 @@ export const getCartesianAxisTicks = (
   ) : void 0;
 }
 
+const _getStartEnd = (
+  mirror
+) => mirror ? 'start' : 'end';
+
 //[textAnchor, verticalAnchor]
 export const getTickAnchors = (
   orientation,
   mirror
-) => [
-  orientation === 'left'
-     ? mirror ? 'start' : 'end'
-     : orientation === 'right'
-        ? mirror ? 'end' : 'start'
-        : 'middle',
-  orientation === 'left' || orientation === 'right'
-    ? 'middle'
-    : orientation === 'top'
-       ? mirror ? 'start' : 'end'
-       : mirror ? 'end' : 'start'
-];
+) => {
+  const _isLeft = isOrientationLeft(orientation)
+  , _isRight = isOrientationRight(orientation);
+  return [
+    _isLeft
+      ? _getStartEnd(mirror)
+      : _isRight
+          ? _getStartEnd(!mirror)
+          : 'middle',
+    _isLeft || _isRight
+      ? 'middle'
+      : isOrientationTop(orientation)
+          ? _getStartEnd(mirror)
+          : _getStartEnd(!mirror)
+  ];
+}
 
 /**
  * Calculate the coordinates of endpoints in ticks
@@ -73,7 +87,6 @@ export const getTickLineCoord = (
     y,
     width,
     height,
-    //mirror,
     tickMargin
   } = props
   , [
@@ -82,7 +95,7 @@ export const getTickLineCoord = (
     mirrorNumber
   ] = props.mirror
     ? [-1, 0, 1]
-    : [1, 1, 0]  
+    : [1, 1, 0]
   , _tickSize = data.tickSize || props.tickSize
   , {
     tickCoord,

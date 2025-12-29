@@ -1,32 +1,36 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.getTickLineCoord = exports.getTickAnchors = exports.getClassName = exports.getCartesianAxisTicks = void 0;
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 var _isTypeFn = require("../../../utils/isTypeFn");
+var _CartesianUtils = require("../util/CartesianUtils");
 var _getTicks = require("./getTicks");
-const _excluded = ["ticks", "ticksGenerator"];
 const getClassName = obj => obj ? obj.className : void 0;
 exports.getClassName = getClassName;
 const _crFinalTicks = props => {
   const {
-      ticks,
-      ticksGenerator
-    } = props,
-    noTicksProps = (0, _objectWithoutPropertiesLoose2.default)(props, _excluded);
-  return (0, _isTypeFn.isFn)(ticksGenerator) ? ticks && ticks.length > 0 ? ticksGenerator(props) : ticksGenerator(noTicksProps) : ticks;
+    ticks,
+    ticksGenerator,
+    ...noTicksProps
+  } = props;
+  return (0, _isTypeFn.isFn)(ticksGenerator) ? (0, _isTypeFn.isNotEmptyArr)(ticks) ? ticksGenerator(props) : ticksGenerator(noTicksProps) : ticks;
 };
 const getCartesianAxisTicks = (props, fontSize, letterSpacing) => {
   const finalTicks = _crFinalTicks(props);
-  return (0, _isTypeFn.isNotEmptyArr)(finalTicks) ? (0, _getTicks.getTicks)(Object.assign({}, props, {
+  return (0, _isTypeFn.isNotEmptyArr)(finalTicks) ? (0, _getTicks.getTicks)({
+    ...props,
     ticks: finalTicks
-  }), fontSize, letterSpacing) : void 0;
+  }, fontSize, letterSpacing) : void 0;
 };
+exports.getCartesianAxisTicks = getCartesianAxisTicks;
+const _getStartEnd = mirror => mirror ? 'start' : 'end';
 
 //[textAnchor, verticalAnchor]
-exports.getCartesianAxisTicks = getCartesianAxisTicks;
-const getTickAnchors = (orientation, mirror) => [orientation === 'left' ? mirror ? 'start' : 'end' : orientation === 'right' ? mirror ? 'end' : 'start' : 'middle', orientation === 'left' || orientation === 'right' ? 'middle' : orientation === 'top' ? mirror ? 'start' : 'end' : mirror ? 'end' : 'start'];
+const getTickAnchors = (orientation, mirror) => {
+  const _isLeft = (0, _CartesianUtils.isOrientationLeft)(orientation),
+    _isRight = (0, _CartesianUtils.isOrientationRight)(orientation);
+  return [_isLeft ? _getStartEnd(mirror) : _isRight ? _getStartEnd(!mirror) : 'middle', _isLeft || _isRight ? 'middle' : (0, _CartesianUtils.isOrientationTop)(orientation) ? _getStartEnd(mirror) : _getStartEnd(!mirror)];
+};
 
 /**
  * Calculate the coordinates of endpoints in ticks
@@ -41,7 +45,6 @@ const getTickLineCoord = (props, data) => {
       y,
       width,
       height,
-      //mirror,
       tickMargin
     } = props,
     [sign, notMirrorNumber, mirrorNumber] = props.mirror ? [-1, 0, 1] : [1, 1, 0],

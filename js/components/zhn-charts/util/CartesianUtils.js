@@ -1,13 +1,21 @@
 "use strict";
 
 exports.__esModule = true;
-exports.formatAxisMap = void 0;
+exports.isOrientationTop = exports.isOrientationRight = exports.isOrientationLeft = exports.isOrientationBottom = exports.formatAxisMap = void 0;
 var _ChartUtils = require("./ChartUtils");
 var _ReactUtils = require("./ReactUtils");
 var _DataUtils = require("./DataUtils");
 var _Bar = require("../cartesian/Bar");
 const _getObjectKeys = Object.keys,
   _mathMin = Math.min;
+const isOrientationLeft = orientation => orientation === 'left';
+exports.isOrientationLeft = isOrientationLeft;
+const isOrientationRight = orientation => orientation === 'right';
+exports.isOrientationRight = isOrientationRight;
+const isOrientationTop = orientation => orientation === 'top';
+exports.isOrientationTop = isOrientationTop;
+const isOrientationBottom = orientation => orientation === 'bottom';
+exports.isOrientationBottom = isOrientationBottom;
 const _calcSmallestDistanceBetweenValues = categoricalDomain => categoricalDomain.sort().reduce((smallestDistance, value, index, sortedValues) => {
   if (index > 0) {
     smallestDistance = _mathMin((value || 0) - (sortedValues[index - 1] || 0), smallestDistance);
@@ -82,7 +90,7 @@ const formatAxisMap = (props, axisMap, offset, axisType, chartName) => {
         padding = {},
         mirror
       } = axis,
-      offsetKey = "" + orientation + (mirror ? 'Mirror' : ''),
+      offsetKey = `${orientation}${mirror ? 'Mirror' : ''}`,
       calculatedPadding = _getCalculatedPadding(axis.type, padding, domain, axis.categoricalDomain, layout, offset, props) || 0,
       _range = _getRange(axisType, offset, padding, calculatedPadding, layout) || axis.range,
       range = axis.reversed ? [_range[1], _range[0]] : _range,
@@ -92,36 +100,40 @@ const formatAxisMap = (props, axisMap, offset, axisType, chartName) => {
       } = (0, _ChartUtils.parseScale)(axis, chartName, hasBar);
     scale.domain(domain).range(range);
     (0, _ChartUtils.checkDomainOfScale)(scale);
-    const ticks = (0, _ChartUtils.getTicksOfScale)(scale, Object.assign({}, axis, {
+    const ticks = (0, _ChartUtils.getTicksOfScale)(scale, {
+      ...axis,
       realScaleType
-    }));
+    });
     let x, y, needSpace;
     if ((0, _ChartUtils.isAxisTypeX)(axisType)) {
-      needSpace = orientation === 'top' && !mirror || orientation === 'bottom' && mirror;
+      needSpace = isOrientationTop(orientation) && !mirror || isOrientationBottom(orientation) && mirror;
       x = offset.left;
       y = steps[offsetKey] - needSpace * axis.height;
     } else if ((0, _ChartUtils.isAxisTypeY)(axisType)) {
-      needSpace = orientation === 'left' && !mirror || orientation === 'right' && mirror;
+      needSpace = isOrientationLeft(orientation) && !mirror || isOrientationRight(orientation) && mirror;
       x = steps[offsetKey] - needSpace * axis.width;
       y = offset.top;
     }
-    const finalAxis = Object.assign({}, axis, ticks, {
+    const finalAxis = {
+      ...axis,
+      ...ticks,
       realScaleType,
       x,
       y,
       scale,
       width: (0, _ChartUtils.isAxisTypeX)(axisType) ? offset.width : axis.width,
       height: (0, _ChartUtils.isAxisTypeY)(axisType) ? offset.height : axis.height
-    });
+    };
     finalAxis.bandSize = (0, _ChartUtils.getBandSizeOfAxis)(finalAxis, ticks);
     if (!axis.hide && (0, _ChartUtils.isAxisTypeX)(axisType)) {
       steps[offsetKey] += (needSpace ? -1 : 1) * finalAxis.height;
     } else if (!axis.hide) {
       steps[offsetKey] += (needSpace ? -1 : 1) * finalAxis.width;
     }
-    return Object.assign({}, result, {
+    return {
+      ...result,
       [id]: finalAxis
-    });
+    };
   }, {});
 };
 exports.formatAxisMap = formatAxisMap;

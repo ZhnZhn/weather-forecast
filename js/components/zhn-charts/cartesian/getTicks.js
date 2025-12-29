@@ -3,10 +3,11 @@
 exports.__esModule = true;
 exports.getTicks = getTicks;
 var _isTypeFn = require("../../../utils/isTypeFn");
+var _CartesianUtils = require("../util/CartesianUtils");
 var _DataUtils = require("../util/DataUtils");
 var _DOMUtils = require("../util/DOMUtils");
 var _Global = require("../util/Global");
-const _crSizeKey = orientation => orientation === 'top' || orientation === 'bottom' ? 'width' : 'height';
+const _crSizeKey = orientation => (0, _CartesianUtils.isOrientationTop)(orientation) || (0, _CartesianUtils.isOrientationBottom)(orientation) ? 'width' : 'height';
 const _crSign = result => result.length >= 2 ? (0, _DataUtils.mathSign)(result[1].coordinate - result[0].coordinate) : 1;
 const _crStartEnd = (_isSizeKeyWidth, x, y, width, height, sign) => {
   const _interval = [_isSizeKeyWidth ? x : y, _isSizeKeyWidth ? x + width : y + height];

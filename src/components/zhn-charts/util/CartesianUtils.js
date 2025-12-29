@@ -17,6 +17,19 @@ import { Bar } from '../cartesian/Bar';
 const _getObjectKeys = Object.keys
 , _mathMin = Math.min;
 
+export const isOrientationLeft = (
+  orientation
+) => orientation === 'left'
+export const isOrientationRight = (
+  orientation
+) => orientation === 'right'
+export const isOrientationTop = (
+  orientation
+) => orientation === 'top'
+export const isOrientationBottom = (
+  orientation
+) => orientation === 'bottom';
+
 const _calcSmallestDistanceBetweenValues = (
   categoricalDomain
 ) => categoricalDomain
@@ -171,11 +184,13 @@ export const formatAxisMap = (
     );
     let x, y, needSpace;
     if (isAxisTypeX(axisType)) {
-      needSpace = (orientation === 'top' && !mirror) || (orientation === 'bottom' && mirror);
+      needSpace = (isOrientationTop(orientation) && !mirror)
+        || (isOrientationBottom(orientation) && mirror);
       x = offset.left;
       y = steps[offsetKey] - needSpace * axis.height;
     } else if (isAxisTypeY(axisType)) {
-      needSpace = (orientation === 'left' && !mirror) || (orientation === 'right' && mirror);
+      needSpace = (isOrientationLeft(orientation) && !mirror)
+        || (isOrientationRight(orientation) && mirror);
       x = steps[offsetKey] - needSpace * axis.width;
       y = offset.top;
     }
