@@ -50,7 +50,7 @@ export const labelTopFn = (
   viewBox,
   parentViewBox,
   offset,
-  xTopOffset
+  xTopOffset = 0
 ) => {
   const {
     x,

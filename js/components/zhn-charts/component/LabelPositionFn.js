@@ -29,7 +29,10 @@ const labelPositionFn = (viewBox, parentViewBox) => {
   };
 };
 exports.labelPositionFn = labelPositionFn;
-const labelTopFn = (viewBox, parentViewBox, offset, xTopOffset) => {
+const labelTopFn = function (viewBox, parentViewBox, offset, xTopOffset) {
+  if (xTopOffset === void 0) {
+    xTopOffset = 0;
+  }
   const {
       x,
       y,
