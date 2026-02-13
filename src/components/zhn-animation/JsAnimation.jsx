@@ -73,13 +73,11 @@ export const JsAnimation = memo(props => {
     return getRefValue(_refAnimateManager);
   }, [])
 
-  /*eslint-disable no-unused-vars*/
   , {
     children,
     isActive,
     canBegin
   } = _props
-  /*eslint-enable no-unused-vars*/
 
   /*eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {

@@ -98,7 +98,7 @@ const ModalDialogContainer = memo(({
     return store.subscribe(_onStore);
   }, [])
   // store
-  /*eslint-disable react-hooks/exhaustive-deps */
+  /*eslint-enable react-hooks/exhaustive-deps */
 
   const {
     isShow,

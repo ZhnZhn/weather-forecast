@@ -87,6 +87,12 @@ function transformer() {
   , output
   , input;
 
+  function scale(x) {
+    return x == null || isNaN(x = +x)
+      ? unknown
+      : (output || (output = piecewise(domain.map(transform), range, interpolate)))(transform(clamp(x)));
+  }
+
   function rescale() {
     let n = mathMin(domain.length, range.length);
     if (clamp !== identity) clamp = clamper(domain[0], domain[n - 1]);
@@ -96,13 +102,7 @@ function transformer() {
     output = input = null;
     return scale;
   }
-
-  function scale(x) {
-    return x == null || isNaN(x = +x)
-      ? unknown
-      : (output || (output = piecewise(domain.map(transform), range, interpolate)))(transform(clamp(x)));
-  }
-
+  
   scale.invert = y => clamp(
     untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber)))(y))
   );

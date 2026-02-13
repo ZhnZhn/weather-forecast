@@ -28,7 +28,7 @@ const fetchUV = function* (action){
 }
 
 
-const watchAction = function* () {
+const watchAction = function* () {  
   yield takeEvery(A.UV_REQUESTED, fetchUV)
 }
 

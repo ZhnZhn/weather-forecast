@@ -31,7 +31,7 @@ const calculateWordWidths = ({
       spaceWidth
     };
   }
-  catch (e) {
+  catch {
     return null;
   }
 };

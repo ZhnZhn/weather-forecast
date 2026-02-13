@@ -1,27 +1,5 @@
 import { getStrValue } from "./formatFn";
 
-// [[fill]align][sign][symbol][0][width][,][.precision][~][type]
-const re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
-
-export function formatSpecifier(specifier) {
-  let match;
-  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-  return new FormatSpecifier({
-    fill: match[1],
-    align: match[2],
-    sign: match[3],
-    symbol: match[4],
-    zero: match[5],
-    width: match[6],
-    comma: match[7],
-    precision: match[8] && match[8].slice(1),
-    trim: match[9],
-    type: match[10]
-  });
-}
-
-formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
-
 const _getNumberValue = value => value === void 0
   ? void 0
   : +value;
@@ -50,3 +28,25 @@ FormatSpecifier.prototype.toString = function() {
       + (this.trim ? "~" : "")
       + this.type;
 };
+
+// [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+const re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+
+export function formatSpecifier(specifier) {
+  let match;
+  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+  return new FormatSpecifier({
+    fill: match[1],
+    align: match[2],
+    sign: match[3],
+    symbol: match[4],
+    zero: match[5],
+    width: match[6],
+    comma: match[7],
+    precision: match[8] && match[8].slice(1),
+    trim: match[9],
+    type: match[10]
+  });
+}
+
+formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof

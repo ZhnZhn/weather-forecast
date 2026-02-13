@@ -102,7 +102,7 @@ const DayItem = ({
     >
       <div style={S_DAY}>{day}</div>
       <span style={S_PRESSURE}>{pressure}</span>
-      <img src={_srcIcon} style={S_ICON} />
+      <img src={_srcIcon} style={S_ICON} alt="" />
       <div style={S_CELL_WIND}>
         <IconVane deg={deg} />
         <span style={S_WIND_SPEED}>

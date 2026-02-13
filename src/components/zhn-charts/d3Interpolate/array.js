@@ -1,10 +1,6 @@
 import value from "./value";
 import numberArray, {isNumberArray} from "./numberArray";
 
-export default function(a, b) {
-  return (isNumberArray(b) ? numberArray : genericArray)(a, b);
-}
-
 export function genericArray(a, b) {
   let nb = b ? b.length : 0
   , na = a ? Math.min(nb, a.length) : 0
@@ -19,4 +15,8 @@ export function genericArray(a, b) {
     for (i = 0; i < na; ++i) c[i] = x[i](t);
     return c;
   };
+}
+
+export default function(a, b) {
+  return (isNumberArray(b) ? numberArray : genericArray)(a, b);
 }

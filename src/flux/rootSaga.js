@@ -8,17 +8,15 @@ import watchAirForecastRequested from './air/saga';
 
 import watchSettingSet from './settings/saga';
 
-const rootSaga = function* () {
-  /*eslint-disable redux-saga/no-unhandled-errors*/
-   yield all([
-     watchPlaceRequested(),
-     watchForecastRequested(),
-     watchHourlyRequested(),
-     watchUvRequested(),
-     watchAirForecastRequested(),
-     watchSettingSet()
-   ]);
-   /*eslint-enable redux-saga/no-unhandled-errors*/
- }
+const rootSaga = function* () {  
+  yield all([
+    watchPlaceRequested(),
+    watchForecastRequested(),
+    watchHourlyRequested(),
+    watchUvRequested(),
+    watchAirForecastRequested(),
+    watchSettingSet()
+  ]);   
+}
 
- export default rootSaga
+export default rootSaga
