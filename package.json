@@ -48,7 +48,7 @@
     "bundle-stats-webpack-plugin": "^4.21.9",
     "clean-css": "^5.3.3",
     "d3-color": "^3.1.0",
-    "eslint": "^9.39.2",
+    "eslint": "^9.39.3",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
