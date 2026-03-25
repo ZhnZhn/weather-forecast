@@ -5,7 +5,7 @@ const MSG = {
 };
 
 const request = (url) => {
-  return fetch(url)
+  return fetch(url, {referrerPolicy: 'no-referrer'})
     .then(res => {
        const { status } = res;
        return Promise.all([
