@@ -45,7 +45,7 @@
     "@testing-library/react": "^16.3.2",
     "babel-jest": "^30.3.0",
     "babel-loader": "^10.1.1",
-    "bundle-stats-webpack-plugin": "^4.21.10",
+    "bundle-stats-webpack-plugin": "^4.22.0",
     "clean-css": "^5.3.3",
     "d3-color": "^3.1.0",
     "eslint": "^9.39.4",
