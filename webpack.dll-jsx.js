@@ -2,7 +2,7 @@
 
 const path = require('path')
     , webpack = require('webpack')
-    , { BundleStatsWebpackPlugin } = require('bundle-stats-webpack-plugin')  
+    //, { BundleStatsWebpackPlugin } = require('bundle-stats-webpack-plugin')  
     , HtmlWebpackPlugin = require('html-webpack-plugin')
     , postProcessing = require('./plugins/post-processing')
     , HtmlProcessingWebpackPlugin = require('./plugins/html-processing-webpack-plugin')
@@ -56,7 +56,7 @@ module.exports = {
       context: __dirname,
       manifest: require('./dll/lib-manifest.json')
     }),    
-    new BundleStatsWebpackPlugin(), 
+    //new BundleStatsWebpackPlugin(), 
     new HtmlWebpackPlugin({
         minify: false,
         filename: path.resolve('index.html'),
