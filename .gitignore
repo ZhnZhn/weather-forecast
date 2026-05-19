@@ -10,6 +10,7 @@ dll
 _codemods
 dev
 webpack.dev.js
+rspack.dev.js
 ut
 template/a-index-dev.ejs
 template/index-dev.ejs
