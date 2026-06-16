@@ -3,10 +3,7 @@ node_modules
 _init_checkout.bat
 _start_server.bat
 lint.txt
-stats.json
-stat-dll.json
 coverage
-dll
 _codemods
 dev
 webpack.dev.js
