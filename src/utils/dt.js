@@ -1,4 +1,6 @@
 
+import { isNumber } from './isTypeFn';
+
 const BLANK = " ";
 const _daysOfWeek = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
 const _days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
@@ -40,6 +42,9 @@ const dt = {
 },
 
 toMonthDayTime(timestamp){
+   if (!isNumber(timestamp)) {
+     return '';
+   }
    const monthDay = dt.toMonthDay(timestamp);
    const time = dt.toTime(timestamp);
    return monthDay + ' ' + time;
@@ -66,8 +71,11 @@ toMonthDayTime(timestamp){
    return dd + BLANK + hh;
  },
 
- toDirection(degNum=0) {
-    const val = Math.floor((degNum / 22.5) + 0.5);
+ toDirection(deg) {
+    if (!isNumber(deg)) {
+      return '';
+    }
+    const val = Math.floor((deg / 22.5) + 0.5);
     return _sidesOfCompass[(val % 16)];
   }
 }
