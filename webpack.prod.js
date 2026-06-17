@@ -12,15 +12,12 @@ module.exports = {
   entry: {
     app: {
       import: path.resolve('src', 'index.jsx'),
-      dependOn: ['lib','dompurify']
+      dependOn: ['lib']
     },
     lib: [       
        "react", "react-dom",
        "redux", "react-redux", 
        "redux-saga","redux-saga/effects",                                                             
-    ],
-    dompurify: [
-       "dompurify"       
     ]
   },
   externals: {        
@@ -67,8 +64,7 @@ module.exports = {
       inject: false
     })
   ],
-  optimization: {
-    runtimeChunk: 'single',
+  optimization: {    
     minimize: true,
     minimizer: [new TerserPlugin()]
   }

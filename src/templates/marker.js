@@ -1,15 +1,21 @@
-import DOMPurify from 'dompurify'
-
 import {
   isNumber,
   isNaN
 } from '../utils/isTypeFn';
-import dt from '../utils/dt'
-
-const { sanitize } = DOMPurify;
+import { joinByCollon2 } from '../utils/arrFn';
+import { escapeStrHtml } from '../utils/domFn';
+import dt from '../utils/dt';
 
 const NO_DATA = 'No data';
-const _isNumberNotZero = n => isNumber(n) && n !== 0;
+const _isNumberNotZero = (
+  n
+) => isNumber(n) && n !== 0;
+
+const _getNumberOrBlank = (
+  v
+) => isNumber(v)
+  ? v
+  : '';
 
 const _getByPropFromArr = (
   arr=[],
@@ -18,8 +24,9 @@ const _getByPropFromArr = (
   df=NO_DATA
 ) => (arr && arr[i] && arr[i][prop]) || df;
 
-const _crVane = deg => {
-  return `<svg xmlns="http://www.w3.org/2000/svg"
+const _crVane = (
+  deg
+) => isNumber(parseInt(deg, 10)) ? `<svg xmlns="http://www.w3.org/2000/svg"
        viewBox="0 0 17 18" width="100%" height="100%"
        preserveAspectRatio="none" aria-labelledby="title"
        class="icon__popup__vane"
@@ -29,8 +36,7 @@ const _crVane = deg => {
      <path
         d="M 10,0 L 8,0 8,11 4,11 9,18 14,11 10,11 10,0"
      >
-  </svg>`;
-};
+  </svg>` : '';
 
 const _crTemperature = (t, fl) => {
   const _t = parseFloat(t)
@@ -45,26 +51,25 @@ const _crTemperature = (t, fl) => {
     : `${t}&nbsp;°C`
 };
 
-const _crCaptionConfig = (id, name, country) => {
-  let _captionCl=''
-    , _captionOnClick=''
-    , _captionCityDiv='';
-  if (_isNumberNotZero(id)) {
-    _captionCl = 'marker__caption__not-empty'
-    _captionOnClick = `weather.fnFetchForecast(${id})`
-    _captionCityDiv = `<div class="marker__caption__city">${name}:${country}</div>`
-  }
-  return [
-    _captionCl,
-    _captionOnClick,
-    _captionCityDiv
-  ];
-};
+const _crCaptionConfig = (
+  id,
+  name,
+  country
+) => _isNumberNotZero(id)
+  ? [
+    'marker__caption__not-empty', //_captionCl
+    `weather.fnFetchForecast(${id})`, //_captionOnClick
+    `<div class="marker__caption__city">${joinByCollon2(escapeStrHtml(name), escapeStrHtml(country))}</div>` //_captionCityDiv
+  ] : ['', '', ''];
 
-const _isEmptyValue = v =>
-  v == null || v === '';
+const _isEmptyValue = (
+  v
+) => v == null || v === '';
 
-const _crWindSpeed = (speed, gust) => {
+const _crWindSpeed = (
+  speed,
+  gust
+) => {
  if (_isEmptyValue(speed)) {
    return '';
  }
@@ -85,7 +90,7 @@ const AQ = [
 const _crAirQuailityRow = aqiSlice => {
  const { main } = aqiSlice || {}
  , { aqi } = main || {}
- , _aqv = typeof aqi === 'number'
+ , _aqv = isNumber(aqi)
      ? AQ[aqi-1]
      : '';
   return _aqv
@@ -96,32 +101,51 @@ const _crAirQuailityRow = aqiSlice => {
     : ''
 };
 
+const _iconTokens = [
+  '01d', '01n',
+  '02d', '02n',
+  '03d', '03n',
+  '04d', '04n',
+  '09d', '09n',
+  '10d', '10n',
+  '11d', '11n',
+  '13d', '13n',
+  '50d', '50n'
+];
+
+const _isIconToken = icon => _iconTokens.indexOf(icon) !== -1;
+
+const _crDivImgIcon = icon => _isIconToken(icon)
+  ? `<img src=./img/${icon}.png style="width:60px;height:60px;"></img>`
+  : '';
+const _crPopupImgIcon = icon => _isIconToken(icon)
+  ? `<img src=./img/${icon}.png style="display:table-cell;width:50px;height:50px;"></img>`
+  : '';
 
 const marker = {
   fDivIcon : (w) => {
     const { weather=[], main, wind } = w || {}
-    , { temp='', pressure='' } = main || {}
-    , { deg=0, speed='' } = wind || {}
+    , { temp, pressure } = main || {}
+    , { deg, speed } = wind || {}
     , icon = _getByPropFromArr(weather, 'icon');
 
-    return sanitize(
-    `<div style="position:relative;top:-45px;left:-25px;font-size: 15px;font-weight:bold;">
-       <img src=./img/${icon}.png style="width:60px;height:60px;"></img>
+    return `<div style="position:relative;top:-45px;left:-25px;font-size: 15px;font-weight:bold;">
+       ${_crDivImgIcon(icon)}
        <div style="position:absolute; top:5px; left: 50px; width: 90px; line-height: 1.2;">
-         <div style="color:#ff9800;">${temp}&nbsp;℃</div>
-         <div style="color:#3f51b5;">${pressure}&nbsp;hPa</div>
+         <div style="color:#ff9800;">${_getNumberOrBlank(temp)}&nbsp;℃</div>
+         <div style="color:#3f51b5;">${_getNumberOrBlank(pressure)}&nbsp;hPa</div>
          <div>
             ${_crVane(deg)}
-            <span style="color:#3f51b5;">${speed}m/s<span>
+            <span style="color:#3f51b5;">${_getNumberOrBlank(speed)}m/s<span>
          </div>
        </div>
-     </div>`)
+     </div>`;
   },
 
   fPopup : (w, themeName) => {
     const {
       id,
-      name='',
+      name,
       sys,
       dt:msc,
       wind,
@@ -130,27 +154,18 @@ const marker = {
       clouds,
       aqi
     } = w || {}
-    , { country='' } = sys || {}
+    , { country } = sys || {}
     , description = _getByPropFromArr(weather, 'description')
-    , { temp='', pressure='', feels_like, humidity='' } = main || {}
-    , { deg=0, speed, gust } = wind || {}
-    , { all:cloudsAll='' } = clouds || {}
+    , { temp, pressure, feels_like, humidity } = main || {}
+    , { deg, speed, gust } = wind || {}
+    , { all:cloudsAll } = clouds || {}
     , icon = _getByPropFromArr(weather, 'icon')
     , _aqr = _crAirQuailityRow(aqi)
 
     , [ _captionCl,
         _captionOnClick,
         _captionCityDiv
-      ] = _crCaptionConfig(id, sanitize(name), sanitize(country))
-
-    , _icon = sanitize(icon)
-    , _description = sanitize(description)
-    , _clouds = sanitize(cloudsAll)
-    , _pressure = sanitize(pressure)
-    , _deg = sanitize(deg)
-    , _windSpeed = _crWindSpeed(sanitize(speed), sanitize(gust))
-    , _temp = _crTemperature(sanitize(temp), sanitize(feels_like))
-    , _humidity = sanitize(humidity);
+    ] = _crCaptionConfig(id, name, country);
 
     return `<div class="marker__caption ${_captionCl}" onclick="${_captionOnClick}">
            ${_captionCityDiv}
@@ -159,31 +174,31 @@ const marker = {
            </div>
         </div>
         <p style="display:table;margin: 0 0;font-size: 15px; font-weight: bold;">
-          <img src=./img/${_icon}.png style="display:table-cell;width:50px;height:50px;"></img>
+          ${_crPopupImgIcon(icon)}
           <span class="marker__description" style="display:table-cell;vertical-align:middle;">
-            ${_description}&nbsp;(${_clouds}%)
+            ${escapeStrHtml(description)}&nbsp;(${_getNumberOrBlank(cloudsAll)}%)
           </span>
         </p>
         <p style="margin: 0 0;margin-top: -8px;font-size: 15px; font-weight: bold;">
           <span class="marker__value-odd" style="color:#ff9800;">
-             ${_temp}
+             ${_crTemperature(_getNumberOrBlank(temp), _getNumberOrBlank(feels_like))}
           </span>
           <span class="marker__value-odd left-5" style="color:#0d2339;">
-            ${_pressure}&nbsp;hPa
+            ${_getNumberOrBlank(pressure)}&nbsp;hPa
           </span>
         </p>
         ${_aqr}
         <p style="margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;">
-          ${_crVane(_deg)}
+          ${_crVane(deg)}
           <span class="marker__value-odd" style="color:#3f51b5;">
-            ${dt.toDirection(_deg)}
+            ${dt.toDirection(deg)}
           </span>
           <span class="marker__value-odd" style="color:#3f51b5;">
-            ${_windSpeed}
+            ${_crWindSpeed(_getNumberOrBlank(speed), _getNumberOrBlank(gust))}
           </span>
            <span class="marker__label left-5" title="Humidity">H:</span>
-           <span class="marker__value-even" style="color:#3f51b5;">${_humidity}%</span>
-        </p>`
+           <span class="marker__value-even" style="color:#3f51b5;">${_getNumberOrBlank(humidity)}%</span>
+        </p>`;
   }
 };
 
