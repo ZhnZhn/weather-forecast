@@ -16,7 +16,7 @@
     "transpile:all": "babel ./src --out-dir ./js --source-maps",
     "lint:one": "eslint -c eslint.config.js",
     "lint:biome": "npx @biomejs/biome lint ./src --colors=off",
-    "build:prod": "webpack --color --progress --config webpack.prod.js",     
+    "build:prod": "webpack --color --progress --config webpack.prod.js",
     "stats": "npm run stats:json && npm run stats:report",
     "stats:json": "webpack --config webpack.dll-jsx.js --profile --json > stats.json",
     "stats:report": "webpack-bundle-analyzer stats.json --no-open --mode static",
@@ -44,8 +44,8 @@
     "@babel/preset-react": "^7.29.7",
     "@biomejs/biome": "^2.5.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.6.2",
-    "@rspack/cli": "^2.0.6",
-    "@rspack/core": "^2.0.6",
+    "@rspack/cli": "^2.0.8",
+    "@rspack/core": "^2.0.8",
     "@rspack/dev-server": "^2.0.3",
     "@rspack/plugin-react-refresh": "^2.0.2",
     "@swc/helpers": "^0.5.23",
@@ -66,7 +66,7 @@
     "webpack": "^5.107.2",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^7.0.3",
-    "webpack-dev-server": "^5.2.4"
+    "webpack-dev-server": "^5.2.5"
   },
   "overrides": {
     "glob": "~13.0.6",
