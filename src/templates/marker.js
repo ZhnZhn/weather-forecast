@@ -1,6 +1,7 @@
 import {
   isEmptyValue,
   isNumber,
+  isNotZeroNumber,
   isNaN
 } from '../utils/isTypeFn';
 import { joinByCollon2 } from '../utils/arrFn';
@@ -11,9 +12,6 @@ import {
 import dt from '../utils/dt';
 
 const NO_DATA = 'No data';
-const _isNumberNotZero = (
-  n
-) => isNumber(n) && n !== 0;
 
 const _getByPropFromArr = (
   arr=[],
@@ -53,7 +51,7 @@ const _crCaptionConfig = (
   id,
   name,
   country
-) => _isNumberNotZero(id)
+) => _isNotZeroNumber(id)
   ? [
     'marker__caption__not-empty', //_captionCl
     `weather.fnFetchForecast(${id})`, //_captionOnClick

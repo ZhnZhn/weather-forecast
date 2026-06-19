@@ -27,6 +27,9 @@ export const isNaN = Number.isNaN
 export const isPositiveNumber = (
   value
 ) => isNumber(value) && value >= 0
+export const isNotZeroNumber = (
+  n
+) => isNumber(n) && n !== 0
 
 export const isNumOrStr = (
   value

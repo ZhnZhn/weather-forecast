@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.isUndef = exports.isStr = exports.isPositiveNumber = exports.isObj = exports.isNumber = exports.isNumOrStr = exports.isNullOrUndef = exports.isNotEmptyArr = exports.isNaN = exports.isFn = exports.isEmptyValue = exports.isBool = exports.isArr = void 0;
+exports.isUndef = exports.isStr = exports.isPositiveNumber = exports.isObj = exports.isNumber = exports.isNumOrStr = exports.isNullOrUndef = exports.isNotZeroNumber = exports.isNotEmptyArr = exports.isNaN = exports.isFn = exports.isEmptyValue = exports.isBool = exports.isArr = void 0;
 const isArr = exports.isArr = Array.isArray;
 const isNotEmptyArr = arr => isArr(arr) && arr.length > 0;
 exports.isNotEmptyArr = isNotEmptyArr;
@@ -22,6 +22,8 @@ exports.isNumber = isNumber;
 const isNaN = exports.isNaN = Number.isNaN;
 const isPositiveNumber = value => isNumber(value) && value >= 0;
 exports.isPositiveNumber = isPositiveNumber;
+const isNotZeroNumber = n => isNumber(n) && n !== 0;
+exports.isNotZeroNumber = isNotZeroNumber;
 const isNumOrStr = value => isNumber(value) || isStr(value);
 exports.isNumOrStr = isNumOrStr;
 //# sourceMappingURL=isTypeFn.js.map

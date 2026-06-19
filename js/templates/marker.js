@@ -8,7 +8,6 @@ var _arrFn = require("../utils/arrFn");
 var _domFn = require("../utils/domFn");
 var _dt = _interopRequireDefault(require("../utils/dt"));
 const NO_DATA = 'No data';
-const _isNumberNotZero = n => (0, _isTypeFn.isNumber)(n) && n !== 0;
 const _getByPropFromArr = function (arr, prop, i, df) {
   if (arr === void 0) {
     arr = [];
@@ -41,7 +40,7 @@ const _crTemperature = (t, fl) => {
   }
   return _difference < -1 || _difference > 1 ? `${t}&nbsp;(Feels&nbsp;Like&nbsp;${fl})&nbsp;°C` : `${t}&nbsp;°C`;
 };
-const _crCaptionConfig = (id, name, country) => _isNumberNotZero(id) ? ['marker__caption__not-empty',
+const _crCaptionConfig = (id, name, country) => _isNotZeroNumber(id) ? ['marker__caption__not-empty',
 //_captionCl
 `weather.fnFetchForecast(${id})`,
 //_captionOnClick
