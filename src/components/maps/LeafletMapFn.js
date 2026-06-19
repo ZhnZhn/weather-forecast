@@ -1,5 +1,8 @@
 import Leaflet from 'leaflet';
-import marker from '../../templates/marker';
+import {
+  crMarkerDivIcon,
+  crMarkerPopup
+} from '../../templates/marker';
 
 const L = Leaflet || window.L;
 
@@ -30,7 +33,7 @@ export const addMarker = (
   map
 ) => {
    if (!L) { return; }
-   const icon = L.divIcon({ html: marker.fDivIcon(w)})
+   const icon = L.divIcon({ html: crMarkerDivIcon(w)})
    , { coord } = w  || {}
    , { lat, lon } = coord || {};
    if (lat && lon) {
@@ -39,7 +42,7 @@ export const addMarker = (
        title: w.name,
        alt: w.name,
      }).bindPopup(
-       marker.fPopup(w),
+       crMarkerPopup(w)
      ).addTo(map)
    }
 }
