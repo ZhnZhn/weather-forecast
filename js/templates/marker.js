@@ -47,12 +47,11 @@ const _crCaptionConfig = (id, name, country) => _isNumberNotZero(id) ? ['marker_
 //_captionOnClick
 `<div class="marker__caption__city">${(0, _arrFn.joinByCollon2)((0, _domFn.escapeStrHtml)(name), (0, _domFn.escapeStrHtml)(country))}</div>` //_captionCityDiv
 ] : ['', '', ''];
-const _isEmptyValue = v => v == null || v === '';
 const _crWindSpeed = (speed, gust) => {
-  if (_isEmptyValue(speed)) {
+  if ((0, _isTypeFn.isEmptyValue)(speed)) {
     return '';
   }
-  const _gust = _isEmptyValue(gust) ? '' : `-${gust}`;
+  const _gust = (0, _isTypeFn.isEmptyValue)(gust) ? '' : `-${gust}`;
   return `${speed}${_gust}m/s`;
 };
 const AQ = ['Good (1)', 'Fair (2)', 'Moderate (3)', 'Poor (4)', 'Very Poor (5)'];

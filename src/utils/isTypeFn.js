@@ -5,6 +5,9 @@ export const isNotEmptyArr = (
 ) => isArr(arr) && arr.length > 0
 
 export const isNullOrUndef = v => v == null
+export const isEmptyValue = (
+  v
+) => v == null || v === '';
 
 export const isObj = v => v !== null
   && typeof v === 'object'

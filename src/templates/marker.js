@@ -1,4 +1,5 @@
 import {
+  isEmptyValue,
   isNumber,
   isNaN
 } from '../utils/isTypeFn';
@@ -59,18 +60,15 @@ const _crCaptionConfig = (
     `<div class="marker__caption__city">${joinByCollon2(escapeStrHtml(name), escapeStrHtml(country))}</div>` //_captionCityDiv
   ] : ['', '', ''];
 
-const _isEmptyValue = (
-  v
-) => v == null || v === '';
 
 const _crWindSpeed = (
   speed,
   gust
 ) => {
- if (_isEmptyValue(speed)) {
+ if (isEmptyValue(speed)) {
    return '';
  }
- const _gust = _isEmptyValue(gust)
+ const _gust = isEmptyValue(gust)
    ? ''
    : `-${gust}`;
   return `${speed}${_gust}m/s`;
