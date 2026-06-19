@@ -4,7 +4,10 @@ import {
   isNotZeroNumber,
   isNaN
 } from '../utils/isTypeFn';
-import { joinByCollon2 } from '../utils/arrFn';
+import {
+  getByIndexAndProp,
+  joinByCollon2
+} from '../utils/arrFn';
 import {
   escapeStrHtml,
   getNumberOr
@@ -12,13 +15,14 @@ import {
 import dt from '../utils/dt';
 
 const NO_DATA = 'No data';
-
-const _getByPropFromArr = (
-  arr=[],
-  prop,
-  i=0,
-  df=NO_DATA
-) => (arr && arr[i] && arr[i][prop]) || df;
+const _fGetWeather = propName => weather => getByIndexAndProp(
+  weather,
+  0,
+  propName,
+  NO_DATA
+)
+, _getWeatherIcon = _fGetWeather('icon')
+, _getWeatherDescription = _fGetWeather('description');
 
 const _crVane = (
   deg
@@ -51,7 +55,7 @@ const _crCaptionConfig = (
   id,
   name,
   country
-) => _isNotZeroNumber(id)
+) => isNotZeroNumber(id)
   ? [
     'marker__caption__not-empty', //_captionCl
     `weather.fnFetchForecast(${id})`, //_captionOnClick
@@ -117,10 +121,20 @@ const _crPopupImgIcon = icon => _isIconToken(icon)
 
 const marker = {
   fDivIcon : (w) => {
-    const { weather=[], main, wind } = w || {}
-    , { temp, pressure } = main || {}
-    , { deg, speed } = wind || {}
-    , icon = _getByPropFromArr(weather, 'icon');
+    const {
+      weather,
+      main,
+      wind
+    } = w || {}
+    , {
+      temp,
+      pressure
+    } = main || {}
+    , {
+      deg,
+      speed
+    } = wind || {}
+    , icon = _getWeatherIcon(weather);
 
     return `<div style="position:relative;top:-45px;left:-25px;font-size: 15px;font-weight:bold;">
        ${_crDivImgIcon(icon)}
@@ -148,11 +162,20 @@ const marker = {
       aqi
     } = w || {}
     , { country } = sys || {}
-    , description = _getByPropFromArr(weather, 'description')
-    , { temp, pressure, feels_like, humidity } = main || {}
-    , { deg, speed, gust } = wind || {}
+    , description = _getWeatherDescription(weather)
+    , {
+      temp,
+      pressure,
+      feels_like,
+      humidity
+    } = main || {}
+    , {
+      deg,
+      speed,
+      gust
+    } = wind || {}
     , { all:cloudsAll } = clouds || {}
-    , icon = _getByPropFromArr(weather, 'icon')
+    , icon = _getWeatherIcon(weather)
     , _aqr = _crAirQuailityRow(aqi)
 
     , [ _captionCl,

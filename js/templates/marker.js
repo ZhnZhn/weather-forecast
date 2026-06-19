@@ -8,18 +8,9 @@ var _arrFn = require("../utils/arrFn");
 var _domFn = require("../utils/domFn");
 var _dt = _interopRequireDefault(require("../utils/dt"));
 const NO_DATA = 'No data';
-const _getByPropFromArr = function (arr, prop, i, df) {
-  if (arr === void 0) {
-    arr = [];
-  }
-  if (i === void 0) {
-    i = 0;
-  }
-  if (df === void 0) {
-    df = NO_DATA;
-  }
-  return arr && arr[i] && arr[i][prop] || df;
-};
+const _fGetWeather = propName => weather => (0, _arrFn.getByIndexAndProp)(weather, 0, propName, NO_DATA),
+  _getWeatherIcon = _fGetWeather('icon'),
+  _getWeatherDescription = _fGetWeather('description');
 const _crVane = deg => (0, _isTypeFn.isNumber)(parseInt(deg, 10)) ? `<svg xmlns="http://www.w3.org/2000/svg"
        viewBox="0 0 17 18" width="100%" height="100%"
        preserveAspectRatio="none" aria-labelledby="title"
@@ -40,7 +31,7 @@ const _crTemperature = (t, fl) => {
   }
   return _difference < -1 || _difference > 1 ? `${t}&nbsp;(Feels&nbsp;Like&nbsp;${fl})&nbsp;°C` : `${t}&nbsp;°C`;
 };
-const _crCaptionConfig = (id, name, country) => _isNotZeroNumber(id) ? ['marker__caption__not-empty',
+const _crCaptionConfig = (id, name, country) => (0, _isTypeFn.isNotZeroNumber)(id) ? ['marker__caption__not-empty',
 //_captionCl
 `weather.fnFetchForecast(${id})`,
 //_captionOnClick
@@ -74,7 +65,7 @@ const _crPopupImgIcon = icon => _isIconToken(icon) ? `<img src=./img/${icon}.png
 const marker = {
   fDivIcon: w => {
     const {
-        weather = [],
+        weather,
         main,
         wind
       } = w || {},
@@ -86,7 +77,7 @@ const marker = {
         deg,
         speed
       } = wind || {},
-      icon = _getByPropFromArr(weather, 'icon');
+      icon = _getWeatherIcon(weather);
     return `<div style="position:relative;top:-45px;left:-25px;font-size: 15px;font-weight:bold;">
        ${_crDivImgIcon(icon)}
        <div style="position:absolute; top:5px; left: 50px; width: 90px; line-height: 1.2;">
@@ -114,7 +105,7 @@ const marker = {
       {
         country
       } = sys || {},
-      description = _getByPropFromArr(weather, 'description'),
+      description = _getWeatherDescription(weather),
       {
         temp,
         pressure,
@@ -129,7 +120,7 @@ const marker = {
       {
         all: cloudsAll
       } = clouds || {},
-      icon = _getByPropFromArr(weather, 'icon'),
+      icon = _getWeatherIcon(weather),
       _aqr = _crAirQuailityRow(aqi),
       [_captionCl, _captionOnClick, _captionCityDiv] = _crCaptionConfig(id, name, country);
     return `<div class="marker__caption ${_captionCl}" onclick="${_captionOnClick}">
