@@ -10,7 +10,8 @@ import {
 } from '../utils/arrFn';
 import {
   escapeStrHtml,
-  getNumberOr
+  getNumberOr,
+  crIconImgSrc
 } from '../utils/domFn';
 import dt from '../utils/dt';
 
@@ -98,26 +99,14 @@ const _crAirQuailityRow = aqiSlice => {
     : ''
 };
 
-const _iconTokens = [
-  '01d', '01n',
-  '02d', '02n',
-  '03d', '03n',
-  '04d', '04n',
-  '09d', '09n',
-  '10d', '10n',
-  '11d', '11n',
-  '13d', '13n',
-  '50d', '50n'
-];
-
-const _isIconToken = icon => _iconTokens.indexOf(icon) !== -1;
-
-const _crDivImgIcon = icon => _isIconToken(icon)
-  ? `<img src=./img/${icon}.png style="width:60px;height:60px;"></img>`
-  : '';
-const _crPopupImgIcon = icon => _isIconToken(icon)
-  ? `<img src=./img/${icon}.png style="display:table-cell;width:50px;height:50px;"></img>`
-  : '';
+const _fIconImg = style => icon => {
+  const _iconImgSrc = crIconImgSrc(icon);
+  return _iconImgSrc
+    ? `<img src=${_iconImgSrc} style=${style}></img>`
+    : '';
+}
+, _crDivImgIcon = _fIconImg("width:60px;height:60px;")
+, _crPopupImgIcon = _fIconImg("display:table-cell;width:50px;height:50px;");
 
 export const crMarkerDivIcon = (w) => {
   const {

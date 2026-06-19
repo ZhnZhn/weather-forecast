@@ -4,6 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.default = void 0;
 var _isTypeFn = require("../../utils/isTypeFn");
+var _domFn = require("../../utils/domFn");
 var _dt = _interopRequireDefault(require("../../utils/dt"));
 var _IconVane = _interopRequireDefault(require("./IconVane"));
 var _jsxRuntime = require("react/jsx-runtime");
@@ -83,7 +84,6 @@ const DayItem = _ref => {
     day = _dt.default.toShortDayOfWeek(timestamp),
     pressure = roundProp(item, 'pressure'),
     icon = weather[0].icon,
-    _srcIcon = icon.length === 3 ? `./img/${icon}.png` : void 0,
     tempDay = roundProp(temp, 'day'),
     tempNight = roundProp(temp, 'night'),
     _focusableAttr = (0, _isTypeFn.isFn)(onClick) ? {
@@ -104,8 +104,9 @@ const DayItem = _ref => {
       style: S_PRESSURE,
       children: pressure
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
-      src: _srcIcon,
-      style: S_ICON
+      src: (0, _domFn.crIconImgSrc)(icon),
+      style: S_ICON,
+      alt: ""
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       style: S_CELL_WIND,
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_IconVane.default, {

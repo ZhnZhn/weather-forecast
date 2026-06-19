@@ -2,7 +2,7 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
-exports.default = void 0;
+exports.crMarkerPopup = exports.crMarkerDivIcon = void 0;
 var _isTypeFn = require("../utils/isTypeFn");
 var _arrFn = require("../utils/arrFn");
 var _domFn = require("../utils/domFn");
@@ -58,104 +58,105 @@ const _crAirQuailityRow = aqiSlice => {
         <span class="marker__value-even" style="color:#3f51b5;">${_aqv}</span>
       </p>` : '';
 };
-const _iconTokens = ['01d', '01n', '02d', '02n', '03d', '03n', '04d', '04n', '09d', '09n', '10d', '10n', '11d', '11n', '13d', '13n', '50d', '50n'];
-const _isIconToken = icon => _iconTokens.indexOf(icon) !== -1;
-const _crDivImgIcon = icon => _isIconToken(icon) ? `<img src=./img/${icon}.png style="width:60px;height:60px;"></img>` : '';
-const _crPopupImgIcon = icon => _isIconToken(icon) ? `<img src=./img/${icon}.png style="display:table-cell;width:50px;height:50px;"></img>` : '';
-const marker = {
-  fDivIcon: w => {
-    const {
-        weather,
-        main,
-        wind
-      } = w || {},
-      {
-        temp,
-        pressure
-      } = main || {},
-      {
-        deg,
-        speed
-      } = wind || {},
-      icon = _getWeatherIcon(weather);
-    return `<div style="position:relative;top:-45px;left:-25px;font-size: 15px;font-weight:bold;">
-       ${_crDivImgIcon(icon)}
-       <div style="position:absolute; top:5px; left: 50px; width: 90px; line-height: 1.2;">
-         <div style="color:#ff9800;">${(0, _domFn.getNumberOr)(temp)}&nbsp;℃</div>
-         <div style="color:#3f51b5;">${(0, _domFn.getNumberOr)(pressure)}&nbsp;hPa</div>
-         <div>
-            ${_crVane(deg)}
-            <span style="color:#3f51b5;">${(0, _domFn.getNumberOr)(speed)}m/s<span>
-         </div>
-       </div>
-     </div>`;
+const _fIconImg = style => icon => {
+    const _iconImgSrc = (0, _domFn.crIconImgSrc)(icon);
+    return _iconImgSrc ? `<img src=${_iconImgSrc} style=${style}></img>` : '';
   },
-  fPopup: (w, themeName) => {
-    const {
-        id,
-        name,
-        sys,
-        dt: msc,
-        wind,
-        weather,
-        main,
-        clouds,
-        aqi
-      } = w || {},
-      {
-        country
-      } = sys || {},
-      description = _getWeatherDescription(weather),
-      {
-        temp,
-        pressure,
-        feels_like,
-        humidity
-      } = main || {},
-      {
-        deg,
-        speed,
-        gust
-      } = wind || {},
-      {
-        all: cloudsAll
-      } = clouds || {},
-      icon = _getWeatherIcon(weather),
-      _aqr = _crAirQuailityRow(aqi),
-      [_captionCl, _captionOnClick, _captionCityDiv] = _crCaptionConfig(id, name, country);
-    return `<div class="marker__caption ${_captionCl}" onclick="${_captionOnClick}">
-           ${_captionCityDiv}
-           <div class="marker__caption__date">
-             ${_dt.default.toMonthDayTime(msc)}
-           </div>
-        </div>
-        <p style="display:table;margin: 0 0;font-size: 15px; font-weight: bold;">
-          ${_crPopupImgIcon(icon)}
-          <span class="marker__description" style="display:table-cell;vertical-align:middle;">
-            ${(0, _domFn.escapeStrHtml)(description)}&nbsp;(${(0, _domFn.getNumberOr)(cloudsAll)}%)
-          </span>
-        </p>
-        <p style="margin: 0 0;margin-top: -8px;font-size: 15px; font-weight: bold;">
-          <span class="marker__value-odd" style="color:#ff9800;">
-             ${_crTemperature((0, _domFn.getNumberOr)(temp), (0, _domFn.getNumberOr)(feels_like))}
-          </span>
-          <span class="marker__value-odd left-5" style="color:#0d2339;">
-            ${(0, _domFn.getNumberOr)(pressure)}&nbsp;hPa
-          </span>
-        </p>
-        ${_aqr}
-        <p style="margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;">
+  _crDivImgIcon = _fIconImg("width:60px;height:60px;"),
+  _crPopupImgIcon = _fIconImg("display:table-cell;width:50px;height:50px;");
+const crMarkerDivIcon = w => {
+  const {
+      weather,
+      main,
+      wind
+    } = w || {},
+    {
+      temp,
+      pressure
+    } = main || {},
+    {
+      deg,
+      speed
+    } = wind || {},
+    icon = _getWeatherIcon(weather);
+  return `<div style="position:relative;top:-45px;left:-25px;font-size: 15px;font-weight:bold;">
+     ${_crDivImgIcon(icon)}
+     <div style="position:absolute; top:5px; left: 50px; width: 90px; line-height: 1.2;">
+       <div style="color:#ff9800;">${(0, _domFn.getNumberOr)(temp)}&nbsp;℃</div>
+       <div style="color:#3f51b5;">${(0, _domFn.getNumberOr)(pressure)}&nbsp;hPa</div>
+       <div>
           ${_crVane(deg)}
-          <span class="marker__value-odd" style="color:#3f51b5;">
-            ${_dt.default.toDirection(deg)}
-          </span>
-          <span class="marker__value-odd" style="color:#3f51b5;">
-            ${_crWindSpeed((0, _domFn.getNumberOr)(speed), (0, _domFn.getNumberOr)(gust))}
-          </span>
-           <span class="marker__label left-5" title="Humidity">H:</span>
-           <span class="marker__value-even" style="color:#3f51b5;">${(0, _domFn.getNumberOr)(humidity)}%</span>
-        </p>`;
-  }
+          <span style="color:#3f51b5;">${(0, _domFn.getNumberOr)(speed)}m/s<span>
+       </div>
+     </div>
+   </div>`;
 };
-var _default = exports.default = marker;
+exports.crMarkerDivIcon = crMarkerDivIcon;
+const crMarkerPopup = (w, themeName) => {
+  const {
+      id,
+      name,
+      sys,
+      dt: msc,
+      wind,
+      weather,
+      main,
+      clouds,
+      aqi
+    } = w || {},
+    {
+      country
+    } = sys || {},
+    description = _getWeatherDescription(weather),
+    {
+      temp,
+      pressure,
+      feels_like,
+      humidity
+    } = main || {},
+    {
+      deg,
+      speed,
+      gust
+    } = wind || {},
+    {
+      all: cloudsAll
+    } = clouds || {},
+    icon = _getWeatherIcon(weather),
+    _aqr = _crAirQuailityRow(aqi),
+    [_captionCl, _captionOnClick, _captionCityDiv] = _crCaptionConfig(id, name, country);
+  return `<div class="marker__caption ${_captionCl}" onclick="${_captionOnClick}">
+       ${_captionCityDiv}
+       <div class="marker__caption__date">
+         ${_dt.default.toMonthDayTime(msc)}
+       </div>
+    </div>
+    <p style="display:table;margin: 0 0;font-size: 15px; font-weight: bold;">
+      ${_crPopupImgIcon(icon)}
+      <span class="marker__description" style="display:table-cell;vertical-align:middle;">
+        ${(0, _domFn.escapeStrHtml)(description)}&nbsp;(${(0, _domFn.getNumberOr)(cloudsAll)}%)
+      </span>
+    </p>
+    <p style="margin: 0 0;margin-top: -8px;font-size: 15px; font-weight: bold;">
+      <span class="marker__value-odd" style="color:#ff9800;">
+         ${_crTemperature((0, _domFn.getNumberOr)(temp), (0, _domFn.getNumberOr)(feels_like))}
+      </span>
+      <span class="marker__value-odd left-5" style="color:#0d2339;">
+        ${(0, _domFn.getNumberOr)(pressure)}&nbsp;hPa
+      </span>
+    </p>
+    ${_aqr}
+    <p style="margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;">
+      ${_crVane(deg)}
+      <span class="marker__value-odd" style="color:#3f51b5;">
+        ${_dt.default.toDirection(deg)}
+      </span>
+      <span class="marker__value-odd" style="color:#3f51b5;">
+        ${_crWindSpeed((0, _domFn.getNumberOr)(speed), (0, _domFn.getNumberOr)(gust))}
+      </span>
+       <span class="marker__label left-5" title="Humidity">H:</span>
+       <span class="marker__value-even" style="color:#3f51b5;">${(0, _domFn.getNumberOr)(humidity)}%</span>
+    </p>`;
+};
+exports.crMarkerPopup = crMarkerPopup;
 //# sourceMappingURL=marker.js.map

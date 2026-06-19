@@ -2,6 +2,9 @@ import {
   isFn,
   isNumber
 } from '../../utils/isTypeFn';
+import {
+  crIconImgSrc
+} from '../../utils/domFn';
 import dt from '../../utils/dt';
 
 import IconVane from './IconVane';
@@ -35,7 +38,9 @@ const CL_DAY_ITEM = 'day-item'
   height: 60,
   margin: '0 auto'
 }
-, S_CELL_WIND = { marginTop: -10 }
+, S_CELL_WIND = {
+  marginTop: -10
+}
 , S_WIND_SPEED = {
   color: '#3f51b5',
   fontSize: '20px',
@@ -82,9 +87,6 @@ const DayItem = ({
   , day = dt.toShortDayOfWeek(timestamp)
   , pressure = roundProp(item, 'pressure')
   , icon = weather[0].icon
-  , _srcIcon = icon.length === 3
-      ? `./img/${icon}.png`
-      : void 0
   , tempDay = roundProp(temp, 'day')
   , tempNight = roundProp(temp, 'night')
   , _focusableAttr = isFn(onClick)
@@ -102,7 +104,7 @@ const DayItem = ({
     >
       <div style={S_DAY}>{day}</div>
       <span style={S_PRESSURE}>{pressure}</span>
-      <img src={_srcIcon} style={S_ICON} alt="" />
+      <img src={crIconImgSrc(icon)} style={S_ICON} alt="" />
       <div style={S_CELL_WIND}>
         <IconVane deg={deg} />
         <span style={S_WIND_SPEED}>

@@ -4,7 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.createMap = exports.addMarker = void 0;
 var _leaflet = _interopRequireDefault(require("leaflet"));
-var _marker = _interopRequireDefault(require("../../templates/marker"));
+var _marker = require("../../templates/marker");
 const L = _leaflet.default || window.L;
 const DF_LAT = 50,
   DF_LNG = 0,
@@ -30,7 +30,7 @@ const addMarker = (w, map) => {
     return;
   }
   const icon = L.divIcon({
-      html: _marker.default.fDivIcon(w)
+      html: (0, _marker.crMarkerDivIcon)(w)
     }),
     {
       coord
@@ -44,7 +44,7 @@ const addMarker = (w, map) => {
       icon: icon,
       title: w.name,
       alt: w.name
-    }).bindPopup(_marker.default.fPopup(w)).addTo(map);
+    }).bindPopup((0, _marker.crMarkerPopup)(w)).addTo(map);
   }
 };
 exports.addMarker = addMarker;
