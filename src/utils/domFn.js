@@ -20,7 +20,7 @@ export const getNumberOr = (
   ? v
   : ''
 
-  const iconTokens = [
+  const _iconTokens = [
     '01d', '01n',
     '02d', '02n',
     '03d', '03n',
