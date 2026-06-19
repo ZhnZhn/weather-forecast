@@ -9,7 +9,6 @@ var _domFn = require("../utils/domFn");
 var _dt = _interopRequireDefault(require("../utils/dt"));
 const NO_DATA = 'No data';
 const _isNumberNotZero = n => (0, _isTypeFn.isNumber)(n) && n !== 0;
-const _getNumberOrBlank = v => (0, _isTypeFn.isNumber)(v) ? v : '';
 const _getByPropFromArr = function (arr, prop, i, df) {
   if (arr === void 0) {
     arr = [];
@@ -93,11 +92,11 @@ const marker = {
     return `<div style="position:relative;top:-45px;left:-25px;font-size: 15px;font-weight:bold;">
        ${_crDivImgIcon(icon)}
        <div style="position:absolute; top:5px; left: 50px; width: 90px; line-height: 1.2;">
-         <div style="color:#ff9800;">${_getNumberOrBlank(temp)}&nbsp;℃</div>
-         <div style="color:#3f51b5;">${_getNumberOrBlank(pressure)}&nbsp;hPa</div>
+         <div style="color:#ff9800;">${(0, _domFn.getNumberOr)(temp)}&nbsp;℃</div>
+         <div style="color:#3f51b5;">${(0, _domFn.getNumberOr)(pressure)}&nbsp;hPa</div>
          <div>
             ${_crVane(deg)}
-            <span style="color:#3f51b5;">${_getNumberOrBlank(speed)}m/s<span>
+            <span style="color:#3f51b5;">${(0, _domFn.getNumberOr)(speed)}m/s<span>
          </div>
        </div>
      </div>`;
@@ -144,15 +143,15 @@ const marker = {
         <p style="display:table;margin: 0 0;font-size: 15px; font-weight: bold;">
           ${_crPopupImgIcon(icon)}
           <span class="marker__description" style="display:table-cell;vertical-align:middle;">
-            ${(0, _domFn.escapeStrHtml)(description)}&nbsp;(${_getNumberOrBlank(cloudsAll)}%)
+            ${(0, _domFn.escapeStrHtml)(description)}&nbsp;(${(0, _domFn.getNumberOr)(cloudsAll)}%)
           </span>
         </p>
         <p style="margin: 0 0;margin-top: -8px;font-size: 15px; font-weight: bold;">
           <span class="marker__value-odd" style="color:#ff9800;">
-             ${_crTemperature(_getNumberOrBlank(temp), _getNumberOrBlank(feels_like))}
+             ${_crTemperature((0, _domFn.getNumberOr)(temp), (0, _domFn.getNumberOr)(feels_like))}
           </span>
           <span class="marker__value-odd left-5" style="color:#0d2339;">
-            ${_getNumberOrBlank(pressure)}&nbsp;hPa
+            ${(0, _domFn.getNumberOr)(pressure)}&nbsp;hPa
           </span>
         </p>
         ${_aqr}
@@ -162,10 +161,10 @@ const marker = {
             ${_dt.default.toDirection(deg)}
           </span>
           <span class="marker__value-odd" style="color:#3f51b5;">
-            ${_crWindSpeed(_getNumberOrBlank(speed), _getNumberOrBlank(gust))}
+            ${_crWindSpeed((0, _domFn.getNumberOr)(speed), (0, _domFn.getNumberOr)(gust))}
           </span>
            <span class="marker__label left-5" title="Humidity">H:</span>
-           <span class="marker__value-even" style="color:#3f51b5;">${_getNumberOrBlank(humidity)}%</span>
+           <span class="marker__value-even" style="color:#3f51b5;">${(0, _domFn.getNumberOr)(humidity)}%</span>
         </p>`;
   }
 };

@@ -1,4 +1,7 @@
-import { isStr } from './isTypeFn';
+import {
+  isNumber,
+  isStr
+} from './isTypeFn';
 
 export const escapeStrHtml = (str) => isStr(str)
   ? str.replace(/[<>&"]/g, (ch) => {
@@ -10,3 +13,9 @@ export const escapeStrHtml = (str) => isStr(str)
        default: return ch;
      }
   }) : ''
+
+export const getNumberOr = (
+  v
+) => isNumber(v)
+  ? v
+  : ''
