@@ -1,3 +1,5 @@
+import { safeMap } from '../uiApi';
+
 import OpenClose from '../zhn/OpenClose';
 import { COLOR_BROWN } from '../styles/Color';
 
@@ -28,8 +30,9 @@ const PeriodForecast = ({
       >
         <div>
          {
-          (list||[]).map((item, index) => (
-            <DayItem key={index}
+          safeMap(list, (item, index) => (
+            <DayItem
+              key={index}
               style={dayStyle}
               item={item}
               onClick={onClickItem}

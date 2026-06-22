@@ -3,6 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports.default = void 0;
+var _uiApi = require("../uiApi");
 var _OpenClose = _interopRequireDefault(require("../zhn/OpenClose"));
 var _Color = require("../styles/Color");
 var _Caption = _interopRequireDefault(require("./Caption"));
@@ -36,7 +37,7 @@ const PeriodForecast = _ref => {
         forecast: forecast
       }),
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        children: (list || []).map((item, index) => /*#__PURE__*/(0, _jsxRuntime.jsx)(_DayItem.default, {
+        children: (0, _uiApi.safeMap)(list, (item, index) => /*#__PURE__*/(0, _jsxRuntime.jsx)(_DayItem.default, {
           style: dayStyle,
           item: item,
           onClick: onClickItem
