@@ -1,45 +1,36 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 exports.__esModule = true;
-exports["default"] = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-
+exports.default = void 0;
+var _arrFn = require("../../utils/arrFn");
 var _jsxRuntime = require("react/jsx-runtime");
-
-var CL_SELECT_NONE = 'select-none',
-    ROOT_DIV = {
-  display: 'inline',
-  color: '#795548',
-  width: '100%',
-  paddingLeft: 8,
-  marginBottom: 8,
-  borderBottom: '3px solid #795548',
-  fontSize: '24px',
-  fontWeight: 'bold'
-};
-
-var Caption = function Caption(_ref) {
-  var style = _ref.style,
-      forecast = _ref.forecast;
-
-  var _ref2 = forecast || {},
-      city = _ref2.city,
-      _ref3 = city || {},
-      _ref3$name = _ref3.name,
-      name = _ref3$name === void 0 ? 'Forecast' : _ref3$name,
-      country = _ref3.country,
-      _caption = [name, country].filter(Boolean).join(':');
-
+const CL_SELECT_NONE = 'select-none',
+  S_DIV = {
+    display: 'inline',
+    color: '#795548',
+    width: '100%',
+    paddingLeft: 8,
+    marginBottom: 8,
+    borderBottom: '3px solid #795548',
+    fontSize: '24px',
+    fontWeight: 'bold'
+  };
+const Caption = props => {
+  const {
+      city
+    } = props.forecast || {},
+    {
+      name = 'Forecast',
+      country
+    } = city || {};
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: CL_SELECT_NONE,
-    style: (0, _extends2["default"])({}, ROOT_DIV, style),
-    children: _caption
+    style: {
+      ...S_DIV,
+      ...props.style
+    },
+    children: (0, _arrFn.joinByCollon2)(name, country)
   });
 };
-
-var _default = Caption;
-exports["default"] = _default;
+var _default = exports.default = Caption;
 //# sourceMappingURL=Caption.js.map

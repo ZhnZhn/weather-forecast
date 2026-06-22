@@ -1,6 +1,7 @@
+import { joinByCollon2 } from '../../utils/arrFn';
 
 const CL_SELECT_NONE = 'select-none'
-, ROOT_DIV = {
+, S_DIV = {
   display: 'inline',
   color: '#795548',
   width: '100%',
@@ -11,21 +12,15 @@ const CL_SELECT_NONE = 'select-none'
   fontWeight: 'bold',
 };
 
-const Caption = ({
-  style,
-  forecast
-}) => {
-  const { city } = forecast || {}
-  , { name='Forecast', country } = city || {}
-  , _caption = [name, country]
-      .filter(Boolean)
-      .join(':');
+const Caption = (props) => {
+  const { city } = props.forecast || {}
+  , { name='Forecast', country } = city || {};
   return (
     <div
       className={CL_SELECT_NONE}
-      style={{...ROOT_DIV, ...style}}
+      style={{...S_DIV, ...props.style}}
     >
-      {_caption}
+      {joinByCollon2(name, country)}
     </div>
   );
 };
