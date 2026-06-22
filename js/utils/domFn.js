@@ -3,20 +3,14 @@
 exports.__esModule = true;
 exports.getNumberOr = exports.escapeStrHtml = exports.crIconImgSrc = void 0;
 var _isTypeFn = require("./isTypeFn");
-const escapeStrHtml = str => (0, _isTypeFn.isStr)(str) ? str.replace(/[<>&"]/g, ch => {
-  switch (ch) {
-    case '<':
-      return '&lt;';
-    case '>':
-      return '&gt;';
-    case '&':
-      return '&amp;';
-    case '"':
-      return '&quot;';
-    default:
-      return ch;
-  }
-}) : '';
+const _reEscapeHtml = /[<>&"]/g,
+  HP_ESCAPE_HTML = Object.create(null);
+HP_ESCAPE_HTML['<'] = '&lt;';
+HP_ESCAPE_HTML['>'] = '&gt;';
+HP_ESCAPE_HTML['&'] = '&amp;';
+HP_ESCAPE_HTML['"'] = '&quot;';
+Object.freeze(HP_ESCAPE_HTML);
+const escapeStrHtml = str => (0, _isTypeFn.isStr)(str) ? str.replace(_reEscapeHtml, ch => HP_ESCAPE_HTML[ch] || ch) : '';
 exports.escapeStrHtml = escapeStrHtml;
 const getNumberOr = v => (0, _isTypeFn.isNumber)(v) ? v : '';
 exports.getNumberOr = getNumberOr;
