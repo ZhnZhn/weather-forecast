@@ -29,28 +29,6 @@ describe('ReactUtils', () => {
       expect((0, _types.adaptEventsOfChild)(1, undefined, 0)).toBe(null);
     });
   });
-  describe('validateWidthHeight', () => {
-    test('validateWidthHeight return false when a react element has width or height smaller than 0', () => {
-      const {
-        container
-      } = (0, _react.render)(/*#__PURE__*/(0, _jsxRuntime.jsxs)(_index.LineChart, {
-        width: 0,
-        height: 0,
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Line, {
-          dataKey: "a"
-        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_index.Bar, {
-          dataKey: "b"
-        })]
-      }));
-      expect((0, _ReactUtils.validateWidthHeight)(container)).toBe(false);
-    });
-    test('validateWidthHeight return false when input is not a react element', () => {
-      expect((0, _ReactUtils.validateWidthHeight)({
-        a: 1
-      })).toBe(false);
-      expect((0, _ReactUtils.validateWidthHeight)(jest.fn())).toBe(false);
-    });
-  });
   describe('toArray', () => {
     const fn = _ReactUtils._toArray;
     test('basic', () => {

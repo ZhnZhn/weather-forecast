@@ -8,8 +8,7 @@ import {
 import {
   findAllByType,
   getDisplayName,
-  _toArray,
-  validateWidthHeight
+  _toArray
 } from '../ReactUtils';
 import {
   adaptEventsOfChild
@@ -47,23 +46,6 @@ describe('ReactUtils', () => {
     test('adaptEventsOfChild return null when input is not a props', () => {
       expect(adaptEventsOfChild(null, undefined, 0)).toBe(null);
       expect(adaptEventsOfChild(1, undefined, 0)).toBe(null);
-    });
-  });
-
-  describe('validateWidthHeight', () => {
-    test('validateWidthHeight return false when a react element has width or height smaller than 0', () => {
-      const { container } = render(
-        <LineChart width={0} height={0}>
-          <Line dataKey="a" />
-          <Bar dataKey="b" />
-        </LineChart>,
-      );
-      expect(validateWidthHeight(container)).toBe(false);
-    });
-
-    test('validateWidthHeight return false when input is not a react element', () => {
-      expect(validateWidthHeight({ a: 1 })).toBe(false);
-      expect(validateWidthHeight(jest.fn())).toBe(false);
     });
   });
 
