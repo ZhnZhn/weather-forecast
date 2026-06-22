@@ -1,0 +1,23 @@
+{
+ "version": 3,
+ "sources": [
+  "../../src/math/mathFn.js"
+ ],
+ "file": "../../src/math/mathFn.js",
+ "names": [
+  "_isTypeFn",
+  "require",
+  "NUMBER_EPSILON",
+  "Number",
+  "EPSILON",
+  "_mathRound",
+  "Math",
+  "round",
+  "roundSafeByOneDigitsOrEmpty",
+  "value",
+  "isNumber",
+  "exports",
+  "roundSafeOrEmpty"
+ ],
+ "mappings": ";;;;AAAA,IAAAA,SAAA,GAAAC,OAAA;AAEA,MAAMC,cAAc,GAAGC,MAAM,CAACC,OAAO;AACrC,MAAMC,UAAU,GAAGC,IAAI,CAACC,KAAK;AAEtB,MAAMC,2BAA2B,GAAGC,KAAK,IAAI,IAAAC,kBAAQ,EAACD,KAAK,CAAC,GAC/DJ,UAAU,CAAC,CAACI,KAAK,GAAGP,cAAc,IAAE,EAAE,CAAC,GAAC,EAAE,GAC1C,EAAE;AAAAS,OAAA,CAAAH,2BAAA,GAAAA,2BAAA;AACC,MAAMI,gBAAgB,GAAGH,KAAK,IAAI,IAAAC,kBAAQ,EAACD,KAAK,CAAC,GACpDJ,UAAU,CAACI,KAAK,CAAC,GACjB,EAAE;AAAAE,OAAA,CAAAC,gBAAA,GAAAA,gBAAA"
+}

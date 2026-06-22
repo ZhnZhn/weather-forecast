@@ -74,6 +74,7 @@
   "jest": {
     "testEnvironment": "jsdom",
     "roots": [
+      "<rootDir>/js/math",
       "<rootDir>/js/math/decimal-light",
       "<rootDir>/js/utils",
       "<rootDir>/js/components/zhn-animation",
@@ -88,6 +89,7 @@
       "<rootDir>/js/components/zhn-charts/util"
     ],
     "transformIgnorePatterns": [
+      "<rootDir>/js/math",
       "<rootDir>/js/math/decimal-light",
       "<rootDir>/js/utils",
       "<rootDir>/js/components/zhn-animate",

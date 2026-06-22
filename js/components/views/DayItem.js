@@ -6,6 +6,7 @@ exports.default = void 0;
 var _isTypeFn = require("../../utils/isTypeFn");
 var _domFn = require("../../utils/domFn");
 var _dt = _interopRequireDefault(require("../../utils/dt"));
+var _mathFn = require("../../math/mathFn");
 var _IconVane = _interopRequireDefault(require("./IconVane"));
 var _jsxRuntime = require("react/jsx-runtime");
 const CL_DAY_ITEM = 'day-item',
@@ -38,7 +39,8 @@ const CL_DAY_ITEM = 'day-item',
     margin: '0 auto'
   },
   S_CELL_WIND = {
-    marginTop: -10
+    marginTop: -10,
+    textAlign: 'center'
   },
   S_WIND_SPEED = {
     color: '#3f51b5',
@@ -61,12 +63,7 @@ const CL_DAY_ITEM = 'day-item',
     fontSize: '20px',
     fontWeight: 'bold'
   };
-const roundProp = function (obj, prop) {
-  if (obj === void 0) {
-    obj = {};
-  }
-  return Math.round(obj[prop]);
-};
+const _roundPropOr = (obj, prop) => (0, _mathFn.roundSafeOrEmpty)(obj?.[prop]);
 const DayItem = _ref => {
   let {
     style,
@@ -80,12 +77,6 @@ const DayItem = _ref => {
       temp,
       dt: timestamp
     } = item || {},
-    _speed = (0, _isTypeFn.isNumber)(speed) ? speed.toFixed(2) : '',
-    day = _dt.default.toShortDayOfWeek(timestamp),
-    pressure = roundProp(item, 'pressure'),
-    icon = weather[0].icon,
-    tempDay = roundProp(temp, 'day'),
-    tempNight = roundProp(temp, 'night'),
     _focusableAttr = (0, _isTypeFn.isFn)(onClick) ? {
       tabIndex: "-1",
       className: CL_DAY_ITEM,
@@ -99,12 +90,12 @@ const DayItem = _ref => {
     },
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       style: S_DAY,
-      children: day
+      children: _dt.default.toShortDayOfWeek(timestamp)
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
       style: S_PRESSURE,
-      children: pressure
+      children: _roundPropOr(item, 'pressure')
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
-      src: (0, _domFn.crIconImgSrc)(icon),
+      src: (0, _domFn.crIconImgSrc)(weather?.[0]?.icon),
       style: S_ICON,
       alt: ""
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
@@ -113,16 +104,16 @@ const DayItem = _ref => {
         deg: deg
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
         style: S_WIND_SPEED,
-        children: _speed
+        children: (0, _mathFn.roundSafeByOneDigitsOrEmpty)(speed)
       })]
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       style: S_CELL_TEMP,
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
         style: S_TEMP_DAY,
-        children: tempDay
+        children: _roundPropOr(temp, 'day')
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
         style: S_TEMP_NIGHT,
-        children: tempNight
+        children: _roundPropOr(temp, 'night')
       })]
     })]
   });

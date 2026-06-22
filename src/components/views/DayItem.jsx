@@ -7,6 +7,11 @@ import {
 } from '../../utils/domFn';
 import dt from '../../utils/dt';
 
+import {
+  roundSafeOrEmpty,
+  roundSafeByOneDigitsOrEmpty,
+} from '../../math/mathFn';
+
 import IconVane from './IconVane';
 
 const CL_DAY_ITEM = 'day-item'
@@ -39,7 +44,8 @@ const CL_DAY_ITEM = 'day-item'
   margin: '0 auto'
 }
 , S_CELL_WIND = {
-  marginTop: -10
+  marginTop: -10,
+  textAlign: 'center'
 }
 , S_WIND_SPEED = {
   color: '#3f51b5',
@@ -63,11 +69,10 @@ const CL_DAY_ITEM = 'day-item'
   fontWeight: 'bold'
 };
 
-
-const roundProp = (
-  obj={},
+const _roundPropOr = (
+  obj,
   prop
-) => Math.round(obj[prop])
+) => roundSafeOrEmpty(obj?.[prop]);
 
 const DayItem = ({
   style,
@@ -81,39 +86,31 @@ const DayItem = ({
     temp,
     dt:timestamp
   } = item || {}
-  , _speed = isNumber(speed)
-       ? speed.toFixed(2)
-       : ''
-  , day = dt.toShortDayOfWeek(timestamp)
-  , pressure = roundProp(item, 'pressure')
-  , icon = weather[0].icon
-  , tempDay = roundProp(temp, 'day')
-  , tempNight = roundProp(temp, 'night')
   , _focusableAttr = isFn(onClick)
-       ? {
-           tabIndex: "-1",
-           className: CL_DAY_ITEM,
-           onClick: () => onClick(item)
-         }
-       : void 0;
+     ? {
+         tabIndex: "-1",
+         className: CL_DAY_ITEM,
+         onClick: () => onClick(item)
+       }
+     : void 0;
 
   return (
     <div
        {..._focusableAttr}
        style={{...S_ROOT_DIV, ...style}}
     >
-      <div style={S_DAY}>{day}</div>
-      <span style={S_PRESSURE}>{pressure}</span>
-      <img src={crIconImgSrc(icon)} style={S_ICON} alt="" />
+      <div style={S_DAY}>{dt.toShortDayOfWeek(timestamp)}</div>
+      <span style={S_PRESSURE}>{_roundPropOr(item, 'pressure')}</span>
+      <img src={crIconImgSrc(weather?.[0]?.icon)} style={S_ICON} alt="" />
       <div style={S_CELL_WIND}>
         <IconVane deg={deg} />
         <span style={S_WIND_SPEED}>
-          {_speed}
+          {roundSafeByOneDigitsOrEmpty(speed)}
         </span>
       </div>
       <div style={S_CELL_TEMP}>
-        <span style={S_TEMP_DAY}>{tempDay}</span>
-        <span style={S_TEMP_NIGHT}>{tempNight}</span>
+        <span style={S_TEMP_DAY}>{_roundPropOr(temp, 'day')}</span>
+        <span style={S_TEMP_NIGHT}>{_roundPropOr(temp, 'night')}</span>
       </div>
     </div>
   );
