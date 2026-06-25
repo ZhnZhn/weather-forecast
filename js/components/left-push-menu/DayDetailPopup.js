@@ -4,6 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.default = void 0;
 var _dt = _interopRequireDefault(require("../../utils/dt"));
+var _mathFn = require("../../math/mathFn");
 var _uiApi = require("../uiApi");
 var _styleFn = require("../styleFn");
 var _BtSvgClose = _interopRequireDefault(require("../zhn/BtSvgClose"));
@@ -41,15 +42,16 @@ const TitleValue = _ref => {
   let {
     title,
     valueCn,
-    value
+    value,
+    suffix
   } = _ref;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
     children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
       className: CL_LABEL,
-      children: [title, "\xA0"]
+      children: [title, ":\xA0"]
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
       className: valueCn,
-      children: [value, "\xA0"]
+      children: [(0, _mathFn.roundSafeByOneDigitsOrEmpty)(value), suffix, "\xA0"]
     })]
   });
 };
@@ -97,7 +99,7 @@ const DayDetailPopup = _ref2 => {
     description = weather[0] && weather[0].description || 'Without description',
     _isRain = !!rain,
     _isSnow = snow > 0.02,
-    _pressureTitle = _isRain && _isSnow ? 'Press.:' : 'Pressure:',
+    _pressureTitle = _isRain && _isSnow ? 'Press.' : 'Pressure',
     _style = isOpen ? _styleFn.S_BLOCK : _styleFn.S_NONE;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     style: {
@@ -122,53 +124,58 @@ const DayDetailPopup = _ref2 => {
       })
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       children: [_isRain && /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
-        title: "Rain:",
+        title: "Rain",
         valueCn: CL_V_RAIN,
-        value: `${rain}mm`
+        value: rain,
+        suffix: "mm"
       }), _isSnow && /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
-        title: "Snow:",
+        title: "Snow",
         valueCn: CL_V_WATER,
-        value: `${snow}mm`
+        value: snow,
+        suffix: "mm"
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
         title: _pressureTitle,
         valueCn: CL_V_PRESSURE,
-        value: `${pressure}hPa`
+        value: pressure,
+        suffix: "hPa"
       })]
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
-        title: "Clouds:",
+        title: "Clouds",
         valueCn: CL_V_WATER,
-        value: `${clouds}%`
+        value: clouds,
+        suffix: "%"
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
-        title: "Humidity:",
+        title: "Humidity",
         valueCn: CL_V_WATER,
-        value: `${humidity}%`
+        value: humidity,
+        suffix: "%"
       })]
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
-        title: "Morn:",
+        title: "Morn",
         valueCn: CL_V_DAY,
         value: morn
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
-        title: "Day:",
+        title: "Day",
         valueCn: CL_V_DAY,
         value: day
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
-        title: "Max:",
+        title: "Max",
         valueCn: CL_V_DAY,
         value: max
       })]
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
-        title: "Eve:",
+        title: "Eve",
         valueCn: CL_V_NIGHT,
         value: eve
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
-        title: "Night:",
+        title: "Night",
         valueCn: CL_V_NIGHT,
         value: night
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(TitleValue, {
-        title: "Min:",
+        title: "Min",
         valueCn: CL_V_NIGHT,
         value: min
       })]

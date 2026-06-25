@@ -1,4 +1,7 @@
 import dt from '../../utils/dt';
+import {
+  roundSafeByOneDigitsOrEmpty
+} from '../../math/mathFn';
 
 import {
   useState,
@@ -47,12 +50,13 @@ S_DAY = {
 const TitleValue = ({
   title,
   valueCn,
-  value
+  value,
+  suffix
 }) => (
   <>
-   <span className={CL_LABEL}>{title}&nbsp;</span>
+   <span className={CL_LABEL}>{title}:&nbsp;</span>
    <span className={valueCn}>
-     {value}&nbsp;
+     {roundSafeByOneDigitsOrEmpty(value)}{suffix}&nbsp;
    </span>
   </>
 );
@@ -88,7 +92,7 @@ const DayDetailPopup = ({
   , _isRain = !!rain
   , _isSnow = snow > 0.02
   , _pressureTitle = _isRain && _isSnow
-       ? 'Press.:' : 'Pressure:'
+       ? 'Press.' : 'Pressure'
   , _style = isOpen
        ? S_BLOCK
        : S_NONE;
@@ -115,55 +119,60 @@ const DayDetailPopup = ({
         <span className={CL_DESCR}>{description}</span>
       </div>
       <div>
-        {_isRain && <TitleValue title="Rain:"
+        {_isRain && <TitleValue title="Rain"
             valueCn={CL_V_RAIN}
-            value={`${rain}mm`}
+            value={rain}
+            suffix="mm"
           />
         }
-        {_isSnow && <TitleValue title="Snow:"
+        {_isSnow && <TitleValue title="Snow"
             valueCn={CL_V_WATER}
-            value={`${snow}mm`}
+            value={snow}
+            suffix="mm"
           />
         }
         <TitleValue title={_pressureTitle}
           valueCn={CL_V_PRESSURE}
-          value={`${pressure}hPa`}
+          value={pressure}
+          suffix="hPa"
         />
       </div>
       <div>
-        <TitleValue title="Clouds:"
+        <TitleValue title="Clouds"
           valueCn={CL_V_WATER}
-          value={`${clouds}%`}
+          value={clouds}
+          suffix="%"
         />
-        <TitleValue title="Humidity:"
+        <TitleValue title="Humidity"
           valueCn={CL_V_WATER}
-          value={`${humidity}%`}
+          value={humidity}
+          suffix="%"
         />
       </div>
       <div>
-        <TitleValue title="Morn:"
+        <TitleValue title="Morn"
           valueCn={CL_V_DAY}
           value={morn}
         />
-        <TitleValue title="Day:"
+        <TitleValue title="Day"
           valueCn={CL_V_DAY}
           value={day}
         />
-        <TitleValue title="Max:"
+        <TitleValue title="Max"
           valueCn={CL_V_DAY}
           value={max}
         />
       </div>
       <div>
-        <TitleValue title="Eve:"
+        <TitleValue title="Eve"
           valueCn={CL_V_NIGHT}
           value={eve}
         />
-        <TitleValue title="Night:"
+        <TitleValue title="Night"
           valueCn={CL_V_NIGHT}
           value={night}
         />
-        <TitleValue title="Min:"
+        <TitleValue title="Min"
           valueCn={CL_V_NIGHT}
           value={min}
         />
