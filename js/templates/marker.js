@@ -7,6 +7,7 @@ var _isTypeFn = require("../utils/isTypeFn");
 var _arrFn = require("../utils/arrFn");
 var _domFn = require("../utils/domFn");
 var _dt = _interopRequireDefault(require("../utils/dt"));
+var _mathFn = require("../math/mathFn");
 const NO_DATA = 'No data';
 const _fGetWeather = propName => weather => (0, _arrFn.getByIndexAndProp)(weather, 0, propName, NO_DATA),
   _getWeatherIcon = _fGetWeather('icon'),
@@ -29,7 +30,8 @@ const _crTemperature = (t, fl) => {
   if ((0, _isTypeFn.isNaN)(_t)) {
     return NO_DATA;
   }
-  return _difference < -1 || _difference > 1 ? `${t}&nbsp;(Feels&nbsp;Like&nbsp;${fl})&nbsp;°C` : `${t}&nbsp;°C`;
+  const _tRounded = (0, _mathFn.roundSafeByOneDigitsOrEmpty)(_t);
+  return _difference < -1 || _difference > 1 ? `${_tRounded}&nbsp;(Feels&nbsp;Like&nbsp;${(0, _mathFn.roundSafeByOneDigitsOrEmpty)(_fl)})&nbsp;°C` : `${_tRounded}&nbsp;°C`;
 };
 const _crCaptionConfig = (id, name, country) => (0, _isTypeFn.isNotZeroNumber)(id) ? ['marker__caption__not-empty',
 //_captionCl
@@ -41,8 +43,8 @@ const _crWindSpeed = (speed, gust) => {
   if ((0, _isTypeFn.isEmptyValue)(speed)) {
     return '';
   }
-  const _gust = (0, _isTypeFn.isEmptyValue)(gust) ? '' : `-${gust}`;
-  return `${speed}${_gust}m/s`;
+  const _gust = (0, _isTypeFn.isEmptyValue)(gust) ? '' : `-${(0, _mathFn.roundSafeByOneDigitsOrEmpty)(gust)}`;
+  return `${(0, _mathFn.roundSafeByOneDigitsOrEmpty)(speed)}${_gust}m/s`;
 };
 const AQ = ['Good (1)', 'Fair (2)', 'Moderate (3)', 'Poor (4)', 'Very Poor (5)'];
 const _crAirQuailityRow = aqiSlice => {
@@ -54,7 +56,7 @@ const _crAirQuailityRow = aqiSlice => {
     } = main || {},
     _aqv = (0, _isTypeFn.isNumber)(aqi) ? AQ[aqi - 1] : '';
   return _aqv ? `<p style="margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;">
-        <span class="marker__label" title="AirQuaility">AirQuaility:</span>
+        <span class="marker__label">AirQuaility:</span>
         <span class="marker__value-even" style="color:#3f51b5;">${_aqv}</span>
       </p>` : '';
 };
@@ -82,11 +84,11 @@ const crMarkerDivIcon = w => {
   return `<div style="position:relative;top:-45px;left:-25px;font-size: 15px;font-weight:bold;">
      ${_crDivImgIcon(icon)}
      <div style="position:absolute; top:5px; left: 50px; width: 90px; line-height: 1.2;">
-       <div style="color:#ff9800;">${(0, _domFn.getNumberOr)(temp)}&nbsp;℃</div>
+       <div style="color:#ff9800;">${(0, _mathFn.roundSafeByOneDigitsOrEmpty)(temp)}&nbsp;℃</div>
        <div style="color:#3f51b5;">${(0, _domFn.getNumberOr)(pressure)}&nbsp;hPa</div>
        <div>
           ${_crVane(deg)}
-          <span style="color:#3f51b5;">${(0, _domFn.getNumberOr)(speed)}m/s<span>
+          <span style="color:#3f51b5;">${(0, _mathFn.roundSafeByOneDigitsOrEmpty)(speed)}m/s<span>
        </div>
      </div>
    </div>`;

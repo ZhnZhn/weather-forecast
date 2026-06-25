@@ -14,6 +14,9 @@ import {
   crIconImgSrc
 } from '../utils/domFn';
 import dt from '../utils/dt';
+import {
+  roundSafeByOneDigitsOrEmpty
+} from '../math/mathFn';
 
 const NO_DATA = 'No data';
 const _fGetWeather = propName => weather => getByIndexAndProp(
@@ -46,10 +49,11 @@ const _crTemperature = (t, fl) => {
   if (isNaN(_t)) {
     return NO_DATA;
   }
+  const _tRounded = roundSafeByOneDigitsOrEmpty(_t);
 
   return _difference < -1 || _difference > 1
-    ? `${t}&nbsp;(Feels&nbsp;Like&nbsp;${fl})&nbsp;°C`
-    : `${t}&nbsp;°C`
+    ? `${_tRounded}&nbsp;(Feels&nbsp;Like&nbsp;${roundSafeByOneDigitsOrEmpty(_fl)})&nbsp;°C`
+    : `${_tRounded}&nbsp;°C`
 };
 
 const _crCaptionConfig = (
@@ -73,8 +77,8 @@ const _crWindSpeed = (
  }
  const _gust = isEmptyValue(gust)
    ? ''
-   : `-${gust}`;
-  return `${speed}${_gust}m/s`;
+   : `-${roundSafeByOneDigitsOrEmpty(gust)}`;
+  return `${roundSafeByOneDigitsOrEmpty(speed)}${_gust}m/s`;
 };
 
 const AQ = [
@@ -93,7 +97,7 @@ const _crAirQuailityRow = aqiSlice => {
      : '';
   return _aqv
     ? `<p style="margin: 0 0;margin-top: 4px;font-size: 15px; font-weight: bold;">
-        <span class="marker__label" title="AirQuaility">AirQuaility:</span>
+        <span class="marker__label">AirQuaility:</span>
         <span class="marker__value-even" style="color:#3f51b5;">${_aqv}</span>
       </p>`
     : ''
@@ -127,11 +131,11 @@ export const crMarkerDivIcon = (w) => {
   return `<div style="position:relative;top:-45px;left:-25px;font-size: 15px;font-weight:bold;">
      ${_crDivImgIcon(icon)}
      <div style="position:absolute; top:5px; left: 50px; width: 90px; line-height: 1.2;">
-       <div style="color:#ff9800;">${getNumberOr(temp)}&nbsp;℃</div>
+       <div style="color:#ff9800;">${roundSafeByOneDigitsOrEmpty(temp)}&nbsp;℃</div>
        <div style="color:#3f51b5;">${getNumberOr(pressure)}&nbsp;hPa</div>
        <div>
           ${_crVane(deg)}
-          <span style="color:#3f51b5;">${getNumberOr(speed)}m/s<span>
+          <span style="color:#3f51b5;">${roundSafeByOneDigitsOrEmpty(speed)}m/s<span>
        </div>
      </div>
    </div>`;
