@@ -2,9 +2,10 @@
 
 exports.__esModule = true;
 exports.default = void 0;
+var _mathFn = require("../../math/mathFn");
 var _Label = require("./Label.Style");
 var _jsxRuntime = require("react/jsx-runtime");
-const _crValue = v => v == null ? '' : v;
+const _crValue = v => v == null ? '' : (0, _mathFn.roundSafeByOneDigitsOrEmpty)(v);
 const TitleValue = _ref => {
   let {
     t,
@@ -14,7 +15,7 @@ const TitleValue = _ref => {
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
       style: _Label.S_LABEL,
-      children: t + ":"
+      children: `${t}:`
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
       style: style,
       children: [_crValue(v), "\xA0"]

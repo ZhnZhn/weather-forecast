@@ -1,4 +1,8 @@
 import {
+  roundSafeByOneDigitsOrEmpty
+} from '../../math/mathFn';
+
+import {
   S_SERIA,
   S_LABEL,
   S_TOOLTIP_ROW
@@ -6,7 +10,7 @@ import {
 
 const _crValue = v => v == null
  ? ''
- : v;
+ : roundSafeByOneDigitsOrEmpty(v);
 
 const TitleValue = ({
   t,

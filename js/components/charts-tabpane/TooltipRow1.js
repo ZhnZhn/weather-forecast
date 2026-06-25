@@ -2,6 +2,7 @@
 
 exports.__esModule = true;
 exports.default = void 0;
+var _mathFn = require("../../math/mathFn");
 var _Label = require("./Label.Style");
 var _jsxRuntime = require("react/jsx-runtime");
 const TooltipRow1 = _ref => {
@@ -14,10 +15,10 @@ const TooltipRow1 = _ref => {
     style: _Label.S_TOOLTIP_ROW,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
       style: _Label.S_CAPTION,
-      children: t + ":"
+      children: `${t}:`
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
       style: style,
-      children: v
+      children: (0, _mathFn.roundSafeByOneDigitsOrEmpty)(v)
     })]
   });
 };

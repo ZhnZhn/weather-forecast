@@ -1,4 +1,8 @@
 import {
+  roundSafeByOneDigitsOrEmpty
+} from '../../math/mathFn';
+
+import {
   S_SERIA,
   S_TOOLTIP_ROW,
   S_CAPTION
@@ -11,7 +15,7 @@ const TooltipRow1 = ({
 }) => v == null ? null : (
  <div style={S_TOOLTIP_ROW}>
    <span style={S_CAPTION}>{`${t}:`}</span>
-   <span style={style}>{v}</span>
+   <span style={style}>{roundSafeByOneDigitsOrEmpty(v)}</span>
  </div>
 );
 
