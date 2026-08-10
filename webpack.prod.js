@@ -21,11 +21,7 @@ module.exports = {
     ]
   },
   externals: {        
-    "leaflet": {
-       "commonjs": "leaflet",
-       "amd": "leaflet",
-       "root": "L"
-    }    
+    "leaflet": "L"    
   },
   output: {
       path: path.resolve('app'),
