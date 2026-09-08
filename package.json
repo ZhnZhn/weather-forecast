@@ -17,6 +17,7 @@
     "lint:one": "eslint -c eslint.config.js",
     "lint:biome": "npx @biomejs/biome lint ./src --colors=off",
     "build:prod": "webpack --color --progress --config webpack.prod.js",
+    "build:rspack:prod": "rspack build --config rspack.prod.js",   
     "stats": "npm run stats:json && npm run stats:report",
     "stats:json": "webpack --config webpack.dll-jsx.js --profile --json > stats.json",
     "stats:report": "webpack-bundle-analyzer stats.json --no-open --mode static",
