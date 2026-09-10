@@ -62,16 +62,14 @@
       
    <script defer src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" 
      integrity="sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M" crossorigin="anonymous"></script>               
-     
-   <%
-    for (let index in htmlWebpackPlugin.files.js) {
-     const fileName = htmlWebpackPlugin.files.js[index];
-     if (fileName.indexOf('app_') !== -1         
-         || fileName.indexOf('lib_') !== -1 ) { %>
-       <script src="<%=fileName %>" defer></script>
-     <% } 
-   } %>     
-    
-
+<%
+ const isFileName = (fileName, token) => fileName.indexOf(token) !== -1;
+ for (let index in htmlWebpackPlugin.files.js ) {
+  let fileName = htmlWebpackPlugin.files.js[index];         
+  if (isFileName(fileName, "lib_") 
+      || isFileName(fileName, "app_")) { %>
+   <script src="<%=fileName %>" defer></script>
+  <% } 
+} %>        
 </body>
 </html>
