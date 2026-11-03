@@ -1,4 +1,8 @@
 import {
+  testSpyOn
+} from '@testHelpers';
+
+import {
   render,
   screen
 } from '@testing-library/react';
@@ -98,7 +102,7 @@ describe('<CartesianAxis />', () => {
   it('gets font states from its ComputedStyle', () => {
     const myStyle = { fontSize: '14px', letterSpacing: '0.5em' };
 
-    jest.spyOn(window, 'getComputedStyle').mockReturnValue(myStyle);
+    testSpyOn(window, 'getComputedStyle').mockReturnValue(myStyle);
 
     render(
       <Surface width={500} height={500}>

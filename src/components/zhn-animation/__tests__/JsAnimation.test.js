@@ -1,3 +1,5 @@
+import { crTestFn } from '@testHelpers';
+
 import {
   render,
   waitFor
@@ -26,7 +28,7 @@ describe('JsAnimation', () => {
   });
 
   test('should called onAnimationEnd', async () => {
-    const handleAnimationEnd = jest.fn()
+    const handleAnimationEnd = crTestFn()
 
     render(
       <JsAnimation
