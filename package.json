@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "webpack serve --config webpack.dev.js",
     "dev:rspack": "rspack serve --config rspack.dev.js",
-    "test": "rstest --config rstest.config.mjs",
+    "test:node": "rstest --config rstest.config.mjs --project node",
+    "test:dom": "rstest --config rstest.config.mjs --project dom",
+    "test": "npm run test:node && npm run test:dom",    
     "test:watch": "rstest --watch --config rstest.config.mjs",
     "css:min": "node ut/css-min.js",
     "css:sass": "node ut/css-sass.js",
